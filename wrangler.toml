@@ -1,0 +1,77 @@
+name = "zaka-bot"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+
+# ---------------------------------------------------------------------------
+# Durable Object — TwitchBotDO, one instance per Twitch channel (keyed by
+# lowercased login via idFromName). Holds the live Twitch IRC connection,
+# moderation/song-request handling, and the OBS chat-widget WebSocket hub.
+# ---------------------------------------------------------------------------
+[[durable_objects.bindings]]
+name = "BOT"
+class_name = "TwitchBotDO"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["TwitchBotDO"]
+
+# ---------------------------------------------------------------------------
+# KV — the one namespace the whole app uses (users/sessions live under
+# `user:`, per-channel config/logs/donations/auctions under `channel:*`,
+# admin-created TTS slots under `announce:*`, the platform blacklist under
+# `global:blacklist`). This id is the real namespace already in the
+# connected Cloudflare account (title "zaka_bot_tokens") — do not repoint
+# this at a different namespace without migrating the data.
+# ---------------------------------------------------------------------------
+[[kv_namespaces]]
+binding = "TOKENS"
+id = "482de8e9da4e44da8b3671b86cdc3893"
+
+# ---------------------------------------------------------------------------
+# Workers AI — Llama Guard 3, used by the Pro "оскорбления" moderation rule.
+# ---------------------------------------------------------------------------
+[ai]
+binding = "AI"
+
+# ---------------------------------------------------------------------------
+# Static assets — the dashboard SPA (user panel + /admin). NOT recoverable
+# from the deployed Worker script (static assets aren't part of the Worker
+# bundle) — ./public currently holds only a placeholder page. See README
+# "Known gap: the dashboard frontend" before deploying this over the real
+# site, or you will take the real dashboard offline.
+# ---------------------------------------------------------------------------
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+# Every 2 minutes: sweepChannels() checks Helix for which enabled channels
+# are actually live and starts/stops each one's Durable Object accordingly,
+# so the bot isn't holding an idle IRC connection for offline channels.
+[triggers]
+crons = ["*/2 * * * *"]
+
+[vars]
+# Non-secret — the bot account's own Twitch login, used to identify its
+# messages/moderator status and as the IRC NICK.
+BOT_LOGIN = "zaka_bot"
+# Non-secret — shown on the /admin-login form; the password is a secret
+# (see below), never this.
+ADMIN_LOGIN_EMAIL = "admin@gmail.com"
+
+# ---------------------------------------------------------------------------
+# Secrets (never commit values) — set with `wrangler secret put <NAME>`:
+#   TWITCH_CLIENT_ID              main app's Twitch application
+#   TWITCH_CLIENT_SECRET
+#   BOT_CLIENT_ID                 the bot account's OWN Twitch application
+#   BOT_ACCESS_TOKEN               bot's Twitch user token (cold-start fallback; KV's bot:token takes over once refreshed)
+#   BOT_REFRESH_TOKEN
+#   SESSION_SECRET                 random 32+ byte string, signs the streops_session cookie
+#   DONATIONALERTS_CLIENT_ID
+#   DONATIONALERTS_CLIENT_SECRET
+#   YOUTUBE_API_KEY
+#   TWITCH_EVENTSUB_SECRET          random string; verifies the channel-points EventSub webhook signature
+#   ADMIN_LOGIN_PASSWORD            /admin-login password — was hardcoded in
+#                                   the deployed source before this recovery;
+#                                   treat the old value as compromised and
+#                                   set a fresh one here instead of reusing it.
+# ---------------------------------------------------------------------------
