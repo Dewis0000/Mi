@@ -2,26 +2,855 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8" />
-<title>StreOps — dashboard placeholder</title>
+<title>StreOps — панель управления</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
-  body { font-family: system-ui, sans-serif; background: #0b0b0f; color: #eee; max-width: 640px; margin: 60px auto; line-height: 1.6; padding: 0 20px; }
-  code { background: #1a1a22; padding: 2px 6px; border-radius: 4px; }
-  h1 { color: #a855f7; }
+  :root {
+    --bg: #0a0a0e;
+    --panel: #131318;
+    --panel2: #1a1a22;
+    --border: rgba(255,255,255,.08);
+    --text: #f3f3f6;
+    --muted: rgba(255,255,255,.5);
+    --accent: #a855f7;
+    --accent2: #7c3aed;
+    --green: #34d399;
+    --red: #f87171;
+    --amber: #f59e0b;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  a { color: var(--accent); }
+  button { font-family: inherit; }
+  [hidden] { display: none !important; }
+
+  /* ---- login screen ---- */
+  #login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .login-card { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 40px; max-width: 380px; width: 100%; text-align: center; }
+  .login-card h1 { font-size: 22px; margin: 0 0 8px; background: linear-gradient(135deg, var(--accent), #38bdf8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .login-card p { color: var(--muted); font-size: 14px; margin: 0 0 24px; line-height: 1.5; }
+  .btn-twitch { display: inline-flex; align-items: center; gap: 8px; background: #9146FF; color: #fff; text-decoration: none; padding: 12px 22px; border-radius: 10px; font-weight: 600; font-size: 14px; }
+  .btn-twitch:hover { background: #7c2ff0; }
+
+  /* ---- app shell ---- */
+  #app { display: none; min-height: 100vh; }
+  #app.ready { display: flex; }
+  .sidebar { width: 220px; flex: none; background: var(--panel); border-right: 1px solid var(--border); padding: 20px 12px; display: flex; flex-direction: column; gap: 4px; }
+  .brand { font-weight: 800; font-size: 18px; padding: 0 10px 20px; background: linear-gradient(135deg, var(--accent), #38bdf8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .nav-btn { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; border: none; background: transparent; color: var(--muted); font-size: 14px; text-align: left; cursor: pointer; width: 100%; }
+  .nav-btn:hover { background: var(--panel2); color: var(--text); }
+  .nav-btn.active { background: rgba(168,85,247,.15); color: var(--accent); font-weight: 600; }
+  .sidebar-footer { margin-top: auto; padding: 10px; font-size: 12px; color: var(--muted); }
+
+  .main { flex: 1; min-width: 0; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--border); }
+  .topbar-title { font-size: 18px; font-weight: 700; }
+  .user-chip { display: flex; align-items: center; gap: 10px; }
+  .user-chip img { width: 32px; height: 32px; border-radius: 50%; }
+  .tier-badge { font-size: 11px; padding: 2px 8px; border-radius: 99px; background: rgba(168,85,247,.18); color: var(--accent); font-weight: 700; text-transform: uppercase; }
+  .btn-plain { background: var(--panel2); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 8px; font-size: 13px; cursor: pointer; }
+  .btn-plain:hover { border-color: var(--accent); }
+
+  .content { padding: 24px; max-width: 980px; }
+  .banner { padding: 12px 16px; border-radius: 10px; margin-bottom: 18px; font-size: 13px; }
+  .banner.error { background: rgba(248,113,113,.12); border: 1px solid rgba(248,113,113,.3); color: #fca5a5; }
+  .banner.ok { background: rgba(52,211,153,.12); border: 1px solid rgba(52,211,153,.3); color: #6ee7b7; }
+  .banner.warn { background: rgba(245,158,11,.12); border: 1px solid rgba(245,158,11,.3); color: #fcd34d; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+  .card h3 { margin: 0 0 4px; font-size: 13px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .03em; }
+  .card .big { font-size: 26px; font-weight: 800; margin-top: 4px; }
+  .card .delta { font-size: 12px; margin-top: 4px; }
+  .delta.up { color: var(--green); }
+  .delta.down { color: var(--red); }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  .dot.live { background: var(--red); box-shadow: 0 0 0 3px rgba(248,113,113,.25); }
+  .dot.off { background: var(--muted); }
+
+  .section { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 18px; }
+  .section h2 { font-size: 15px; margin: 0 0 14px; }
+  .section h2 small { color: var(--muted); font-weight: 400; font-size: 12px; margin-left: 8px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  .field-inline { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .field-inline label { font-size: 13px; color: var(--text); }
+  input[type=text], input[type=number], input[type=password], input[type=color], select, textarea {
+    width: 100%; background: var(--panel2); border: 1px solid var(--border); color: var(--text);
+    border-radius: 8px; padding: 8px 10px; font-size: 13px; font-family: inherit;
+  }
+  textarea { min-height: 70px; resize: vertical; }
+  input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--accent); }
+  input[type=range] { accent-color: var(--accent); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+  .btn { background: var(--accent); color: #fff; border: none; padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .btn:hover { background: var(--accent2); }
+  .btn:disabled { opacity: .5; cursor: default; }
+  .btn.secondary { background: var(--panel2); border: 1px solid var(--border); color: var(--text); }
+  .btn.secondary:hover { border-color: var(--accent); }
+  .btn.danger { background: rgba(248,113,113,.15); color: #fca5a5; border: 1px solid rgba(248,113,113,.3); }
+  .btn.danger:hover { background: rgba(248,113,113,.25); }
+  .btn.sm { padding: 6px 10px; font-size: 12px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; }
+  .track-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .track-row img { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; background: var(--panel2); flex: none; }
+  .track-row .meta { flex: 1; min-width: 0; }
+  .track-row .meta .t { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .track-row .meta .s { font-size: 11px; color: var(--muted); }
+  .empty { color: var(--muted); font-size: 13px; padding: 12px 0; }
+
+  .url-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .url-row code { flex: 1; background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 12px; overflow-x: auto; white-space: nowrap; }
+
+  .log-entry { padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; display: flex; gap: 8px; }
+  .log-entry .time { color: var(--muted); flex: none; }
+  .log-entry .role-moderator { color: #38bdf8; }
+  .log-entry .role-subscriber { color: var(--green); }
+  .log-entry .role-bot { color: var(--accent); }
+  .log-entry .action-ban, .log-entry .action-timeout, .log-entry .action-deleted { color: var(--red); }
 </style>
 </head>
 <body>
-  <h1>Dashboard not recovered here</h1>
-  <p>
-    This placeholder exists only so the Worker's static-assets binding has something
-    to serve locally. The real StreOps dashboard (user panel + <code>/admin</code>)
-    is a separate frontend build that isn't part of the deployed Worker script, so it
-    could not be recovered from the Cloudflare account the same way <code>src/*.ts</code> was.
-  </p>
-  <p>See the repository README for details and next steps.</p>
-  <p>
-    API routes, the Twitch/DonationAlerts OAuth flows, and the six <code>/widget/*</code>
-    OBS overlay pages all work independently of this page.
-  </p>
+
+<div id="login-screen">
+  <div class="login-card">
+    <h1>StreOps</h1>
+    <p>Чат-бот, модерация, музыка и виджеты для вашего Twitch-канала.</p>
+    <a class="btn-twitch" href="/api/auth/twitch/login">Войти через Twitch</a>
+  </div>
+</div>
+
+<div id="app">
+  <div class="sidebar">
+    <div class="brand">StreOps</div>
+    <button class="nav-btn" data-tab="overview">Обзор</button>
+    <button class="nav-btn" data-tab="moderation">Модерация</button>
+    <button class="nav-btn" data-tab="music">Музыка</button>
+    <button class="nav-btn" data-tab="widgets">Виджеты</button>
+    <div class="sidebar-footer" id="sidebar-footer"></div>
+  </div>
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">Обзор</div>
+      <div class="user-chip">
+        <span class="tier-badge" id="tier-badge">free</span>
+        <img id="user-avatar" src="" alt="" />
+        <span id="user-name"></span>
+        <a class="btn-plain" href="/api/auth/logout">Выйти</a>
+      </div>
+    </div>
+    <div class="content">
+      <div id="global-banner"></div>
+      <div id="tab-overview" class="tab"></div>
+      <div id="tab-moderation" class="tab" hidden></div>
+      <div id="tab-music" class="tab" hidden></div>
+      <div id="tab-widgets" class="tab" hidden></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  function api(path, opts) {
+    opts = opts || {};
+    var headers = Object.assign({}, opts.headers || {});
+    if (opts.body && typeof opts.body !== 'string') {
+      headers['Content-Type'] = 'application/json';
+      opts.body = JSON.stringify(opts.body);
+    }
+    return fetch(path, Object.assign({ credentials: 'include' }, opts, { headers: headers }))
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (data) { return { ok: r.ok, status: r.status, data: data }; }); });
+  }
+
+  function el(tag, attrs, children) {
+    var node = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (k) {
+      if (k === 'class') node.className = attrs[k];
+      else if (k === 'html') node.innerHTML = attrs[k];
+      else if (k.indexOf('on') === 0) node.addEventListener(k.slice(2), attrs[k]);
+      else node.setAttribute(k, attrs[k]);
+    });
+    (children || []).forEach(function (c) { if (c) node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+    return node;
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function banner(kind, text) {
+    var box = document.getElementById('global-banner');
+    box.innerHTML = '';
+    if (!text) return;
+    box.appendChild(el('div', { class: 'banner ' + kind }, [text]));
+  }
+
+  var state = { me: null, cfg: {}, login: null };
+
+  function fmtDuration(sec) {
+    sec = Math.max(0, Math.round(sec || 0));
+    var m = Math.floor(sec / 60), s = sec % 60;
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  // ---------------- Overview ----------------
+  function renderOverview() {
+    var root = document.getElementById('tab-overview');
+    root.innerHTML = '';
+    var statusCard = el('div', { class: 'section' });
+    statusCard.appendChild(el('h2', {}, ['Бот и стрим']));
+    var body = el('div', { class: 'grid' });
+    statusCard.appendChild(body);
+    root.appendChild(statusCard);
+
+    var statsRoot = el('div', { class: 'grid' });
+    root.appendChild(statsRoot);
+
+    var actionsRow = el('div', { class: 'row' });
+    var toggleBtn = el('button', { class: 'btn' }, ['...']);
+    actionsRow.appendChild(toggleBtn);
+    statusCard.appendChild(actionsRow);
+
+    function load() {
+      api('/api/bot/status').then(function (res) {
+        var d = res.data || {};
+        var cfg = d.config || {};
+        var stream = d.stream || {};
+        body.innerHTML = '';
+        body.appendChild(el('div', { class: 'card' }, [
+          el('h3', {}, ['Бот']),
+          el('div', { class: 'big' }, [(cfg.enabled ? 'Включён' : 'Выключен')]),
+          el('div', { class: 'delta' }, [d.connected ? 'IRC-соединение активно' : 'нет соединения (офлайн или недавно запущен)'])
+        ]));
+        body.appendChild(el('div', { class: 'card' }, [
+          el('h3', {}, ['Стрим']),
+          el('div', { class: 'big' }, [
+            el('span', { class: 'dot ' + (stream.live ? 'live' : 'off') }),
+            stream.live ? 'В эфире' : 'Офлайн'
+          ]),
+          el('div', { class: 'delta' }, [stream.live ? (escapeHtml(stream.title || '') + ' · ' + (stream.viewerCount || 0) + ' зрителей') : ''])
+        ]));
+        toggleBtn.textContent = cfg.enabled ? 'Остановить бота' : 'Запустить бота';
+        toggleBtn.className = 'btn' + (cfg.enabled ? ' danger' : '');
+        toggleBtn.onclick = function () {
+          toggleBtn.disabled = true;
+          api('/api/bot/' + (cfg.enabled ? 'stop' : 'start'), { method: 'POST' }).then(function () {
+            toggleBtn.disabled = false;
+            load();
+          });
+        };
+      });
+      api('/api/channel/stats').then(function (res) {
+        var d = res.data || {};
+        statsRoot.innerHTML = '';
+        if (d.error) {
+          statsRoot.appendChild(el('div', { class: 'card' }, [
+            el('h3', {}, ['Статистика подписок']),
+            el('div', { class: 'delta' }, [d.message || 'Недоступно — нужно заново войти через Twitch.'])
+          ]));
+          return;
+        }
+        var pct = d.subscribersWeekDeltaPct;
+        statsRoot.appendChild(el('div', { class: 'card' }, [
+          el('h3', {}, ['Фолловеры']),
+          el('div', { class: 'big' }, [d.followers == null ? '—' : String(d.followers)])
+        ]));
+        statsRoot.appendChild(el('div', { class: 'card' }, [
+          el('h3', {}, ['Подписчики']),
+          el('div', { class: 'big' }, [d.subscribers == null ? '—' : String(d.subscribers)]),
+          el('div', { class: 'delta ' + (pct > 0 ? 'up' : pct < 0 ? 'down' : '') }, [
+            pct == null ? '' : (pct > 0 ? '+' : '') + pct + '% за неделю'
+          ])
+        ]));
+        statsRoot.appendChild(el('div', { class: 'card' }, [
+          el('h3', {}, ['Очки подписки']),
+          el('div', { class: 'big' }, [d.subPoints == null ? '—' : String(d.subPoints)])
+        ]));
+      });
+    }
+    load();
+  }
+
+  // ---------------- Moderation ----------------
+  function renderModeration() {
+    var root = document.getElementById('tab-moderation');
+    root.innerHTML = '';
+
+    api('/api/bot/status').then(function (res) {
+      var cfg = (res.data && res.data.config) || {};
+      root.appendChild(buildModerationForm(cfg));
+      root.appendChild(buildModerationActions());
+      root.appendChild(buildOverridesSection(cfg));
+      root.appendChild(buildLogsSection());
+    });
+  }
+
+  function saveConfig(patch, onDone) {
+    api('/api/bot/config', { method: 'POST', body: patch }).then(function (res) {
+      if (onDone) onDone(res);
+    });
+  }
+
+  function buildModerationForm(cfg) {
+    var sec = el('div', { class: 'section' });
+    sec.appendChild(el('h2', {}, ['Правила модерации']));
+
+    var bannedWords = el('textarea', { placeholder: 'по одному слову на строку' });
+    bannedWords.value = (cfg.bannedWords || []).join('\n');
+    sec.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Стоп-слова']), bannedWords]));
+
+    var linksMode = el('select', {}, [
+      el('option', { value: 'off' }, ['Разрешены всем']),
+      el('option', { value: 'subs-only' }, ['Только подписчикам']),
+      el('option', { value: 'mods-only' }, ['Только модераторам'])
+    ]);
+    linksMode.value = cfg.linksMode || 'mods-only';
+    sec.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Ссылки в чате']), linksMode]));
+
+    var capsMode = el('input', { type: 'checkbox' });
+    capsMode.checked = cfg.capsMode !== false;
+    sec.appendChild(el('div', { class: 'field-inline' }, [capsMode, el('label', {}, ['Фильтр КАПСА'])]));
+
+    sec.appendChild(el('h2', {}, ['Предупреждения и баны']));
+    var twoCol = el('div', { class: 'two-col' });
+    var firstAction = el('select', {}, [
+      el('option', { value: 'warn' }, ['Предупреждение']),
+      el('option', { value: 'timeout' }, ['Сразу тайм-аут']),
+      el('option', { value: 'ban' }, ['Сразу бан'])
+    ]);
+    firstAction.value = cfg.firstViolationAction || 'warn';
+    twoCol.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Первое нарушение']), firstAction]));
+
+    var warnBefore = el('input', { type: 'number', min: '0' });
+    warnBefore.value = cfg.warningsBeforeTimeout ?? 2;
+    twoCol.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Предупреждений до тайм-аута']), warnBefore]));
+
+    var timeoutMin = el('input', { type: 'number', min: '1' });
+    timeoutMin.value = cfg.timeoutDurationMin ?? 10;
+    twoCol.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Длительность тайм-аута (мин)']), timeoutMin]));
+
+    var banAfter = el('input', { type: 'number', min: '1' });
+    banAfter.value = cfg.banAfterViolations ?? 3;
+    twoCol.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Тайм-аутов до бана']), banAfter]));
+    sec.appendChild(twoCol);
+
+    var proBoxes = {};
+    if (cfg.isPro) {
+      sec.appendChild(el('h2', {}, ['Pro-правила']));
+      var proGrid = el('div', { class: 'two-col' });
+      [
+        ['proDuplicateCheck', 'Проверка на дубли сообщений'],
+        ['proMentionSpamCheck', 'Спам-упоминаниями'],
+        ['proEmoteFloodCheck', 'Флуд эмодзи'],
+        ['proInsultsCheck', 'Оскорбления / токсичность (ИИ)']
+      ].forEach(function (pair) {
+        var box = el('input', { type: 'checkbox' });
+        box.checked = cfg[pair[0]] !== false;
+        proBoxes[pair[0]] = box;
+        proGrid.appendChild(el('div', { class: 'field-inline' }, [box, el('label', {}, [pair[1]])]));
+      });
+      sec.appendChild(proGrid);
+    } else {
+      sec.appendChild(el('div', { class: 'banner warn' }, ['Pro-правила (дубли, флуд эмодзи, спам упоминаниями, ИИ-проверка на токсичность) доступны с Pro-подпиской.']));
+    }
+
+    var saveBtn = el('button', { class: 'btn' }, ['Сохранить']);
+    saveBtn.onclick = function () {
+      saveBtn.disabled = true;
+      var patch = {
+        bannedWords: bannedWords.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean),
+        linksMode: linksMode.value,
+        capsMode: capsMode.checked,
+        firstViolationAction: firstAction.value,
+        warningsBeforeTimeout: Number(warnBefore.value) || 0,
+        timeoutDurationMin: Math.max(1, Number(timeoutMin.value) || 10),
+        banAfterViolations: Math.max(1, Number(banAfter.value) || 3)
+      };
+      Object.keys(proBoxes).forEach(function (k) { patch[k] = proBoxes[k].checked; });
+      saveConfig(patch, function () {
+        saveBtn.disabled = false;
+        banner('ok', 'Настройки модерации сохранены.');
+        setTimeout(function () { banner('ok', ''); }, 3000);
+      });
+    };
+    sec.appendChild(saveBtn);
+    return sec;
+  }
+
+  function buildModerationActions() {
+    var sec = el('div', { class: 'section' });
+    sec.appendChild(el('h2', {}, ['Действия']));
+
+    var row1 = el('div', { class: 'row' });
+    var clearBtn = el('button', { class: 'btn secondary' }, ['Очистить чат']);
+    clearBtn.onclick = function () {
+      if (!confirm('Очистить весь чат канала?')) return;
+      clearBtn.disabled = true;
+      api('/api/bot/clear-chat', { method: 'POST' }).then(function (res) {
+        clearBtn.disabled = false;
+        banner(res.ok ? 'ok' : 'error', res.data.message || (res.ok ? 'Чат очищен.' : 'Не удалось очистить чат.'));
+      });
+    };
+    row1.appendChild(clearBtn);
+
+    var emoteBtn = el('button', { class: 'btn secondary' }, ['Режим "только эмодзи": вкл/выкл']);
+    var emoteState = false;
+    emoteBtn.onclick = function () {
+      emoteState = !emoteState;
+      api('/api/bot/emote-only', { method: 'POST', body: { enabled: emoteState } }).then(function (res) {
+        banner(res.ok ? 'ok' : 'error', res.data.message || (res.ok ? ('Режим "только эмодзи": ' + (emoteState ? 'включён' : 'выключен')) : 'Не удалось переключить режим.'));
+      });
+    };
+    row1.appendChild(emoteBtn);
+    sec.appendChild(row1);
+
+    sec.appendChild(el('h2', { html: 'Ручной бан/разбан<small>по никнейму</small>' }));
+    var row2 = el('div', { class: 'row' });
+    var uname = el('input', { type: 'text', placeholder: 'никнейм', style: 'width:160px' });
+    var duration = el('select', {}, [
+      el('option', { value: '' }, ['Навсегда']),
+      el('option', { value: '600' }, ['10 минут']),
+      el('option', { value: '1800' }, ['30 минут']),
+      el('option', { value: '3600' }, ['1 час']),
+      el('option', { value: '86400' }, ['1 день'])
+    ]);
+    var reason = el('input', { type: 'text', placeholder: 'причина (необязательно)', style: 'width:200px' });
+    var banBtn = el('button', { class: 'btn danger sm' }, ['Забанить']);
+    var unbanBtn = el('button', { class: 'btn secondary sm' }, ['Разбанить']);
+    banBtn.onclick = function () {
+      if (!uname.value.trim()) return;
+      api('/api/bot/ban-user', { method: 'POST', body: { username: uname.value.trim(), durationSec: duration.value ? Number(duration.value) : null, reason: reason.value.trim() || undefined } })
+        .then(function (res) { banner(res.ok ? 'ok' : 'error', res.data.message || (res.ok ? 'Готово.' : 'Ошибка.')); });
+    };
+    unbanBtn.onclick = function () {
+      if (!uname.value.trim()) return;
+      api('/api/bot/unban-user', { method: 'POST', body: { username: uname.value.trim() } })
+        .then(function (res) { banner(res.ok ? 'ok' : 'error', res.data.message || (res.ok ? 'Готово.' : 'Ошибка.')); });
+    };
+    row2.appendChild(uname); row2.appendChild(duration); row2.appendChild(reason); row2.appendChild(banBtn); row2.appendChild(unbanBtn);
+    sec.appendChild(row2);
+    return sec;
+  }
+
+  function buildOverridesSection(cfg) {
+    var sec = el('div', { class: 'section' });
+    sec.appendChild(el('h2', { html: 'Исключения по зрителям<small>освобождение от модерации или мгновенный бан на канале</small>' }));
+    var list = el('div', {});
+    var overrides = (cfg.userOverrides || []).slice();
+    function renderList() {
+      list.innerHTML = '';
+      if (!overrides.length) { list.appendChild(el('div', { class: 'empty' }, ['Пока нет исключений.'])); return; }
+      overrides.forEach(function (o, i) {
+        var row = el('div', { class: 'row', style: 'margin-bottom:6px' }, [
+          el('code', {}, [o.username]),
+          el('span', { style: 'color:var(--muted);font-size:12px' }, [o.mode === 'exempt' ? 'освобождён от модерации' : 'мгновенный бан']),
+        ]);
+        var del = el('button', { class: 'btn secondary sm' }, ['Удалить']);
+        del.onclick = function () { overrides.splice(i, 1); renderList(); saveConfig({ userOverrides: overrides }); };
+        row.appendChild(del);
+        list.appendChild(row);
+      });
+    }
+    renderList();
+    sec.appendChild(list);
+
+    var addRow = el('div', { class: 'row' });
+    var uname = el('input', { type: 'text', placeholder: 'никнейм', style: 'width:160px' });
+    var mode = el('select', {}, [el('option', { value: 'exempt' }, ['Освободить от модерации']), el('option', { value: 'always-ban' }, ['Банить всегда'])]);
+    var addBtn = el('button', { class: 'btn secondary sm' }, ['Добавить']);
+    addBtn.onclick = function () {
+      if (!uname.value.trim()) return;
+      overrides.push({ username: uname.value.trim(), mode: mode.value });
+      uname.value = '';
+      renderList();
+      saveConfig({ userOverrides: overrides });
+    };
+    addRow.appendChild(uname); addRow.appendChild(mode); addRow.appendChild(addBtn);
+    sec.appendChild(addRow);
+    return sec;
+  }
+
+  function buildLogsSection() {
+    var sec = el('div', { class: 'section' });
+    var header = el('div', { class: 'row', style: 'justify-content:space-between' }, [
+      el('h2', { style: 'margin:0' }, ['Журнал'])
+    ]);
+    var clearBtn = el('button', { class: 'btn danger sm' }, ['Очистить журнал']);
+    header.appendChild(clearBtn);
+    sec.appendChild(header);
+    var list = el('div', {});
+    sec.appendChild(list);
+
+    function load() {
+      api('/api/bot/logs').then(function (res) {
+        var logs = (res.data && res.data.logs) || [];
+        list.innerHTML = '';
+        if (!logs.length) { list.appendChild(el('div', { class: 'empty' }, ['Пусто.'])); return; }
+        logs.slice(0, 100).forEach(function (l) {
+          list.appendChild(el('div', { class: 'log-entry' }, [
+            el('span', { class: 'time' }, [l.time]),
+            el('span', { class: 'role-' + l.role }, [l.user]),
+            l.action !== 'message' ? el('span', { class: 'action-' + l.action }, [' [' + l.action + (l.reason ? ': ' + l.reason : '') + ']']) : '',
+            el('span', {}, [' ' + (l.text || '')])
+          ]));
+        });
+      });
+    }
+    clearBtn.onclick = function () {
+      if (!confirm('Очистить журнал? Это также удалит связанные сообщения из чата.')) return;
+      api('/api/bot/logs/clear', { method: 'POST' }).then(load);
+    };
+    load();
+    return sec;
+  }
+
+  // ---------------- Music ----------------
+  function renderMusic() {
+    var root = document.getElementById('tab-music');
+    root.innerHTML = '';
+    var nowSec = el('div', { class: 'section' });
+    nowSec.appendChild(el('h2', {}, ['Сейчас играет']));
+    var nowBody = el('div', {});
+    nowSec.appendChild(nowBody);
+    var controls = el('div', { class: 'row', style: 'margin-top:10px' });
+    var pauseBtn = el('button', { class: 'btn secondary sm' }, ['Пауза/Продолжить']);
+    var skipBtn = el('button', { class: 'btn secondary sm' }, ['Пропустить']);
+    var stopBtn = el('button', { class: 'btn danger sm' }, ['Стоп']);
+    controls.appendChild(pauseBtn); controls.appendChild(skipBtn); controls.appendChild(stopBtn);
+    nowSec.appendChild(controls);
+    root.appendChild(nowSec);
+
+    var queueSec = el('div', { class: 'section' });
+    queueSec.appendChild(el('h2', {}, ['Очередь']));
+    var queueBody = el('div', {});
+    queueSec.appendChild(queueBody);
+    root.appendChild(queueSec);
+
+    var playlistSec = el('div', { class: 'section' });
+    var plHeader = el('div', { class: 'row', style: 'justify-content:space-between' }, [el('h2', { style: 'margin:0' }, ['Фоновый плейлист'])]);
+    var shuffleBox = el('input', { type: 'checkbox' });
+    plHeader.appendChild(el('label', { class: 'field-inline', style: 'margin:0' }, [shuffleBox, 'вперемешку']));
+    playlistSec.appendChild(plHeader);
+    var playlistBody = el('div', {});
+    playlistSec.appendChild(playlistBody);
+    var addRow = el('div', { class: 'row', style: 'margin-top:10px' });
+    var addUrl = el('input', { type: 'text', placeholder: 'ссылка на YouTube', style: 'flex:1;min-width:200px' });
+    var addTitle = el('input', { type: 'text', placeholder: 'название (необязательно)', style: 'width:200px' });
+    var addBtn = el('button', { class: 'btn secondary sm' }, ['Добавить в плейлист']);
+    addRow.appendChild(addUrl); addRow.appendChild(addTitle); addRow.appendChild(addBtn);
+    playlistSec.appendChild(addRow);
+    root.appendChild(playlistSec);
+
+    var settingsSec = buildMusicSettingsForm();
+    root.appendChild(settingsSec);
+
+    function loadQueue() {
+      api('/api/queue?channel=' + encodeURIComponent(state.login)).then(function (res) {
+        var d = res.data || {};
+        shuffleBox.checked = !!d.playlistShuffle;
+        nowBody.innerHTML = '';
+        if (!d.nowPlaying) {
+          nowBody.appendChild(el('div', { class: 'empty' }, ['Ничего не играет.']));
+        } else {
+          var np = d.nowPlaying;
+          nowBody.appendChild(el('div', { class: 'track-row' }, [
+            np.thumbnail ? el('img', { src: np.thumbnail }) : el('div', { style: 'width:40px;height:40px;border-radius:6px;background:var(--panel2)' }),
+            el('div', { class: 'meta' }, [
+              el('div', { class: 't' }, [np.title || '']),
+              el('div', { class: 's' }, [(d.paused ? 'на паузе' : 'играет') + (np.durationSec ? ' · ' + fmtDuration(np.durationSec) : '') + (np.queuedBy ? ' · заказал ' + np.queuedBy : '')])
+            ])
+          ]));
+          if (d.next) nowBody.appendChild(el('div', { class: 'empty' }, ['Далее: ' + d.next.title]));
+        }
+        queueBody.innerHTML = '';
+        if (!d.queue || !d.queue.length) {
+          queueBody.appendChild(el('div', { class: 'empty' }, ['Очередь пуста.']));
+        } else {
+          d.queue.forEach(function (t) {
+            queueBody.appendChild(el('div', { class: 'track-row' }, [
+              t.thumbnail ? el('img', { src: t.thumbnail }) : el('div', { style: 'width:40px;height:40px;border-radius:6px;background:var(--panel2)' }),
+              el('div', { class: 'meta' }, [el('div', { class: 't' }, [t.title || '']), el('div', { class: 's' }, [t.queuedBy ? 'заказал ' + t.queuedBy : ''])])
+            ]));
+          });
+        }
+        playlistBody.innerHTML = '';
+        if (!d.playlist || !d.playlist.length) {
+          playlistBody.appendChild(el('div', { class: 'empty' }, ['Плейлист пуст.']));
+        } else {
+          d.playlist.forEach(function (t) {
+            var row = el('div', { class: 'track-row' }, [
+              t.thumbnail ? el('img', { src: t.thumbnail }) : el('div', { style: 'width:40px;height:40px;border-radius:6px;background:var(--panel2)' }),
+              el('div', { class: 'meta' }, [el('div', { class: 't' }, [t.title || ''])])
+            ]);
+            var del = el('button', { class: 'btn secondary sm' }, ['Убрать']);
+            del.onclick = function () { api('/api/playlist', { method: 'DELETE', body: { id: t.id } }).then(loadQueue); };
+            row.appendChild(del);
+            playlistBody.appendChild(row);
+          });
+        }
+      });
+    }
+    pauseBtn.onclick = function () {
+      api('/api/queue?channel=' + encodeURIComponent(state.login)).then(function (res) {
+        var wasPaused = !!(res.data || {}).paused;
+        api('/api/queue/pause', { method: 'POST', body: { paused: !wasPaused } }).then(loadQueue);
+      });
+    };
+    skipBtn.onclick = function () { api('/api/queue/advance?channel=self', { method: 'POST' }).then(loadQueue); };
+    stopBtn.onclick = function () { api('/api/queue/stop', { method: 'POST' }).then(loadQueue); };
+    shuffleBox.onchange = function () { api('/api/playlist/settings', { method: 'POST', body: { shuffle: shuffleBox.checked } }); };
+    addBtn.onclick = function () {
+      if (!addUrl.value.trim()) return;
+      addBtn.disabled = true;
+      api('/api/playlist', { method: 'POST', body: { title: addTitle.value.trim() || addUrl.value.trim(), url: addUrl.value.trim() } }).then(function (res) {
+        addBtn.disabled = false;
+        if (!res.ok) { banner('error', res.data.message || 'Не удалось добавить.'); return; }
+        addUrl.value = ''; addTitle.value = '';
+        loadQueue();
+      });
+    };
+    loadQueue();
+  }
+
+  function buildMusicSettingsForm() {
+    var sec = el('div', { class: 'section' });
+    sec.appendChild(el('h2', {}, ['Настройки заказа треков']));
+    api('/api/bot/status').then(function (res) {
+      var cfg = (res.data && res.data.config) || {};
+      var body = el('div', { class: 'two-col' });
+
+      var cmd = el('input', { type: 'text' }); cmd.value = cfg.songRequestCommand || '!sr';
+      body.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Команда заказа']), cmd]));
+
+      var cooldown = el('input', { type: 'number', min: '0' }); cooldown.value = cfg.songRequestCooldownSeconds ?? 45;
+      body.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Кулдаун (сек)']), cooldown]));
+
+      var maxDur = el('input', { type: 'number', min: '0' }); maxDur.value = cfg.songMaxDurationMin ?? 6;
+      body.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Макс. длительность (мин)']), maxDur]));
+
+      var minViews = el('input', { type: 'number', min: '0' }); minViews.value = cfg.songMinViews ?? 1000;
+      body.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Мин. просмотров на YouTube']), minViews]));
+
+      var autoDel = el('input', { type: 'number', min: '0' }); autoDel.value = cfg.songRequestAutoDeleteSeconds ?? 0;
+      body.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Автоудаление сообщений (сек, 0 = выкл.)']), autoDel]));
+
+      sec.appendChild(body);
+
+      var subsOnly = el('input', { type: 'checkbox' }); subsOnly.checked = !!cfg.songSubsOnly;
+      sec.appendChild(el('div', { class: 'field-inline' }, [subsOnly, el('label', {}, ['Только для подписчиков'])]));
+      var catOnly = el('input', { type: 'checkbox' }); catOnly.checked = cfg.songMusicCategoryOnly !== false;
+      sec.appendChild(el('div', { class: 'field-inline' }, [catOnly, el('label', {}, ['Только категория "Музыка" на YouTube'])]));
+
+      var blocked = el('textarea', { placeholder: 'по одному названию канала на строку' });
+      blocked.value = (cfg.songBlockedChannels || []).join('\n');
+      sec.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Чёрный список каналов YouTube']), blocked]));
+
+      var saveBtn = el('button', { class: 'btn' }, ['Сохранить']);
+      saveBtn.onclick = function () {
+        saveBtn.disabled = true;
+        saveConfig({
+          songRequestCommand: cmd.value.trim() || '!sr',
+          songRequestCooldownSeconds: Math.max(0, Number(cooldown.value) || 0),
+          songMaxDurationMin: Math.max(0, Number(maxDur.value) || 0),
+          songMinViews: Math.max(0, Number(minViews.value) || 0),
+          songRequestAutoDeleteSeconds: Math.max(0, Number(autoDel.value) || 0),
+          songSubsOnly: subsOnly.checked,
+          songMusicCategoryOnly: catOnly.checked,
+          songBlockedChannels: blocked.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean)
+        }, function () {
+          saveBtn.disabled = false;
+          banner('ok', 'Настройки музыки сохранены.');
+          setTimeout(function () { banner('ok', ''); }, 3000);
+        });
+      };
+      sec.appendChild(saveBtn);
+      if (!cfg.isPro) sec.insertBefore(el('div', { class: 'banner warn' }, ['Заказ музыки зрителями доступен только с Pro-подпиской — настройки всё равно можно менять заранее.']), sec.firstChild.nextSibling);
+    });
+    return sec;
+  }
+
+  // ---------------- Widgets ----------------
+  var CHAT_DEFAULTS = { accent: '#a855f7', size: 'md', opacity: 20, font: 'sans', anim: 'fade', radius: 16, maxLines: 6, badges: true, timestamps: false, shadow: true, hideCommands: true, hideBot: false };
+  var MUSIC_W_DEFAULTS = { accent: '#a855f7', layout: 'card', compact: false, cover: true, progress: true, next: true, glow: true, autoHide: false, volume: 70 };
+
+  function renderWidgets() {
+    var root = document.getElementById('tab-widgets');
+    root.innerHTML = '';
+    var origin = location.origin;
+    var linksSec = el('div', { class: 'section' });
+    linksSec.appendChild(el('h2', { html: 'Ссылки для OBS<small>добавьте как "Источник браузера"</small>' }));
+    [
+      ['Чат', '/widget/chat'],
+      ['Сейчас играет', '/widget/now-playing'],
+      ['Аукцион', '/widget/auction'],
+      ['Донат-алерт', '/widget/donation-alert'],
+      ['Прогресс сбора', '/widget/donation-goal']
+    ].forEach(function (pair) {
+      var url = origin + pair[1] + '?channel=' + encodeURIComponent(state.login);
+      var row = el('div', { class: 'url-row' }, [el('code', {}, [url])]);
+      var copyBtn = el('button', { class: 'btn secondary sm' }, ['Копировать']);
+      copyBtn.onclick = function () { navigator.clipboard && navigator.clipboard.writeText(url); copyBtn.textContent = 'Скопировано'; setTimeout(function () { copyBtn.textContent = 'Копировать'; }, 1500); };
+      row.insertBefore(el('span', { style: 'width:130px;flex:none;color:var(--muted);font-size:13px' }, [pair[0]]), row.firstChild);
+      row.appendChild(copyBtn);
+      linksSec.appendChild(row);
+    });
+    root.appendChild(linksSec);
+
+    api('/api/widget-settings?channel=' + encodeURIComponent(state.login)).then(function (res) {
+      var d = res.data || {};
+      var chat = Object.assign({}, CHAT_DEFAULTS, d.chat || {});
+      var music = Object.assign({}, MUSIC_W_DEFAULTS, d.music || {});
+
+      var chatSec = el('div', { class: 'section' });
+      chatSec.appendChild(el('h2', {}, ['Виджет чата']));
+      var chatGrid = el('div', { class: 'two-col' });
+      var accent = el('input', { type: 'color' }); accent.value = chat.accent;
+      chatGrid.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Акцентный цвет']), accent]));
+      var opacity = el('input', { type: 'range', min: '0', max: '80' }); opacity.value = chat.opacity;
+      chatGrid.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Прозрачность фона']), opacity]));
+      var size = el('select', {}, [el('option', { value: 'sm' }, ['мелкий']), el('option', { value: 'md' }, ['средний']), el('option', { value: 'lg' }, ['крупный'])]); size.value = chat.size;
+      chatGrid.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Размер шрифта']), size]));
+      var anim = el('select', {}, [el('option', { value: 'fade' }, ['проявление']), el('option', { value: 'slide' }, ['слайд']), el('option', { value: 'none' }, ['без анимации'])]); anim.value = chat.anim;
+      chatGrid.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Анимация появления']), anim]));
+      var maxLines = el('input', { type: 'number', min: '1', max: '30' }); maxLines.value = chat.maxLines;
+      chatGrid.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Макс. строк']), maxLines]));
+      chatSec.appendChild(chatGrid);
+      var chatChecks = el('div', { class: 'two-col' });
+      var badges = el('input', { type: 'checkbox' }); badges.checked = !!chat.badges;
+      var timestamps = el('input', { type: 'checkbox' }); timestamps.checked = !!chat.timestamps;
+      var shadow = el('input', { type: 'checkbox' }); shadow.checked = !!chat.shadow;
+      var hideCommands = el('input', { type: 'checkbox' }); hideCommands.checked = !!chat.hideCommands;
+      var hideBot = el('input', { type: 'checkbox' }); hideBot.checked = !!chat.hideBot;
+      [[badges, 'Бейджи'], [timestamps, 'Таймстемпы'], [shadow, 'Тень текста'], [hideCommands, 'Скрывать команды'], [hideBot, 'Скрывать сообщения бота']].forEach(function (p) {
+        chatChecks.appendChild(el('div', { class: 'field-inline' }, [p[0], el('label', {}, [p[1]])]));
+      });
+      chatSec.appendChild(chatChecks);
+
+      var musicSec = el('div', { class: 'section' });
+      musicSec.appendChild(el('h2', {}, ['Виджет "Сейчас играет"']));
+      var musicGrid = el('div', { class: 'two-col' });
+      var mAccent = el('input', { type: 'color' }); mAccent.value = music.accent;
+      musicGrid.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Акцентный цвет']), mAccent]));
+      var layout = el('select', {}, [el('option', { value: 'card' }, ['карточка']), el('option', { value: 'bar' }, ['полоса'])]); layout.value = music.layout;
+      musicGrid.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Layout']), layout]));
+      var volume = el('input', { type: 'range', min: '0', max: '100' }); volume.value = music.volume;
+      musicGrid.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Громкость по умолчанию']), volume]));
+      musicSec.appendChild(musicGrid);
+      var musicChecks = el('div', { class: 'two-col' });
+      var compact = el('input', { type: 'checkbox' }); compact.checked = !!music.compact;
+      var cover = el('input', { type: 'checkbox' }); cover.checked = !!music.cover;
+      var progress = el('input', { type: 'checkbox' }); progress.checked = !!music.progress;
+      var next = el('input', { type: 'checkbox' }); next.checked = !!music.next;
+      var glow = el('input', { type: 'checkbox' }); glow.checked = !!music.glow;
+      var autoHide = el('input', { type: 'checkbox' }); autoHide.checked = !!music.autoHide;
+      [[compact, 'Компактный вид'], [cover, 'Обложка'], [progress, 'Прогресс-бар'], [next, '"Далее в очереди"'], [glow, 'Свечение'], [autoHide, 'Скрывать, если очередь пуста']].forEach(function (p) {
+        musicChecks.appendChild(el('div', { class: 'field-inline' }, [p[0], el('label', {}, [p[1]])]));
+      });
+      musicSec.appendChild(musicChecks);
+
+      var saveBtn = el('button', { class: 'btn' }, ['Сохранить настройки виджетов']);
+      saveBtn.onclick = function () {
+        saveBtn.disabled = true;
+        api('/api/widget-settings', {
+          method: 'POST',
+          body: {
+            chat: { accent: accent.value, opacity: Number(opacity.value), size: size.value, font: chat.font, anim: anim.value, radius: chat.radius, maxLines: Number(maxLines.value), badges: badges.checked, timestamps: timestamps.checked, shadow: shadow.checked, hideCommands: hideCommands.checked, hideBot: hideBot.checked },
+            music: { accent: mAccent.value, layout: layout.value, compact: compact.checked, cover: cover.checked, progress: progress.checked, next: next.checked, glow: glow.checked, autoHide: autoHide.checked, volume: Number(volume.value) }
+          }
+        }).then(function () {
+          saveBtn.disabled = false;
+          banner('ok', 'Настройки виджетов сохранены — обновятся в OBS в течение пары секунд.');
+          setTimeout(function () { banner('ok', ''); }, 3000);
+        });
+      };
+
+      root.appendChild(chatSec);
+      root.appendChild(musicSec);
+      root.appendChild(saveBtn);
+    });
+  }
+
+  // ---------------- shell / routing ----------------
+  var TABS = { overview: renderOverview, moderation: renderModeration, music: renderMusic, widgets: renderWidgets };
+  var TITLES = { overview: 'Обзор', moderation: 'Модерация', music: 'Музыка', widgets: 'Виджеты' };
+
+  function showTab(name) {
+    Object.keys(TABS).forEach(function (t) {
+      document.getElementById('tab-' + t).hidden = t !== name;
+    });
+    document.querySelectorAll('.nav-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.tab === name); });
+    document.getElementById('topbar-title').textContent = TITLES[name];
+    banner('ok', '');
+    TABS[name]();
+  }
+
+  document.querySelectorAll('.nav-btn').forEach(function (b) {
+    b.addEventListener('click', function () { location.hash = b.dataset.tab; });
+  });
+  window.addEventListener('hashchange', function () {
+    var t = location.hash.replace('#', '') || 'overview';
+    if (TABS[t]) showTab(t);
+  });
+
+  function boot() {
+    api('/api/me').then(function (res) {
+      var d = res.data || {};
+      if (!d.authenticated) {
+        document.getElementById('login-screen').style.display = 'flex';
+        return;
+      }
+      if (d.banned) {
+        document.getElementById('login-screen').style.display = 'flex';
+        document.querySelector('.login-card p').textContent = d.bannedReason ? ('Доступ к аккаунту заблокирован: ' + d.bannedReason) : 'Доступ к аккаунту заблокирован администратором.';
+        document.querySelector('.btn-twitch').style.display = 'none';
+        return;
+      }
+      state.me = d;
+      state.login = d.user.login;
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').classList.add('ready');
+      document.getElementById('user-name').textContent = d.user.displayName || d.user.login;
+      document.getElementById('user-avatar').src = d.user.avatar || '';
+      document.getElementById('tier-badge').textContent = d.isPro ? 'pro' : 'free';
+      document.getElementById('sidebar-footer').textContent = '@' + d.user.login;
+      var initial = location.hash.replace('#', '') || 'overview';
+      if (!TABS[initial]) initial = 'overview';
+      showTab(initial);
+    });
+  }
+
+  // Twitch OAuth lands on /auth/complete?ok=1|0; DonationAlerts on
+  // /dashboard/profile?donationalerts=ok|error — this is a single-page app
+  // (see wrangler.toml's single-page-application fallback), so both just
+  // need a friendly banner once the shell loads, not a separate page.
+  function handleEntryBanner() {
+    var q = new URLSearchParams(location.search);
+    if (location.pathname === '/auth/complete') {
+      if (q.get('ok') === '0') banner('error', 'Не удалось войти через Twitch — попробуйте ещё раз.');
+      history.replaceState(null, '', '/');
+    } else if (q.get('donationalerts') === 'ok') {
+      banner('ok', 'DonationAlerts подключён.');
+      history.replaceState(null, '', location.pathname);
+    } else if (q.get('donationalerts') === 'error') {
+      banner('error', 'Не удалось подключить DonationAlerts (' + (q.get('reason') || 'ошибка') + ').');
+      history.replaceState(null, '', location.pathname);
+    }
+  }
+
+  handleEntryBanner();
+  boot();
+})();
+</script>
 </body>
 </html>

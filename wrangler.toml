@@ -43,6 +43,10 @@ binding = "AI"
 [assets]
 directory = "./public"
 binding = "ASSETS"
+# The dashboard is a single-page app that reads paths like /auth/complete
+# and /dashboard/profile client-side — anything not a literal file in
+# ./public falls back to index.html instead of 404ing.
+not_found_handling = "single-page-application"
 
 # Every 2 minutes: sweepChannels() checks Helix for which enabled channels
 # are actually live and starts/stops each one's Durable Object accordingly,
