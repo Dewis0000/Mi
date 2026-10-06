@@ -7,6 +7,10 @@ RewriteCond %{HTTPS} !=on
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
+# Приватные папки/файлы закрыть от веба (на случай, если lib/ и config.php
+# лежат внутри корня сайта, а не над ним)
+RewriteRule ^(lib|server-php)/ - [F,L]
+
 # API → фронт-контроллер
 RewriteRule ^api(/.*)?$ api/index.php [L,QSA]
 

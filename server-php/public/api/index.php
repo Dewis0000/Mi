@@ -5,10 +5,22 @@
  */
 declare(strict_types=1);
 
-require __DIR__ . '/../../lib/bootstrap.php';
-require __DIR__ . '/../../lib/notify.php';
-require __DIR__ . '/../../lib/auth.php';
-require __DIR__ . '/../../lib/slots.php';
+// lib/ может лежать над docroot (server-php/lib — безопаснее) или внутри него
+// (docroot/lib — если корень сайта поменять нельзя). Поддерживаем оба варианта.
+$LIB = null;
+foreach ([__DIR__ . '/../../lib', __DIR__ . '/../lib'] as $cand) {
+    if (is_file($cand . '/bootstrap.php')) { $LIB = $cand; break; }
+}
+if (!$LIB) {
+    http_response_code(500);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['error' => 'Не найдена папка lib/', 'code' => 'NO_LIB'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+require $LIB . '/bootstrap.php';
+require $LIB . '/notify.php';
+require $LIB . '/auth.php';
+require $LIB . '/slots.php';
 
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $uri    = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
