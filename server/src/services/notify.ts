@@ -1,5 +1,5 @@
 import type { Messenger, User } from '@prisma/client';
-import { config, isDev } from '../config.js';
+import { config, showCodes } from '../config.js';
 
 /**
  * Отправка кодов подтверждения и уведомлений в мессенджеры.
@@ -74,11 +74,11 @@ export async function sendCode(phone: string, channel: Messenger, code: string, 
     else if (channel === 'VK' && user?.vkUserId) sent = await providers.VK(user.vkUserId, text);
     else if (channel === 'MAX' && user?.maxUserId) sent = await providers.MAX(user.maxUserId, text);
     if (!sent) log(channel, phone, text);
-    return sent || isDev;
+    return sent || showCodes;
   } catch (e) {
     console.error('sendCode failed', e);
     log(channel, phone, text);
-    return isDev;
+    return showCodes;
   }
 }
 

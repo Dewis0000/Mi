@@ -34,12 +34,16 @@ const schema = z.object({
   /** Control API MediaMTX; если не задан — запись по сеансам не управляется */
   MEDIA_API_URL: z.string().optional(),
   INGEST_SECRET: z.string().default('change-me-ingest'),
+  /** Показывать код подтверждения в ответе API (для тестового запуска, пока не подключены мессенджеры) */
+  AUTH_SHOW_CODES: z.enum(['0', '1']).default('0'),
 });
 
 // Пустые строки из .env считаем отсутствующими значениями
 const raw = Object.fromEntries(Object.entries(process.env).filter(([, v]) => v !== ''));
 export const config = schema.parse(raw);
 export const isDev = config.NODE_ENV !== 'production';
+export const showCodes = isDev || config.AUTH_SHOW_CODES === '1';
+if (!isDev && showCodes) console.warn('ВНИМАНИЕ: AUTH_SHOW_CODES=1 — коды подтверждения видны в форме входа. Отключите после подключения мессенджеров.');
 
 // в продакшене не стартуем с секретами-заглушками из .env.example
 if (!isDev) {

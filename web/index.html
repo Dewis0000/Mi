@@ -23,10 +23,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Rubik+Wet+Paint&display=swap&subset=cyrillic" rel="stylesheet" />
     <link rel="preload" as="image" href="/images/fon.webp" type="image/webp" />
 
-    <script>
-      // тема до отрисовки — без вспышки светлого фона
-      try { if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light') } catch (e) {}
-    </script>
+    <script src="/theme-init.js"></script>
   </head>
   <body>
     <div id="root"></div>

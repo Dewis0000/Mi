@@ -162,6 +162,9 @@ npm run dev
 | `MEDIA_HLS_URL` | адрес HLS-сервера MediaMTX (поток комнаты N — `/roomN/index.m3u8`) |
 | `MEDIA_API_URL` | Control API MediaMTX (`http://localhost:9997`) — включение записи на время сеанса |
 | `INGEST_SECRET` | секрет камер и медиасервера: публикация потоков и загрузка записей |
+| `WEB_DIST` | папка собранного фронтенда: если указана (или есть `./public`), API сам отдаёт сайт |
+| `AUTH_SHOW_CODES` | `1` — показывать код подтверждения в форме входа (только для теста, пока не подключены мессенджеры) |
+| `SEED_DEMO` | `0` — `npm run db:seed` создаёт только роли, квесты и владельца, без демо-данных |
 
 ### `web/.env`
 
@@ -197,6 +200,7 @@ npm --prefix server run db:deploy  # миграции
 NODE_ENV=production npm --prefix server start
 ```
 
+- Хостинг с Node.js-сайтами (ispmanager, reg.ru): `node deploy/build-bundle.mjs` собирает архив, где один процесс отдаёт API и сайт. При старте `dist/start.js` сам применяет миграции и создаёт начальные данные. Пошагово — в [`deploy/ispmanager/README.md`](deploy/ispmanager/README.md).
 - [`deploy/nginx.conf`](deploy/nginx.conf) — пример: статика, прокси `/api`, HTTPS, SPA-фолбэк, HLS.
 - [`server/Dockerfile`](server/Dockerfile) — образ API: при старте применяет миграции.
 - Фоновые задачи (напоминания, сгорание баллов, автоудаление видео, очистка блокировок, управление записью) запускаются в процессе API. При нескольких инстансах их стоит вынести в отдельный воркер.

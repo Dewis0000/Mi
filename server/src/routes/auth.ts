@@ -1,7 +1,7 @@
 import { Router, type Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
-import { config, isDev } from '../config.js';
+import { config, isDev, showCodes } from '../config.js';
 import { prisma } from '../db.js';
 import { verifyCaptcha } from '../lib/captcha.js';
 import { randomCode, randomToken, sha256 } from '../lib/crypto.js';
@@ -57,7 +57,7 @@ export async function issueCode(phone: string, channel: 'TELEGRAM' | 'VK' | 'MAX
   const user = await prisma.user.findUnique({ where: { phone } });
   const delivered = await sendCode(phone, channel, code, user);
   if (!delivered) throw new HttpError(502, 'Не удалось отправить код. Выберите другой способ.', 'DELIVERY_FAILED');
-  return { resendIn: RESEND_SEC, devCode: isDev ? code : undefined };
+  return { resendIn: RESEND_SEC, devCode: showCodes ? code : undefined };
 }
 
 export async function consumeCode(phone: string, code: string, purpose: string) {
