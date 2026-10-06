@@ -1,0 +1,24 @@
+# Защита служебных файлов
+<FilesMatch "\.(sql|md|example\.php)$">
+  Require all denied
+</FilesMatch>
+<Files "config.php">
+  Require all denied
+</Files>
+RedirectMatch 404 (?i)/lib/
+
+DirectoryIndex index.php index.html
+
+# HTTPS-редирект (учитывает прокси reg.ru)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 7 days"
+  ExpiresByType application/javascript "access plus 7 days"
+</IfModule>
