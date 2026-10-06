@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { FileSpreadsheet } from 'lucide-react'
 import { ColumnChart } from '../../components/ColumnChart'
 import { Button, ErrorBox, Skeleton, useUi } from '../../components/ui'
-import { api, download, errorMessage } from '../../lib/api'
+import { api, download, errorMessage, isDemoNotice } from '../../lib/api'
 import { fmtDate, rub } from '../../lib/format'
 import { DateRange, PageHeader, presetRange } from './shared'
 
@@ -24,11 +24,11 @@ type Report = {
   byDay: { date: string; revenue: number; bookings: number }[]
 }
 
-function Tile({ label, value, hint }: { label: string; value: string | number; hint?: string }) {
+function Tile({ label, value, hint, small }: { label: string; value: string | number; hint?: string; small?: boolean }) {
   return (
     <div className="card p-4">
       <p className="text-sm text-muted">{label}</p>
-      <p className="mt-1 text-2xl font-semibold">{value}</p>
+      <p className={small ? 'mt-1.5 text-sm font-medium leading-snug' : 'mt-1 text-2xl font-semibold'}>{value}</p>
       {hint && <p className="mt-0.5 text-xs text-muted">{hint}</p>}
     </div>
   )
@@ -51,7 +51,7 @@ export default function Reports() {
     try {
       await download('/admin/reports/export', { ...range, format }, `report_${range.from}_${range.to}.${format}`)
     } catch (e) {
-      toast(errorMessage(e), 'error')
+      toast(errorMessage(e), isDemoNotice(e) ? 'info' : 'error')
     } finally {
       setExporting(null)
     }
@@ -88,7 +88,7 @@ export default function Reports() {
               <Tile label="Конверсия" value={`${r.conversion}%`} hint="Заявка → состоявшаяся игра" />
               <Tile label="Неявки" value={r.noShows} />
               <Tile label="Отмены" value={r.cancelled} />
-              <Tile label="Источники" value={r.bySource.filter((s) => s.count).map((s) => `${s.source} ${s.count}`).join(' · ') || '—'} />
+              <Tile label="Источники заявок" small value={r.bySource.filter((s) => s.count).map((s) => `${s.source}: ${s.count}`).join(' · ') || '—'} />
             </div>
           </div>
 

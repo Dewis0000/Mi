@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Copy, Radio, Share2 } from 'lucide-react'
 import { HlsPlayer } from '../components/HlsPlayer'
+import { FakeFeed } from '../demo/FakeFeed'
+import { DEMO } from '../lib/env'
 import { Button, EmptyState, ErrorBox, Skeleton, buttonClass, useUi } from '../components/ui'
 import { api, errorMessage } from '../lib/api'
 import { fmtDateTime, fmtTime } from '../lib/format'
@@ -11,7 +13,7 @@ import { useRequireAuth } from '../lib/useRequireAuth'
 
 type StreamInfo = {
   bookingId: string
-  quest: { title: string; photoUrl: string }
+  quest: { title: string; photoUrl: string; roomNumber: number }
   startAt: string
   endAt: string
   status: 'live' | 'upcoming' | 'ended'
@@ -21,15 +23,15 @@ type StreamInfo = {
 
 function StreamView({ info, owner }: { info: StreamInfo; owner?: boolean }) {
   const { toast } = useUi()
-  const [invite, setInvite] = useState<string | null>(null)
+  const [invite, setInvite] = useState<{ url: string; path?: string } | null>(null)
   const left = useSecondsLeft(new Date(info.endAt).getTime())
 
   async function share() {
     try {
-      const r = await api<{ url: string }>(`/streams/booking/${info.bookingId}/invite`, { method: 'POST' })
-      setInvite(r.url)
-      await navigator.clipboard?.writeText(r.url).catch(() => null)
-      toast('Ссылка для зрителей скопирована')
+      const r = await api<{ url: string; path?: string }>(`/streams/booking/${info.bookingId}/invite`, { method: 'POST' })
+      setInvite(r)
+      const copied = await navigator.clipboard?.writeText(r.url).then(() => true).catch(() => false)
+      toast(copied ? 'Ссылка для зрителей скопирована' : 'Ссылка для зрителей готова', 'success')
     } catch (e) {
       toast(errorMessage(e), 'error')
     }
@@ -56,14 +58,23 @@ function StreamView({ info, owner }: { info: StreamInfo; owner?: boolean }) {
       </div>
       {invite && (
         <div className="card mb-6 flex items-center gap-3 p-3 text-sm">
-          <input readOnly value={invite} className="input flex-1 text-xs" onFocus={(e) => e.target.select()} aria-label="Ссылка для зрителей" />
-          <Button size="sm" variant="secondary" onClick={() => navigator.clipboard?.writeText(invite)}>
+          <input readOnly value={invite.url} className="input min-w-0 flex-1 text-xs" onFocus={(e) => e.target.select()} aria-label="Ссылка для зрителей" />
+          <Button size="sm" variant="secondary" onClick={() => navigator.clipboard?.writeText(invite.url).catch(() => null)} aria-label="Скопировать ссылку">
             <Copy className="size-4" />
           </Button>
+          {DEMO && invite.path && (
+            <Link to={invite.path} className={buttonClass('ghost', 'sm')}>
+              Открыть как зритель
+            </Link>
+          )}
         </div>
       )}
       {info.status === 'live' && info.hlsUrl && info.token ? (
-        <HlsPlayer src={info.hlsUrl} token={info.token} />
+        DEMO ? (
+          <FakeFeed photo={info.quest.photoUrl} title={info.quest.title} room={info.quest.roomNumber} />
+        ) : (
+          <HlsPlayer src={info.hlsUrl} token={info.token} />
+        )
       ) : (
         <EmptyState
           icon={<Radio className="size-7" />}

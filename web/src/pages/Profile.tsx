@@ -23,7 +23,7 @@ import { CodeInput } from '../components/CodeInput'
 import { PhoneInput } from '../components/PhoneInput'
 import { SlotPicker } from '../components/SlotPicker'
 import { Badge, Button, EmptyState, ErrorBox, Field, Modal, Skeleton, Switch, Tabs, buttonClass, useUi } from '../components/ui'
-import { api, errorMessage } from '../lib/api'
+import { api, errorMessage, goToPayment, isDemoNotice } from '../lib/api'
 import { useAuth } from '../lib/auth'
 import {
   MESSENGERS,
@@ -339,6 +339,7 @@ type RecordingItem = {
 function VideosTab() {
   const { data, isLoading, error, refetch } = useQuery({ queryKey: ['my-recordings'], queryFn: () => api<RecordingItem[]>('/profile/recordings') })
   const { toast, confirm } = useUi()
+  const navigate = useNavigate()
   const [busy, setBusy] = useState<string | null>(null)
   const [params] = useSearchParams()
   const qc = useQueryClient()
@@ -355,7 +356,7 @@ function VideosTab() {
     setBusy(id)
     try {
       const r = await api<{ confirmationUrl: string }>(`/recordings/${id}/purchase`, { method: 'POST' })
-      window.location.href = r.confirmationUrl
+      goToPayment(r.confirmationUrl, navigate)
     } catch (e) {
       toast(errorMessage(e), 'error')
       setBusy(null)
@@ -367,7 +368,7 @@ function VideosTab() {
       const r = await api<{ url: string }>(`/recordings/${id}/download`)
       window.location.href = r.url
     } catch (e) {
-      toast(errorMessage(e), 'error')
+      toast(errorMessage(e), isDemoNotice(e) ? 'info' : 'error')
     } finally {
       setBusy(null)
     }
@@ -469,7 +470,7 @@ function SettingsTab() {
       const r = await api<{ url: string }>('/profile/link/telegram')
       window.open(r.url, '_blank', 'noopener')
     } catch (e) {
-      toast(errorMessage(e), 'error')
+      toast(errorMessage(e), isDemoNotice(e) ? 'info' : 'error')
     }
   }
 
@@ -653,7 +654,7 @@ export default function Profile() {
             <button
               className="flex items-center gap-1.5 text-sm text-muted hover:text-fg"
               onClick={() => {
-                navigator.clipboard?.writeText(user.phone)
+                navigator.clipboard?.writeText(user.phone).catch(() => null)
                 toast('Номер скопирован', 'info')
               }}
             >

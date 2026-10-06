@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
+import { DEMO } from './env'
 import { api, hasSession, refreshSession, setAccessToken, subscribeAuth, type AuthResponse } from './api'
 import type { User } from './types'
 
@@ -24,7 +25,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // восстановление сессии по refresh-cookie; если API на том же домене и маркера сессии нет —
     // посетитель анонимный, лишний запрос не нужен
     const sameOrigin = !import.meta.env.VITE_API_URL
-    if (sameOrigin && !document.cookie.split('; ').includes('hs=1')) setReady(true)
+    if (!DEMO && sameOrigin && !document.cookie.split('; ').includes('hs=1')) setReady(true)
     else refreshSession().finally(() => setReady(true))
     // продлеваем access-токен заранее, пока вкладка открыта
     const t = setInterval(() => hasSession() && refreshSession(), 12 * 60_000)

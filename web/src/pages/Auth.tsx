@@ -9,6 +9,7 @@ import { PhoneInput } from '../components/PhoneInput'
 import { Button, Field } from '../components/ui'
 import { ApiError, api, errorMessage, type AuthResponse } from '../lib/api'
 import { useAuth } from '../lib/auth'
+import { DEMO } from '../lib/env'
 import { getCaptchaToken } from '../lib/captcha'
 import { MESSENGERS, isPhoneComplete } from '../lib/format'
 import { useSecondsLeft, useSeo } from '../lib/hooks'
@@ -197,11 +198,11 @@ export default function Auth() {
                 <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 size-4 shrink-0 accent-[var(--accent)]" required />
                 <span>
                   Даю согласие на{' '}
-                  <Link to="/personal-data" target="_blank" className="text-fg underline underline-offset-2 hover:text-accent">
+                  <Link to="/personal-data" target={DEMO ? undefined : '_blank'} className="text-fg underline underline-offset-2 hover:text-accent">
                     обработку персональных данных
                   </Link>{' '}
                   в соответствии с 152-ФЗ и принимаю{' '}
-                  <Link to="/privacy" target="_blank" className="text-fg underline underline-offset-2 hover:text-accent">
+                  <Link to="/privacy" target={DEMO ? undefined : '_blank'} className="text-fg underline underline-offset-2 hover:text-accent">
                     политику конфиденциальности
                   </Link>
                 </span>

@@ -124,7 +124,7 @@ export function Header() {
   return (
     <header
       className={clsx(
-        'sticky top-0 z-50 transition-all duration-300',
+        'sticky top-[env(safe-area-inset-top,0px)] z-50 transition-all duration-300',
         transparent ? 'bg-transparent' : 'border-b border-line/70 bg-bg/80 backdrop-blur-xl',
       )}
     >

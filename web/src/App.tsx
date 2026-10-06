@@ -2,10 +2,12 @@ import { Suspense, lazy, useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
+import { DEMO } from './lib/env'
 import { Spinner } from './components/ui'
 import Home from './pages/Home'
 import { NotFound, PersonalData, Privacy, Rules } from './pages/Legal'
 
+const DemoBar = lazy(() => import('./demo/DemoBar').then((m) => ({ default: m.DemoBar })))
 const Auth = lazy(() => import('./pages/Auth'))
 const Booking = lazy(() => import('./pages/Booking'))
 const Profile = lazy(() => import('./pages/Profile'))
@@ -60,6 +62,11 @@ export default function App() {
         Перейти к содержимому
       </a>
       <ScrollManager />
+      {DEMO && (
+        <Suspense fallback={null}>
+          <DemoBar />
+        </Suspense>
+      )}
       <Header />
       <main id="main" className="flex-1">
         <Suspense fallback={<Fallback />}>

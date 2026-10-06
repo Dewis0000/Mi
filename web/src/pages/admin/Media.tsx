@@ -3,7 +3,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import clsx from 'clsx'
 import { Download, Film, Link2, Trash2, Upload } from 'lucide-react'
 import { Badge, Button, EmptyState, ErrorBox, Field, Modal, Skeleton, useUi } from '../../components/ui'
-import { api, errorMessage } from '../../lib/api'
+import { api, errorMessage, isDemoNotice } from '../../lib/api'
 import { fmtBytes, fmtDate, fmtDateTime, fmtDuration, fromVenueInput, rub, venueDateKey } from '../../lib/format'
 import type { Booking, Paged } from '../../lib/types'
 import { PageHeader, Pagination } from './shared'
@@ -136,7 +136,7 @@ export function Recordings() {
       const r = await api<{ url: string }>(`/admin/recordings/${id}/download`)
       window.open(r.url, '_blank', 'noopener')
     } catch (e) {
-      toast(errorMessage(e), 'error')
+      toast(errorMessage(e), isDemoNotice(e) ? 'info' : 'error')
     }
   }
 

@@ -7,10 +7,12 @@ const Ctx = createContext<{ theme: Theme; toggle: () => void }>({ theme: 'dark',
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
     try {
-      return localStorage.getItem('theme') === 'light' ? 'light' : 'dark'
+      const saved = localStorage.getItem('theme')
+      if (saved === 'light' || saved === 'dark') return saved
     } catch {
-      return 'dark'
+      /* хранилище недоступно */
     }
+    return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'
   })
   useEffect(() => {
     document.documentElement.classList.toggle('light', theme === 'light')

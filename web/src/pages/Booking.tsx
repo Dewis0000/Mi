@@ -7,7 +7,7 @@ import { AlertTriangle, ArrowLeft, Check, CheckCircle2, Hourglass, Minus, Plus, 
 import { FearMeter } from '../components/FearMeter'
 import { SlotPicker } from '../components/SlotPicker'
 import { Button, ErrorBox, Field, Skeleton, buttonClass, useUi } from '../components/ui'
-import { api, errorMessage } from '../lib/api'
+import { api, errorMessage, goToPayment } from '../lib/api'
 import { fmtDateTime, fmtTime, plural, rub } from '../lib/format'
 import { useContent, useSecondsLeft, useSeo } from '../lib/hooks'
 import type { Booking as BookingT, Quest, Quote, Slot } from '../lib/types'
@@ -159,7 +159,7 @@ export default function Booking() {
     onSuccess: (r) => {
       qc.invalidateQueries({ queryKey: ['my-bookings'] })
       if (r.payment) {
-        window.location.href = r.payment.confirmationUrl
+        goToPayment(r.payment.confirmationUrl, navigate)
         return
       }
       holdRef.current = 0

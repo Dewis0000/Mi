@@ -20,6 +20,7 @@ import {
 import { QuestCarousel } from '../components/QuestCarousel'
 import { Socials } from '../components/Socials'
 import { Accordion, Reveal, SectionTitle, Skeleton, buttonClass } from '../components/ui'
+import { DEMO } from '../lib/env'
 import { useContent, useJsonLd, useQuests, useSeo } from '../lib/hooks'
 import { rub } from '../lib/format'
 
@@ -288,13 +289,13 @@ function AddressSection() {
           </div>
           {c && (
             <>
-              <iframe
+              {!DEMO && <iframe
                 title="Карта: как добраться"
                 src={`https://yandex.ru/map-widget/v1/?ll=${c.lon},${c.lat}&z=16&pt=${c.lon},${c.lat},pm2rdm`}
                 className="absolute inset-0 h-full w-full grayscale-[0.4] light:grayscale-0"
                 loading="lazy"
                 tabIndex={-1}
-              />
+              />}
               {/* клик по карте — переход к построению маршрута */}
               <a href={routeUrl} target="_blank" rel="noopener noreferrer" className="absolute inset-0 z-10" aria-label="Открыть маршрут в Яндекс.Картах">
                 <span className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-xl bg-black/80 px-4 py-2.5 text-sm font-medium text-white backdrop-blur">

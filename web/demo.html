@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Чёрный ход</title>
+    <meta name="description" content="Демо-версия сайта сети хоррор-квестов «Чёрный ход»: запись, личный кабинет и админ-панель." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Rubik+Wet+Paint&display=swap&subset=cyrillic" rel="stylesheet" />
+    <script>
+      // тема до отрисовки: явный выбор на сайте, иначе явный выбор в интерфейсе просмотра, иначе тёмная
+      ;(function () {
+        var t = null
+        try { t = localStorage.getItem('theme') } catch (e) {}
+        if (!t) t = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'
+        if (t === 'light') document.documentElement.classList.add('light')
+        document.documentElement.lang = 'ru'
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

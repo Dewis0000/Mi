@@ -59,7 +59,7 @@ export function PromoCodes() {
         <div className="card divide-y divide-line">
           {q.data.map((p) => (
             <div key={p.id} className="flex flex-wrap items-center gap-4 p-4 text-sm">
-              <button className="flex items-center gap-2 font-mono text-base font-semibold hover:text-accent" onClick={() => { navigator.clipboard?.writeText(p.code); toast('Код скопирован', 'info') }}>
+              <button className="flex items-center gap-2 font-mono text-base font-semibold hover:text-accent" onClick={() => { navigator.clipboard?.writeText(p.code).then(() => toast('Код скопирован', 'info')).catch(() => null) }}>
                 {p.code} <Copy className="size-3.5 text-muted" />
               </button>
               <Badge className={p.isCertificate ? 'bg-violet-500/15 text-violet-400 ring-violet-500/30' : 'bg-sky-500/15 text-sky-500 ring-sky-500/30'}>{p.isCertificate ? 'Сертификат' : 'Промокод'}</Badge>
