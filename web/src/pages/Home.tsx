@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import {
   ArrowRight,
-  Camera,
   Clock,
   DoorOpen,
   ExternalLink,
@@ -11,18 +10,15 @@ import {
   MapPin,
   PartyPopper,
   Phone,
-  ShieldAlert,
   Skull,
   Sparkles,
   Users,
-  Video,
 } from 'lucide-react'
 import { QuestCarousel } from '../components/QuestCarousel'
 import { Socials } from '../components/Socials'
 import { Accordion, Reveal, SectionTitle, Skeleton, buttonClass } from '../components/ui'
 import { DEMO } from '../lib/env'
 import { useContent, useJsonLd, useQuests, useSeo } from '../lib/hooks'
-import { rub } from '../lib/format'
 
 function Hero() {
   const { data } = useContent()
@@ -302,30 +298,6 @@ function AddressSection() {
   )
 }
 
-function LoyaltyTeaser() {
-  const { data } = useContent()
-  if (!data) return null
-  const max = Math.max(...data.loyalty.tiers.map((t) => t.percent))
-  return (
-    <section className="mx-auto max-w-7xl px-4 pb-24 sm:px-6">
-      <Reveal className="relative overflow-hidden rounded-[1.5rem] border border-accent/30 bg-gradient-to-br from-accent/20 via-surface to-surface p-8 sm:p-12">
-        <Heart className="absolute -bottom-10 right-1/3 size-48 rotate-12 text-accent/[0.07]" aria-hidden />
-        <div className="relative grid items-center gap-6 md:grid-cols-[1fr_auto]">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent">Программа лояльности</p>
-            <h2 className="mt-3 font-display text-3xl uppercase sm:text-4xl">Возвращайтесь — и бойтесь дешевле</h2>
-            <p className="mt-3 max-w-2xl text-muted">
-              {data.loyalty.pointsPerVisit} баллов за каждое посещение и постоянная скидка до {max}%. Баллы копятся автоматически после игры.
-            </p>
-          </div>
-          <a href="#quests" className={buttonClass('outline', 'md')}>
-            Выбрать квест <ArrowRight className="size-4" />
-          </a>
-        </div>
-      </Reveal>
-    </section>
-  )
-}
 
 export default function Home() {
   const { data: content } = useContent()

@@ -130,7 +130,14 @@ const defaultSettings = {
     vk: '',
     max: '',
   },
-  booking: { prepayMode: 'none' as 'none' | 'prepay', prepayPercent: 30, holdMinutes: 10, cancelHours: 24, horizonDays: 60 },
+  booking: { prepayMode: 'prepay' as 'none' | 'prepay', prepayPercent: 30, prepayAmount: 500, basePlayers: 5, extraPlayerPrice: 700, holdMinutes: 10, cancelHours: 24, horizonDays: 60 },
+  // Дополнительные опции (комната отдыха, оформление) — редактируются в админке
+  extras: [
+    { id: 'rest', label: 'Комната отдыха', price: 500, unit: 'hour' as 'toggle' | 'hour' },
+    { id: 'birthday', label: 'Надпись «С днём рождения»', price: 200, unit: 'toggle' as 'toggle' | 'hour' },
+    { id: 'tableware', label: 'Цветная посуда (на всех)', price: 200, unit: 'toggle' as 'toggle' | 'hour' },
+    { id: 'balloons', label: 'Воздушные шары (20 шт)', price: 200, unit: 'toggle' as 'toggle' | 'hour' },
+  ],
   loyalty: {
     pointsPerVisit: 100,
     tiers: [
@@ -326,22 +333,40 @@ function findPromo(db: DB, code?: unknown) {
   return promo
 }
 
-function quote(db: DB, slotPrices: number[], user: User | null, promoCode?: unknown) {
+function quote(db: DB, slotPrices: number[], user: User | null, promoCode?: unknown, opts: { players?: number; double?: boolean; extras?: unknown } = {}) {
   const s = db.settings
-  const basePrice = slotPrices.reduce((a, b) => a + b, 0)
+  const gamesBase = slotPrices.reduce((a, b) => a + b, 0)
+  const players = Math.max(1, opts.players ?? 0)
+  // доплата за игроков сверх базовых — только в одиночной игре (при делении цена уже по играм)
+  const playersExtra = opts.double ? 0 : s.booking.extraPlayerPrice * Math.max(0, players - s.booking.basePlayers)
+  // выбранные опции: массив id или {id, qty}
+  const picks = Array.isArray(opts.extras) ? (opts.extras as unknown[]) : []
+  const extras = picks
+    .map((x) => {
+      const id = x && typeof x === 'object' ? (x as { id?: unknown }).id : x
+      const qty = x && typeof x === 'object' ? Math.max(1, Number((x as { qty?: unknown }).qty) || 1) : 1
+      const e = s.extras.find((o) => o.id === id)
+      if (!e) return null
+      return { label: e.label + (e.unit === 'hour' ? ` ×${qty} ч` : ''), price: e.unit === 'hour' ? e.price * qty : e.price }
+    })
+    .filter(Boolean) as { label: string; price: number }[]
+  const extrasTotal = extras.reduce((a, b) => a + b.price, 0)
+
+  const basePrice = gamesBase + playersExtra + extrasTotal
   const loyaltyPercent = user ? tierFor(user.points, s.loyalty).percent : 0
   const promo = findPromo(db, promoCode)
   const percent = Math.min(50, loyaltyPercent + (promo?.discountPercent ?? 0))
   const discountAmount = Math.min(basePrice, Math.round((basePrice * percent) / 100) + (promo?.discountAmount ?? 0))
   const finalPrice = basePrice - discountAmount
+  const prepay = s.booking.prepayMode === 'prepay' ? Math.min(s.booking.prepayAmount, finalPrice) : 0
   return {
-    basePrice,
+    basePrice, gamesBase, playersExtra, extrasTotal, extras,
     loyaltyPercent,
     promo: promo ? { code: promo.code, isCertificate: promo.isCertificate, percent: promo.discountPercent, amount: promo.discountAmount } : null,
     discountPercent: percent,
     discountAmount,
     finalPrice,
-    prepay: s.booking.prepayMode === 'prepay' ? Math.round((finalPrice * s.booking.prepayPercent) / 100) : 0,
+    prepay,
   }
 }
 
@@ -735,13 +760,15 @@ function createBooking(
   c: Ctx,
   user: User,
   quest: Quest,
-  o: { startAt: string; players: number; ages: number[]; double: boolean; comment?: string | null; promoCode?: unknown; source?: Booking['source']; ignoreLead?: boolean; finalPrice?: number },
+  o: { startAt: string; players: number; ages: number[]; double: boolean; comment?: string | null; promoCode?: unknown; extras?: unknown; source?: Booking['source']; ignoreLead?: boolean; finalPrice?: number },
 ) {
   validatePlayers(quest, o.players, o.ages, o.double)
   const slots = resolveSlots(c.db, quest.id, o.startAt, o.double, { userId: user.id, ignoreLead: o.ignoreLead })
   if (!slots) fail(409, 'Это время уже занято. Выберите другой сеанс.', 'SLOT_TAKEN')
-  const price = quote(c.db, slots!.map((s) => s.price), user, o.promoCode)
+  const price = quote(c.db, slots!.map((s) => s.price), user, o.promoCode, { players: o.players, double: o.double, extras: o.extras })
   const finalPrice = o.finalPrice ?? price.finalPrice
+  const extrasNote = price.extras.length ? 'Опции: ' + price.extras.map((e) => e.label).join(', ') : ''
+  const fullComment = [o.comment, extrasNote].filter(Boolean).join(' · ') || null
   const base = {
     userId: user.id,
     questId: quest.id,
@@ -771,7 +798,7 @@ function createBooking(
     discountAmount: price.basePrice - finalPrice,
     promoCode: price.promo?.code ?? null,
     finalPrice,
-    comment: o.comment || null,
+    comment: fullComment,
     isDoubleSession: !!second,
     linkedBookingId: second?.id ?? null,
   }
@@ -830,7 +857,8 @@ route('GET', '/content', ({ db }) => {
   return {
     site: s.site,
     contacts: s.contacts,
-    booking: { prepayMode: s.booking.prepayMode, prepayPercent: s.booking.prepayPercent, cancelHours: s.booking.cancelHours, holdMinutes: s.booking.holdMinutes },
+    booking: { prepayMode: s.booking.prepayMode, prepayPercent: s.booking.prepayPercent, prepayAmount: s.booking.prepayAmount, basePlayers: s.booking.basePlayers, extraPlayerPrice: s.booking.extraPlayerPrice, cancelHours: s.booking.cancelHours, holdMinutes: s.booking.holdMinutes },
+    extras: s.extras,
     loyalty: s.loyalty,
     recordings: { price: s.recordings.price, linkDays: s.recordings.linkDays },
   }
@@ -1057,7 +1085,7 @@ route('POST', '/bookings/quote', (c) => {
   activeQuest(c, c.body.questId)
   const slots = resolveSlots(c.db, str(c.body.questId), str(c.body.startAt), !!c.body.double, { userId: u.id })
   if (!slots) fail(409, 'Этот сеанс уже заняли — выберите другое время', 'SLOT_TAKEN')
-  return quote(c.db, slots!.map((s) => s.price), u, c.body.promoCode)
+  return quote(c.db, slots!.map((s) => s.price), u, c.body.promoCode, { players: int(c.body.playersCount), double: !!c.body.double, extras: c.body.extras })
 })
 
 route('POST', '/bookings', (c) => {
@@ -1071,13 +1099,10 @@ route('POST', '/bookings', (c) => {
     double: !!c.body.double,
     comment: str(c.body.comment).slice(0, 1000),
     promoCode: c.body.promoCode,
+    extras: c.body.extras,
   })
-  const s = c.db.settings.booking
-  const payment =
-    s.prepayMode === 'prepay' && booking.finalPrice > 0
-      ? createPayment(c, u, 'BOOKING_PREPAY', booking.id, Math.round((booking.finalPrice * s.prepayPercent) / 100), '/profile')
-      : null
-  return { booking: bookingView(c.db, booking), payment }
+  // Предоплата вносится переводом (не онлайн) — бронь оформляется сразу, без редиректа на оплату
+  return { booking: bookingView(c.db, booking), payment: null }
 })
 
 route('GET', '/bookings/my', (c) => {

@@ -73,6 +73,10 @@ export type Booking = {
 
 export type Quote = {
   basePrice: number
+  gamesBase: number
+  playersExtra: number
+  extrasTotal: number
+  extras: { label: string; price: number }[]
   loyaltyPercent: number
   promo: { code: string; isCertificate: boolean; percent: number | null; amount: number | null } | null
   discountPercent: number
@@ -98,7 +102,8 @@ export type Content = {
     vk: string
     max: string
   }
-  booking: { prepayMode: 'none' | 'prepay'; prepayPercent: number; cancelHours: number; holdMinutes: number }
+  booking: { prepayMode: 'none' | 'prepay'; prepayPercent: number; prepayAmount: number; basePlayers: number; extraPlayerPrice: number; cancelHours: number; holdMinutes: number }
+  extras: { id: string; label: string; price: number; unit: 'toggle' | 'hour' }[]
   loyalty: { pointsPerVisit: number; tiers: Tier[]; burnAfterMonths: number; burnPercentPerMonth: number }
   recordings: { price: number; linkDays: number }
 }

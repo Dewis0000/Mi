@@ -83,6 +83,7 @@ export default function Booking() {
   const [promo, setPromo] = useState('')
   const [appliedPromo, setAppliedPromo] = useState<string | undefined>()
   const [comment, setComment] = useState('')
+  const [extras, setExtras] = useState<Record<string, number>>({})
   const [done, setDone] = useState<BookingT | null>(null)
   const holdLeft = useSecondsLeft(holdUntil)
 
@@ -107,6 +108,12 @@ export default function Booking() {
   const ageList = useMemo(
     () => (ageMode === 'range' ? [ageRange.min, ageRange.max] : ages).map(Number).filter((n) => n > 0),
     [ageMode, ageRange, ages],
+  )
+
+  const extrasList = content?.extras ?? []
+  const extrasPayload = useMemo(
+    () => Object.entries(extras).filter(([, n]) => n > 0).map(([id, qty]) => ({ id, qty })),
+    [extras],
   )
 
   // проверка шага 1
@@ -144,8 +151,8 @@ export default function Booking() {
   })
 
   const quote = useQuery({
-    queryKey: ['quote', q?.id, slot?.first.start, double, appliedPromo],
-    queryFn: () => api<Quote>('/bookings/quote', { method: 'POST', body: { questId: q!.id, startAt: slot!.first.start, double, promoCode: appliedPromo } }),
+    queryKey: ['quote', q?.id, slot?.first.start, double, appliedPromo, players, extrasPayload],
+    queryFn: () => api<Quote>('/bookings/quote', { method: 'POST', body: { questId: q!.id, startAt: slot!.first.start, double, promoCode: appliedPromo, playersCount: players, extras: extrasPayload } }),
     enabled: step === 2 && !!slot,
     retry: false,
   })
@@ -154,7 +161,7 @@ export default function Booking() {
     mutationFn: () =>
       api<{ booking: BookingT; payment: { confirmationUrl: string } | null }>('/bookings', {
         method: 'POST',
-        body: { questId: q!.id, startAt: slot!.first.start, double, playersCount: players, ages: ageList, comment: comment || undefined, promoCode: appliedPromo },
+        body: { questId: q!.id, startAt: slot!.first.start, double, playersCount: players, ages: ageList, comment: comment || undefined, promoCode: appliedPromo, extras: extrasPayload },
       }),
     onSuccess: (r) => {
       qc.invalidateQueries({ queryKey: ['my-bookings'] })
@@ -200,6 +207,11 @@ export default function Booking() {
           «{q.title}», {fmtDateTime(done.startAt)}. Детали отправили в {user.messenger === 'TELEGRAM' ? 'Telegram' : user.messenger === 'VK' ? 'ВКонтакте' : 'MAX'}, напомним за сутки и за 2 часа до начала.
         </p>
         <p className="mt-2 text-sm text-muted">Статус: ожидает подтверждения администратором.</p>
+        {content && content.booking.prepayMode === 'prepay' && content.booking.prepayAmount > 0 && content.contacts.phone && (
+          <p className="mx-auto mt-5 max-w-md rounded-xl border border-amber-500/40 bg-amber-500/5 px-4 py-3 text-sm">
+            Для записи внесите предоплату <b>{rub(content.booking.prepayAmount)}</b> переводом на <b>{content.contacts.phone}</b>. После перевода пришлите чек администратору.
+          </p>
+        )}
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link to="/profile/bookings" className={buttonClass('primary')}>
             Мои записи
@@ -389,6 +401,32 @@ export default function Booking() {
               <Field label="Комментарий" hint="День рождения, особые пожелания, «щадящий» режим — администратор всё учтёт">
                 {(id) => <textarea id={id} rows={3} maxLength={1000} className="input resize-none" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Например: у Кати день рождения, нужен торт в конце 🎂" />}
               </Field>
+              {extrasList.length > 0 && (
+                <Field label="Дополнительно" hint="Комната отдыха и праздничное оформление — по желанию, всё посчитается в стоимость">
+                  {() => (
+                    <div className="space-y-2.5">
+                      {extrasList.map((ex) => {
+                        const qty = extras[ex.id] ?? 0
+                        const on = qty > 0
+                        return (
+                          <div key={ex.id} className="flex flex-wrap items-center gap-3">
+                            <label className="flex items-center gap-2.5 text-sm">
+                              <input type="checkbox" className="size-4 accent-[var(--accent)]" checked={on} onChange={(e) => setExtras((s) => ({ ...s, [ex.id]: e.target.checked ? 1 : 0 }))} />
+                              {ex.label} — {rub(ex.price)}{ex.unit === 'hour' ? '/час' : ''}
+                            </label>
+                            {ex.unit === 'hour' && on && (
+                              <span className="flex items-center gap-2 text-sm text-muted">
+                                часов
+                                <input type="number" min={1} max={12} className="input w-16" value={qty} onChange={(e) => setExtras((s) => ({ ...s, [ex.id]: Math.max(1, Math.min(12, Number(e.target.value) || 1)) }))} />
+                              </span>
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
+                </Field>
+              )}
               <Field label="Промокод или сертификат" error={quote.isError && appliedPromo ? errorMessage(quote.error) : null}>
                 {(id) => (
                   <div className="flex gap-2">
@@ -421,9 +459,21 @@ export default function Booking() {
               {quote.data && (
                 <dl className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <dt className="text-muted">Базовая цена{double ? ' (2 сеанса)' : ''}</dt>
-                    <dd>{rub(quote.data.basePrice)}</dd>
+                    <dt className="text-muted">{double ? 'Игры (2 сеанса)' : 'Игра'}</dt>
+                    <dd>{rub(quote.data.gamesBase)}</dd>
                   </div>
+                  {quote.data.playersExtra > 0 && (
+                    <div className="flex justify-between">
+                      <dt className="text-muted">Доплата за игроков</dt>
+                      <dd>{rub(quote.data.playersExtra)}</dd>
+                    </div>
+                  )}
+                  {quote.data.extras.map((ex, i) => (
+                    <div key={i} className="flex justify-between">
+                      <dt className="text-muted">{ex.label}</dt>
+                      <dd>{rub(ex.price)}</dd>
+                    </div>
+                  ))}
                   {quote.data.loyaltyPercent > 0 && (
                     <div className="flex justify-between text-emerald-500">
                       <dt>Скидка по баллам</dt>
@@ -448,14 +498,14 @@ export default function Booking() {
                   </div>
                   {quote.data.prepay > 0 && (
                     <p className="text-xs text-muted">
-                      Онлайн-предоплата {content?.booking.prepayPercent}% — {rub(quote.data.prepay)}, остальное на месте.
+                      Для записи — предоплата {rub(quote.data.prepay)} переводом, остальное на месте. Реквизиты пришлём после заявки.
                     </p>
                   )}
                   {quote.data.prepay === 0 && <p className="text-xs text-muted">Оплата на месте картой или наличными.</p>}
                 </dl>
               )}
               <Button className="w-full" size="lg" loading={create.isPending} disabled={!quote.data} onClick={() => create.mutate()}>
-                {quote.data?.prepay ? 'Перейти к оплате' : 'Подтвердить запись'}
+                Подтвердить запись
               </Button>
             </aside>
           </motion.section>
