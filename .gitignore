@@ -18,3 +18,8 @@ server-php/public/index.html
 server-php/public/favicon.svg
 server-php/public/robots.txt
 server-php/public/theme-init.js
+
+# server-php: реальный конфиг с секретами и локальная тестовая БД
+server-php/config.php
+server-php/data.sqlite
+server-php/data.sqlite-*
