@@ -7,3 +7,6 @@ server/storage/
 *.log
 web/node_modules/.tmp/
 deploy/out/
+
+# Секреты PHP-сайта — только на сервере, не в репозитории
+php-site/config.php

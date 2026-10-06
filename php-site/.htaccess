@@ -1,0 +1,18 @@
+# Защита служебных файлов от прямого доступа по HTTP
+<FilesMatch "\.(sql|md|example\.php)$">
+  Require all denied
+</FilesMatch>
+<Files "config.php">
+  Require all denied
+</Files>
+RedirectMatch 404 (?i)/lib/
+
+# index.php — страница по умолчанию
+DirectoryIndex index.php index.html
+
+# Немного кэша для статики
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 7 days"
+  ExpiresByType application/javascript "access plus 7 days"
+</IfModule>
