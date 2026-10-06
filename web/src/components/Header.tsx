@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import clsx from 'clsx'
-import { CalendarDays, ChevronDown, LayoutDashboard, LogOut, Menu, Moon, Sun, User as UserIcon, X } from 'lucide-react'
+import { CalendarDays, ChevronDown, LogOut, Menu, Moon, Sun, User as UserIcon, X } from 'lucide-react'
 import { useAuth } from '../lib/auth'
 import { formatPhone } from '../lib/format'
 import { useContent } from '../lib/hooks'
@@ -81,7 +81,6 @@ function ProfileMenu({ light }: { light?: boolean }) {
             {[
               { to: '/profile', icon: UserIcon, label: 'Профиль' },
               { to: '/profile/bookings', icon: CalendarDays, label: 'Мои записи' },
-              ...(user.isStaff ? [{ to: '/admin', icon: LayoutDashboard, label: 'Админ-панель' }] : []),
             ].map((i) => (
               <Link key={i.to} role="menuitem" to={i.to} onClick={() => setOpen(false)} className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm hover:bg-surface-2">
                 <i.icon className="size-4 text-muted" /> {i.label}

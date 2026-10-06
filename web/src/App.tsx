@@ -2,12 +2,10 @@ import { Suspense, lazy, useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
-import { DEMO } from './lib/env'
 import { Spinner } from './components/ui'
 import Home from './pages/Home'
 import { NotFound, PersonalData, Privacy, Rules } from './pages/Legal'
 
-const DemoBar = lazy(() => import('./demo/DemoBar').then((m) => ({ default: m.DemoBar })))
 const Auth = lazy(() => import('./pages/Auth'))
 const Booking = lazy(() => import('./pages/Booking'))
 const Profile = lazy(() => import('./pages/Profile'))
@@ -15,20 +13,6 @@ const QuestPage = lazy(() => import('./pages/QuestPage'))
 const PaymentMock = lazy(() => import('./pages/PaymentMock'))
 const LiveOwner = lazy(() => import('./pages/Live').then((m) => ({ default: m.LiveOwner })))
 const WatchInvite = lazy(() => import('./pages/Live').then((m) => ({ default: m.WatchInvite })))
-
-// админ-панель грузится отдельным чанком
-const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'))
-const Dashboard = lazy(() => import('./pages/admin/Dashboard'))
-const AdminBookings = lazy(() => import('./pages/admin/Bookings'))
-const AdminUsers = lazy(() => import('./pages/admin/Users'))
-const AdminRoles = lazy(() => import('./pages/admin/Users').then((m) => ({ default: m.Roles })))
-const AdminLogs = lazy(() => import('./pages/admin/Users').then((m) => ({ default: m.Logs })))
-const AdminQuests = lazy(() => import('./pages/admin/Quests'))
-const AdminRecordings = lazy(() => import('./pages/admin/Media').then((m) => ({ default: m.Recordings })))
-const AdminPayments = lazy(() => import('./pages/admin/Media').then((m) => ({ default: m.Payments })))
-const AdminReports = lazy(() => import('./pages/admin/Reports'))
-const AdminPromo = lazy(() => import('./pages/admin/Content').then((m) => ({ default: m.PromoCodes })))
-const AdminSettings = lazy(() => import('./pages/admin/Content').then((m) => ({ default: m.SettingsPage })))
 
 /** Прокрутка: к якорю (#quests) или наверх при смене страницы */
 function ScrollManager() {
@@ -62,11 +46,6 @@ export default function App() {
         Перейти к содержимому
       </a>
       <ScrollManager />
-      {DEMO && (
-        <Suspense fallback={null}>
-          <DemoBar />
-        </Suspense>
-      )}
       <Header />
       <main id="main" className="flex-1">
         <Suspense fallback={<Fallback />}>
@@ -82,19 +61,6 @@ export default function App() {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/personal-data" element={<PersonalData />} />
             <Route path="/rules" element={<Rules />} />
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="bookings" element={<AdminBookings />} />
-              <Route path="users" element={<AdminUsers />} />
-              <Route path="quests" element={<AdminQuests />} />
-              <Route path="recordings" element={<AdminRecordings />} />
-              <Route path="reports" element={<AdminReports />} />
-              <Route path="payments" element={<AdminPayments />} />
-              <Route path="promo" element={<AdminPromo />} />
-              <Route path="settings" element={<AdminSettings />} />
-              <Route path="roles" element={<AdminRoles />} />
-              <Route path="logs" element={<AdminLogs />} />
-            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

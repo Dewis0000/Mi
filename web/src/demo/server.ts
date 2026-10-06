@@ -155,7 +155,7 @@ const defaultSettings = {
 type Settings = typeof defaultSettings
 
 type DB = {
-  version: 1
+  version: 2
   roles: Role[]
   quests: Quest[]
   users: User[]
@@ -519,7 +519,7 @@ function seed(): DB {
     user({ phone: '+79990000013', name: 'Денис', password: 'operator12345', roleId: role('operator') }),
   ]
   const db: DB = {
-    version: 1,
+    version: 2,
     roles,
     quests,
     users,
@@ -669,7 +669,12 @@ function load(): DB {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (raw) {
       const parsed = JSON.parse(raw) as DB
-      if (parsed.version === 1) db = parsed
+      if (parsed.version === 2 && parsed.settings) {
+        // подстраховка на случай новых полей настроек/опций — дополняем значениями по умолчанию
+        parsed.settings.booking = { ...defaultSettings.booking, ...parsed.settings.booking }
+        if (!Array.isArray(parsed.settings.extras)) parsed.settings.extras = clone(defaultSettings.extras)
+        db = parsed
+      }
     }
   } catch {
     /* хранилище недоступно — работаем в памяти */
