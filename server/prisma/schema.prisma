@@ -1,0 +1,297 @@
+// Модель данных сети хоррор-квестов «Чёрный ход»
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Messenger {
+  TELEGRAM
+  VK
+  MAX
+}
+
+enum BookingStatus {
+  NEW
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum BookingSource {
+  WEB
+  ADMIN
+  PHONE
+  WALK_IN
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  CANCELED
+}
+
+enum PaymentPurpose {
+  BOOKING_PREPAY
+  RECORDING
+}
+
+model User {
+  id            String    @id @default(cuid())
+  phone         String    @unique
+  phoneVerified Boolean   @default(false)
+  name          String?
+  birthDate     DateTime?
+  email         String?
+  passwordHash  String?
+  points        Int       @default(0)
+  lastVisitAt   DateTime?
+  roleId        String?
+  role          Role?     @relation(fields: [roleId], references: [id])
+  blocked       Boolean   @default(false)
+
+  // Мессенджер для кодов и уведомлений + привязанные аккаунты
+  messenger      Messenger @default(TELEGRAM)
+  telegramChatId String?
+  vkUserId       String?
+  maxUserId      String?
+  notifyBookings Boolean   @default(true)
+  notifyReminders Boolean  @default(true)
+  notifyPromo    Boolean   @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bookings      Booking[]
+  pointsLog     PointsLog[]
+  refreshTokens RefreshToken[]
+  payments      Payment[]
+  adminLogs     AdminLog[]
+  holds         SlotHold[]
+}
+
+/// Роль сотрудника. Название роли видит только главный администратор.
+model Role {
+  id          String   @id @default(cuid())
+  key         String   @unique // owner | deputy | accountant | operator
+  name        String
+  permissions String[]
+  users       User[]
+}
+
+model Quest {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  title            String
+  shortDescription String
+  description      String
+  photoUrl         String
+  fearLevel        Int // 1..5
+  minPlayers       Int
+  maxPlayers       Int
+  durationMin      Int
+  minAge           Int
+  basePrice        Int // цена сеанса в будни до 17:00
+  peakExtra        Int      @default(1000) // надбавка: вечер (с 17:00) и выходные
+  roomNumber       Int      @default(1) // номер комнаты — привязка камер
+  isActive         Boolean  @default(true)
+  sortOrder        Int      @default(0)
+  tags             String[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  schedules Schedule[]
+  bookings  Booking[]
+  holds     SlotHold[]
+}
+
+/// Расписание доступности: в какой день недели и с какого по какое время идут сеансы.
+model Schedule {
+  id       String @id @default(cuid())
+  questId  String
+  quest    Quest  @relation(fields: [questId], references: [id], onDelete: Cascade)
+  weekday  Int // 0 = воскресенье … 6 = суббота
+  timeFrom String // "10:00"
+  timeTo   String // "23:30" — последний сеанс должен закончиться до этого времени
+  breakMin Int    @default(20) // технический перерыв между сеансами
+
+  @@index([questId, weekday])
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id])
+  questId         String
+  quest           Quest         @relation(fields: [questId], references: [id])
+  startAt         DateTime
+  endAt           DateTime
+  playersCount    Int
+  ages            Int[]
+  status          BookingStatus @default(NEW)
+  source          BookingSource @default(WEB)
+  basePrice       Int
+  discountPercent Int           @default(0)
+  discountAmount  Int           @default(0)
+  promoCode       String?
+  finalPrice      Int
+  prepaid         Int           @default(0)
+  comment         String?
+  adminNote       String?
+  isDoubleSession Boolean       @default(false)
+  linkedBookingId String?       @unique
+  linkedBooking   Booking?      @relation("DoubleSession", fields: [linkedBookingId], references: [id])
+  linkedFrom      Booking?      @relation("DoubleSession")
+
+  // результат прохождения
+  passed     Boolean?
+  timeSpentMin Int?
+
+  reminded24 Boolean @default(false)
+  reminded2  Boolean @default(false)
+  pointsAwarded Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  recordings    Recording[]
+  streamInvites StreamInvite[]
+
+  @@index([questId, startAt])
+  @@index([userId, startAt])
+  @@index([status])
+}
+
+/// Временная блокировка слота на время оформления заявки (10 минут).
+model SlotHold {
+  id        String   @id @default(cuid())
+  questId   String
+  quest     Quest    @relation(fields: [questId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startAt   DateTime
+  endAt     DateTime
+  expiresAt DateTime
+
+  @@index([questId, startAt])
+}
+
+model PointsLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  delta     Int
+  reason    String // VISIT | BURN | ADMIN | SPEND
+  comment   String?
+  bookingId String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model Recording {
+  id            String    @id @default(cuid())
+  bookingId     String?
+  booking       Booking?  @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  roomNumber    Int
+  fileKey       String
+  durationSec   Int
+  sizeBytes     BigInt
+  recordedAt    DateTime
+  price         Int       @default(990)
+  isPurchased   Boolean   @default(false)
+  purchasedAt   DateTime?
+  expiresAt     DateTime? // срок действия ссылки на скачивание после покупки
+  deleteAfter   DateTime? // автоудаление по сроку хранения
+  createdAt     DateTime  @default(now())
+
+  @@index([bookingId])
+  @@index([roomNumber, recordedAt])
+}
+
+model StreamInvite {
+  id        String   @id @default(cuid())
+  bookingId String
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Payment {
+  id          String         @id @default(cuid())
+  userId      String
+  user        User           @relation(fields: [userId], references: [id])
+  purpose     PaymentPurpose
+  entityId    String
+  amount      Int
+  status      PaymentStatus  @default(PENDING)
+  provider    String
+  externalId  String?
+  createdAt   DateTime       @default(now())
+  paidAt      DateTime?
+
+  @@index([status, createdAt])
+}
+
+/// Промокоды и подарочные сертификаты
+model PromoCode {
+  id              String    @id @default(cuid())
+  code            String    @unique
+  isCertificate   Boolean   @default(false)
+  discountPercent Int?
+  discountAmount  Int?
+  validTo         DateTime?
+  usesLeft        Int?
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+}
+
+model VerificationCode {
+  id        String    @id @default(cuid())
+  phone     String
+  purpose   String    @default("auth") // auth | change_phone
+  codeHash  String
+  channel   Messenger
+  attempts  Int       @default(0)
+  expiresAt DateTime
+  consumed  Boolean   @default(false)
+  createdAt DateTime  @default(now())
+
+  @@index([phone, createdAt])
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model AdminLog {
+  id        String   @id @default(cuid())
+  adminId   String
+  admin     User     @relation(fields: [adminId], references: [id])
+  action    String
+  entity    String
+  entityId  String?
+  details   Json?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+/// Редактируемые настройки и тексты сайта (ключ → JSON)
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}

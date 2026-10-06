@@ -1,0 +1,63 @@
+# Инфраструктура для локальной разработки и как пример для продакшена:
+# PostgreSQL, S3-совместимое хранилище (MinIO) и медиасервер для камер (MediaMTX).
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: quest
+      POSTGRES_PASSWORD: quest
+      POSTGRES_DB: quest
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U quest"]
+      interval: 5s
+      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: quest
+      MINIO_ROOT_PASSWORD: quest-secret
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio:/data
+
+  # Создаёт приватный бакет для видеозаписей
+  minio-init:
+    image: minio/mc:latest
+    depends_on: [minio]
+    entrypoint: >
+      /bin/sh -c "
+      until mc alias set local http://minio:9000 quest quest-secret; do sleep 1; done;
+      mc mb -p local/quest-recordings;
+      mc anonymous set none local/quest-recordings;
+      "
+
+  # RTSP от IP-камер → HLS для онлайн-трансляции + запись сеансов
+  mediamtx:
+    build:
+      context: ./deploy
+      dockerfile: mediamtx.Dockerfile
+    environment:
+      API_URL: http://host.docker.internal:4000
+      INGEST_SECRET: change-me-ingest
+    ports:
+      - "8554:8554"   # RTSP (публикация с камер)
+      - "8888:8888"   # HLS (просмотр)
+      - "9997:9997"   # Control API (включение записи на время сеанса)
+    volumes:
+      - ./deploy/mediamtx.yml:/mediamtx.yml:ro
+      - recordings:/recordings
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  pgdata:
+  minio:
+  recordings:

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Чёрный ход — хоррор-квесты в реальности</title>
+    <meta name="description" content="Авторские хоррор-квесты с живыми актёрами в Москве. Онлайн-запись, программа лояльности, видео прохождения и онлайн-трансляция." />
+    <meta name="theme-color" content="#0a0a0c" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://chernyhod.ru/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:site_name" content="Чёрный ход" />
+    <meta property="og:title" content="Чёрный ход — хоррор-квесты в реальности" />
+    <meta property="og:description" content="Страх, который можно потрогать. Живые актёры, звук и 60–75 минут, чтобы выбраться." />
+    <meta property="og:image" content="https://chernyhod.ru/images/og.jpg" />
+    <meta property="og:url" content="https://chernyhod.ru/" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Rubik+Wet+Paint&display=swap&subset=cyrillic" rel="stylesheet" />
+    <link rel="preload" as="image" href="/images/fon.webp" type="image/webp" />
+
+    <script>
+      // тема до отрисовки — без вспышки светлого фона
+      try { if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light') } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <h1>Чёрный ход — хоррор-квесты в реальности</h1>
+      <p>Для онлайн-записи включите JavaScript или позвоните нам: +7 (495) 000-13-13. Москва, ул. Бауманская, 13.</p>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

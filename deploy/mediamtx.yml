@@ -1,0 +1,45 @@
+# MediaMTX: камеры комнат публикуют RTSP-потоки room1…room5,
+# зрители смотрят HLS. Права проверяет API «Чёрного хода».
+
+hls: yes
+hlsAddress: :8888
+hlsVariant: lowLatency
+hlsAllowOrigin: "*"
+rtsp: yes
+rtspAddress: :8554
+
+# Control API: через него сервер включает запись на время сеанса
+api: yes
+apiAddress: :9997
+
+# Внешняя авторизация: зритель — только с токеном активного сеанса,
+# публикация и Control API — только с логином camera / паролем INGEST_SECRET.
+authMethod: http
+authHTTPAddress: http://host.docker.internal:4000/api/streams/mediamtx-auth
+authHTTPExclude: []
+
+pathDefaults:
+  # Запись выключена по умолчанию: API включает её в начале сеанса и выключает в конце,
+  # поэтому на каждый сеанс получается ровно один файл.
+  record: no
+  recordPath: /recordings/%path/%Y-%m-%d_%H-%M-%S-%f
+  recordFormat: fmp4
+  recordSegmentDuration: 4h
+  # Готовый файл уходит в API, который привяжет его к заявке по комнате и времени.
+  # Время начала берётся из имени файла (UTC), номер комнаты — из имени пути (room3 → 3).
+  runOnRecordSegmentComplete: >
+    sh -c 'NAME=$(basename "$MTX_SEGMENT_PATH");
+    START=$(echo "$NAME" | sed -E "s/^([0-9]{4}-[0-9]{2}-[0-9]{2})_([0-9]{2})-([0-9]{2})-([0-9]{2}).*/\1T\2:\3:\4Z/");
+    curl -sf -X POST "$API_URL/api/recordings/ingest"
+    -H "x-ingest-secret: $INGEST_SECRET"
+    -F room=${MTX_PATH#room}
+    -F recordedAt=$START
+    -F durationSec=${MTX_SEGMENT_DURATION%.*}
+    -F file=@$MTX_SEGMENT_PATH && rm -f "$MTX_SEGMENT_PATH"'
+
+paths:
+  room1: {}
+  room2: {}
+  room3: {}
+  room4: {}
+  room5: {}
