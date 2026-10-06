@@ -115,6 +115,18 @@ export default function Booking() {
     () => Object.entries(extras).filter(([, n]) => n > 0).map(([id, qty]) => ({ id, qty })),
     [extras],
   )
+  // комната отдыха выбрана? (опция с оплатой за час) — от неё зависит доступность декора
+  const roomSelected = extrasList.some((ex) => ex.unit === 'hour' && (extras[ex.id] ?? 0) > 0)
+  // при снятии комнаты убираем выбранный декор
+  useEffect(() => {
+    if (roomSelected) return
+    setExtras((s) => {
+      let changed = false
+      const next = { ...s }
+      for (const ex of extrasList) if (ex.requiresRoom && next[ex.id]) { next[ex.id] = 0; changed = true }
+      return changed ? next : s
+    })
+  }, [roomSelected, extrasList])
 
   // проверка шага 1
   const playersIssue = useMemo(() => {
@@ -402,17 +414,19 @@ export default function Booking() {
                 {(id) => <textarea id={id} rows={3} maxLength={1000} className="input resize-none" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Например: у Кати день рождения, нужен торт в конце 🎂" />}
               </Field>
               {extrasList.length > 0 && (
-                <Field label="Дополнительно" hint="Комната отдыха и праздничное оформление — по желанию, всё посчитается в стоимость">
+                <Field label="Дополнительно" hint="Оформление (надпись, посуда, шары) доступно только с арендой комнаты отдыха">
                   {() => (
                     <div className="space-y-2.5">
                       {extrasList.map((ex) => {
                         const qty = extras[ex.id] ?? 0
                         const on = qty > 0
+                        const locked = !!ex.requiresRoom && !roomSelected
                         return (
                           <div key={ex.id} className="flex flex-wrap items-center gap-3">
-                            <label className="flex items-center gap-2.5 text-sm">
-                              <input type="checkbox" className="size-4 accent-[var(--accent)]" checked={on} onChange={(e) => setExtras((s) => ({ ...s, [ex.id]: e.target.checked ? 1 : 0 }))} />
+                            <label className={clsx('flex items-center gap-2.5 text-sm', locked && 'opacity-50')}>
+                              <input type="checkbox" className="size-4 accent-[var(--accent)]" checked={on} disabled={locked} onChange={(e) => setExtras((s) => ({ ...s, [ex.id]: e.target.checked ? 1 : 0 }))} />
                               {ex.label} — {rub(ex.price)}{ex.unit === 'hour' ? '/час' : ''}
+                              {locked && <span className="text-xs text-muted">— с комнатой отдыха</span>}
                             </label>
                             {ex.unit === 'hour' && on && (
                               <span className="flex items-center gap-2 text-sm text-muted">

@@ -103,7 +103,7 @@ export type Content = {
     max: string
   }
   booking: { prepayMode: 'none' | 'prepay'; prepayPercent: number; prepayAmount: number; basePlayers: number; extraPlayerPrice: number; cancelHours: number; holdMinutes: number }
-  extras: { id: string; label: string; price: number; unit: 'toggle' | 'hour' }[]
+  extras: { id: string; label: string; price: number; unit: 'toggle' | 'hour'; requiresRoom?: boolean }[]
   loyalty: { pointsPerVisit: number; tiers: Tier[]; burnAfterMonths: number; burnPercentPerMonth: number }
   recordings: { price: number; linkDays: number }
 }

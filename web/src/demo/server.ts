@@ -133,10 +133,10 @@ const defaultSettings = {
   booking: { prepayMode: 'prepay' as 'none' | 'prepay', prepayPercent: 30, prepayAmount: 500, basePlayers: 5, extraPlayerPrice: 700, holdMinutes: 10, cancelHours: 24, horizonDays: 60 },
   // Дополнительные опции (комната отдыха, оформление) — редактируются в админке
   extras: [
-    { id: 'rest', label: 'Комната отдыха', price: 500, unit: 'hour' as 'toggle' | 'hour' },
-    { id: 'birthday', label: 'Надпись «С днём рождения»', price: 200, unit: 'toggle' as 'toggle' | 'hour' },
-    { id: 'tableware', label: 'Цветная посуда (на всех)', price: 200, unit: 'toggle' as 'toggle' | 'hour' },
-    { id: 'balloons', label: 'Воздушные шары (20 шт)', price: 200, unit: 'toggle' as 'toggle' | 'hour' },
+    { id: 'rest', label: 'Комната отдыха', price: 500, unit: 'hour' as 'toggle' | 'hour', requiresRoom: false },
+    { id: 'birthday', label: 'Надпись «С днём рождения»', price: 200, unit: 'toggle' as 'toggle' | 'hour', requiresRoom: true },
+    { id: 'tableware', label: 'Цветная посуда (на всех)', price: 200, unit: 'toggle' as 'toggle' | 'hour', requiresRoom: true },
+    { id: 'balloons', label: 'Воздушные шары (20 шт)', price: 200, unit: 'toggle' as 'toggle' | 'hour', requiresRoom: true },
   ],
   loyalty: {
     pointsPerVisit: 100,
@@ -341,12 +341,16 @@ function quote(db: DB, slotPrices: number[], user: User | null, promoCode?: unkn
   const playersExtra = opts.double ? 0 : s.booking.extraPlayerPrice * Math.max(0, players - s.booking.basePlayers)
   // выбранные опции: массив id или {id, qty}
   const picks = Array.isArray(opts.extras) ? (opts.extras as unknown[]) : []
+  const pickId = (x: unknown) => (x && typeof x === 'object' ? (x as { id?: unknown }).id : x)
+  // декор (requiresRoom) доступен только если выбрана комната отдыха (опция с оплатой за час)
+  const roomSelected = picks.some((x) => s.extras.find((o) => o.id === pickId(x))?.unit === 'hour')
   const extras = picks
     .map((x) => {
-      const id = x && typeof x === 'object' ? (x as { id?: unknown }).id : x
+      const id = pickId(x)
       const qty = x && typeof x === 'object' ? Math.max(1, Number((x as { qty?: unknown }).qty) || 1) : 1
       const e = s.extras.find((o) => o.id === id)
       if (!e) return null
+      if (e.requiresRoom && !roomSelected) return null
       return { label: e.label + (e.unit === 'hour' ? ` ×${qty} ч` : ''), price: e.unit === 'hour' ? e.price * qty : e.price }
     })
     .filter(Boolean) as { label: string; price: number }[]
@@ -513,7 +517,7 @@ function seed(): DB {
   })
   const role = (k: string) => roles.find((r) => r.key === k)!.id
   const users: User[] = [
-    user({ phone: '+79990000001', name: 'Алексей (владелец)', password: 'admin12345', roleId: role('owner') }),
+    user({ phone: '+79996544460', name: 'Владелец', password: 'admin12345', roleId: role('owner') }),
     user({ phone: '+79990000011', name: 'Марина', password: 'deputy12345', roleId: role('deputy') }),
     user({ phone: '+79990000012', name: 'Ольга', password: 'account12345', roleId: role('accountant') }),
     user({ phone: '+79990000013', name: 'Денис', password: 'operator12345', roleId: role('operator') }),
