@@ -10,7 +10,7 @@ import { useRequireAuth } from '../lib/useRequireAuth'
 
 /** Тестовая платёжная страница (PAYMENT_PROVIDER=mock). В продакшене — редирект в ЮKassa. */
 export default function PaymentMock() {
-  useSeo('Оплата — Чёрный ход')
+  useSeo('Оплата — Neru-Квест')
   useRequireAuth()
   const [params] = useSearchParams()
   const id = params.get('id') ?? ''

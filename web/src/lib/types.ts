@@ -93,6 +93,7 @@ export type Content = {
     phone: string
     email: string
     hours: string
+    mapUrl?: string
     telegram: string
     vk: string
     max: string

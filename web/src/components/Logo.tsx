@@ -13,7 +13,7 @@ export function LogoMark({ className }: { className?: string }) {
   )
 }
 
-export function Logo({ name = 'Чёрный ход', compact, light }: { name?: string; compact?: boolean; light?: boolean }) {
+export function Logo({ name = 'Neru-Квест', compact, light }: { name?: string; compact?: boolean; light?: boolean }) {
   return (
     <Link to="/" className={clsx('group flex items-center gap-2.5', light && 'text-white')} aria-label={`${name} — на главную`}>
       <LogoMark className={clsx('transition-transform group-hover:-rotate-3', light ? 'text-white' : 'text-fg')} />

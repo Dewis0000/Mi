@@ -16,7 +16,7 @@ export default function QuestPage() {
   const { data: all } = useQuests()
   const book = useBookAction()
   const quest = q.data
-  useSeo(quest ? `${quest.title} — хоррор-квест «Чёрный ход»` : 'Квест — Чёрный ход', quest?.shortDescription)
+  useSeo(quest ? `${quest.title} — хоррор-квест «Neru-Квест»` : 'Квест — Neru-Квест', quest?.shortDescription)
   useJsonLd(
     'ld-quest',
     quest && {

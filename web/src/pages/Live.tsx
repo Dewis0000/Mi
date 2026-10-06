@@ -99,7 +99,7 @@ function useAutoRefresh(info: StreamInfo | undefined, refetch: () => void) {
 }
 
 export function LiveOwner() {
-  useSeo('Онлайн-трансляция — Чёрный ход')
+  useSeo('Онлайн-трансляция — Neru-Квест')
   const { id } = useParams()
   const { user } = useRequireAuth()
   const q = useQuery({ queryKey: ['stream', id], queryFn: () => api<StreamInfo>(`/streams/booking/${id}`), enabled: !!user })
@@ -110,7 +110,7 @@ export function LiveOwner() {
 }
 
 export function WatchInvite() {
-  useSeo('Трансляция квеста — Чёрный ход')
+  useSeo('Трансляция квеста — Neru-Квест')
   const { token } = useParams()
   const q = useQuery({ queryKey: ['invite', token], queryFn: () => api<StreamInfo>(`/streams/invite/${token}`), retry: false })
   useAutoRefresh(q.data, q.refetch)

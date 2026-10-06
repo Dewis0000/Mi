@@ -628,7 +628,7 @@ function ChangePhoneModal({ open, onClose }: { open: boolean; onClose: () => voi
 /* ---------------- Страница ---------------- */
 
 export default function Profile() {
-  useSeo('Личный кабинет — Чёрный ход')
+  useSeo('Личный кабинет — Neru-Квест')
   const { user } = useRequireAuth()
   const { tab = 'bookings' } = useParams()
   const navigate = useNavigate()

@@ -32,7 +32,7 @@ function safeNext(next: string | null) {
 }
 
 export default function Auth() {
-  useSeo('Вход и регистрация — Чёрный ход')
+  useSeo('Вход и регистрация — Neru-Квест')
   const { user, ready, signIn, setUser } = useAuth()
   const [params] = useSearchParams()
   const next = safeNext(params.get('next'))

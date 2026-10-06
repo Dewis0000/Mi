@@ -6,8 +6,8 @@
 import { fromVenueInput, venueDateKey, venueParts } from '../lib/format'
 
 const DAY = 86_400_000
-const STORAGE_KEY = 'chernyhod-demo-db-v1'
-const DEMO_SITE = 'https://chernyhod.ru'
+const STORAGE_KEY = 'neru-kvest-db-v1'
+const DEMO_SITE = 'https://nery-quest.ru'
 
 /* ------------------------------------------------------------------ типы */
 
@@ -109,25 +109,26 @@ type Log = { id: string; adminId: string; action: string; entity: string; entity
 
 const defaultSettings = {
   site: {
-    name: 'Чёрный ход',
-    tagline: 'Хоррор-квесты в реальности',
-    heroTitle: 'Страх, который\nможно потрогать',
+    name: 'Neru-Квест',
+    tagline: 'Хоррор-квест в реальности · Нерюнгри',
+    heroTitle: 'Граф Дракула\nждёт гостей',
     heroText:
-      'Авторские сюжеты, живые актёры, звук, от которого стынет кровь, и 60–75 минут, чтобы выбраться. Соберите команду — если осмелитесь.',
+      'Хоррор-квест с живым актёром. Тёмные коридоры, загадки и один час, чтобы выбраться. Три уровня сложности выбираете прямо перед игрой. Соберите команду до 7 человек.',
     aboutText:
-      '«Чёрный ход» — сеть авторских хоррор-квестов. Мы строим декорации вручную, пишем сценарии вместе с театральными режиссёрами и работаем только с профессиональными актёрами. Безопасность — на первом месте: стоп-слово, видеонаблюдение и администратор на связи всё время игры.',
+      'Neru-Квест — квест в реальности в Нерюнгри. Атмосферные декорации, живой актёр и продуманный сюжет. Выберите удобное время, оставьте заявку — и мы свяжемся с вами для подтверждения.',
   },
   contacts: {
-    address: 'Москва, ул. Бауманская, 13',
-    addressNote: 'Вход со двора, железная дверь с красной лампой',
-    lat: 55.772,
-    lon: 37.6795,
-    phone: '+7 (495) 000-13-13',
-    email: 'hello@chernyhod.ru',
-    hours: 'Ежедневно 10:00 – 02:00',
-    telegram: 'https://t.me/chernyhod',
-    vk: 'https://vk.com/chernyhod',
-    max: 'https://max.ru/chernyhod',
+    address: 'Нерюнгри, ул. Чурапчинская, 46',
+    addressNote: 'Вход с обратной стороны дома, в подвал — сине-белое крыльцо',
+    lat: 56.6557,
+    lon: 124.7247,
+    phone: '+7 924 661-15-20',
+    email: '',
+    hours: 'Ежедневно, по записи',
+    mapUrl: 'https://yandex.ru/maps/org/neru_kvest/211067171529/',
+    telegram: '',
+    vk: '',
+    max: '',
   },
   booking: { prepayMode: 'none' as 'none' | 'prepay', prepayPercent: 30, holdMinutes: 10, cancelHours: 24, horizonDays: 60 },
   loyalty: {
@@ -442,103 +443,24 @@ function seed(): DB {
   const q = (data: Omit<Quest, 'id' | 'createdAt' | 'updatedAt'>): Quest => ({ ...data, id: uid(), createdAt: created, updatedAt: created })
   const quests: Quest[] = [
     q({
-      slug: 'cirk-urodov',
-      title: 'Цирк уродов',
-      shortDescription: 'Шапито приехало в город ровно на одну ночь. Зрители, которые остались после представления, так и не вернулись домой.',
+      slug: 'graf-drakula',
+      title: 'Граф Дракула',
+      shortDescription: 'Старый замок проснулся. У вас есть час, чтобы разгадать его тайны и выбраться — пока хозяин не нашёл вас первым.',
       description:
-        'Ржавые клетки, запах опилок и грима, музыка шарманки, которая не замолкает ни на секунду. Директор цирка приглашает вас за кулисы — туда, где держат артистов, которых не показывают публике. У вас 70 минут, чтобы найти выход, пока клоун не закончил свой последний номер.\n\nАктёрский квест с контактом: актёры могут прикасаться к игрокам. Предусмотрено стоп-слово и «щадящий» режим по запросу.',
-      photoUrl: '/images/circus.webp',
-      fearLevel: 5,
-      minPlayers: 2,
-      maxPlayers: 5,
-      durationMin: 70,
-      minAge: 18,
-      basePrice: 5500,
-      peakExtra: 1500,
+        'Атмосферный хоррор-квест с живым актёром по мотивам легенды о Графе Дракуле. Тёмные коридоры, загадки, спрятанные механизмы и актёр, который ведёт историю.\n\nТри уровня сложности и взаимодействия с актёром выбираются прямо перед игрой — под настроение вашей команды: от спокойного (минимум контакта, атмосферно) до хардкора (максимум взаимодействия, по-настоящему жутко).\n\nЦена: 3500 ₽ за команду до 5 человек, каждый следующий игрок +700 ₽ (максимум 7). Для записи — предоплата 500 ₽; возврат при отмене минимум за сутки. Приходите за 10 минут до игры, с собой — чистая сменная обувь.',
+      photoUrl: '/images/crypt.webp',
+      fearLevel: 4,
+      minPlayers: 1,
+      maxPlayers: 7,
+      durationMin: 60,
+      minAge: 12,
+      basePrice: 3500,
+      peakExtra: 0,
       roomNumber: 1,
       isActive: true,
       sortOrder: 1,
-      tags: ['актёры', 'контакт', 'экстрим'],
-      schedules: allWeek('12:00', '02:00', 20),
-    }),
-    q({
-      slug: 'sklep',
-      title: 'Склеп',
-      shortDescription: 'Экспедиция спустилась в фамильный склеп графов Орловых. Факелы гаснут, а за стеной кто-то скребётся.',
-      description:
-        'Каменные своды, полумрак и скрежет за стенами. Вы — участники археологической экспедиции, которая вскрыла древнее захоронение. Чтобы выбраться, придётся разгадать шифры на надгробиях и не потревожить того, кто спит в центральном саркофаге.\n\nКвест с элементами мистики, сложными механическими загадками и одним актёром.',
-      photoUrl: '/images/crypt.webp',
-      fearLevel: 4,
-      minPlayers: 2,
-      maxPlayers: 5,
-      durationMin: 75,
-      minAge: 14,
-      basePrice: 5000,
-      peakExtra: 1000,
-      roomNumber: 2,
-      isActive: true,
-      sortOrder: 2,
-      tags: ['мистика', 'механика'],
-      schedules: allWeek('11:00', '01:00', 25),
-    }),
-    q({
-      slug: 'vedmin-les',
-      title: 'Ведьмин лес',
-      shortDescription: 'Туман сгущается, тропа петляет, а в старой избушке горит свет. Говорят, отсюда выходят не все.',
-      description:
-        'Вы заблудились в лесу, о котором в деревне говорят шёпотом. Живой туман, звуки леса со всех сторон и хижина, в которой кто-то варит зелье. Атмосферный квест для тех, кто хочет попробовать хоррор без перегибов: страшно, но не до слёз.\n\nПодходит для первого знакомства с жанром и семейных команд с подростками.',
-      photoUrl: '/images/forest.webp',
-      fearLevel: 3,
-      minPlayers: 2,
-      maxPlayers: 6,
-      durationMin: 60,
-      minAge: 12,
-      basePrice: 4000,
-      peakExtra: 1000,
-      roomNumber: 3,
-      isActive: true,
-      sortOrder: 3,
-      tags: ['атмосфера', 'для новичков'],
-      schedules: allWeek('10:00', '23:00', 20),
-    }),
-    q({
-      slug: 'pepel',
-      title: 'Пепел',
-      shortDescription: 'Двадцать лет назад приют сгорел дотла. Сегодня ночью в его окнах снова видели огонь.',
-      description:
-        'Обугленные стены, детские рисунки и запах гари. Вы — пожарные-дознаватели, которые должны выяснить, что на самом деле случилось той ночью. Но чем ближе вы к правде, тем жарче становится вокруг.\n\nСюжетный хоррор с неожиданной развязкой, спецэффектами и одним актёром.',
-      photoUrl: '/images/ashes.webp',
-      fearLevel: 4,
-      minPlayers: 3,
-      maxPlayers: 6,
-      durationMin: 60,
-      minAge: 16,
-      basePrice: 4800,
-      peakExtra: 1200,
-      roomNumber: 4,
-      isActive: true,
-      sortOrder: 4,
-      tags: ['сюжет', 'спецэффекты'],
-      schedules: allWeek('12:00', '00:30', 20),
-    }),
-    q({
-      slug: 'bezdna',
-      title: 'Бездна',
-      shortDescription: 'Батискаф застрял на дне Марианской впадины. Кислорода — на час. Снаружи что-то движется.',
-      description: 'Новый квест в разработке: клаустрофобия, глубина и тишина, в которой слышно собственное сердце. Открытие — скоро.',
-      photoUrl: '/images/abyss.webp',
-      fearLevel: 2,
-      minPlayers: 2,
-      maxPlayers: 4,
-      durationMin: 60,
-      minAge: 10,
-      basePrice: 3500,
-      peakExtra: 800,
-      roomNumber: 5,
-      isActive: false,
-      sortOrder: 5,
-      tags: ['скоро'],
-      schedules: allWeek('10:00', '22:00', 15),
+      tags: ['живой актёр', '3 уровня сложности', '~1 час'],
+      schedules: allWeek('10:00', '22:00', 20),
     }),
   ]
   const byslug = (s: string) => quests.find((x) => x.slug === s)!
@@ -635,9 +557,9 @@ function seed(): DB {
   const anna = user({ phone: '+79990000002', name: 'Анна', email: 'anna@example.com', password: 'demo12345', points: 300 })
   users.push(anna)
   const past = [
-    { slug: 'vedmin-les', days: -120, n: 5, passed: true, time: 52, bought: false },
-    { slug: 'sklep', days: -60, n: 6, passed: false, time: 75, bought: false },
-    { slug: 'cirk-urodov', days: -20, n: 5, passed: true, time: 64, bought: true },
+    { slug: 'graf-drakula', days: -120, n: 5, passed: true, time: 48, bought: false },
+    { slug: 'graf-drakula', days: -60, n: 6, passed: false, time: 60, bought: false },
+    { slug: 'graf-drakula', days: -20, n: 2, passed: true, time: 55, bought: true },
   ]
   for (const p of past) {
     const quest = byslug(p.slug)
@@ -660,7 +582,7 @@ function seed(): DB {
     })
     anna.lastVisitAt = b.startAt
   }
-  const pepel = byslug('pepel')
+  const pepel = byslug('graf-drakula')
   const upcoming = slotAt(pepel, 3, 6)
   const upBase = slotPrice(pepel, ms(upcoming.start))
   book(anna, pepel, upcoming, {

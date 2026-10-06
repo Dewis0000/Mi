@@ -70,7 +70,7 @@ export default function Booking() {
   const { data: content } = useContent()
 
   const quest = useQuery({ queryKey: ['quest', slug], queryFn: () => api<Quest>(`/quests/${slug}`) })
-  useSeo(quest.data ? `Запись на «${quest.data.title}» — Чёрный ход` : 'Запись — Чёрный ход')
+  useSeo(quest.data ? `Запись на «${quest.data.title}» — Neru-Квест` : 'Запись — Neru-Квест')
 
   const [step, setStep] = useState(0)
   const [players, setPlayers] = useState(0)

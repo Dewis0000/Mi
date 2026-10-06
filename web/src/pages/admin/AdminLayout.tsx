@@ -32,7 +32,7 @@ export const ADMIN_NAV = [
 ] as const
 
 export default function AdminLayout() {
-  useSeo('Админ-панель — Чёрный ход')
+  useSeo('Админ-панель — Neru-Квест')
   const { user, ready, can } = useAuth()
   if (!ready) return <div className="grid min-h-[60vh] place-items-center"><Spinner /></div>
   if (!user) return <Navigate to="/auth?next=/admin" replace />

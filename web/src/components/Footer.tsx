@@ -43,15 +43,23 @@ export function Footer() {
                   {c.phone}
                 </a>
               </li>
-              <li className="flex gap-3">
-                <Mail className="mt-0.5 size-4 shrink-0 text-accent" />
-                <a href={`mailto:${c.email}`} className="hover:text-accent">
-                  {c.email}
-                </a>
-              </li>
+              {c.email && (
+                <li className="flex gap-3">
+                  <Mail className="mt-0.5 size-4 shrink-0 text-accent" />
+                  <a href={`mailto:${c.email}`} className="hover:text-accent">
+                    {c.email}
+                  </a>
+                </li>
+              )}
               <li className="flex gap-3">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-accent" />
-                {c.address}
+                {c.mapUrl ? (
+                  <a href={c.mapUrl} target="_blank" rel="noopener noreferrer" className="hover:text-accent">
+                    {c.address}
+                  </a>
+                ) : (
+                  c.address
+                )}
               </li>
               <li className="flex gap-3">
                 <Clock className="mt-0.5 size-4 shrink-0 text-accent" />
@@ -83,7 +91,7 @@ export function Footer() {
       </div>
       <div className="border-t border-line">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-6 text-xs text-muted sm:flex-row sm:justify-between sm:px-6">
-          <span>© {new Date().getFullYear()} {data?.site.name ?? 'Чёрный ход'}. Все права защищены.</span>
+          <span>© {new Date().getFullYear()} {data?.site.name ?? 'Neru-Квест'}. Все права защищены.</span>
           <span>Квесты содержат сцены, способные напугать. Беременным и людям с заболеваниями сердца участие не рекомендуется.</span>
         </div>
       </div>
