@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /profile
+Disallow: /book/
+Disallow: /auth
+Disallow: /payment/
+Disallow: /live/
+Disallow: /watch/
+
+Sitemap: https://chernyhod.ru/sitemap.xml

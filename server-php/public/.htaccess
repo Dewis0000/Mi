@@ -2,6 +2,11 @@
 
 RewriteEngine On
 
+# Пробросить заголовок Authorization в PHP (на части конфигураций reg.ru он
+# иначе теряется, и каждый авторизованный запрос возвращает 401).
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+RewriteRule .? - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 # HTTPS (учёт прокси reg.ru)
 RewriteCond %{HTTPS} !=on
 RewriteCond %{HTTP:X-Forwarded-Proto} !https

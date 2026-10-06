@@ -11,13 +11,8 @@ deploy/out/
 # Секреты PHP-сайта — только на сервере, не в репозитории
 php-site/config.php
 
-# server-php: сгенерированная React-сборка (кладётся при финальном деплое)
-server-php/public/assets/
-server-php/public/images/
-server-php/public/index.html
-server-php/public/favicon.svg
-server-php/public/robots.txt
-server-php/public/theme-init.js
+# server-php: собранный React закоммичен в репозиторий (на хостинге нет Node),
+# чтобы деплой одной командой мог его скачать. Пересобирается через build.sh.
 
 # server-php: реальный конфиг с секретами и локальная тестовая БД
 server-php/config.php
