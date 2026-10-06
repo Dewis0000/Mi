@@ -1,0 +1,24 @@
+# Боевой сайт: React-статика + PHP-API на /api/
+
+RewriteEngine On
+
+# HTTPS (учёт прокси reg.ru)
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# API → фронт-контроллер
+RewriteRule ^api(/.*)?$ api/index.php [L,QSA]
+
+# SPA: несуществующий путь (не файл, не /api) → index.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]
+
+# Секреты и SQL — закрыть
+<FilesMatch "\.(sql)$">
+  Require all denied
+</FilesMatch>
+<Files "config.php">
+  Require all denied
+</Files>
