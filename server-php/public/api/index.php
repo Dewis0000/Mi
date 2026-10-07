@@ -122,8 +122,9 @@ if ($R('POST', '/bot/telegram') !== null) {
                 $u = find_user_by_phone($phone);
                 return $u && !empty(user_perms($u));
             })();
-            $tail = $isStaff ? ' и уведомления о новых записях' : '';
-            tg_send($chatId, "✅ Готово! Номер <b>$phone</b> привязан. Теперь сюда будут приходить коды для входа на сайт$tail.", ['reply_markup' => ['remove_keyboard' => true]]);
+            $tail = $isStaff ? "\n\nСюда также будут приходить уведомления о новых записях." : '';
+            $code = mint_code($phone, 'auth');
+            tg_send($chatId, "✅ Готово! Номер <b>$phone</b> привязан.\n\nВаш код для входа на сайт: <b>$code</b>\nВведите его на странице входа (действует 5 минут).$tail", ['reply_markup' => ['remove_keyboard' => true]]);
         } else {
             tg_send($chatId, 'Пожалуйста, поделитесь своим собственным номером — кнопкой ниже.');
         }
@@ -139,6 +140,51 @@ if ($R('POST', '/bot/telegram') !== null) {
     out(['ok' => true]);
 }
 
+/* ============================================================ MAX-бот (webhook) */
+
+if ($R('POST', '/bot/max') !== null) {
+    $expected = hash_hmac('sha256', 'max-webhook', (string)cfg('app_secret'));
+    if (!hash_equals($expected, (string)($_GET['s'] ?? ''))) out(['ok' => true]);
+
+    $upd = body();
+    $type = $upd['update_type'] ?? '';
+    $msg = $upd['message'] ?? [];
+    $chatId = (string)($msg['recipient']['chat_id'] ?? ($upd['chat_id'] ?? ''));
+    $welcome = 'Здравствуйте! Это бот <b>Neru-Квест</b>. Нажмите «Поделиться номером» или просто отправьте свой номер телефона сообщением — на него будут приходить коды для входа и напоминания о бронях.';
+
+    if ($type === 'bot_started') {
+        if ($chatId) max_api_send($chatId, $welcome, max_contact_keyboard());
+        out(['ok' => true]);
+    }
+
+    if ($type === 'message_created') {
+        // телефон: из прикреплённого контакта или из текста сообщения
+        $phone = null;
+        foreach (($msg['body']['attachments'] ?? []) as $att) {
+            if (($att['type'] ?? '') === 'contact') {
+                $pl = $att['payload'] ?? [];
+                $phone = normalize_phone(extract_phone($pl['phone'] ?? ($pl['vcfInfo'] ?? ($pl['vcfPhone'] ?? ''))));
+            }
+        }
+        if (!$phone) $phone = normalize_phone(extract_phone($msg['body']['text'] ?? ''));
+
+        if ($phone && $chatId) {
+            link_messenger('MAX', $phone, $chatId, $msg['sender']['username'] ?? null);
+            $isStaff = in_array($phone, (array)cfg('owner_phones', []), true) || (function () use ($phone) {
+                $u = find_user_by_phone($phone);
+                return $u && !empty(user_perms($u));
+            })();
+            $tail = $isStaff ? "\n\nСюда также будут приходить уведомления о новых записях." : '';
+            $code = mint_code($phone, 'auth');
+            max_api_send($chatId, "✅ Готово! Номер $phone привязан.\n\nВаш код для входа на сайт: $code\nВведите его на странице входа (действует 5 минут).$tail");
+        } elseif ($chatId) {
+            max_api_send($chatId, $welcome, max_contact_keyboard());
+        }
+        out(['ok' => true]);
+    }
+    out(['ok' => true]);
+}
+
 /* ============================================================ вход */
 
 if ($R('POST', '/auth/code') !== null) {
@@ -148,10 +194,31 @@ if ($R('POST', '/auth/code') !== null) {
     $existing = find_user_by_phone($phone);
     if ($existing && (int)$existing['blocked']) fail(403, 'Аккаунт заблокирован. Свяжитесь с администратором.', 'BLOCKED');
     if (!$existing && empty($b['consent'])) fail(400, 'Необходимо согласие на обработку персональных данных', 'CONSENT_REQUIRED');
-    $issued = issue_code($phone, 'auth');
-    $delivered = deliver_login_code($phone, $issued['_code'], s($b['channel'] ?? 'TELEGRAM'));
-    $resp = ['ok' => true, 'isNewUser' => !$existing, 'hasPassword' => !empty($existing['password_hash']), 'resendIn' => $issued['resendIn']];
-    if (!$delivered && cfg('expose_dev_codes', false)) $resp['devCode'] = $issued['_code'];
+    $channel = s($b['channel'] ?? 'TELEGRAM');
+    $base = ['ok' => true, 'isNewUser' => !$existing, 'hasPassword' => !empty($existing['password_hash'])];
+
+    $tgLinked  = link_chat_for_phone('TELEGRAM', $phone) !== null;
+    $maxLinked = link_chat_for_phone('MAX', $phone) !== null;
+    $canDeliver = $tgLinked || $maxLinked || cfg('telegram_gateway_token', '') !== '';
+
+    if ($canDeliver) {
+        $issued = issue_code($phone, 'auth');
+        $delivered = deliver_login_code($phone, $issued['_code'], $channel);
+        $resp = $base + ['resendIn' => $issued['resendIn'], 'sentTo' => $delivered ? (($maxLinked && $channel === 'MAX') ? 'max' : 'telegram') : null];
+        if (!$delivered && cfg('expose_dev_codes', false)) $resp['devCode'] = $issued['_code'];
+        out($resp);
+    }
+
+    // Бот ещё не привязан к этому номеру — отправляем человека в бота (там он поделится номером и получит код).
+    $resp = $base + ['resendIn' => 0, 'needsMessenger' => true, 'messenger' => $channel];
+    if ($channel === 'MAX') {
+        $mu = (string)cfg('max_bot_username', 'id272499215410_bot');
+        if ($mu) $resp['botUrl'] = "https://max.ru/$mu";
+    } else {
+        $tu = (string)cfg('telegram_bot_username', 'Neru_kvestBot');
+        if ($tu) $resp['botUrl'] = "https://t.me/$tu?start=auth";
+    }
+    if (cfg('expose_dev_codes', false)) $resp['devCode'] = issue_code($phone, 'auth')['_code'];
     out($resp);
 }
 

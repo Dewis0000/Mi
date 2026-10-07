@@ -109,6 +109,12 @@ function phone_or_fail($v): string {
     if ($p === null) fail(400, 'Неверный формат телефона', 'VALIDATION');
     return $p;
 }
+/** Выдернуть телефоноподобную подстроку из произвольного текста (vCard, сообщение). */
+function extract_phone(?string $s): ?string {
+    if (!is_string($s) || $s === '') return null;
+    if (preg_match('/(\+?\d[\d\s\-()]{9,}\d)/', $s, $m)) return $m[1];
+    return null;
+}
 
 // ------------------------------------------------------------------ база данных
 function db(): PDO {

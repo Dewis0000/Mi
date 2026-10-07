@@ -57,11 +57,29 @@ function tg_gateway_send_code(string $phoneE164, string $code): bool {
 }
 
 // ------------------------------------------------------------------ MAX
-function max_send(string $chatId, string $text): bool {
+function max_api_send(string $chatId, string $text, array $attachments = []): bool {
     $token = (string)cfg('max_bot_token', '');
     if (!$token || $chatId === '') return false;
-    $r = http_post_json('https://botapi.max.ru/messages?access_token=' . urlencode($token), ['chat_id' => (int)$chatId, 'text' => $text]);
-    return $r['ok'] && empty($r['body']['code']);
+    $payload = ['text' => $text];
+    if ($attachments) $payload['attachments'] = $attachments;
+    $ch = curl_init('https://botapi.max.ru/messages?chat_id=' . urlencode($chatId));
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST           => true,
+        CURLOPT_HTTPHEADER     => ['Authorization: ' . $token, 'Content-Type: application/json'],
+        CURLOPT_POSTFIELDS     => json_encode($payload, JSON_UNESCAPED_UNICODE),
+        CURLOPT_TIMEOUT        => 8,
+        CURLOPT_CONNECTTIMEOUT => 5,
+    ]);
+    $resp = curl_exec($ch);
+    $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    return $code >= 200 && $code < 300;
+}
+function max_send(string $chatId, string $text): bool { return max_api_send($chatId, $text); }
+/** Клавиатура с кнопкой «Поделиться номером» для MAX. */
+function max_contact_keyboard(): array {
+    return [['type' => 'inline_keyboard', 'payload' => ['buttons' => [[['type' => 'request_contact', 'text' => '📱 Поделиться номером']]]]]];
 }
 
 // ------------------------------------------------------------------ привязки «номер ↔ чат»

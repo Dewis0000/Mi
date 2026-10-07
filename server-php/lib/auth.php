@@ -30,6 +30,14 @@ function issue_code(string $phone, string $purpose): array {
     return ['resendIn' => 60, '_code' => $code];
 }
 
+/** Выдать код без анти-флуд-проверок (для бота: человек только что поделился номером). */
+function mint_code(string $phone, string $purpose): string {
+    $code = str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+    db()->prepare('INSERT INTO auth_codes (id, phone, purpose, code_hash, attempts, expires_at, consumed, created_at) VALUES (?,?,?,?,0,?,0,?)')
+        ->execute([uid(), $phone, $purpose, code_hash($phone, $code), time() + 300, time()]);
+    return $code;
+}
+
 function consume_code(string $phone, $code, string $purpose): void {
     if (!is_string($code) || !preg_match('/^\d{6}$/', $code)) fail(400, 'Код — 6 цифр', 'VALIDATION');
     $pdo = db();

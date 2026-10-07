@@ -46,6 +46,8 @@ export default function Auth() {
   const [code, setCode] = useState('')
   const [password, setPassword] = useState('')
   const [devCode, setDevCode] = useState<string | null>(null)
+  const [botUrl, setBotUrl] = useState<string | null>(null)
+  const [sentTo, setSentTo] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [resendUntil, setResendUntil] = useState(0)
@@ -64,12 +66,14 @@ export default function Auth() {
     setLoading(true)
     try {
       const captchaToken = await getCaptchaToken()
-      const res = await api<{ resendIn: number; devCode?: string }>('/auth/code', {
+      const res = await api<{ resendIn: number; devCode?: string; needsMessenger?: boolean; botUrl?: string; sentTo?: string }>('/auth/code', {
         method: 'POST',
         body: { phone, channel, consent, captchaToken, website: honeypot },
       })
       setDevCode(res.devCode ?? null)
-      setResendUntil(Date.now() + res.resendIn * 1000)
+      setBotUrl(res.needsMessenger ? res.botUrl ?? 'https://t.me/Neru_kvestBot' : null)
+      setSentTo(res.sentTo ?? null)
+      setResendUntil(Date.now() + (res.resendIn ?? 0) * 1000)
       setCode('')
       setStep('code')
     } catch (err) {
@@ -220,9 +224,27 @@ export default function Auth() {
 
           {step === 'code' && (
             <motion.div key="code" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-5">
-              <p className="text-sm text-muted">
-                Отправили 6-значный код в {MESSENGERS.find((m) => m.id === channel)?.label} для номера <span className="whitespace-nowrap text-fg">{phone}</span>
-              </p>
+              {botUrl ? (
+                <div className="space-y-3">
+                  <p className="text-sm text-muted">
+                    Код приходит в {MESSENGERS.find((m) => m.id === channel)?.label ?? 'мессенджер'}. Откройте нашего бота, нажмите <b className="text-fg">Старт</b> и поделитесь номером — бот сразу пришлёт код для входа.
+                  </p>
+                  <a
+                    href={botUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 font-medium text-accent-fg transition-colors hover:bg-accent-hover"
+                  >
+                    <Send className="size-5" /> Открыть {MESSENGERS.find((m) => m.id === channel)?.label ?? 'бота'} и получить код
+                  </a>
+                  <p className="text-xs text-muted">Получили код в чате с ботом? Введите его ниже.</p>
+                </div>
+              ) : (
+                <p className="text-sm text-muted">
+                  Код отправлен в {MESSENGERS.find((m) => m.id === (sentTo === 'max' ? 'MAX' : 'TELEGRAM'))?.label ?? 'Telegram'} для номера{' '}
+                  <span className="whitespace-nowrap text-fg">{phone}</span>. Введите его ниже.
+                </p>
+              )}
               <CodeInput
                 value={code}
                 error={!!error}
@@ -233,9 +255,9 @@ export default function Auth() {
                   if (v.length === 6) verify(v)
                 }}
               />
-              {devCode && (
+              {DEMO && devCode && (
                 <p className="rounded-xl border border-dashed border-amber-500/40 bg-amber-500/10 px-3 py-2 text-xs text-amber-500">
-                  Режим разработки: код <b className="font-mono text-sm">{devCode}</b>
+                  Демо-режим: код <b className="font-mono text-sm">{devCode}</b>
                 </p>
               )}
               {error && <p className="text-sm text-rose-500" role="alert">{error}</p>}
