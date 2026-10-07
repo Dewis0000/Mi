@@ -54,7 +54,49 @@ function cfg(string $key, $default = null) {
     global $CONFIG;
     return $CONFIG[$key] ?? $default;
 }
-function data_all(): array { global $DATA; return $DATA; }
+function data_all(): array {
+    global $DATA;
+    static $merged = null;
+    if ($merged !== null) return $merged;
+    $merged = $DATA;
+    // накладываем сохранённые в админке правки (kv_store: ключ data_overrides)
+    try {
+        $st = db()->prepare('SELECT v FROM kv_store WHERE k = ?');
+        $st->execute(['data_overrides']);
+        $raw = $st->fetchColumn();
+        $over = $raw ? json_decode((string)$raw, true) : null;
+        if (is_array($over)) {
+            foreach (['site', 'contacts', 'booking', 'loyalty', 'recordings'] as $k) {
+                if (isset($over[$k]) && is_array($over[$k]) && isset($merged[$k]) && is_array($merged[$k])) {
+                    $merged[$k] = array_merge($merged[$k], $over[$k]);
+                }
+            }
+            if (isset($over['roles']) && is_array($over['roles'])) {
+                foreach ($over['roles'] as $rk => $perms) {
+                    // владельца не трогаем (у него всегда '*')
+                    if ($rk !== 'owner' && isset($merged['roles'][$rk]) && ($merged['roles'][$rk]['permissions'] ?? null) !== '*' && is_array($perms)) {
+                        $merged['roles'][$rk]['permissions'] = array_values($perms);
+                    }
+                }
+            }
+        }
+    } catch (Throwable $e) {
+        // БД ещё не готова — работаем на статичных данных
+    }
+    return $merged;
+}
+
+/** Сохранить правку раздела данных в kv_store (мержится в data_all на следующих запросах). */
+function data_save_override(string $section, $value): void {
+    $st = db()->prepare('SELECT v FROM kv_store WHERE k = ?');
+    $st->execute(['data_overrides']);
+    $raw = $st->fetchColumn();
+    $over = $raw ? json_decode((string)$raw, true) : [];
+    if (!is_array($over)) $over = [];
+    $over[$section] = $value;
+    db()->prepare('REPLACE INTO kv_store (k, v) VALUES (?, ?)')
+        ->execute(['data_overrides', json_encode($over, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)]);
+}
 
 // ------------------------------------------------------------------ ответы
 header('Content-Type: application/json; charset=utf-8');
@@ -294,6 +336,26 @@ function user_perms(?array $u): array {
 }
 function all_perms(): array {
     return ['dashboard.view','bookings.view','bookings.edit','users.view','users.edit','points.edit','quests.edit','content.edit','recordings.manage','reports.view','payments.view','promo.edit','settings.edit','logs.view','roles.manage'];
+}
+/** Человеческие подписи прав — для раздела «Роли» в админке. */
+function perm_labels(): array {
+    return [
+        'dashboard.view'    => 'Дашборд',
+        'bookings.view'     => 'Просмотр заявок',
+        'bookings.edit'     => 'Редактирование заявок',
+        'users.view'        => 'Просмотр пользователей',
+        'users.edit'        => 'Работа с пользователями',
+        'points.edit'       => 'Корректировка баллов',
+        'quests.edit'       => 'Управление квестами',
+        'content.edit'      => 'Тексты и контакты',
+        'recordings.manage' => 'Видеозаписи',
+        'reports.view'      => 'Отчётность',
+        'payments.view'     => 'Платежи',
+        'promo.edit'        => 'Промокоды и сертификаты',
+        'settings.edit'     => 'Настройки записи и лояльности',
+        'logs.view'         => 'Журнал действий',
+        'roles.manage'      => 'Управление ролями',
+    ];
 }
 function can(?array $u, string $perm): bool { return in_array($perm, user_perms($u), true); }
 

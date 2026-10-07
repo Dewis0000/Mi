@@ -306,12 +306,12 @@ export function Roles() {
   })
   if (q.error) return <ErrorBox error={q.error} />
   if (!q.data) return <Skeleton className="h-96" />
-  const perms = Object.entries(q.data.permissions)
+  const perms = Object.entries(q.data.permissions ?? {})
   return (
     <div className="space-y-6">
       <PageHeader title="Роли" text="Роли и пометки о них видит только главный администратор. Назначить роль — в карточке пользователя." />
       <div className="grid gap-4 xl:grid-cols-2">
-        {q.data.roles.map((r) => {
+        {(q.data.roles ?? []).map((r) => {
           const current = edits[r.key] ?? r.permissions
           const locked = r.key === 'owner'
           return (
@@ -319,7 +319,7 @@ export function Roles() {
               <div className="mb-3 flex items-start justify-between gap-3">
                 <div>
                   <h3 className="font-semibold">{r.name}</h3>
-                  <p className="text-xs text-muted">{r.users.length ? r.users.map((u) => u.name ?? u.phone).join(', ') : 'Нет сотрудников'}</p>
+                  <p className="text-xs text-muted">{(r.users ?? []).length ? (r.users ?? []).map((u) => u.name ?? u.phone).join(', ') : 'Нет сотрудников'}</p>
                 </div>
                 {!locked && edits[r.key] && (
                   <Button size="sm" loading={save.isPending} onClick={async () => (await confirm({ title: `Изменить права роли «${r.name}»?` })) && save.mutate({ key: r.key, permissions: current })}>
@@ -397,7 +397,7 @@ export function Logs() {
               <li key={l.id}>
                 <button className="flex w-full flex-wrap items-center gap-x-4 gap-y-1 p-3 text-left hover:bg-surface-2" onClick={() => setOpen(l)}>
                   <span className="w-36 shrink-0 tabular-nums text-muted">{fmtDateTime(l.createdAt)}</span>
-                  <span className="w-40 shrink-0 font-medium">{l.admin.name ?? l.admin.phone}</span>
+                  <span className="w-40 shrink-0 font-medium">{l.admin?.name ?? l.admin?.phone ?? '—'}</span>
                   <span className="flex-1">{ACTION_LABEL[l.action] ?? l.action}</span>
                   <span className="text-xs text-muted">{l.entity}{l.entityId && ` · ${l.entityId.slice(-6)}`}</span>
                 </button>

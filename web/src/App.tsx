@@ -1,5 +1,6 @@
 import { Suspense, lazy, useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { Spinner } from './components/ui'
@@ -54,6 +55,7 @@ const Fallback = () => (
 )
 
 export default function App() {
+  const { pathname } = useLocation()
   return (
     <div className="flex min-h-screen flex-col">
       <a href="#main" className="sr-only z-[300] rounded-lg bg-accent px-4 py-2 text-accent-fg focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
@@ -62,6 +64,8 @@ export default function App() {
       <ScrollManager />
       <Header />
       <main id="main" className="flex-1">
+        {/* resetKey по пути: ошибка одной страницы не блокирует переход на другие */}
+        <ErrorBoundary resetKey={pathname}>
         <Suspense fallback={<Fallback />}>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -91,6 +95,7 @@ export default function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
+        </ErrorBoundary>
       </main>
       <Footer />
     </div>

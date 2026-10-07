@@ -88,7 +88,7 @@ export default function Reports() {
               <Tile label="Конверсия" value={`${r.conversion}%`} hint="Заявка → состоявшаяся игра" />
               <Tile label="Неявки" value={r.noShows} />
               <Tile label="Отмены" value={r.cancelled} />
-              <Tile label="Источники заявок" small value={r.bySource.filter((s) => s.count).map((s) => `${s.source}: ${s.count}`).join(' · ') || '—'} />
+              <Tile label="Источники заявок" small value={(r.bySource ?? []).filter((s) => s.count).map((s) => `${s.source}: ${s.count}`).join(' · ') || '—'} />
             </div>
           </div>
 
@@ -98,7 +98,7 @@ export default function Reports() {
             <ColumnChart
               ariaLabel="Выручка по дням"
               format={rub}
-              data={r.byDay.map((d) => ({ key: d.date, label: fmtDate(d.date, { day: 'numeric', month: 'short' }), value: d.revenue }))}
+              data={(r.byDay ?? []).map((d) => ({ key: d.date, label: fmtDate(d.date, { day: 'numeric', month: 'short' }), value: d.revenue }))}
             />
             <details className="mt-4 text-sm">
               <summary className="cursor-pointer text-muted hover:text-fg">Показать таблицей</summary>
@@ -108,7 +108,7 @@ export default function Reports() {
                     <tr><th className="p-2 font-medium">Дата</th><th className="p-2 text-right font-medium">Заявок</th><th className="p-2 text-right font-medium">Выручка</th></tr>
                   </thead>
                   <tbody className="divide-y divide-line">
-                    {r.byDay.map((d) => (
+                    {(r.byDay ?? []).map((d) => (
                       <tr key={d.date}><td className="p-2">{fmtDate(d.date, { day: 'numeric', month: 'long', weekday: 'short' })}</td><td className="p-2 text-right tabular-nums">{d.bookings}</td><td className="p-2 text-right tabular-nums">{rub(d.revenue)}</td></tr>
                     ))}
                   </tbody>
@@ -131,7 +131,7 @@ export default function Reports() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-line">
-                  {r.byQuest.map((qq) => (
+                  {(r.byQuest ?? []).map((qq) => (
                     <tr key={qq.questId}>
                       <td className="p-3">{qq.title}</td>
                       <td className="p-3">

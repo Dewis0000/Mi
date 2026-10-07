@@ -460,6 +460,98 @@ function all_main_bookings(): array {
     return array_values(array_filter($rows, fn($r) => !is_second($r)));
 }
 
+/** Единый расчёт отчётности за период [fromKey, toKey] (ключи дат площадки). */
+function report_data(string $fromKey, string $toKey): array {
+    $from = day_start($fromKey);
+    $to = day_start(shift_key($toKey, 1));
+    $all = db()->query('SELECT * FROM bookings')->fetchAll();
+    $ref = [];
+    foreach ($all as $r) if (!empty($r['linked_booking_id'])) $ref[$r['linked_booking_id']] = true;
+    $isSecond = fn($r) => isset($ref[$r['id']]);
+    $inRange = array_values(array_filter($all, fn($r) => ts_of($r['start_at']) >= $from && ts_of($r['start_at']) < $to));
+    $main = array_values(array_filter($inRange, fn($r) => !$isSecond($r)));
+    $done = array_values(array_filter($main, fn($r) => $r['status'] === 'COMPLETED'));
+    $revenue = (int)array_sum(array_map(fn($r) => (int)$r['final_price'], $done));
+    $upcoming = count(array_filter($main, fn($r) => in_array($r['status'], ACTIVE_STATUSES, true)));
+    $completedN = count($done);
+
+    $dayKeys = [];
+    for ($k = $fromKey; $k <= $toKey && count($dayKeys) < 400; $k = shift_key($k, 1)) $dayKeys[] = $k;
+    $byDay = array_map(function ($date) use ($main) {
+        $items = array_filter($main, fn($r) => venue_date_key(ts_of($r['start_at'])) === $date);
+        return ['date' => $date, 'bookings' => count($items),
+                'revenue' => (int)array_sum(array_map(fn($r) => $r['status'] === 'COMPLETED' ? (int)$r['final_price'] : 0, $items))];
+    }, $dayKeys);
+
+    $srcDefs = [['WEB', 'Сайт'], ['ADMIN', 'Админ'], ['PHONE', 'Телефон'], ['WALK_IN', 'Без записи']];
+    $bySource = array_map(fn($p) => ['source' => $p[1], 'count' => count(array_filter($main, fn($r) => ($r['source'] ?? 'WEB') === $p[0]))], $srcDefs);
+
+    $byQuest = array_map(function ($quest) use ($inRange, $isSecond, $dayKeys) {
+        $totalSlots = 0;
+        foreach ($dayKeys as $d) $totalSlots += count(build_grid($quest, $d));
+        $qb = array_filter($inRange, fn($r) => $r['quest_id'] === $quest['id'] && in_array($r['status'], ['NEW', 'CONFIRMED', 'COMPLETED'], true));
+        $qDone = array_filter($qb, fn($r) => $r['status'] === 'COMPLETED');
+        return [
+            'questId' => $quest['id'], 'title' => $quest['title'],
+            'sessions' => count($qb), 'totalSlots' => $totalSlots,
+            'load' => $totalSlots ? (int)round(count($qb) / $totalSlots * 100) : 0,
+            'revenue' => (int)array_sum(array_map(fn($r) => (int)$r['final_price'], $qDone)),
+            'players' => (int)array_sum(array_map(fn($r) => !$isSecond($r) ? (int)$r['players_count'] : 0, $qDone)),
+        ];
+    }, quests_all());
+
+    return [
+        'revenue' => $revenue, 'recordingsRevenue' => 0, 'prepayments' => 0,
+        'bookings' => count($main), 'completed' => $completedN,
+        'cancelled' => count(array_filter($main, fn($r) => $r['status'] === 'CANCELLED')),
+        'noShows' => count(array_filter($main, fn($r) => $r['status'] === 'NO_SHOW')),
+        'upcoming' => $upcoming,
+        'avgCheck' => $completedN ? (int)round($revenue / $completedN) : 0,
+        'conversion' => (count($main) - $upcoming) ? (int)round($completedN / (count($main) - $upcoming) * 100) : 0,
+        'bySource' => $bySource, 'byQuest' => array_values($byQuest), 'byDay' => $byDay,
+    ];
+}
+
+/** Минимальный валидный .xlsx из массива строк (каждая строка — список ячеек). */
+function xlsx_build(array $rows): string {
+    $colLetter = function (int $n): string {
+        $s = '';
+        for ($n = $n + 1; $n > 0; $n = intdiv($n - 1, 26)) $s = chr(65 + ($n - 1) % 26) . $s;
+        return $s;
+    };
+    $esc = fn($v) => htmlspecialchars((string)$v, ENT_QUOTES | ENT_XML1, 'UTF-8');
+    $sheetRows = '';
+    foreach ($rows as $ri => $row) {
+        $rn = $ri + 1; $cells = '';
+        foreach (array_values($row) as $ci => $val) {
+            $ref = $colLetter($ci) . $rn;
+            if (is_int($val) || is_float($val) || (is_string($val) && $val !== '' && preg_match('/^-?\d+$/', $val))) {
+                $cells .= '<c r="' . $ref . '"><v>' . $esc($val) . '</v></c>';
+            } else {
+                $cells .= '<c r="' . $ref . '" t="inlineStr"><is><t xml:space="preserve">' . $esc($val) . '</t></is></c>';
+            }
+        }
+        $sheetRows .= '<row r="' . $rn . '">' . $cells . '</row>';
+    }
+    $sheet = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>' . $sheetRows . '</sheetData></worksheet>';
+    $contentTypes = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>';
+    $rels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>';
+    $workbook = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Отчёт" sheetId="1" r:id="rId1"/></sheets></workbook>';
+    $wbRels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>';
+    $tmp = tempnam(sys_get_temp_dir(), 'xlsx');
+    $zip = new ZipArchive();
+    $zip->open($tmp, ZipArchive::OVERWRITE);
+    $zip->addFromString('[Content_Types].xml', $contentTypes);
+    $zip->addFromString('_rels/.rels', $rels);
+    $zip->addFromString('xl/workbook.xml', $workbook);
+    $zip->addFromString('xl/_rels/workbook.xml.rels', $wbRels);
+    $zip->addFromString('xl/worksheets/sheet1.xml', $sheet);
+    $zip->close();
+    $bytes = (string)file_get_contents($tmp);
+    @unlink($tmp);
+    return $bytes;
+}
+
 if ($R('GET', '/admin/dashboard') !== null) {
     require_perm('dashboard.view');
     $now = time(); $today = venue_date_key($now);
@@ -669,29 +761,94 @@ if (($p = $R('POST', '/admin/users/:id/points')) !== null) {
 
 if ($R('GET', '/admin/roles') !== null) {
     require_perm('roles.manage');
-    $out = [];
+    $owners = (array)cfg('owner_phones', []);
+    $users = db()->query('SELECT id, name, phone, role_key FROM users')->fetchAll();
+    $roles = [];
     foreach (data_all()['roles'] as $key => $r) {
-        $perms = $r['permissions'] === '*' ? all_perms() : $r['permissions'];
-        $out[] = ['key' => $key, 'name' => $r['name'], 'permissions' => $perms];
+        $perms = ($r['permissions'] ?? null) === '*' ? all_perms() : array_values((array)($r['permissions'] ?? []));
+        $members = array_values(array_filter($users, function ($u) use ($key, $owners) {
+            $eff = in_array($u['phone'] ?? '', $owners, true) ? 'owner' : ($u['role_key'] ?: null);
+            return $eff === $key;
+        }));
+        $roles[] = [
+            'key' => $key, 'name' => $r['name'], 'permissions' => $perms,
+            'users' => array_map(fn($u) => ['id' => $u['id'], 'name' => $u['name'], 'phone' => $u['phone']], $members),
+        ];
     }
-    out($out);
+    out(['roles' => $roles, 'permissions' => perm_labels()]);
+}
+
+if (($p = $R('PUT', '/admin/roles/:key')) !== null) {
+    $me = require_perm('roles.manage');
+    $key = $p['key'];
+    if ($key === 'owner') fail(403, 'Права главного администратора не редактируются', 'FORBIDDEN');
+    if (!array_key_exists($key, data_all()['roles'])) not_found('Роль не найдена');
+    $valid = all_perms();
+    $perms = array_values(array_filter((array)(body()['permissions'] ?? []), fn($x) => in_array($x, $valid, true) && $x !== 'roles.manage'));
+    $st = db()->prepare('SELECT v FROM kv_store WHERE k = ?'); $st->execute(['data_overrides']);
+    $over = json_decode((string)($st->fetchColumn() ?: 'null'), true);
+    $rolesOver = (is_array($over) && is_array($over['roles'] ?? null)) ? $over['roles'] : [];
+    $rolesOver[$key] = $perms;
+    data_save_override('roles', $rolesOver);
+    admin_log($me['id'], 'role.update', 'Role', $key, ['permissions' => $perms]);
+    out(['key' => $key, 'name' => data_all()['roles'][$key]['name'], 'permissions' => $perms]);
 }
 
 if ($R('GET', '/admin/settings') !== null) {
-    require_perm('settings.edit');
+    require_perm('dashboard.view');
     $d = data_all();
-    out(['booking' => $d['booking'], 'loyalty' => $d['loyalty'], 'recordings' => $d['recordings'], 'extras' => $d['extras']]);
+    out([
+        'site' => $d['site'], 'contacts' => $d['contacts'],
+        'booking' => $d['booking'], 'loyalty' => $d['loyalty'],
+        'recordings' => $d['recordings'], 'extras' => $d['extras'],
+    ]);
+}
+
+if (($p = $R('PUT', '/admin/settings/:key')) !== null) {
+    $me = require_user();
+    $key = $p['key'];
+    if (!in_array($key, ['site', 'contacts', 'booking', 'loyalty', 'recordings'], true)) not_found('Раздел не найден');
+    $need = ($key === 'site' || $key === 'contacts') ? 'content.edit' : 'settings.edit';
+    if (!can($me, $need)) forbidden();
+    $current = is_array(data_all()[$key] ?? null) ? data_all()[$key] : [];
+    $patch = body();
+    $merged = array_merge($current, $patch);
+    data_save_override($key, $merged);
+    admin_log($me['id'], 'settings.update', 'Setting', $key, $patch);
+    out($merged);
 }
 
 if ($R('GET', '/admin/quests') !== null) {
     require_perm('quests.edit');
-    out(array_map(fn($q) => public_quest($q) + ['roomNumber' => $q['roomNumber'], 'isActive' => $q['isActive'], 'sortOrder' => $q['sortOrder']], quests_all()));
+    out(array_map(function ($q) {
+        $sch = $q['_schedule'] ?? ['from' => '10:00', 'to' => '22:00', 'break' => 20];
+        $schedules = array_map(fn($wd) => [
+            'weekday' => $wd, 'timeFrom' => $sch['from'], 'timeTo' => $sch['to'], 'breakMin' => (int)$sch['break'],
+        ], [0, 1, 2, 3, 4, 5, 6]);
+        return public_quest($q) + [
+            'roomNumber' => $q['roomNumber'], 'isActive' => $q['isActive'], 'sortOrder' => $q['sortOrder'],
+            'schedules' => $schedules,
+        ];
+    }, quests_all()));
 }
 
 if ($R('GET', '/admin/logs') !== null) {
     require_perm('logs.view');
-    $rows = db()->query('SELECT * FROM admin_logs ORDER BY created_at DESC LIMIT 200')->fetchAll();
-    out(['items' => array_map(fn($l) => ['id' => $l['id'], 'adminId' => $l['admin_id'], 'action' => $l['action'], 'entity' => $l['entity'], 'entityId' => $l['entity_id'], 'details' => json_decode($l['details'] ?: 'null', true), 'createdAt' => $l['created_at']], $rows), 'total' => count($rows)]);
+    $page = max(1, i(q('page'), 1)); $pageSize = 50; $offset = ($page - 1) * $pageSize;
+    $total = (int)db()->query('SELECT COUNT(*) FROM admin_logs')->fetchColumn();
+    $rows = db()->query("SELECT * FROM admin_logs ORDER BY created_at DESC LIMIT $pageSize OFFSET $offset")->fetchAll();
+    $umap = [];
+    foreach (db()->query('SELECT id, name, phone FROM users')->fetchAll() as $u) $umap[$u['id']] = $u;
+    $items = array_map(function ($l) use ($umap) {
+        $a = $umap[$l['admin_id']] ?? null;
+        return [
+            'id' => $l['id'], 'adminId' => $l['admin_id'], 'action' => $l['action'],
+            'entity' => $l['entity'], 'entityId' => $l['entity_id'],
+            'details' => json_decode($l['details'] ?: 'null', true), 'createdAt' => $l['created_at'],
+            'admin' => ['name' => $a['name'] ?? null, 'phone' => $a['phone'] ?? ''],
+        ];
+    }, $rows);
+    out(['items' => $items, 'total' => $total, 'page' => $page, 'pageSize' => $pageSize]);
 }
 
 if ($R('GET', '/admin/payments') !== null) { require_perm('payments.view'); out(['items' => [], 'total' => 0, 'page' => 1, 'pageSize' => 30]); }
@@ -700,11 +857,56 @@ if ($R('GET', '/admin/recordings') !== null) { require_perm('recordings.manage')
 
 if ($R('GET', '/admin/reports') !== null) {
     require_perm('reports.view');
-    $from = day_start(s(q('from') ?: venue_date_key(time())));
-    $to = day_start(shift_key(s(q('to') ?: venue_date_key(time())), 1));
-    $rows = array_filter(all_main_bookings(), fn($r) => ts_of($r['start_at']) >= $from && ts_of($r['start_at']) < $to);
-    $revenue = array_sum(array_map(fn($r) => $r['status'] === 'COMPLETED' ? (int)$r['final_price'] : 0, $rows));
-    out(['revenue' => $revenue, 'bookings' => count($rows), 'byStatus' => [], 'byQuest' => [], 'series' => []]);
+    $today = venue_date_key(time());
+    out(report_data(s(q('from')) ?: $today, s(q('to')) ?: $today));
+}
+
+if ($R('GET', '/admin/reports/export') !== null) {
+    require_perm('reports.view');
+    $today = venue_date_key(time());
+    $fromKey = s(q('from')) ?: $today; $toKey = s(q('to')) ?: $today;
+    $rep = report_data($fromKey, $toKey);
+    $rows = [
+        ['Показатель', 'Значение'],
+        ['Период', $fromKey . ' — ' . $toKey],
+        ['Выручка, руб', $rep['revenue']],
+        ['Средний чек, руб', $rep['avgCheck']],
+        ['Заявок', $rep['bookings']],
+        ['Завершено', $rep['completed']],
+        ['Отмены', $rep['cancelled']],
+        ['Неявки', $rep['noShows']],
+        ['Впереди', $rep['upcoming']],
+        ['Конверсия, %', $rep['conversion']],
+        [],
+        ['Выручка по дням'],
+        ['Дата', 'Заявок', 'Выручка, руб'],
+    ];
+    foreach ($rep['byDay'] as $d) $rows[] = [$d['date'], $d['bookings'], $d['revenue']];
+    $rows[] = [];
+    $rows[] = ['Загрузка по квестам'];
+    $rows[] = ['Квест', 'Сеансов', 'Слотов', 'Загрузка, %', 'Игроков', 'Выручка, руб'];
+    foreach ($rep['byQuest'] as $qq) $rows[] = [$qq['title'], $qq['sessions'], $qq['totalSlots'], $qq['load'], $qq['players'], $qq['revenue']];
+
+    $format = s(q('format')) === 'csv' ? 'csv' : 'xlsx';
+    header_remove('Content-Type');
+    header('Cache-Control: no-store');
+    if ($format === 'xlsx' && class_exists('ZipArchive')) {
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        echo xlsx_build($rows);
+        exit;
+    }
+    header('Content-Type: text/csv; charset=utf-8');
+    $csv = "\xEF\xBB\xBF"; // BOM — чтобы Excel правильно распознал кириллицу
+    foreach ($rows as $r) {
+        $cells = array_map(function ($v) {
+            $v = (string)$v;
+            if (preg_match('/[";\n\r]/', $v)) $v = '"' . str_replace('"', '""', $v) . '"';
+            return $v;
+        }, $r);
+        $csv .= implode(';', $cells) . "\r\n";
+    }
+    echo $csv;
+    exit;
 }
 
 /* ============================================================ */
