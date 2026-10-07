@@ -21,6 +21,7 @@ require $LIB . '/bootstrap.php';
 require $LIB . '/notify.php';
 require $LIB . '/auth.php';
 require $LIB . '/slots.php';
+require $LIB . '/bot.php';
 
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $uri    = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
@@ -98,90 +99,22 @@ if (($p = $R('GET', '/quests/:id/slots')) !== null) {
     out(get_slots($p['id'], (string)q('date'), ['userId' => $u['id'] ?? null]));
 }
 
-/* ============================================================ Telegram-бот (webhook) */
+/* ============================================================ боты (webhook; на reg.ru приём идёт через cron-опрос, см. poll.php) */
 
 if ($R('POST', '/bot/telegram') !== null) {
-    // проверка секрета (устанавливается вместе с webhook'ом)
     $expected = hash_hmac('sha256', 'tg-webhook', (string)cfg('app_secret'));
     $got = $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] ?? '';
-    if (!hash_equals($expected, $got)) out(['ok' => true]); // чужой запрос — молча игнорируем
-
+    if (!hash_equals($expected, $got)) out(['ok' => true]);
     $upd = body();
-    $msg = $upd['message'] ?? $upd['edited_message'] ?? null;
-    if (!$msg) out(['ok' => true]);
-    $chatId = (string)($msg['chat']['id'] ?? '');
-
-    // человек поделился контактом
-    if (isset($msg['contact'])) {
-        $c = $msg['contact'];
-        $ownContact = isset($c['user_id']) && isset($msg['from']['id']) && (string)$c['user_id'] === (string)$msg['from']['id'];
-        $phone = $ownContact ? normalize_phone($c['phone_number'] ?? null) : null;
-        if ($phone) {
-            link_messenger('TELEGRAM', $phone, $chatId, $msg['from']['username'] ?? null);
-            $isStaff = in_array($phone, (array)cfg('owner_phones', []), true) || (function () use ($phone) {
-                $u = find_user_by_phone($phone);
-                return $u && !empty(user_perms($u));
-            })();
-            $tail = $isStaff ? "\n\nСюда также будут приходить уведомления о новых записях." : '';
-            $code = mint_code($phone, 'auth');
-            tg_send($chatId, "✅ Готово! Номер <b>$phone</b> привязан.\n\nВаш код для входа на сайт: <b>$code</b>\nВведите его на странице входа (действует 5 минут).$tail", ['reply_markup' => ['remove_keyboard' => true]]);
-        } else {
-            tg_send($chatId, 'Пожалуйста, поделитесь своим собственным номером — кнопкой ниже.');
-        }
-        out(['ok' => true]);
-    }
-
-    // /start и любое другое сообщение → предложить поделиться номером
-    tg_send(
-        $chatId,
-        'Здравствуйте! Это бот <b>Neru-Квест</b> 🧛\n\nНажмите кнопку ниже и поделитесь номером телефона — на него приходят коды для входа на сайт и напоминания о бронях.',
-        ['reply_markup' => ['keyboard' => [[['text' => '📱 Поделиться номером', 'request_contact' => true]]], 'resize_keyboard' => true, 'one_time_keyboard' => true]],
-    );
+    $msg = $upd['message'] ?? ($upd['edited_message'] ?? null);
+    if (is_array($msg)) bot_tg_handle($msg);
     out(['ok' => true]);
 }
-
-/* ============================================================ MAX-бот (webhook) */
 
 if ($R('POST', '/bot/max') !== null) {
     $expected = hash_hmac('sha256', 'max-webhook', (string)cfg('app_secret'));
     if (!hash_equals($expected, (string)($_GET['s'] ?? ''))) out(['ok' => true]);
-
-    $upd = body();
-    $type = $upd['update_type'] ?? '';
-    $msg = $upd['message'] ?? [];
-    $chatId = (string)($msg['recipient']['chat_id'] ?? ($upd['chat_id'] ?? ''));
-    $welcome = 'Здравствуйте! Это бот <b>Neru-Квест</b>. Нажмите «Поделиться номером» или просто отправьте свой номер телефона сообщением — на него будут приходить коды для входа и напоминания о бронях.';
-
-    if ($type === 'bot_started') {
-        if ($chatId) max_api_send($chatId, $welcome, max_contact_keyboard());
-        out(['ok' => true]);
-    }
-
-    if ($type === 'message_created') {
-        // телефон: из прикреплённого контакта или из текста сообщения
-        $phone = null;
-        foreach (($msg['body']['attachments'] ?? []) as $att) {
-            if (($att['type'] ?? '') === 'contact') {
-                $pl = $att['payload'] ?? [];
-                $phone = normalize_phone(extract_phone($pl['phone'] ?? ($pl['vcfInfo'] ?? ($pl['vcfPhone'] ?? ''))));
-            }
-        }
-        if (!$phone) $phone = normalize_phone(extract_phone($msg['body']['text'] ?? ''));
-
-        if ($phone && $chatId) {
-            link_messenger('MAX', $phone, $chatId, $msg['sender']['username'] ?? null);
-            $isStaff = in_array($phone, (array)cfg('owner_phones', []), true) || (function () use ($phone) {
-                $u = find_user_by_phone($phone);
-                return $u && !empty(user_perms($u));
-            })();
-            $tail = $isStaff ? "\n\nСюда также будут приходить уведомления о новых записях." : '';
-            $code = mint_code($phone, 'auth');
-            max_api_send($chatId, "✅ Готово! Номер $phone привязан.\n\nВаш код для входа на сайт: $code\nВведите его на странице входа (действует 5 минут).$tail");
-        } elseif ($chatId) {
-            max_api_send($chatId, $welcome, max_contact_keyboard());
-        }
-        out(['ok' => true]);
-    }
+    bot_max_handle(body());
     out(['ok' => true]);
 }
 

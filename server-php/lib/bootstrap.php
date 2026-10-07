@@ -236,6 +236,11 @@ function ensure_schema(PDO $pdo, string $driver): void {
             details TEXT,
             created_at VARCHAR(32) NOT NULL
         )",
+        // Служебное хранилище (offset/marker опроса ботов и т.п.)
+        'kv_store' => "(
+            k VARCHAR(64) PRIMARY KEY,
+            v TEXT
+        )",
         // Связки «номер телефона ↔ чат мессенджера» (пользователь поделился номером боту)
         'messenger_links' => "(
             id VARCHAR(40) PRIMARY KEY,
