@@ -20,6 +20,7 @@ import {
   Users,
 } from 'lucide-react'
 import { CodeInput } from '../components/CodeInput'
+import { DateInput } from '../components/DateInput'
 import { PhoneInput } from '../components/PhoneInput'
 import { SlotPicker } from '../components/SlotPicker'
 import { Badge, Button, EmptyState, ErrorBox, Field, Modal, Skeleton, Switch, Tabs, buttonClass, useUi } from '../components/ui'
@@ -492,7 +493,7 @@ function SettingsTab() {
         <h3 className="font-display text-lg uppercase">Профиль</h3>
         <Field label="Имя">{(id) => <input id={id} className="input" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required minLength={2} />}</Field>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Дата рождения">{(id) => <input id={id} type="date" className="input" value={form.birthDate} onChange={(e) => setForm({ ...form, birthDate: e.target.value })} />}</Field>
+          <Field label="Дата рождения" hint="ДД.ММ.ГГГГ">{(id) => <DateInput id={id} value={form.birthDate} onChange={(iso) => setForm({ ...form, birthDate: iso })} />}</Field>
           <Field label="E-mail">{(id) => <input id={id} type="email" className="input" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />}</Field>
         </div>
         <Field label="Телефон">

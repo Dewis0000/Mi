@@ -34,7 +34,6 @@ function extractPhone(s) {
   return m ? m[1] : null;
 }
 const code6 = () => String(Math.floor(Math.random() * 1000000)).padStart(6, '0');
-const SITE_URL = 'https://nery-quest.ru';
 
 async function tgSend(env, chatId, text, extra = {}) {
   if (!env.TG_TOKEN) return false;
@@ -59,6 +58,8 @@ async function maxSend(env, chatId, text, attachments) {
 const maxKeyboard = () => [{ type: 'inline_keyboard', payload: { buttons: [[{ type: 'request_contact', text: '📱 Поделиться номером' }]] } }];
 // Инлайн-кнопка Telegram «скопировать код» (copy_text, Bot API 7.11+)
 const tgCopyKb = (code) => ({ inline_keyboard: [[{ text: '📋 Скопировать код', copy_text: { text: code } }]] });
+// Кнопка «скопировать код» для MAX (тип clipboard: payload — что копируется)
+const maxCopyKb = (code) => [{ type: 'inline_keyboard', payload: { buttons: [[{ type: 'clipboard', text: '📋 Скопировать код', payload: code }]] } }];
 
 function isStaff(env, phone) {
   return (env.OWNER_PHONES || '').split(',').map((s) => s.trim()).filter(Boolean).includes(phone);
@@ -83,13 +84,13 @@ async function tgWebhook(request, env) {
     if (phone) {
       const code = await linkAndCode(env, 'TELEGRAM', phone, chatId);
       const tail = isStaff(env, phone) ? '\n\nСюда также будут приходить уведомления о новых записях.' : '';
-      await tgSend(env, chatId, `✅ Готово! Номер <b>${phone}</b> привязан.\n\nВаш код для входа на сайт: <b>${code}</b>\nВведите его на странице входа (действует 5 минут).${tail}\n\n🌐 Сайт: ${SITE_URL}`, { reply_markup: tgCopyKb(code) });
+      await tgSend(env, chatId, `✅ Готово! Номер <b>${phone}</b> привязан.\n\nВаш код для входа на сайт: <b>${code}</b>\nВведите его на странице входа (действует 5 минут).${tail}`, { reply_markup: tgCopyKb(code) });
     } else {
       await tgSend(env, chatId, 'Пожалуйста, поделитесь своим собственным номером — кнопкой ниже.');
     }
     return json({ ok: true });
   }
-  await tgSend(env, chatId, `Здравствуйте! Это бот <b>Neru-Квест</b> 🧛\n\nНажмите кнопку ниже и поделитесь номером телефона — на него приходят коды для входа на сайт и напоминания о бронях.\n\n🌐 Сайт: ${SITE_URL}`, {
+  await tgSend(env, chatId, `Здравствуйте! Это бот <b>Neru-Квест</b> 🧛\n\nНажмите кнопку ниже и поделитесь номером телефона — на него приходят коды для входа на сайт и напоминания о бронях.`, {
     reply_markup: { keyboard: [[{ text: '📱 Поделиться номером', request_contact: true }]], resize_keyboard: true, one_time_keyboard: true },
   });
   return json({ ok: true });
@@ -101,7 +102,7 @@ async function maxWebhook(request, url, env) {
   const type = upd.update_type;
   const msg = upd.message || {};
   const chatId = (msg.recipient && msg.recipient.chat_id) ?? upd.chat_id ?? (msg.sender && msg.sender.user_id) ?? null;
-  const welcome = `Здравствуйте! Это бот <b>Neru-Квест</b>. Нажмите «Поделиться номером» или просто отправьте свой номер телефона сообщением — на него будут приходить коды для входа и напоминания о бронях.\n\n🌐 Сайт: ${SITE_URL}`;
+  const welcome = `Здравствуйте! Это бот <b>Neru-Квест</b>. Нажмите «Поделиться номером» или просто отправьте свой номер телефона сообщением — на него будут приходить коды для входа и напоминания о бронях.`;
   if (type === 'bot_started') {
     if (chatId != null) await maxSend(env, chatId, welcome, maxKeyboard());
     return json({ ok: true });
@@ -122,7 +123,7 @@ async function maxWebhook(request, url, env) {
   if (phone && chatId != null) {
     const code = await linkAndCode(env, 'MAX', phone, chatId);
     const tail = isStaff(env, phone) ? '\n\nСюда также будут приходить уведомления о новых записях.' : '';
-    await maxSend(env, chatId, `✅ Готово! Номер ${phone} привязан.\n\nВаш код для входа на сайт: ${code}\nВведите его на странице входа (действует 5 минут).${tail}\n\n🌐 Сайт: ${SITE_URL}`);
+    await maxSend(env, chatId, `✅ Готово! Номер ${phone} привязан.\n\nВаш код для входа на сайт: ${code}\nВведите его на странице входа (действует 5 минут).${tail}`, maxCopyKb(code));
   } else if (chatId != null) {
     await maxSend(env, chatId, welcome, maxKeyboard());
   }
@@ -160,8 +161,8 @@ async function apiRequestCode(request, env) {
   const c = code6();
   await env.KV.put(`code:${phone}`, c, { expirationTtl: 300 });
   const ok = chan === 'MAX'
-    ? await maxSend(env, chatId, `Ваш код для входа на Neru-Квест: ${c}\n\n🌐 ${SITE_URL}`)
-    : await tgSend(env, chatId, `Ваш код для входа на Neru-Квест: <b>${c}</b>\n\n🌐 ${SITE_URL}`, { reply_markup: tgCopyKb(c) });
+    ? await maxSend(env, chatId, `Ваш код для входа на Neru-Квест: ${c}`, maxCopyKb(c))
+    : await tgSend(env, chatId, `Ваш код для входа на Neru-Квест: <b>${c}</b>`, { reply_markup: tgCopyKb(c) });
   return json({ delivered: ok, channel: chan === 'MAX' ? 'max' : 'telegram' });
 }
 

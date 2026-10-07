@@ -50,6 +50,29 @@ function admin_log(string $adminId, string $action, string $entity, ?string $ent
 
 $R = fn(string $m, string $p) => match_route($method, $m, $p, $path);
 
+/* ============================================================ диагностика (по секрету) */
+
+if ($R('GET', '/_diag') !== null) {
+    if (!hash_equals(hash_hmac('sha256', 'diag', (string)cfg('app_secret')), (string)q('s'))) fail(403, 'forbidden');
+    $pdo = db();
+    $info = ['php' => PHP_VERSION, 'driver' => $pdo->getAttribute(PDO::ATTR_DRIVER_NAME), 'server' => $pdo->getAttribute(PDO::ATTR_SERVER_VERSION)];
+    $tables = ['users', 'bookings', 'holds', 'sessions', 'auth_codes', 'points_log', 'admin_logs', 'messenger_links', 'kv_store'];
+    $counts = [];
+    foreach ($tables as $t) {
+        try { $counts[$t] = (int)$pdo->query("SELECT COUNT(*) FROM $t")->fetchColumn(); }
+        catch (Throwable $e) { $counts[$t] = 'ERR: ' . $e->getMessage(); }
+    }
+    $bv = 'нет броней';
+    try {
+        $r = $pdo->query('SELECT * FROM bookings ORDER BY start_at DESC LIMIT 1')->fetch();
+        if ($r) { booking_view($r, true); $bv = 'ok'; }
+    } catch (Throwable $e) { $bv = 'ERR: ' . $e->getMessage() . ' @ ' . basename($e->getFile()) . ':' . $e->getLine(); }
+    $log = '';
+    $lf = $LIB . '/error.log';
+    if (is_file($lf)) { $log = implode('', array_slice(file($lf) ?: [], -40)); }
+    out(['info' => $info, 'counts' => $counts, 'bookingView' => $bv, 'errorLog' => $log]);
+}
+
 /* ============================================================ публичные */
 
 if (($p = $R('GET', '/content')) !== null) {

@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import clsx from 'clsx'
 import { ArrowLeft, KeyRound, Send } from 'lucide-react'
 import { CodeInput } from '../components/CodeInput'
+import { DateInput } from '../components/DateInput'
 import { LogoMark } from '../components/Logo'
 import { PhoneInput } from '../components/PhoneInput'
 import { Button, Field } from '../components/ui'
@@ -301,8 +302,8 @@ export default function Auth() {
             <motion.form key="profile" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} onSubmit={saveProfile} className="space-y-5">
               <p className="text-sm text-muted">Номер подтверждён. Расскажите немного о себе.</p>
               <Field label="Имя *">{(id) => <input id={id} className="input" autoComplete="given-name" value={profile.name} onChange={(e) => setProfile({ ...profile, name: e.target.value })} autoFocus />}</Field>
-              <Field label="Дата рождения" hint="Необязательно. Пришлём подарок ко дню рождения">
-                {(id) => <input id={id} type="date" className="input" value={profile.birthDate} max={new Date().toISOString().slice(0, 10)} onChange={(e) => setProfile({ ...profile, birthDate: e.target.value })} />}
+              <Field label="Дата рождения" hint="Необязательно. Введите вручную: ДД.ММ.ГГГГ">
+                {(id) => <DateInput id={id} value={profile.birthDate} onChange={(iso) => setProfile({ ...profile, birthDate: iso })} />}
               </Field>
               <Field label="E-mail" hint="Необязательно. Для чеков и сертификатов">
                 {(id) => <input id={id} type="email" className="input" autoComplete="email" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} />}

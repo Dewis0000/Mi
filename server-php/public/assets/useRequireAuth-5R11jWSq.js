@@ -1,0 +1,1 @@
+import{dt as e,lt as t}from"./ui-Bz5K9xbF.js";import{G as n,K as r,T as i}from"./index-Cz1o8mMP.js";var a=e(t(),1);function o(){let{user:e,ready:t}=i(),o=r(),{pathname:s,search:c}=n();return(0,a.useEffect)(()=>{t&&!e&&!s.startsWith(`/auth`)&&o(`/auth?next=${encodeURIComponent(s+c)}`,{replace:!0})},[t,e,o,s,c]),{user:e,ready:t}}export{o as t};
