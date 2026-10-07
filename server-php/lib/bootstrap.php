@@ -147,7 +147,26 @@ function db(): PDO {
 
 function ensure_schema(PDO $pdo, string $driver): void {
     $suffix = $driver === 'mysql' ? ' ENGINE=InnoDB DEFAULT CHARSET=utf8mb4' : '';
-    $tables = [
+    foreach (schema_tables() as $name => $cols) {
+        $pdo->exec("CREATE TABLE IF NOT EXISTS $name $cols$suffix");
+    }
+}
+
+/** Ожидаемые имена колонок таблицы (из её DDL) — для проверки/починки схемы. */
+function schema_columns(string $cols): array {
+    $out = [];
+    foreach (explode("\n", $cols) as $line) {
+        $line = trim($line);
+        if (!preg_match('/^([a-z_]+)\b/i', $line, $m)) continue;
+        $tok = strtolower($m[1]);
+        if (in_array($tok, ['unique', 'primary', 'key', 'constraint', 'foreign', 'index'], true)) continue;
+        $out[] = $tok;
+    }
+    return $out;
+}
+
+function schema_tables(): array {
+    return [
         'users' => "(
             id VARCHAR(40) PRIMARY KEY,
             phone VARCHAR(20) NOT NULL UNIQUE,
@@ -252,9 +271,6 @@ function ensure_schema(PDO $pdo, string $driver): void {
             UNIQUE (platform, phone)
         )",
     ];
-    foreach ($tables as $name => $cols) {
-        $pdo->exec("CREATE TABLE IF NOT EXISTS $name $cols$suffix");
-    }
 }
 
 // ------------------------------------------------------------------ роли и права

@@ -73,6 +73,43 @@ if ($R('GET', '/_diag') !== null) {
     out(['info' => $info, 'counts' => $counts, 'bookingView' => $bv, 'errorLog' => $log]);
 }
 
+// Починка схемы: пересоздаёт таблицы, у которых не хватает колонок (напр. старая
+// таблица bookings из прежней БД). Таблицы с верной схемой не трогает.
+if ($R('GET', '/_fixdb') !== null) {
+    if (!hash_equals(hash_hmac('sha256', 'fixdb', (string)cfg('app_secret')), (string)q('s'))) fail(403, 'forbidden');
+    $pdo = db();
+    $driver = cfg('db', [])['driver'] ?? 'mysql';
+    $suffix = $driver === 'mysql' ? ' ENGINE=InnoDB DEFAULT CHARSET=utf8mb4' : '';
+    $res = [];
+    foreach (schema_tables() as $name => $cols) {
+        $expected = schema_columns($cols);
+        $actual = [];
+        try {
+            if ($driver === 'mysql') {
+                $st = $pdo->prepare('SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?');
+                $st->execute([$name]);
+                $actual = array_map('strtolower', array_column($st->fetchAll(), 'COLUMN_NAME'));
+            } else {
+                foreach ($pdo->query("PRAGMA table_info($name)")->fetchAll() as $c) $actual[] = strtolower($c['name']);
+            }
+        } catch (Throwable $e) {}
+        $missing = array_values(array_diff($expected, $actual));
+        if (!$actual) {
+            $pdo->exec("CREATE TABLE IF NOT EXISTS $name $cols$suffix");
+            $res[$name] = 'создана';
+        } elseif ($missing) {
+            $cnt = 0;
+            try { $cnt = (int)$pdo->query("SELECT COUNT(*) FROM `$name`")->fetchColumn(); } catch (Throwable $e) {}
+            $pdo->exec("DROP TABLE `$name`");
+            $pdo->exec("CREATE TABLE $name $cols$suffix");
+            $res[$name] = "пересоздана (было строк: $cnt; не хватало колонок: " . implode(',', $missing) . ')';
+        } else {
+            $res[$name] = 'ок';
+        }
+    }
+    out(['fixed' => $res]);
+}
+
 /* ============================================================ публичные */
 
 if (($p = $R('GET', '/content')) !== null) {
