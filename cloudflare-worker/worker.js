@@ -136,16 +136,15 @@ async function apiRequestCode(request, env) {
   const { phone: raw, channel } = await request.json().catch(() => ({}));
   const phone = normPhone(raw);
   if (!phone) return json({ error: 'bad phone' }, 400);
-  const tg = await env.KV.get(`link:TELEGRAM:${phone}`);
-  const mx = await env.KV.get(`link:MAX:${phone}`);
-
-  // выбрать канал доставки (привязанный бот)
-  const target = (channel === 'MAX' && mx) ? ['max', mx] : tg ? ['tg', tg] : mx ? ['max', mx] : null;
-  if (!target) {
-    const botUrl = channel === 'MAX'
+  // Строго уважаем выбранный канал: Telegram → только Telegram, MAX → только MAX.
+  const chan = channel === 'MAX' ? 'MAX' : 'TELEGRAM';
+  const chatId = chan === 'MAX' ? await env.KV.get(`link:MAX:${phone}`) : await env.KV.get(`link:TELEGRAM:${phone}`);
+  if (!chatId) {
+    // в выбранном мессенджере номер ещё не привязан — отправляем именно в его бота
+    const botUrl = chan === 'MAX'
       ? (env.MAX_USERNAME ? `https://max.ru/${env.MAX_USERNAME}` : null)
       : (env.TG_USERNAME ? `https://t.me/${env.TG_USERNAME}?start=auth` : null);
-    return json({ delivered: false, needsMessenger: true, botUrl, messenger: channel || 'TELEGRAM' });
+    return json({ delivered: false, needsMessenger: true, botUrl, messenger: chan });
   }
 
   // анти-флуд: не больше 5 запросов кода за 10 минут на номер
@@ -158,13 +157,12 @@ async function apiRequestCode(request, env) {
   rl.count++;
   await env.KV.put(`rl:${phone}`, JSON.stringify(rl), { expirationTtl: Math.max(60, Math.ceil((rl.resetAt - now) / 1000) + 5) });
 
-  const [kind, chatId] = target;
   const c = code6();
   await env.KV.put(`code:${phone}`, c, { expirationTtl: 300 });
-  const ok = kind === 'max'
+  const ok = chan === 'MAX'
     ? await maxSend(env, chatId, `Ваш код для входа на Neru-Квест: ${c}\n\n🌐 ${SITE_URL}`)
     : await tgSend(env, chatId, `Ваш код для входа на Neru-Квест: <b>${c}</b>\n\n🌐 ${SITE_URL}`, { reply_markup: tgCopyKb(c) });
-  return json({ delivered: ok, channel: kind === 'max' ? 'max' : 'telegram' });
+  return json({ delivered: ok, channel: chan === 'MAX' ? 'max' : 'telegram' });
 }
 
 async function apiVerifyCode(request, env) {
