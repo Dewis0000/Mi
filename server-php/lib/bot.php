@@ -128,6 +128,7 @@ function poll_max(): void {
 
 /** Один проход опроса обоих мессенджеров (с простой защитой от наложения). */
 function run_poll(): void {
+    if (bs_enabled()) return; // боты вынесены на внешний сервис — локальный опрос не нужен
     $last = (int)kv_get('poll_lock', '0');
     if (time() - $last < 50) return; // предыдущий запуск ещё идёт/только что был
     kv_set('poll_lock', (string)time());

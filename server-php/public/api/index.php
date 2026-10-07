@@ -21,6 +21,7 @@ require $LIB . '/bootstrap.php';
 require $LIB . '/notify.php';
 require $LIB . '/auth.php';
 require $LIB . '/slots.php';
+require $LIB . '/bot_service.php';
 require $LIB . '/bot.php';
 
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
@@ -130,6 +131,13 @@ if ($R('POST', '/auth/code') !== null) {
     $channel = s($b['channel'] ?? 'TELEGRAM');
     $base = ['ok' => true, 'isNewUser' => !$existing, 'hasPassword' => !empty($existing['password_hash'])];
 
+    // Внешний бот-сервис (Cloudflare): коды входа идут через него.
+    if (bs_enabled()) {
+        $r = bs_request_code($phone, $channel);
+        if ($r['delivered']) out($base + ['resendIn' => 60, 'sentTo' => $r['channel']]);
+        out($base + ['resendIn' => 0, 'needsMessenger' => true, 'botUrl' => $r['botUrl'], 'messenger' => $channel]);
+    }
+
     $tgLinked  = link_chat_for_phone('TELEGRAM', $phone) !== null;
     $maxLinked = link_chat_for_phone('MAX', $phone) !== null;
     $canDeliver = $tgLinked || $maxLinked || cfg('telegram_gateway_token', '') !== '';
@@ -158,7 +166,11 @@ if ($R('POST', '/auth/code') !== null) {
 if ($R('POST', '/auth/verify') !== null) {
     $b = body();
     $phone = phone_or_fail($b['phone'] ?? null);
-    consume_code($phone, $b['code'] ?? null, 'auth');
+    if (bs_enabled()) {
+        if (!bs_verify_code($phone, s($b['code'] ?? ''))) fail(400, 'Неверный код', 'CODE_INVALID');
+    } else {
+        consume_code($phone, $b['code'] ?? null, 'auth');
+    }
     $u = find_user_by_phone($phone);
     if (!$u) {
         $id = uid();

@@ -129,7 +129,23 @@ function operator_telegram_chats(): array {
     }
     return array_values(array_unique(array_filter($chats)));
 }
+/** Телефоны сотрудников/владельцев (для адресной рассылки через бот-сервис). */
+function operator_phones(): array {
+    $phones = (array)cfg('owner_phones', []);
+    foreach (db()->query("SELECT phone FROM users WHERE role_key IS NOT NULL AND role_key <> ''")->fetchAll() as $r) {
+        $phones[] = $r['phone'];
+    }
+    return array_values(array_unique(array_filter($phones)));
+}
+
 function notify_operators(string $text): void {
+    // Внешний бот-сервис (Cloudflare): шлём по номерам сотрудников.
+    if (function_exists('bs_enabled') && bs_enabled()) {
+        foreach (operator_phones() as $ph) {
+            try { bs_send($ph, $text); } catch (Throwable $e) {}
+        }
+        return;
+    }
     foreach (operator_telegram_chats() as $cid) {
         try { tg_send((string)$cid, $text); } catch (Throwable $e) {}
     }

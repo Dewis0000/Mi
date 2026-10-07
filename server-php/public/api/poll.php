@@ -18,6 +18,7 @@ require $LIB . '/bootstrap.php';
 require $LIB . '/notify.php';
 require $LIB . '/auth.php';
 require $LIB . '/slots.php';
+require $LIB . '/bot_service.php';
 require $LIB . '/bot.php';
 
 $cli = PHP_SAPI === 'cli';

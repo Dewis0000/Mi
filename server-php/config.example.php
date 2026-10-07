@@ -50,6 +50,12 @@ return [
     'max_bot_username'      => '',        // имя MAX-бота (для ссылки max.ru/...)
     'max_operator_chat_ids' => [],
 
+    // --- Внешний бот-сервис (Cloudflare Worker) ---
+    // Если задан — коды входа и уведомления идут через него (боты работают отдельно
+    // и всегда доступны). Пусто — используется локальная логика (webhook/cron).
+    'bot_service_url'    => '',   // напр. https://neru-bot.ВАШ-САБДОМЕН.workers.dev
+    'bot_service_secret' => '',   // тот же секрет, что SITE_SECRET в Worker
+
     // --- Владельцы (полный доступ к админ-панели) ---
     'owner_phones' => ['+79996544460'],
 ];
