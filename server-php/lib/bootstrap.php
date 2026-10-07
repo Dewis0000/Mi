@@ -230,6 +230,16 @@ function ensure_schema(PDO $pdo, string $driver): void {
             details TEXT,
             created_at VARCHAR(32) NOT NULL
         )",
+        // Связки «номер телефона ↔ чат мессенджера» (пользователь поделился номером боту)
+        'messenger_links' => "(
+            id VARCHAR(40) PRIMARY KEY,
+            platform VARCHAR(12) NOT NULL,
+            phone VARCHAR(20) NOT NULL,
+            chat_id VARCHAR(40) NOT NULL,
+            username VARCHAR(80),
+            created_at VARCHAR(32) NOT NULL,
+            UNIQUE (platform, phone)
+        )",
     ];
     foreach ($tables as $name => $cols) {
         $pdo->exec("CREATE TABLE IF NOT EXISTS $name $cols$suffix");

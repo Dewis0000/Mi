@@ -98,6 +98,47 @@ if (($p = $R('GET', '/quests/:id/slots')) !== null) {
     out(get_slots($p['id'], (string)q('date'), ['userId' => $u['id'] ?? null]));
 }
 
+/* ============================================================ Telegram-бот (webhook) */
+
+if ($R('POST', '/bot/telegram') !== null) {
+    // проверка секрета (устанавливается вместе с webhook'ом)
+    $expected = hash_hmac('sha256', 'tg-webhook', (string)cfg('app_secret'));
+    $got = $_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] ?? '';
+    if (!hash_equals($expected, $got)) out(['ok' => true]); // чужой запрос — молча игнорируем
+
+    $upd = body();
+    $msg = $upd['message'] ?? $upd['edited_message'] ?? null;
+    if (!$msg) out(['ok' => true]);
+    $chatId = (string)($msg['chat']['id'] ?? '');
+
+    // человек поделился контактом
+    if (isset($msg['contact'])) {
+        $c = $msg['contact'];
+        $ownContact = isset($c['user_id']) && isset($msg['from']['id']) && (string)$c['user_id'] === (string)$msg['from']['id'];
+        $phone = $ownContact ? normalize_phone($c['phone_number'] ?? null) : null;
+        if ($phone) {
+            link_messenger('TELEGRAM', $phone, $chatId, $msg['from']['username'] ?? null);
+            $isStaff = in_array($phone, (array)cfg('owner_phones', []), true) || (function () use ($phone) {
+                $u = find_user_by_phone($phone);
+                return $u && !empty(user_perms($u));
+            })();
+            $tail = $isStaff ? ' и уведомления о новых записях' : '';
+            tg_send($chatId, "✅ Готово! Номер <b>$phone</b> привязан. Теперь сюда будут приходить коды для входа на сайт$tail.", ['reply_markup' => ['remove_keyboard' => true]]);
+        } else {
+            tg_send($chatId, 'Пожалуйста, поделитесь своим собственным номером — кнопкой ниже.');
+        }
+        out(['ok' => true]);
+    }
+
+    // /start и любое другое сообщение → предложить поделиться номером
+    tg_send(
+        $chatId,
+        'Здравствуйте! Это бот <b>Neru-Квест</b> 🧛\n\nНажмите кнопку ниже и поделитесь номером телефона — на него приходят коды для входа на сайт и напоминания о бронях.',
+        ['reply_markup' => ['keyboard' => [[['text' => '📱 Поделиться номером', 'request_contact' => true]]], 'resize_keyboard' => true, 'one_time_keyboard' => true]],
+    );
+    out(['ok' => true]);
+}
+
 /* ============================================================ вход */
 
 if ($R('POST', '/auth/code') !== null) {

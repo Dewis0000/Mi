@@ -97,3 +97,13 @@ CREATE TABLE IF NOT EXISTS admin_logs (
   details TEXT,
   created_at VARCHAR(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS messenger_links (
+  id VARCHAR(40) PRIMARY KEY,
+  platform VARCHAR(12) NOT NULL,
+  phone VARCHAR(20) NOT NULL,
+  chat_id VARCHAR(40) NOT NULL,
+  username VARCHAR(80),
+  created_at VARCHAR(32) NOT NULL,
+  UNIQUE (platform, phone)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
