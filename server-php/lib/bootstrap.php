@@ -17,7 +17,36 @@ if (!is_file($cfgPath)) {
     exit;
 }
 $CONFIG = require $cfgPath;
-$DATA   = require __DIR__ . '/data.php';
+
+// Перехват любой необработанной ошибки: пишем детали в лог (закрыт от веба
+// правилом .htaccess ^lib/), а наружу отдаём аккуратный JSON. При 'debug'=>true
+// текст ошибки возвращается в ответе — чтобы быстро найти причину 500.
+$__debug = !empty($CONFIG['debug']);
+$__emit_error = function (string $msg, string $where) use ($__debug): void {
+    @error_log('[' . gmdate('c') . "] $msg @ $where\n", 3, __DIR__ . '/error.log');
+    if (!headers_sent()) {
+        http_response_code(500);
+        header('Content-Type: application/json; charset=utf-8');
+        header('Cache-Control: no-store');
+    }
+    echo json_encode(
+        $__debug
+            ? ['error' => $msg, 'where' => $where, 'code' => 'SERVER_ERROR']
+            : ['error' => 'Внутренняя ошибка сервера. Попробуйте позже.', 'code' => 'SERVER_ERROR'],
+        JSON_UNESCAPED_UNICODE,
+    );
+};
+set_exception_handler(function (Throwable $e) use ($__emit_error) {
+    $__emit_error($e->getMessage(), basename($e->getFile()) . ':' . $e->getLine());
+});
+register_shutdown_function(function () use ($__emit_error) {
+    $e = error_get_last();
+    if ($e && in_array($e['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR], true)) {
+        $__emit_error($e['message'], basename($e['file']) . ':' . $e['line']);
+    }
+});
+
+$DATA = require __DIR__ . '/data.php';
 
 date_default_timezone_set($CONFIG['venue_tz'] ?? 'Asia/Yakutsk');
 
@@ -98,9 +127,15 @@ function db(): PDO {
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     } catch (Throwable $e) {
-        fail(500, 'Не удалось подключиться к базе данных', 'DB_CONNECT');
+        $extra = !empty($GLOBALS['CONFIG']['debug']) ? ['detail' => $e->getMessage()] : [];
+        fail(500, 'Не удалось подключиться к базе данных. Проверьте данные БД в config.php.', 'DB_CONNECT', $extra);
     }
-    ensure_schema($pdo, $driver);
+    try {
+        ensure_schema($pdo, $driver);
+    } catch (Throwable $e) {
+        $extra = !empty($GLOBALS['CONFIG']['debug']) ? ['detail' => $e->getMessage()] : [];
+        fail(500, 'Не удалось создать таблицы в базе. Импортируйте server-php/schema.sql через phpMyAdmin.', 'DB_SCHEMA', $extra);
+    }
     return $pdo;
 }
 
