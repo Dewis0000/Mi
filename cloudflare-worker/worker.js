@@ -57,6 +57,8 @@ async function maxSend(env, chatId, text, attachments) {
   return r.ok;
 }
 const maxKeyboard = () => [{ type: 'inline_keyboard', payload: { buttons: [[{ type: 'request_contact', text: '📱 Поделиться номером' }]] } }];
+// Инлайн-кнопка Telegram «скопировать код» (copy_text, Bot API 7.11+)
+const tgCopyKb = (code) => ({ inline_keyboard: [[{ text: '📋 Скопировать код', copy_text: { text: code } }]] });
 
 function isStaff(env, phone) {
   return (env.OWNER_PHONES || '').split(',').map((s) => s.trim()).filter(Boolean).includes(phone);
@@ -81,7 +83,7 @@ async function tgWebhook(request, env) {
     if (phone) {
       const code = await linkAndCode(env, 'TELEGRAM', phone, chatId);
       const tail = isStaff(env, phone) ? '\n\nСюда также будут приходить уведомления о новых записях.' : '';
-      await tgSend(env, chatId, `✅ Готово! Номер <b>${phone}</b> привязан.\n\nВаш код для входа на сайт: <b>${code}</b>\nВведите его на странице входа (действует 5 минут).${tail}\n\n🌐 Сайт: ${SITE_URL}`, { reply_markup: { remove_keyboard: true } });
+      await tgSend(env, chatId, `✅ Готово! Номер <b>${phone}</b> привязан.\n\nВаш код для входа на сайт: <b>${code}</b>\nВведите его на странице входа (действует 5 минут).${tail}\n\n🌐 Сайт: ${SITE_URL}`, { reply_markup: tgCopyKb(code) });
     } else {
       await tgSend(env, chatId, 'Пожалуйста, поделитесь своим собственным номером — кнопкой ниже.');
     }
@@ -96,7 +98,6 @@ async function tgWebhook(request, env) {
 async function maxWebhook(request, url, env) {
   if ((url.searchParams.get('s') || '') !== env.WEBHOOK_SECRET) return json({ ok: true });
   const upd = await request.json().catch(() => ({}));
-  try { await env.KV.put('debug:maxlast', JSON.stringify(upd), { expirationTtl: 1800 }); } catch (e) {}
   const type = upd.update_type;
   const msg = upd.message || {};
   const chatId = (msg.recipient && msg.recipient.chat_id) ?? upd.chat_id ?? (msg.sender && msg.sender.user_id) ?? null;
@@ -112,7 +113,7 @@ async function maxWebhook(request, url, env) {
   const atts = (msg.body && msg.body.attachments) || [];
   for (const att of atts) {
     const pl = att.payload || att.contact || att || {};
-    phone = phone || normPhone(extractPhone(pl.phone || pl.vcfInfo || pl.vcfPhone || pl.number || pl.vcard || ''));
+    phone = phone || normPhone(extractPhone(pl.vcf_info || pl.phone || pl.vcfInfo || pl.vcfPhone || pl.number || pl.vcard || ''));
   }
   if (!phone) phone = normPhone(extractPhone((msg.body && msg.body.text) || ''));
   if (!phone && atts.length) phone = normPhone(extractPhone(JSON.stringify(atts)));
@@ -137,20 +138,33 @@ async function apiRequestCode(request, env) {
   if (!phone) return json({ error: 'bad phone' }, 400);
   const tg = await env.KV.get(`link:TELEGRAM:${phone}`);
   const mx = await env.KV.get(`link:MAX:${phone}`);
-  const deliver = async (chatId, kind) => {
-    const c = code6();
-    await env.KV.put(`code:${phone}`, c, { expirationTtl: 300 });
-    const text = `Ваш код для входа на Neru-Квест: ${c}`;
-    const ok = kind === 'max' ? await maxSend(env, chatId, text) : await tgSend(env, chatId, `Ваш код для входа на Neru-Квест: <b>${c}</b>`);
-    return ok;
-  };
-  if (channel === 'MAX' && mx) return json({ delivered: await deliver(mx, 'max'), channel: 'max' });
-  if (tg) return json({ delivered: await deliver(tg, 'tg'), channel: 'telegram' });
-  if (mx) return json({ delivered: await deliver(mx, 'max'), channel: 'max' });
-  const botUrl = channel === 'MAX'
-    ? (env.MAX_USERNAME ? `https://max.ru/${env.MAX_USERNAME}` : null)
-    : (env.TG_USERNAME ? `https://t.me/${env.TG_USERNAME}?start=auth` : null);
-  return json({ delivered: false, needsMessenger: true, botUrl, messenger: channel || 'TELEGRAM' });
+
+  // выбрать канал доставки (привязанный бот)
+  const target = (channel === 'MAX' && mx) ? ['max', mx] : tg ? ['tg', tg] : mx ? ['max', mx] : null;
+  if (!target) {
+    const botUrl = channel === 'MAX'
+      ? (env.MAX_USERNAME ? `https://max.ru/${env.MAX_USERNAME}` : null)
+      : (env.TG_USERNAME ? `https://t.me/${env.TG_USERNAME}?start=auth` : null);
+    return json({ delivered: false, needsMessenger: true, botUrl, messenger: channel || 'TELEGRAM' });
+  }
+
+  // анти-флуд: не больше 5 запросов кода за 10 минут на номер
+  const now = Date.now();
+  let rl = await env.KV.get(`rl:${phone}`, 'json');
+  if (!rl || now > rl.resetAt) rl = { count: 0, resetAt: now + 600000 };
+  if (rl.count >= 5) {
+    return json({ delivered: false, rateLimited: true, retryIn: Math.ceil((rl.resetAt - now) / 1000) }, 429);
+  }
+  rl.count++;
+  await env.KV.put(`rl:${phone}`, JSON.stringify(rl), { expirationTtl: Math.max(60, Math.ceil((rl.resetAt - now) / 1000) + 5) });
+
+  const [kind, chatId] = target;
+  const c = code6();
+  await env.KV.put(`code:${phone}`, c, { expirationTtl: 300 });
+  const ok = kind === 'max'
+    ? await maxSend(env, chatId, `Ваш код для входа на Neru-Квест: ${c}\n\n🌐 ${SITE_URL}`)
+    : await tgSend(env, chatId, `Ваш код для входа на Neru-Квест: <b>${c}</b>\n\n🌐 ${SITE_URL}`, { reply_markup: tgCopyKb(c) });
+  return json({ delivered: ok, channel: kind === 'max' ? 'max' : 'telegram' });
 }
 
 async function apiVerifyCode(request, env) {

@@ -34,11 +34,13 @@ function bs_request_code(string $phone, string $channel): array {
     $r = bs_call('/api/request-code', ['phone' => $phone, 'channel' => $channel]);
     $b = $r['body'];
     return [
+        'ok'            => $r['ok'] || $r['status'] === 429,
         'delivered'     => !empty($b['delivered']),
-        'needsMessenger'=> !empty($b['needsMessenger']) || empty($b['delivered']),
+        'rateLimited'   => !empty($b['rateLimited']),
+        'retryIn'       => (int)($b['retryIn'] ?? 0),
+        'needsMessenger'=> !empty($b['needsMessenger']),
         'botUrl'        => $b['botUrl'] ?? null,
         'channel'       => $b['channel'] ?? 'telegram',
-        'ok'            => $r['ok'],
     ];
 }
 

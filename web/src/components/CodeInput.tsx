@@ -24,13 +24,14 @@ export function CodeInput({ value, onChange, error, disabled }: { value: string;
           }}
           inputMode="numeric"
           autoComplete={i === 0 ? 'one-time-code' : 'off'}
-          maxLength={1}
           disabled={disabled}
           aria-label={`Цифра ${i + 1}`}
           value={d.trim()}
+          onFocus={(e) => e.currentTarget.select()}
           onChange={(e) => {
             const v = e.target.value.replace(/\D/g, '')
             if (!v) return
+            // вставка/автозаполнение всего кода — раскладываем по ячейкам
             if (v.length > 1) {
               onChange(v.slice(0, 6))
               refs.current[Math.min(v.length, 5)]?.focus()

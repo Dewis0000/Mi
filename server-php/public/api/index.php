@@ -134,8 +134,12 @@ if ($R('POST', '/auth/code') !== null) {
     // Внешний бот-сервис (Cloudflare): коды входа идут через него.
     if (bs_enabled()) {
         $r = bs_request_code($phone, $channel);
-        if ($r['delivered']) out($base + ['resendIn' => 60, 'sentTo' => $r['channel']]);
-        out($base + ['resendIn' => 0, 'needsMessenger' => true, 'botUrl' => $r['botUrl'], 'messenger' => $channel]);
+        if ($r['ok']) {
+            if ($r['rateLimited']) fail(429, 'Слишком много запросов кода. Подождите немного и попробуйте снова.', 'RATE_LIMIT', ['retryIn' => $r['retryIn']]);
+            if ($r['delivered']) out($base + ['resendIn' => 60, 'sentTo' => $r['channel']]);
+            out($base + ['resendIn' => 0, 'needsMessenger' => true, 'botUrl' => $r['botUrl'], 'messenger' => $channel]);
+        }
+        // воркер недоступен — используем локальную логику ниже (не падаем)
     }
 
     $tgLinked  = link_chat_for_phone('TELEGRAM', $phone) !== null;
