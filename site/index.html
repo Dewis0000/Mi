@@ -1,51 +1,58 @@
 <!doctype html>
-<html lang="ru" data-theme="dark">
+<html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Streamix — бот и инструменты для стримеров</title>
-  <meta name="description" content="Streamix — модерация чата, аналитика, виджеты для OBS, музыка, розыгрыши и алерты для Twitch, YouTube и VK Play в одном дашборде.">
+  <title>Streop — бот и инструменты для стримеров</title>
+  <meta name="description" content="Streop — модерация чата, аналитика, виджеты для OBS, музыка, розыгрыши и алерты для Twitch, YouTube и VK Play в одном дашборде.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Streamix — бот для стримеров">
+  <meta property="og:title" content="Streop — бот для стримеров">
   <meta property="og:description" content="Всё, что нужно стримеру, в одном месте: модерация, аналитика, виджеты, алерты.">
-  <meta name="theme-color" content="#0b0b14">
+  <meta name="theme-color" content="#000000">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700;800&family=Russo+One&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    // Применяем сохранённое оформление до отрисовки, чтобы не было мигания
+    try {
+      var l = JSON.parse(localStorage.getItem('streop.look') || 'null');
+      if (l && l.bg) {
+        var s = document.documentElement.style;
+        s.setProperty('--bg', l.bg); s.setProperty('--fg', l.fg);
+      }
+    } catch (e) {}
+  </script>
 </head>
 <body>
-  <!-- SVG-иконки -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></symbol>
-    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></symbol>
     <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
     <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
     <symbol id="i-timer" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></symbol>
-    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13M12 8S10.5 3 8 3.5 7 8 12 8zm0 0s1.5-5 4-4.5S17 8 12 8z"/></symbol>
-    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13M12 8S10.5 3 8 3.5 7 8 12 8zm0 0s1.5-5 4-4.5S17 8 12 8z"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></symbol>
     <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a2 2 0 0 0 3.4 0"/></symbol>
-    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></symbol>
     <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3z"/></symbol>
-    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
-    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
-    <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M13 9h4M13 13h4"/></symbol>
-    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.5A6.5 6.5 0 0 1 21.5 20"/></symbol>
-    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
-    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></symbol>
+    <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16"/><path d="M9 4v16"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.5A6.5 6.5 0 0 1 21.5 20"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H4V3h5M16 17l5-5-5-5M21 12H9"/></symbol>
     <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
     <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
     <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
-    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></symbol>
   </svg>
 
-  <!-- ХЕДЕР -->
+  <!-- ===== ХЕДЕР ===== -->
   <header class="header" id="header">
     <div class="container header__inner">
-      <a href="#top" class="brand" aria-label="На главную">
-        <span class="brand__logo" id="brandLogo"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" class="lg-a"/><stop offset="1" class="lg-b"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#lg)"/><path d="M12 9.5v13l11-6.5z" fill="#fff"/></svg></span>
-        <span class="brand__name" data-site-name>Streamix</span>
+      <a href="#top" class="brand" aria-label="Streop — на главную">
+        <span class="brand__mark" data-logo><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" fill="currentColor"/><path d="M9 7v10l8-5z" fill="var(--bg)"/></svg></span>
+        <span class="brand__name" data-site-name>Streop</span>
       </a>
 
       <nav class="nav" id="nav" aria-label="Основная навигация">
@@ -54,22 +61,19 @@
       </nav>
 
       <div class="header__actions">
-        <button class="btn btn--primary btn--sm" id="loginBtn" type="button">Войти</button>
+        <button class="btn btn--solid btn--sm" id="loginBtn" type="button">Войти</button>
 
         <div class="user" id="userBox" hidden>
-          <button class="avatar" id="avatarBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="userMenu" aria-label="Меню пользователя">
-            <span id="avatarLetter">S</span>
-          </button>
+          <button class="avatar" id="avatarBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="userMenu" aria-label="Меню пользователя"><span id="avatarLetter">S</span></button>
           <div class="menu" id="userMenu" role="menu" aria-labelledby="avatarBtn">
             <div class="menu__head">
-              <strong id="menuName">Стример</strong>
-              <span id="menuPlan" class="menu__plan">Про</span>
+              <span class="menu__name" id="menuName">Стример</span>
+              <span class="label" id="menuPlan">Про</span>
             </div>
             <a href="#" role="menuitem" data-soon="Панель стримера"><svg class="ic"><use href="#i-panel"/></svg>Панель стримера</a>
             <a href="#" role="menuitem" data-soon="Мои стримеры"><svg class="ic"><use href="#i-users"/></svg>Мои стримеры</a>
             <button type="button" role="menuitem" id="openSettings"><svg class="ic"><use href="#i-gear"/></svg>Настройки</button>
-            <hr>
-            <button type="button" role="menuitem" id="logoutBtn" class="menu__danger"><svg class="ic"><use href="#i-logout"/></svg>Выйти</button>
+            <button type="button" role="menuitem" id="logoutBtn" class="menu__sep"><svg class="ic"><use href="#i-logout"/></svg>Выйти</button>
           </div>
         </div>
 
@@ -79,156 +83,175 @@
   </header>
 
   <main id="top" class="main">
-    <!-- HERO -->
+
+    <!-- ===== HERO ===== -->
     <section class="hero" data-block="hero" aria-label="Главный экран">
       <div class="container hero__inner">
-        <div class="hero__text reveal">
-          <span class="eyebrow"><svg class="ic"><use href="#i-bolt"/></svg>Бот нового поколения для стримеров</span>
-          <h1 class="hero__title"><span data-site-name>Streamix</span></h1>
-          <p class="hero__lead">Модерация, аналитика, виджеты, алерты и музыка в одном боте. Подключи канал за минуту и сосредоточься на стриме, а не на рутине.</p>
-          <ul class="platforms" aria-label="Платформы">
-            <li class="pf pf--twitch">Twitch</li>
-            <li class="pf pf--yt">YouTube</li>
-            <li class="pf pf--vk">VK Play</li>
-          </ul>
+        <div class="hero__text">
+          <p class="label reveal">Бот для Twitch · YouTube · VK Play</p>
+          <h1 class="hero__title reveal" data-site-name>Streop</h1>
+          <p class="hero__lead reveal">Один бот для всего стрима. Модерация, аналитика, виджеты, алерты и музыка <em>в одном окне.</em></p>
+          <dl class="hero__stats reveal">
+            <div><dt>10</dt><dd>модулей</dd></div>
+            <div><dt>3</dt><dd>платформы</dd></div>
+            <div><dt>24/7</dt><dd>бот на связи</dd></div>
+          </dl>
+          <div class="hero__actions reveal">
+            <button class="btn btn--solid btn--lg" id="continueBtn" type="button">Продолжить <svg class="ic"><use href="#i-arrow"/></svg></button>
+            <a class="btn btn--ghost btn--lg" href="#pricing">Тарифы</a>
+          </div>
         </div>
 
-        <div class="hero__stage reveal" id="stage">
-          <div class="blob blob--1"></div>
-          <div class="blob blob--2"></div>
-          <div class="blob blob--3"></div>
-          <div class="blob blob--cursor" id="cursorBlob"></div>
-          <div class="stage__grain"></div>
-          <button class="cta" id="continueBtn" type="button">
-            <span class="cta__ring"></span>
-            <span class="cta__label">Продолжить <svg class="ic"><use href="#i-arrow"/></svg></span>
-          </button>
+        <div class="stage reveal" id="stage">
+          <canvas class="stage__canvas" id="robot" role="img" aria-label="Трёхмерная голова робота из точек. Потяни, чтобы повернуть."></canvas>
+          <span class="stage__tl label"><i class="live-dot"></i>Live · 3D</span>
+          <span class="stage__tr label" id="dotsCount">0 точек</span>
+          <span class="stage__bl label">Потяни, чтобы повернуть</span>
+          <span class="stage__br label" id="coords">Yaw 0° · Pitch 0°</span>
         </div>
       </div>
     </section>
 
-    <!-- ПРЕИМУЩЕСТВА -->
+    <!-- ===== ПРЕИМУЩЕСТВА ===== -->
     <section class="section" id="features" data-block="features" aria-labelledby="featuresTitle">
       <div class="container">
-        <header class="section__head reveal">
-          <span class="eyebrow">Преимущества бота</span>
-          <h2 id="featuresTitle">Всё, что нужно стримеру, <span class="grad">в одном месте</span></h2>
+        <header class="section__head">
+          <p class="label reveal">Возможности</p>
+          <h2 id="featuresTitle" class="reveal">Всё, что нужно стримеру, <em>в одном месте.</em></h2>
         </header>
+
         <div class="features">
-          <article class="feature reveal"><span class="feature__ic"><svg class="ic"><use href="#i-shield"/></svg></span><h3>Модерация чата</h3><p>Автоматическая фильтрация спама, мата, рекламы и капса.</p></article>
-          <article class="feature reveal"><span class="feature__ic"><svg class="ic"><use href="#i-chart"/></svg></span><h3>Аналитика чата</h3><p>Статистика активности, топ зрителей, пиковые часы.</p></article>
-          <article class="feature reveal"><span class="feature__ic"><svg class="ic"><use href="#i-layers"/></svg></span><h3>Виджеты</h3><p>Готовые оверлеи для OBS: цели, донаты, подписки, топы.</p></article>
-          <article class="feature reveal"><span class="feature__ic"><svg class="ic"><use href="#i-music"/></svg></span><h3>Музыка</h3><p>Управление треками прямо из чата командами.</p></article>
-          <article class="feature reveal"><span class="feature__ic"><svg class="ic"><use href="#i-timer"/></svg></span><h3>Таймеры и команды</h3><p>Автосообщения, счётчики, кастомные команды.</p></article>
-          <article class="feature reveal"><span class="feature__ic"><svg class="ic"><use href="#i-gift"/></svg></span><h3>Розыгрыши</h3><p>Проведение Giveaway с автоподбором победителей.</p></article>
-          <article class="feature reveal"><span class="feature__ic"><svg class="ic"><use href="#i-chat"/></svg></span><h3>Автоответы</h3><p>Реакция на ключевые слова и приветствие новых зрителей.</p></article>
-          <article class="feature reveal"><span class="feature__ic"><svg class="ic"><use href="#i-bell"/></svg></span><h3>Уведомления</h3><p>Алерты о донатах, фолловах, сабах и рейдах.</p></article>
-          <article class="feature reveal"><span class="feature__ic"><svg class="ic"><use href="#i-grid"/></svg></span><h3>Единый дашборд</h3><p>Все настройки и модули в одном окне.</p></article>
-          <article class="feature reveal"><span class="feature__ic"><svg class="ic"><use href="#i-globe"/></svg></span><h3>Мультиплатформенность</h3><p>Поддержка Twitch, YouTube и VK Play.</p></article>
+          <article class="feature reveal"><span class="feature__n">01</span><svg class="ic"><use href="#i-shield"/></svg><h3>Модерация чата</h3><p>Автоматическая фильтрация спама, мата, рекламы и капса.</p></article>
+          <article class="feature reveal"><span class="feature__n">02</span><svg class="ic"><use href="#i-chart"/></svg><h3>Аналитика чата</h3><p>Статистика активности, топ зрителей, пиковые часы.</p></article>
+          <article class="feature reveal"><span class="feature__n">03</span><svg class="ic"><use href="#i-layers"/></svg><h3>Виджеты</h3><p>Готовые оверлеи для OBS: цели, донаты, подписки, топы.</p></article>
+          <article class="feature reveal"><span class="feature__n">04</span><svg class="ic"><use href="#i-music"/></svg><h3>Музыка</h3><p>Управление треками прямо из чата командами.</p></article>
+          <article class="feature reveal"><span class="feature__n">05</span><svg class="ic"><use href="#i-timer"/></svg><h3>Таймеры и команды</h3><p>Автосообщения, счётчики, кастомные команды.</p></article>
+          <article class="feature reveal"><span class="feature__n">06</span><svg class="ic"><use href="#i-gift"/></svg><h3>Розыгрыши</h3><p>Проведение Giveaway с автоподбором победителей.</p></article>
+          <article class="feature reveal"><span class="feature__n">07</span><svg class="ic"><use href="#i-chat"/></svg><h3>Автоответы</h3><p>Реакция на ключевые слова и приветствие новых зрителей.</p></article>
+          <article class="feature reveal"><span class="feature__n">08</span><svg class="ic"><use href="#i-bell"/></svg><h3>Уведомления</h3><p>Алерты о донатах, фолловах, сабах и рейдах.</p></article>
+          <article class="feature reveal"><span class="feature__n">09</span><svg class="ic"><use href="#i-grid"/></svg><h3>Единый дашборд</h3><p>Все настройки и модули в одном окне.</p></article>
+          <article class="feature reveal"><span class="feature__n">10</span><svg class="ic"><use href="#i-globe"/></svg><h3>Мультиплатформенность</h3><p>Поддержка Twitch, YouTube и VK Play.</p></article>
         </div>
       </div>
     </section>
 
-    <!-- ТАРИФЫ -->
+    <!-- ===== ТАРИФЫ ===== -->
     <section class="section" id="pricing" data-block="pricing" aria-labelledby="pricingTitle">
       <div class="container">
-        <header class="section__head reveal">
-          <span class="eyebrow">Уровни подписок</span>
-          <h2 id="pricingTitle">Выбери свой <span class="grad">уровень</span></h2>
+        <header class="section__head">
+          <p class="label reveal">Уровни подписок</p>
+          <h2 id="pricingTitle" class="reveal">Три уровня. <em>Ничего лишнего.</em></h2>
         </header>
 
         <div class="plans">
           <article class="plan reveal">
-            <h3 class="plan__name">Продвинутая</h3>
-            <p class="plan__desc">Оптимальный старт для растущего стримера.</p>
-            <p class="plan__price"><b>299 ₽</b><span>/ месяц</span></p>
+            <div class="plan__top">
+              <h3 class="plan__name">Продвинутая</h3>
+              <p class="plan__desc">Оптимальный старт для растущего стримера.</p>
+            </div>
+            <p class="plan__price"><b>299</b><span>₽ / месяц</span></p>
             <ul class="plan__list">
-              <li><svg class="ic"><use href="#i-check"/></svg>Все виджеты без ограничений</li>
-              <li><svg class="ic"><use href="#i-check"/></svg>ИИ-модерация: умная фильтрация спама, токсичности и рекламы</li>
-              <li><svg class="ic"><use href="#i-check"/></svg>Аналитика чата за 30 дней: активность, топ зрителей, пиковые часы</li>
-              <li><svg class="ic"><use href="#i-check"/></svg>Музыка, команды, таймеры, розыгрыши, автоответы</li>
-              <li><svg class="ic"><use href="#i-check"/></svg>Базовые алерты: донаты, фолловы, сабы</li>
+              <li>Все виджеты без ограничений</li>
+              <li>ИИ-модерация: умная фильтрация спама, токсичности и рекламы</li>
+              <li>Аналитика чата за 30 дней: активность, топ зрителей, пиковые часы</li>
+              <li>Музыка, команды, таймеры, розыгрыши, автоответы</li>
+              <li>Базовые алерты: донаты, фолловы, сабы</li>
             </ul>
-            <button class="btn btn--ghost plan__btn" type="button" data-plan="Продвинутая">Выбрать</button>
+            <button class="btn btn--line plan__btn" type="button" data-plan="Продвинутая">Выбрать тариф</button>
           </article>
 
           <article class="plan plan--featured reveal">
-            <span class="plan__badge">Популярный</span>
-            <h3 class="plan__name">Про</h3>
-            <p class="plan__desc">Для стримеров, которые хотят расти и понимать свою аудиторию.</p>
-            <p class="plan__price"><b>499 ₽</b><span>/ месяц</span></p>
+            <div class="plan__top">
+              <h3 class="plan__name">Про <span class="label">Популярный</span></h3>
+              <p class="plan__desc">Для стримеров, которые хотят расти и понимать свою аудиторию.</p>
+            </div>
+            <p class="plan__price"><b>499</b><span>₽ / месяц</span></p>
             <ul class="plan__list">
-              <li><svg class="ic"><use href="#i-check"/></svg><b>Всё из тарифа «Продвинутая»</b></li>
-              <li><svg class="ic"><use href="#i-check"/></svg>Своя страница стримера: лендинг с информацией о канале, расписанием и ссылками</li>
-              <li><svg class="ic"><use href="#i-check"/></svg>Аналитика каждого зрителя: история активности, донаты, время просмотра, вовлечённость</li>
-              <li><svg class="ic"><use href="#i-check"/></svg>Расширенная статистика по каналу и чату</li>
-              <li><svg class="ic"><use href="#i-check"/></svg>Кастомизация виджетов под свой бренд</li>
+              <li><strong>Всё из тарифа «Продвинутая»</strong></li>
+              <li>Своя страница стримера: лендинг с информацией о канале, расписанием и ссылками</li>
+              <li>Аналитика каждого зрителя: история активности, донаты, время просмотра, вовлечённость</li>
+              <li>Расширенная статистика по каналу и чату</li>
+              <li>Кастомизация виджетов под свой бренд</li>
             </ul>
-            <button class="btn btn--primary plan__btn" type="button" data-plan="Про">Выбрать</button>
+            <button class="btn btn--solid plan__btn" type="button" data-plan="Про">Выбрать тариф</button>
           </article>
 
           <article class="plan reveal">
-            <h3 class="plan__name">Максимум</h3>
-            <p class="plan__desc">Всё, что есть в боте, без ограничений.</p>
-            <p class="plan__price"><b>967 ₽</b><span>/ месяц</span></p>
+            <div class="plan__top">
+              <h3 class="plan__name">Максимум</h3>
+              <p class="plan__desc">Всё, что есть в боте, без ограничений.</p>
+            </div>
+            <p class="plan__price"><b>967</b><span>₽ / месяц</span></p>
             <ul class="plan__list">
-              <li><svg class="ic"><use href="#i-check"/></svg><b>Всё из тарифа «Про»</b></li>
-              <li><svg class="ic"><use href="#i-check"/></svg>Полный доступ ко всем функциям и модулям</li>
-              <li><svg class="ic"><use href="#i-check"/></svg>Приоритетная поддержка 24/7</li>
-              <li><svg class="ic"><use href="#i-check"/></svg>Ранний доступ к новым фишкам</li>
-              <li><svg class="ic"><use href="#i-check"/></svg>Индивидуальные интеграции под твой канал</li>
-              <li><svg class="ic"><use href="#i-check"/></svg>Аналитика без ограничений по глубине и детализации</li>
+              <li><strong>Всё из тарифа «Про»</strong></li>
+              <li>Полный доступ ко всем функциям и модулям</li>
+              <li>Приоритетная поддержка 24/7</li>
+              <li>Ранний доступ к новым фишкам</li>
+              <li>Индивидуальные интеграции под твой канал</li>
+              <li>Аналитика без ограничений по глубине и детализации</li>
             </ul>
-            <button class="btn btn--ghost plan__btn" type="button" data-plan="Максимум">Выбрать</button>
+            <button class="btn btn--line plan__btn" type="button" data-plan="Максимум">Выбрать тариф</button>
           </article>
         </div>
 
-        <div class="compare reveal">
-          <div><b>299 ₽</b><span>все инструменты для работы со стримом</span></div>
-          <div><b>499 ₽</b><span>персональная страница и глубокий разбор аудитории</span></div>
-          <div><b>967 ₽</b><span>абсолютный максимум возможностей</span></div>
-        </div>
+        <dl class="compare reveal">
+          <div><dt>299 ₽</dt><dd>Все инструменты для работы со стримом</dd></div>
+          <div><dt>499 ₽</dt><dd>Персональная страница и глубокий разбор аудитории</dd></div>
+          <div><dt>967 ₽</dt><dd>Абсолютный максимум возможностей</dd></div>
+        </dl>
       </div>
     </section>
   </main>
 
-  <!-- ПОДВАЛ -->
+  <!-- ===== ПОДВАЛ ===== -->
   <footer class="footer">
-    <div class="container footer__inner">
-      <div>
-        <a href="#top" class="brand"><span class="brand__logo brand__logo--sm"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="url(#lg)"/><path d="M12 9.5v13l11-6.5z" fill="#fff"/></svg></span><span class="brand__name" data-site-name>Streamix</span></a>
-        <p class="muted">Бот и инструменты для стримеров на Twitch, YouTube и VK Play.</p>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="label">О сервисе</p>
+          <p class="footer__about">Бот и инструменты для стримеров на Twitch, YouTube и VK Play.</p>
+        </div>
+        <nav aria-label="Разделы">
+          <p class="label">Разделы</p>
+          <a href="#features">Возможности</a>
+          <a href="#pricing">Тарифы</a>
+        </nav>
+        <nav aria-label="Документы">
+          <p class="label">Документы</p>
+          <a href="#" data-soon="Политика конфиденциальности">Политика конфиденциальности</a>
+          <a href="#" data-soon="Пользовательское соглашение">Пользовательское соглашение</a>
+        </nav>
+        <div>
+          <p class="label">Связь</p>
+          <a href="mailto:support@streop.ru">support@streop.ru</a>
+        </div>
       </div>
-      <nav class="footer__nav" aria-label="Навигация в подвале">
-        <a href="#features">Возможности</a>
-        <a href="#pricing">Тарифы</a>
-        <a href="mailto:support@streamix.ru">support@streamix.ru</a>
-      </nav>
-      <nav class="footer__nav" aria-label="Документы">
-        <a href="#" data-soon="Политика конфиденциальности">Политика конфиденциальности</a>
-        <a href="#" data-soon="Пользовательское соглашение">Пользовательское соглашение</a>
-      </nav>
+      <p class="footer__word" aria-hidden="true" data-site-name>Streop</p>
+      <div class="footer__bottom">
+        <span>© <span id="year">2026</span> <span data-site-name>Streop</span></span>
+        <span>Все права защищены</span>
+      </div>
     </div>
-    <div class="container footer__copy muted">© <span id="year">2026</span> <span data-site-name>Streamix</span>. Все права защищены.</div>
   </footer>
 
-  <!-- ОКНО ВХОДА -->
+  <!-- ===== ВХОД ===== -->
   <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle" hidden>
     <div class="modal__backdrop" data-close></div>
     <div class="modal__box modal__box--sm">
       <button class="icon-btn modal__close" type="button" data-close aria-label="Закрыть"><svg class="ic"><use href="#i-close"/></svg></button>
-      <h2 id="loginTitle">Вход в <span data-site-name>Streamix</span></h2>
-      <p class="muted">Войди через платформу, на которой стримишь.</p>
+      <p class="label">Вход</p>
+      <h2 id="loginTitle">Войти в <span data-site-name>Streop</span></h2>
+      <p class="muted">Выбери платформу, на которой стримишь.</p>
       <div class="login-list">
-        <button class="login-btn pf--twitch" type="button" data-login="Twitch">Войти через Twitch</button>
-        <button class="login-btn pf--yt" type="button" data-login="YouTube">Войти через YouTube</button>
-        <button class="login-btn pf--vk" type="button" data-login="VK Play">Войти через VK Play</button>
+        <button class="login-btn" type="button" data-login="Twitch"><span>Twitch</span><svg class="ic"><use href="#i-arrow"/></svg></button>
+        <button class="login-btn" type="button" data-login="YouTube"><span>YouTube</span><svg class="ic"><use href="#i-arrow"/></svg></button>
+        <button class="login-btn" type="button" data-login="VK Play"><span>VK Play</span><svg class="ic"><use href="#i-arrow"/></svg></button>
       </div>
       <p class="muted small">Демо-режим: вход работает без реального аккаунта.</p>
     </div>
   </div>
 
-  <!-- НАСТРОЙКИ -->
+  <!-- ===== НАСТРОЙКИ ===== -->
   <div class="modal" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden>
     <div class="modal__backdrop" data-close></div>
     <div class="modal__box">
@@ -242,47 +265,45 @@
         <button role="tab" aria-selected="false" aria-controls="tab-danger" id="t-danger" tabindex="-1">Удаление</button>
       </div>
 
+      <!-- Аккаунт -->
       <section class="tab" id="tab-account" role="tabpanel" aria-labelledby="t-account">
-        <dl class="kv">
-          <div><dt>Имя</dt><dd><input class="input" id="accName" maxlength="32"></dd></div>
-          <div><dt>E-mail</dt><dd><input class="input" id="accEmail" type="email" maxlength="64"></dd></div>
-          <div><dt>Платформа</dt><dd id="accPlatform">—</dd></div>
-          <div><dt>Дата регистрации</dt><dd id="accDate">—</dd></div>
-          <div><dt>ID аккаунта</dt><dd class="mono" id="accId">—</dd></div>
-        </dl>
-        <button class="btn btn--primary" type="button" id="saveAccount">Сохранить</button>
+        <div class="rows">
+          <label class="row"><span class="row__k">Имя</span><input class="input" id="accName" maxlength="32"></label>
+          <label class="row"><span class="row__k">E-mail</span><input class="input" id="accEmail" type="email" maxlength="64"></label>
+          <div class="row"><span class="row__k">Платформа</span><span id="accPlatform">—</span></div>
+          <div class="row"><span class="row__k">Дата регистрации</span><span id="accDate">—</span></div>
+          <div class="row"><span class="row__k">ID аккаунта</span><span class="mono" id="accId">—</span></div>
+        </div>
+        <button class="btn btn--solid" type="button" id="saveAccount">Сохранить</button>
       </section>
 
+      <!-- Оформление -->
       <section class="tab" id="tab-look" role="tabpanel" aria-labelledby="t-look" hidden>
-        <div class="field">
-          <span class="field__label">Тема</span>
-          <div class="seg" id="themeSeg">
-            <button type="button" data-theme-val="dark">Тёмная</button>
-            <button type="button" data-theme-val="light">Светлая</button>
+        <div class="group">
+          <p class="label">Готовые стили</p>
+          <div class="presets" id="presets"></div>
+        </div>
+
+        <div class="group">
+          <p class="label">Цвета</p>
+          <div class="colors">
+            <label class="color"><input type="color" id="cBg"><span><b>Фон</b><i id="cBgHex"></i></span></label>
+            <label class="color"><input type="color" id="cFg"><span><b>Текст</b><i id="cFgHex"></i></span></label>
+            <label class="color"><input type="color" id="cAccent"><span><b>Кнопки</b><i id="cAccentHex"></i></span></label>
           </div>
         </div>
-        <div class="field">
-          <span class="field__label">Акцентный цвет</span>
-          <div class="swatches" id="swatches">
-            <button type="button" style="--c:#8b5cf6" data-accent="#8b5cf6" aria-label="Фиолетовый"></button>
-            <button type="button" style="--c:#ec4899" data-accent="#ec4899" aria-label="Розовый"></button>
-            <button type="button" style="--c:#06b6d4" data-accent="#06b6d4" aria-label="Бирюзовый"></button>
-            <button type="button" style="--c:#22c55e" data-accent="#22c55e" aria-label="Зелёный"></button>
-            <button type="button" style="--c:#f97316" data-accent="#f97316" aria-label="Оранжевый"></button>
-            <button type="button" style="--c:#ef4444" data-accent="#ef4444" aria-label="Красный"></button>
-            <label class="swatch-custom" aria-label="Свой цвет"><input type="color" id="accentPicker" value="#8b5cf6"></label>
-          </div>
-        </div>
-        <div class="field field--row">
-          <label><span class="field__label">Шрифт заголовков</span>
+
+        <div class="group group--row">
+          <label><span class="label">Шрифт заголовков</span>
             <select class="input" id="fontHead">
-              <option value="Unbounded">Unbounded</option>
-              <option value="Russo One">Russo One</option>
+              <option value="Inter Tight">Inter Tight</option>
+              <option value="Instrument Serif">Instrument Serif</option>
               <option value="Manrope">Manrope</option>
+              <option value="Unbounded">Unbounded</option>
               <option value="JetBrains Mono">JetBrains Mono</option>
             </select>
           </label>
-          <label><span class="field__label">Шрифт текста</span>
+          <label><span class="label">Шрифт текста</span>
             <select class="input" id="fontBody">
               <option value="Inter">Inter</option>
               <option value="Manrope">Manrope</option>
@@ -290,32 +311,57 @@
             </select>
           </label>
         </div>
-        <div class="field">
-          <span class="field__label">Расположение блоков</span>
+
+        <div class="group group--row">
+          <div><span class="label">Скругление углов</span>
+            <div class="seg" id="radiusSeg">
+              <button type="button" data-radius="0">0</button>
+              <button type="button" data-radius="6">6</button>
+              <button type="button" data-radius="14">14</button>
+              <button type="button" data-radius="28">28</button>
+            </div>
+          </div>
+          <label><span class="label">Размер текста: <b id="sizeVal">16</b> px</span>
+            <input type="range" id="fontSize" min="14" max="19" step="1">
+          </label>
+        </div>
+
+        <div class="group">
+          <label class="switch"><input type="checkbox" id="motionToggle"><span></span>Анимация робота на главном экране</label>
+        </div>
+
+        <div class="group">
+          <p class="label">Блоки на главной</p>
           <ol class="order" id="blockOrder"></ol>
         </div>
-        <div class="field field--row">
-          <label><span class="field__label">Название сайта</span><input class="input" id="siteName" maxlength="20"></label>
-          <label><span class="field__label">Логотип</span><input class="input" id="logoFile" type="file" accept="image/*"></label>
+
+        <div class="group group--row">
+          <label><span class="label">Название сайта</span><input class="input" id="siteName" maxlength="20"></label>
+          <label><span class="label">Логотип (до 400 КБ)</span><input class="input" id="logoFile" type="file" accept="image/*"></label>
         </div>
-        <button class="btn btn--ghost" type="button" id="resetLook">Сбросить оформление</button>
+
+        <button class="btn btn--line" type="button" id="resetLook">Сбросить оформление</button>
       </section>
 
+      <!-- Баланс -->
       <section class="tab" id="tab-balance" role="tabpanel" aria-labelledby="t-balance" hidden>
         <div class="balance">
-          <div class="balance__card"><span class="muted">Текущие средства</span><b id="balAmount">0 ₽</b></div>
-          <div class="balance__card"><span class="muted">Активная подписка</span><b id="balPlan">—</b><span class="muted small" id="balRenew"></span></div>
+          <div><p class="label">Текущие средства</p><b id="balAmount">0 ₽</b></div>
+          <div><p class="label">Активная подписка</p><b id="balPlan">—</b><span class="muted small" id="balRenew"></span></div>
         </div>
-        <button class="btn btn--primary" type="button" id="topUp">Пополнить на 500 ₽</button>
-        <h3 class="sub">История операций</h3>
-        <ul class="history" id="history"></ul>
+        <button class="btn btn--solid" type="button" id="topUp">Пополнить на 500 ₽</button>
+        <div class="group">
+          <p class="label">История операций</p>
+          <ul class="history" id="history"></ul>
+        </div>
       </section>
 
+      <!-- Удаление -->
       <section class="tab" id="tab-danger" role="tabpanel" aria-labelledby="t-danger" hidden>
         <div class="danger">
           <h3>Удалить аккаунт</h3>
-          <p>Аккаунт будет удалён вместе со всеми данными: настройками бота, статистикой, балансом и историей. Восстановить их будет невозможно.</p>
-          <label class="field"><span class="field__label">Для подтверждения введи <b>УДАЛИТЬ</b></span><input class="input" id="deleteConfirm" autocomplete="off"></label>
+          <p class="muted">Аккаунт будет удалён вместе со всеми данными: настройками бота, статистикой, балансом и историей операций. Восстановить их будет невозможно.</p>
+          <label class="group"><span class="label">Для подтверждения введи слово УДАЛИТЬ</span><input class="input" id="deleteConfirm" autocomplete="off"></label>
           <button class="btn btn--danger" type="button" id="deleteBtn" disabled>Удалить навсегда</button>
         </div>
       </section>
