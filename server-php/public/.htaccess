@@ -24,8 +24,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.html [L]
 
-# Секреты, SQL и логи — закрыть
-<FilesMatch "\.(sql|log)$">
+# Секреты, SQL, логи и архивы (напр. оставшийся site-update.zip) — закрыть
+<FilesMatch "\.(sql|log|zip|tar|gz|tgz)$">
   Require all denied
 </FilesMatch>
 <Files "config.php">

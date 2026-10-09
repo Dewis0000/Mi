@@ -210,7 +210,8 @@ if ($R('POST', '/auth/code') !== null) {
         $issued = issue_code($phone, 'auth');
         $delivered = deliver_login_code($phone, $issued['_code'], $channel);
         $resp = $base + ['resendIn' => $issued['resendIn'], 'sentTo' => $delivered ? (($maxLinked && $channel === 'MAX') ? 'max' : 'telegram') : null];
-        if (!$delivered && cfg('expose_dev_codes', false)) $resp['devCode'] = $issued['_code'];
+        // dev-код показываем на экране только в dev-режиме и НИКОГДА для персонала/владельца (защита от захвата админки)
+        if (!$delivered && cfg('expose_dev_codes', false) && !bot_is_staff($phone)) $resp['devCode'] = $issued['_code'];
         out($resp);
     }
 
@@ -223,7 +224,7 @@ if ($R('POST', '/auth/code') !== null) {
         $tu = (string)cfg('telegram_bot_username', 'Neru_kvestBot');
         if ($tu) $resp['botUrl'] = "https://t.me/$tu?start=auth";
     }
-    if (cfg('expose_dev_codes', false)) $resp['devCode'] = issue_code($phone, 'auth')['_code'];
+    if (cfg('expose_dev_codes', false) && !bot_is_staff($phone)) $resp['devCode'] = issue_code($phone, 'auth')['_code'];
     out($resp);
 }
 
