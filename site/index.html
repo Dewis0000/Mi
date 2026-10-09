@@ -8,7 +8,7 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Streop — бот для стримеров">
   <meta property="og:description" content="Всё, что нужно стримеру, в одном месте: модерация, аналитика, виджеты, алерты.">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#0d0b0b">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,7 @@
   <script>
     // Применяем сохранённое оформление до отрисовки, чтобы не было мигания
     try {
-      var l = JSON.parse(localStorage.getItem('streop.look') || 'null');
+      var l = JSON.parse(localStorage.getItem('streop.look.v2') || 'null');
       if (l && l.bg) {
         var s = document.documentElement.style;
         s.setProperty('--bg', l.bg); s.setProperty('--fg', l.fg);
@@ -87,27 +87,21 @@
     <!-- ===== HERO ===== -->
     <section class="hero" data-block="hero" aria-label="Главный экран">
       <div class="container hero__inner">
-        <div class="hero__text">
-          <p class="label reveal">Бот для Twitch · YouTube · VK Play</p>
-          <h1 class="hero__title reveal" data-site-name>Streop</h1>
-          <p class="hero__lead reveal">Один бот для всего стрима. Модерация, аналитика, виджеты, алерты и музыка <em>в одном окне.</em></p>
+        <p class="label reveal">Бот для Twitch · YouTube · VK Play</p>
+        <h1 class="hero__title reveal" data-site-name>Streop</h1>
+        <div class="hero__bottom">
+          <div class="hero__text">
+            <p class="hero__lead reveal">Один бот для всего стрима. Модерация, аналитика, виджеты, алерты и музыка <em>в одном окне.</em></p>
+            <div class="hero__actions reveal">
+              <button class="btn btn--solid btn--lg" id="continueBtn" type="button">Продолжить <svg class="ic"><use href="#i-arrow"/></svg></button>
+              <a class="btn btn--ghost btn--lg" href="#pricing">Тарифы</a>
+            </div>
+          </div>
           <dl class="hero__stats reveal">
             <div><dt>10</dt><dd>модулей</dd></div>
             <div><dt>3</dt><dd>платформы</dd></div>
             <div><dt>24/7</dt><dd>бот на связи</dd></div>
           </dl>
-          <div class="hero__actions reveal">
-            <button class="btn btn--solid btn--lg" id="continueBtn" type="button">Продолжить <svg class="ic"><use href="#i-arrow"/></svg></button>
-            <a class="btn btn--ghost btn--lg" href="#pricing">Тарифы</a>
-          </div>
-        </div>
-
-        <div class="stage reveal" id="stage">
-          <canvas class="stage__canvas" id="robot" role="img" aria-label="Трёхмерная голова робота из точек. Потяни, чтобы повернуть."></canvas>
-          <span class="stage__tl label"><i class="live-dot"></i>Live · 3D</span>
-          <span class="stage__tr label" id="dotsCount">0 точек</span>
-          <span class="stage__bl label">Потяни, чтобы повернуть</span>
-          <span class="stage__br label" id="coords">Yaw 0° · Pitch 0°</span>
         </div>
       </div>
     </section>
@@ -324,10 +318,6 @@
           <label><span class="label">Размер текста: <b id="sizeVal">16</b> px</span>
             <input type="range" id="fontSize" min="14" max="19" step="1">
           </label>
-        </div>
-
-        <div class="group">
-          <label class="switch"><input type="checkbox" id="motionToggle"><span></span>Анимация робота на главном экране</label>
         </div>
 
         <div class="group">
