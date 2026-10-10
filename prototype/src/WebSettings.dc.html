@@ -11,30 +11,67 @@
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:#0A0A0A}
+html{scroll-padding-top:88px}
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
 a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
+:focus-visible{outline:2px solid #F2F2F2;outline-offset:2px}
 .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
 .ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
 .ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .nav-i{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;color:#B4B4B4}
 .nav-i:hover{background:rgba(255,255,255,.04);color:#F2F2F2}
-.sec{padding:28px;border-radius:8px;border:1px solid #2A2A2A;background:#111111}
+.nav-i[aria-current]{background:rgba(255,255,255,.10);color:#F2F2F2;box-shadow:inset 2px 0 0 #F2F2F2}
+.nav-i.dz{color:#FF6369}
+.nav-i.dz[aria-current]{box-shadow:inset 2px 0 0 #FF6369}
+.snav{flex:1 1 200px;max-width:240px;display:flex;flex-direction:column;gap:2px;position:sticky;top:88px;align-self:flex-start}
+.sec{padding:28px;border-radius:8px;border:1px solid #2A2A2A;background:#111111;scroll-margin-top:88px}
 .sec h2{margin:0;font-size:20px;line-height:26px;font-weight:600;letter-spacing:-.01em}
 .sub{margin:6px 0 0;font-size:14px;line-height:20px;color:#8F8F8F}
 .fl{display:flex;flex-direction:column;gap:8px}
 .fl label,.lab{font-size:13px;line-height:18px;font-weight:500;color:#DCDCDC}
 .inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 15px/22px 'Onest',sans-serif;width:100%}
 .inp:hover{border-color:#8F8F8F}
+.inp[readonly]{background:transparent;border-color:#2A2A2A;color:#DCDCDC}
+.inp[readonly]:hover{border-color:#3A3A3A}
 .hint{font-size:12px;line-height:16px;color:#8F8F8F;margin:0}
-.bp{height:40px;padding:0 16px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 14px/20px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
-.bp:hover{background:#DCDCDC}
-.bs{height:40px;padding:0 16px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 14px/20px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.hint a{text-decoration:underline;text-underline-offset:2px;color:#DCDCDC}
+.bp{height:40px;padding:0 16px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 14px/20px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;white-space:nowrap}
+.bp:hover{background:#DCDCDC;color:#0A0A0A}
+.bs{height:40px;padding:0 16px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 14px/20px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;white-space:nowrap}
 .bs:hover{background:rgba(255,255,255,.04);border-color:#6E6E6E}
+.bd{height:40px;padding:0 16px;border-radius:6px;border:0;background:#D92D20;color:#FFFFFF;font:500 14px/20px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;white-space:nowrap}
+.bp:disabled,.bd:disabled{background:#2A2A2A;color:#6E6E6E;cursor:not-allowed}
+.bs:disabled{border-color:#2A2A2A;color:#6E6E6E;background:transparent;cursor:not-allowed}
 .pl{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 0;border-top:1px solid #1F1F1F}
-.pli{width:40px;height:40px;border-radius:8px;border:1px solid #3A3A3A;display:inline-flex;align-items:center;justify-content:center;font:600 13px/1 'JetBrains Mono',monospace;color:#DCDCDC}
-.preset{display:flex;flex-direction:column;gap:8px;padding:0;border:0;background:transparent;color:#F2F2F2;font:500 14px/20px 'Onest',sans-serif;cursor:pointer;text-align:left}
-.pvw{height:84px;border-radius:8px;position:relative;overflow:hidden}
-input[type=range]{width:100%;accent-color:#F2F2F2;height:24px}
+.pli{width:40px;height:40px;border-radius:8px;border:1px solid #3A3A3A;display:inline-flex;align-items:center;justify-content:center;font:600 13px/1 'JetBrains Mono',monospace;color:#DCDCDC;box-sizing:border-box}
+.st{display:inline-flex;align-items:center;gap:6px;font-size:13px;line-height:18px;color:#B4B4B4}
+.err{margin:0;padding:10px 12px;border:2px solid #F2F2F2;border-radius:6px;font-size:13px;line-height:18px;color:#F2F2F2}
+.note{margin:0;padding:10px 12px;border:1px solid #3A3A3A;border-radius:6px;font-size:13px;line-height:18px;color:#DCDCDC;background:#171717}
+.hl{margin:16px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.hl li{display:flex;gap:10px;font-size:13px;line-height:19px;color:#B4B4B4}
+.hl li svg{flex:none;margin-top:2px;color:#8F8F8F}
+.badge{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:4px;border:1px solid #3A3A3A;font-size:12px;line-height:16px;color:#DCDCDC;white-space:nowrap}
+.plans{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.plan{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:8px;border:1px solid #2A2A2A;background:#171717;min-width:0}
+.feat{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;flex:1}
+.feat li{display:flex;gap:8px;font-size:13px;line-height:18px;color:#DCDCDC}
+.feat li.off{color:#8F8F8F}
+.feat svg{flex:none;margin-top:1px}
 .tx{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:12px 0;border-top:1px solid #1F1F1F;font-size:14px;line-height:20px}
+.dlg-bg{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.64);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;overflow-y:auto}
+.dlg{width:100%;max-width:480px;box-sizing:border-box;padding:28px;border-radius:12px;background:rgba(14,14,14,0.92);border:1px solid rgba(255,255,255,0.14);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12),0 32px 80px -16px rgba(0,0,0,0.75);margin:auto}
+.dlg h2{margin:0;font-size:20px;line-height:26px;font-weight:600}
+.dlg-t{margin:8px 0 0;font-size:14px;line-height:20px;color:#B4B4B4}
+.dlg-a{margin-top:24px;display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.sk{display:inline-block;height:12px;border-radius:4px;background:#1F1F1F}
+@media (max-width: 760px){
+.snav{position:static;max-width:none;flex-basis:100%;flex-direction:row;flex-wrap:wrap}
+.nav-i{height:36px}
+.sec,#danger{padding:20px}
+.pl{grid-template-columns:40px minmax(0,1fr)}
+.pl > :last-child{grid-column:2 / -1;justify-self:start}
+.dlg{padding:20px}
+}
 </style>
 </helmet>
 <div style="position: relative; min-height: 100vh; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
@@ -51,131 +88,650 @@ input[type=range]{width:100%;accent-color:#F2F2F2;height:24px}
 <div style="flex: 999 1 640px; min-width: 0; max-width: 1200px; padding-bottom: 72px">
 <h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Настройки</h1>
 <div style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start">
-<nav aria-label="Разделы настроек" style="flex: 1 1 200px; max-width: 240px; display: flex; flex-direction: column; gap: 2px">
-<a href="#profile" aria-current="page" class="nav-i" style="background: rgba(255,255,255,0.10); color: #F2F2F2; box-shadow: inset 2px 0 0 #F2F2F2">Профиль</a>
-<a href="#platforms" class="nav-i">Платформы</a>
-<a href="#security" class="nav-i">Безопасность</a>
-<a href="#theme" class="nav-i">Оформление</a>
-<a href="#billing" class="nav-i">Тариф и оплата</a>
-<a href="#danger" class="nav-i" style="color: #FF6369">Опасная зона</a>
+<nav aria-label="Разделы настроек" class="snav">
+<sc-for list="{{ secs }}" as="n" hint-placeholder-count="7"><a href="{{ n.href }}" class="{{ n.cls }}" aria-current="{{ n.cur }}" onClick="{{ n.pick }}">{{ n.label }}</a></sc-for>
 </nav>
 
 <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 24px; max-width: 880px">
 
+<!-- Профиль -->
 <section id="profile" class="sec" aria-labelledby="p-t">
-<h2 id="p-t">Личные данные</h2><p class="sub">Ник и аватар видят зрители в виджетах и ответах бота.</p>
+<h2 id="p-t">Профиль</h2><p class="sub">Ник, имя и аватар берутся из Twitch — их видят зрители в виджетах и ответах бота.</p>
 <div style="margin-top: 24px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap">
-<span style="width: 72px; height: 72px; border-radius: 999px; background: linear-gradient(135deg, #B4B4B4, #3A3A3A); display: inline-flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 600; color: #0A0A0A">КС</span>
-<div style="display: flex; flex-direction: column; gap: 8px"><span style="display: flex; gap: 8px"><button type="button" class="bs"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"></path></svg>Загрузить фото</button><button type="button" class="bs" style="border-color: transparent; color: #B4B4B4">Удалить</button></span><p class="hint">JPG или PNG, квадрат от 256 px, до 2 МБ</p></div>
+<span style="width: 72px; height: 72px; flex: none; border-radius: 999px; overflow: hidden; background: linear-gradient(135deg, #B4B4B4, #3A3A3A); display: inline-flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 600; color: #0A0A0A"><sc-if value="{{ hasAvatar }}" hint-placeholder-val="{{ false }}"><img src="{{ avatar }}" alt="" width="72" height="72" style="width: 72px; height: 72px; object-fit: cover; display: block"></sc-if><sc-if value="{{ noAvatar }}" hint-placeholder-val="{{ true }}">{{ initials }}</sc-if></span>
+<div style="min-width: 0; flex: 1 1 240px">
+<p style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600; overflow-wrap: anywhere">{{ profName }}</p>
+<p class="mono" style="margin: 2px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">{{ profLogin }}</p>
+<p class="hint" style="margin-top: 6px">{{ profSince }}</p>
+</div>
 </div>
 <div style="margin-top: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
-<div class="fl"><label for="nick">Ник</label><input id="nick" class="inp" value="kira_stream"></div>
-<div class="fl"><label for="mail">Почта</label><input id="mail" class="inp" type="email" value="kira.stream@yandex.ru"><p class="hint">Сюда придут чеки и уведомления о входе</p></div>
-<div class="fl"><label for="tz">Часовой пояс</label><select id="tz" class="inp" style="appearance: none; background-image: none"><option>Москва, UTC+3</option><option>Екатеринбург, UTC+5</option><option>Новосибирск, UTC+7</option></select></div>
+<div class="fl"><label for="pf-login">Ник на Twitch</label><input id="pf-login" class="inp mono" readonly value="{{ fLogin }}" aria-describedby="pf-h"></div>
+<div class="fl"><label for="pf-name">Имя на канале</label><input id="pf-name" class="inp" readonly value="{{ fName }}" aria-describedby="pf-h"></div>
 </div>
-<div style="margin-top: 24px; display: flex; justify-content: flex-end"><button type="button" class="bp">Сохранить изменения</button></div>
+<p id="pf-h" class="hint" style="margin-top: 12px">Меняются в Twitch: поменяй ник, имя или аватар в <a href="https://www.twitch.tv/settings/profile" target="_blank" rel="noopener">настройках профиля Twitch</a> — здесь они обновятся при следующем входе.</p>
+<div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid #1F1F1F; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+<p class="hint" style="font-size: 13px; line-height: 18px">Вход в StreOps — только через Twitch, пароль не нужен.</p>
+<a href="/auth/logout.php" class="bs"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg>Выйти</a>
+</div>
 </section>
 
+<!-- Бот -->
+<section id="bot" class="sec" aria-labelledby="bt-t">
+<h2 id="bt-t">Бот в канале</h2><p class="sub">{{ botSub }}</p>
+<div style="margin-top: 20px; display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 16px 20px; border-radius: 8px; border: 1px solid #2A2A2A; background: #171717">
+<div style="display: flex; gap: 12px; align-items: center; min-width: 0; flex: 1 1 260px">
+<span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 999px; flex: none; {{ botDot }}"></span>
+<div role="status" style="min-width: 0"><p style="margin: 0; font-size: 15px; line-height: 22px; font-weight: 600">{{ botTitle }}</p><p style="margin: 2px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">{{ botText }}</p></div>
+</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-if value="{{ botShowRetry }}" hint-placeholder-val="{{ false }}"><button type="button" class="bs" onClick="{{ enableBot }}" disabled="{{ botBusy }}">Подключить заново</button></sc-if>
+<sc-if value="{{ botCanEnable }}" hint-placeholder-val="{{ true }}"><button type="button" class="bp" onClick="{{ enableBot }}" disabled="{{ botBusy }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>{{ enableLabel }}</button></sc-if>
+<sc-if value="{{ botCanDisable }}" hint-placeholder-val="{{ false }}"><button type="button" class="bs" onClick="{{ disableBot }}" disabled="{{ botBusy }}">{{ disableLabel }}</button></sc-if>
+</div>
+</div>
+<sc-if value="{{ hasBotFail }}" hint-placeholder-val="{{ false }}"><p role="alert" class="err" style="margin-top: 12px">{{ botFail }}</p></sc-if>
+<sc-if value="{{ hasBotErrors }}" hint-placeholder-val="{{ false }}"><div role="alert" class="err" style="margin-top: 12px"><p style="margin: 0; font-weight: 600">Что мешает боту</p><ul style="margin: 6px 0 0; padding-left: 18px"><sc-for list="{{ botErrors }}" as="e" hint-placeholder-count="1"><li style="overflow-wrap: anywhere">{{ e.text }}</li></sc-for></ul></div></sc-if>
+<ul class="hl">
+<li><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span>{{ modHint }}</span></li>
+<sc-if value="{{ modFailed }}" hint-placeholder-val="{{ false }}"><li style="color: #F2F2F2"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="color: #F2F2F2"><path d="M10.3 3.9L2.4 17.5a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4M12 17h.01"></path></svg><span>{{ modFailText }}</span></li></sc-if>
+<sc-if value="{{ botNotReady }}" hint-placeholder-val="{{ false }}"><li><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg><span>Аккаунт бота ещё не подключил администратор StreOps. Включить бота можно уже сейчас — чтение чата и ответы на команды заработают, как только его подключат.</span></li></sc-if>
+</ul>
+</section>
+
+<!-- Подключения -->
 <section id="platforms" class="sec" aria-labelledby="pl-t">
-<h2 id="pl-t">Привязки платформ</h2><p class="sub">На тарифе «Про» можно подключить до трёх платформ.</p>
+<h2 id="pl-t">Подключения</h2><p class="sub">Откуда StreOps берёт чат, подписки и донаты.</p>
+<sc-if value="{{ hasDaMsg }}" hint-placeholder-val="{{ false }}"><div role="{{ daMsgRole }}" class="{{ daMsgCls }}" style="margin-top: 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px"><span>{{ daMsgText }}</span><button type="button" onClick="{{ hideDaMsg }}" aria-label="Скрыть сообщение" style="flex: none; width: 24px; height: 24px; margin: -2px -4px 0 0; border: 0; border-radius: 4px; background: transparent; color: #B4B4B4; cursor: pointer; display: inline-flex; align-items: center; justify-content: center"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button></div></sc-if>
 <div style="margin-top: 16px">
-<div class="pl"><span class="pli">Tw</span><span><span style="display: block; font-size: 15px; font-weight: 500">Twitch</span><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #B4B4B4"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#F2F2F2"></circle><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round"></path></svg>Подключено как kira_stream</span></span><button type="button" class="bs">Отключить</button></div>
-<div class="pl"><span class="pli">VK</span><span><span style="display: block; font-size: 15px; font-weight: 500">VK Видео Live</span><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #DCDCDC"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.3 3.9L2.4 17.5a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4M12 17h.01"></path></svg>Доступ истекает через 3 дня</span></span><button type="button" class="bp">Переподключить</button></div>
-<div class="pl"><span class="pli" style="border-style: dashed; color: #8F8F8F">YT</span><span><span style="display: block; font-size: 15px; font-weight: 500">YouTube</span><span style="font-size: 13px; color: #8F8F8F">Не подключено</span></span><button type="button" class="bs">Подключить</button></div>
+<div class="pl"><span class="pli">Tw</span><span style="min-width: 0"><span style="display: block; font-size: 15px; font-weight: 500">Twitch</span><span class="st"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="10" fill="#F2F2F2"></circle><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round"></path></svg><span style="overflow-wrap: anywhere">{{ twStatus }}</span></span></span><span class="badge" title="Через Twitch ты входишь в StreOps — отвязать его можно только вместе с аккаунтом">Основной вход</span></div>
+<div class="pl"><span class="pli" style="{{ daIconStyle }}">DA</span><span style="min-width: 0"><span style="display: block; font-size: 15px; font-weight: 500">DonationAlerts</span><span class="st" style="{{ daStatusStyle }}"><sc-if value="{{ daOn }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="10" fill="#F2F2F2"></circle><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round"></path></svg></sc-if><span style="overflow-wrap: anywhere">{{ daStatus }}</span></span></span><span style="display: inline-flex"><sc-if value="{{ daOn }}" hint-placeholder-val="{{ false }}"><button type="button" class="bs" onClick="{{ daDisconnect }}" disabled="{{ daBusy }}">Отключить</button></sc-if><sc-if value="{{ daOff }}" hint-placeholder-val="{{ true }}"><a href="/auth/da.php" class="bp">Подключить</a></sc-if></span></div>
 </div>
+<p class="hint" style="margin-top: 4px">Донаты из DonationAlerts попадают в алерты, цель сбора и топ донатеров. Подключение откроет страницу DonationAlerts — там нужно разрешить доступ.</p>
 </section>
 
-<section id="security" class="sec" aria-labelledby="s-t">
-<h2 id="s-t">Смена пароля</h2><p class="sub">После смены выйдем со всех устройств, кроме этого.</p>
-<div style="margin-top: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
-<div class="fl"><label for="pw0">Текущий пароль</label><input id="pw0" class="inp" type="password" value="streamer2026"></div>
-<div class="fl"><label for="pw1">Новый пароль</label><input id="pw1" class="inp" type="password" value="kira" aria-describedby="pw1-e" style="border: 2px solid #F2F2F2; padding: 0 11px"><p id="pw1-e" style="margin: 0; display: flex; gap: 6px; font-size: 12px; line-height: 16px; color: #F2F2F2; font-weight: 500"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M7.9 2h8.2L22 7.9v8.2L16.1 22H7.9L2 16.1V7.9z"></path><path d="M15 9l-6 6M9 9l6 6"></path></svg>Нужно хотя бы 8 символов</p></div>
-<div class="fl"><label for="pw2">Повтори новый</label><input id="pw2" class="inp" type="password"></div>
+<!-- Тариф и баланс -->
+<section id="billing" class="sec" aria-labelledby="b-t">
+<h2 id="b-t">Тариф и баланс</h2>
+<div style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
+<div style="padding: 20px; border-radius: 8px; border: 2px solid #F2F2F2"><p style="margin: 0; font-size: 13px; color: #8F8F8F">Текущий тариф</p><p style="margin: 8px 0 0; font-size: 24px; line-height: 30px; font-weight: 600">{{ planName }}</p><p style="margin: 4px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">{{ planUntil }}</p><p class="hint" style="margin-top: 12px; font-size: 13px; line-height: 18px">{{ planLimits }}</p></div>
+<div style="padding: 20px; border-radius: 8px; border: 1px solid #2A2A2A; background: #171717"><p style="margin: 0; font-size: 13px; color: #8F8F8F">Баланс</p><p class="mono" style="margin: 8px 0 0; font-size: 32px; line-height: 36px; font-weight: 500">{{ balance }}</p><p style="margin: 4px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">{{ balanceNote }}</p><p class="hint" style="margin-top: 12px; font-size: 13px; line-height: 18px">Пополнение — через администратора: онлайн-оплата пока не подключена. Напиши администратору StreOps свой ник и сумму — он зачислит её на баланс.</p></div>
 </div>
-<div style="margin-top: 24px; display: flex; justify-content: flex-end"><button type="button" class="bp" disabled="" style="background: #2A2A2A; color: #6E6E6E; cursor: not-allowed">Сменить пароль</button></div>
+<h3 style="margin: 28px 0 0; font-size: 15px; font-weight: 600">Тарифы</h3>
+<p class="hint" style="margin-top: 4px; font-size: 13px; line-height: 18px">Оплата списывается с баланса, тариф действует 30 дней. Когда срок закончится, аккаунт вернётся на бесплатный тариф — команды и настройки сохранятся.</p>
+<ul class="plans">
+<sc-for list="{{ plans }}" as="p" hint-placeholder-count="4">
+<li class="plan" style="{{ p.ring }}">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap"><h4 style="margin: 0; font-size: 16px; line-height: 22px; font-weight: 600">{{ p.name }}</h4><sc-if value="{{ p.current }}" hint-placeholder-val="{{ false }}"><span class="badge" style="border-color: #F2F2F2; color: #F2F2F2">Твой тариф</span></sc-if></div>
+<p style="margin: 0"><span class="mono" style="font-size: 22px; line-height: 28px; font-weight: 500">{{ p.price }}</span> <span style="font-size: 13px; color: #8F8F8F">{{ p.per }}</span></p>
+<ul class="feat"><sc-for list="{{ p.lines }}" as="l" hint-placeholder-count="3"><li class="{{ l.cls }}"><sc-if value="{{ l.on }}" hint-placeholder-val="{{ true }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if><sc-if value="{{ l.off }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"></path></svg></sc-if>{{ l.text }}</li></sc-for></ul>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<sc-if value="{{ p.canBuy }}" hint-placeholder-val="{{ false }}"><button type="button" class="{{ p.btnCls }}" style="width: 100%; height: 36px; padding: 0 12px" onClick="{{ p.buy }}" disabled="{{ p.dis }}" aria-describedby="{{ p.descId }}">{{ p.btn }}</button></sc-if>
+<p id="{{ p.descId }}" class="hint">{{ p.note }}</p>
+</div>
+</li>
+</sc-for>
+</ul>
+<h3 style="margin: 28px 0 0; font-size: 15px; font-weight: 600">История операций</h3>
+<ul style="list-style: none; margin: 8px 0 0; padding: 0" aria-busy="{{ txBusy }}">
+<sc-for list="{{ tx }}" as="t" hint-placeholder-count="3"><li class="tx"><span style="min-width: 0"><span style="display: block; overflow-wrap: anywhere">{{ t.title }}</span><span class="mono" style="font-size: 12px; line-height: 16px; color: #8F8F8F">{{ t.meta }}</span></span><span class="mono" style="text-align: right; white-space: nowrap; {{ t.color }}">{{ t.amount }}</span></li></sc-for>
+</ul>
+<sc-if value="{{ txEmpty }}" hint-placeholder-val="{{ false }}"><p style="margin: 8px 0 0; padding: 16px 0 0; border-top: 1px solid #1F1F1F; font-size: 14px; line-height: 20px; color: #8F8F8F">{{ txEmptyText }}</p></sc-if>
 </section>
 
+<!-- Ссылки для OBS -->
+<section id="obs" class="sec" aria-labelledby="o-t">
+<h2 id="o-t">Ссылки для OBS</h2><p class="sub">Каждый виджет открывается в OBS по ссылке с секретным ключом. Не показывай её на стриме: по ней любой сможет вставить твои виджеты к себе.</p>
+<div class="fl" style="margin-top: 20px"><label for="wt">Ключ виджетов</label>
+<div style="display: flex; gap: 8px; flex-wrap: wrap"><input id="wt" class="inp mono" readonly value="{{ tokenShown }}" aria-describedby="wt-h" style="flex: 1 1 220px; width: auto; min-width: 0"><button type="button" class="bs" onClick="{{ toggleToken }}" disabled="{{ noToken }}">{{ showTokenLabel }}</button><button type="button" class="bs" onClick="{{ copyToken }}" disabled="{{ noToken }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>Скопировать</button></div>
+<p id="wt-h" class="hint" style="overflow-wrap: anywhere">Ключ входит в каждую ссылку: <span class="mono">{{ linkExample }}</span>. Готовые ссылки для каждого виджета — в разделе <a href="WebWidgets.dc.html">«Виджеты»</a>.</p>
+</div>
+<div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #1F1F1F; display: flex; justify-content: space-between; gap: 16px; align-items: center; flex-wrap: wrap"><p style="margin: 0; max-width: 480px; font-size: 13px; line-height: 18px; color: #B4B4B4">Если ссылка попала на стрим или к посторонним — сбрось её. Старые ссылки в OBS сразу перестанут работать, их нужно будет вставить заново.</p><button type="button" class="bs" onClick="{{ resetToken }}" disabled="{{ tokenBusy }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5"></path></svg>Сбросить ссылки</button></div>
+</section>
+
+<!-- Оформление -->
 <section id="theme" class="sec" aria-labelledby="t-t">
-<h2 id="t-t">Оформление</h2><p class="sub">Тема, цвет интерфейса, акцент, фон или своя картинка, эффекты, шрифт и масштаб. Изменения видны сразу на всех страницах и сохраняются в этом браузере.</p>
+<h2 id="t-t">Оформление</h2><p class="sub">Тема, цвет интерфейса, акцент, фон или своя картинка, эффекты, шрифт и масштаб. Изменения видны сразу на всех страницах и хранятся в этом браузере.</p>
 <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center"><button type="button" class="bp" onClick="{{ openTheme }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="13.5" cy="6.5" r="1.5"></circle><circle cx="17.5" cy="10.5" r="1.5"></circle><circle cx="8.5" cy="7.5" r="1.5"></circle><circle cx="6.5" cy="12.5" r="1.5"></circle><path d="M12 2a10 10 0 0 0 0 20c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.3A5.7 5.7 0 0 0 22 9.7C22 5.4 17.5 2 12 2z"></path></svg>Открыть редактор оформления</button><button type="button" class="bs" onClick="{{ resetTheme }}">Сбросить к «Графиту»</button></div>
 <p class="hint" style="margin-top: 12px">Редактор также открывается кнопкой «Оформление» в правом нижнем углу любой страницы.</p>
-</section>
-
-<section id="billing" class="sec" aria-labelledby="b-t">
-<h2 id="b-t">Тариф и оплата</h2>
-<div style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
-<div style="padding: 20px; border-radius: 8px; border: 2px solid #F2F2F2"><p style="margin: 0; font-size: 13px; color: #8F8F8F">Текущий тариф</p><p style="margin: 8px 0 0; font-size: 24px; font-weight: 600">Про</p><p style="margin: 4px 0 0; font-size: 14px; color: #B4B4B4"><span class="mono">499&nbsp;₽</span> в месяц · следующее списание <span class="mono">14.11.2026</span></p><div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap"><a href="WebLanding.dc.html#pricing" class="bs" style="height: 36px">Сменить тариф</a></div></div>
-<div style="padding: 20px; border-radius: 8px; border: 1px solid #2A2A2A; background: #171717"><p style="margin: 0; font-size: 13px; color: #8F8F8F">Баланс</p><p class="mono" style="margin: 8px 0 0; font-size: 32px; line-height: 36px; font-weight: 500">1 247&nbsp;₽</p><p style="margin: 4px 0 0; font-size: 14px; color: #B4B4B4">Хватит на 2 месяца «Про»</p><div style="margin-top: 16px"><button type="button" class="bp" style="height: 36px">Пополнить</button></div></div>
-</div>
-<h3 style="margin: 28px 0 0; font-size: 15px; font-weight: 600">Последние операции</h3>
-<div style="margin-top: 8px">
-<div class="tx"><span><span style="display: block">Оплата тарифа «Про»</span><span class="mono" style="font-size: 12px; color: #8F8F8F">14.10.2026 · 10:02 · №&nbsp;48213</span></span><span class="mono" style="text-align: right">−499&nbsp;₽</span></div>
-<div class="tx"><span><span style="display: block">Пополнение баланса, карта ·· 4417</span><span class="mono" style="font-size: 12px; color: #8F8F8F">02.10.2026 · 21:15 · №&nbsp;47790</span></span><span class="mono" style="text-align: right; color: #F2F2F2">+1 000&nbsp;₽</span></div>
-<div class="tx"><span><span style="display: block">Оплата тарифа «Про»</span><span class="mono" style="font-size: 12px; color: #8F8F8F">14.09.2026 · 10:01 · №&nbsp;45102</span></span><span class="mono" style="text-align: right">−499&nbsp;₽</span></div>
+<div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #1F1F1F">
+<p class="lab" style="margin: 0">Тема в аккаунте</p>
+<p style="margin: 4px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">{{ acctThemeText }}</p>
+<div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="bs" onClick="{{ saveTheme }}" disabled="{{ themeBusy }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"></path></svg>{{ saveThemeLabel }}</button><button type="button" class="bs" onClick="{{ loadTheme }}" disabled="{{ cantLoadTheme }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>Загрузить из аккаунта</button></div>
+<p class="hint" style="margin-top: 8px">Сохрани тему в аккаунт, чтобы открыть её на другом компьютере. Своя картинка фона в аккаунт не попадает — она остаётся в этом браузере.</p>
 </div>
 </section>
 
-<section id="danger" aria-labelledby="d-t" style="padding: 28px; border-radius: 8px; border: 1px solid rgba(255,99,105,0.40)">
+<!-- Удаление -->
+<section id="danger" aria-labelledby="d-t" style="padding: 28px; border-radius: 8px; border: 1px solid rgba(255,99,105,0.40); scroll-margin-top: 88px">
 <p class="ov" style="color: #FF6369">Опасная зона</p>
 <h2 id="d-t" style="margin: 8px 0 0; font-size: 20px; line-height: 26px; font-weight: 600">Удаление аккаунта</h2>
-<p class="sub" style="max-width: 560px">Удалим команды, статистику, темы и привязки платформ. Остаток баланса вернём на карту в течение 10 дней. Отменить удаление нельзя.</p>
-<div style="margin-top: 20px"><button type="button" onClick="{{ openConfirm }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: #D92D20; color: #FFFFFF; font: 500 14px/20px 'Onest', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 8px"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"></path></svg>Удалить аккаунт</button></div>
+<p class="sub" style="max-width: 560px">Удалим команды, настройки модерации и музыки, розыгрыши, историю чата и статистику, отключим бота от канала. Остаток баланса и оплаченные дни тарифа пропадут. Отменить удаление нельзя.</p>
+<div style="margin-top: 20px"><button type="button" class="bd" onClick="{{ openDelete }}" disabled="{{ noMe }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"></path></svg>Удалить аккаунт</button></div>
 </section>
 </main>
 </div>
 </div>
 </div>
 
+<sc-if value="{{ hasAsk }}" hint-placeholder-val="{{ false }}">
+<div class="dlg-bg" onClick="{{ askBackdrop }}">
+<div role="alertdialog" aria-modal="true" aria-labelledby="ask-t" aria-describedby="ask-d" class="dlg">
+<h2 id="ask-t">{{ ask.title }}</h2>
+<p id="ask-d" class="dlg-t">{{ ask.text }}</p>
+<sc-if value="{{ hasAskErr }}" hint-placeholder-val="{{ false }}"><p role="alert" class="err" style="margin-top: 16px">{{ askErr }}</p></sc-if>
+<div class="dlg-a"><button type="button" class="bs" id="ask-no" onClick="{{ closeAsk }}">{{ ask.no }}</button><button type="button" class="{{ ask.cls }}" onClick="{{ askYes }}" disabled="{{ askBusy }}">{{ askYesLabel }}</button></div>
+</div>
+</div>
+</sc-if>
+
 <sc-if value="{{ confirm }}" hint-placeholder-val="{{ false }}">
-<div style="position: absolute; inset: 0; z-index: 500; background: rgba(0,0,0,0.64); backdrop-filter: blur(4px); display: flex; align-items: flex-start; justify-content: center; padding: 240px 16px 0">
-<div role="alertdialog" aria-modal="true" aria-labelledby="cf-t" aria-describedby="cf-d" style="position: sticky; top: 120px; width: 100%; max-width: 480px; box-sizing: border-box; padding: 28px; border-radius: 12px; background: rgba(14,14,14,0.92); border: 1px solid rgba(255,255,255,0.14); box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 32px 80px -16px rgba(0,0,0,0.75)">
-<h2 id="cf-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Удалить аккаунт kira_stream?</h2>
-<p id="cf-d" style="margin: 8px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">24 команды, статистика за 47 стримов и 3 привязки платформ будут удалены навсегда.</p>
-<div class="fl" style="margin-top: 20px"><label for="cf-in">Чтобы подтвердить, введи ник <span class="mono" style="color: #F2F2F2">kira_stream</span></label><input id="cf-in" class="inp mono" value="{{ typed }}" onChange="{{ setTyped }}" autocomplete="off"></div>
-<div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap"><button type="button" class="bs" onClick="{{ closeConfirm }}">Оставить аккаунт</button><button type="button" disabled="{{ cantDelete }}" style="{{ delStyle }}">Удалить навсегда</button></div>
+<div class="dlg-bg" onClick="{{ delBackdrop }}">
+<div role="alertdialog" aria-modal="true" aria-labelledby="cf-t" aria-describedby="cf-d" class="dlg">
+<form onSubmit="{{ doDelete }}">
+<h2 id="cf-t" style="overflow-wrap: anywhere">{{ delTitle }}</h2>
+<p id="cf-d" class="dlg-t">{{ delText }}</p>
+<div class="fl" style="margin-top: 20px"><label for="cf-in">Чтобы подтвердить, введи ник <span class="mono" style="color: #F2F2F2">{{ myLogin }}</span></label><input id="cf-in" class="inp mono" value="{{ typed }}" onChange="{{ setTyped }}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-invalid="{{ delInvalid }}"></div>
+<sc-if value="{{ hasDelErr }}" hint-placeholder-val="{{ false }}"><p role="alert" class="err" style="margin-top: 16px">{{ delErr }}</p></sc-if>
+<div class="dlg-a"><button type="button" class="bs" onClick="{{ closeConfirm }}">Оставить аккаунт</button><button type="submit" class="bd" disabled="{{ cantDelete }}">{{ delLabel }}</button></div>
+</form>
 </div>
 </div>
 </sc-if>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2300}}'>
+// Тарифы — копия server/app/lib/plans.php (публичного маршрута со списком тарифов пока нет).
+// Лимиты текущего тарифа берутся из me.user.limits.
+const STRE_PLANS = [
+  { key: 'free', name: 'Бесплатный', price: 0, commands: 10, widgets: 2, music: false },
+  { key: 'advanced', name: 'Продвинутая', price: 299, commands: 30, widgets: 3, music: false },
+  { key: 'pro', name: 'Про', price: 499, commands: 1000, widgets: 10, music: true },
+  { key: 'max', name: 'Максимум', price: 967, commands: 1000, widgets: 100, music: true },
+];
+const STRE_SECS = [['profile', 'Профиль'], ['bot', 'Бот в канале'], ['platforms', 'Подключения'], ['billing', 'Тариф и баланс'], ['obs', 'Ссылки для OBS'], ['theme', 'Оформление'], ['danger', 'Опасная зона']];
+const STRE_TX = { plan: 'Оплата тарифа', topup: 'Пополнение', charge: 'Списание', grant: 'Тариф от администратора', ban: 'Блокировка' };
+const STRE_DA_ERR = {
+  denied: 'Ты отменил подключение на странице DonationAlerts.',
+  state: 'Ссылка подключения устарела. Нажми «Подключить» ещё раз.',
+  token: 'DonationAlerts не подтвердил подключение. Попробуй ещё раз через пару минут.',
+  config: 'DonationAlerts пока не настроен на сервере StreOps. Напиши администратору.',
+};
+
+function streDays(n, one, few, many) {
+  const a = Math.abs(n) % 100, b = a % 10;
+  if (a > 10 && a < 20) return many;
+  if (b > 1 && b < 5) return few;
+  if (b === 1) return one;
+  return many;
+}
+function streRub(n) { return (n < 0 ? '−' : '') + StreAPI.fmtNum(Math.abs(n)) + ' ₽'; }
+
 class Component extends DCLogic {
-  constructor(props) { super(props); this.state = { preset: 0, blur: 24, dim: 64, effect: 0, confirm: false, typed: '' }; }
+  constructor(props) {
+    super(props);
+    this.state = {
+      me: null, bot: null, tx: [], txLoaded: false,
+      busy: '', botMsg: null, botFail: '', daMsg: null, showToken: false,
+      acctTheme: undefined, ask: null, askErr: '', askBusy: false,
+      confirm: false, typed: '', delErr: '', deleting: false, sec: 'profile',
+    };
+  }
+
+  componentDidMount() {
+    this.readDaParam();
+    this.load();
+    this.loadTx();
+    this.loadAcctTheme();
+    this.onScroll = () => {
+      if (this.raf) return;
+      this.raf = requestAnimationFrame(() => { this.raf = 0; this.spy(); });
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (this.state.ask && !this.state.askBusy) this.closeAsk();
+      else if (this.state.confirm && !this.state.deleting) this.closeDelete();
+    });
+    // Баланс могли пополнить, пока вкладка была в фоне
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && this.state.me) { this.reloadMe(); this.loadTx(); }
+    });
+    this.spy();
+  }
+
+  readDaParam() {
+    let p;
+    try { p = new URLSearchParams(location.search); } catch (e) { return; }
+    const da = p.get('da');
+    if (!da) return;
+    if (da === 'connected') this.setState({ daMsg: { ok: true } });
+    else {
+      const reason = p.get('reason') || (da.indexOf('error_') === 0 ? da.slice(6) : '');
+      this.setState({ daMsg: { ok: false, text: STRE_DA_ERR[reason] || 'Не удалось подключить DonationAlerts. Попробуй ещё раз.' } });
+    }
+    p.delete('da'); p.delete('reason');
+    const q = p.toString();
+    try { history.replaceState(null, '', location.pathname + (q ? '?' + q : '') + location.hash); } catch (e) { /* ничего */ }
+  }
+
+  async load() {
+    try {
+      const m = await StreAPI.me();
+      if (!m || !m.user) return; // api.js отправит на вход через Twitch
+      this.setState({ me: m.user, bot: m.bot || null });
+      if (location.hash && !this.scrolled) {
+        this.scrolled = true;
+        const el = document.getElementById(location.hash.slice(1));
+        if (el) requestAnimationFrame(() => el.scrollIntoView());
+      }
+    } catch (e) { StreAPI.toast(e.message, 'error'); }
+  }
+
+  async reloadMe() {
+    try {
+      const m = await StreAPI.refreshMe();
+      if (!m || !m.user) return;
+      if (JSON.stringify(m.user) !== JSON.stringify(this.state.me) || JSON.stringify(m.bot) !== JSON.stringify(this.state.bot)) this.setState({ me: m.user, bot: m.bot || null });
+    } catch (e) { /* покажем старые данные */ }
+  }
+
+  async loadTx() {
+    try {
+      const r = await StreAPI.get('account.transactions');
+      const items = r.items || [];
+      if (!this.state.txLoaded || JSON.stringify(items) !== JSON.stringify(this.state.tx)) this.setState({ tx: items, txLoaded: true });
+    } catch (e) { if (!this.state.txLoaded) { this.setState({ txLoaded: true, txErr: e.message }); } }
+  }
+
+  async loadAcctTheme() {
+    try {
+      const r = await StreAPI.get('account.theme');
+      this.setState({ acctTheme: r.theme && typeof r.theme === 'object' ? r.theme : null });
+      return r.theme || null;
+    } catch (e) { this.setState({ acctTheme: null, acctThemeErr: e.message }); return null; }
+  }
+
+  spy() {
+    let cur = STRE_SECS[0][0];
+    for (const [id] of STRE_SECS) {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= 140) cur = id;
+    }
+    const doc = document.documentElement;
+    if (window.innerHeight + window.scrollY >= doc.scrollHeight - 4) cur = STRE_SECS[STRE_SECS.length - 1][0];
+    if (cur !== this.state.sec) this.setState({ sec: cur });
+  }
+
+  // ---------- модальные окна ----------
+  openAsk(ask) {
+    this.lastFocus = document.activeElement;
+    this.setState({ ask: Object.assign({ no: 'Отмена', cls: 'bp' }, ask), askErr: '', askBusy: false });
+    setTimeout(() => { const b = document.getElementById('ask-no'); if (b) b.focus(); }, 0);
+  }
+  closeAsk() {
+    this.setState({ ask: null, askErr: '', askBusy: false });
+    this.restoreFocus();
+  }
+  restoreFocus() {
+    const f = this.lastFocus;
+    this.lastFocus = null;
+    setTimeout(() => { if (f && document.contains(f) && !f.disabled) f.focus(); }, 0);
+  }
+  async runAsk() {
+    const a = this.state.ask;
+    if (!a || this.state.askBusy) return;
+    this.setState({ askBusy: true, askErr: '' });
+    try {
+      await a.run();
+      this.setState({ ask: null, askBusy: false });
+      this.restoreFocus();
+    } catch (e) { this.setState({ askBusy: false, askErr: e.message }); }
+  }
+  openDelete() {
+    this.lastFocus = document.activeElement;
+    this.setState({ confirm: true, typed: '', delErr: '' });
+    setTimeout(() => { const i = document.getElementById('cf-in'); if (i) i.focus(); }, 0);
+  }
+  closeDelete() {
+    this.setState({ confirm: false, typed: '', delErr: '' });
+    this.restoreFocus();
+  }
+
+  // ---------- бот ----------
+  async enableBot() {
+    const me = this.state.me;
+    if (!me || this.state.busy) return;
+    this.setState({ busy: 'botOn', botFail: '', botMsg: null });
+    try {
+      const r = await StreAPI.post('bot.enable');
+      const errors = r.errors || [];
+      this.setState({ botMsg: { moderator: r.moderator !== false, errors } });
+      StreAPI.toast(errors.length ? 'Бот включён, но не всё получилось — смотри подробности' : 'Бот подключён к каналу', errors.length ? 'error' : undefined);
+      await this.reloadMe();
+    } catch (e) {
+      this.setState({ botFail: e.message });
+    }
+    this.setState({ busy: '' });
+  }
+  async disableBot() {
+    const me = this.state.me;
+    if (!me || this.state.busy) return;
+    // оптимистично: бот сразу показан выключенным, при ошибке вернём как было
+    this.setState({ busy: 'botOff', botFail: '', botMsg: null, me: Object.assign({}, me, { botEnabled: false, botError: null }) });
+    try {
+      await StreAPI.post('bot.disable');
+      StreAPI.toast('Бот отключён от канала');
+      await this.reloadMe();
+    } catch (e) {
+      this.setState({ me, botFail: e.message });
+    }
+    this.setState({ busy: '' });
+  }
+
+  // ---------- тариф ----------
+  askBuy(p) {
+    const me = this.state.me;
+    if (!me) return;
+    const now = Date.now() / 1000;
+    const same = me.plan === p.key;
+    const base = same && me.planUntil > now ? me.planUntil : now;
+    const until = StreAPI.fmtDate(base + 30 * 86400);
+    let text = 'Спишем ' + streRub(p.price) + ' с баланса (сейчас ' + streRub(me.balance) + '). ';
+    if (same) text += 'Тариф продлится до ' + until + '.';
+    else {
+      text += 'Тариф «' + p.name + '» включится сразу и будет действовать до ' + until + '.';
+      if (me.plan !== 'free') text += me.planUntil > 0 ? ' Оставшиеся дни тарифа «' + me.planName + '» (до ' + StreAPI.fmtDate(me.planUntil) + ') не переносятся.' : ' Бессрочный тариф «' + me.planName + '» сменится на «' + p.name + '» на 30 дней.';
+    }
+    this.openAsk({
+      title: (same ? 'Продлить' : 'Оплатить') + ' «' + p.name + '» с баланса?',
+      text, yes: 'Оплатить ' + streRub(p.price), cls: 'bp',
+      run: async () => {
+        await StreAPI.post('account.buy', { plan: p.key });
+        const m = await StreAPI.refreshMe();
+        if (m && m.user) this.setState({ me: m.user });
+        StreAPI.toast('Тариф «' + p.name + '» оплачен' + (m && m.user && m.user.planUntil ? ' до ' + StreAPI.fmtDate(m.user.planUntil) : ''));
+        this.loadTx();
+      },
+    });
+  }
+
+  // ---------- подключения, ключ, тема ----------
+  askDaDisconnect() {
+    const me = this.state.me;
+    this.openAsk({
+      title: 'Отключить DonationAlerts?',
+      text: 'Новые донаты перестанут приходить в алерты, цель сбора и топ донатеров' + (me && me.daName ? ' (аккаунт ' + me.daName + ')' : '') + '. Подключить снова можно в любой момент.',
+      yes: 'Отключить', cls: 'bp',
+      run: async () => {
+        await StreAPI.post('account.da.disconnect');
+        await this.reloadMe();
+        this.setState({ daMsg: null });
+        StreAPI.toast('DonationAlerts отключён');
+      },
+    });
+  }
+  askResetToken() {
+    this.openAsk({
+      title: 'Сбросить ссылки виджетов?',
+      text: 'Создадим новый ключ. Все виджеты, которые сейчас добавлены в OBS по старым ссылкам, сразу перестанут работать — новые ссылки нужно будет вставить заново из раздела «Виджеты».',
+      yes: 'Сбросить ссылки', cls: 'bd',
+      run: async () => {
+        await StreAPI.post('account.widgetToken');
+        await this.reloadMe();
+        StreAPI.toast('Ключ обновлён. Вставь новые ссылки в OBS.');
+      },
+    });
+  }
+  async copy(text) {
+    let ok = false;
+    try { await navigator.clipboard.writeText(text); ok = true; } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+      document.body.appendChild(ta); ta.select();
+      try { ok = document.execCommand('copy'); } catch (e2) { ok = false; }
+      ta.remove();
+    }
+    StreAPI.toast(ok ? 'Ключ скопирован' : 'Не получилось скопировать — нажми «Показать» и выдели ключ вручную', ok ? undefined : 'error');
+  }
+  async saveTheme() {
+    if (!window.StreTheme || this.state.busy) return;
+    const t = window.StreTheme.get();
+    this.setState({ busy: 'theme' });
+    try {
+      await StreAPI.post('account.theme', { theme: t });
+      const saved = Object.assign({}, t);
+      delete saved.image;
+      this.setState({ acctTheme: saved });
+      StreAPI.toast(t.bgType === 'image' ? 'Тема сохранена в аккаунт. Картинка фона осталась только в этом браузере.' : 'Тема сохранена в аккаунт');
+    } catch (e) { StreAPI.toast(e.message, 'error'); }
+    this.setState({ busy: '' });
+  }
+  askLoadTheme() {
+    this.openAsk({
+      title: 'Применить тему из аккаунта?',
+      text: 'Текущее оформление в этом браузере заменится темой, сохранённой в аккаунте.',
+      yes: 'Применить', cls: 'bp',
+      run: async () => {
+        const r = await StreAPI.get('account.theme');
+        if (!r.theme || typeof r.theme !== 'object') { this.setState({ acctTheme: null }); throw new Error('В аккаунте нет сохранённой темы'); }
+        const t = Object.assign({}, r.theme);
+        delete t.image;
+        const local = window.StreTheme.get();
+        if (t.bgType === 'image' && !local.image) t.bgType = 'solid';
+        window.StreTheme.set(t);
+        this.setState({ acctTheme: r.theme });
+        StreAPI.toast('Тема из аккаунта применена');
+      },
+    });
+  }
+
+  async doDelete(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const me = this.state.me;
+    const typed = this.state.typed.trim();
+    if (!me || this.state.deleting || typed.toLowerCase() !== me.login.toLowerCase()) return;
+    this.setState({ deleting: true, delErr: '' });
+    try {
+      await StreAPI.post('account.delete', { confirm: typed });
+      location.href = 'WebLanding.dc.html';
+    } catch (err) { this.setState({ deleting: false, delErr: err.message }); }
+  }
+
   renderVals() {
-    const ps = [
-      { name: 'Графит', bg: 'radial-gradient(120px 60px at 20% 0%, rgba(255,255,255,0.10), transparent 70%), #0A0A0A', glass: '#111111', border: '#2A2A2A' },
-      { name: 'Полночь', bg: 'radial-gradient(1px 1px at 20% 30%, #FFF, transparent), radial-gradient(1px 1px at 70% 20%, #DCDCDC, transparent), radial-gradient(1px 1px at 45% 55%, #FFF, transparent), radial-gradient(1px 1px at 85% 45%, #B4B4B4, transparent), #000000', glass: 'rgba(18,18,18,0.62)', border: 'rgba(255,255,255,0.10)' },
-      { name: 'Бумага', bg: '#F2F2F2', glass: '#FFFFFF', border: '#DCDCDC' },
-      { name: 'Туман', bg: 'radial-gradient(90px 50px at 75% 30%, rgba(220,230,224,0.5), transparent 70%), linear-gradient(160deg, #5E6B63, #0D0F0E)', glass: 'rgba(18,20,19,0.70)', border: 'rgba(255,255,255,0.10)' }
-    ];
-    const fx = ['Нет', 'Звёзды', 'Виньетка', 'Зерно'];
-    const ok = this.state.typed.trim() === 'kira_stream';
-    const base = 'height: 40px; padding: 0 16px; border-radius: 6px; border: 0; font: 500 14px/20px Onest, sans-serif; ';
+    const s = this.state;
+    const me = s.me;
+    const bot = (s.bot && s.bot.login) || 'zaka_bot';
+    const now = Date.now() / 1000;
+    const L = 'Загрузка…';
+
+    // профиль
+    const initials = me ? ((me.name || me.login).replace(/[^A-Za-zА-Яа-яЁё0-9]/g, '').slice(0, 2).toUpperCase() || '?') : '';
+
+    // бот
+    const errs = me && me.botEnabled && me.botError ? String(me.botError).split('; ').filter(Boolean) : [];
+    const botBusy = s.busy === 'botOn' || s.busy === 'botOff';
+    let botTitle = L, botText = '', botDot = 'background: #3A3A3A';
+    if (me) {
+      if (s.busy === 'botOn') { botTitle = 'Подключаем бота…'; botText = 'Назначаем ' + bot + ' модератором и подписываемся на события канала.'; botDot = 'background: #8F8F8F'; }
+      else if (s.busy === 'botOff') { botTitle = 'Отключаем бота…'; botText = 'Это займёт пару секунд.'; botDot = 'background: #8F8F8F'; }
+      else if (me.botEnabled && !errs.length) { botTitle = 'Бот работает в канале'; botText = bot + ' читает чат, отвечает на команды и модерирует.'; botDot = 'background: #F2F2F2; box-shadow: 0 0 0 4px rgba(255,255,255,0.12)'; }
+      else if (me.botEnabled) { botTitle = 'Бот включён, но не всё работает'; botText = 'Подробности ниже. Исправь причину и нажми «Подключить заново».'; botDot = 'background: transparent; border: 2px solid #F2F2F2; box-sizing: border-box'; }
+      else { botTitle = 'Бот выключен'; botText = 'Включи, чтобы ' + bot + ' начал отвечать на команды и следить за чатом.'; botDot = 'background: #525252'; }
+    }
+
+    // DonationAlerts
+    const daOn = !!(me && me.daConnected);
+    let daMsgText = '';
+    if (s.daMsg) daMsgText = s.daMsg.ok ? 'DonationAlerts подключён' + (me && me.daName ? ' как ' + me.daName : '') + '. Новые донаты появятся в алертах и виджетах.' : s.daMsg.text;
+
+    // тарифы
+    const bal = me ? me.balance : 0;
+    const cur = me ? STRE_PLANS.find((p) => p.key === me.plan) : null;
+    const plans = STRE_PLANS.map((p0) => {
+      const p = Object.assign({}, p0, me && me.plan === p0.key && me.limits ? { commands: me.limits.commands, widgets: me.limits.widgets, music: !!me.limits.music } : {});
+      const isCur = !!me && me.plan === p.key;
+      const unlimitedCur = isCur && p.price > 0 && me.planUntil === 0;
+      const canBuy = !!me && p.price > 0 && !unlimitedCur;
+      const short = Math.max(0, p.price - bal);
+      let note = '';
+      if (!me) note = '';
+      else if (p.price === 0) note = isCur ? 'Действует всегда, без оплаты' : 'Включится сам, когда закончится платный тариф';
+      else if (unlimitedCur) note = 'Выдан бессрочно — продлевать не нужно';
+      else if (short > 0) note = 'Не хватает ' + streRub(short) + ' на балансе';
+      else if (isCur) note = 'Продлим с ' + StreAPI.fmtDate(me.planUntil > now ? me.planUntil : now);
+      else note = 'Хватает на балансе';
+      return {
+        name: p.name, current: isCur,
+        price: p.price ? StreAPI.fmtNum(p.price) + ' ₽' : '0 ₽',
+        per: p.price ? 'за 30 дней' : 'навсегда',
+        ring: isCur ? 'border: 2px solid #F2F2F2; padding: 15px' : '',
+        lines: [
+          { text: p.commands >= 1000 ? 'Команды без ограничений' : 'До ' + p.commands + ' ' + streDays(p.commands, 'команды', 'команд', 'команд'), on: true, off: false, cls: '' },
+          { text: (p.widgets >= 100 ? 'До ' : '') + p.widgets + ' ' + streDays(p.widgets, 'виджет', 'виджета', 'виджетов') + ' для OBS', on: true, off: false, cls: '' },
+          { text: p.music ? 'Музыка по заказу зрителей' : 'Без музыки по заказу', on: p.music, off: !p.music, cls: p.music ? '' : 'off' },
+        ],
+        canBuy, dis: short > 0 || !!s.ask,
+        btnCls: isCur ? 'bs' : 'bp',
+        btn: (isCur ? 'Продлить · ' : 'Оплатить с баланса · ') + streRub(p.price),
+        descId: 'plan-' + p.key + '-n',
+        note,
+        buy: () => this.askBuy(p),
+      };
+    });
+    let planUntil = L, planLimits = '';
+    if (me) {
+      if (me.plan === 'free') planUntil = 'Бесплатно, без срока';
+      else if (me.planUntil > 0) {
+        const left = Math.max(0, Math.ceil((me.planUntil - now) / 86400));
+        planUntil = 'до ' + StreAPI.fmtDate(me.planUntil) + ' · ' + (left ? 'осталось ' + left + ' ' + streDays(left, 'день', 'дня', 'дней') : 'последний день');
+      } else planUntil = 'бессрочно';
+      const lim = me.limits || {};
+      planLimits = (lim.commands >= 1000 ? 'Команды без ограничений' : 'Команд: до ' + lim.commands) + ' · виджетов: ' + lim.widgets + ' · музыка: ' + (lim.music ? 'есть' : 'нет');
+    }
+    let balanceNote = '';
+    if (me) {
+      if (cur && cur.price > 0) {
+        const n = Math.floor(bal / cur.price);
+        balanceNote = n > 0 ? 'Хватит на ' + n + ' ' + streDays(n, 'продление', 'продления', 'продлений') + ' «' + cur.name + '»' : 'На продление «' + cur.name + '» не хватает ' + streRub(cur.price - bal);
+      } else balanceNote = bal > 0 ? 'Можно оплатить тариф ниже' : 'Пока пусто';
+    }
+
+    // операции
+    const tx = s.tx.map((t) => ({
+      title: t.comment || STRE_TX[t.kind] || 'Операция',
+      meta: (STRE_TX[t.kind] || t.kind) + ' · ' + StreAPI.fmtDate(t.at) + ' · ' + StreAPI.fmtTime(t.at) + ' · № ' + t.id,
+      amount: t.amount === 0 ? '—' : (t.amount > 0 ? '+' : '') + streRub(t.amount),
+      color: t.amount > 0 ? 'color: #F2F2F2' : 'color: #B4B4B4',
+    }));
+    const txEmpty = !s.txLoaded || !tx.length;
+    const txEmptyText = !s.txLoaded ? L : (s.txErr ? 'Не удалось загрузить операции: ' + s.txErr : 'Операций пока нет. Здесь появятся пополнения баланса и оплаты тарифов.');
+
+    // ключ виджетов
+    const token = (me && me.widgetToken) || '';
+    const masked = token ? '•'.repeat(Math.max(12, token.length)) : '';
+    const origin = location.origin && location.origin !== 'null' ? location.origin : 'https://streops.ru';
+
+    // тема
+    let acctThemeText = 'Проверяем…';
+    if (s.acctTheme === null) acctThemeText = 'В аккаунте пока нет сохранённой темы.';
+    else if (s.acctTheme) {
+      const pr = window.StreTheme && window.StreTheme.presets ? window.StreTheme.presets[s.acctTheme.preset] : null;
+      acctThemeText = 'Сохранена тема «' + (pr ? pr.name : 'Своя') + '»' + (s.acctTheme.mode === 'light' ? ', светлая' : ', тёмная') + '.';
+    }
+
+    // удаление
+    const typedOk = !!me && s.typed.trim().toLowerCase() === me.login.toLowerCase();
+    let delText = 'Команды, настройки, история чата и статистика канала удалятся навсегда, бот отключится от канала.';
+    if (me && me.plan !== 'free') delText += ' Тариф «' + me.planName + '» сгорит.';
+    if (me && me.balance > 0) delText += ' На балансе ' + streRub(me.balance) + ' — они тоже пропадут.';
+
+    const ask = s.ask;
     return {
+      secs: STRE_SECS.map(([id, label]) => ({
+        href: '#' + id, label, cls: id === 'danger' ? 'nav-i dz' : 'nav-i', cur: s.sec === id ? 'true' : false,
+        pick: () => this.setState({ sec: id }),
+      })),
+      noMe: !me,
+
+      hasAvatar: !!(me && me.avatar), noAvatar: !(me && me.avatar), avatar: me ? me.avatar : '', initials,
+      profName: me ? me.name : L, profLogin: me ? 'twitch.tv/' + me.login : '',
+      profSince: me && me.createdAt ? 'В StreOps с ' + StreAPI.fmtDate(me.createdAt) : '',
+      fLogin: me ? me.login : '', fName: me ? me.name : '',
+
+      botSub: 'Бот ' + bot + ' отвечает на команды, ставит музыку, проводит розыгрыши и модерирует чат твоего канала Twitch.',
+      botTitle, botText, botDot, botBusy: botBusy || !me,
+      botCanEnable: !!me && (s.busy === 'botOn' || (!me.botEnabled && s.busy !== 'botOff')),
+      botCanDisable: !!me && (s.busy === 'botOff' || (!!me.botEnabled && s.busy !== 'botOn')),
+      botShowRetry: !!me && !!me.botEnabled && errs.length > 0 && !botBusy,
+      enableLabel: s.busy === 'botOn' ? 'Подключаем…' : 'Подключить бота',
+      disableLabel: s.busy === 'botOff' ? 'Отключаем…' : 'Отключить',
+      enableBot: () => this.enableBot(), disableBot: () => this.disableBot(),
+      hasBotFail: !!s.botFail, botFail: s.botFail,
+      hasBotErrors: !botBusy && errs.length > 0, botErrors: errs.map((t) => ({ text: t })),
+      modHint: bot + ' сам становится модератором твоего канала, когда ты подключаешь бота: без этого он не сможет удалять сообщения и выдавать таймауты.',
+      modFailed: !!(s.botMsg && !s.botMsg.moderator),
+      modFailText: 'Не получилось назначить ' + bot + ' модератором. Сделай это вручную: напиши в своём чате /mod ' + bot,
+      botNotReady: !!(s.bot && !s.bot.ready),
+
+      twStatus: me ? 'Подключено как ' + me.login : L,
+      daOn, daOff: !daOn && !!me,
+      daStatus: !me ? L : (daOn ? 'Подключено' + (me.daName ? ' как ' + me.daName : '') : 'Не подключено'),
+      daStatusStyle: daOn ? '' : 'color: #8F8F8F',
+      daIconStyle: daOn ? '' : 'border-style: dashed; color: #8F8F8F',
+      daBusy: !!s.ask,
+      daDisconnect: () => this.askDaDisconnect(),
+      hasDaMsg: !!s.daMsg, daMsgText, daMsgRole: s.daMsg && !s.daMsg.ok ? 'alert' : 'status', daMsgCls: s.daMsg && !s.daMsg.ok ? 'err' : 'note',
+      hideDaMsg: () => this.setState({ daMsg: null }),
+
+      planName: me ? me.planName : L, planUntil, planLimits,
+      balance: me ? streRub(bal) : '—', balanceNote,
+      plans,
+      tx, txEmpty, txEmptyText, txBusy: s.txLoaded ? 'false' : 'true',
+
+      tokenShown: !token ? (me ? 'Ключа нет' : L) : (s.showToken ? token : masked),
+      noToken: !token,
+      showTokenLabel: s.showToken ? 'Скрыть' : 'Показать',
+      toggleToken: () => this.setState({ showToken: !s.showToken }),
+      copyToken: () => this.copy(token),
+      linkExample: origin + '/w/?t=' + (token && s.showToken ? token : '••••') + '&w=alerts',
+      tokenBusy: !me,
+      resetToken: () => this.askResetToken(),
+
       openTheme: () => { if (window.StreTheme) window.StreTheme.open(); },
-      resetTheme: () => { if (window.StreTheme) window.StreTheme.reset(); },
-      presets: ps.map((p, i) => Object.assign({}, p, {
-        sel: this.state.preset === i ? 'true' : 'false',
-        ring: this.state.preset === i ? '2px solid #F2F2F2' : '1px solid #3A3A3A',
-        pick: () => this.setState({ preset: i })
-      })),
-      blur: this.state.blur,
-      dim: this.state.dim,
-      setBlur: (e) => this.setState({ blur: Number(e.target.value) }),
-      setDim: (e) => this.setState({ dim: Number(e.target.value) }),
-      effects: fx.map((l, i) => ({
-        label: l, sel: this.state.effect === i ? 'true' : 'false',
-        bg: this.state.effect === i ? '#F2F2F2' : 'transparent',
-        fg: this.state.effect === i ? '#0A0A0A' : '#B4B4B4',
-        pick: () => this.setState({ effect: i })
-      })),
-      confirm: this.state.confirm,
-      openConfirm: () => this.setState({ confirm: true, typed: '' }),
-      closeConfirm: () => this.setState({ confirm: false }),
-      typed: this.state.typed,
-      setTyped: (e) => this.setState({ typed: e.target.value }),
-      cantDelete: !ok,
-      delStyle: base + (ok ? 'background: #D92D20; color: #FFFFFF; cursor: pointer' : 'background: #2A2A2A; color: #6E6E6E; cursor: not-allowed')
+      resetTheme: () => this.openAsk({
+        title: 'Сбросить оформление?',
+        text: 'Вернём стандартную тему «Графит» в этом браузере. Тема, сохранённая в аккаунте, не изменится.',
+        yes: 'Сбросить', cls: 'bp',
+        run: async () => { if (window.StreTheme) window.StreTheme.reset(); StreAPI.toast('Оформление сброшено к «Графиту»'); },
+      }),
+      acctThemeText,
+      themeBusy: s.busy === 'theme' || !me,
+      saveThemeLabel: s.busy === 'theme' ? 'Сохраняем…' : 'Сохранить тему в аккаунт',
+      saveTheme: () => this.saveTheme(),
+      cantLoadTheme: !s.acctTheme,
+      loadTheme: () => this.askLoadTheme(),
+
+      hasAsk: !!ask, ask: ask || {},
+      hasAskErr: !!s.askErr, askErr: s.askErr, askBusy: s.askBusy,
+      askYesLabel: s.askBusy ? 'Секунду…' : (ask ? ask.yes : ''),
+      askYes: () => this.runAsk(),
+      closeAsk: () => { if (!s.askBusy) this.closeAsk(); },
+      askBackdrop: (e) => { if (e.target === e.currentTarget && !s.askBusy) this.closeAsk(); },
+
+      confirm: s.confirm,
+      openDelete: () => this.openDelete(),
+      closeConfirm: () => { if (!s.deleting) this.closeDelete(); },
+      delBackdrop: (e) => { if (e.target === e.currentTarget && !s.deleting) this.closeDelete(); },
+      delTitle: 'Удалить аккаунт ' + (me ? me.login : '') + '?',
+      delText, myLogin: me ? me.login : '',
+      typed: s.typed,
+      setTyped: (e) => this.setState({ typed: e.target.value, delErr: '' }),
+      delInvalid: !!s.delErr,
+      hasDelErr: !!s.delErr, delErr: s.delErr,
+      cantDelete: !typedOk || s.deleting,
+      delLabel: s.deleting ? 'Удаляем…' : 'Удалить навсегда',
+      doDelete: (e) => this.doDelete(e),
     };
   }
 }

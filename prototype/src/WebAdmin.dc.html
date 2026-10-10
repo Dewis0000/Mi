@@ -1,0 +1,857 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>StreOps — админ-панель</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0A0A0A}
+a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
+[hidden]{display:none !important}
+:focus-visible{outline:2px solid #F2F2F2;outline-offset:2px}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.card{background:#111111;border:1px solid #2A2A2A;border-radius:8px}
+.h2{margin:0;font-size:20px;line-height:26px;font-weight:600}
+.h3{margin:0;font-size:16px;line-height:22px;font-weight:600}
+.txt{margin:0;font-size:14px;line-height:20px;color:#B4B4B4}
+.hint{font-size:12px;line-height:16px;color:#8F8F8F;margin:0}
+.tab{height:44px;padding:0;border:0;background:transparent;color:#8F8F8F;font:500 14px/20px 'Onest',sans-serif;display:flex;gap:6px;align-items:center;cursor:pointer;white-space:nowrap}
+.tab:hover{color:#F2F2F2}
+.tab[aria-selected="true"]{color:#F2F2F2;box-shadow:inset 0 -2px 0 #F2F2F2}
+.btn{height:40px;padding:0 16px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 14px/20px 'Onest',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap;box-sizing:border-box}
+a.btn:hover{color:#0A0A0A;background:#DCDCDC}
+.btn:hover{background:#DCDCDC}
+.bs{height:40px;padding:0 16px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 14px/20px 'Onest',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap;box-sizing:border-box}
+.bs:hover{border-color:#8F8F8F;background:rgba(255,255,255,.04)}
+.bd{height:40px;padding:0 16px;border-radius:6px;border:1px solid rgba(217,45,32,.6);background:transparent;color:#FF6369;font:500 14px/20px 'Onest',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap;box-sizing:border-box}
+.bd:hover{background:rgba(217,45,32,.12);border-color:#D92D20}
+.bdx{height:40px;padding:0 16px;border-radius:6px;border:0;background:#D92D20;color:#FFFFFF;font:500 14px/20px 'Onest',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap}
+.bdx:hover{background:#B42318}
+.sm{height:32px;padding:0 12px;font-size:13px}
+button[disabled]{opacity:.45;cursor:not-allowed}
+.ib{width:36px;height:36px;border-radius:6px;border:0;background:transparent;color:#B4B4B4;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+.ib:hover{background:rgba(255,255,255,.06);color:#F2F2F2}
+.lnk{border:0;background:transparent;padding:0;color:#F2F2F2;font:inherit;cursor:pointer;text-decoration:underline;text-decoration-color:#525252;text-underline-offset:3px;text-align:left}
+.lnk:hover{text-decoration-color:#F2F2F2}
+.fl{display:flex;flex-direction:column;gap:8px;min-width:0}
+.fl > label,.lab{font-size:13px;line-height:18px;font-weight:500;color:#DCDCDC}
+.inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 15px/22px 'Onest',sans-serif;width:100%}
+.inp:hover{border-color:#8F8F8F}
+.sg{display:inline-flex;flex-wrap:wrap;gap:2px;padding:2px;border:1px solid #3A3A3A;border-radius:6px;align-self:flex-start;max-width:100%;box-sizing:border-box}
+.seg{min-height:36px;padding:0 12px;border:0;border-radius:4px;background:transparent;color:#B4B4B4;font:500 13px/18px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.seg:hover{color:#F2F2F2}
+.seg[aria-checked="true"],.seg[aria-pressed="true"]{background:#F2F2F2;color:#0A0A0A}
+.seg small{font:400 11px/14px 'JetBrains Mono',monospace;opacity:.7}
+.kpi{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.sd{width:10px;height:10px;border-radius:999px;flex:none;display:inline-block}
+.pill{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:4px;border:1px solid #3A3A3A;color:#B4B4B4;font-size:12px;line-height:16px;white-space:nowrap;box-sizing:border-box}
+.pill.on{color:#F2F2F2;border-color:#8F8F8F}
+.pill.bad{color:#FF6369;border-color:rgba(217,45,32,.55)}
+.pill.adm{color:#0A0A0A;background:#DCDCDC;border-color:#DCDCDC}
+.alert{display:flex;gap:14px;align-items:flex-start;padding:16px 18px;border-radius:8px;border:1px solid #3A3A3A;background:#111111}
+.alert.bad{border:1px solid rgba(217,45,32,.6);box-shadow:inset 3px 0 0 #D92D20}
+.alert.ok{border-color:#8F8F8F}
+code.c{font:400 13px/18px 'JetBrains Mono',monospace;padding:2px 6px;border-radius:4px;background:#1F1F1F;border:1px solid #2A2A2A;color:#F2F2F2;word-break:break-all}
+.av{width:32px;height:32px;border-radius:999px;background:linear-gradient(135deg,#B4B4B4,#3A3A3A);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#0A0A0A;flex:none;overflow:hidden}
+.av img{width:100%;height:100%;object-fit:cover;display:block}
+.tw{overflow:hidden;border:1px solid #2A2A2A;border-radius:8px;background:#111111}
+.tbl{width:100%;border-collapse:collapse;font-size:14px;line-height:20px}
+.tbl th{text-align:left;font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;padding:12px 16px;border-bottom:1px solid #2A2A2A;white-space:nowrap}
+.tbl td{padding:12px 16px;border-top:1px solid #1F1F1F;vertical-align:middle}
+.tbl tbody tr:first-child td{border-top:0}
+.tbl tr.rw{cursor:pointer}
+.tbl tr.rw:hover td{background:rgba(255,255,255,.03)}
+.tbl .num{text-align:right;white-space:nowrap}
+.cl{display:flex;gap:12px;align-items:center;min-width:0}
+.muted{color:#8F8F8F}
+.ovl{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.64);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:flex-start;justify-content:center;padding:48px 16px;overflow-y:auto;box-sizing:border-box}
+.ovl.top{z-index:550;align-items:center}
+.dlg{width:100%;box-sizing:border-box;border-radius:12px;background:rgba(17,17,17,.97);border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 32px 80px -16px rgba(0,0,0,.75)}
+.dsec{padding:24px;border-top:1px solid #2A2A2A;display:flex;flex-direction:column;gap:16px}
+.mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:#2A2A2A;border-top:1px solid #2A2A2A}
+.mini > div{background:#111111;padding:14px 24px}
+.err{margin:0;padding:10px 12px;border:2px solid #F2F2F2;border-radius:6px;font-size:13px;line-height:18px}
+.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.kv{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:12px 0;border-top:1px solid #1F1F1F;font-size:14px}
+.kv:first-child{border-top:0}
+@media (max-width: 760px){
+.tbl thead{display:none}
+.tw{border:0;background:transparent;overflow:visible}
+.tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:auto}
+.tbl tr{border:1px solid #2A2A2A;border-radius:8px;padding:8px 14px;margin-bottom:8px;background:#111111}
+.tbl td{border:0 !important;padding:6px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:right}
+.tbl td::before{content:attr(data-l);color:#8F8F8F;font-size:12px;flex:none;text-align:left}
+.tbl td.first{justify-content:flex-start;text-align:left;padding-bottom:10px}
+.tbl td.first::before,.tbl td.nolab::before{display:none}
+.tbl td.wrap{flex-wrap:wrap}
+.tbl .num{text-align:right}
+.ovl{padding:16px 12px}
+.dsec{padding:20px 16px}
+.mini > div{padding:12px 16px}
+}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
+
+<header style="position: sticky; top: 0; z-index: 200; background: rgba(10,10,10,0.72); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.08)">
+<div style="height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 24px">
+<a href="WebLanding.dc.html" style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</a>
+<a href="WebSettings.dc.html" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 8px 0 6px; border-radius: 6px; font-size: 14px; font-weight: 500"><span style="width: 32px; height: 32px; border-radius: 999px; background: linear-gradient(135deg, #B4B4B4, #3A3A3A); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #0A0A0A">КС</span>kira_stream<svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></a>
+</div>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; box-sizing: border-box; max-width: 1920px; margin: 0 auto">
+<nav aria-label="Разделы стрим-панели"></nav>
+<main style="flex: 999 1 640px; min-width: 0">
+<nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px"><li><a href="WebDashboard.dc.html" style="color: #8F8F8F">Стрим-панель</a></li><li aria-hidden="true" style="color: #525252">/</li><li aria-current="page" style="color: #F2F2F2">Админ-панель</li></ol></nav>
+<div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
+<div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Админ-панель</h1><p style="margin: 6px 0 0; font-size: 15px; color: #B4B4B4">{{ subtitle }}</p></div>
+<sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}"><button type="button" class="bs" onClick="{{ refresh }}" disabled="{{ refreshing }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"></path></svg>{{ refreshLabel }}</button></sc-if>
+</div>
+
+<sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}"><p role="status" style="margin: 32px 0; font-size: 14px; color: #8F8F8F">Загрузка…</p></sc-if>
+
+<sc-if value="{{ denied }}" hint-placeholder-val="{{ false }}">
+<section class="card" style="margin-top: 24px; padding: 32px; max-width: 560px" aria-labelledby="dn-t">
+<svg class="ic" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" style="color: #8F8F8F"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+<h2 id="dn-t" class="h2" style="margin-top: 12px">Раздел только для администратора</h2>
+<p class="txt" style="margin-top: 8px">Здесь управляют всем сервисом StreOps, поэтому вход открыт одному аккаунту Twitch. Настройки твоего канала — в стрим-панели.</p>
+<div style="margin-top: 20px"><a href="WebDashboard.dc.html" class="btn">Перейти к обзору</a></div>
+</section>
+</sc-if>
+
+<sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px">
+<sc-if value="{{ cronBad }}" hint-placeholder-val="{{ false }}">
+<div class="alert bad" role="alert">
+<span class="sd" style="margin-top: 5px; background: #D92D20; box-shadow: 0 0 0 4px rgba(217,45,32,.25)"></span>
+<div style="min-width: 0">
+<p style="margin: 0; font-size: 15px; line-height: 22px; font-weight: 600">Cron не работает — последний запуск: {{ cronAgo }}</p>
+<p class="txt" style="margin-top: 4px">Без него не приходят донаты DonationAlerts, не обновляются статусы эфиров, не снимаются истёкшие тарифы и не чинятся подписки EventSub. Добавь в планировщик хостинга (ISPmanager → Планировщик) задачу раз в минуту: <code class="c">php ~/streops-app/cron.php</code></p>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ botMissing }}" hint-placeholder-val="{{ false }}">
+<div class="alert">
+<svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 1px; color: #DCDCDC"><path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg>
+<div style="min-width: 0; flex: 1">
+<p style="margin: 0; font-size: 15px; line-height: 22px; font-weight: 600">Бот не читает чаты: аккаунт {{ botLogin }} не подключён к приложению</p>
+<p class="txt" style="margin-top: 4px">Пока его не подключить, подписки EventSub на сообщения не создаются и команды в чатах не срабатывают.</p>
+</div>
+<button type="button" class="bs sm" onClick="{{ goBot }}" style="flex: none">Как подключить</button>
+</div>
+</sc-if>
+</div>
+
+<div role="tablist" aria-label="Разделы админ-панели" style="margin-top: 20px; display: flex; flex-wrap: wrap; column-gap: 24px; border-bottom: 1px solid #2A2A2A">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4"><button type="button" role="tab" class="tab" id="{{ t.id }}" aria-controls="{{ t.panel }}" aria-selected="{{ t.sel }}" tabindex="{{ t.ti }}" onClick="{{ t.pick }}" onKeyDown="{{ t.key }}">{{ t.label }}<span class="mono" style="font-size: 12px; color: #8F8F8F">{{ t.n }}</span></button></sc-for>
+</div>
+
+<!-- ===================== СВОДКА ===================== -->
+<section role="tabpanel" id="p-sum" aria-labelledby="t-sum" hidden="{{ hideSum }}" style="margin-top: 24px; display: flex; flex-direction: column; gap: 24px">
+<sc-if value="{{ statsErrOn }}" hint-placeholder-val="{{ false }}"><p role="alert" class="err">Не удалось загрузить сводку: {{ statsErr }}</p></sc-if>
+<div class="kpi" aria-busy="{{ statsBusy }}">
+<sc-for list="{{ kpis }}" as="k" hint-placeholder-count="6">
+<div class="card" style="padding: 20px"><p style="margin: 0; font-size: 13px; color: #8F8F8F">{{ k.label }}</p><p class="mono" style="margin: 10px 0 0; font-size: 32px; line-height: 36px; font-weight: 500; letter-spacing: -0.02em">{{ k.val }}</p><p style="margin: 8px 0 0; font-size: 12px; line-height: 16px; color: #8F8F8F">{{ k.sub }}</p></div>
+</sc-for>
+</div>
+
+<div class="grid3">
+<section class="card" style="padding: 24px" aria-labelledby="cr-t">
+<h2 id="cr-t" class="h3">Фоновые задачи (cron)</h2>
+<p style="display: flex; align-items: center; gap: 10px; margin: 16px 0 0; font-size: 18px; line-height: 24px; font-weight: 500"><span class="sd" style="{{ cronDot }}"></span>{{ cronState }}</p>
+<p class="hint" style="margin-top: 6px">Последний запуск: <span class="mono" style="color: #DCDCDC">{{ cronAgo }}</span></p>
+<p class="txt" style="margin-top: 16px; font-size: 13px; line-height: 19px">Раз в минуту обновляет статусы эфиров, забирает донаты DonationAlerts, снимает истёкшие тарифы и закрывает розыгрыши по таймеру. Раз в 15 минут проверяет подписки EventSub.</p>
+</section>
+
+<section class="card" style="padding: 24px" aria-labelledby="bs-t">
+<h2 id="bs-t" class="h3">Бот и EventSub</h2>
+<p style="display: flex; align-items: center; gap: 10px; margin: 16px 0 0; font-size: 18px; line-height: 24px; font-weight: 500"><span class="sd" style="{{ botDot }}"></span><span class="mono" style="font-size: 16px">{{ botLogin }}</span></p>
+<p class="hint" style="margin-top: 6px">{{ botStateText }}</p>
+<p class="txt" style="margin-top: 16px; font-size: 13px; line-height: 19px">Подписок EventSub: <span class="mono" style="color: #F2F2F2">{{ subsTotal }}</span></p>
+<div style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{ byStatus }}" as="b" hint-placeholder-count="2"><span class="{{ b.cls }}">{{ b.label }} <span class="mono">{{ b.n }}</span></span></sc-for>
+<sc-if value="{{ noByStatus }}" hint-placeholder-val="{{ false }}"><span class="hint">Подписок пока нет</span></sc-if>
+</div>
+<div style="margin-top: 16px"><button type="button" class="bs sm" onClick="{{ goBot }}">Открыть раздел «Бот»</button></div>
+</section>
+
+<section class="card" style="padding: 24px" aria-labelledby="cf-t">
+<h2 id="cf-t" class="h3">Конфигурация</h2>
+<div style="margin-top: 8px">
+<sc-for list="{{ cfgRows }}" as="c" hint-placeholder-count="4">
+<div class="kv"><div style="min-width: 0"><span style="color: #DCDCDC">{{ c.k }}</span><sc-if value="{{ c.hasNote }}" hint-placeholder-val="{{ false }}"><p class="hint" style="margin-top: 2px">{{ c.note }}</p></sc-if></div><span class="{{ c.cls }}" style="{{ c.style }}">{{ c.v }}</span></div>
+</sc-for>
+</div>
+<p class="hint" style="margin-top: 12px">Ключи задаются в файле <span class="mono">.env</span> на сервере.</p>
+</section>
+</div>
+</section>
+
+<!-- ===================== БОТ И EVENTSUB ===================== -->
+<section role="tabpanel" id="p-bot" aria-labelledby="t-bot" hidden="{{ hideBot }}" style="margin-top: 24px; display: flex; flex-direction: column; gap: 24px">
+<sc-if value="{{ botConnected }}" hint-placeholder-val="{{ false }}">
+<div class="alert ok" role="status">
+<svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M20 6L9 17l-5-5"></path></svg>
+<div style="min-width: 0; flex: 1"><p style="margin: 0; font-size: 15px; line-height: 22px; font-weight: 600">Аккаунт бота подключён</p><p class="txt" style="margin-top: 4px">Подписки EventSub для каналов с включённым ботом созданы заново. Проверь список ниже.</p></div>
+<button type="button" class="ib" aria-label="Скрыть сообщение" onClick="{{ hideConnected }}"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button>
+</div>
+</sc-if>
+
+<section class="card" style="padding: 24px" aria-labelledby="ba-t">
+<p class="ov">Аккаунт бота</p>
+<sc-if value="{{ botReady }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap">
+<div style="min-width: 0">
+<h2 id="ba-t" class="h2" style="display: flex; align-items: center; gap: 10px"><span class="sd" style="background: #F2F2F2"></span><span class="mono">{{ botLogin }}</span> подключён</h2>
+<p class="txt" style="margin-top: 8px; max-width: 620px">Бот читает чаты через EventSub и пишет в них от своего имени. Если Twitch отозвал доступ, сменился пароль бота или в чатах тишина — переподключи его тем же способом, что и в первый раз.</p>
+</div>
+<a href="/auth/bot.php" class="bs">Переподключить</a>
+</div>
+<details style="margin-top: 16px"><summary style="cursor: pointer; font-size: 13px; color: #B4B4B4">Как переподключить</summary><ol style="margin: 12px 0 0; padding-left: 20px; font-size: 14px; line-height: 22px; color: #DCDCDC"><li>Выйди из Twitch и войди как <span class="mono">{{ botLogin }}</span> (или открой эту страницу в другом браузере).</li><li>Нажми «Переподключить». Twitch спросит разрешения — подтверди.</li><li>Ты вернёшься сюда, а подписки EventSub создадутся заново.</li></ol></details>
+</sc-if>
+<sc-if value="{{ botNotReady }}" hint-placeholder-val="{{ true }}">
+<h2 id="ba-t2" class="h2" style="margin-top: 12px; font-size: 24px; line-height: 30px">Подключи аккаунт бота {{ botLogin }}</h2>
+<p class="txt" style="margin-top: 8px; max-width: 680px">{{ botWhy }}</p>
+<ol style="margin: 20px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; max-width: 680px">
+<li style="display: flex; gap: 14px; align-items: flex-start"><span class="mono" style="flex: none; width: 28px; height: 28px; border-radius: 999px; border: 1px solid #6E6E6E; display: inline-flex; align-items: center; justify-content: center; font-size: 13px">1</span><span style="font-size: 15px; line-height: 26px">Перед нажатием выйди из Twitch и войди как <span class="mono">{{ botLogin }}</span> (или открой эту страницу в другом браузере).</span></li>
+<li style="display: flex; gap: 14px; align-items: flex-start"><span class="mono" style="flex: none; width: 28px; height: 28px; border-radius: 999px; border: 1px solid #6E6E6E; display: inline-flex; align-items: center; justify-content: center; font-size: 13px">2</span><span style="font-size: 15px; line-height: 26px">Нажми «Подключить аккаунт бота». Twitch спросит разрешения для StreOps — подтверди.</span></li>
+<li style="display: flex; gap: 14px; align-items: flex-start"><span class="mono" style="flex: none; width: 28px; height: 28px; border-radius: 999px; border: 1px solid #6E6E6E; display: inline-flex; align-items: center; justify-content: center; font-size: 13px">3</span><span style="font-size: 15px; line-height: 26px">Ты вернёшься сюда. Вход в StreOps не сменится, а подписки для каналов с ботом создадутся сами.</span></li>
+</ol>
+<div style="margin-top: 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap"><a href="/auth/bot.php" class="btn" style="height: 48px; padding: 0 22px; font-size: 15px"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"></path><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"></path></svg>Подключить аккаунт бота</a><span class="hint" style="max-width: 360px">Если Twitch откроется под другим аккаунтом, StreOps откажет и попросит войти ботом.</span></div>
+</sc-if>
+</section>
+
+<section class="card" style="padding: 24px" aria-labelledby="es-t">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap">
+<div style="min-width: 0"><h2 id="es-t" class="h2">Подписки EventSub</h2><p class="txt" style="margin-top: 6px; max-width: 620px">По ним Twitch присылает сообщения чата, начало и конец эфира, фолловы и награды. На каждый канал с ботом — до 7 подписок.</p></div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<button type="button" class="bs" onClick="{{ resync }}" disabled="{{ resyncOff }}" title="{{ resyncTitle }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"></path></svg>{{ resyncLabel }}</button>
+<button type="button" class="bd" onClick="{{ purge }}" disabled="{{ purgeOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"></path></svg>{{ purgeLabel }}</button>
+</div>
+</div>
+<div style="margin-top: 16px; display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{ byStatus }}" as="b" hint-placeholder-count="2"><span class="{{ b.cls }}">{{ b.label }} <span class="mono">{{ b.n }}</span></span></sc-for>
+</div>
+<sc-if value="{{ subsErrOn }}" hint-placeholder-val="{{ false }}"><p role="alert" class="err" style="margin-top: 16px">{{ subsErr }}</p></sc-if>
+<div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+<div class="sg" role="radiogroup" aria-label="Какие подписки показать">
+<sc-for list="{{ subFilters }}" as="f" hint-placeholder-count="3"><button type="button" role="radio" class="seg" aria-checked="{{ f.sel }}" onClick="{{ f.pick }}">{{ f.label }}<small>{{ f.n }}</small></button></sc-for>
+</div>
+<label style="position: relative; display: block; width: 240px; max-width: 100%"><span class="sr">Канал</span><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="position: absolute; left: 12px; top: 12px; color: #8F8F8F"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.3-4.3"></path></svg><input type="search" class="inp" placeholder="Канал" value="{{ subQ }}" onChange="{{ setSubQ }}" style="padding-left: 36px"></label>
+</div>
+<sc-if value="{{ subsLoading }}" hint-placeholder-val="{{ false }}"><p role="status" style="margin: 20px 0 0; font-size: 14px; color: #8F8F8F">Загрузка…</p></sc-if>
+<sc-if value="{{ subsHasRows }}" hint-placeholder-val="{{ true }}">
+<div class="tw" style="margin-top: 16px">
+<table class="tbl">
+<thead><tr><th scope="col">Канал</th><th scope="col">Событие</th><th scope="col">Статус</th><th scope="col" class="num">Создана</th></tr></thead>
+<tbody>
+<sc-for list="{{ subRows }}" as="x" hint-placeholder-count="5">
+<tr><td class="first"><span class="mono" style="font-size: 13px">{{ x.channel }}</span></td><td data-l="Событие"><span>{{ x.type }}<span class="mono muted" style="display: block; font-size: 11px; line-height: 14px">{{ x.raw }}</span></span></td><td data-l="Статус"><span class="{{ x.cls }}">{{ x.status }}</span></td><td data-l="Создана" class="num mono muted" style="font-size: 13px">{{ x.at }}</td></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</sc-if>
+<sc-if value="{{ subsEmpty }}" hint-placeholder-val="{{ false }}"><p style="margin: 20px 0 0; padding: 24px; border: 1px dashed #3A3A3A; border-radius: 8px; font-size: 14px; line-height: 20px; color: #8F8F8F; text-align: center">{{ subsEmptyText }}</p></sc-if>
+</section>
+</section>
+
+<!-- ===================== ПОЛЬЗОВАТЕЛИ ===================== -->
+<section role="tabpanel" id="p-users" aria-labelledby="t-users" hidden="{{ hideUsers }}" style="margin-top: 24px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+<label style="position: relative; display: block; width: 320px; max-width: 100%"><span class="sr">Поиск пользователя по нику</span><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="position: absolute; left: 12px; top: 12px; color: #8F8F8F"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.3-4.3"></path></svg><input type="search" class="inp" placeholder="Ник или имя на Twitch" value="{{ q }}" onChange="{{ setQ }}" autocomplete="off" style="padding-left: 36px"></label>
+<p class="hint" role="status">{{ usersNote }}</p>
+</div>
+<sc-if value="{{ usersErrOn }}" hint-placeholder-val="{{ false }}"><p role="alert" class="err" style="margin-top: 16px">{{ usersErr }}</p></sc-if>
+<sc-if value="{{ usersLoading }}" hint-placeholder-val="{{ false }}"><p role="status" style="margin: 20px 0 0; font-size: 14px; color: #8F8F8F">Загрузка…</p></sc-if>
+<sc-if value="{{ usersHasRows }}" hint-placeholder-val="{{ true }}">
+<div class="tw" style="margin-top: 16px">
+<table class="tbl">
+<thead><tr><th scope="col">Пользователь</th><th scope="col">Тариф</th><th scope="col" class="num">Баланс</th><th scope="col">Бот</th><th scope="col">Доступ</th><th scope="col">Последний вход</th><th scope="col"><span class="sr">Действия</span></th></tr></thead>
+<tbody>
+<sc-for list="{{ userRows }}" as="u" hint-placeholder-count="6">
+<tr class="rw" onClick="{{ u.open }}">
+<td class="first"><div class="cl"><span class="av"><sc-if value="{{ u.hasAv }}" hint-placeholder-val="{{ false }}"><img src="{{ u.avatar }}" alt="" width="32" height="32" loading="lazy"></sc-if>{{ u.ini }}</span><div style="min-width: 0"><div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><span style="font-weight: 500">{{ u.name }}</span><sc-if value="{{ u.isAdmin }}" hint-placeholder-val="{{ false }}"><span class="pill adm" style="height: 18px; font-size: 11px">админ</span></sc-if></div><span class="mono muted" style="font-size: 12px">{{ u.sub }}</span></div></div></td>
+<td data-l="Тариф"><span>{{ u.plan }}<span class="muted" style="display: block; font-size: 12px; line-height: 16px">{{ u.planSub }}</span></span></td>
+<td data-l="Баланс" class="num mono">{{ u.balance }}</td>
+<td data-l="Бот"><span class="{{ u.botCls }}" title="{{ u.botTitle }}">{{ u.bot }}</span></td>
+<td data-l="Доступ"><span class="{{ u.accCls }}">{{ u.access }}</span></td>
+<td data-l="Последний вход" class="mono muted" style="font-size: 13px; white-space: nowrap">{{ u.last }}</td>
+<td class="nolab" style="text-align: right"><button type="button" class="bs sm" aria-label="{{ u.manageLabel }}" onClick="{{ u.open }}">Управлять</button></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</sc-if>
+<sc-if value="{{ usersEmpty }}" hint-placeholder-val="{{ false }}"><p style="margin: 16px 0 0; padding: 24px; border: 1px dashed #3A3A3A; border-radius: 8px; font-size: 14px; line-height: 20px; color: #8F8F8F; text-align: center">{{ usersEmptyText }}</p></sc-if>
+</section>
+
+<!-- ===================== ОПЕРАЦИИ ===================== -->
+<section role="tabpanel" id="p-tx" aria-labelledby="t-tx" hidden="{{ hideTx }}" style="margin-top: 24px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+<div class="sg" role="radiogroup" aria-label="Тип операций">
+<sc-for list="{{ txFilters }}" as="f" hint-placeholder-count="4"><button type="button" role="radio" class="seg" aria-checked="{{ f.sel }}" onClick="{{ f.pick }}">{{ f.label }}<small>{{ f.n }}</small></button></sc-for>
+</div>
+<label style="position: relative; display: block; width: 240px; max-width: 100%"><span class="sr">Фильтр операций по нику</span><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="position: absolute; left: 12px; top: 12px; color: #8F8F8F"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.3-4.3"></path></svg><input type="search" class="inp" placeholder="Ник" value="{{ txQ }}" onChange="{{ setTxQ }}" autocomplete="off" style="padding-left: 36px"></label>
+</div>
+<p class="hint" style="margin-top: 12px">Последние 100 операций по всем пользователям: оплаты тарифов, начисления, списания, выдача тарифов и блокировки.</p>
+<sc-if value="{{ txErrOn }}" hint-placeholder-val="{{ false }}"><p role="alert" class="err" style="margin-top: 16px">{{ txErr }}</p></sc-if>
+<sc-if value="{{ txLoading }}" hint-placeholder-val="{{ false }}"><p role="status" style="margin: 20px 0 0; font-size: 14px; color: #8F8F8F">Загрузка…</p></sc-if>
+<sc-if value="{{ txHasRows }}" hint-placeholder-val="{{ true }}">
+<div class="tw" style="margin-top: 16px">
+<table class="tbl">
+<thead><tr><th scope="col">Когда</th><th scope="col">Пользователь</th><th scope="col">Операция</th><th scope="col" class="num">Сумма</th><th scope="col">Комментарий</th><th scope="col">Кто</th></tr></thead>
+<tbody>
+<sc-for list="{{ txRows }}" as="t" hint-placeholder-count="6">
+<tr><td class="first mono muted" style="font-size: 13px; white-space: nowrap">{{ t.at }}</td><td data-l="Пользователь"><sc-if value="{{ t.hasLogin }}" hint-placeholder-val="{{ true }}"><button type="button" class="lnk mono" style="font-size: 13px" onClick="{{ t.open }}" aria-label="{{ t.openLabel }}">{{ t.login }}</button></sc-if><sc-if value="{{ t.noLogin }}" hint-placeholder-val="{{ false }}"><span class="muted">удалён</span></sc-if></td><td data-l="Операция"><span class="pill">{{ t.kind }}</span></td><td data-l="Сумма" class="num mono" style="{{ t.amountStyle }}">{{ t.amount }}</td><td data-l="Комментарий" class="wrap" style="font-size: 13px; color: #B4B4B4; max-width: 380px">{{ t.comment }}</td><td data-l="Кто" class="mono muted" style="font-size: 12px">{{ t.admin }}</td></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</sc-if>
+<sc-if value="{{ txEmpty }}" hint-placeholder-val="{{ false }}"><p style="margin: 16px 0 0; padding: 24px; border: 1px dashed #3A3A3A; border-radius: 8px; font-size: 14px; line-height: 20px; color: #8F8F8F; text-align: center">{{ txEmptyText }}</p></sc-if>
+</section>
+</sc-if>
+</main>
+</div>
+
+<!-- ===================== КАРТОЧКА ПОЛЬЗОВАТЕЛЯ ===================== -->
+<sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
+<div class="ovl" onClick="{{ ovlClick }}">
+<div role="dialog" aria-modal="true" aria-labelledby="um-t" aria-describedby="um-d" class="dlg" style="max-width: 760px">
+<div style="display: flex; align-items: flex-start; gap: 16px; padding: 24px">
+<span class="av" style="width: 48px; height: 48px; font-size: 16px"><sc-if value="{{ su.hasAv }}" hint-placeholder-val="{{ false }}"><img src="{{ su.avatar }}" alt="" width="48" height="48"></sc-if>{{ su.ini }}</span>
+<div style="min-width: 0; flex: 1">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><h2 id="um-t" class="h2">{{ su.name }}</h2><sc-if value="{{ su.isAdmin }}" hint-placeholder-val="{{ false }}"><span class="pill adm">админ</span></sc-if><sc-if value="{{ su.banned }}" hint-placeholder-val="{{ false }}"><span class="pill bad">заблокирован</span></sc-if></div>
+<p id="um-d" class="hint" style="margin-top: 4px; font-size: 13px; line-height: 18px"><span class="mono">{{ su.ids }}</span><br>{{ su.since }}</p>
+</div>
+<button type="button" class="ib" id="um-close" aria-label="Закрыть карточку пользователя" onClick="{{ closeUser }}"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button>
+</div>
+<div class="mini">
+<div><p class="ov">Тариф</p><p style="margin: 6px 0 0; font-size: 15px; font-weight: 500">{{ su.plan }}</p><p class="hint" style="margin-top: 2px">{{ su.planSub }}</p></div>
+<div><p class="ov">Баланс</p><p class="mono" style="margin: 6px 0 0; font-size: 15px; font-weight: 500">{{ su.balance }}</p></div>
+<div><p class="ov">Бот</p><p style="margin: 6px 0 0"><span class="{{ su.botCls }}">{{ su.bot }}</span></p></div>
+<div><p class="ov">Доступ</p><p style="margin: 6px 0 0"><span class="{{ su.accCls }}">{{ su.access }}</span></p></div>
+</div>
+<sc-if value="{{ su.hasBotErr }}" hint-placeholder-val="{{ false }}"><div style="padding: 12px 24px; border-top: 1px solid #2A2A2A"><p class="hint">Ошибка бота</p><p class="mono" style="margin: 4px 0 0; font-size: 12px; line-height: 18px; color: #DCDCDC; word-break: break-word">{{ su.botErr }}</p></div></sc-if>
+
+<form class="dsec" onSubmit="{{ grantPlan }}" aria-labelledby="pl-t">
+<h3 id="pl-t" class="h3">Тариф</h3>
+<div class="fl"><span class="lab" id="pl-p">Какой тариф</span>
+<div class="sg" role="radiogroup" aria-labelledby="pl-p">
+<sc-for list="{{ planOpts }}" as="p" hint-placeholder-count="4"><button type="button" role="radio" class="seg" aria-checked="{{ p.sel }}" onClick="{{ p.pick }}">{{ p.label }}<small>{{ p.price }}</small></button></sc-for>
+</div>
+</div>
+<sc-if value="{{ showDays }}" hint-placeholder-val="{{ true }}">
+<div class="fl"><span class="lab" id="pl-d">Срок</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+<div class="sg" role="radiogroup" aria-labelledby="pl-d">
+<sc-for list="{{ dayOpts }}" as="d" hint-placeholder-count="6"><button type="button" role="radio" class="seg" aria-checked="{{ d.sel }}" onClick="{{ d.pick }}">{{ d.label }}</button></sc-for>
+</div>
+<sc-if value="{{ customDays }}" hint-placeholder-val="{{ false }}"><label style="display: flex; align-items: center; gap: 8px"><span class="sr">Своё число дней</span><input id="pl-cd" class="inp mono" type="number" inputmode="numeric" min="1" max="3650" step="1" value="{{ pf.custom }}" onChange="{{ setCustom }}" placeholder="45" style="width: 96px"><span class="hint" style="font-size: 13px">дней</span></label></sc-if>
+</div>
+</div>
+</sc-if>
+<p class="txt" style="font-size: 13px; line-height: 19px">{{ planHint }}</p>
+<div class="fl"><label for="pl-c">Комментарий <span class="muted" style="font-weight: 400">— необязательно, его увидит пользователь</span></label><input id="pl-c" class="inp" value="{{ pf.comment }}" onChange="{{ setPlanComment }}" maxlength="200" placeholder="Например: за участие в бета-тесте"></div>
+<sc-if value="{{ planErrOn }}" hint-placeholder-val="{{ false }}"><p role="alert" class="err">{{ planErr }}</p></sc-if>
+<div style="display: flex; justify-content: flex-end"><button type="submit" class="{{ planBtnCls }}" disabled="{{ planOff }}">{{ planBtn }}</button></div>
+</form>
+
+<form class="dsec" onSubmit="{{ topUp }}" aria-labelledby="mn-t">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap"><h3 id="mn-t" class="h3">Баланс</h3><span class="mono" style="font-size: 20px; font-weight: 500">{{ su.balance }}</span></div>
+<div class="row2">
+<div class="fl"><label for="mn-a">Сумма, ₽</label><input id="mn-a" class="inp mono" type="number" inputmode="numeric" min="1" max="1000000" step="1" value="{{ mf.amount }}" onChange="{{ setAmount }}" placeholder="500"></div>
+<div class="fl"><label for="mn-c">Комментарий <span class="muted" style="font-weight: 400">— обязателен для списания</span></label><input id="mn-c" class="inp" value="{{ mf.comment }}" onChange="{{ setMoneyComment }}" maxlength="200" placeholder="Причина: возврат, ошибка оплаты…"></div>
+</div>
+<p class="txt" style="font-size: 13px; line-height: 19px">{{ moneyHint }}</p>
+<sc-if value="{{ moneyErrOn }}" hint-placeholder-val="{{ false }}"><p role="alert" class="err">{{ moneyErr }}</p></sc-if>
+<div style="display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap"><button type="button" class="bd" onClick="{{ charge }}" disabled="{{ moneyOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"></path></svg>{{ chargeLabel }}</button><button type="submit" class="btn" disabled="{{ moneyOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>{{ topupLabel }}</button></div>
+</form>
+
+<form class="dsec" onSubmit="{{ toggleBan }}" aria-labelledby="bn-t">
+<h3 id="bn-t" class="h3">Доступ к сервису</h3>
+<p class="txt">{{ banText }}</p>
+<sc-if value="{{ canBan }}" hint-placeholder-val="{{ true }}"><div class="fl"><label for="bn-c">{{ banCommentLabel }} <span class="muted" style="font-weight: 400">— необязательно</span></label><input id="bn-c" class="inp" value="{{ bf.comment }}" onChange="{{ setBanComment }}" maxlength="200" placeholder="{{ banPlaceholder }}"></div></sc-if>
+<sc-if value="{{ banErrOn }}" hint-placeholder-val="{{ false }}"><p role="alert" class="err">{{ banErr }}</p></sc-if>
+<sc-if value="{{ canBan }}" hint-placeholder-val="{{ true }}"><div style="display: flex; justify-content: flex-end"><button type="submit" class="{{ banBtnCls }}" disabled="{{ banOff }}">{{ banBtn }}</button></div></sc-if>
+</form>
+
+<div class="dsec">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap"><h3 class="h3">Последние операции</h3><button type="button" class="lnk" style="font-size: 13px" onClick="{{ goTxOfUser }}">Все операции</button></div>
+<sc-if value="{{ suHasTx }}" hint-placeholder-val="{{ true }}">
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{ suTx }}" as="t" hint-placeholder-count="3"><li class="kv"><span style="min-width: 0"><span style="font-size: 14px">{{ t.kind }}</span><span class="hint" style="display: block; margin-top: 2px">{{ t.at }} · {{ t.comment }}</span></span><span class="mono" style="{{ t.amountStyle }}">{{ t.amount }}</span></li></sc-for>
+</ul>
+</sc-if>
+<sc-if value="{{ suNoTx }}" hint-placeholder-val="{{ false }}"><p class="hint" style="font-size: 13px">Операций пока не было.</p></sc-if>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ===================== ПОДТВЕРЖДЕНИЕ ===================== -->
+<sc-if value="{{ hasAsk }}" hint-placeholder-val="{{ false }}">
+<div class="ovl top">
+<div role="alertdialog" aria-modal="true" aria-labelledby="ask-t" aria-describedby="ask-d" class="dlg" style="max-width: 460px; padding: 28px">
+<h2 id="ask-t" class="h2">{{ ask.title }}</h2>
+<p id="ask-d" class="txt" style="margin-top: 8px">{{ ask.text }}</p>
+<div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap"><button type="button" id="ask-cancel" class="bs" onClick="{{ askNo }}">{{ ask.cancel }}</button><button type="button" id="ask-ok" class="{{ ask.okCls }}" onClick="{{ askYes }}">{{ ask.ok }}</button></div>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1600}}'>
+// Тарифы — как в server/app/lib/plans.php (цена за 30 дней)
+const ADM_PLANS = [['free', 'Бесплатный', 0], ['advanced', 'Продвинутая', 299], ['pro', 'Про', 499], ['max', 'Максимум', 967]];
+const ADM_DAYS = [[7, '7 дней'], [30, '30 дней'], [90, '90 дней'], [365, 'Год'], [0, 'Бессрочно'], ['custom', 'Своё']];
+const ADM_TABS = [['sum', 'Сводка'], ['bot', 'Бот и EventSub'], ['users', 'Пользователи'], ['tx', 'Операции']];
+const ADM_KIND = { topup: 'Начисление', charge: 'Списание', plan: 'Оплата тарифа', grant: 'Выдача тарифа', ban: 'Блокировка' };
+const ADM_SUB_TYPE = {
+  'channel.chat.message': 'Сообщения чата', 'channel.chat.notification': 'Подписки, рейды, гифты', 'stream.online': 'Начало эфира', 'stream.offline': 'Конец эфира',
+  'channel.follow': 'Фолловы', 'channel.channel_points_custom_reward_redemption.add': 'Награды за баллы', 'channel.moderate': 'Действия модераторов',
+};
+const ADM_SUB_STATUS = {
+  enabled: 'работает', webhook_callback_verification_pending: 'ждёт проверки', webhook_callback_verification_failed: 'проверка не прошла',
+  notification_failures_exceeded: 'много сбоев доставки', authorization_revoked: 'доступ отозван', moderator_removed: 'бот снят с модераторов',
+  user_removed: 'аккаунт удалён', version_removed: 'версия устарела', beta_maintenance: 'техработы Twitch',
+};
+
+function admPlural(n, f) { n = Math.abs(n) % 100; const d = n % 10; return n > 10 && n < 20 ? f[2] : d > 1 && d < 5 ? f[1] : d === 1 ? f[0] : f[2]; }
+function admMoney(n) { n = Number(n) || 0; return (n < 0 ? '−' : '') + StreAPI.fmtNum(Math.abs(n)) + ' ₽'; }
+function admSigned(n) { return n > 0 ? '+' + StreAPI.fmtNum(n) + ' ₽' : n < 0 ? '−' + StreAPI.fmtNum(-n) + ' ₽' : '—'; }
+function admWhen(ts) { return ts ? StreAPI.fmtDate(ts) + ' ' + StreAPI.fmtTime(ts) : '—'; }
+function admIni(name) { return (name || '?').replace(/[^A-Za-zА-Яа-яЁё0-9]/g, '').slice(0, 2).toUpperCase() || '?'; }
+function admAgo(sec) {
+  if (sec < 60) return 'меньше минуты назад';
+  const m = Math.floor(sec / 60);
+  if (m < 60) return m + ' мин назад';
+  const h = Math.floor(m / 60);
+  if (h < 48) return h + ' ч назад';
+  return Math.floor(h / 24) + ' ' + admPlural(Math.floor(h / 24), ['день', 'дня', 'дней']) + ' назад';
+}
+function admKind(t) { return t.kind === 'ban' && /^Разблокирован/.test(t.comment || '') ? 'Разблокировка' : (ADM_KIND[t.kind] || t.kind); }
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      phase: 'loading', tab: 'sum', botConnected: false, botLogin: 'zaka_bot', meId: 0, nowMin: 0, refreshing: false,
+      stats: null, statsErr: '',
+      subs: null, subsErr: '', subFilter: 'all', subQ: '',
+      users: null, usersErr: '', q: '',
+      tx: null, txErr: '', txFilter: 'all', txQ: '',
+      sel: null, pf: { plan: 'pro', days: 30, custom: '', comment: '' }, mf: { amount: '', comment: '' }, bf: { comment: '' },
+      errs: {}, busy: {}, ask: null,
+    };
+    this.useq = 0;
+  }
+
+  async componentDidMount() {
+    const st = {};
+    const hash = location.hash.slice(1);
+    if (ADM_TABS.some((t) => t[0] === hash)) st.tab = hash;
+    if (new URLSearchParams(location.search).get('bot') === 'connected') {
+      st.botConnected = true; st.tab = 'bot';
+      history.replaceState(null, '', location.pathname + '#bot');
+    }
+    this.setState(st);
+    const me = await StreAPI.me();
+    if (!me.user) return; // api.js уведёт на вход
+    if (!me.user.isAdmin) { this.setState({ phase: 'denied' }); return; }
+    this.setState({ phase: 'ready', meId: me.user.id, botLogin: (me.bot && me.bot.login) || 'zaka_bot', nowMin: Math.floor(Date.now() / 60000) });
+    this.refreshAll();
+    document.addEventListener('keydown', (e) => this.onKey(e));
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) this.tick(); });
+    this.timer = setInterval(() => this.tick(), 30000);
+  }
+
+  // ---------- загрузка ----------
+  denied(e) {
+    if (/Нет доступа/.test(e.message)) { clearInterval(this.timer); this.setState({ phase: 'denied', sel: null, ask: null }); return true; }
+    return false;
+  }
+  async refreshAll() {
+    this.setState({ refreshing: true });
+    await Promise.all([this.loadStats(), this.loadSubs(), this.loadUsers(), this.loadTx()]);
+    this.setState({ refreshing: false });
+  }
+  async loadStats(quiet) {
+    try {
+      const r = await StreAPI.get('admin.stats');
+      delete r.ok;
+      if (JSON.stringify(r) !== JSON.stringify(this.state.stats) || this.state.statsErr) this.setState({ stats: r, statsErr: '' });
+    } catch (e) { if (!this.denied(e) && !quiet) this.setState({ statsErr: e.message }); }
+  }
+  async loadSubs() {
+    try { const r = await StreAPI.get('admin.eventsub'); this.setState({ subs: r.items, subsErr: '' }); }
+    catch (e) { if (!this.denied(e)) this.setState({ subs: this.state.subs || [], subsErr: 'Не удалось получить подписки от Twitch: ' + e.message }); }
+  }
+  async loadUsers() {
+    const seq = ++this.useq;
+    const q = this.state.q.trim();
+    try {
+      const r = await StreAPI.get('admin.users', q ? { q } : null);
+      if (seq !== this.useq) return;
+      const sel = this.state.sel && r.items.find((x) => x.id === this.state.sel.id);
+      this.setState({ users: r.items, usersErr: '', sel: sel || this.state.sel });
+    } catch (e) { if (seq === this.useq && !this.denied(e)) this.setState({ users: this.state.users || [], usersErr: e.message }); }
+  }
+  async loadTx(quiet) {
+    try { const r = await StreAPI.get('admin.transactions'); this.setState({ tx: r.items, txErr: '' }); }
+    catch (e) { if (!this.denied(e) && !quiet) this.setState({ tx: this.state.tx || [], txErr: e.message }); }
+  }
+  // Карточка открыта, а пользователя нет в текущем списке (другой поиск) — берём свежие данные точечно
+  async syncSel(id, login) {
+    const inList = (this.state.users || []).find((x) => x.id === id);
+    if (inList) { this.setState({ sel: inList }); return; }
+    try { const r = await StreAPI.get('admin.users', { q: login }); const x = r.items.find((y) => y.id === id); if (x) this.setState({ sel: x }); } catch (e) { /* оставим как есть */ }
+  }
+  tick() {
+    if (document.hidden || this.state.phase !== 'ready') return;
+    const m = Math.floor(Date.now() / 60000);
+    if (m !== this.state.nowMin) this.setState({ nowMin: m });
+    this.loadStats(true);
+  }
+
+  // ---------- вкладки ----------
+  pickTab(key, focus) {
+    this.setState({ tab: key });
+    history.replaceState(null, '', location.pathname + location.search + '#' + key);
+    if (key === 'bot' && !this.state.subs) this.loadSubs();
+    if (focus) setTimeout(() => { const el = document.getElementById('t-' + key); if (el) el.focus(); }, 0);
+  }
+  tabKey(e, i) {
+    const n = ADM_TABS.length;
+    const map = { ArrowRight: (i + 1) % n, ArrowLeft: (i - 1 + n) % n, Home: 0, End: n - 1 };
+    if (!(e.key in map)) return;
+    e.preventDefault();
+    this.pickTab(ADM_TABS[map[e.key]][0], true);
+  }
+
+  // ---------- диалоги ----------
+  focusLater(id) { setTimeout(() => { const el = document.getElementById(id); if (el) el.focus(); }, 30); }
+  ask(o) {
+    return new Promise((res) => {
+      this.askRes = res;
+      this.askOpener = document.activeElement;
+      this.setState({ ask: Object.assign({ cancel: 'Отмена', okCls: 'bdx' }, o) });
+      this.focusLater('ask-cancel');
+    });
+  }
+  answer(v) {
+    const r = this.askRes; this.askRes = null;
+    this.setState({ ask: null });
+    const back = this.askOpener; setTimeout(() => { if (back && document.contains(back)) back.focus(); }, 30);
+    if (r) r(v);
+  }
+  openUser(u) {
+    if (this.state.sel && this.state.sel.id === u.id) return;
+    this.opener = document.activeElement;
+    this.setState({ sel: u, pf: { plan: u.plan === 'free' ? 'pro' : u.plan, days: 30, custom: '', comment: '' }, mf: { amount: '', comment: '' }, bf: { comment: '' }, errs: {} });
+    document.body.style.overflow = 'hidden';
+    this.focusLater('um-close');
+  }
+  closeUser() {
+    if (this.state.ask) return;
+    this.setState({ sel: null, errs: {} });
+    document.body.style.overflow = '';
+    const back = this.opener; setTimeout(() => { if (back && document.contains(back)) back.focus(); }, 30);
+  }
+  async openByLogin(login) {
+    const known = (this.state.users || []).find((x) => x.login === login);
+    if (known) { this.openUser(known); return; }
+    try { const r = await StreAPI.get('admin.users', { q: login }); const x = r.items.find((y) => y.login === login); if (x) this.openUser(x); else StreAPI.toast('Пользователь ' + login + ' не найден', 'error'); }
+    catch (e) { StreAPI.toast(e.message, 'error'); }
+  }
+  onKey(e) {
+    if (e.key === 'Escape') {
+      if (this.state.ask) { e.preventDefault(); this.answer(false); }
+      else if (this.state.sel) { e.preventDefault(); this.closeUser(); }
+      return;
+    }
+    if (e.key !== 'Tab') return;
+    const dlgs = document.querySelectorAll('[aria-modal="true"]');
+    const d = dlgs[dlgs.length - 1];
+    if (!d) return;
+    const f = Array.from(d.querySelectorAll('button:not([disabled]),input:not([disabled]),select,textarea,a[href],summary')).filter((x) => x.offsetParent !== null);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1], act = document.activeElement;
+    if (!d.contains(act)) { e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && act === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && act === last) { e.preventDefault(); first.focus(); }
+  }
+
+  // ---------- действия с пользователем ----------
+  setBusy(k, v) { this.setState({ busy: Object.assign({}, this.state.busy, { [k]: v }) }); }
+  setErr(k, v) { this.setState({ errs: Object.assign({}, this.state.errs, { [k]: v }) }); }
+  async userAction(kind, body, okText) {
+    const u = this.state.sel;
+    this.setBusy(kind, true); this.setErr(kind, '');
+    try {
+      await StreAPI.post('admin.user', Object.assign({ id: u.id }, body));
+      StreAPI.toast(okText);
+      await Promise.all([this.loadUsers(), this.loadStats(true), this.loadTx(true)]);
+      await this.syncSel(u.id, u.login);
+      return true;
+    } catch (e) { if (!this.denied(e)) this.setErr(kind, e.message); return false; }
+    finally { this.setBusy(kind, false); }
+  }
+  planDays() { const f = this.state.pf; return f.days === 'custom' ? Number(f.custom) : f.days; }
+  async grantPlan(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const u = this.state.sel, f = this.state.pf;
+    const p = ADM_PLANS.find((x) => x[0] === f.plan);
+    const days = f.plan === 'free' ? 0 : this.planDays();
+    if (f.plan !== 'free' && f.days === 'custom' && !(Number.isInteger(days) && days >= 1 && days <= 3650)) { this.setErr('plan', 'Срок — целое число дней от 1 до 3650.'); return; }
+    if (f.plan === 'free') {
+      if (!(await this.ask({ title: 'Снять тариф «' + u.planName + '» у ' + u.login + '?', text: 'Пользователь сразу перейдёт на бесплатный тариф с его лимитами. Деньги за оставшиеся дни не вернутся.', ok: 'Снять тариф' }))) return;
+    }
+    const ok = await this.userAction('plan', { plan: f.plan, days, comment: f.comment.trim() },
+      f.plan === 'free' ? u.login + ': тариф снят' : u.login + ': тариф «' + p[1] + '» ' + (days ? 'на ' + days + ' ' + admPlural(days, ['день', 'дня', 'дней']) : 'бессрочно'));
+    if (ok) this.setState({ pf: Object.assign({}, this.state.pf, { comment: '' }) });
+  }
+  async money(sign) {
+    const u = this.state.sel, f = this.state.mf;
+    const n = Number(f.amount);
+    if (!(Number.isInteger(n) && n >= 1 && n <= 1000000)) { this.setErr('money', 'Введи сумму целым числом от 1 до 1 000 000 ₽.'); return; }
+    if (sign < 0 && !f.comment.trim()) { this.setErr('money', 'Для списания напиши причину — пользователь увидит её в истории операций.'); return; }
+    this.setErr('money', '');
+    if (sign < 0) {
+      const after = u.balance - n;
+      if (!(await this.ask({ title: 'Списать ' + admMoney(n) + ' у ' + u.login + '?', text: 'Баланс станет ' + admMoney(after) + '.' + (after < 0 ? ' Он уйдёт в минус: пока не пополнят, тарифы с баланса не купить.' : '') + ' Причина: «' + f.comment.trim() + '».', ok: 'Списать ' + admMoney(n) }))) return;
+    }
+    const ok = await this.userAction('money', { balanceDelta: sign * n, comment: f.comment.trim() }, (sign > 0 ? 'Начислено ' : 'Списано ') + admMoney(n) + (sign > 0 ? ' пользователю ' : ' у ') + u.login);
+    if (ok) this.setState({ mf: { amount: '', comment: '' } });
+  }
+  async toggleBan(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const u = this.state.sel;
+    const on = !u.banned;
+    if (on && !(await this.ask({ title: 'Заблокировать ' + u.login + '?', text: 'Вход в панель закроется, бот отключится от канала, виджеты в OBS перестанут показываться. Данные и баланс сохранятся — разблокировать можно в любой момент.', ok: 'Заблокировать' }))) return;
+    const ok = await this.userAction('ban', { banned: on, comment: this.state.bf.comment.trim() }, u.login + (on ? ' заблокирован' : ' разблокирован'));
+    if (ok) this.setState({ bf: { comment: '' } });
+  }
+
+  // ---------- EventSub ----------
+  async subsAction(act) {
+    const subs = this.state.subs || [];
+    const broken = subs.filter((x) => x.status !== 'enabled').length;
+    if (act === 'purge' && !(await this.ask({ title: 'Удалить ' + broken + ' ' + admPlural(broken, ['сломанную подписку', 'сломанные подписки', 'сломанных подписок']) + '?', text: 'Удалим все подписки со статусом не «работает», включая ждущие проверки. Twitch перестанет присылать по ним события. Для каналов с включённым ботом их потом создаст «Пересоздать подписки» или cron (раз в 15 минут).', ok: 'Удалить' }))) return;
+    this.setBusy(act, true);
+    try {
+      const r = await StreAPI.post('admin.eventsub', { action: act });
+      const delta = r.items.length - subs.length;
+      this.setState({ subs: r.items, subsErr: '' });
+      if (act === 'purge') StreAPI.toast('Удалено ' + Math.max(0, -delta) + ' ' + admPlural(-delta, ['подписка', 'подписки', 'подписок']));
+      else StreAPI.toast(delta > 0 ? 'Создано ' + delta + ' ' + admPlural(delta, ['подписка', 'подписки', 'подписок']) : (this.state.stats && !this.state.stats.botChannels ? 'Каналов с включённым ботом нет — подписывать нечего' : 'Все нужные подписки на месте'));
+      this.loadStats(true); this.loadUsers();
+    } catch (e) { if (!this.denied(e)) StreAPI.toast(e.message, 'error'); }
+    finally { this.setBusy(act, false); }
+  }
+
+  renderVals() {
+    const s = this.state;
+    const st = s.stats;
+    const now = Math.floor(Date.now() / 1000);
+    const ready = s.phase === 'ready';
+    const busy = s.busy;
+
+    // ---- сводка ----
+    const v = (x) => (st ? StreAPI.fmtNum(x) : '—');
+    const kpis = [
+      { label: 'Пользователей', val: v(st && st.users), sub: 'всего в базе' },
+      { label: 'С платным тарифом', val: v(st && st.paid), sub: 'тариф с датой окончания, срок не вышел' },
+      { label: 'Каналов с ботом', val: v(st && st.botChannels), sub: 'бот включён стримером' },
+      { label: 'Сейчас в эфире', val: v(st && st.live), sub: 'по данным cron' },
+      { label: 'Сумма балансов', val: st ? admMoney(st.balances) : '—', sub: 'деньги на счетах пользователей' },
+      { label: 'Доход за 30 дней', val: st ? admMoney(st.income30) : '—', sub: 'оплата тарифов с баланса' },
+    ];
+    const cronLast = st ? st.cronLast : 0;
+    const cronAge = cronLast ? Math.max(0, now - cronLast) : 0;
+    const cronBad = !!st && (!cronLast || cronAge > 300);
+    const cronAgo = !st ? '…' : !cronLast ? 'ни разу' : admAgo(cronAge) + ', ' + admWhen(cronLast);
+    const bot = st ? st.bot : null;
+    const botReady = !!(bot && bot.ownApp);
+    const botLogin = (bot && bot.login) || s.botLogin;
+    const bs = (st && st.eventsub && st.eventsub.byStatus) || {};
+    const byStatus = Object.keys(bs).sort((a, b) => (a === 'enabled' ? -1 : b === 'enabled' ? 1 : 0)).map((k) => ({
+      label: ADM_SUB_STATUS[k] || k, n: bs[k], cls: k === 'enabled' ? 'pill on' : k === 'webhook_callback_verification_pending' ? 'pill' : 'pill bad',
+    }));
+    const cfg = (st && st.config) || {};
+    const https = /^https:\/\//.test(cfg.appUrl || '');
+    const cfgRow = (k, ok, note) => ({ k, v: ok ? 'задан' : 'не задан', cls: ok ? 'pill on' : 'pill bad', style: '', hasNote: !ok, note });
+    const cfgRows = st ? [
+      { k: 'Адрес сайта (APP_URL)', v: cfg.appUrl || 'не задан', cls: 'mono', style: 'font-size: 12px; color: #DCDCDC; word-break: break-all; text-align: right', hasNote: !https, note: 'Вход через Twitch и EventSub работают только по https' },
+      cfgRow('Ключ YouTube API', cfg.youtube, 'Без него не работает заказ музыки'),
+      cfgRow('Приложение DonationAlerts', cfg.da, 'Стримеры не смогут подключить донаты'),
+      cfgRow('Ключ FACEIT API', cfg.faceit, 'Виджеты FACEIT останутся без статистики'),
+    ] : [];
+
+    // ---- EventSub ----
+    const subs = s.subs || [];
+    const nOk = subs.filter((x) => x.status === 'enabled').length;
+    const nBad = subs.filter((x) => x.status !== 'enabled').length;
+    const sq = s.subQ.trim().toLowerCase();
+    const subRows = subs
+      .filter((x) => (s.subFilter === 'all' || (s.subFilter === 'ok' ? x.status === 'enabled' : x.status !== 'enabled')) && (!sq || String(x.channel).toLowerCase().indexOf(sq) >= 0))
+      .slice().sort((a, b) => String(a.channel).localeCompare(String(b.channel)) || String(a.type).localeCompare(String(b.type)))
+      .map((x) => ({
+        channel: x.channel || '—', type: ADM_SUB_TYPE[x.type] || x.type, raw: x.type, status: ADM_SUB_STATUS[x.status] || x.status,
+        cls: x.status === 'enabled' ? 'pill on' : x.status === 'webhook_callback_verification_pending' ? 'pill' : 'pill bad', at: admWhen(x.at),
+      }));
+    const subFilters = [['all', 'Все', subs.length], ['ok', 'Работают', nOk], ['bad', 'Сломанные', nBad]].map((f) => ({
+      label: f[1], n: f[2], sel: s.subFilter === f[0] ? 'true' : 'false', pick: () => this.setState({ subFilter: f[0] }),
+    }));
+    let subsEmptyText = '';
+    if (s.subs && !subRows.length) {
+      if (subs.length) subsEmptyText = 'Под фильтр ничего не попало.';
+      else if (!botReady) subsEmptyText = 'Подписок нет: сначала подключи аккаунт бота — без него подписки на чат не создаются.';
+      else if (st && st.botChannels) subsEmptyText = 'Подписок нет, хотя бот включён на ' + st.botChannels + ' ' + admPlural(st.botChannels, ['канале', 'каналах', 'каналах']) + '. Нажми «Пересоздать подписки».';
+      else subsEmptyText = 'Подписок пока нет. Они появятся, когда стример включит бота на своём канале.';
+    }
+
+    // ---- пользователи ----
+    const planSub = (u) => (u.plan === 'free' ? (u.rawPlan && u.rawPlan !== 'free' ? 'платный тариф истёк' : '') : u.planUntil ? 'до ' + StreAPI.fmtDate(u.planUntil) : 'бессрочно');
+    const look = (u) => ({
+      name: u.name, sub: u.name.toLowerCase() === String(u.login).toLowerCase() ? 'id ' + u.id : u.login + ' · id ' + u.id,
+      hasAv: !!u.avatar, avatar: u.avatar || null, ini: u.avatar ? '' : admIni(u.name), isAdmin: !!u.isAdmin,
+      plan: u.planName, planSub: planSub(u), balance: admMoney(u.balance),
+      bot: u.botError ? 'ошибка' : u.botEnabled ? 'включён' : 'выключен', botCls: u.botError ? 'pill bad' : u.botEnabled ? 'pill on' : 'pill', botTitle: u.botError || null,
+      access: u.banned ? 'заблокирован' : 'активен', accCls: u.banned ? 'pill bad' : 'pill',
+      last: u.lastLogin ? admWhen(u.lastLogin) : '—',
+    });
+    const users = s.users || [];
+    const userRows = users.map((u) => Object.assign(look(u), { open: () => this.openUser(u), manageLabel: 'Управлять: ' + u.login }));
+    const q = s.q.trim();
+    const usersNote = !s.users ? '' : users.length >= 100 ? 'Показаны 100 последних — уточни поиск' : q ? 'Найдено: ' + users.length : 'Всего: ' + users.length;
+
+    // ---- операции ----
+    const tx = s.tx || [];
+    const TXF = { all: () => true, money: (t) => t.kind === 'topup' || t.kind === 'charge', plans: (t) => t.kind === 'plan' || t.kind === 'grant', ban: (t) => t.kind === 'ban' };
+    const tq = s.txQ.trim().toLowerCase();
+    const txLook = (t) => ({
+      at: admWhen(t.at), kind: admKind(t), amount: admSigned(t.amount), amountStyle: t.amount > 0 ? 'color: #F2F2F2' : t.amount < 0 ? 'color: #B4B4B4' : 'color: #6E6E6E',
+      comment: t.comment || '—', admin: t.admin || 'сам / система',
+    });
+    const txRows = tx.filter((t) => TXF[s.txFilter](t) && (!tq || String(t.login || '').toLowerCase().indexOf(tq) >= 0)).map((t) => Object.assign(txLook(t), {
+      login: t.login || '', hasLogin: !!t.login, noLogin: !t.login, open: () => this.openByLogin(t.login), openLabel: 'Открыть карточку ' + t.login,
+    }));
+    const txFilters = [['all', 'Все'], ['money', 'Деньги'], ['plans', 'Тарифы'], ['ban', 'Блокировки']].map((f) => ({
+      label: f[1], n: tx.filter(TXF[f[0]]).length, sel: s.txFilter === f[0] ? 'true' : 'false', pick: () => this.setState({ txFilter: f[0] }),
+    }));
+
+    // ---- карточка пользователя ----
+    const u = s.sel;
+    const su = u ? Object.assign(look(u), {
+      banned: !!u.banned, hasBotErr: !!u.botError, botErr: u.botError || '',
+      ids: (u.name.toLowerCase() === String(u.login).toLowerCase() ? '' : u.login + ' · ') + 'id ' + u.id + ' · Twitch ' + u.twitchId,
+      since: 'В StreOps с ' + StreAPI.fmtDate(u.createdAt) + ' · последний вход ' + (u.lastLogin ? admWhen(u.lastLogin) : '—'),
+    }) : {};
+    const pf = s.pf;
+    const pName = (ADM_PLANS.find((x) => x[0] === pf.plan) || ADM_PLANS[0])[1];
+    const days = pf.days === 'custom' ? Number(pf.custom) : pf.days;
+    let planHint = '';
+    if (u) {
+      if (pf.plan === 'free') planHint = u.plan === 'free' ? 'Пользователь уже на бесплатном тарифе.' : 'Тариф «' + u.planName + '» снимется сразу, деньги за оставшиеся дни не вернутся.';
+      else if (pf.days === 0) planHint = '«' + pName + '» без срока — до тех пор, пока не сменишь вручную.';
+      else if (!(Number.isInteger(days) && days >= 1 && days <= 3650)) planHint = 'Укажи срок от 1 до 3650 дней.';
+      else {
+        const extend = u.plan === pf.plan && u.planUntil > now;
+        const base = extend ? u.planUntil : now;
+        planHint = '«' + pName + '» будет действовать до ' + StreAPI.fmtDate(base + days * 86400) + (extend ? ' — дни добавятся к текущему сроку.' : '.') +
+          (u.plan === pf.plan && !u.planUntil ? ' Сейчас этот тариф бессрочный — после выдачи у него появится срок.' : '');
+      }
+    }
+    const amount = Number(s.mf.amount);
+    const amountOk = Number.isInteger(amount) && amount >= 1 && amount <= 1000000;
+    const moneyHint = !u ? '' : amountOk ? 'После начисления: ' + admMoney(u.balance + amount) + ' · после списания: ' + admMoney(u.balance - amount) : 'Начисление пополняет баланс, с него пользователь сам оплачивает тарифы.';
+    const self = !!u && (u.id === s.meId || u.isAdmin);
+    const suTx = u ? tx.filter((t) => t.login === u.login).slice(0, 5).map(txLook) : [];
+    const ask = s.ask;
+
+    return {
+      subtitle: s.phase === 'denied' ? 'Управление сервисом StreOps.' : 'Весь сервис StreOps: пользователи, деньги, бот и фоновые задачи. Раздел видишь только ты.',
+      loading: s.phase === 'loading', denied: s.phase === 'denied', ready,
+      refresh: () => this.refreshAll(), refreshing: s.refreshing, refreshLabel: s.refreshing ? 'Обновляем…' : 'Обновить',
+      cronBad, cronAgo, botMissing: !!st && !botReady, botLogin, goBot: () => this.pickTab('bot', true),
+      tabs: ADM_TABS.map((t, i) => ({
+        id: 't-' + t[0], panel: 'p-' + t[0], label: t[1], sel: s.tab === t[0] ? 'true' : 'false', ti: s.tab === t[0] ? '0' : '-1',
+        n: t[0] === 'users' ? (st ? StreAPI.fmtNum(st.users) : '') : t[0] === 'bot' ? (nBad ? '! ' + nBad : '') : '',
+        pick: () => this.pickTab(t[0]), key: (e) => this.tabKey(e, i),
+      })),
+      hideSum: s.tab !== 'sum', hideBot: s.tab !== 'bot', hideUsers: s.tab !== 'users', hideTx: s.tab !== 'tx',
+
+      statsErrOn: !!s.statsErr, statsErr: s.statsErr, statsBusy: !st, kpis,
+      cronDot: cronBad ? 'background: #D92D20; box-shadow: 0 0 0 4px rgba(217,45,32,.25)' : st ? 'background: #F2F2F2' : 'background: #525252',
+      cronState: !st ? 'Проверяем…' : cronBad ? 'Не работает' : 'Работает',
+      botDot: botReady ? 'background: #F2F2F2' : 'background: #6E6E6E',
+      botStateText: !st ? 'Проверяем…' : botReady ? 'Подключён к приложению StreOps' : bot ? 'Работает только запасной токен из .env: писать в чат может, читать — нет' : 'Аккаунт бота не подключён',
+      subsTotal: st ? StreAPI.fmtNum(st.eventsub.total) : '—', byStatus, noByStatus: !!st && !byStatus.length, cfgRows,
+
+      botConnected: s.botConnected, hideConnected: () => this.setState({ botConnected: false }),
+      botReady: !!st && botReady, botNotReady: !!st && !botReady,
+      botWhy: bot ? 'Сейчас у бота только запасной токен из .env — им можно писать в чат и модерировать, но подписаться на сообщения нельзя: Twitch разрешает это только приложению, которое авторизовал сам бот.'
+        : 'Без этого бот не может ни читать, ни писать в чаты: подписки EventSub на сообщения создаются только от имени бота, авторизовавшего приложение StreOps.',
+      resync: () => this.subsAction('resync'), resyncOff: !!busy.resync || !botReady, resyncLabel: busy.resync ? 'Пересоздаём…' : 'Пересоздать подписки',
+      resyncTitle: botReady ? 'Проверить подписки всех каналов с ботом и создать недостающие' : 'Сначала подключи аккаунт бота',
+      purge: () => this.subsAction('purge'), purgeOff: !!busy.purge || !nBad, purgeLabel: busy.purge ? 'Удаляем…' : 'Удалить сломанные' + (nBad ? ' (' + nBad + ')' : ''),
+      subsErrOn: !!s.subsErr, subsErr: s.subsErr, subFilters, subQ: s.subQ, setSubQ: (e) => this.setState({ subQ: e.target.value }),
+      subsLoading: !s.subs, subsHasRows: subRows.length > 0, subRows, subsEmpty: !!s.subs && !subRows.length, subsEmptyText,
+
+      q: s.q, setQ: (e) => { this.setState({ q: e.target.value }); clearTimeout(this.qTimer); this.qTimer = setTimeout(() => this.loadUsers(), 300); },
+      usersNote, usersErrOn: !!s.usersErr, usersErr: s.usersErr, usersLoading: !s.users, usersHasRows: userRows.length > 0, userRows,
+      usersEmpty: !!s.users && !userRows.length, usersEmptyText: q ? 'Никого не нашли по запросу «' + q + '». Ищи по нику Twitch.' : 'Пользователей пока нет. Они появятся после первого входа через Twitch.',
+
+      txFilters, txQ: s.txQ, setTxQ: (e) => this.setState({ txQ: e.target.value }),
+      txErrOn: !!s.txErr, txErr: s.txErr, txLoading: !s.tx, txHasRows: txRows.length > 0, txRows, txEmpty: !!s.tx && !txRows.length,
+      txEmptyText: tx.length ? 'Под фильтр ничего не попало.' : 'Операций пока нет. Здесь появятся оплаты тарифов, начисления, списания и блокировки.',
+
+      hasSel: !!u, su, closeUser: () => this.closeUser(), ovlClick: (e) => { if (e.target === e.currentTarget) this.closeUser(); },
+      pf, planOpts: ADM_PLANS.map((p) => ({ label: p[1], price: p[2] ? p[2] + ' ₽' : '0 ₽', sel: pf.plan === p[0] ? 'true' : 'false', pick: () => this.setState({ pf: Object.assign({}, pf, { plan: p[0] }), errs: {} }) })),
+      showDays: pf.plan !== 'free', customDays: pf.days === 'custom',
+      dayOpts: ADM_DAYS.map((d) => ({ label: d[1], sel: pf.days === d[0] ? 'true' : 'false', pick: () => { this.setState({ pf: Object.assign({}, pf, { days: d[0] }) }); if (d[0] === 'custom') this.focusLater('pl-cd'); } })),
+      setCustom: (e) => this.setState({ pf: Object.assign({}, this.state.pf, { custom: e.target.value }) }),
+      setPlanComment: (e) => this.setState({ pf: Object.assign({}, this.state.pf, { comment: e.target.value }) }),
+      planHint, planErrOn: !!s.errs.plan, planErr: s.errs.plan || '',
+      planOff: !!busy.plan || (!!u && pf.plan === 'free' && u.plan === 'free'),
+      planBtn: busy.plan ? 'Сохраняем…' : pf.plan === 'free' ? 'Снять платный тариф' : 'Выдать «' + pName + '»',
+      planBtnCls: pf.plan === 'free' ? 'bd' : 'btn', grantPlan: (e) => this.grantPlan(e),
+
+      mf: s.mf, setAmount: (e) => this.setState({ mf: Object.assign({}, this.state.mf, { amount: e.target.value }) }),
+      setMoneyComment: (e) => this.setState({ mf: Object.assign({}, this.state.mf, { comment: e.target.value }) }),
+      moneyHint, moneyErrOn: !!s.errs.money, moneyErr: s.errs.money || '', moneyOff: !!busy.money,
+      topupLabel: busy.money ? 'Сохраняем…' : 'Начислить', chargeLabel: 'Списать',
+      topUp: (e) => { if (e && e.preventDefault) e.preventDefault(); this.money(1); }, charge: () => this.money(-1),
+
+      bf: s.bf, setBanComment: (e) => this.setState({ bf: { comment: e.target.value } }),
+      canBan: !self,
+      banText: !u ? '' : self ? 'Это аккаунт администратора — его заблокировать нельзя.' : u.banned
+        ? 'Аккаунт заблокирован: вход в панель закрыт, виджеты не показываются. После разблокировки стример сам включит бота заново на странице обзора.'
+        : 'Блокировка закрывает вход в панель, отключает бота на канале и останавливает виджеты в OBS. Данные и баланс сохраняются.',
+      banCommentLabel: u && u.banned ? 'Комментарий' : 'Причина', banPlaceholder: u && u.banned ? 'Например: разобрались, всё в порядке' : 'Например: спам ботом в чужих чатах',
+      banErrOn: !!s.errs.ban, banErr: s.errs.ban || '', banOff: !!busy.ban,
+      banBtn: busy.ban ? 'Сохраняем…' : u && u.banned ? 'Разблокировать' : 'Заблокировать', banBtnCls: u && u.banned ? 'bs' : 'bdx',
+      toggleBan: (e) => this.toggleBan(e),
+      suTx, suHasTx: suTx.length > 0, suNoTx: !!u && !suTx.length,
+      goTxOfUser: () => { const login = u.login; this.closeUser(); this.setState({ txQ: login, txFilter: 'all' }); this.pickTab('tx', true); },
+
+      hasAsk: !!ask, ask: ask || {}, askNo: () => this.answer(false), askYes: () => this.answer(true),
+    };
+  }
+}
+</script>
+</body>
+</html>
