@@ -30,7 +30,13 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 .crow input[type=color]{width:52px;height:32px;padding:0;border:1px solid #3A3A3A;border-radius:6px;background:none;cursor:pointer}
 .crow .hexv{font:400 12px/1 'JetBrains Mono',monospace;color:#8F8F8F}
 .trow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;font-size:13px;color:#DCDCDC}
-.trow small{display:block;margin-top:2px;font-size:12px;line-height:16px;color:#8F8F8F}
+.trow small,.fl small.hint{display:block;margin-top:2px;font-size:12px;line-height:16px;color:#8F8F8F}
+.note{display:flex;align-items:center;gap:12px;padding:10px 12px 10px 14px;border-radius:8px;font-size:14px;line-height:20px;color:#F2F2F2}
+.box{margin-top:18px;padding:12px 14px;border-radius:6px;border:1px solid #2A2A2A;background:#171717;font-size:13px;line-height:19px;color:#DCDCDC}
+.bs:disabled,.bp:disabled,.sw:disabled{opacity:.5;cursor:not-allowed}
+.sw[aria-busy="true"]{opacity:.6}
+.tabs button:focus-visible,.segw button:focus-visible,.pres button:focus-visible,.anc button:focus-visible,.bs:focus-visible,.bp:focus-visible,.sw:focus-visible,a:focus-visible{outline:2px solid #F2F2F2;outline-offset:2px}
+.inp:focus-visible{outline:2px solid #F2F2F2;outline-offset:1px}
 .sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid #6E6E6E;background:transparent;cursor:pointer;flex:none;padding:0}
 .sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:#8F8F8F;transition:transform 180ms cubic-bezier(.2,0,0,1)}
 .sw[aria-checked="true"]{background:#FFFFFF;border-color:#FFFFFF}
@@ -86,20 +92,23 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px"><li><a href="WebDashboard.dc.html" style="color: #8F8F8F">Стрим-панель</a></li><li aria-hidden="true" style="color: #525252">/</li><li><a href="WebWidgets.dc.html" style="color: #8F8F8F">Виджеты</a></li><li aria-hidden="true" style="color: #525252">/</li><li aria-current="page">{{ name }}</li></ol></nav>
 
 <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
-<div style="min-width: 0">
+<div style="min-width: 0; max-width: 100%">
 <label for="wpick" class="ov">Виджет</label>
-<select id="wpick" class="inp" value="{{ id }}" onChange="{{ pickWidget }}" style="margin-top: 6px; height: 44px; font-size: 20px; font-weight: 600; width: auto; min-width: 320px; padding-right: 32px">
-<sc-for list="{{ widgetOptions }}" as="o" hint-placeholder-count="16"><option value="{{ o.v }}">{{ o.l }}</option></sc-for>
+<select id="wpick" class="inp" value="{{ id }}" onChange="{{ pickWidget }}" style="margin-top: 6px; height: 44px; font-size: 20px; font-weight: 600; width: auto; min-width: min(320px, 100%); max-width: 100%; padding-right: 32px">
+<sc-for list="{{ widgetOptions }}" as="o" hint-placeholder-count="15"><option value="{{ o.v }}">{{ o.l }}</option></sc-for>
 </select>
 <p style="margin: 8px 0 0; font-size: 14px; color: #B4B4B4">{{ desc }}</p>
 </div>
 <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
-<span style="display: inline-flex; align-items: center; gap: 10px; height: 38px; padding: 0 6px 0 12px; border: 1px solid #3A3A3A; border-radius: 6px; font-size: 13px">{{ onLabel }}<button type="button" role="switch" class="sw" aria-checked="{{ isOn }}" aria-label="Виджет включён" onClick="{{ toggleOn }}" disabled="{{ locked }}"><span></span></button></span>
-<button type="button" class="bs" onClick="{{ applyAll }}">{{ applyAllLabel }}</button>
-<button type="button" class="bs" onClick="{{ reset }}">Сбросить</button>
+<span style="display: inline-flex; align-items: center; gap: 10px; height: 38px; padding: 0 6px 0 12px; border: 1px solid #3A3A3A; border-radius: 6px; font-size: 13px">{{ onLabel }}<button type="button" role="switch" class="sw" aria-checked="{{ isOn }}" aria-busy="{{ onBusy }}" aria-label="Виджет включён" onClick="{{ toggleOn }}" disabled="{{ notReady }}"><span></span></button></span>
+<button type="button" class="bs" onClick="{{ applyAll }}" disabled="{{ notReady }}">{{ applyAllLabel }}</button>
+<button type="button" class="bs" onClick="{{ reset }}" disabled="{{ notReady }}">Сбросить</button>
 </div>
 </div>
-<sc-if value="{{ hasNote }}" hint-placeholder-val="{{ false }}"><p style="margin: 12px 0 0; display: inline-flex; gap: 8px; padding: 8px 12px; border: 1px dashed #B4B4B4; border-radius: 6px; font-size: 13px; color: #DCDCDC">{{ note }}</p></sc-if>
+<p role="status" aria-live="polite" class="mono" style="margin: 10px 0 0; font-size: 12px; color: {{ saveColor }}">{{ saveLabel }}</p>
+<sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}"><div role="alert" class="note" style="margin-top: 12px; border: 2px solid #F2F2F2"><span style="flex: 1">{{ err }}</span><sc-if value="{{ canRetry }}" hint-placeholder-val="{{ false }}"><button type="button" class="bs" style="height: 32px" onClick="{{ retry }}">Повторить</button></sc-if><button type="button" class="bs" style="height: 32px" onClick="{{ closeErr }}">Закрыть</button></div></sc-if>
+<sc-if value="{{ hasInfo }}" hint-placeholder-val="{{ false }}"><p role="status" class="note" style="margin: 12px 0 0; border: 1px dashed #8F8F8F">{{ info }}</p></sc-if>
+<sc-for list="{{ notes }}" as="n" hint-placeholder-count="1"><p class="note" style="margin: 12px 0 0; border: 1px dashed #B4B4B4; color: #DCDCDC; font-size: 13px; line-height: 18px"><span style="flex: 1">{{ n.text }}</span><sc-if value="{{ n.isLink }}" hint-placeholder-val="{{ true }}"><a href="{{ n.href }}" style="text-decoration: underline; white-space: nowrap">{{ n.link }}</a></sc-if><sc-if value="{{ n.isBtn }}" hint-placeholder-val="{{ false }}"><button type="button" class="bs" style="height: 32px" onClick="{{ n.act }}">{{ n.link }}</button></sc-if></p></sc-for>
 
 <div style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
 <section class="sec" aria-label="Настройки виджета" style="flex: 1 1 360px; max-width: 460px; min-width: 0; box-sizing: border-box">
@@ -123,28 +132,40 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <sc-if value="{{ f.isHead }}" hint-placeholder-val="{{ false }}"><p class="ov" style="margin: 22px 0 0">{{ f.label }}</p></sc-if>
 <sc-if value="{{ f.isRange }}" hint-placeholder-val="{{ true }}"><label class="fl"><span class="fl-h"><span>{{ f.label }}</span><b class="mono">{{ f.val }}{{ f.unit }}</b></span><input type="range" min="{{ f.min }}" max="{{ f.max }}" step="{{ f.step }}" value="{{ f.val }}" onChange="{{ f.on }}"></label></sc-if>
 <sc-if value="{{ f.isColor }}" hint-placeholder-val="{{ false }}"><label class="crow"><span>{{ f.label }}</span><span style="display: inline-flex; align-items: center; gap: 10px"><span class="hexv">{{ f.val }}</span><input type="color" value="{{ f.val }}" onChange="{{ f.on }}"></span></label></sc-if>
-<sc-if value="{{ f.isToggle }}" hint-placeholder-val="{{ false }}"><div class="trow"><span>{{ f.label }}<sc-if value="{{ f.hint }}" hint-placeholder-val="{{ false }}"><small>{{ f.hint }}</small></sc-if></span><button type="button" role="switch" class="sw" aria-checked="{{ f.state }}" aria-label="{{ f.label }}" onClick="{{ f.on }}"><span></span></button></div></sc-if>
-<sc-if value="{{ f.isSelect }}" hint-placeholder-val="{{ false }}"><label class="fl"><span>{{ f.label }}</span><select class="inp" value="{{ f.val }}" onChange="{{ f.on }}"><sc-for list="{{ f.options }}" as="o" hint-placeholder-count="3"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label></sc-if>
+<sc-if value="{{ f.isToggle }}" hint-placeholder-val="{{ false }}"><div class="trow"><span>{{ f.label }}<sc-if value="{{ f.hasHint }}" hint-placeholder-val="{{ false }}"><small>{{ f.hint }}</small></sc-if></span><button type="button" role="switch" class="sw" aria-checked="{{ f.state }}" aria-label="{{ f.label }}" onClick="{{ f.on }}"><span></span></button></div></sc-if>
+<sc-if value="{{ f.isSelect }}" hint-placeholder-val="{{ false }}"><label class="fl"><span>{{ f.label }}</span><select class="inp" value="{{ f.val }}" onChange="{{ f.on }}"><sc-for list="{{ f.options }}" as="o" hint-placeholder-count="3"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select><sc-if value="{{ f.hasHint }}" hint-placeholder-val="{{ false }}"><small class="hint">{{ f.hint }}</small></sc-if></label></sc-if>
 <sc-if value="{{ f.isSeg }}" hint-placeholder-val="{{ false }}"><div class="fl"><span>{{ f.label }}</span><span class="segw" role="group" aria-label="{{ f.label }}"><sc-for list="{{ f.opts }}" as="o" hint-placeholder-count="3"><button type="button" aria-pressed="{{ o.sel }}" onClick="{{ o.pick }}">{{ o.l }}</button></sc-for></span></div></sc-if>
-<sc-if value="{{ f.isText }}" hint-placeholder-val="{{ false }}"><label class="fl"><span>{{ f.label }}</span><input class="inp" value="{{ f.val }}" onChange="{{ f.on }}"></label></sc-if>
-<sc-if value="{{ f.isNumber }}" hint-placeholder-val="{{ false }}"><label class="fl"><span>{{ f.label }}</span><input class="inp mono" type="number" value="{{ f.val }}" onChange="{{ f.on }}"></label></sc-if>
+<sc-if value="{{ f.isText }}" hint-placeholder-val="{{ false }}"><label class="fl"><span>{{ f.label }}</span><input class="inp" value="{{ f.val }}" maxlength="300" onChange="{{ f.on }}"><sc-if value="{{ f.hasHint }}" hint-placeholder-val="{{ false }}"><small class="hint">{{ f.hint }}</small></sc-if></label></sc-if>
+<sc-if value="{{ f.isNumber }}" hint-placeholder-val="{{ false }}"><label class="fl"><span>{{ f.label }}</span><input class="inp mono" type="number" min="0" value="{{ f.val }}" onChange="{{ f.on }}"><sc-if value="{{ f.hasHint }}" hint-placeholder-val="{{ false }}"><small class="hint">{{ f.hint }}</small></sc-if></label></sc-if>
 </sc-for>
+
+<sc-for list="{{ boxes }}" as="b" hint-placeholder-count="1"><div class="box" role="{{ b.role }}"><sc-if value="{{ b.hasTitle }}" hint-placeholder-val="{{ true }}"><p class="ov" style="color: #B4B4B4">{{ b.title }}</p></sc-if><p style="margin: 4px 0 0">{{ b.text }}</p><sc-if value="{{ b.hasBtn }}" hint-placeholder-val="{{ false }}"><button type="button" class="bs" style="margin-top: 10px; height: 32px" onClick="{{ b.act }}" disabled="{{ b.busy }}">{{ b.btn }}</button></sc-if><sc-if value="{{ b.hasLink }}" hint-placeholder-val="{{ false }}"><a href="{{ b.href }}" style="display: inline-block; margin-top: 8px; text-decoration: underline">{{ b.link }}</a></sc-if></div></sc-for>
+
+<sc-if value="{{ showGame }}" hint-placeholder-val="{{ false }}">
+<p class="ov" style="margin-top: 18px">Подключение {{ gsi.game }}</p>
+<ol style="margin: 10px 0 0; padding-left: 20px; font-size: 13px; line-height: 21px; color: #B4B4B4">
+<sc-for list="{{ gsi.steps }}" as="st" hint-placeholder-count="4"><li>{{ st.t }}<sc-if value="{{ st.hasCode }}" hint-placeholder-val="{{ false }}"> <code class="mono" style="color: #F2F2F2; word-break: break-all">{{ st.code }}</code></sc-if></li></sc-for>
+</ol>
+<label class="fl"><span>Файл <span class="mono" style="color: #F2F2F2">{{ gsi.file }}</span></span><textarea class="inp mono" readonly="" rows="16" aria-label="Содержимое файла" value="{{ gsi.text }}" style="height: auto; padding: 10px; font-size: 11px; line-height: 16px; white-space: pre; overflow: auto; resize: vertical"></textarea></label>
+<div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="bp" onClick="{{ gsi.download }}" disabled="{{ noToken }}">Скачать файл</button><button type="button" class="bs" onClick="{{ gsi.copy }}" disabled="{{ noToken }}">{{ gsi.copyLabel }}</button></div>
+<p role="status" style="margin: 14px 0 0; display: flex; gap: 8px; padding: 10px 12px; border: 1px dashed #B4B4B4; border-radius: 6px; font-size: 13px; line-height: 18px; color: #DCDCDC">{{ gsi.status }}</p>
+<p style="margin: 10px 0 0; font-size: 12px; line-height: 18px; color: #8F8F8F">В файле твоя личная ссылка — не показывай его в эфире. Если сменишь ссылку виджетов в настройках, файл нужно скачать заново.</p>
+</sc-if>
 
 <sc-if value="{{ showObs }}" hint-placeholder-val="{{ false }}">
 <p class="ov" style="margin-top: 18px">Ссылка для OBS</p>
-<div style="margin-top: 8px; display: flex; gap: 8px"><input aria-label="Ссылка на виджет" class="inp mono" readonly="" value="{{ url }}" style="font-size: 12px"><button type="button" class="bs" onClick="{{ toggleShow }}" aria-label="{{ showLabel }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button type="button" class="bp" onClick="{{ copy }}">{{ copyLabel }}</button></div>
+<div style="margin-top: 8px; display: flex; gap: 8px"><input aria-label="Ссылка на виджет" class="inp mono" readonly="" value="{{ url }}" style="font-size: 12px; min-width: 0"><button type="button" class="bs" onClick="{{ toggleShow }}" aria-label="{{ showLabel }}" aria-pressed="{{ showPressed }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div>
+<div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="bp" onClick="{{ copy }}" disabled="{{ noToken }}">{{ copyLabel }}</button><a class="bs" href="{{ realUrl }}" target="_blank" rel="noopener">Открыть в новой вкладке</a></div>
 <ol style="margin: 14px 0 0; padding-left: 20px; font-size: 13px; line-height: 21px; color: #B4B4B4"><li>OBS → «Источники» → «+» → «Браузер»</li><li>Вставь ссылку, размер <span class="mono" style="color: #F2F2F2">1920 × 1080</span></li><li>Виджет встанет туда, куда ты его поставил во вкладке «Позиция». Фон источника прозрачный</li><li>Изменения подхватываются на лету, перезагружать сцену не нужно</li></ol>
 <p style="margin: 14px 0 0; display: flex; gap: 8px; padding: 10px 12px; border: 1px dashed #B4B4B4; border-radius: 6px; font-size: 13px; line-height: 18px; color: #DCDCDC">Не показывай ссылку в эфире: по ней любой может вставить виджет к себе.</p>
-<div style="margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="bs" onClick="{{ copyCfg }}">{{ copyCfgLabel }}</button><button type="button" class="bs" onClick="{{ pasteCfg }}">Вставить настройки</button></div>
+<div style="margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="bs" onClick="{{ copyCfg }}" disabled="{{ notReady }}">{{ copyCfgLabel }}</button><button type="button" class="bs" onClick="{{ pasteCfg }}" disabled="{{ notReady }}">Вставить настройки</button></div>
 </sc-if>
-
-<p class="mono" style="margin: 20px 0 0; font-size: 11px; color: #6E6E6E">{{ savedLabel }}</p>
 </section>
 
 <section aria-label="Предпросмотр" style="flex: 999 1 560px; min-width: 0; position: sticky; top: 88px">
 <div class="stagebar">
 <span role="group" aria-label="Фон предпросмотра" class="segw"><sc-for list="{{ stages }}" as="s" hint-placeholder-count="4"><button type="button" aria-pressed="{{ s.sel }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></span>
-<span style="display: flex; gap: 8px; align-items: center"><span style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #B4B4B4">Сетка<button type="button" role="switch" class="sw" aria-checked="{{ guides }}" aria-label="Безопасная зона" onClick="{{ toggleGuides }}"><span></span></button></span><button type="button" class="bs" onClick="{{ replay }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z"></path></svg>Проиграть анимацию</button></span>
+<span style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap"><span style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #B4B4B4">Сетка<button type="button" role="switch" class="sw" aria-checked="{{ guides }}" aria-label="Безопасная зона" onClick="{{ toggleGuides }}"><span></span></button></span><button type="button" class="bs" onClick="{{ replay }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z"></path></svg>Проиграть анимацию</button></span>
 </div>
 
 <div id="wstage" style="position: relative; margin-top: 12px; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; border: 1px solid #2A2A2A; background: {{ stageBg }}">
@@ -155,43 +176,42 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <div style="{{ wrapStyle }}">
 <div class="wbox" style="{{ boxStyle }}">
 
-<sc-if value="{{ k_alerts }}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: .9em; align-items: center; justify-content: {{ pv.justify }}"><sc-if value="{{ c.image }}" hint-placeholder-val="{{ true }}"><span style="flex: none; width: 3.4em; height: 3.4em; border-radius: calc(var(--w-rad) * .6); background: radial-gradient(circle at 35% 30%, var(--w-acc), var(--w-acc-soft))"></span></sc-if><div><div class="wov">{{ pv.typeLabel }}</div><div style="font-size: 1.8em; font-weight: 700; line-height: 1.15; color: var(--w-acc)">{{ c.name }}</div><div class="w2">{{ pv.msg }}</div></div></div></sc-if>
+<sc-if value="{{ k_alerts }}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: .9em; align-items: center; justify-content: {{ pv.justify }}"><sc-if value="{{ c.image }}" hint-placeholder-val="{{ true }}"><span style="flex: none; width: 3.4em; height: 3.4em; border-radius: calc(var(--w-rad) * .6); background: radial-gradient(circle at 35% 30%, var(--w-acc), var(--w-acc-soft))"></span></sc-if><div><div class="wov">{{ pv.typeLabel }}</div><div style="font-size: 1.8em; font-weight: 700; line-height: 1.15; color: var(--w-acc)">{{ pv.alertName }}</div><div class="w2">{{ pv.msg }}</div></div></div></sc-if>
 
 <sc-if value="{{ k_goal }}" hint-placeholder-val="{{ false }}"><div class="wrow"><span style="font-weight: 600">{{ c.title }}</span><sc-if value="{{ c.pct }}" hint-placeholder-val="{{ true }}"><span class="wnum wacc">{{ pv.pct }}%</span></sc-if></div><div class="wbar" style="margin-top: .6em; height: {{ c.barH }}px"><div style="height: 100%; width: {{ pv.pct }}%; {{ pv.fill }}"></div></div><div class="wnum w2" style="margin-top: .45em; font-size: .85em">{{ pv.cur }} / {{ pv.tgt }} ₽</div></sc-if>
 
-<sc-if value="{{ k_subgoal }}" hint-placeholder-val="{{ false }}"><div class="wrow"><span style="font-weight: 600">{{ c.title }}</span><span class="wnum wacc">{{ pv.cur }} / {{ pv.tgt }}<sc-if value="{{ c.pct }}" hint-placeholder-val="{{ false }}"> · {{ pv.pct }}%</sc-if></span></div><div class="wbar" style="margin-top: .6em; height: {{ c.barH }}px"><div style="height: 100%; width: {{ pv.pct }}%; {{ pv.fill }}"></div></div></sc-if>
+<sc-if value="{{ k_subgoal }}" hint-placeholder-val="{{ false }}"><div class="wrow"><span style="font-weight: 600">{{ c.title }}</span><sc-if value="{{ c.pct }}" hint-placeholder-val="{{ false }}"><span class="wnum wacc">{{ pv.pct }}%</span></sc-if></div><div class="wbar" style="margin-top: .6em; height: {{ c.barH }}px"><div style="height: 100%; width: {{ pv.pct }}%; {{ pv.fill }}"></div></div><div class="wnum w2" style="margin-top: .45em; font-size: .85em">{{ pv.cur }} / {{ pv.tgt }}</div></sc-if>
 
-<sc-if value="{{ k_chat }}" hint-placeholder-val="{{ false }}"><div style="display: flex; flex-direction: column; gap: .35em"><sc-for list="{{ pv.lines }}" as="l" hint-placeholder-count="4"><div><sc-if value="{{ c.badges }}" hint-placeholder-val="{{ true }}"><sc-if value="{{ l.badge }}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; min-width: 1.1em; padding: 0 .3em; margin-right: .35em; border-radius: .25em; border: 1px solid var(--w-fg2); font-size: .7em; line-height: 1.5; text-align: center; vertical-align: .15em" class="w2">{{ l.badge }}</span></sc-if></sc-if><b style="font-weight: 700; {{ l.nickStyle }}">{{ l.nick }}</b> {{ l.text }}</div></sc-for></div></sc-if>
+<sc-if value="{{ k_chat }}" hint-placeholder-val="{{ false }}"><div style="display: flex; flex-direction: column; gap: .35em"><sc-for list="{{ pv.lines }}" as="l" hint-placeholder-count="4"><div><sc-if value="{{ c.badges }}" hint-placeholder-val="{{ true }}"><sc-if value="{{ l.hasBadge }}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; min-width: 1.1em; padding: 0 .3em; margin-right: .35em; border-radius: .25em; border: 1px solid var(--w-fg2); font-size: .7em; line-height: 1.5; text-align: center; vertical-align: .15em" class="w2">{{ l.badge }}</span></sc-if></sc-if><b style="font-weight: 700; {{ l.nickStyle }}">{{ l.nick }}</b> {{ l.text }}</div></sc-for></div></sc-if>
 
 <sc-if value="{{ k_events }}" hint-placeholder-val="{{ false }}"><div class="wov" style="margin-bottom: .4em">Последние события</div><sc-for list="{{ pv.events }}" as="e" hint-placeholder-count="3"><div class="wrow" style="padding: .25em 0"><span><b style="font-weight: 600">{{ e.who }}</b> <span class="w2">{{ e.what }}</span></span><sc-if value="{{ c.amounts }}" hint-placeholder-val="{{ true }}"><span class="wnum wacc">{{ e.amount }}</span></sc-if></div></sc-for></sc-if>
 
 <sc-if value="{{ k_topdon }}" hint-placeholder-val="{{ false }}"><div class="wov" style="margin-bottom: .4em">Топ донатеров · {{ pv.period }}</div><sc-for list="{{ pv.tops }}" as="e" hint-placeholder-count="3"><div class="wrow" style="padding: .2em 0"><span><span class="wnum w2">{{ e.n }}.</span> {{ e.who }}</span><span class="wnum wacc">{{ e.sum }}</span></div></sc-for></sc-if>
 
-<sc-if value="{{ k_faceit }}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: .9em; align-items: center; justify-content: {{ pv.justify }}"><sc-if value="{{ c.level }}" hint-placeholder-val="{{ true }}"><span class="wnum" style="flex: none; width: 3em; height: 3em; border-radius: 999px; border: .22em solid var(--w-acc); border-right-color: var(--w-acc-soft); box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1em">9</span></sc-if><div><sc-if value="{{ c.elo }}" hint-placeholder-val="{{ true }}"><div class="wnum" style="font-size: 1.6em; font-weight: 600; line-height: 1.1">1 874 <span class="w2" style="font-size: .5em">ELO</span></div></sc-if><sc-if value="{{ c.delta }}" hint-placeholder-val="{{ true }}"><div class="wnum wacc" style="font-size: .85em">▲ +25 за стрим</div></sc-if><sc-if value="{{ c.last5 }}" hint-placeholder-val="{{ true }}"><div style="display: flex; gap: .25em; margin-top: .35em; justify-content: {{ pv.justify }}"><span class="wnum" style="padding: 0 .35em; border-radius: .2em; background: var(--w-acc); color: rgb(10 10 10); font-size: .75em; font-weight: 700">W</span><span class="wnum" style="padding: 0 .35em; border-radius: .2em; background: var(--w-acc); font-size: .75em; font-weight: 700; color: rgb(10 10 10)">W</span><span class="wnum" style="padding: 0 .35em; border-radius: .2em; border: 1px dashed var(--w-fg2); font-size: .75em; font-weight: 700">L</span><span class="wnum" style="padding: 0 .35em; border-radius: .2em; background: var(--w-acc); font-size: .75em; font-weight: 700; color: rgb(10 10 10)">W</span><span class="wnum" style="padding: 0 .35em; border-radius: .2em; background: var(--w-acc); font-size: .75em; font-weight: 700; color: rgb(10 10 10)">W</span></div></sc-if></div></div><div class="w2" style="margin-top: .4em; font-size: .75em">{{ c.nick }} · FACEIT</div></sc-if>
+<sc-if value="{{ k_faceit }}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: .9em; align-items: center; justify-content: {{ pv.justify }}"><sc-if value="{{ c.level }}" hint-placeholder-val="{{ true }}"><span class="wnum" style="flex: none; width: 3em; height: 3em; border-radius: 999px; border: .22em solid var(--w-acc); border-right-color: var(--w-acc-soft); box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1em">{{ pv.f.level }}</span></sc-if><div><sc-if value="{{ c.elo }}" hint-placeholder-val="{{ true }}"><div class="wnum" style="font-size: 1.6em; font-weight: 600; line-height: 1.1">{{ pv.f.elo }} <span class="w2" style="font-size: .5em">ELO</span></div></sc-if><sc-if value="{{ c.delta }}" hint-placeholder-val="{{ true }}"><div class="wnum wacc" style="font-size: .85em">{{ pv.f.delta }} за стрим</div></sc-if><sc-if value="{{ c.last5 }}" hint-placeholder-val="{{ true }}"><div style="display: flex; gap: .25em; margin-top: .35em; justify-content: {{ pv.justify }}"><sc-for list="{{ pv.f.l5 }}" as="r" hint-placeholder-count="5"><span class="wnum" style="padding: 0 .35em; border-radius: .2em; font-size: .75em; font-weight: 700; {{ r.style }}">{{ r.r }}</span></sc-for></div></sc-if></div></div></sc-if>
 
-<sc-if value="{{ k_fmatch }}" hint-placeholder-val="{{ false }}"><div class="wov" style="margin-bottom: .4em">{{ c.nick }} · за стрим</div><div style="display: flex; gap: 1.4em; justify-content: {{ pv.justify }}"><sc-if value="{{ c.kd }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">K/D</div><div class="wnum wacc" style="font-size: 1.5em; font-weight: 600">1.32</div></div></sc-if><sc-if value="{{ c.hs }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">HS</div><div class="wnum" style="font-size: 1.5em; font-weight: 600">54%</div></div></sc-if><sc-if value="{{ c.wl }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">Матчи</div><div class="wnum" style="font-size: 1.5em; font-weight: 600">4W 1L</div></div></sc-if></div></sc-if>
+<sc-if value="{{ k_fmatch }}" hint-placeholder-val="{{ false }}"><div class="wov" style="margin-bottom: .4em">{{ pv.f.nick }} · FACEIT</div><div style="display: flex; gap: 1.4em; justify-content: {{ pv.justify }}"><sc-if value="{{ c.elo }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">ELO</div><div class="wnum wacc" style="font-size: 1.4em; font-weight: 600">{{ pv.f.elo }}</div></div></sc-if><sc-if value="{{ c.delta }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">За стрим</div><div class="wnum" style="font-size: 1.4em; font-weight: 600">{{ pv.f.delta }}</div></div></sc-if><sc-if value="{{ c.wl }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">Матчи</div><div class="wnum" style="font-size: 1.4em; font-weight: 600">{{ pv.f.wl }}</div></div></sc-if></div></sc-if>
 
-<sc-if value="{{ k_cs }}" hint-placeholder-val="{{ false }}"><div class="wnum" style="font-size: 1.9em; font-weight: 600">CT 9 <span class="w2">:</span> <span class="wacc">7</span> T</div><sc-if value="{{ pv.csSub }}" hint-placeholder-val="{{ true }}"><div class="w2" style="font-size: .8em">{{ pv.csSub }}</div></sc-if></sc-if>
+<sc-if value="{{ k_cs }}" hint-placeholder-val="{{ false }}"><div class="wnum" style="font-size: 1.9em; font-weight: 600">CT {{ pv.cs.ct }} <span class="w2">:</span> <span class="wacc">{{ pv.cs.t }}</span> T</div><sc-if value="{{ pv.cs.hasSub }}" hint-placeholder-val="{{ true }}"><div class="w2" style="font-size: .8em">{{ pv.cs.sub }}</div></sc-if><sc-if value="{{ c.stats }}" hint-placeholder-val="{{ true }}"><div class="wnum" style="font-size: .85em; margin-top: .2em">{{ pv.cs.stats }}</div></sc-if></sc-if>
 
-<sc-if value="{{ k_dota }}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: 1.4em; justify-content: {{ pv.justify }}"><sc-if value="{{ c.mmr }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">MMR</div><div class="wnum wacc" style="font-size: 1.5em; font-weight: 600">4 210</div></div></sc-if><sc-if value="{{ c.wl }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">Стрим</div><div class="wnum" style="font-size: 1.5em; font-weight: 600">3W 1L</div></div></sc-if><sc-if value="{{ c.hero }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">Герой</div><div style="font-size: 1.1em; font-weight: 600; line-height: 1.9">Invoker · ур. 18</div></div></sc-if></div></sc-if>
+<sc-if value="{{ k_dota }}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: 1.4em; justify-content: {{ pv.justify }}"><sc-if value="{{ c.hero }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">Герой</div><div style="font-size: 1.1em; font-weight: 600; line-height: 1.9">{{ pv.dota.hero }}</div></div></sc-if><sc-if value="{{ c.kda }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">K / D / A</div><div class="wnum wacc" style="font-size: 1.4em; font-weight: 600">{{ pv.dota.kda }}</div></div></sc-if><sc-if value="{{ c.gpm }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">GPM / XPM</div><div class="wnum" style="font-size: 1.4em; font-weight: 600">{{ pv.dota.gpm }}</div></div></sc-if></div></sc-if>
 
-<sc-if value="{{ k_np }}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: .8em; align-items: center; justify-content: {{ pv.justify }}"><sc-if value="{{ c.cover }}" hint-placeholder-val="{{ true }}"><span style="flex: none; width: 3em; height: 3em; border-radius: calc(var(--w-rad) * .5); background: linear-gradient(135deg, var(--w-acc), var(--w-acc-soft)); display: flex; align-items: flex-end; gap: .12em; padding: .45em; box-sizing: border-box"><i style="flex: 1; height: 40%; background: var(--w-fg)"></i><i style="flex: 1; height: 90%; background: var(--w-fg)"></i><i style="flex: 1; height: 60%; background: var(--w-fg)"></i></span></sc-if><div style="min-width: 0"><div style="font-weight: 700">Выхода нет</div><div class="w2" style="font-size: .85em">Сплин<sc-if value="{{ c.requester }}" hint-placeholder-val="{{ true }}"> · заказал tixiy_bard</sc-if></div></div></div><sc-if value="{{ c.progress }}" hint-placeholder-val="{{ true }}"><div class="wbar" style="margin-top: .6em; height: 4px"><div style="height: 100%; width: 34%; background: var(--w-acc)"></div></div></sc-if></sc-if>
+<sc-if value="{{ k_np }}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: .8em; align-items: center; justify-content: {{ pv.justify }}"><sc-if value="{{ c.cover }}" hint-placeholder-val="{{ true }}"><span style="flex: none; width: 4.2em; height: 3em; border-radius: calc(var(--w-rad) * .5); background: linear-gradient(135deg, var(--w-acc), var(--w-acc-soft)); display: flex; align-items: flex-end; gap: .12em; padding: .45em; box-sizing: border-box"><i style="flex: 1; height: 40%; background: var(--w-fg)"></i><i style="flex: 1; height: 90%; background: var(--w-fg)"></i><i style="flex: 1; height: 60%; background: var(--w-fg)"></i></span></sc-if><div style="min-width: 0"><div style="font-weight: 700">Сплин — Выхода нет</div><sc-if value="{{ c.requester }}" hint-placeholder-val="{{ true }}"><div class="w2" style="font-size: .85em">заказал viewer_42</div></sc-if></div></div></sc-if>
 
 <sc-if value="{{ k_queue }}" hint-placeholder-val="{{ false }}"><div class="wov" style="margin-bottom: .4em">Дальше в очереди</div><sc-for list="{{ pv.queue }}" as="q" hint-placeholder-count="3"><div style="padding: .2em 0"><span class="wnum wacc">{{ q.n }}</span> {{ q.t }}<sc-if value="{{ c.requester }}" hint-placeholder-val="{{ false }}"> <span class="w2">· {{ q.by }}</span></sc-if></div></sc-for></sc-if>
 
 <sc-if value="{{ k_uptime }}" hint-placeholder-val="{{ false }}"><div class="wov">{{ c.label }}</div><div class="wnum wacc" style="font-size: 1.4em; font-weight: 600">{{ pv.uptime }}</div></sc-if>
 
-<sc-if value="{{ k_deaths }}" hint-placeholder-val="{{ false }}"><div style="display: flex; align-items: baseline; gap: .6em; justify-content: {{ pv.justify }}"><span class="w2">{{ c.label }}</span><span class="wnum wacc" style="font-size: 2em; font-weight: 700">{{ c.value }}</span></div></sc-if>
-
-<sc-if value="{{ k_poll }}" hint-placeholder-val="{{ false }}"><div style="font-weight: 700; margin-bottom: .5em">{{ c.q }}</div><div class="wrow"><span>1. {{ c.a }}</span><span class="wnum wacc">62%</span></div><div class="wbar" style="height: 6px; margin: .3em 0 .6em"><div style="height: 100%; width: 62%; background: var(--w-acc)"></div></div><div class="wrow"><span>2. {{ c.b }}</span><span class="wnum w2">38%</span></div><div class="wbar" style="height: 6px; margin-top: .3em"><div style="height: 100%; width: 38%; background: var(--w-fg2)"></div></div><div class="w2" style="margin-top: .6em; font-size: .75em">Пиши 1 или 2 в чат · {{ c.secs }} с</div></sc-if>
+<sc-if value="{{ k_deaths }}" hint-placeholder-val="{{ false }}"><div style="display: flex; align-items: baseline; gap: .6em; justify-content: {{ pv.justify }}"><span class="w2">{{ c.label }}</span><span class="wnum wacc" style="font-size: 2em; font-weight: 700">{{ pv.deaths }}</span></div></sc-if>
 
 <sc-if value="{{ k_ticker }}" hint-placeholder-val="{{ false }}"><div style="overflow: hidden; white-space: nowrap"><div class="wtick" style="display: inline-block; {{ pv.tickAnim }}">{{ c.text }}   ·   {{ c.text }}   ·   </div></div></sc-if>
 
 </div>
 </div>
 </div>
+<span class="mono" style="position: absolute; right: 10px; top: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(10,10,10,0.72); border: 1px solid rgba(255,255,255,0.16); font-size: 11px; color: #DCDCDC">{{ pvBadge }}</span>
 </div>
-<p style="margin: 10px 0 0; font-size: 12px; color: #8F8F8F">Предпросмотр в масштабе экрана 1920 × 1080. Пунктир — безопасная зона, которую не перекрывают интерфейсы Twitch.</p>
+<p style="margin: 10px 0 0; font-size: 12px; line-height: 18px; color: #8F8F8F">{{ pvCaption }} Масштаб экрана 1920 × 1080, пунктир — безопасная зона, которую не перекрывают интерфейсы Twitch.</p>
 </section>
 </div>
 </main>
@@ -203,63 +223,142 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     const W = window.StreWidgets;
-    const q = new URLSearchParams(location.search).get('w');
-    const id = W.LIST.some((w) => w[0] === q) ? q : 'goal';
-    this.state = { all: W.loadAll(), id, tab: 'look', stage: 0, k: 0.45, animKey: 0, guides: true, show: false, copied: false, cfgCopied: false, applied: false, saved: '' };
+    const q = new URLSearchParams(location.search);
+    const ok = (x) => { const m = W.meta(x); return !!m && m[5] !== 'soon'; };
+    const id = ok(q.get('w')) ? q.get('w') : 'alerts';
+    const tabOk = ['look', 'text', 'anim', 'pos', 'content', 'obs', 'game'].indexOf(q.get('tab')) >= 0 && (q.get('tab') !== 'game' || id === 'cs' || id === 'dota');
+    this.dirty = new Set();
+    this.saving = false;
+    this.state = { loaded: false, loadErr: '', all: { on: {}, cfg: {} }, token: '', limit: 0, me: {}, info: '', id, tab: tabOk ? q.get('tab') : 'look',
+      stage: 0, k: 0.45, animKey: 0, guides: true, show: false, copied: false, cfgCopied: false, gsiCopied: false, applied: false,
+      save: 'idle', saveErr: '', savedAt: 0, onBusy: false, onErr: '', live: null, liveFor: '' };
   }
   componentDidMount() {
     const el = document.getElementById('wstage');
-    const fit = () => { if (el) this.setState({ k: el.clientWidth / 1920 }); };
+    const fit = () => { if (el && el.clientWidth) this.setState({ k: el.clientWidth / 1920 }); };
     fit();
     if (window.ResizeObserver && el) new ResizeObserver(fit).observe(el);
+    window.addEventListener('beforeunload', (e) => { if (this.dirty.size || this.saving) { e.preventDefault(); e.returnValue = ''; } });
+    // пока открыта вкладка «Игра», проверяем, пришли ли данные из игры
+    setInterval(() => { if (this.state.tab === 'game' && !document.hidden) this.fetchLive(); }, 5000);
+    this.load();
   }
-  write(all, msg) {
-    window.StreWidgets.saveAll(all);
-    const t = new Date();
-    const hh = String(t.getHours()).padStart(2, '0'), mm = String(t.getMinutes()).padStart(2, '0'), ss = String(t.getSeconds()).padStart(2, '0');
-    this.setState({ all, saved: (msg || 'Сохранено') + ' в этом браузере · ' + hh + ':' + mm + ':' + ss });
+  async load() {
+    const W = window.StreWidgets;
+    this.setState({ loadErr: '' });
+    try {
+      const [r, me] = await Promise.all([W.load(), StreAPI.me()]);
+      const info = r.migrated === 'local' ? 'Перенесли настройки виджетов из этого браузера на сервер — теперь их видит OBS.' + (r.dropped.length ? ' Выключены из-за лимита тарифа: ' + r.dropped.map((x) => W.meta(x)[1]).join(', ') + '.' : '') : '';
+      this.setState({ loaded: true, all: r.data, token: r.token, limit: r.limit, me: me || {}, info });
+      this.fetchLive();
+    } catch (e) { this.setState({ loadErr: 'Не удалось загрузить настройки: ' + e.message }); }
+  }
+  // Живые данные с сервера для подсказок (цель, счётчик, FACEIT, игра)
+  async fetchLive() {
+    const id = this.state.id;
+    if (!this.state.token || ['goal', 'subgoal', 'deaths', 'faceit', 'fmatch', 'cs', 'dota'].indexOf(id) < 0) return;
+    try {
+      const p = await StreAPI.get('widget.data', { t: this.state.token, w: id, after: 0 });
+      if (this.state.id === id) this.setState({ live: p, liveFor: id });
+    } catch (e) { /* подсказка просто не обновится */ }
+  }
+  clone(x) { return JSON.parse(JSON.stringify(x)); }
+  // Правка настроек виджета: сразу в превью, на сервер — через 600 мс тишины
+  edit(ids, fn, now) {
+    const all = this.clone(this.state.all);
+    fn(all);
+    ids.forEach((x) => this.dirty.add(x));
+    this.setState({ all, save: 'pending', saveErr: '' });
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => this.flush(), now ? 0 : 600);
   }
   patch(p, replay) {
-    const all = JSON.parse(JSON.stringify(this.state.all));
+    const W = window.StreWidgets;
     const id = this.state.id;
-    all.cfg[id] = Object.assign({}, all.cfg[id] || {}, p);
-    this.write(all);
+    this.edit([id], (all) => { all.cfg[id] = Object.assign(W.cfg(id, all), p); });
     if (replay) this.setState({ animKey: 1 - this.state.animKey });
   }
   patchContent(key, v) {
-    const all = JSON.parse(JSON.stringify(this.state.all));
+    const W = window.StreWidgets;
     const id = this.state.id;
-    const cur = all.cfg[id] || {};
-    all.cfg[id] = Object.assign({}, cur, { content: Object.assign({}, cur.content || {}, { [key]: v }) });
-    this.write(all);
+    this.edit([id], (all) => { const c = W.cfg(id, all); c.content = Object.assign({}, c.content, { [key]: v }); all.cfg[id] = c; });
   }
+  async flush() {
+    const W = window.StreWidgets;
+    if (this.saving) { this.again = true; return; }
+    if (!this.dirty.size) return;
+    const ids = Array.from(this.dirty);
+    this.dirty.clear();
+    this.saving = true;
+    const snap = this.clone(this.state.all.cfg);
+    this.setState({ save: 'saving' });
+    try {
+      const fresh = await W.update((d) => { ids.forEach((x) => { if (snap[x]) d.cfg[x] = snap[x]; else delete d.cfg[x]; }); });
+      const all = this.clone(this.state.all);
+      ['goal', 'subgoal'].forEach((g) => { if (fresh.cfg[g] && fresh.cfg[g].since && all.cfg[g] && !this.dirty.has(g)) all.cfg[g].since = fresh.cfg[g].since; });
+      this.saving = false;
+      this.setState({ all, save: this.dirty.size ? 'pending' : 'saved', savedAt: Date.now() });
+      this.fetchLive();
+      if (this.dirty.size || this.again) { this.again = false; this.flush(); }
+    } catch (e) {
+      ids.forEach((x) => this.dirty.add(x));
+      this.saving = false;
+      this.setState({ save: 'error', saveErr: e.message });
+    }
+  }
+  toggleOn() {
+    const W = window.StreWidgets;
+    const s = this.state;
+    const id = s.id;
+    if (!s.loaded || s.onBusy) return;
+    const next = !s.all.on[id];
+    const setOn = (v) => { const all = this.clone(this.state.all); if (v) all.on[id] = true; else delete all.on[id]; return all; };
+    this.setState({ all: setOn(next), onBusy: true, onErr: '' });
+    W.update((d) => {
+      if (next) d.on[id] = true; else delete d.on[id];
+      if (this.state.all.cfg[id]) d.cfg[id] = this.clone(this.state.all.cfg[id]);
+    }).then(() => { this.setState({ onBusy: false }); StreAPI.toast(next ? 'Виджет включён' : 'Виджет выключен'); })
+      .catch((e) => { this.setState({ all: setOn(!next), onBusy: false, onErr: e.message }); StreAPI.toast(e.message, 'error'); });
+  }
+  async copyText(text) {
+    try { await navigator.clipboard.writeText(text); return true; } catch (e) {
+      const t = document.createElement('textarea'); t.value = text; t.setAttribute('readonly', ''); t.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(t); t.select(); let ok = false; try { ok = document.execCommand('copy'); } catch (e2) { ok = false; } t.remove(); return ok;
+    }
+  }
+  flash(key) { this.setState({ [key]: true }); setTimeout(() => this.setState({ [key]: false }), 2500); }
   renderVals() {
     const W = window.StreWidgets;
     const s = this.state;
     const id = s.id;
-    const meta = W.LIST.find((w) => w[0] === id);
+    const meta = W.meta(id);
     const c = W.cfg(id, s.all);
     W.useFont(c.font);
     const fmt = (n) => String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const u = s.me.user || {};
+    const live = s.liveFor === id && s.live ? s.live : null;
+    const ld = (live && live.data) || {};
+    const isGame = id === 'cs' || id === 'dota';
 
     // --- контролы ---
     const range = (label, key, min, max, step, unit, replay) => ({ isRange: true, label, val: c[key], min, max, step, unit: unit || '', on: (e) => this.patch({ [key]: Number(e.target.value) }, replay) });
     const color = (label, key) => ({ isColor: true, label, val: c[key], on: (e) => this.patch({ [key]: e.target.value }) });
-    const toggle = (label, key, hint) => ({ isToggle: true, label, hint: hint || '', state: c[key] ? 'true' : 'false', on: () => this.patch({ [key]: !c[key] }) });
+    const toggle = (label, key, hint) => ({ isToggle: true, label, hint: hint || '', hasHint: !!hint, state: c[key] ? 'true' : 'false', on: () => this.patch({ [key]: !c[key] }) });
     const select = (label, key, options, replay) => ({ isSelect: true, label, val: c[key], options: options.map((o) => ({ v: o[0], l: o[1] })), on: (e) => this.patch({ [key]: e.target.value }, replay) });
     const seg = (label, key, opts, replay) => ({ isSeg: true, label, opts: opts.map((o) => ({ l: o[1], sel: String(c[key]) === String(o[0]) ? 'true' : 'false', pick: () => this.patch({ [key]: o[0] }, replay) })) });
     const head = (label) => ({ isHead: true, label });
 
-    const TABS = [['look', 'Вид'], ['text', 'Текст'], ['anim', 'Анимация'], ['pos', 'Позиция'], ['content', 'Содержимое'], ['obs', 'OBS']];
+    const TABS = [['look', 'Вид'], ['text', 'Текст'], ['anim', 'Анимация'], ['pos', 'Позиция'], ['content', 'Содержимое']].concat(isGame ? [['game', 'Игра']] : [], [['obs', 'OBS']]);
+    const tab = s.tab === 'game' && !isGame ? 'look' : s.tab;
     let controls = [];
-    if (s.tab === 'look') {
+    if (tab === 'look') {
       controls = [
         head('Фон'), color('Цвет фона', 'bg'), range('Непрозрачность фона', 'bgA', 0, 100, 1, '%'), range('Эффект стекла (размытие)', 'blur', 0, 40, 1, ' px'),
         head('Рамка и форма'), range('Толщина рамки', 'bw', 0, 6, 1, ' px'), color('Цвет рамки', 'bc'), range('Непрозрачность рамки', 'bcA', 0, 100, 1, '%'), range('Скругление', 'radius', 0, 40, 1, ' px'),
         head('Глубина'), range('Тень', 'shadow', 0, 100, 1, '%'), range('Свечение', 'glow', 0, 60, 1, ' px'), color('Цвет свечения', 'glowC'),
         head('Размер'), range('Ширина', 'width', 160, 1920, 10, ' px'), range('Масштаб', 'scale', 40, 250, 5, '%'), range('Внутренний отступ', 'pad', 0, 48, 1, ' px'),
       ];
-    } else if (s.tab === 'text') {
+    } else if (tab === 'text') {
       controls = [
         select('Шрифт', 'font', W.FONTS.map((f) => [f, f])),
         color('Основной текст', 'fg'), color('Второстепенный текст', 'fg2'), color('Акцент: полосы, ники, цифры', 'acc'),
@@ -270,25 +369,87 @@ class Component extends DCLogic {
         toggle('Тень у текста', 'tshadow', 'Читается поверх любой игры даже без фона'),
         toggle('Всё заглавными', 'upper'),
       ];
-    } else if (s.tab === 'anim') {
+    } else if (tab === 'anim') {
       controls = [
         select('Появление', 'anim', [['none', 'Без анимации'], ['fade', 'Проявление'], ['up', 'Снизу'], ['down', 'Сверху'], ['side', 'Сбоку'], ['zoom', 'Увеличение'], ['spring', 'Пружина'], ['blur', 'Из размытия']], true),
         range('Длительность появления', 'dur', 100, 2000, 50, ' мс', true),
       ];
-      if (id === 'alerts' || id === 'poll') controls.push(range('Время на экране', 'hold', 2, 30, 1, ' с'));
-      if (id === 'alerts') controls.push(head('Звук'), toggle('Звук алерта', 'sound'), range('Громкость', 'vol', 0, 100, 5, '%'));
-      controls.push(toggle('Прятать, когда нечего показывать', 'hideIdle', 'Например, цель без донатов или пустая очередь'));
-    } else if (s.tab === 'pos') {
+      if (id === 'alerts') controls.push(range('Время на экране', 'hold', 2, 30, 1, ' с'), head('Звук'), toggle('Звук алерта', 'sound'), range('Громкость', 'vol', 0, 100, 5, '%'));
+      if (id !== 'alerts') controls.push(toggle('Прятать, когда нечего показывать', 'hideIdle', 'Например, цель без донатов или пустая очередь'));
+    } else if (tab === 'pos') {
       controls = [range('Отступ по горизонтали', 'x', 0, 600, 4, ' px'), range('Отступ по вертикали', 'y', 0, 400, 4, ' px')];
-    } else if (s.tab === 'content') {
+    } else if (tab === 'content') {
       controls = (W.CONTENT[id] || []).map((f) => {
-        const [key, label, type, def, opts] = f;
+        const [key, label, type, def, opts, hint] = f;
         const val = c.content[key];
-        if (type === 'toggle') return { isToggle: true, label, hint: '', state: val ? 'true' : 'false', on: () => this.patchContent(key, !val) };
-        if (type === 'select') return { isSelect: true, label, val, options: opts.map((o) => ({ v: o[0], l: o[1] })), on: (e) => this.patchContent(key, e.target.value) };
-        if (type === 'number') return { isNumber: true, label, val, on: (e) => this.patchContent(key, Number(e.target.value)) };
-        return { isText: true, label, val, on: (e) => this.patchContent(key, e.target.value) };
+        const h = { hint: hint || '', hasHint: !!hint };
+        if (type === 'toggle') return Object.assign({ isToggle: true, label, state: val ? 'true' : 'false', on: () => this.patchContent(key, !val) }, h);
+        if (type === 'select') return Object.assign({ isSelect: true, label, val, options: opts.map((o) => ({ v: o[0], l: o[1] })), on: (e) => this.patchContent(key, e.target.value) }, h);
+        if (type === 'number') return Object.assign({ isNumber: true, label, val, on: (e) => this.patchContent(key, Math.max(0, Number(e.target.value) || 0)) }, h);
+        return Object.assign({ isText: true, label, val, on: (e) => this.patchContent(key, key === 'command' || key === 'nick' ? e.target.value.replace(/\s+/g, '') : e.target.value) }, h);
       });
+    }
+
+    // --- подсказки: что нужно виджету, чтобы на стриме появились данные ---
+    const notes = [];
+    const note = (text, link, target) => notes.push(typeof target === 'function' ? { text, link, isBtn: true, isLink: false, act: target } : { text, link, isLink: true, isBtn: false, href: target });
+    if (s.loaded) {
+      if (['chat', 'alerts', 'events', 'subgoal', 'deaths'].indexOf(id) >= 0 && !u.botEnabled) note('Бот не в канале: чат, подписки и команды не приходят, виджет останется пустым.', 'Подключить бота', 'WebDashboard.dc.html');
+      if (['goal', 'topdon', 'alerts', 'events'].indexOf(id) >= 0 && !u.daConnected) note(id === 'goal' || id === 'topdon' ? 'Донаты берём из DonationAlerts — он не подключён, поэтому сумма не будет расти.' : 'Донаты появятся после подключения DonationAlerts.', 'Подключить в настройках', 'WebSettings.dc.html#platforms');
+      if ((id === 'np' || id === 'queue') && u.limits && !u.limits.music) note('Заказ музыки доступен на тарифе «Про» и выше — без него виджет пустой.', 'Тарифы', 'WebSettings.dc.html#billing');
+      if (isGame && !ld.updatedAt && tab !== 'game') note('Нужен файл конфигурации ' + (id === 'cs' ? 'CS2' : 'Dota 2') + ' в папке игры — без него данных не будет.', 'Как подключить', () => this.setState({ tab: 'game' }));
+    }
+
+    // --- блоки во вкладке «Содержимое» ---
+    const boxes = [];
+    if (tab === 'content' && s.loaded) {
+      if (id === 'goal' || id === 'subgoal') {
+        const since = c.since ? StreAPI.fmtDate(c.since) + ' ' + StreAPI.fmtTime(c.since) : '';
+        const cur = live && ld.current != null ? fmt(ld.current) + (id === 'goal' ? ' ₽' : '') : '…';
+        boxes.push({ role: 'status', hasTitle: true, title: 'Сейчас на стриме', text: 'Собрано: ' + cur + (since ? '. Считаем ' + (id === 'goal' ? 'донаты' : 'подписки') + ' с ' + since + '.' : '. Отсчёт начнётся после сохранения.'),
+          hasBtn: true, btn: 'Начать отсчёт заново', busy: false, act: () => {
+            if (!confirm('Начать отсчёт заново? Собранное обнулится, считать начнём с этой минуты.')) return;
+            this.edit([id], (all) => { const x = W.cfg(id, all); x.since = Math.floor(Date.now() / 1000); x.content = Object.assign({}, x.content, { current: 0 }); all.cfg[id] = x; }, true);
+          } });
+      }
+      if (id === 'deaths') boxes.push({ role: 'status', hasTitle: true, title: 'Сейчас на экране: ' + (live ? fmt(ld.value) : '…'), text: 'Модераторы и ты пишут в чат: ' + c.content.command + ' — плюс один, ' + c.content.command + ' 5 — плюс пять, ' + c.content.command + ' -1 — минус один, ' + c.content.command + ' 0 — сброс. Зрители по этой команде видят текущее значение. Работает, когда бот в канале.' });
+      if (id === 'faceit' || id === 'fmatch') {
+        const f = ld.faceit;
+        const nick = c.content.nick;
+        let text = 'Укажи ник — без него виджет на стриме пустой.';
+        if (nick && s.save !== 'idle' && s.save !== 'saved') text = 'Проверим ник после сохранения…';
+        else if (nick && f) text = 'Нашли ' + f.nick + ': уровень ' + f.level + ', ' + fmt(f.elo) + ' ELO. Данные обновляются раз в минуту.';
+        else if (nick && live) text = 'По нику «' + nick + '» данных нет, поэтому виджет на стриме пустой. Проверь ник (регистр важен). Если ник верный — на сервере не задан ключ FACEIT API, тогда виджет не заработает, пока его не добавит администратор.';
+        boxes.push({ role: 'status', hasTitle: true, title: 'Проверка FACEIT', text, hasBtn: !!nick, btn: 'Проверить ещё раз', busy: false, act: () => this.fetchLive() });
+      }
+      if (id === 'alerts') boxes.push({ hasTitle: false, text: 'Алерты показываются по очереди: фолловы и подписки — когда бот в канале, донаты — из DonationAlerts (новые проверяются раз в минуту).' });
+    }
+
+    // --- Game State Integration ---
+    let gsi = {};
+    if (isGame) {
+      const G = W.GSI[id];
+      const text = W.gsiConfig(s.token, id);
+      const age = ld.updatedAt && live ? Math.max(0, (live.now || 0) - ld.updatedAt) : -1;
+      gsi = {
+        game: G.game, file: G.file, text: s.token ? text : 'Загрузка…',
+        steps: [
+          { t: 'Скачай файл ниже (или скопируй текст и сохрани с именем ' + G.file + ').', hasCode: false },
+          { t: 'Положи его в папку игры:', hasCode: true, code: G.folder + (id === 'dota' ? ' (папку gamestate_integration создай, если её нет)' : '') },
+          id === 'dota' ? { t: 'В Steam: Dota 2 → «Свойства» → «Параметры запуска», добавь', hasCode: true, code: '-gamestateintegration' } : { t: 'Перезапусти CS2, если игра была открыта.', hasCode: false },
+          { t: 'Зайди в матч — статус ниже сменится сам. Игра шлёт данные на', hasCode: true, code: W.gsiUrl('•••', id).replace('t=%E2%80%A2%E2%80%A2%E2%80%A2', 't=•••') },
+        ],
+        status: age < 0 ? (live ? 'Данные из игры ещё не приходили.' : 'Проверяем…') : age < 120 ? 'Игра на связи: данные пришли ' + (age < 5 ? 'только что' : age + ' с назад') + '.' : 'Последние данные из игры: ' + StreAPI.fmtDate(ld.updatedAt) + ' ' + StreAPI.fmtTime(ld.updatedAt) + '. Сейчас игра не шлёт данные — виджет на стриме скрыт.',
+        copyLabel: s.gsiCopied ? 'Скопировано' : 'Скопировать текст',
+        copy: async () => { if (await this.copyText(text)) { StreAPI.toast('Текст файла скопирован'); this.flash('gsiCopied'); } else StreAPI.toast('Не получилось скопировать — скачай файл', 'error'); },
+        download: () => {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
+          a.download = G.file;
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+        },
+      };
     }
 
     // --- превью: позиция и стиль ---
@@ -303,50 +464,88 @@ class Component extends DCLogic {
     const anim = c.anim === 'none' ? 'none' : 'wa-' + c.anim + '-' + s.animKey + ' ' + c.dur + 'ms cubic-bezier(.16,1,.3,1) both';
     const boxStyle = W.vars(c) + '; width: ' + c.width + 'px; animation: ' + anim;
 
-    // --- превью: данные ---
+    // --- превью: пример данных (цели и счётчик — настоящие, если сервер их отдал) ---
     const ct = c.content;
+    let real = false;
     const pv = { justify: c.align === 'center' ? 'center' : c.align === 'right' ? 'flex-end' : 'flex-start' };
     if (id === 'alerts') {
-      pv.typeLabel = { follow: 'Новый фолловер', sub: 'Новая подписка', donate: 'Донат · 300 ₽', raid: 'Рейд · 212 зрителей' }[ct.type] || 'Событие';
-      pv.msg = String(ct.tpl || '').replace(/\{name\}/g, ct.name);
+      const ex = { follow: {}, sub: { months: 1 }, resub: { months: 7 }, gift: { total: 5 }, raid: { viewers: 42 }, donation: { amount: 300, message: '' } };
+      const type = ex[ct.type] ? ct.type : 'sub';
+      const e = { type, name: ct.name || 'viewer_42', data: ex[type] };
+      pv.typeLabel = W.alertLabel(e); pv.alertName = e.name; pv.msg = W.alertText(ct, e);
     }
     if (id === 'goal' || id === 'subgoal') {
-      pv.pct = Math.max(0, Math.min(100, Math.round((Number(ct.current) || 0) / Math.max(1, Number(ct.target) || 1) * 100)));
-      pv.cur = fmt(ct.current); pv.tgt = fmt(ct.target);
+      real = !!live && ld.current != null;
+      const cur = real ? Number(ld.current) || 0 : Math.round((Number(ct.target) || 0) * 0.4);
+      pv.pct = Math.max(0, Math.min(100, Math.round(cur / Math.max(1, Number(ct.target) || 1) * 100)));
+      pv.cur = fmt(cur); pv.tgt = fmt(ct.target);
       pv.fill = ct.bar === 'hatch' ? 'background: repeating-linear-gradient(135deg, var(--w-acc) 0 8px, var(--w-acc-soft) 8px 14px)' : ct.bar === 'gradient' ? 'background: linear-gradient(90deg, var(--w-acc-soft), var(--w-acc))' : 'background: var(--w-acc)';
     }
     if (id === 'chat') {
       const L = [
-        { nick: 'lenta_ln', text: 'вот это клатч, 1 против 3', badge: 'M', tw: 'rgb(92 200 255)' },
-        { nick: 'moroz_tv', text: '!аптайм', badge: '', cmd: true, tw: 'rgb(255 122 26)' },
+        { nick: 'viewer_42', text: 'вот это клатч, 1 против 3', badge: 'M', tw: 'rgb(92 200 255)' },
+        { nick: 'zritel_tv', text: '!аптайм', badge: '', cmd: true, tw: 'rgb(255 122 26)' },
         { nick: 'Nightbot', text: 'Стрим идёт 2 ч 47 мин', badge: '', bot: true, tw: 'rgb(140 140 140)' },
-        { nick: 'polyana_live', text: 'кира, ты сегодня в ударе', badge: 'VIP', tw: 'rgb(255 79 163)' },
-        { nick: 'tixiy_bard', text: 'первый раз на стриме, привет', badge: 'S', tw: 'rgb(43 182 115)' },
-        { nick: 'nastya_k', text: 'какой прицел стоит?', badge: '', tw: 'rgb(245 197 24)' },
-        { nick: 'gleb_1999', text: 'GG', badge: '', tw: 'rgb(139 92 246)' },
+        { nick: 'gost_chata', text: 'ты сегодня в ударе', badge: 'VIP', tw: 'rgb(255 79 163)' },
+        { nick: 'novichok_7', text: 'первый раз на стриме, привет', badge: 'S', tw: 'rgb(43 182 115)' },
+        { nick: 'cs_fan', text: 'какой прицел стоит?', badge: '', tw: 'rgb(245 197 24)' },
+        { nick: 'zritel_2', text: 'GG', badge: '', tw: 'rgb(139 92 246)' },
       ].filter((l) => !(ct.hideCmd && l.cmd) && !(ct.hideBots && l.bot));
       pv.lines = L.slice(-Math.max(1, Math.min(12, Number(ct.max) || 5))).map((l) => Object.assign({}, l, {
-        nickStyle: ct.nick === 'accent' ? 'color: var(--w-acc)' : ct.nick === 'platform' ? 'color: ' + l.tw : 'color: var(--w-fg)',
+        hasBadge: !!l.badge, nickStyle: ct.nick === 'accent' ? 'color: var(--w-acc)' : ct.nick === 'platform' ? 'color: ' + l.tw : 'color: var(--w-fg)',
       }));
     }
     if (id === 'events') {
       pv.events = [
-        { who: 'sever_ops', what: 'рейд', amount: '212' }, { who: 'tixiy_bard', what: 'подписка', amount: '3 мес' }, { who: 'moroz_tv', what: 'донат', amount: '300 ₽' },
-        { who: 'nastya_k', what: 'фоллов', amount: '' }, { who: 'gleb_1999', what: 'донат', amount: '150 ₽' },
+        { who: 'raid_team', what: 'рейд', amount: '42' }, { who: 'viewer_42', what: 'продление', amount: '7 мес' }, { who: 'zritel_tv', what: 'донат', amount: '300 ₽' },
+        { who: 'novichok_7', what: 'фоллов', amount: '' }, { who: 'cs_fan', what: 'донат', amount: '150 ₽' },
       ].slice(0, Math.max(1, Math.min(5, Number(ct.count) || 3)));
     }
     if (id === 'topdon') {
       pv.period = { stream: 'стрим', week: 'неделя', month: 'месяц' }[ct.period];
-      pv.tops = [['moroz_tv', 4300], ['polyana_live', 2150], ['gleb_1999', 900], ['nastya_k', 600], ['sever_ops', 450]]
+      pv.tops = [['zritel_tv', 4300], ['viewer_42', 2150], ['cs_fan', 900], ['novichok_7', 600], ['gost_chata', 450]]
         .slice(0, Math.max(1, Math.min(5, Number(ct.count) || 3))).map((t, i) => ({ n: i + 1, who: t[0], sum: fmt(t[1]) + ' ₽' }));
     }
-    if (id === 'cs') pv.csSub = [ct.map ? 'Mirage' : '', ct.round ? 'раунд 17' : ''].filter(Boolean).join(' · ');
+    if (id === 'faceit' || id === 'fmatch') {
+      const f = ld.faceit;
+      real = !!f;
+      const d = f ? f.delta : 25;
+      const l5 = f ? f.last5 || [] : ['W', 'W', 'L', 'W', 'W'];
+      const w = l5.filter((r) => r === 'W').length;
+      pv.f = { nick: f ? f.nick : (ct.nick || 'ник'), level: f ? f.level : 8, elo: fmt(f ? f.elo : 1874), delta: (d > 0 ? '▲ +' : d < 0 ? '▼ ' : '± ') + d,
+        wl: l5.length ? w + 'W ' + (l5.length - w) + 'L' : '—',
+        l5: l5.map((r) => ({ r, style: r === 'W' ? 'background: var(--w-acc); color: rgb(10 10 10)' : 'border: 1px dashed var(--w-fg2)' })) };
+    }
+    if (id === 'cs') {
+      const g = ld.gsi && ld.gsi.map ? ld.gsi : null;
+      real = !!g;
+      const m = g ? g.map : { name: 'de_mirage', round: 16, team_ct: { score: 9 }, team_t: { score: 7 } };
+      const ps = g && g.player && g.player.stats ? g.player.stats : { kills: 18, deaths: 11, mvps: 3 };
+      const sub = [ct.map ? String(m.name || '').replace(/^(de|cs|ar)_/, '') : '', ct.round ? 'раунд ' + ((Number(m.round) || 0) + 1) : ''].filter(Boolean).join(' · ');
+      pv.cs = { ct: (m.team_ct && m.team_ct.score) || 0, t: (m.team_t && m.team_t.score) || 0, sub, hasSub: !!sub, stats: 'K/D ' + (ps.kills || 0) + '/' + (ps.deaths || 0) + ' · MVP ' + (ps.mvps || 0) };
+    }
+    if (id === 'dota') {
+      const g = ld.gsi && ld.gsi.hero && ld.gsi.hero.name ? ld.gsi : null;
+      real = !!g;
+      const pl = g ? g.player || {} : { kills: 7, deaths: 2, assists: 11, gpm: 612, xpm: 705 };
+      pv.dota = { hero: g ? String(g.hero.name).replace('npc_dota_hero_', '').replace(/_/g, ' ') + ' · ур. ' + (g.hero.level || 1) : 'invoker · ур. 18',
+        kda: (pl.kills || 0) + ' / ' + (pl.deaths || 0) + ' / ' + (pl.assists || 0), gpm: (pl.gpm || 0) + ' / ' + (pl.xpm || 0) };
+    }
     if (id === 'queue') {
-      pv.queue = [['Звезда по имени Солнце — Кино', 'moroz_tv'], ['Тает лёд — Грибы', 'nastya_k'], ['Районы-кварталы — Звери', 'gleb_1999'], ['Я свободен — Кипелов', 'polyana_live'], ['Владивосток 2000 — Мумий Тролль', 'sever_ops']]
+      pv.queue = [['Кино — Звезда по имени Солнце', 'viewer_42'], ['Грибы — Тает лёд', 'zritel_tv'], ['Звери — Районы-кварталы', 'cs_fan'], ['Кипелов — Я свободен', 'gost_chata'], ['Мумий Тролль — Владивосток 2000', 'novichok_7']]
         .slice(0, Math.max(1, Math.min(5, Number(ct.count) || 3))).map((q, i) => ({ n: i + 1, t: q[0], by: q[1] }));
     }
-    if (id === 'uptime') pv.uptime = { hms: '02:47:13', hm: '02:47', words: '2 ч 47 мин' }[ct.format];
+    if (id === 'uptime') {
+      const st = s.me.stream || {};
+      real = !!st.live;
+      const sec = st.live ? Math.max(0, Math.floor(Date.now() / 1000 - st.startedAt)) : 2 * 3600 + 47 * 60 + 13;
+      const two = (n) => String(n).padStart(2, '0');
+      const hh = Math.floor(sec / 3600), mm = Math.floor(sec % 3600 / 60), ss = sec % 60;
+      pv.uptime = ct.format === 'hm' ? two(hh) + ':' + two(mm) : ct.format === 'words' ? (hh ? hh + ' ч ' : '') + mm + ' мин' : two(hh) + ':' + two(mm) + ':' + two(ss);
+    }
+    if (id === 'deaths') { real = !!live; pv.deaths = live ? fmt(ld.value) : fmt(ct.value); }
     if (id === 'ticker') {
+      real = true;
       const secs = Math.max(4, Math.round(String(ct.text || '').length * c.size * 0.55 / Math.max(10, Number(ct.speed) || 60)));
       pv.tickAnim = 'animation: wa-ticker ' + secs + 's linear infinite';
     }
@@ -356,57 +555,76 @@ class Component extends DCLogic {
 
     const stagesDef = [['Игра', 'rgb(17 17 17)'], ['Чёрный', 'rgb(0 0 0)'], ['Шахматка', 'repeating-conic-gradient(rgb(36 36 36) 0 25%, rgb(26 26 26) 0 50%) 0 0 / 32px 32px'], ['Хромакей', '#00B140']];
     const isOn = !!s.all.on[id];
-    const locked = meta[5] === 'locked';
     const presets = Object.keys(W.PRESETS).map((k) => {
       const p = Object.assign({}, W.STYLE, W.PRESETS[k]);
       return {
         name: p.name, sel: c.preset === k ? 'true' : 'false',
         swatch: 'background: ' + W.rgba(p.bg, Math.max(p.bgA, 8)) + '; border: ' + (p.bw ? p.bw + 'px solid ' + W.rgba(p.bc, p.bcA) : '1px dashed rgb(110 110 110)') + '; box-shadow: ' + (p.glow ? '0 0 12px ' + W.rgba(p.glowC, 70) : 'none') + ', inset 10px -10px 0 -4px ' + p.acc,
-        pick: () => this.patch(Object.assign({ preset: k }, W.PRESETS[k], { name: undefined }), true),
+        pick: () => { const pp = Object.assign({ preset: k }, W.PRESETS[k]); delete pp.name; this.patch(pp, true); },
       };
     });
     const ANCH = [['tl', 'Сверху слева'], ['tc', 'Сверху по центру'], ['tr', 'Сверху справа'], ['ml', 'Слева по центру'], ['mc', 'По центру'], ['mr', 'Справа по центру'], ['bl', 'Снизу слева'], ['bc', 'Снизу по центру'], ['br', 'Снизу справа']];
+    const realUrl = s.token ? W.obsUrl(s.token, id) : '';
+    const tm = s.savedAt ? new Date(s.savedAt).toLocaleTimeString('ru-RU') : '';
+    const saveLabel = !s.loaded ? (s.loadErr ? 'Настройки не загружены' : 'Загрузка…') : s.save === 'pending' || s.save === 'saving' ? 'Сохраняем…' : s.save === 'saved' ? 'Сохранено на сервере · ' + tm + ' · OBS подхватит за пару секунд' : s.save === 'error' ? 'Не сохранено' : 'Изменения сохраняются на сервер автоматически';
+    const err = s.loadErr || (s.save === 'error' ? 'Не удалось сохранить: ' + s.saveErr : '') || s.onErr;
 
     return Object.assign(kinds, {
       id, name: meta[1], desc: meta[3],
-      widgetOptions: W.LIST.map((w) => ({ v: w[0], l: w[1] })),
-      pickWidget: (e) => { const nid = e.target.value; history.replaceState(null, '', '?w=' + nid); this.setState({ id: nid, animKey: 1 - s.animKey, show: false, copied: false }); },
-      isOn: isOn ? 'true' : 'false', onLabel: locked ? 'Доступно в «Максимум»' : (isOn ? 'Включён' : 'Выключен'), locked,
-      toggleOn: () => { const all = JSON.parse(JSON.stringify(s.all)); all.on[id] = !isOn; this.write(all, isOn ? 'Выключен' : 'Включён'); },
-      hasNote: meta[5] === 'setup', note: id === 'cs' ? 'Нужен файл конфигурации CS2: скачай его во вкладке OBS и положи в папку игры cfg' : 'Нужен файл конфигурации Dota 2: скачай его во вкладке OBS и положи в папку игры',
+      widgetOptions: W.LIST.filter((w) => w[5] !== 'soon').map((w) => ({ v: w[0], l: w[1] + (s.all.on[w[0]] ? ' · вкл.' : '') })),
+      pickWidget: (e) => {
+        const nid = e.target.value;
+        history.replaceState(null, '', '?w=' + nid);
+        this.setState({ id: nid, animKey: 1 - s.animKey, show: false, copied: false, applied: false, live: null, liveFor: '', onErr: '', tab: s.tab === 'game' ? 'look' : s.tab });
+        setTimeout(() => this.fetchLive(), 0);
+      },
+      notReady: !s.loaded, onBusy: s.onBusy ? 'true' : 'false',
+      isOn: isOn ? 'true' : 'false', onLabel: !s.loaded ? 'Загрузка…' : s.onBusy ? 'Сохраняем…' : (isOn ? 'Включён' : 'Выключен'),
+      toggleOn: () => this.toggleOn(),
+      saveLabel, saveColor: s.save === 'error' ? '#F2F2F2' : '#8F8F8F',
+      hasErr: !!err, err, canRetry: !!s.loadErr || s.save === 'error',
+      retry: () => { if (s.loadErr) this.load(); else this.flush(); },
+      closeErr: () => this.setState({ onErr: '', saveErr: s.save === 'error' ? s.saveErr : '' }),
+      hasInfo: !!s.info, info: s.info, notes,
       applyAllLabel: s.applied ? 'Стиль применён ко всем' : 'Применить стиль ко всем',
       applyAll: () => {
-        const all = JSON.parse(JSON.stringify(s.all));
+        if (!confirm('Скопировать оформление этого виджета (фон, рамку, шрифт, цвета, анимацию) во все остальные?')) return;
         const styleKeys = ['preset', 'bg', 'bgA', 'blur', 'bw', 'bc', 'bcA', 'radius', 'shadow', 'glow', 'glowC', 'pad', 'font', 'fg', 'fg2', 'acc', 'weight', 'ls', 'tshadow', 'upper', 'anim', 'dur'];
-        W.LIST.forEach((w) => {
-          if (w[0] === id) return;
-          const cur = all.cfg[w[0]] || {};
-          styleKeys.forEach((k) => { cur[k] = c[k]; });
-          all.cfg[w[0]] = cur;
-        });
-        this.write(all, 'Стиль скопирован во все виджеты');
+        const ids = W.LIST.filter((w) => w[0] !== id).map((w) => w[0]);
+        this.edit(ids, (all) => { ids.forEach((x) => { const cur = W.cfg(x, all); styleKeys.forEach((k) => { cur[k] = c[k]; }); all.cfg[x] = cur; }); }, true);
         this.setState({ applied: true });
       },
-      reset: () => { const all = JSON.parse(JSON.stringify(s.all)); delete all.cfg[id]; this.write(all, 'Сброшено'); this.setState({ animKey: 1 - s.animKey }); },
-      tabs: TABS.map((t) => ({ label: t[1], sel: s.tab === t[0] ? 'true' : 'false', pick: () => this.setState({ tab: t[0] }) })),
-      showPresets: s.tab === 'look', presets,
-      showAnchor: s.tab === 'pos',
-      anchors: ANCH.map((a) => ({ label: a[1], sel: c.anchor === a[0] ? 'true' : 'false', pick: () => this.patch({ anchor: a[0] }, true) })),
-      controls,
-      showObs: s.tab === 'obs',
-      url: s.show ? 'https://streops.ru/w/' + id + '/' + W.token(id) : 'https://streops.ru/w/' + id + '/••••••••••••',
-      showLabel: s.show ? 'Скрыть ссылку' : 'Показать ссылку',
-      toggleShow: () => this.setState({ show: !s.show }),
-      copyLabel: s.copied ? 'Скопировано' : 'Скопировать',
-      copy: () => { try { navigator.clipboard.writeText('https://streops.ru/w/' + id + '/' + W.token(id)); } catch (e) { /* нет доступа к буферу */ } this.setState({ copied: true }); },
-      copyCfgLabel: s.cfgCopied ? 'Настройки скопированы' : 'Скопировать настройки',
-      copyCfg: () => { try { navigator.clipboard.writeText(JSON.stringify(s.all.cfg[id] || {})); } catch (e) { /* нет доступа */ } this.setState({ cfgCopied: true }); },
-      pasteCfg: () => {
-        const text = prompt('Вставь настройки виджета:');
-        if (!text) return;
-        try { const data = JSON.parse(text); const all = JSON.parse(JSON.stringify(s.all)); all.cfg[id] = data; this.write(all, 'Настройки вставлены'); } catch (e) { alert('Не получилось прочитать настройки'); }
+      reset: () => {
+        if (!confirm('Сбросить все настройки виджета «' + meta[1] + '» к стандартным?')) return;
+        this.edit([id], (all) => { const since = all.cfg[id] && all.cfg[id].since; delete all.cfg[id]; if (since) all.cfg[id] = Object.assign(W.defaults(id), { since }); }, true);
+        this.setState({ animKey: 1 - s.animKey });
       },
-      savedLabel: s.saved || 'Изменения сохраняются автоматически в этом браузере',
+      tabs: TABS.map((t) => ({ label: t[1], sel: tab === t[0] ? 'true' : 'false', pick: () => { this.setState({ tab: t[0] }); if (t[0] === 'content' || t[0] === 'game') this.fetchLive(); } })),
+      showPresets: tab === 'look', presets,
+      showAnchor: tab === 'pos',
+      anchors: ANCH.map((a) => ({ label: a[1], sel: c.anchor === a[0] ? 'true' : 'false', pick: () => this.patch({ anchor: a[0] }, true) })),
+      controls, boxes,
+      showGame: tab === 'game', gsi, noToken: !s.token,
+      showObs: tab === 'obs', realUrl,
+      url: !s.token ? 'Загрузка…' : s.show ? realUrl : realUrl.replace(/t=[^&]+/, 't=••••••••••••'),
+      showLabel: s.show ? 'Скрыть ссылку' : 'Показать ссылку', showPressed: s.show ? 'true' : 'false',
+      toggleShow: () => this.setState({ show: !s.show }),
+      copyLabel: s.copied ? 'Скопировано' : 'Скопировать ссылку',
+      copy: async () => { if (await this.copyText(realUrl)) { StreAPI.toast('Ссылка для OBS скопирована'); this.flash('copied'); } else StreAPI.toast('Не получилось скопировать. Нажми на глаз и скопируй ссылку вручную', 'error'); },
+      copyCfgLabel: s.cfgCopied ? 'Настройки скопированы' : 'Скопировать настройки',
+      copyCfg: async () => { const x = Object.assign({}, c); delete x.since; if (await this.copyText(JSON.stringify(x))) this.flash('cfgCopied'); else StreAPI.toast('Не получилось скопировать', 'error'); },
+      pasteCfg: () => {
+        const text = prompt('Вставь настройки виджета (текст после «Скопировать настройки»):');
+        if (!text) return;
+        let data = null;
+        try { data = JSON.parse(text); } catch (e) { data = null; }
+        if (!data || typeof data !== 'object' || Array.isArray(data)) { StreAPI.toast('Не получилось прочитать настройки — это не тот текст', 'error'); return; }
+        delete data.since;
+        this.edit([id], (all) => { const cur = W.cfg(id, all); const next = Object.assign(cur, data, { content: Object.assign({}, cur.content, data.content && typeof data.content === 'object' ? data.content : {}) }); if (all.cfg[id] && all.cfg[id].since) next.since = all.cfg[id].since; all.cfg[id] = next; }, true);
+        StreAPI.toast('Настройки вставлены');
+      },
+      pvBadge: real ? 'данные с сервера' : 'пример',
+      pvCaption: real ? 'В предпросмотре — текущие данные с сервера.' : 'В предпросмотре — пример данных, на стриме будут настоящие.',
       stages: stagesDef.map((st, i) => ({ label: st[0], sel: s.stage === i ? 'true' : 'false', pick: () => this.setState({ stage: i }) })),
       stageBg: stagesDef[s.stage][1], isGame: s.stage === 0,
       guides: s.guides ? 'true' : 'false', guidesOn: s.guides, toggleGuides: () => this.setState({ guides: !s.guides }),
