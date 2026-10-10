@@ -322,7 +322,7 @@ function api_dispatch(string $r): never {
             $byAction = [];
             foreach (db_all('SELECT action, COUNT(*) c FROM mod_actions WHERE user_id = ? AND created_at >= ? GROUP BY action', [$uid, $since]) as $r) $byAction[$r['action']] = (int)$r['c'];
             $byReason = db_all("SELECT reason, COUNT(*) c FROM mod_actions WHERE user_id = ? AND created_at >= ? AND by_login = 'Бот' GROUP BY reason ORDER BY c DESC LIMIT 10", [$uid, $since]);
-            $tox = (int)db_one("SELECT COUNT(*) c FROM mod_actions WHERE user_id = ? AND created_at >= ? AND reason IN ('оскорбления','угрозы в чате')", [$uid, $since])['c'];
+            $tox = (int)db_one("SELECT COUNT(*) c FROM mod_actions WHERE user_id = ? AND created_at >= ? AND by_login <> 'Бот' AND reason IN ('оскорбления','угрозы в чате')", [$uid, $since])['c'];
             $top = db_all('SELECT chatter_login, COUNT(*) c FROM chat_messages WHERE user_id = ? AND created_at >= ? GROUP BY chatter_login ORDER BY c DESC LIMIT 6', [$uid, $since]);
             foreach ($top as &$t) {
                 $t['violations'] = (int)db_one('SELECT COUNT(*) c FROM mod_actions WHERE user_id = ? AND chatter_login = ? AND created_at >= ?', [$uid, $t['chatter_login'], $since])['c'];

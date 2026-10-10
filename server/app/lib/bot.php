@@ -314,6 +314,7 @@ function punish(array $ctx, array $cfg, string $action, int $dur, string $reason
 function parse_dur(string $s): int {
     $map = ['30 с' => 30, '1 мин' => 60, '5 мин' => 300, '10 мин' => 600, '1 ч' => 3600, '24 ч' => 86400, '7 дней' => 604800];
     if (isset($map[$s])) return $map[$s];
+    if (preg_match('/^(\d+)\s*([smhd])$/i', trim($s), $m)) return (int)$m[1] * ['s' => 1, 'm' => 60, 'h' => 3600, 'd' => 86400][strtolower($m[2])];
     return max(1, (int)$s);
 }
 
@@ -370,7 +371,7 @@ function handle_builtin(array $ctx): bool {
         return true;
     }
     // разрешить ссылку
-    if ($r['mod'] && $word === '!permit' && $arg !== '') {
+    if ($r['mod'] && $word === '!permit' && $arg !== '' && !empty(mod_config((int)$user['id'])['permit'])) {
         $target = tw_get_user_by_login(ltrim(explode(' ', $arg)[0], '@'));
         if ($target) {
             kv_set('permit:' . $user['id'] . ':' . $target['id'], 1, 60);
