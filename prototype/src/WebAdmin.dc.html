@@ -448,7 +448,7 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.state = {
-      phase: 'loading', tab: 'sum', botConnected: false, botLogin: 'zaka_bot', meId: 0, nowMin: 0, refreshing: false,
+      phase: 'loading', tab: 'sum', botConnected: false, botLogin: 'streopsbot', meId: 0, nowMin: 0, refreshing: false,
       stats: null, statsErr: '',
       subs: null, subsErr: '', subFilter: 'all', subQ: '',
       users: null, usersErr: '', q: '',
@@ -471,7 +471,7 @@ class Component extends DCLogic {
     const me = await StreAPI.me();
     if (!me.user) return; // api.js уведёт на вход
     if (!me.user.isAdmin) { this.setState({ phase: 'denied' }); return; }
-    this.setState({ phase: 'ready', meId: me.user.id, botLogin: (me.bot && me.bot.login) || 'zaka_bot', nowMin: Math.floor(Date.now() / 60000) });
+    this.setState({ phase: 'ready', meId: me.user.id, botLogin: (me.bot && me.bot.login) || 'streopsbot', nowMin: Math.floor(Date.now() / 60000) });
     this.refreshAll();
     document.addEventListener('keydown', (e) => this.onKey(e));
     document.addEventListener('visibilitychange', () => { if (!document.hidden) this.tick(); });

@@ -72,7 +72,7 @@ function api_dispatch(string $r): never {
             if (!$u) json_out(['ok' => true, 'user' => null]);
             $b = bot_account();
             json_out(['ok' => true, 'user' => user_public($u), 'stream' => stream_row((int)$u['id']),
-                'bot' => ['login' => $b['login'] ?? cfg('BOT_LOGIN', 'zaka_bot'), 'ready' => (bool)($b['own_app'] ?? false)]]);
+                'bot' => ['login' => $b['login'] ?? cfg('BOT_LOGIN', 'streopsbot'), 'ready' => (bool)($b['own_app'] ?? false)]]);
         }
         case 'live.list': {
             $rows = db_all('SELECT u.login, u.display_name, u.avatar, s.title, s.game, s.viewers, s.thumbnail FROM streams s JOIN users u ON u.id = s.user_id WHERE s.live = 1 AND u.banned = 0 ORDER BY s.viewers DESC LIMIT 20');

@@ -14,7 +14,7 @@ if (!$tu) { http_response_code(502); exit('Не удалось получить 
 
 if ($o['kind'] === 'bot') {
     if (!is_admin(current_user())) { http_response_code(403); exit('Только для администратора'); }
-    $expected = strtolower((string)cfg('BOT_LOGIN', 'zaka_bot'));
+    $expected = strtolower((string)cfg('BOT_LOGIN', 'streopsbot'));
     if (strtolower($tu['login']) !== $expected) { http_response_code(400); exit('Нужно войти аккаунтом бота ' . htmlspecialchars($expected) . ', а вошёл ' . htmlspecialchars($tu['login']) . '. Выйди из Twitch и попробуй снова.'); }
     kv_set('bot_account', ['id' => $tu['id'], 'login' => $tu['login'], 'access_token' => $tok['access_token'], 'refresh_token' => $tok['refresh_token'] ?? '', 'expires' => now() + (int)($tok['expires_in'] ?? 3600), 'scopes' => $tok['scope'] ?? []]);
     kv_set('bot_env_validated', null, 1);
