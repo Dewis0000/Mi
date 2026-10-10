@@ -119,7 +119,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 <p style="margin: 0; font-size: 14px; color: #B4B4B4">{{ periodLabel }}</p>
 <sc-if value="{{ statsFailed }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert" style="margin: 0">Не удалось загрузить статистику: {{ statsErr }}. Пробуем снова каждые 10 секунд.</p></sc-if>
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px">
 <sc-for list="{{ statCards }}" as="c" hint-placeholder-count="5"><div class="card" style="padding: 18px"><p class="k">{{ c.k }}</p><p class="mono big">{{ c.v }}</p><p style="margin: 6px 0 0; font-size: 12px; line-height: 16px; color: #B4B4B4">{{ c.sub }}</p></div></sc-for>
 </div>
 

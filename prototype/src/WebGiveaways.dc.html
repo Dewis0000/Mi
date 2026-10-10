@@ -12,38 +12,45 @@
 <style>
 body{margin:0;background:#0A0A0A}
 a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #F2F2F2;outline-offset:2px}
 .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
 .ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
 .ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.nav-i{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;color:#B4B4B4}
-.nav-i:hover{background:rgba(255,255,255,.04);color:#F2F2F2}
 .sec{padding:20px;border-radius:8px;border:1px solid #2A2A2A;background:#111111;display:flex;flex-direction:column;gap:14px}
 .sec h2{margin:0;font-size:17px;line-height:24px;font-weight:600}
 .lab{font-size:13px;line-height:18px;font-weight:500;color:#DCDCDC}
 .inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 15px/22px 'Onest',sans-serif;width:100%}
 .inp:disabled{border-color:#2A2A2A;color:#8F8F8F}
+.inp[aria-invalid="true"]{border:2px solid #F2F2F2}
 .hint{font-size:12px;line-height:16px;color:#8F8F8F;margin:0}
 .seg{height:34px;padding:0 12px;border:0;border-radius:4px;background:transparent;color:#B4B4B4;font:500 13px/18px 'Onest',sans-serif;cursor:pointer;white-space:nowrap}
 .seg:hover{color:#F2F2F2}
 .seg:disabled{cursor:not-allowed}
 .sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid #6E6E6E;background:transparent;cursor:pointer;flex:none;padding:0}
+.sw:disabled{cursor:not-allowed;opacity:.55}
 .sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:#8F8F8F;transition:transform 180ms cubic-bezier(.2,0,0,1)}
 .sw[aria-checked="true"]{background:#FFFFFF;border-color:#FFFFFF}
 .sw[aria-checked="true"] span{transform:translateX(16px);background:#0A0A0A}
-.row{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:40px;font-size:14px;border-top:1px solid #1F1F1F}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:40px;padding:6px 0;font-size:14px;border-top:1px solid #1F1F1F}
 .mode{flex:1 1 120px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:12px;border-radius:8px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font-family:'Onest',sans-serif;cursor:pointer;text-align:left}
 .mode:hover{border-color:#8F8F8F}
+.mode:disabled{cursor:not-allowed;color:#8F8F8F}
 .bp{height:44px;padding:0 18px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 15px/20px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .bp:hover{background:#DCDCDC}
 .bp:disabled{background:#2A2A2A;color:#6E6E6E;cursor:not-allowed}
 .bs{height:44px;padding:0 16px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 14px/20px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .bs:hover{background:rgba(255,255,255,.04);border-color:#6E6E6E}
 .bs:disabled{color:#525252;border-color:#2A2A2A;cursor:not-allowed}
+.bd{color:#FF6369}
+.sm{height:30px;padding:0 10px;border-radius:4px;font-size:12px}
 .card{flex:none;width:120px;height:148px;box-sizing:border-box;border-radius:8px;background:#171717;border:1px solid #3A3A3A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:10px;position:relative;overflow:hidden}
 .av{border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-weight:600;color:#0A0A0A;flex:none}
-.pr{display:grid;grid-template-columns:28px minmax(0,1fr) 84px 56px;gap:10px;align-items:center;padding:8px 0;border-top:1px solid #1F1F1F;font-size:13px}
+.pr{display:grid;grid-template-columns:28px minmax(0,1fr) 84px 64px;gap:10px;align-items:center;padding:8px 0;border-top:1px solid #1F1F1F;font-size:13px}
 .step{display:flex;align-items:center;gap:8px;font-size:13px;color:#8F8F8F}
 .step b{width:22px;height:22px;border-radius:999px;border:1px solid #3A3A3A;display:inline-flex;align-items:center;justify-content:center;font:500 11px/1 'JetBrains Mono',monospace}
+.note{margin:0;display:flex;gap:8px;padding:10px 12px;border:1px dashed #8F8F8F;border-radius:6px;font-size:13px;line-height:18px;color:#DCDCDC}
+.alert{margin:0;padding:10px 12px;border:2px solid #F2F2F2;border-radius:6px;font-size:13px;line-height:18px}
+@media (max-width: 480px){.pr{grid-template-columns:28px minmax(0,1fr) 40px 64px}}
 </style>
 </helmet>
 <div style="min-height: 100vh; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
@@ -62,61 +69,52 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 </header>
 
 <div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; box-sizing: border-box; max-width: 1920px; margin: 0 auto">
-<nav aria-label="Разделы стрим-панели" style="flex: 1 1 200px; max-width: 248px; min-width: 200px; align-self: flex-start; box-sizing: border-box; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 2px">
-<p class="ov" style="padding: 8px 12px">Эфир</p>
-<a href="WebDashboard.dc.html" class="nav-i">Обзор</a>
-<a href="WebModeration.dc.html" class="nav-i">Модерация</a>
-<p class="ov" style="padding: 16px 12px 8px">Бот</p>
-<a href="WebCommands.dc.html" class="nav-i">Команды</a>
-<a href="WebMusic.dc.html" class="nav-i">Музыка</a>
-<a href="WebWidgets.dc.html" class="nav-i">Виджеты</a>
-<p class="ov" style="padding: 16px 12px 8px">Интерактив</p>
-<a href="WebGiveaways.dc.html" aria-current="page" class="nav-i" style="background: rgba(255,255,255,0.10); color: #F2F2F2; box-shadow: inset 2px 0 0 #F2F2F2">Розыгрыши<sc-if value="{{ isLive }}" hint-placeholder-val="{{ false }}"><span style="margin-left: auto; width: 8px; height: 8px; border-radius: 999px; background: #F2F2F2"></span></sc-if></a>
-<a href="#" class="nav-i" aria-disabled="true" style="color: #525252">Аукционы<span style="margin-left: auto; font-size: 11px; padding: 1px 6px; border: 1px dashed #3A3A3A; border-radius: 4px; color: #6E6E6E">скоро</span></a>
-<div style="height: 1px; background: #2A2A2A; margin: 10px 0"></div>
-<a href="WebSettings.dc.html" class="nav-i">Настройки</a>
-</nav>
+<nav aria-label="Разделы стрим-панели"></nav>
 
 <main style="flex: 999 1 720px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
 <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
-<div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Розыгрыши</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; max-width: 640px">Зрители участвуют словом в чате, за баллы канала или просто за активность. Победителя выбирает рулетка прямо на стриме, а результат можно проверить.</p></div>
+<div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Розыгрыши</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; max-width: 640px">Зрители входят ключевым словом в чате или просто активностью. Победителя выбирает сервер по заранее объявленному seed, рулетка показывает результат, а итог можно проверить.</p></div>
 <ol aria-label="Этапы розыгрыша" style="list-style: none; margin: 0; padding: 0; display: flex; gap: 16px; flex-wrap: wrap">
 <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4"><li class="step" style="{{ s.style }}" aria-current="{{ s.cur }}"><b style="{{ s.dot }}">{{ s.n }}</b>{{ s.label }}</li></sc-for>
 </ol>
+</div>
+
+<div>
+<sc-if value="{{ botOff }}" hint-placeholder-val="{{ false }}"><div role="alert" style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 16px; border: 1px dashed #B4B4B4; border-radius: 8px; font-size: 14px; line-height: 20px"><span>{{ botOffText }}</span><button type="button" class="bs" style="height: 36px" onClick="{{ enableBot }}" disabled="{{ botBusy }}">{{ botBtnLabel }}</button></div></sc-if>
 </div>
 
 <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
 
 <!-- ===== НАСТРОЙКА ===== -->
 <form aria-label="Настройки розыгрыша" style="flex: 1 1 380px; max-width: 460px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
-<sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; display: flex; gap: 8px; padding: 10px 12px; border: 1px dashed #8F8F8F; border-radius: 6px; font-size: 13px; color: #DCDCDC"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Пока идёт розыгрыш, условия менять нельзя: так честнее для участников.</p></sc-if>
+<div>
+<sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><p class="note"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 1px"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Пока идёт розыгрыш, условия менять нельзя: так честнее для участников. Здесь показаны условия текущего розыгрыша.</p></sc-if>
+</div>
 
 <section class="sec" aria-labelledby="pz">
 <h2 id="pz">Приз</h2>
-<div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="prize">Что разыгрываем</label><input id="prize" class="inp" value="Ключ Cyberpunk 2077 · Steam" disabled="{{ locked }}"></div>
-<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
-<div style="display: flex; flex-direction: column; gap: 8px"><span class="lab" id="wn">Победителей</span><span role="radiogroup" aria-labelledby="wn" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px"><sc-for list="{{ winnersOpt }}" as="o" hint-placeholder-count="4"><button type="button" role="radio" class="seg mono" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ locked }}" style="{{ o.style }}">{{ o.label }}</button></sc-for></span></div>
-<div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="dl">Как выдать приз</label><select id="dl" class="inp" disabled="{{ locked }}" style="font-size: 14px"><option>Личным сообщением</option><option>Код в ЛС на Twitch</option><option>Сам свяжусь</option></select></div>
-</div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="prize">Что разыгрываем</label><input id="prize" class="inp" maxlength="200" autocomplete="off" placeholder="Например, ключ игры в Steam" value="{{ f.prize }}" onChange="{{ setPrize }}" disabled="{{ locked }}" aria-invalid="{{ prizeInvalid }}"></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="lab" id="wn">Победителей</span><span role="radiogroup" aria-labelledby="wn" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px"><sc-for list="{{ winnersOpt }}" as="o" hint-placeholder-count="4"><button type="button" role="radio" class="seg mono" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ locked }}" style="{{ o.style }}">{{ o.label }}</button></sc-for></span><p class="hint">Победителей выбирают по одному: после первого появится кнопка «Следующий победитель».</p></div>
 </section>
 
 <section class="sec" aria-labelledby="hw">
 <h2 id="hw">Как участвовать</h2>
 <div role="radiogroup" aria-label="Способ участия" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
-<sc-for list="{{ entryOpt }}" as="o" hint-placeholder-count="4"><button type="button" role="radio" class="mode" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ locked }}" style="{{ o.style }}"><span style="font-size: 14px; font-weight: 500">{{ o.label }}</span><span class="hint">{{ o.note }}</span></button></sc-for>
+<sc-for list="{{ entryOpt }}" as="o" hint-placeholder-count="2"><button type="button" role="radio" class="mode" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ locked }}" style="{{ o.style }}"><span style="font-size: 14px; font-weight: 500">{{ o.label }}</span><span class="hint">{{ o.note }}</span></button></sc-for>
 </div>
-<sc-if value="{{ entryWord }}" hint-placeholder-val="{{ true }}"><div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="kw">Слово для участия</label><input id="kw" class="inp mono" value="!участвую" disabled="{{ locked }}"><p class="hint">Регистр и лишние пробелы не важны. Повторные сообщения не дают лишних шансов.</p></div></sc-if>
-<sc-if value="{{ entryPoints }}" hint-placeholder-val="{{ false }}"><div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px"><div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="tp">Цена билета</label><input id="tp" class="inp mono" value="1 000 баллов" disabled="{{ locked }}"></div><div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="tm">Билетов на зрителя</label><input id="tm" class="inp mono" value="до 5" disabled="{{ locked }}"></div><p class="hint" style="grid-column: span 2">Если розыгрыш отменят, баллы за билеты вернутся автоматически.</p></div></sc-if>
-<sc-if value="{{ entryActive }}" hint-placeholder-val="{{ false }}"><div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="am">Писали в чат за последние</label><select id="am" class="inp" disabled="{{ locked }}"><option>10 минут</option><option selected="">30 минут</option><option>Весь стрим</option></select><p class="hint">Слово писать не нужно, участвуют все, кто был активен.</p></div></sc-if>
-<sc-if value="{{ entryList }}" hint-placeholder-val="{{ false }}"><div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="ls">Ники через запятую или с новой строки</label><textarea id="ls" rows="3" class="inp" style="height: auto; padding: 10px 12px; resize: vertical" disabled="{{ locked }}">moroz_tv, lenta_ln, tixiy_bard, polyana_live</textarea></div></sc-if>
-<div style="display: flex; flex-direction: column; gap: 8px"><span class="lab" id="tmr">Сбор участников</span><span role="radiogroup" aria-labelledby="tmr" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px"><sc-for list="{{ timerOpt }}" as="o" hint-placeholder-count="4"><button type="button" role="radio" class="seg" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ locked }}" style="{{ o.style }}">{{ o.label }}</button></sc-for></span></div>
+<div>
+<sc-if value="{{ entryWord }}" hint-placeholder-val="{{ true }}"><div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="kw">Слово для участия</label><input id="kw" class="inp mono" maxlength="40" autocomplete="off" value="{{ f.keyword }}" onChange="{{ setKeyword }}" disabled="{{ locked }}"><p class="hint">Сообщение должно целиком совпадать со словом, регистр не важен. Повторы не дают лишних шансов, а сообщения, удалённые модерацией, не считаются.</p></div></sc-if>
+<sc-if value="{{ entryActive }}" hint-placeholder-val="{{ false }}"><p class="hint">Слово писать не нужно: участником становится каждый, кто напишет в чат что угодно, пока идёт сбор.</p></sc-if>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="lab" id="tmr">Сбор участников</span><span role="radiogroup" aria-labelledby="tmr" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px"><sc-for list="{{ timerOpt }}" as="o" hint-placeholder-count="4"><button type="button" role="radio" class="seg" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ locked }}" style="{{ o.style }}">{{ o.label }}</button></sc-for></span><p class="hint">{{ timerHint }}</p></div>
 </section>
 
 <section class="sec" aria-labelledby="rl">
 <h2 id="rl">Правила и защита от накрутки</h2>
 <div>
-<sc-for list="{{ rules }}" as="r" hint-placeholder-count="6"><div class="row"><span><span style="display: block">{{ r.label }}</span><span class="hint">{{ r.note }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ r.on }}" aria-label="{{ r.label }}" onClick="{{ r.toggle }}" disabled="{{ locked }}"><span></span></button></div></sc-for>
+<sc-for list="{{ rules }}" as="r" hint-placeholder-count="5"><div class="row"><span><span style="display: block">{{ r.label }}</span><span class="hint">{{ r.note }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ r.on }}" aria-label="{{ r.label }}" onClick="{{ r.toggle }}" disabled="{{ locked }}"><span></span></button></div></sc-for>
 </div>
+<p class="hint">Правила проверяются в момент входа. Известные боты (Nightbot, StreamElements и другие) не участвуют никогда.</p>
 </section>
 
 <section class="sec" aria-labelledby="an">
@@ -124,132 +122,152 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <div role="radiogroup" aria-label="Анимация выбора" style="display: flex; gap: 8px; flex-wrap: wrap">
 <sc-for list="{{ modeOpt }}" as="o" hint-placeholder-count="3"><button type="button" role="radio" class="mode" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ spinningNow }}" style="{{ o.style }}"><span style="font-size: 14px; font-weight: 500">{{ o.label }}</span><span class="hint">{{ o.note }}</span></button></sc-for>
 </div>
-<div class="row" style="border-top: 0"><span><span style="display: block">Победитель подтверждает участие</span><span class="hint">Должен написать в чат за 60 секунд, иначе перевыбор</span></span><button type="button" role="switch" class="sw" aria-checked="{{ confirmOn }}" aria-label="Подтверждение победителем" onClick="{{ toggleConfirm }}"><span></span></button></div>
-<div class="row"><span><span style="display: block">Показывать на стриме</span><span class="hint">Виджет «Розыгрыш» в OBS: сбор, рулетка, победитель</span></span><button type="button" role="switch" class="sw" aria-checked="true" aria-label="Показывать на стриме"><span></span></button></div>
+<p class="hint">Анимация только показывает результат: победителя заранее выбирает сервер. В OBS-оверлее всегда лента-рулетка.</p>
+<div class="row"><span><span style="display: block">Победитель подтверждает участие</span><span class="hint">При объявлении бот попросит написать в чат за 60 секунд. Ответ отметится на сцене, без ответа — перевыбери</span></span><button type="button" role="switch" class="sw" aria-checked="{{ confirmOn }}" aria-label="Победитель подтверждает участие" onClick="{{ toggleConfirm }}" disabled="{{ locked }}"><span></span></button></div>
 </section>
 </form>
 
 <!-- ===== СЦЕНА ===== -->
 <section aria-label="Ход розыгрыша" style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
 
-<div role="region" aria-label="Сцена розыгрыша" style="{{ stageStyle }}">
+<div role="region" aria-label="Сцена розыгрыша" data-gw-stage style="{{ stageStyle }}">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid #2A2A2A; flex-wrap: wrap">
-<div><p class="ov">{{ phaseLabel }}</p><p style="margin: 4px 0 0; font-size: 20px; line-height: 26px; font-weight: 600">Ключ Cyberpunk 2077 · Steam</p></div>
-<div style="display: flex; gap: 20px; align-items: baseline">
-<span><span class="mono" style="font-size: 24px; font-weight: 500">{{ count }}</span> <span style="font-size: 13px; color: #8F8F8F">участников</span></span>
-<sc-if value="{{ collecting }}" hint-placeholder-val="{{ false }}"><span><span class="mono" style="font-size: 24px; font-weight: 500">1:24</span> <span style="font-size: 13px; color: #8F8F8F">до конца сбора</span></span></sc-if>
-<button type="button" onClick="{{ toggleFs }}" aria-pressed="{{ fsPressed }}" style="align-self: center; height: 36px; padding: 0 12px; border-radius: 6px; border: 1px solid #3A3A3A; background: rgba(10,10,10,0.6); color: #F2F2F2; font: 500 13px/18px 'Onest', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 8px"><sc-if value="{{ fsOff }}" hint-placeholder-val="{{ true }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"></path></svg></sc-if><sc-if value="{{ fs }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3v6H3M15 3v6h6M9 21v-6H3M15 21v-6h6"></path></svg></sc-if>{{ fsLabel }}</button>
+<div style="min-width: 0"><p class="ov">{{ phaseLabel }}</p><p style="margin: 4px 0 0; font-size: 20px; line-height: 26px; font-weight: 600; overflow-wrap: anywhere">{{ stageTitle }}</p></div>
+<div style="display: flex; gap: 20px; align-items: baseline; flex-wrap: wrap">
+<span><span class="mono" style="font-size: 24px; font-weight: 500">{{ countNum }}</span> <span style="font-size: 13px; color: #8F8F8F">{{ countWord }}</span></span>
+<span><sc-if value="{{ showTimer }}" hint-placeholder-val="{{ false }}"><span class="mono" style="font-size: 24px; font-weight: 500">{{ timerLabel }}</span> <span style="font-size: 13px; color: #8F8F8F">{{ timerNote }}</span></sc-if></span>
+<button type="button" onClick="{{ toggleFs }}" aria-pressed="{{ fsPressed }}" style="align-self: center; height: 36px; padding: 0 12px; border-radius: 6px; border: 1px solid #3A3A3A; background: rgba(10,10,10,0.6); color: #F2F2F2; font: 500 13px/18px 'Onest', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 8px"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ fsIcon }}"></path></svg>{{ fsLabel }}</button>
 </div>
 </div>
 
 <div style="position: relative; {{ arenaH }}; display: flex; align-items: center; justify-content: center">
 
-<sc-if value="{{ isSetup }}" hint-placeholder-val="{{ true }}"><div style="text-align: center; max-width: 420px; padding: 24px"><svg class="ic" width="40" height="40" viewBox="0 0 24 24" aria-hidden="true" style="color: #8F8F8F"><rect x="3" y="8" width="18" height="13" rx="1"></rect><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1s6 1 6 1zM12 8c2-4 6-4 6-1s-6 1-6 1z"></path></svg><p style="margin: 16px 0 0; font-size: 20px; font-weight: 600">Розыгрыш ещё не начат</p><p style="margin: 8px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">Проверь условия слева и запусти сбор. Бот напишет в чат, как участвовать.</p></div></sc-if>
+<sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 14px; color: #8F8F8F">{{ loadingText }}</p></sc-if>
+
+<sc-if value="{{ isSetup }}" hint-placeholder-val="{{ true }}"><div style="text-align: center; max-width: 420px; padding: 24px"><svg class="ic" width="40" height="40" viewBox="0 0 24 24" aria-hidden="true" style="color: #8F8F8F"><rect x="3" y="8" width="18" height="13" rx="1"></rect><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1s6 1 6 1zM12 8c2-4 6-4 6-1s-6 1-6 1z"></path></svg><p style="margin: 16px 0 0; font-size: 20px; font-weight: 600">Розыгрыш ещё не начат</p><p style="margin: 8px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">Проверь условия слева и запусти сбор. Бот сам напишет в чат, как участвовать.</p></div></sc-if>
+
+<sc-if value="{{ collectEmpty }}" hint-placeholder-val="{{ false }}"><div style="text-align: center; max-width: 420px; padding: 24px"><p style="margin: 0; font-size: 20px; font-weight: 600">Ждём участников</p><p style="margin: 8px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">{{ collectEmptyText }}</p></div></sc-if>
 
 <sc-if value="{{ showRoulette }}" hint-placeholder-val="{{ false }}">
 <div style="position: absolute; inset: 0; overflow: hidden">
-<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 50%; height: 148px; margin-top: -74px; background: linear-gradient(90deg, #0E0E0E 0%, transparent 18%, transparent 82%, #0E0E0E 100%); z-index: 2; pointer-events: none"></div>
-<div aria-hidden="true" style="position: absolute; left: 50%; top: 40px; bottom: 40px; width: 2px; margin-left: -1px; background: #F2F2F2; z-index: 3; box-shadow: 0 0 0 1px #0E0E0E"></div>
-<div aria-hidden="true" style="position: absolute; left: 50%; top: 32px; margin-left: -8px; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 10px solid #F2F2F2; z-index: 3"></div>
-<div aria-hidden="true" style="position: absolute; left: 50%; bottom: 32px; margin-left: -8px; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 10px solid #F2F2F2; z-index: 3"></div>
-<div style="position: absolute; left: 50%; top: 50%; margin-top: -74px; display: flex; gap: 8px; will-change: transform; transform: translateX({{ stripX }}px); transition: {{ stripT }}">
+<div aria-hidden="true" style="position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform: scale({{ scale }})">
+<div style="position: absolute; left: 0; top: -74px; display: flex; gap: 8px; will-change: transform; transform: translateX({{ stripX }}px); transition: {{ stripT }}">
 <sc-for list="{{ strip }}" as="c" hint-placeholder-count="12">
 <div class="card" style="{{ c.style }}">
-<span aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: 3px; {{ c.bar }}"></span>
+<span style="position: absolute; left: 0; right: 0; top: 0; height: 3px; {{ c.bar }}"></span>
 <span class="av" style="width: 52px; height: 52px; font-size: 16px; background: {{ c.bg }}">{{ c.ini }}</span>
 <span style="font-size: 13px; font-weight: 500; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ c.nick }}</span>
 <span style="font-size: 11px; color: #8F8F8F">{{ c.role }}</span>
 </div>
 </sc-for>
 </div>
+<div style="position: absolute; left: -1px; top: -100px; width: 2px; height: 200px; background: #F2F2F2; box-shadow: 0 0 0 1px #0A0A0A"></div>
+<div style="position: absolute; left: -8px; top: -108px; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 10px solid #F2F2F2"></div>
+<div style="position: absolute; left: -8px; top: 98px; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 10px solid #F2F2F2"></div>
+</div>
+<div aria-hidden="true" style="position: absolute; inset: 0; background: linear-gradient(90deg, #0A0A0A 0%, rgba(10,10,10,0) 18%, rgba(10,10,10,0) 82%, #0A0A0A 100%); pointer-events: none"></div>
 </div>
 </sc-if>
 
 <sc-if value="{{ showWheel }}" hint-placeholder-val="{{ false }}">
-<div style="position: relative; width: 280px; height: 280px">
-<div aria-hidden="true" style="position: absolute; left: 50%; top: -8px; margin-left: -10px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 18px solid #F2F2F2; z-index: 2"></div>
-<div style="position: absolute; inset: 0; border-radius: 999px; border: 2px solid #3A3A3A; background: repeating-conic-gradient(#232323 0 30deg, #161616 30deg 60deg); transform: rotate({{ wheelDeg }}deg); transition: {{ wheelT }}">
-<sc-for list="{{ wheel }}" as="w" hint-placeholder-count="12"><span style="position: absolute; left: 50%; top: 50%; width: 120px; height: 16px; margin-top: -8px; transform-origin: 0 50%; transform: rotate({{ w.rot }}deg); font: 500 11px/16px 'JetBrains Mono', monospace; color: #DCDCDC; text-align: right; padding-right: 12px; box-sizing: border-box">{{ w.nick }}</span></sc-for>
-<span style="position: absolute; left: 50%; top: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 999px; background: #F2F2F2; box-shadow: 0 0 0 4px #0E0E0E"></span>
+<div aria-hidden="true" style="position: relative; width: 280px; height: 280px; transform: scale({{ scale }})">
+<div style="position: absolute; left: 50%; top: -8px; margin-left: -10px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 18px solid #F2F2F2; z-index: 2"></div>
+<div style="position: absolute; inset: 0; border-radius: 999px; border: 2px solid #3A3A3A; background: repeating-conic-gradient(#1F1F1F 0 30deg, #171717 30deg 60deg); transform: rotate({{ wheelDeg }}deg); transition: {{ wheelT }}">
+<sc-for list="{{ wheel }}" as="w" hint-placeholder-count="12"><span style="position: absolute; left: 50%; top: 50%; width: 132px; height: 16px; margin-top: -8px; transform-origin: 0 50%; transform: rotate({{ w.rot }}deg); font: 500 11px/16px 'JetBrains Mono', monospace; color: #DCDCDC; text-align: right; padding: 0 10px 0 30px; box-sizing: border-box; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ w.nick }}</span></sc-for>
+<span style="position: absolute; left: 50%; top: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 999px; background: #F2F2F2; box-shadow: 0 0 0 4px #0A0A0A"></span>
 </div>
 </div>
 </sc-if>
 
-<sc-if value="{{ showInstant }}" hint-placeholder-val="{{ false }}"><div style="text-align: center"><p class="mono" style="margin: 0; font-size: 56px; line-height: 1; color: #3A3A3A">{{ instantGlyph }}</p><p style="margin: 12px 0 0; font-size: 14px; color: #8F8F8F">Победитель выбирается мгновенно, без анимации</p></div></sc-if>
+<sc-if value="{{ showInstant }}" hint-placeholder-val="{{ false }}"><div style="text-align: center; transform: scale({{ scale }})"><p class="mono" style="margin: 0; font-size: 56px; line-height: 1; color: #3A3A3A">? ? ?</p><p style="margin: 12px 0 0; font-size: 14px; color: #8F8F8F">Победитель появится сразу, без анимации</p></div></sc-if>
 
 <sc-if value="{{ isWinner }}" hint-placeholder-val="{{ false }}">
-<div role="status" aria-live="assertive" style="position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(320px 200px at 50% 50%, rgba(255,255,255,0.10), rgba(14,14,14,0.92) 70%); backdrop-filter: blur(4px)">
+<div style="position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; justify-content: center; text-align: center; background: radial-gradient({{ glow }} at 50% 50%, rgba(255,255,255,0.10), rgba(10,10,10,0.92) 70%); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px)">
+<div style="display: flex; flex-direction: column; align-items: center; padding: 16px; transform: scale({{ scale }})">
+<div role="status" aria-live="polite" style="display: flex; flex-direction: column; align-items: center">
 <p class="ov" style="color: #DCDCDC">{{ winnerTitle }}</p>
-<span class="av" style="margin-top: 16px; width: 88px; height: 88px; font-size: 28px; background: {{ winner.bg }}; box-shadow: 0 0 0 2px #0E0E0E, 0 0 0 4px #F2F2F2">{{ winner.ini }}</span>
-<p style="margin: 14px 0 0; font-size: 32px; line-height: 38px; font-weight: 600; letter-spacing: -0.02em">{{ winner.nick }}</p>
-<p style="margin: 4px 0 0; font-size: 13px; color: #B4B4B4">{{ winner.role }} · шанс <span class="mono">{{ winner.chance }}</span> · билетов <span class="mono">{{ winner.tickets }}</span></p>
-<sc-if value="{{ waitConfirm }}" hint-placeholder-val="{{ true }}"><div style="margin-top: 16px; width: 260px"><div style="display: flex; justify-content: space-between; font-size: 12px; color: #DCDCDC"><span>Ждём ответа в чате</span><span class="mono">0:47</span></div><div style="margin-top: 6px; height: 4px; background: #2A2A2A; border-radius: 2px"><div style="width: 78%; height: 100%; background: #F2F2F2; border-radius: 2px"></div></div></div></sc-if>
-<sc-if value="{{ confirmed }}" hint-placeholder-val="{{ false }}"><p style="margin: 16px 0 0; display: inline-flex; gap: 8px; align-items: center; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#F2F2F2"></circle><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round"></path></svg>Победитель на месте: «я тут!!» в 23:04</p></sc-if>
+<span class="av" style="margin-top: 16px; width: 88px; height: 88px; font-size: 28px; background: {{ winner.bg }}; box-shadow: 0 0 0 2px #0A0A0A, 0 0 0 4px #F2F2F2">{{ winner.ini }}</span>
+<p style="margin: 14px 0 0; font-size: 32px; line-height: 38px; font-weight: 600; letter-spacing: -0.02em; overflow-wrap: anywhere">{{ winner.name }}</p>
+</div>
+<p style="margin: 4px 0 0; font-size: 13px; color: #B4B4B4">{{ winner.role }} · шанс <span class="mono">{{ winner.chance }}</span>{{ winner.mult }}</p>
+<sc-if value="{{ confirmWait }}" hint-placeholder-val="{{ false }}"><div style="margin-top: 16px; width: 260px"><div style="display: flex; justify-content: space-between; font-size: 12px; color: #DCDCDC"><span>Ждём ответа в чате</span><span class="mono">{{ confirmLeft }}</span></div><div style="margin-top: 6px; height: 4px; background: #2A2A2A; border-radius: 2px"><div style="width: {{ confirmPct }}; height: 100%; background: #F2F2F2; border-radius: 2px"></div></div></div></sc-if>
+<sc-if value="{{ confirmHint }}" hint-placeholder-val="{{ false }}"><p style="margin: 16px 0 0; max-width: 300px; font-size: 13px; line-height: 18px; color: #DCDCDC">Нажми «Объявить в чате» — бот попросит победителя ответить за 60 секунд.</p></sc-if>
+<sc-if value="{{ confirmMissed }}" hint-placeholder-val="{{ false }}"><p style="margin: 16px 0 0; max-width: 300px; font-size: 13px; line-height: 18px; color: #DCDCDC">Победитель не ответил за 60 секунд. Можно перевыбрать.</p></sc-if>
+<sc-if value="{{ replied }}" hint-placeholder-val="{{ false }}"><p style="margin: 16px 0 0; display: inline-flex; gap: 8px; align-items: center; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#F2F2F2"></circle><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round"></path></svg>Победитель на месте: ответил в чате</p></sc-if>
+<sc-if value="{{ hasPrev }}" hint-placeholder-val="{{ false }}"><p style="margin: 12px 0 0; font-size: 12px; color: #8F8F8F; max-width: 340px">Уже выбраны: {{ prevWinners }}</p></sc-if>
+</div>
 </div>
 </sc-if>
 </div>
 
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 20px; border-top: 1px solid #2A2A2A; flex-wrap: wrap">
-<span class="mono" style="font-size: 11px; color: #6E6E6E">seed sha256: 9f2c…a71e · <a href="#" style="color: #8F8F8F; text-decoration: underline">проверить честность</a></span>
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 16px 20px; border-top: 1px solid #2A2A2A">
+<div>
+<sc-if value="{{ hasActErr }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert">{{ actErr }}</p></sc-if>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+<span class="mono" style="font-size: 11px; color: #6E6E6E">{{ seedLine }} · <a href="#fair" style="color: #8F8F8F; text-decoration: underline">как проверить честность</a></span>
 <div style="display: flex; gap: 8px; flex-wrap: wrap">
-<sc-if value="{{ isSetup }}" hint-placeholder-val="{{ true }}"><button type="button" class="bp" onClick="{{ start }}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="#0A0A0A"></path></svg>Начать сбор участников</button></sc-if>
-<sc-if value="{{ collecting }}" hint-placeholder-val="{{ false }}"><button type="button" class="bs" onClick="{{ cancel }}">Отменить</button><button type="button" class="bp" onClick="{{ spin }}">{{ spinLabel }}</button></sc-if>
-<sc-if value="{{ spinningNow }}" hint-placeholder-val="{{ false }}"><button type="button" class="bp" disabled="">Крутим…</button></sc-if>
-<sc-if value="{{ isWinner }}" hint-placeholder-val="{{ false }}"><button type="button" class="bs" onClick="{{ reroll }}" disabled="{{ noReroll }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"></path></svg>Перевыбрать</button><sc-if value="{{ waitConfirm }}" hint-placeholder-val="{{ true }}"><button type="button" class="bs" onClick="{{ confirm }}">Засчитать ответ</button></sc-if><button type="button" class="bp" onClick="{{ finish }}">{{ finishLabel }}</button></sc-if>
+<sc-if value="{{ isSetupBtn }}" hint-placeholder-val="{{ true }}"><button type="button" class="bp" onClick="{{ start }}" disabled="{{ cantStart }}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="#0A0A0A"></path></svg>{{ startLabel }}</button></sc-if>
+<sc-if value="{{ collecting }}" hint-placeholder-val="{{ false }}"><button type="button" class="bs bd" onClick="{{ cancel }}" disabled="{{ busyAny }}">{{ cancelLabel }}</button><button type="button" class="bp" onClick="{{ drawFirst }}" disabled="{{ cantDraw }}">{{ drawLabel }}</button></sc-if>
+<sc-if value="{{ spinningNow }}" hint-placeholder-val="{{ false }}"><button type="button" class="bp" disabled="">Выбираем…</button></sc-if>
+<sc-if value="{{ isWinner }}" hint-placeholder-val="{{ false }}"><button type="button" class="bs bd" onClick="{{ cancel }}" disabled="{{ busyAny }}">{{ cancelLabel }}</button><button type="button" class="bs" onClick="{{ reroll }}" disabled="{{ cantReroll }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"></path></svg>{{ rerollLabel }}</button><button type="button" class="bs" onClick="{{ announce }}" disabled="{{ busyAny }}">{{ announceLabel }}</button><sc-if value="{{ needMore }}" hint-placeholder-val="{{ false }}"><button type="button" class="bs" onClick="{{ drawNext }}" disabled="{{ cantNext }}">{{ nextLabel }}</button></sc-if><button type="button" class="bp" onClick="{{ finish }}" disabled="{{ busyAny }}">{{ finishLabel }}</button></sc-if>
+</div>
 </div>
 </div>
 </div>
 
 <section class="sec" aria-labelledby="obs-t">
-<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap"><div><h2 id="obs-t">Вывод на стрим</h2><p class="hint" style="margin-top: 4px">Розыгрыш на экране: сбор, рулетка и победитель. Управляешь отсюда, а зрители видят анимацию в OBS.</p></div><a href="#" onClick="{{ toggleFs }}" style="display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: 6px; border: 1px solid #3A3A3A; font-size: 13px"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"></rect><path d="M14 4h7v7"></path></svg>Открыть в отдельном окне</a></div>
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap"><div><h2 id="obs-t">Вывод на стрим</h2><p class="hint" style="margin-top: 4px">Оверлей для OBS сам показывает сбор, рулетку и карточку победителя. Управляешь отсюда — зрители видят анимацию. Для захвата окна подойдёт и кнопка «На весь экран» на сцене.</p></div><a href="{{ obsUrl }}" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: 6px; border: 1px solid #3A3A3A; font-size: 13px"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"></rect><path d="M14 4h7v7"></path></svg>Открыть оверлей</a></div>
 <div style="display: flex; flex-wrap: wrap; gap: 20px">
-<div aria-hidden="true" style="flex: 0 0 260px; aspect-ratio: 16 / 9; border-radius: 8px; border: 1px solid #3A3A3A; position: relative; overflow: hidden; background: {{ obsPreviewBg }}">
+<div aria-hidden="true" style="flex: 0 1 260px; aspect-ratio: 16 / 9; border-radius: 8px; border: 1px solid #3A3A3A; position: relative; overflow: hidden; background: {{ obsPreviewBg }}">
 <div style="position: absolute; left: 0; right: 0; top: 50%; margin-top: -22px; display: flex; gap: 4px; justify-content: center"><span style="width: 34px; height: 44px; border-radius: 3px; background: rgba(23,23,23,0.9); border: 1px solid #3A3A3A"></span><span style="width: 34px; height: 44px; border-radius: 3px; background: rgba(23,23,23,0.9); border: 1px solid #3A3A3A"></span><span style="width: 34px; height: 44px; border-radius: 3px; background: #1F1F1F; border: 2px solid #F2F2F2; box-sizing: border-box"></span><span style="width: 34px; height: 44px; border-radius: 3px; background: rgba(23,23,23,0.9); border: 1px solid #3A3A3A"></span><span style="width: 34px; height: 44px; border-radius: 3px; background: rgba(23,23,23,0.9); border: 1px solid #3A3A3A"></span></div>
 <span style="position: absolute; left: 50%; top: 22px; bottom: 22px; width: 1px; background: #F2F2F2"></span>
 <span class="mono" style="position: absolute; left: 8px; bottom: 6px; font-size: 10px; color: #DCDCDC">1920 × 1080</span>
 </div>
 <div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
-<div style="display: flex; gap: 8px"><input aria-label="Ссылка на виджет розыгрыша для OBS" class="inp mono" readonly="" value="{{ obsUrl }}" style="font-size: 13px"><button type="button" class="bs" style="height: 40px; flex: none" onClick="{{ toggleObsShow }}" aria-label="{{ obsShowLabel }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button type="button" class="bp" style="height: 40px; flex: none" onClick="{{ copyObs }}">{{ obsCopyLabel }}</button></div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px">
-<div style="display: flex; flex-direction: column; gap: 8px"><span class="lab" id="obg">Фон</span><span role="radiogroup" aria-labelledby="obg" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px"><sc-for list="{{ obsBgOpt }}" as="o" hint-placeholder-count="3"><button type="button" role="radio" class="seg" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</button></sc-for></span></div>
-<div style="display: flex; flex-direction: column; gap: 8px"><span class="lab" id="osh">Когда показывать</span><span role="radiogroup" aria-labelledby="osh" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px"><sc-for list="{{ obsWhenOpt }}" as="o" hint-placeholder-count="2"><button type="button" role="radio" class="seg" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</button></sc-for></span></div>
-</div>
-<div class="row" style="border-top: 0; min-height: 32px"><span><span style="display: block">Звук рулетки и победы</span><span class="hint">Щелчки ленты и короткий сигнал, громкость 60%</span></span><button type="button" role="switch" class="sw" aria-checked="{{ obsSound }}" aria-label="Звук рулетки" onClick="{{ toggleObsSound }}"><span></span></button></div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap"><input aria-label="Ссылка на оверлей розыгрыша для OBS" class="inp mono" readonly="" value="{{ obsUrlShown }}" style="font-size: 13px; flex: 1 1 200px; min-width: 0; width: auto"><button type="button" class="bs" style="height: 40px; flex: none" onClick="{{ toggleObsShow }}" aria-pressed="{{ obsShowPressed }}" aria-label="{{ obsShowLabel }}" title="{{ obsShowLabel }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button type="button" class="bp" style="height: 40px; flex: none" onClick="{{ copyObs }}" disabled="{{ noToken }}">{{ obsCopyLabel }}</button></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="lab" id="obg">Фон оверлея</span><span role="radiogroup" aria-labelledby="obg" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px"><sc-for list="{{ obsBgOpt }}" as="o" hint-placeholder-count="3"><button type="button" role="radio" class="seg" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</button></sc-for></span><p class="hint">Фон меняет ссылку — после выбора скопируй её заново.</p></div>
 <ol style="margin: 0; padding-left: 20px; font-size: 13px; line-height: 20px; color: #B4B4B4"><li>Скопируй ссылку</li><li>OBS: «Источники» → «+» → «Браузер», вставь ссылку, размер <span class="mono" style="color: #F2F2F2">1920 × 1080</span></li><li>Поставь источник поверх игры. Без розыгрыша он прозрачный и ничего не перекрывает</li></ol>
-<p style="margin: 0; display: flex; gap: 8px; padding: 10px 12px; border: 1px dashed #B4B4B4; border-radius: 6px; font-size: 13px; line-height: 18px; color: #DCDCDC"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M10.3 3.9L2.4 17.5a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4M12 17h.01"></path></svg>Не показывай ссылку в эфире. Если она утекла — <a href="#" style="text-decoration: underline">создай новую</a>, старая перестанет работать.</p>
+<p style="margin: 0; display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; border: 1px dashed #B4B4B4; border-radius: 6px; font-size: 13px; line-height: 18px; color: #DCDCDC"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M10.3 3.9L2.4 17.5a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4M12 17h.01"></path></svg><span>Не показывай ссылку в эфире. Если она утекла — <button type="button" onClick="{{ resetToken }}" disabled="{{ tokenBusy }}" style="padding: 0; border: 0; background: transparent; color: #F2F2F2; font: inherit; text-decoration: underline; cursor: pointer">создай новую</button>: старые ссылки на все виджеты перестанут работать.</span></p>
 </div>
 </div>
 </section>
 
 <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
 <section class="sec" aria-labelledby="pt" style="flex: 1 1 340px; min-width: 0">
-<div style="display: flex; justify-content: space-between; align-items: center"><h2 id="pt">Участники</h2><span class="hint">шанс с учётом удачи</span></div>
-<sc-if value="{{ isSetup }}" hint-placeholder-val="{{ true }}"><p style="margin: 0; padding: 24px 0; text-align: center; font-size: 14px; color: #8F8F8F">Список появится после старта сбора</p></sc-if>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><h2 id="pt">Участники</h2><span class="hint">{{ peopleHint }}</span></div>
+<div>
+<sc-if value="{{ peopleMsg }}" hint-placeholder-val="{{ true }}"><p style="margin: 0; padding: 24px 0; text-align: center; font-size: 14px; line-height: 20px; color: #8F8F8F">{{ peopleText }}</p></sc-if>
 <sc-if value="{{ hasPeople }}" hint-placeholder-val="{{ false }}"><div>
 <sc-for list="{{ people }}" as="p" hint-placeholder-count="8"><div class="pr" style="{{ p.rowStyle }}"><span class="av" style="width: 24px; height: 24px; font-size: 10px; background: {{ p.bg }}">{{ p.ini }}</span><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap"><b style="font-weight: 500">{{ p.nick }}</b> <span style="color: #8F8F8F">{{ p.role }}</span></span><span style="height: 4px; background: #2A2A2A"><span style="display: block; height: 100%; width: {{ p.bar }}; background: #DCDCDC"></span></span><span class="mono" style="text-align: right">{{ p.chance }}</span></div></sc-for>
-<p class="hint" style="padding-top: 8px; border-top: 1px solid #1F1F1F">и ещё <span class="mono">196</span> участников · исключено <span class="mono">7</span>: новые аккаунты и боты</p>
+<sc-if value="{{ hasMore }}" hint-placeholder-val="{{ false }}"><p class="hint" style="padding-top: 8px; border-top: 1px solid #1F1F1F">{{ moreText }}</p></sc-if>
 </div></sc-if>
+</div>
 </section>
 
 <section class="sec" aria-labelledby="bm" style="flex: 1 1 300px; min-width: 0">
-<h2 id="bm">Сообщения бота</h2>
-<div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; line-height: 19px">
-<p style="margin: 0; padding: 8px 10px; border-radius: 4px; background: rgba(255,255,255,0.04)"><b style="font-weight: 500; color: #8F8F8F">StreOps</b> Розыгрыш: ключ Cyberpunk 2077! Пиши <span class="mono">!участвую</span>, сбор 2 минуты. Подписчикам шанс ×2</p>
-<p style="margin: 0; padding: 8px 10px; border-radius: 4px; background: rgba(255,255,255,0.04)"><b style="font-weight: 500; color: #8F8F8F">StreOps</b> Осталось 30 секунд, участников: <span class="mono">212</span></p>
-<p style="margin: 0; padding: 8px 10px; border-radius: 4px; background: rgba(255,255,255,0.04)"><b style="font-weight: 500; color: #8F8F8F">StreOps</b> @{winner}, ты выиграл! Напиши что-нибудь в чат за 60 секунд</p>
-<p style="margin: 0; padding: 8px 10px; border-radius: 4px; background: rgba(255,255,255,0.04)"><b style="font-weight: 500; color: #8F8F8F">StreOps</b> @{winner} не ответил, крутим заново</p>
+<h2 id="bm">Что напишет бот</h2>
+<div style="display: flex; flex-direction: column; gap: 10px; font-size: 13px; line-height: 19px">
+<sc-for list="{{ botMsgs }}" as="m" hint-placeholder-count="3"><div><p class="hint" style="margin-bottom: 4px">{{ m.when }}</p><p style="margin: 0; padding: 8px 10px; border-radius: 4px; background: rgba(255,255,255,0.04); overflow-wrap: anywhere"><b style="font-weight: 500; color: #8F8F8F">{{ botName }}</b> {{ m.text }}</p></div></sc-for>
 </div>
-<a href="#" style="font-size: 13px; color: #B4B4B4; text-decoration: underline">Изменить тексты</a>
+<p class="hint">При отмене бот ничего не пишет. Тексты сообщений пока не настраиваются.</p>
 </section>
 </div>
 
 <section class="sec" aria-labelledby="hs">
 <h2 id="hs">История розыгрышей</h2>
-<div style="overflow-x: auto"><table style="width: 100%; min-width: 620px; border-collapse: collapse; font-size: 13px">
-<thead><tr style="text-align: left; color: #8F8F8F"><th style="font-weight: 500; padding: 8px 12px 8px 0">Дата</th><th style="font-weight: 500; padding: 8px 12px">Приз</th><th style="font-weight: 500; padding: 8px 12px">Участников</th><th style="font-weight: 500; padding: 8px 12px">Победитель</th><th style="font-weight: 500; padding: 8px 12px">Статус</th></tr></thead>
+<div>
+<sc-if value="{{ histMsg }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 16px 0; text-align: center; font-size: 14px; color: #8F8F8F">{{ histText }}</p></sc-if>
+<sc-if value="{{ hasHist }}" hint-placeholder-val="{{ true }}"><div style="overflow-x: auto"><table style="width: 100%; min-width: 680px; border-collapse: collapse; font-size: 13px">
+<thead><tr style="text-align: left; color: #8F8F8F"><th style="font-weight: 500; padding: 8px 12px 8px 0">Дата</th><th style="font-weight: 500; padding: 8px 12px">Приз</th><th style="font-weight: 500; padding: 8px 12px">Участников</th><th style="font-weight: 500; padding: 8px 12px">Победители</th><th style="font-weight: 500; padding: 8px 12px">Статус</th><th style="font-weight: 500; padding: 8px 0 8px 12px">Честность</th></tr></thead>
 <tbody>
-<sc-for list="{{ history }}" as="h" hint-placeholder-count="4"><tr style="border-top: 1px solid #1F1F1F"><td class="mono" style="padding: 10px 12px 10px 0; color: #8F8F8F">{{ h.d }}</td><td style="padding: 10px 12px">{{ h.p }}</td><td class="mono" style="padding: 10px 12px">{{ h.n }}</td><td style="padding: 10px 12px">{{ h.w }}</td><td style="padding: 10px 12px"><span style="display: inline-flex; height: 22px; align-items: center; padding: 0 8px; border-radius: 4px; font-size: 12px; {{ h.style }}">{{ h.s }}</span></td></tr></sc-for>
-</tbody></table></div>
+<sc-for list="{{ history }}" as="h" hint-placeholder-count="4"><tr style="border-top: 1px solid #1F1F1F"><td class="mono" style="padding: 10px 12px 10px 0; color: #8F8F8F; white-space: nowrap">{{ h.d }}</td><td style="padding: 10px 12px">{{ h.p }}</td><td class="mono" style="padding: 10px 12px">{{ h.n }}</td><td style="padding: 10px 12px">{{ h.w }}</td><td style="padding: 10px 12px"><span style="display: inline-flex; height: 22px; align-items: center; padding: 0 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; {{ h.style }}">{{ h.s }}</span></td><td style="padding: 10px 0 10px 12px; white-space: nowrap"><span class="mono" style="font-size: 11px; color: #8F8F8F">{{ h.hash }}</span> <button type="button" class="bs sm" onClick="{{ h.check }}" aria-expanded="{{ h.openAttr }}">{{ h.checkLabel }}</button></td></tr><sc-if value="{{ h.open }}" hint-placeholder-val="{{ false }}"><tr><td colspan="6" style="padding: 0 0 12px"><div style="padding: 10px 12px; border-radius: 6px; background: rgba(255,255,255,0.04); font-size: 12px; line-height: 18px; display: flex; flex-direction: column; gap: 4px"><span>seed: <span class="mono" style="color: #F2F2F2; overflow-wrap: anywhere">{{ h.seed }}</span></span><span>sha256(seed): <span class="mono" style="overflow-wrap: anywhere">{{ h.calc }}</span></span><span>объявлено при старте: <span class="mono" style="overflow-wrap: anywhere">{{ h.seedHash }}</span></span><b style="font-weight: 500">{{ h.verdict }}</b></div></td></tr></sc-if></sc-for>
+</tbody></table></div></sc-if>
+</div>
+<div id="fair" style="padding: 12px 14px; border-radius: 6px; border: 1px dashed #3A3A3A; font-size: 13px; line-height: 19px; color: #B4B4B4">
+<p style="margin: 0 0 6px; color: #F2F2F2; font-weight: 500">Как проверить честность</p>
+<ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px"><li>При старте бот пишет в чат начало sha256-хэша секретного seed. Подменить seed потом незаметно нельзя.</li><li>После завершения бот публикует сам seed. Кнопка «Проверить» считает sha256(seed) прямо в браузере и сравнивает с хэшем, объявленным заранее.</li><li>Победитель раунда r (0 — первый выбор, каждый следующий выбор или перевыбор +1): первые 12 hex-символов sha256(«seed:r») → число, остаток от деления на сумму весов оставшихся участников в порядке входа, отсчёт по весам. Вес — 2, с «удачей» у подписчика 4, у VIP 3.</li></ol>
+</div>
 </section>
 </section>
 </div>
@@ -261,166 +279,410 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
+    const DEF = { prize: '', keyword: '!участвую', winners: 1, duration: 120, entry: 'word', rules: { followers: false, noNew: true, noMods: true, luck: true, noRecent: true, confirm: true } };
+    const saved = this.lsGet('stre.gw.form', null);
+    const form = Object.assign({}, DEF, saved || {}, { rules: Object.assign({}, DEF.rules, (saved && saved.rules) || {}) });
+    const mode = this.lsGet('stre.gw.mode', 'roulette');
     this.state = {
-      phase: 'setup', mode: 0, entry: 0, winners: 0, timer: 1, confirmOn: true,
-      rules: [true, true, true, true, true, false],
-      winIdx: -1, excluded: [], stripX: -444, anim: false, wheelDeg: 0, wheelAnim: false,
-      confirmed: false, drawn: [], history: null,
-      fs: false, obsShow: false, obsCopied: false, obsBg: 0, obsWhen: 1, obsSound: true
+      loaded: false, loadErr: '', cur: null, history: [], me: null,
+      form, prizeInvalid: false, mode: ['roulette', 'wheel', 'instant'].indexOf(mode) >= 0 ? mode : 'roulette',
+      busy: '', actErr: '', botBusy: false, tokenBusy: false,
+      spinning: false, spin: null, stripX: this.restX(), stripAnim: false, wheelDeg: 0, wheelAnim: false,
+      ann: this.lsGet('stre.gw.ann', {}),
+      fs: false, fsFallback: false, scale: 1,
+      obsShow: false, obsCopied: false, obsBg: [0, 1, 2].indexOf(this.lsGet('stre.gw.obsBg', 0)) >= 0 ? this.lsGet('stre.gw.obsBg', 0) : 0,
+      open: {}, calc: {}, skew: 0, tick: 0,
     };
+    this.reqId = 0; this.appliedId = 0; this.lastJson = '';
   }
-  people() {
-    const P = [
-      ['moroz_tv', 'подписчик', 1], ['lenta_ln', 'фолловер', 1], ['tixiy_bard', 'подписчик', 1], ['polyana_live', 'VIP', 1],
-      ['gleb_1999', 'фолловер', 1], ['nastya_k', 'фолловер', 1], ['sever_ops', 'подписчик', 1], ['dasha_draws', 'фолловер', 1],
-      ['ivan_gg', 'фолловер', 1], ['katya_meow', 'подписчик', 1], ['artem_cs', 'фолловер', 1], ['rina_vibe', 'VIP', 1]
-    ];
-    const luck = this.state.rules[3];
-    const mult = (r) => luck ? (r === 'подписчик' ? 2 : (r === 'VIP' ? 1.5 : 1)) : 1;
-    const shades = ['#F2F2F2', '#DCDCDC', '#B4B4B4', '#8F8F8F'];
-    const total = P.reduce((a, p) => a + p[2] * mult(p[1]), 0) + 196;
-    return P.map((p, i) => ({
-      nick: p[0], role: p[1], tickets: p[2], w: p[2] * mult(p[1]),
-      ini: p[0].slice(0, 2).toUpperCase(),
-      bg: 'linear-gradient(135deg, ' + shades[i % 4] + ', #2A2A2A)',
-      chance: ((p[2] * mult(p[1])) / total * 100).toFixed(2).replace('.', ',') + '%'
-    }));
+  // ---------- утилиты ----------
+  lsGet(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }
+  lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* без хранилища */ } }
+  restX() { return -(6 * 128 + 60); }
+  ini(n) { return (String(n || '?').replace(/[^A-Za-zА-Яа-яЁё0-9]/g, '').slice(0, 2) || '?').toUpperCase(); }
+  shade(login) { let h = 0; const s = String(login || ''); for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return 'linear-gradient(135deg, ' + ['#F2F2F2', '#DCDCDC', '#B4B4B4', '#8F8F8F'][h % 4] + ', #2A2A2A)'; }
+  plural(n, f) { const a = Math.abs(n) % 100, b = a % 10; return a > 10 && a < 20 ? f[2] : b > 1 && b < 5 ? f[1] : b === 1 ? f[0] : f[2]; }
+  hdur(s) { if (s >= 3600 && s % 3600 === 0) return (s / 3600) + ' ч'; if (s >= 60) return Math.floor(s / 60) + ' мин'; return s + ' с'; }
+  mmss(sec) { sec = Math.max(0, Math.ceil(sec)); return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0'); }
+  pct(x) { return String(Math.round((Number(x) || 0) * 100) / 100).replace('.', ',') + '%'; }
+  nowS() { return Date.now() / 1000 + this.state.skew; }
+  wkey(w) { return w ? w.id + ':' + w.round : ''; }
+  short(h) { return h ? h.slice(0, 4) + '…' + h.slice(-4) : ''; }
+  barStyle(role) { return role === 'подписчик' ? 'background: #F2F2F2' : (role === 'VIP' ? 'background: repeating-linear-gradient(90deg, #F2F2F2 0 6px, transparent 6px 10px)' : 'background: #3A3A3A'); }
+
+  // ---------- загрузка и опрос ----------
+  componentDidMount() {
+    this.init();
+    this.pollT = setInterval(() => { if (!document.hidden) this.poll(); }, 2000);
+    this.tickT = setInterval(() => { if (!document.hidden && this.needTick()) this.setState({ tick: Date.now() }); }, 1000);
+    const onFs = () => { const on = !!(document.fullscreenElement || document.webkitFullscreenElement); this.setState({ fs: on, scale: on ? this.calcScale() : (this.state.fsFallback ? this.calcScale() : 1) }); };
+    document.addEventListener('fullscreenchange', onFs);
+    document.addEventListener('webkitfullscreenchange', onFs);
+    window.addEventListener('resize', () => { if (this.state.fs || this.state.fsFallback) this.setState({ scale: this.calcScale() }); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && this.state.fsFallback) this.setState({ fsFallback: false, scale: 1 }); });
   }
-  pick(ppl) {
-    const pool = ppl.map((p, i) => i).filter((i) => this.state.excluded.indexOf(i) < 0 && this.state.drawn.indexOf(i) < 0);
-    if (!pool.length) return -1;
-    const sum = pool.reduce((a, i) => a + ppl[i].w, 0);
-    let r = Math.random() * sum;
-    for (const i of pool) { r -= ppl[i].w; if (r <= 0) return i; }
-    return pool[pool.length - 1];
+  async init() {
+    const me = await StreAPI.me();
+    this.setState({ me });
+    await this.poll();
+    const tok = me && me.user && me.user.widgetToken;
+    if (tok) { // разница часов с сервером — для точного таймера
+      try { const t0 = Date.now(); const r = await StreAPI.get('widget.data', { t: tok, w: 'giveaway' }); if (r.now) this.setState({ skew: r.now - (t0 + Date.now()) / 2000 }); } catch (e) { /* таймер по часам браузера */ }
+    }
   }
-  runSpin(extraExclude) {
-    const ppl = this.people();
-    const excluded = this.state.excluded.concat(extraExclude || []);
-    this.state.excluded = excluded;
-    const idx = this.pick(ppl);
-    if (idx < 0) return;
-    const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const mode = this.state.mode;
-    if (mode === 2 || reduce) {
-      this.setState({ excluded, winIdx: idx, phase: 'winner', confirmed: false });
+  async poll() {
+    const id = ++this.reqId;
+    try {
+      const r = await StreAPI.get('gw.state');
+      if (id < this.appliedId) return;
+      this.appliedId = id;
+      const j = JSON.stringify([r.current, r.history]);
+      if (j !== this.lastJson || !this.state.loaded || this.state.loadErr) {
+        this.lastJson = j;
+        this.setState({ cur: r.current || null, history: r.history || [], loaded: true, loadErr: '' });
+      }
+    } catch (e) {
+      if (e.message !== this.state.loadErr) this.setState({ loadErr: e.message });
+    }
+  }
+  needTick() {
+    const c = this.state.cur;
+    if (!c) return false;
+    if ((c.status === 'collecting' || c.status === 'closed') && c.endsAt > 0 && c.endsAt > this.nowS() - 2) return true;
+    const w = c.winners && c.winners[c.winners.length - 1];
+    const at = w && this.state.ann[c.id + ':' + this.wkey(w)];
+    return !!(at && Date.now() - at < 62000 && !c.lastReplied);
+  }
+  calcScale() { return Math.max(1, Math.min(2.4, Math.min(window.innerWidth / 1000, (window.innerHeight - 170) / 430))); }
+
+  // ---------- действия ----------
+  setF(p) { if (!this.state.cur) this.setState({ form: Object.assign({}, this.state.form, p), prizeInvalid: false, actErr: '' }); }
+  async start() {
+    const f = this.state.form;
+    const prize = f.prize.trim();
+    if (!prize) {
+      this.setState({ prizeInvalid: true, actErr: 'Напиши, что разыгрываем: без приза сбор не начать.' });
+      const el = document.getElementById('prize'); if (el) el.focus();
       return;
     }
-    if (mode === 0) {
-      const target = 52;
-      const jitter = Math.round((Math.random() - 0.5) * 80);
-      this.setState({ excluded, winIdx: idx, phase: 'spinning', anim: false, stripX: -(3 * 128 + 60), confirmed: false });
-      setTimeout(() => this.setState({ anim: true, stripX: -(target * 128 + 60 + jitter) }), 60);
-      setTimeout(() => this.setState({ phase: 'winner' }), 6200);
+    if (f.entry === 'word' && !f.keyword.trim()) { this.setState({ actErr: 'Укажи слово, которым зрители будут входить в розыгрыш.' }); return; }
+    this.setState({ busy: 'start', actErr: '' });
+    try {
+      const r = f.rules;
+      await StreAPI.post('gw.start', { prize, keyword: f.keyword.trim(), winners: f.winners, duration: f.duration, entry: f.entry,
+        rules: { followers: !!r.followers, noNew: !!r.noNew, noMods: !!r.noMods, luck: !!r.luck, noRecent: !!r.noRecent, confirm: !!r.confirm } });
+      this.lsSet('stre.gw.form', Object.assign({}, f, { prize }));
+      StreAPI.toast('Сбор начался — бот написал в чат, как участвовать');
+      this.setState({ busy: '', spin: null, stripX: this.restX(), stripAnim: false });
+      await this.poll();
+    } catch (e) { this.setState({ busy: '', actErr: e.message }); StreAPI.toast(e.message, 'error'); }
+  }
+  async cancel() {
+    const c = this.state.cur;
+    if (!c || !confirm('Отменить розыгрыш «' + c.prize + '»? Победителя не будет, в историю он попадёт как отменённый. В чат бот ничего не напишет.')) return;
+    this.setState({ busy: 'cancel', actErr: '' });
+    try { await StreAPI.post('gw.cancel'); StreAPI.toast('Розыгрыш отменён'); this.setState({ busy: '', spin: null }); await this.poll(); }
+    catch (e) { this.setState({ busy: '', actErr: e.message }); StreAPI.toast(e.message, 'error'); }
+  }
+  async draw(reroll) {
+    const s = this.state;
+    if (s.busy || s.spinning || !s.cur) return;
+    this.setState({ busy: reroll ? 'reroll' : 'draw', actErr: '' });
+    let r;
+    try { r = await StreAPI.post('gw.draw', reroll ? { reroll: true } : {}); }
+    catch (e) { this.setState({ busy: '', actErr: e.message }); StreAPI.toast(e.message, 'error'); return; }
+    const c = this.state.cur;
+    const winners = (reroll ? c.winners.slice(0, -1) : c.winners.slice()).concat([r.winner]);
+    this.setState({ busy: '', cur: Object.assign({}, c, { status: 'drawing', winners, lastReplied: false }) });
+    this.animate(r);
+  }
+  animate(r) {
+    const s = this.state, w = r.winner;
+    const gid = s.cur ? s.cur.id : 0;
+    const pool = r.pool && r.pool.length ? r.pool : [{ login: w.login, name: w.name, role: w.role }];
+    const base = { gid, wkey: this.wkey(w) };
+    clearTimeout(this.t1); clearTimeout(this.t2);
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (s.mode === 'instant' || reduce) { this.setState({ spinning: false, spin: Object.assign(base, { kind: 'instant' }) }); this.poll(); return; }
+    const pickOther = () => { const o = pool.filter((p) => p.login !== w.login); return o.length ? o[Math.floor(Math.random() * o.length)] : w; };
+    if (s.mode === 'wheel') {
+      const wi = Math.floor(Math.random() * 12);
+      const labels = []; for (let i = 0; i < 12; i++) labels.push(i === wi ? w : pickOther());
+      const from = ((s.wheelDeg % 360) + 360) % 360;
+      const target = ((-(wi * 30 + 15) + Math.round((Math.random() - 0.5) * 20)) % 360 + 360) % 360;
+      const final = from + 360 * 6 + ((target - from) % 360 + 360) % 360;
+      this.setState({ spinning: true, spin: Object.assign(base, { kind: 'wheel', labels }), wheelAnim: false, wheelDeg: from });
+      this.t1 = setTimeout(() => { void document.body.offsetHeight; this.setState({ wheelAnim: true, wheelDeg: final }); }, 60);
+      this.t2 = setTimeout(() => this.endSpin(), 5700);
     } else {
-      const seg = 30;
-      const pos = idx % 12;
-      const base = this.state.wheelDeg - (this.state.wheelDeg % 360);
-      const final = base + 360 * 6 + (360 - (pos * seg + seg / 2)) - 90 + Math.round((Math.random() - 0.5) * 16);
-      this.setState({ excluded, winIdx: idx, phase: 'spinning', wheelAnim: true, wheelDeg: final, confirmed: false });
-      setTimeout(() => this.setState({ phase: 'winner' }), 5600);
+      const cards = []; for (let k = 0; k < 60; k++) cards.push(k === 52 ? w : (k > 48 && k < 56 ? pickOther() : pool[Math.floor(Math.random() * pool.length)]));
+      const jitter = Math.round((Math.random() - 0.5) * 96);
+      this.setState({ spinning: true, spin: Object.assign(base, { kind: 'roulette', cards }), stripAnim: false, stripX: this.restX() });
+      this.t1 = setTimeout(() => { void document.body.offsetHeight; this.setState({ stripAnim: true, stripX: -(52 * 128 + 60 + jitter) }); }, 60);
+      this.t2 = setTimeout(() => this.endSpin(), 6300);
     }
   }
+  endSpin() { this.setState({ spinning: false, stripAnim: false, wheelAnim: false }); this.poll(); }
+  async announce() {
+    const c = this.state.cur; if (!c) return;
+    const w = c.winners[c.winners.length - 1];
+    this.setState({ busy: 'announce', actErr: '' });
+    try {
+      await StreAPI.post('gw.announce');
+      const ann = Object.assign({}, this.state.ann, { [c.id + ':' + this.wkey(w)]: Date.now() });
+      const keys = Object.keys(ann); if (keys.length > 30) keys.slice(0, keys.length - 30).forEach((k) => delete ann[k]);
+      this.lsSet('stre.gw.ann', ann);
+      this.setState({ busy: '', ann });
+      StreAPI.toast('Бот объявил победителя в чате');
+    } catch (e) { this.setState({ busy: '', actErr: e.message }); StreAPI.toast(e.message, 'error'); }
+  }
+  async finish() {
+    const c = this.state.cur; if (!c) return;
+    if (c.winners.length < c.winnersCount && !confirm('Выбрано ' + c.winners.length + ' из ' + c.winnersCount + ' победителей. Завершить розыгрыш сейчас?')) return;
+    this.setState({ busy: 'finish', actErr: '' });
+    try {
+      await StreAPI.post('gw.finish');
+      StreAPI.toast(c.winners.length ? 'Розыгрыш завершён — бот написал итоги и seed в чат' : 'Розыгрыш завершён');
+      this.setState({ busy: '', spin: null });
+      await this.poll();
+    } catch (e) { this.setState({ busy: '', actErr: e.message }); StreAPI.toast(e.message, 'error'); }
+  }
+  toggleFs() {
+    const el = document.querySelector('[data-gw-stage]');
+    if (document.fullscreenElement || document.webkitFullscreenElement) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
+    if (this.state.fsFallback) { this.setState({ fsFallback: false, scale: 1 }); return; }
+    const fallback = () => this.setState({ fsFallback: true, scale: this.calcScale() });
+    const req = el && (el.requestFullscreen || el.webkitRequestFullscreen);
+    if (!req) { fallback(); return; }
+    try { const p = req.call(el); if (p && p.catch) p.catch(fallback); } catch (e) { fallback(); }
+  }
+  async enableBot() {
+    this.setState({ botBusy: true });
+    try {
+      const r = await StreAPI.post('bot.enable');
+      const me = await StreAPI.refreshMe();
+      this.setState({ me });
+      if (r.errors && r.errors.length) StreAPI.toast('Бот подключён, но есть ошибки: ' + r.errors.join('; '), 'error');
+      else StreAPI.toast('Бот подключён к чату');
+    } catch (e) { StreAPI.toast(e.message, 'error'); }
+    this.setState({ botBusy: false });
+  }
+  obsUrl(masked) {
+    const me = this.state.me;
+    const tok = me && me.user && me.user.widgetToken;
+    if (!tok) return '';
+    return location.origin + '/w/giveaway.php?t=' + (masked ? '••••••••••••' : encodeURIComponent(tok)) + ['', '&bg=dark', '&bg=green'][this.state.obsBg];
+  }
+  async copyObs() {
+    const url = this.obsUrl(false);
+    if (!url) return;
+    let ok = false;
+    try { await navigator.clipboard.writeText(url); ok = true; } catch (e) {
+      try { const t = document.createElement('textarea'); t.value = url; t.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(t); t.select(); ok = document.execCommand('copy'); t.remove(); } catch (e2) { ok = false; }
+    }
+    if (!ok) { this.setState({ obsShow: true }); StreAPI.toast('Не получилось скопировать — выдели ссылку и скопируй вручную', 'error'); return; }
+    this.setState({ obsCopied: true });
+    clearTimeout(this.copyT); this.copyT = setTimeout(() => this.setState({ obsCopied: false }), 2000);
+  }
+  async resetToken() {
+    if (!confirm('Создать новую ссылку? Старые ссылки на все виджеты StreOps (розыгрыш, алерты, чат и другие) перестанут работать — их нужно будет заменить в OBS.')) return;
+    this.setState({ tokenBusy: true });
+    try { await StreAPI.post('account.widgetToken'); const me = await StreAPI.refreshMe(); this.setState({ me }); StreAPI.toast('Новая ссылка готова. Обнови источники в OBS'); }
+    catch (e) { StreAPI.toast(e.message, 'error'); }
+    this.setState({ tokenBusy: false });
+  }
+  async check(h) {
+    const open = Object.assign({}, this.state.open, { [h.id]: !this.state.open[h.id] });
+    this.setState({ open });
+    if (!open[h.id] || this.state.calc[h.id] || !h.seed) return;
+    let calc = '';
+    try {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(h.seed));
+      calc = Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('');
+    } catch (e) { calc = '-'; }
+    this.setState({ calc: Object.assign({}, this.state.calc, { [h.id]: calc }) });
+  }
+
+  // ---------- отрисовка ----------
   renderVals() {
     const s = this.state;
-    const ppl = this.people();
-    const phases = ['setup', 'collecting', 'spinning', 'winner'];
-    const pi = phases.indexOf(s.phase);
-    const stepNames = ['Настройка', 'Сбор', 'Выбор', 'Победитель'];
-    const seg = (cur, i) => cur === i ? 'background: #F2F2F2; color: #0A0A0A' : '';
-    const card = (cur, i) => cur === i ? 'border: 2px solid #F2F2F2; padding: 11px; background: rgba(255,255,255,0.04)' : '';
-    const locked = pi > 0;
-    const EN = [['Слово в чат', 'Пишут !участвую'], ['Баллы канала', 'Билеты за баллы, можно несколько'], ['Активные зрители', 'Все, кто писал в чат'], ['Список ников', 'Вставь вручную']];
-    const MO = [['Рулетка', 'Лента карточек, как при открытии кейса'], ['Колесо', 'Барабан с никами'], ['Мгновенно', 'Без анимации']];
+    const c = s.cur;
+    const me = s.me && s.me.user;
+    const winners = c ? (c.winners || []) : [];
+    const lastW = winners[winners.length - 1] || null;
+    let phase = 'setup';
+    if (s.spinning) phase = 'spinning';
+    else if (c && c.status === 'drawing' && lastW) phase = 'winner';
+    else if (c) phase = 'collecting';
+    const pi = ['setup', 'collecting', 'spinning', 'winner'].indexOf(phase);
+    const locked = !!c;
+    const seg = (on) => on ? 'background: #F2F2F2; color: #0A0A0A' : '';
+    const card = (on) => on ? 'border: 2px solid #F2F2F2; padding: 11px; background: rgba(255,255,255,0.04)' : '';
+
+    // условия: свои (до старта) или текущего розыгрыша
+    const f = c ? { prize: c.prize, keyword: c.keyword, winners: c.winnersCount, entry: (c.rules && c.rules.entry) || 'word', duration: c.endsAt ? c.endsAt - c.createdAt : 0, rules: c.rules || {} } : s.form;
+    const opts = (list, v) => (list.indexOf(v) >= 0 ? list : list.concat([v]).sort((a, b) => (a || 1e9) - (b || 1e9)));
     const RU = [
-      ['Только фолловеры', 'Фолловят канал не меньше 24 часов'],
-      ['Без новых аккаунтов', 'Аккаунтам меньше 7 дней участие закрыто'],
-      ['Без модераторов и ботов', 'Модераторы, Nightbot, StreamElements не участвуют'],
-      ['Удача подписчиков', 'Подписчикам шанс ×2, VIP ×1,5'],
-      ['Без недавних победителей', 'Кто выигрывал за 7 дней, не участвует'],
-      ['Только присутствующие', 'Победитель должен быть в чате в момент выбора']
+      ['followers', 'Только фолловеры', 'Подписчики, VIP и модераторы проходят без проверки'],
+      ['noNew', 'Без новых аккаунтов', 'Аккаунтам моложе 7 дней участие закрыто'],
+      ['noMods', 'Без модераторов', 'Модераторы и ты сам не участвуете'],
+      ['luck', 'Удача подписчиков', 'Подписчикам шанс ×2, VIP ×1,5'],
+      ['noRecent', 'Без недавних победителей', 'Кто выигрывал у тебя за 7 дней, не участвует'],
     ];
-    const strip = [];
-    const win = s.winIdx >= 0 ? ppl[s.winIdx] : null;
-    for (let k = 0; k < 60; k++) {
-      const p = (k === 52 && win) ? win : ppl[(k * 7 + 3) % ppl.length];
-      const isW = k === 52 && s.phase === 'winner';
-      strip.push({
-        nick: p.nick, ini: p.ini, bg: p.bg, role: p.role,
-        bar: p.role === 'подписчик' ? 'background: #F2F2F2' : (p.role === 'VIP' ? 'background: repeating-linear-gradient(90deg, #F2F2F2 0 6px, transparent 6px 10px)' : 'background: #3A3A3A'),
-        style: isW ? 'border: 2px solid #F2F2F2; background: #1F1F1F' : ''
-      });
+    const EN = [['word', 'Слово в чат', 'Пишут ключевое слово'], ['active', 'Все, кто пишет', 'Любое сообщение во время сбора']];
+    const MO = [['roulette', 'Рулетка', 'Лента карточек, как при открытии кейса'], ['wheel', 'Колесо', 'Барабан с никами'], ['instant', 'Мгновенно', 'Без анимации']];
+
+    // таймер сбора
+    const now = this.nowS();
+    const ended = !!(c && (c.status === 'closed' || (c.endsAt > 0 && c.endsAt <= now)));
+    const showTimer = phase === 'collecting' && !!c && c.endsAt > 0;
+    const count = c ? c.count : 0;
+    const entries = c ? (c.entries || []) : [];
+    const revealed = s.spinning && s.spin ? winners.filter((w) => this.wkey(w) !== s.spin.wkey) : winners;
+    const winLogins = revealed.map((w) => w.login);
+
+    // лента и колесо
+    const asCard = (p, hl) => ({ nick: p.name, ini: this.ini(p.name), bg: this.shade(p.login), role: p.role, bar: this.barStyle(p.role), style: hl ? 'border: 2px solid #F2F2F2; background: #1F1F1F' : '' });
+    const spinOn = !!(s.spin && c && s.spin.gid === c.id && (s.spinning || (lastW && this.wkey(lastW) === s.spin.wkey)));
+    let strip = [], stripX = this.restX(), stripT = 'none';
+    if (spinOn && s.spin.kind === 'roulette') {
+      strip = s.spin.cards.map((p, k) => asCard(p, k === 52 && phase === 'winner'));
+      stripX = s.stripX; stripT = s.stripAnim ? 'transform 6s cubic-bezier(.08,.62,.12,1)' : 'none';
+    } else if (entries.length) {
+      for (let k = 0; k < 16; k++) strip.push(k === 6 && phase === 'winner' ? asCard(lastW, true) : asCard(entries[k % entries.length], false));
     }
-    const wheel = ppl.map((p, i) => ({ nick: p.nick, rot: i * 30 + 15 - 90 }));
-    const nDrawn = s.drawn.length;
-    const needW = s.winners + 1;
-    const H0 = [
-      { d: '07.10', p: 'Скин AK-47 | Redline', n: '318', w: 'sever_ops', s: 'Выдан', style: 'border: 1px solid #6E6E6E; color: #F2F2F2' },
-      { d: '03.10', p: '500 ₽ на Steam', n: '264', w: 'nastya_k', s: 'Перевыбран 1 раз', style: 'border: 1px dashed #B4B4B4; color: #DCDCDC' },
-      { d: '29.09', p: 'Подписка Twitch ×3', n: '187', w: 'gleb_1999, ivan_gg, rina_vibe', s: 'Выдан', style: 'border: 1px solid #6E6E6E; color: #F2F2F2' },
-      { d: '24.09', p: 'Ключ Hades II', n: '402', w: '—', s: 'Отменён', style: 'border: 1px dotted #6E6E6E; color: #8F8F8F' }
+    let wheelNames = [], wheelDeg = 0, wheelT = 'none';
+    if (spinOn && s.spin.kind === 'wheel') { wheelNames = s.spin.labels; wheelDeg = s.wheelDeg; wheelT = s.wheelAnim ? 'transform 5.4s cubic-bezier(.1,.7,.12,1)' : 'none'; }
+    else if (entries.length) { for (let i = 0; i < 12; i++) wheelNames.push(i === 0 && phase === 'winner' ? lastW : entries[i % entries.length]); wheelDeg = phase === 'winner' ? 345 : 0; }
+    const wheel = wheelNames.map((p, i) => ({ nick: p.name, rot: i * 30 + 15 - 90 }));
+    const hasArenaPeople = entries.length > 0 || spinOn;
+
+    // победитель
+    const confirmOn = !!(c && c.rules && c.rules.confirm);
+    const annAt = c && lastW ? s.ann[c.id + ':' + this.wkey(lastW)] : 0;
+    const replied = confirmOn && !!(c && c.lastReplied);
+    const left = annAt ? 60 - (Date.now() - annAt) / 1000 : 0;
+    const mult = lastW && c && c.rules && c.rules.luck && lastW.weight > 2 ? ' · удача ×' + String(lastW.weight / 2).replace('.', ',') : '';
+
+    // участники
+    const maxCh = entries.reduce((m, e) => Math.max(m, e.chance), 0) || 1;
+    const people = entries.map((e) => {
+      const won = winLogins.indexOf(e.login) >= 0;
+      return { ini: this.ini(e.name), bg: this.shade(e.login), nick: e.name, role: won ? e.role + ' · победитель' : e.role, chance: this.pct(e.chance), bar: Math.round(e.chance / maxCh * 100) + '%', rowStyle: won ? 'background: rgba(255,255,255,0.06)' : '' };
+    });
+    let peopleText = '';
+    if (!s.loaded) peopleText = 'Загрузка…';
+    else if (!c) peopleText = 'Список появится после старта сбора';
+    else if (!entries.length) peopleText = f.entry === 'active' ? 'Пока никого. Участником станет каждый, кто напишет в чат.' : 'Пока никого. Бот уже написал в чат, что нужно отправить ' + f.keyword + '.';
+
+    // сообщения бота (как в api.php)
+    const prizeT = f.prize || 'Приз';
+    const how = f.entry === 'active' ? 'Участвуют все, кто пишет в чат' : 'Пиши ' + (f.keyword || '!участвую');
+    const hash12 = c ? c.seedHash.slice(0, 12) : '<хэш seed>';
+    const wName = lastW ? lastW.name : 'ник';
+    const botMsgs = [
+      { when: 'При старте', text: 'Розыгрыш: ' + prizeT + '! ' + how + (f.duration ? ', сбор ' + this.hdur(f.duration) : '') + '. Проверка честности: sha256 ' + hash12 + '…' },
+      { when: 'По кнопке «Объявить в чате»', text: '@' + wName + ', ты выиграл «' + prizeT + '»!' + (f.rules && f.rules.confirm ? ' Напиши что-нибудь в чат за 60 секунд, чтобы забрать приз.' : '') },
+      { when: 'При завершении', text: 'Розыгрыш «' + prizeT + '» завершён. Победители: ' + (winners.length ? winners.map((w) => w.name).join(', ') : 'ники победителей') + '. Seed для проверки: <seed>' },
     ];
-    const history = s.history || H0;
-    const stageBase = 'background: radial-gradient(900px 360px at 50% 0%, rgba(255,255,255,0.08), transparent 70%), #0E0E0E; overflow: hidden; ';
-    const obsBgs = ['repeating-conic-gradient(#1F1F1F 0 25%, #171717 0 50%) 0 0 / 16px 16px', '#0E0E0E', '#00B140'];
+
+    // история
+    const ST = { done: ['Завершён', 'border: 1px solid #6E6E6E; color: #F2F2F2'], none: ['Без победителя', 'border: 1px dashed #6E6E6E; color: #B4B4B4'], cancelled: ['Отменён', 'border: 1px dotted #6E6E6E; color: #8F8F8F'] };
+    const history = s.history.map((h) => {
+      const st = h.status === 'cancelled' ? ST.cancelled : (h.winners.length ? ST.done : ST.none);
+      const calc = s.calc[h.id] || '';
+      const d = new Date(h.createdAt * 1000);
+      return {
+        d: d.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' }) + ' ' + StreAPI.fmtTime(h.createdAt),
+        p: h.prize, n: StreAPI.fmtNum(h.count), w: h.winners.length ? h.winners.map((w) => w.name).join(', ') : '—', s: st[0], style: st[1],
+        hash: this.short(h.seedHash), open: !!s.open[h.id], openAttr: s.open[h.id] ? 'true' : 'false', checkLabel: s.open[h.id] ? 'Скрыть' : 'Проверить',
+        seed: h.seed || 'скрыт', seedHash: h.seedHash, calc: calc === '-' ? 'браузер не умеет считать sha256 на этой странице' : (calc || 'считаем…'),
+        verdict: !h.seed ? 'Seed ещё не раскрыт.' : (!calc ? '' : calc === h.seedHash ? 'Совпадает: seed не меняли после старта.' : (calc === '-' ? 'Проверь вручную любым калькулятором sha256.' : 'Не совпадает! Напиши в поддержку.')),
+        check: () => this.check(h),
+      };
+    });
+
+    const busy = s.busy;
+    const obsBgs = ['repeating-conic-gradient(#1F1F1F 0 25%, #171717 0 50%) 0 0 / 16px 16px', '#0A0A0A', '#00B140'];
+    const stageBase = 'background: radial-gradient(900px 360px at 50% 0%, rgba(255,255,255,0.08), transparent 70%), #0A0A0A; overflow: hidden; ';
+    const fsOn = s.fs || s.fsFallback;
+    const remaining = count - winners.length;
+
     return {
-      stageStyle: s.fs
-        ? stageBase + 'position: fixed; inset: 0; z-index: 600; display: flex; flex-direction: column; border-radius: 0'
+      steps: ['Настройка', 'Сбор', 'Выбор', 'Победитель'].map((n, i) => ({ n: i + 1, label: n, cur: i === pi ? 'step' : 'false', style: i <= pi ? 'color: #F2F2F2' : '', dot: i < pi ? 'background: #F2F2F2; color: #0A0A0A; border-color: #F2F2F2' : (i === pi ? 'border-color: #F2F2F2; color: #F2F2F2' : '') })),
+      botOff: !!me && (!me.botEnabled || !!me.botError),
+      botOffText: me && me.botEnabled ? 'Бот подключён с ошибкой: ' + me.botError + '. Зрители могут не попасть в розыгрыш.' : 'Бот не подключён к чату: без него зрители не смогут войти в розыгрыш, а итоги не попадут в чат.',
+      botBtnLabel: s.botBusy ? 'Подключаем…' : (me && me.botEnabled ? 'Переподключить бота' : 'Подключить бота'),
+      enableBot: () => this.enableBot(), botBusy: s.botBusy,
+
+      locked, f, prizeInvalid: s.prizeInvalid ? 'true' : 'false',
+      setPrize: (e) => this.setF({ prize: e.target.value }),
+      setKeyword: (e) => this.setF({ keyword: e.target.value }),
+      winnersOpt: opts([1, 2, 3, 5], f.winners).map((n) => ({ label: String(n), sel: f.winners === n ? 'true' : 'false', style: seg(f.winners === n), pick: () => this.setF({ winners: n }) })),
+      entryOpt: EN.map((e) => ({ label: e[1], note: e[2], sel: f.entry === e[0] ? 'true' : 'false', style: card(f.entry === e[0]), pick: () => this.setF({ entry: e[0] }) })),
+      entryWord: f.entry !== 'active', entryActive: f.entry === 'active',
+      timerOpt: opts([60, 120, 300, 0], f.duration).map((d) => ({ label: d ? this.hdur(d) : 'Вручную', sel: f.duration === d ? 'true' : 'false', style: seg(f.duration === d), pick: () => this.setF({ duration: d }) })),
+      timerHint: f.duration ? 'Через ' + this.hdur(f.duration) + ' бот перестанет принимать участников, а выбрать победителя можно в любой момент.' : 'Сбор идёт, пока не нажмёшь «Завершить сбор и выбрать».',
+      rules: RU.map((r) => ({ label: r[1], note: r[2], on: f.rules[r[0]] ? 'true' : 'false', toggle: () => this.setF({ rules: Object.assign({}, s.form.rules, { [r[0]]: !s.form.rules[r[0]] }) }) })),
+      modeOpt: MO.map((m) => ({ label: m[1], note: m[2], sel: s.mode === m[0] ? 'true' : 'false', style: card(s.mode === m[0]), pick: () => { this.lsSet('stre.gw.mode', m[0]); this.setState({ mode: m[0] }); } })),
+      confirmOn: f.rules.confirm ? 'true' : 'false',
+      toggleConfirm: () => this.setF({ rules: Object.assign({}, s.form.rules, { confirm: !s.form.rules.confirm }) }),
+
+      stageStyle: fsOn
+        ? stageBase + (s.fsFallback ? 'position: fixed; inset: 0; z-index: 600; ' : 'position: relative; ') + 'display: flex; flex-direction: column; width: 100%; height: 100%; box-sizing: border-box; border-radius: 0; border: 0'
         : stageBase + 'position: relative; border-radius: 12px; border: 1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08)',
-      arenaH: s.fs ? 'flex: 1; min-height: 360px' : 'height: 340px',
-      fs: s.fs, fsOff: !s.fs, fsPressed: s.fs ? 'true' : 'false',
-      fsLabel: s.fs ? 'Свернуть' : 'На весь экран',
-      toggleFs: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ fs: !s.fs }); },
-      obsUrl: s.obsShow ? 'https://streops.ru/w/giveaway/3c81e0f7a2d4' : 'https://streops.ru/w/giveaway/••••••••••••',
-      obsShowLabel: s.obsShow ? 'Скрыть ссылку' : 'Показать ссылку',
+      arenaH: fsOn ? 'flex: 1; min-height: 0' : 'height: 340px',
+      scale: s.scale, glow: Math.round(320 * s.scale) + 'px ' + Math.round(200 * s.scale) + 'px',
+      fsPressed: fsOn ? 'true' : 'false', fsLabel: fsOn ? 'Свернуть (Esc)' : 'На весь экран',
+      fsIcon: fsOn ? 'M9 3v6H3M15 3v6h6M9 21v-6H3M15 21v-6h6' : 'M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6',
+      toggleFs: () => this.toggleFs(),
+      phaseLabel: !s.loaded ? 'Загрузка' : ({ setup: 'Подготовка', collecting: ended ? 'Сбор окончен — пора выбирать' : 'Идёт сбор участников', spinning: 'Выбираем победителя', winner: c && c.winnersCount > 1 ? 'Победители: ' + winners.length + ' из ' + c.winnersCount : 'Победитель выбран' })[phase],
+      stageTitle: c ? c.prize : (s.form.prize.trim() || 'Новый розыгрыш'),
+      countNum: StreAPI.fmtNum(count), countWord: this.plural(count, ['участник', 'участника', 'участников']),
+      showTimer, timerLabel: c && c.endsAt ? this.mmss(c.endsAt - now) : '', timerNote: ended ? 'сбор закрыт' : 'до конца сбора',
+
+      isLoading: !s.loaded, loadingText: s.loadErr ? 'Не удалось загрузить розыгрыш: ' + s.loadErr + ' Повторим через пару секунд.' : 'Загрузка…',
+      isSetup: s.loaded && phase === 'setup',
+      collectEmpty: phase === 'collecting' && !entries.length,
+      collectEmptyText: f.entry === 'active' ? 'Участником станет каждый, кто напишет в чат во время сбора.' : 'Зрители входят, когда пишут в чат ' + f.keyword + '. Список обновляется сам.',
+      showRoulette: s.mode === 'roulette' && pi > 0 && hasArenaPeople,
+      showWheel: s.mode === 'wheel' && pi > 0 && hasArenaPeople,
+      showInstant: s.mode === 'instant' && phase === 'collecting' && entries.length > 0,
+      strip, stripX, stripT, wheel, wheelDeg, wheelT,
+      isWinner: phase === 'winner', spinningNow: phase === 'spinning', collecting: phase === 'collecting',
+      winnerTitle: c && c.winnersCount > 1 ? 'Победитель ' + winners.length + ' из ' + c.winnersCount : 'Победитель',
+      winner: lastW ? { name: lastW.name, ini: this.ini(lastW.name), bg: this.shade(lastW.login), role: lastW.role, chance: this.pct(lastW.chance), mult } : { name: '', ini: '', bg: '#3A3A3A', role: '', chance: '', mult: '' },
+      confirmWait: confirmOn && !replied && !!annAt && left > 0, confirmLeft: this.mmss(left), confirmPct: Math.max(0, Math.min(100, left / 60 * 100)).toFixed(1) + '%',
+      confirmHint: confirmOn && !replied && !annAt, confirmMissed: confirmOn && !replied && !!annAt && left <= 0, replied,
+      hasPrev: winners.length > 1, prevWinners: winners.slice(0, -1).map((w) => w.name).join(', '),
+
+      hasActErr: !!s.actErr, actErr: s.actErr,
+      seedLine: c ? 'seed sha256: ' + this.short(c.seedHash) : 'хэш seed появится при старте',
+      isSetupBtn: s.loaded && phase === 'setup',
+      cantStart: !!busy, startLabel: busy === 'start' ? 'Запускаем…' : 'Начать сбор участников', start: () => this.start(),
+      busyAny: !!busy,
+      cancelLabel: busy === 'cancel' ? 'Отменяем…' : 'Отменить', cancel: () => this.cancel(),
+      cantDraw: !!busy || count === 0, drawLabel: busy === 'draw' ? 'Выбираем…' : (ended ? 'Выбрать победителя' : 'Завершить сбор и выбрать'), drawFirst: () => this.draw(false),
+      cantReroll: !!busy || remaining < 1, rerollLabel: busy === 'reroll' ? 'Выбираем…' : 'Перевыбрать', reroll: () => this.draw(true),
+      announceLabel: busy === 'announce' ? 'Пишем в чат…' : (annAt ? 'Напомнить в чате' : 'Объявить в чате'), announce: () => this.announce(),
+      needMore: !!c && winners.length < c.winnersCount, cantNext: !!busy || remaining < 1, nextLabel: busy === 'draw' ? 'Выбираем…' : 'Следующий победитель', drawNext: () => this.draw(false),
+      finishLabel: busy === 'finish' ? 'Завершаем…' : 'Завершить розыгрыш', finish: () => this.finish(),
+
+      obsUrl: this.obsUrl(false) || '#', obsUrlShown: me ? this.obsUrl(!s.obsShow) : 'Загрузка…', noToken: !me,
+      obsShowPressed: s.obsShow ? 'true' : 'false', obsShowLabel: s.obsShow ? 'Скрыть ссылку' : 'Показать ссылку',
       toggleObsShow: () => this.setState({ obsShow: !s.obsShow }),
-      obsCopyLabel: s.obsCopied ? 'Скопировано' : 'Скопировать',
-      copyObs: () => this.setState({ obsCopied: true }),
+      obsCopyLabel: s.obsCopied ? 'Скопировано' : 'Скопировать', copyObs: () => this.copyObs(),
       obsPreviewBg: obsBgs[s.obsBg],
-      obsBgOpt: ['Прозрачный', 'Тёмный', 'Хромакей'].map((l, i) => ({ label: l, sel: s.obsBg === i ? 'true' : 'false', style: seg(s.obsBg, i), pick: () => this.setState({ obsBg: i }) })),
-      obsWhenOpt: ['Всегда', 'Только во время розыгрыша'].map((l, i) => ({ label: l, sel: s.obsWhen === i ? 'true' : 'false', style: seg(s.obsWhen, i), pick: () => this.setState({ obsWhen: i }) })),
-      obsSound: s.obsSound ? 'true' : 'false',
-      toggleObsSound: () => this.setState({ obsSound: !s.obsSound }),
-      steps: stepNames.map((n, i) => ({ n: i + 1, label: n, cur: i === pi ? 'step' : 'false', style: i <= pi ? 'color: #F2F2F2' : '', dot: i < pi ? 'background: #F2F2F2; color: #0A0A0A; border-color: #F2F2F2' : (i === pi ? 'border-color: #F2F2F2; color: #F2F2F2' : '') })),
-      locked, isLive: pi > 0,
-      winnersOpt: ['1', '2', '3', '5'].map((l, i) => ({ label: l, sel: s.winners === i ? 'true' : 'false', style: seg(s.winners, i), pick: () => this.setState({ winners: i }) })),
-      entryOpt: EN.map((e, i) => ({ label: e[0], note: e[1], sel: s.entry === i ? 'true' : 'false', style: card(s.entry, i), pick: () => this.setState({ entry: i }) })),
-      entryWord: s.entry === 0, entryPoints: s.entry === 1, entryActive: s.entry === 2, entryList: s.entry === 3,
-      timerOpt: ['1 мин', '2 мин', '5 мин', 'Вручную'].map((l, i) => ({ label: l, sel: s.timer === i ? 'true' : 'false', style: seg(s.timer, i), pick: () => this.setState({ timer: i }) })),
-      rules: RU.map((r, i) => ({ label: r[0], note: r[1], on: s.rules[i] ? 'true' : 'false', toggle: () => { const n = s.rules.slice(); n[i] = !n[i]; this.setState({ rules: n }); } })),
-      modeOpt: MO.map((m, i) => ({ label: m[0], note: m[1], sel: s.mode === i ? 'true' : 'false', style: card(s.mode, i), pick: () => this.setState({ mode: i, anim: false, stripX: -(3 * 128 + 60) }) })),
-      confirmOn: s.confirmOn ? 'true' : 'false', toggleConfirm: () => this.setState({ confirmOn: !s.confirmOn }),
-      phaseLabel: ['Подготовка', 'Идёт сбор участников', 'Выбираем победителя', 'Победитель'][pi],
-      count: pi === 0 ? '0' : '208',
-      isSetup: pi === 0, collecting: pi === 1, spinningNow: pi === 2, isWinner: pi === 3,
-      showRoulette: pi > 0 && s.mode === 0, showWheel: pi > 0 && s.mode === 1, showInstant: pi > 0 && pi < 3 && s.mode === 2,
-      instantGlyph: '? ? ?',
-      strip, stripX: s.stripX, stripT: s.anim ? 'transform 6s cubic-bezier(.08,.62,.12,1)' : 'none',
-      wheel, wheelDeg: s.wheelDeg, wheelT: s.wheelAnim ? 'transform 5.4s cubic-bezier(.1,.7,.12,1)' : 'none',
-      winner: win || { nick: '', ini: '', bg: '#3A3A3A', role: '', chance: '', tickets: '' },
-      winnerTitle: needW > 1 ? 'Победитель ' + (nDrawn + 1) + ' из ' + needW : 'Победитель',
-      waitConfirm: s.confirmOn && !s.confirmed, confirmed: s.confirmOn && s.confirmed,
-      noReroll: ppl.length - s.excluded.length - s.drawn.length <= 1,
-      hasPeople: pi > 0,
-      people: ppl.map((p, i) => Object.assign({}, p, {
-        bar: Math.min(100, p.w * 50) + '%',
-        rowStyle: (s.excluded.indexOf(i) >= 0) ? 'opacity: .4; text-decoration: line-through' : ((i === s.winIdx && pi === 3) || s.drawn.indexOf(i) >= 0 ? 'background: rgba(255,255,255,0.06)' : '')
-      })),
-      spinLabel: ['Крутить рулетку', 'Крутить колесо', 'Выбрать победителя'][s.mode],
-      start: () => this.setState({ phase: 'collecting', excluded: [], drawn: [], winIdx: -1, anim: false, stripX: -(3 * 128 + 60) }),
-      cancel: () => this.setState({ phase: 'setup', winIdx: -1 }),
-      spin: () => this.runSpin([]),
-      reroll: () => this.runSpin([s.winIdx]),
-      confirm: () => this.setState({ confirmed: true }),
-      finishLabel: nDrawn + 1 < needW ? 'Следующий победитель' : 'Завершить розыгрыш',
-      finish: () => {
-        const drawn = s.drawn.concat([s.winIdx]);
-        if (drawn.length < needW) { this.state.drawn = drawn; this.setState({ drawn }); this.runSpin([]); return; }
-        const names = drawn.map((i) => ppl[i].nick).join(', ');
-        this.setState({ phase: 'setup', drawn: [], excluded: [], winIdx: -1, anim: false, stripX: -(3 * 128 + 60),
-          history: [{ d: '10.10', p: 'Ключ Cyberpunk 2077', n: '208', w: names, s: 'Выдан', style: 'border: 1px solid #6E6E6E; color: #F2F2F2' }].concat(history) });
-      },
-      history
+      obsBgOpt: ['Прозрачный', 'Тёмный', 'Хромакей'].map((l, i) => ({ label: l, sel: s.obsBg === i ? 'true' : 'false', style: seg(s.obsBg === i), pick: () => { this.lsSet('stre.gw.obsBg', i); this.setState({ obsBg: i }); } })),
+      resetToken: () => this.resetToken(), tokenBusy: s.tokenBusy,
+
+      peopleHint: c && c.rules && c.rules.luck ? 'шанс с учётом удачи' : 'шанс выиграть',
+      peopleMsg: !!peopleText, peopleText, hasPeople: entries.length > 0, people,
+      hasMore: count > entries.length, moreText: 'Показаны последние ' + entries.length + ' · и ещё ' + StreAPI.fmtNum(count - entries.length) + ' ' + this.plural(count - entries.length, ['участник', 'участника', 'участников']),
+      botMsgs, botName: (s.me && s.me.bot && s.me.bot.login) || 'StreOps',
+
+      histMsg: !s.loaded || !s.history.length, histText: !s.loaded ? 'Загрузка…' : 'Розыгрышей ещё не было. Итоги с seed для проверки появятся здесь.',
+      hasHist: s.history.length > 0, history,
     };
   }
 }

@@ -196,7 +196,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <p class="hint" style="margin-top: 12px">Редактор также открывается кнопкой «Оформление» в правом нижнем углу любой страницы.</p>
 <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #1F1F1F">
 <p class="lab" style="margin: 0">Тема в аккаунте</p>
-<p style="margin: 4px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">{{ acctThemeText }}</p>
+<p id="acct-theme" role="status" style="margin: 4px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">{{ acctThemeText }}</p>
 <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="bs" onClick="{{ saveTheme }}" disabled="{{ themeBusy }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"></path></svg>{{ saveThemeLabel }}</button><button type="button" class="bs" onClick="{{ loadTheme }}" disabled="{{ cantLoadTheme }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>Загрузить из аккаунта</button></div>
 <p class="hint" style="margin-top: 8px">Сохрани тему в аккаунт, чтобы открыть её на другом компьютере. Своя картинка фона в аккаунт не попадает — она остаётся в этом браузере.</p>
 </div>
@@ -593,7 +593,7 @@ class Component extends DCLogic {
         ],
         canBuy, dis: short > 0 || !!s.ask,
         btnCls: isCur ? 'bs' : 'bp',
-        btn: (isCur ? 'Продлить · ' : 'Оплатить с баланса · ') + streRub(p.price),
+        btn: (isCur ? 'Продлить · ' : 'Оплатить · ') + streRub(p.price),
         descId: 'plan-' + p.key + '-n',
         note,
         buy: () => this.askBuy(p),
