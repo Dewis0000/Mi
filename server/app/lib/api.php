@@ -474,6 +474,9 @@ function api_dispatch(string $r): never {
         }
 
         // ---------- аккаунт ----------
+        case 'plans': { // тарифы для страниц сайта — один источник с серверными лимитами
+            json_out(['ok' => true, 'items' => array_map(fn($k, $p) => ['key' => $k] + $p, array_keys(PLANS), PLANS)]);
+        }
         case 'account.transactions': {
             $u = require_user();
             $rows = db_all('SELECT * FROM transactions WHERE user_id = ? ORDER BY id DESC LIMIT 50', [$u['id']]);
