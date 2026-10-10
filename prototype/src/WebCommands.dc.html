@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>StreOps — команды чат-бота</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0A0A0A}
+a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.tab{height:44px;padding:0;border:0;background:transparent;color:#8F8F8F;font:500 14px/20px 'Onest',sans-serif;display:flex;gap:6px;align-items:center;cursor:pointer}
+.tab:hover{color:#F2F2F2}
+.cmd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 20px;border-radius:8px;border:1px solid #2A2A2A;background:#111111}
+.cmd:hover{border-color:#3A3A3A}
+.sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid #6E6E6E;background:transparent;cursor:pointer;flex:none;padding:0}
+.sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:#8F8F8F;transition:transform 180ms cubic-bezier(.2,0,0,1)}
+.sw[aria-checked="true"]{background:#FFFFFF;border-color:#FFFFFF}
+.sw[aria-checked="true"] span{transform:translateX(16px);background:#0A0A0A}
+.ib{width:36px;height:36px;border-radius:6px;border:0;background:transparent;color:#B4B4B4;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.ib:hover{background:rgba(255,255,255,.06);color:#F2F2F2}
+.fl{display:flex;flex-direction:column;gap:8px}
+.fl > label,.lab{font-size:13px;line-height:18px;font-weight:500;color:#DCDCDC}
+.inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 15px/22px 'Onest',sans-serif;width:100%}
+.inp:hover{border-color:#8F8F8F}
+.hint{font-size:12px;line-height:16px;color:#8F8F8F;margin:0}
+.seg{height:36px;padding:0 14px;border:0;border-radius:4px;background:transparent;color:#B4B4B4;font:500 14px/20px 'Onest',sans-serif;cursor:pointer}
+.seg:hover{color:#F2F2F2}
+.tag{height:28px;padding:0 10px;border-radius:4px;border:1px solid #3A3A3A;background:transparent;color:#DCDCDC;font:400 12px/16px 'JetBrains Mono',monospace;cursor:pointer}
+.tag:hover{border-color:#8F8F8F;background:rgba(255,255,255,.04)}
+.rad{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:6px;font-size:14px;color:#DCDCDC;cursor:pointer;border:0;background:transparent;width:100%;text-align:left;font-family:'Onest',sans-serif}
+.rad:hover{background:rgba(255,255,255,.04)}
+.dot{width:18px;height:18px;border-radius:999px;border:1px solid #6E6E6E;box-sizing:border-box;flex:none;display:inline-flex;align-items:center;justify-content:center}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 4px 0 10px;border-radius:4px;background:#1F1F1F;border:1px solid #3A3A3A;font-size:13px}
+.chip button{width:20px;height:20px;border:0;border-radius:3px;background:transparent;color:#8F8F8F;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.chip button:hover{color:#F2F2F2;background:rgba(255,255,255,.08)}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
+
+<header style="position: sticky; top: 0; z-index: 200; background: rgba(10,10,10,0.72); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.08)">
+<div style="height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 24px">
+<a href="WebLanding.dc.html" style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</a>
+<a href="WebSettings.dc.html" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 8px 0 6px; border-radius: 6px; font-size: 14px; font-weight: 500"><span style="width: 32px; height: 32px; border-radius: 999px; background: linear-gradient(135deg, #B4B4B4, #3A3A3A); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #0A0A0A">КС</span>kira_stream<svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></a>
+</div>
+</header>
+
+<div style="max-width: 1440px; margin: 0 auto; padding: 24px; box-sizing: border-box">
+<nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px"><li><a href="WebDashboard.dc.html" style="color: #8F8F8F">Стрим-панель</a></li><li aria-hidden="true" style="color: #525252">/</li><li><a href="#" style="color: #8F8F8F">Чат-бот</a></li><li aria-hidden="true" style="color: #525252">/</li><li aria-current="page" style="color: #F2F2F2">Команды</li></ol></nav>
+<div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
+<div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Команды чат-бота</h1><p style="margin: 6px 0 0; font-size: 15px; color: #B4B4B4">Бот отвечает на них во всех подключённых чатах.</p></div>
+<button type="button" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 14px/20px 'Onest', sans-serif; display: inline-flex; align-items: center; gap: 8px; cursor: pointer"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Создать команду</button>
+</div>
+
+<div style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<section style="flex: 999 1 520px; min-width: 0" aria-label="Список команд">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; border-bottom: 1px solid #2A2A2A">
+<div role="tablist" aria-label="Фильтр команд" style="display: flex; gap: 24px">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3"><button role="tab" type="button" class="tab" aria-selected="{{ t.sel }}" onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}<span class="mono" style="font-size: 12px; color: #8F8F8F">{{ t.n }}</span></button></sc-for>
+</div>
+<label style="position: relative; display: block; width: 240px; margin-bottom: 8px"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Поиск по командам</span><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="position: absolute; left: 12px; top: 12px; color: #8F8F8F"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.3-4.3"></path></svg><input type="search" class="inp" placeholder="Найти команду" style="padding-left: 36px"></label>
+</div>
+<ul style="list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{ shown }}" as="c" hint-placeholder-count="6">
+<li class="cmd" style="{{ c.rowStyle }}">
+<div style="min-width: 0">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><span class="mono" style="font-size: 15px; font-weight: 500; color: {{ c.nameColor }}">{{ c.name }}</span><span style="font-size: 12px; line-height: 16px; padding: 2px 8px; border: 1px solid #3A3A3A; border-radius: 4px; color: #B4B4B4">{{ c.access }}</span><span class="mono" style="font-size: 12px; color: #8F8F8F">кулдаун {{ c.cd }}</span></div>
+<p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">{{ c.desc }}</p>
+</div>
+<div style="display: flex; align-items: center; gap: 8px">
+<span style="font-size: 12px; color: #8F8F8F; min-width: 64px; text-align: right">{{ c.stateLabel }}</span>
+<button type="button" role="switch" class="sw" aria-checked="{{ c.on }}" aria-label="{{ c.swLabel }}" onClick="{{ c.toggle }}"><span></span></button>
+<button type="button" class="ib" aria-label="{{ c.editLabel }}" onClick="{{ c.edit }}"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path></svg></button>
+</div>
+</li>
+</sc-for>
+</ul>
+</section>
+
+<section aria-labelledby="ed-t" style="flex: 1 1 420px; max-width: 520px; min-width: 0; border-radius: 12px; background: rgba(18,18,18,0.62); border: 1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08)">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid #2A2A2A"><h2 id="ed-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Редактор: <span class="mono">{{ editing }}</span></h2><button type="button" class="ib" aria-label="Закрыть редактор"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button></div>
+<form style="padding: 24px; display: flex; flex-direction: column; gap: 24px">
+
+<div class="fl"><span class="lab" id="pf">Префикс</span>
+<div role="radiogroup" aria-labelledby="pf" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px">
+<sc-for list="{{ prefixes }}" as="p" hint-placeholder-count="3"><button type="button" role="radio" class="seg" aria-checked="{{ p.sel }}" onClick="{{ p.pick }}" style="{{ p.style }}">{{ p.label }}</button></sc-for>
+</div>
+<p class="hint">Без префикса бот реагирует, если сообщение целиком совпадает с названием.</p>
+</div>
+
+<div class="fl"><label for="cn">Название</label>
+<div style="display: flex; align-items: center; height: 40px; border-radius: 6px; background: #171717; border: 1px solid #6E6E6E; overflow: hidden"><span class="mono" style="padding: 0 0 0 12px; color: #8F8F8F; font-size: 15px">{{ prefixShown }}</span><input id="cn" value="дс" class="mono" style="flex: 1; min-width: 0; height: 100%; padding: 0 12px 0 2px; border: 0; background: transparent; color: #F2F2F2; font-size: 15px"></div>
+</div>
+
+<div class="fl"><label for="rp">Ответ бота</label>
+<textarea id="rp" rows="3" style="box-sizing: border-box; width: 100%; padding: 10px 12px; border-radius: 6px; background: #171717; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 15px/22px 'Onest', sans-serif; resize: vertical">Сервер: discord.gg/kira · заходи, {user}. Команду вызвали {count} раз</textarea>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center"><span class="hint" style="margin-right: 4px">Вставить:</span><button type="button" class="tag" title="Ник того, кто вызвал команду">{user}</button><button type="button" class="tag" title="Сколько раз вызвана команда">{count}</button><button type="button" class="tag" title="Сколько идёт стрим">{uptime}</button><button type="button" class="tag" title="Текущее время по Москве">{time}</button><button type="button" class="tag" title="Число зрителей сейчас">{viewers}</button></div>
+<div style="margin-top: 4px; padding: 12px; border-radius: 6px; border: 1px dashed #3A3A3A">
+<p class="ov" style="margin-bottom: 6px">Предпросмотр</p>
+<p style="margin: 0; font-size: 13px; line-height: 19px"><span class="mono" style="font-size: 11px; color: #6E6E6E">22:54</span> <span style="font-weight: 500; color: #8F8F8F">StreOps</span> <span style="color: #DCDCDC">Сервер: discord.gg/kira · заходи, <b style="font-weight: 500; color: #F2F2F2">moroz_tv</b>. Команду вызвали <span class="mono" style="color: #F2F2F2">185</span> раз</span></p>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div class="fl"><label for="cd1">Кулдаун для всех</label><div style="position: relative"><input id="cd1" class="inp mono" value="30" inputmode="numeric" style="padding-right: 40px"><span style="position: absolute; right: 12px; top: 10px; font-size: 13px; color: #8F8F8F">сек</span></div></div>
+<div class="fl"><label for="cd2">Для одного зрителя</label><div style="position: relative"><input id="cd2" class="inp mono" value="120" inputmode="numeric" style="padding-right: 40px"><span style="position: absolute; right: 12px; top: 10px; font-size: 13px; color: #8F8F8F">сек</span></div></div>
+</div>
+
+<div class="fl"><span class="lab" id="ac">Кто может вызвать</span>
+<div role="radiogroup" aria-labelledby="ac" style="display: flex; flex-direction: column; margin: 0 -12px">
+<sc-for list="{{ access }}" as="a" hint-placeholder-count="6"><button type="button" role="radio" class="rad" aria-checked="{{ a.sel }}" onClick="{{ a.pick }}"><span class="dot" style="{{ a.ring }}"><sc-if value="{{ a.on }}" hint-placeholder-val="{{ false }}"><span style="width: 8px; height: 8px; border-radius: 999px; background: #0A0A0A"></span></sc-if></span>{{ a.label }}</button></sc-for>
+</div>
+<sc-if value="{{ showNicks }}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 6px; background: #171717; border: 1px solid #6E6E6E">
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><span class="chip">moroz_tv<button type="button" aria-label="Убрать moroz_tv"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button></span><span class="chip">lenta_ln<button type="button" aria-label="Убрать lenta_ln"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button></span></div>
+<label for="nk" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Добавить ник</label>
+<input id="nk" role="combobox" aria-expanded="true" aria-controls="nk-l" value="tix" style="height: 32px; border: 0; background: transparent; color: #F2F2F2; font: 400 14px/20px 'Onest', sans-serif; padding: 0">
+<ul id="nk-l" role="listbox" style="list-style: none; margin: 0; padding: 4px; border-radius: 6px; background: #1F1F1F; border: 1px solid rgba(255,255,255,0.14)">
+<li role="option" aria-selected="true" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 8px; border-radius: 4px; background: rgba(255,255,255,0.08); font-size: 14px"><span style="width: 20px; height: 20px; border-radius: 999px; background: linear-gradient(135deg, #8F8F8F, #1F1F1F)"></span><span><b style="font-weight: 600">tix</b>iy_bard</span><span style="margin-left: auto; font-size: 12px; color: #8F8F8F">подписчик</span></li>
+<li role="option" aria-selected="false" style="display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 8px; border-radius: 4px; font-size: 14px; color: #DCDCDC"><span style="width: 20px; height: 20px; border-radius: 999px; background: linear-gradient(135deg, #B4B4B4, #3A3A3A)"></span><span><b style="font-weight: 600">tix</b>on_play</span><span style="margin-left: auto; font-size: 12px; color: #8F8F8F">фолловер</span></li>
+</ul>
+</div>
+</sc-if>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding-top: 20px; border-top: 1px solid #2A2A2A">
+<button type="button" style="height: 40px; padding: 0 12px; border-radius: 6px; border: 0; background: transparent; color: #FF6369; font: 500 14px/20px 'Onest', sans-serif; display: inline-flex; align-items: center; gap: 8px; cursor: pointer"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"></path></svg>Удалить команду</button>
+<span style="display: flex; gap: 8px"><button type="button" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 1px solid #3A3A3A; background: transparent; color: #F2F2F2; font: 500 14px/20px 'Onest', sans-serif; cursor: pointer">Отменить</button><button type="submit" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 14px/20px 'Onest', sans-serif; cursor: pointer">Сохранить команду</button></span>
+</div>
+</form>
+</section>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tab: 0, prefix: 0, access: 5, editing: '!дс',
+      on: { '!дс': true, '!тг': true, '!музыка': true, '!аптайм': true, '!прицел': true, '!кубик': false, 'привет': false, '!шаутаут': true }
+    };
+  }
+  renderVals() {
+    const cmds = [
+      ['!дс', 'Ссылка на Discord-сервер', 'Конкретные ники', '30 с'],
+      ['!тг', 'Ссылка на Telegram-канал', 'Все', '30 с'],
+      ['!музыка', 'Заказать трек в очередь', 'Подписчики', '60 с'],
+      ['!аптайм', 'Сколько идёт стрим', 'Все', '10 с'],
+      ['!прицел', 'Код настроек прицела', 'Все', '30 с'],
+      ['!кубик', 'Случайное число от 1 до 6', 'Фолловеры', '15 с'],
+      ['привет', 'Ответ на приветствие, без префикса', 'Все', '120 с'],
+      ['!шаутаут', 'Рекомендовать канал другого стримера', 'Модераторы', '0 с']
+    ];
+    const on = this.state.on;
+    const all = cmds.map((c) => {
+      const isOn = !!on[c[0]];
+      const active = this.state.editing === c[0];
+      return {
+        name: c[0], desc: c[1], access: c[2], cd: c[3], isOn,
+        on: isOn ? 'true' : 'false',
+        stateLabel: isOn ? 'Включена' : 'Выключена',
+        nameColor: isOn ? '#F2F2F2' : '#8F8F8F',
+        rowStyle: active ? 'border-color: #F2F2F2; box-shadow: inset 2px 0 0 #F2F2F2' : '',
+        swLabel: 'Команда ' + c[0],
+        editLabel: 'Настроить ' + c[0],
+        toggle: () => this.setState({ on: Object.assign({}, on, { [c[0]]: !isOn }) }),
+        edit: () => this.setState({ editing: c[0] })
+      };
+    });
+    const nOn = all.filter((c) => c.isOn).length;
+    const tabDefs = [['Все', all.length], ['Включённые', nOn], ['Выключенные', all.length - nOn]];
+    const shown = this.state.tab === 0 ? all : all.filter((c) => (this.state.tab === 1 ? c.isOn : !c.isOn));
+    const pre = ['!', 'Без префикса', 'Свой'];
+    const acc = ['Все', 'Фолловеры', 'Подписчики', 'VIP', 'Модераторы', 'Конкретные ники'];
+    return {
+      shown,
+      editing: this.state.editing,
+      tabs: tabDefs.map((t, i) => ({
+        label: t[0], n: t[1], sel: this.state.tab === i ? 'true' : 'false',
+        style: this.state.tab === i ? 'color: #F2F2F2; box-shadow: inset 0 -2px 0 #F2F2F2' : '',
+        pick: () => this.setState({ tab: i })
+      })),
+      prefixes: pre.map((l, i) => ({
+        label: l, sel: this.state.prefix === i ? 'true' : 'false',
+        style: this.state.prefix === i ? 'background: #F2F2F2; color: #0A0A0A' : '',
+        pick: () => this.setState({ prefix: i })
+      })),
+      prefixShown: this.state.prefix === 0 ? '!' : (this.state.prefix === 2 ? '?' : ''),
+      access: acc.map((l, i) => ({
+        label: l, on: this.state.access === i, sel: this.state.access === i ? 'true' : 'false',
+        ring: this.state.access === i ? 'background: #FFFFFF; border-color: #FFFFFF' : '',
+        pick: () => this.setState({ access: i })
+      })),
+      showNicks: this.state.access === 5
+    };
+  }
+}
+</script>
+</body>
+</html>

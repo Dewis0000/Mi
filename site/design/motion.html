@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StreOps — движение и состояния</title>
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0A0A0A}
+a{color:#F2F2F2}a:hover{color:#FFFFFF}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.why{font-size:13px;line-height:18px;color:#8F8F8F;margin:0}
+.why b{color:#B4B4B4;font-weight:500}
+.h2{margin:12px 0 0;font-size:32px;line-height:38px;letter-spacing:-.02em;font-weight:600}
+.lead{margin:12px 0 0;font-size:15px;line-height:22px;color:#B4B4B4;max-width:760px}
+.t{width:100%;border-collapse:collapse;font-size:13px;line-height:18px}
+.t th{text-align:left;font-weight:500;color:#8F8F8F;padding:10px 12px;font-size:12px;border-bottom:1px solid #3A3A3A}
+.t td{border-top:1px solid #1F1F1F;padding:9px 12px;vertical-align:top;color:#DCDCDC}
+pre{margin:0;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:19px;color:#DCDCDC;white-space:pre;overflow:auto}
+.btn{height:40px;padding:0 16px;border-radius:6px;font:500 14px/20px 'Onest',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box}
+.st{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.st span.l{font-family:'JetBrains Mono',monospace;font-size:11px;color:#8F8F8F}
+.fld{width:100%;height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 15px/22px 'Onest',sans-serif;display:flex;align-items:center}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="dc">
+
+<div style="width: 1440px; min-height: 2700px; box-sizing: border-box; padding: 72px 96px 96px; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
+<p class="ov">05 · Движение</p>
+<h1 style="margin: 16px 0 0; font-size: 56px; line-height: 60px; letter-spacing: -0.03em; font-weight: 500">Коротко, без отскоков</h1>
+<p class="lead">Анимация объясняет, откуда элемент появился и куда ушёл. Она не развлекает. Стример смотрит на панель боковым зрением во время эфира, поэтому всё, что движется без причины, отвлекает его от игры.</p>
+
+<section style="margin-top: 40px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px">
+<div>
+<p class="ov">Длительности</p>
+<table class="t" style="margin-top: 12px">
+<thead><tr><th>Токен</th><th>мс</th><th></th><th>Где</th></tr></thead>
+<tbody>
+<tr><td class="mono">dur-instant</td><td class="mono">0</td><td><div style="width: 2px; height: 8px; background: #F2F2F2"></div></td><td>Появление фокус-кольца</td></tr>
+<tr><td class="mono">dur-fast</td><td class="mono">80</td><td><div style="width: 16px; height: 8px; background: #F2F2F2"></div></td><td>Нажатие (press), чекбокс</td></tr>
+<tr><td class="mono">dur-quick</td><td class="mono">120</td><td><div style="width: 24px; height: 8px; background: #F2F2F2"></div></td><td>Hover, смена цвета, новое сообщение чата</td></tr>
+<tr><td class="mono">dur-base</td><td class="mono">180</td><td><div style="width: 36px; height: 8px; background: #F2F2F2"></div></td><td>Тултип, выпадающее меню, тумблер</td></tr>
+<tr><td class="mono">dur-moderate</td><td class="mono">240</td><td><div style="width: 48px; height: 8px; background: #F2F2F2"></div></td><td>Поповер, аккордеон, индикатор таба, тост</td></tr>
+<tr><td class="mono">dur-slow</td><td class="mono">320</td><td><div style="width: 64px; height: 8px; background: #F2F2F2"></div></td><td>Модалка, drawer, сворачивание меню</td></tr>
+<tr><td class="mono">dur-deliberate</td><td class="mono">480</td><td><div style="width: 96px; height: 8px; background: #F2F2F2"></div></td><td>Только первый экран лендинга</td></tr>
+<tr><td class="mono">dur-shimmer</td><td class="mono">1600</td><td><div style="width: 160px; height: 8px; background: repeating-linear-gradient(90deg, #F2F2F2 0 4px, transparent 4px 8px)"></div></td><td>Скелетон, цикл</td></tr>
+<tr><td class="mono">dur-pulse</td><td class="mono">2000</td><td><div style="width: 160px; height: 8px; background: repeating-linear-gradient(90deg, #D92D20 0 4px, transparent 4px 8px)"></div></td><td>Пульс точки «в эфире», цикл</td></tr>
+</tbody>
+</table>
+<p class="why" style="margin-top: 12px"><b>Уход быстрее появления:</b> exit = 70% от enter (модалка уходит за 220 мс). Закрытое окно больше не нужно, и ждать его не стоит.</p>
+</div>
+<div>
+<p class="ov">Кривые</p>
+<div style="margin-top: 12px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<div style="padding: 16px; border: 1px solid #2A2A2A; border-radius: 8px"><svg width="100%" height="90" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100 C20 100 0 0 100 0" fill="none" stroke="#F2F2F2" stroke-width="1.5" vector-effect="non-scaling-stroke"></path></svg><p class="mono" style="margin: 10px 0 0; font-size: 13px">ease-standard</p><p class="mono" style="margin: 2px 0 0; font-size: 11px; color: #8F8F8F">cubic-bezier(.2,0,0,1)</p><p class="why" style="margin-top: 6px">Hover, цвет, изменение размера</p></div>
+<div style="padding: 16px; border: 1px solid #2A2A2A; border-radius: 8px"><svg width="100%" height="90" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100 C16 0 30 0 100 0" fill="none" stroke="#F2F2F2" stroke-width="1.5" vector-effect="non-scaling-stroke"></path></svg><p class="mono" style="margin: 10px 0 0; font-size: 13px">ease-enter</p><p class="mono" style="margin: 2px 0 0; font-size: 11px; color: #8F8F8F">cubic-bezier(.16,1,.3,1)</p><p class="why" style="margin-top: 6px">Появление: быстро стартует, мягко садится</p></div>
+<div style="padding: 16px; border: 1px solid #2A2A2A; border-radius: 8px"><svg width="100%" height="90" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100 C40 100 100 0 100 0" fill="none" stroke="#F2F2F2" stroke-width="1.5" vector-effect="non-scaling-stroke"></path></svg><p class="mono" style="margin: 10px 0 0; font-size: 13px">ease-exit</p><p class="mono" style="margin: 2px 0 0; font-size: 11px; color: #8F8F8F">cubic-bezier(.4,0,1,1)</p><p class="why" style="margin-top: 6px">Исчезновение: ускоряется и уходит</p></div>
+<div style="padding: 16px; border: 1px solid #2A2A2A; border-radius: 8px"><svg width="100%" height="90" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100 C12 10 22 -6 40 2 S70 0 100 0" fill="none" stroke="#F2F2F2" stroke-width="1.5" vector-effect="non-scaling-stroke"></path></svg><p class="mono" style="margin: 10px 0 0; font-size: 13px">spring-snap</p><p class="mono" style="margin: 2px 0 0; font-size: 11px; color: #8F8F8F">stiffness 520 · damping 42</p><p class="why" style="margin-top: 6px">Индикатор таба, layout-сдвиги. Перелёт не больше 2%</p></div>
+</div>
+<p class="why" style="margin-top: 12px"><b>Почему без bounce:</b> отскок выглядит игриво и «игрово». Инженерному инструменту нужен ход, который приходит в точку и останавливается.</p>
+</div>
+</section>
+
+<section style="margin-top: 64px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px">
+<div style="grid-column: span 7">
+<p class="ov">Правила по типам взаимодействия</p>
+<table class="t" style="margin-top: 12px">
+<thead><tr><th style="width: 22%">Событие</th><th style="width: 40%">Что анимируем</th><th>Почему</th></tr></thead>
+<tbody>
+<tr><td>Hover</td><td>Только фон и граница, 120 мс standard. Без сдвига и масштаба</td><td>Курсор часто пролетает над панелью, и сдвиг под ним дёргает вёрстку.</td></tr>
+<tr><td>Press</td><td>Кнопка: <span class="mono">scale .98</span>, 80 мс. Карточка: только фон active</td><td>Кнопке нужен тактильный отклик, а большая карточка от масштаба «плывёт».</td></tr>
+<tr><td>Focus</td><td>Кольцо появляется мгновенно, без перехода</td><td>Клавиатурный пользователь не должен ждать, чтобы понять, где он.</td></tr>
+<tr><td>Появление</td><td>Прозрачность и сдвиг: меню y 4 px, тост y 8 px, модалка scale .98 → 1</td><td>Короткий путь показывает источник элемента и не заставляет следить за ним глазами.</td></tr>
+<tr><td>Скелетон</td><td>Показываем через 300 мс ожидания. Блик идёт слева направо за 1600 мс, линейно</td><td>Быстрый ответ не мигает скелетоном, а долгий выглядит живым.</td></tr>
+<tr><td>Числа</td><td>Метрики сменяются кроссфейдом 120 мс без «прокрутки» цифр</td><td>Счётчик зрителей обновляется часто, и анимация отсчёта превратилась бы в постоянное мельтешение.</td></tr>
+<tr><td>Чат</td><td>Новое сообщение проявляется за 120 мс. Если приходит больше 5 сообщений в секунду, анимация отключается</td><td>В рейде чат несётся сплошным потоком, а анимация каждой строки грузит CPU.</td></tr>
+<tr><td>LIVE</td><td>Кольцо вокруг точки: scale 1 → 2.2, прозрачность .35 → 0, цикл 2000 мс</td><td>Это единственный вечный цикл в продукте: «ты в эфире» важно постоянно.</td></tr>
+</tbody>
+</table>
+</div>
+<div style="grid-column: 9 / span 4">
+<p class="ov">Framer Motion</p>
+<div style="margin-top: 12px; padding: 16px; background: #111111; border: 1px solid #2A2A2A; border-radius: 8px">
+<pre>// motion.ts
+export const ease = {
+  standard: [0.2, 0, 0, 1],
+  enter:    [0.16, 1, 0.3, 1],
+  exit:     [0.4, 0, 1, 1],
+} as const;
+
+export const t = {
+  menu:  { duration: .18, ease: ease.enter },
+  modal: { duration: .32, ease: ease.enter },
+  exit:  { duration: .22, ease: ease.exit },
+  snap:  { type: 'spring',
+           stiffness: 520, damping: 42 },
+};
+
+export const fadeUp = {
+  initial: { opacity: 0, y: 4 },
+  animate: { opacity: 1, y: 0,
+             transition: t.menu },
+  exit:    { opacity: 0, y: 4,
+             transition: t.exit },
+};
+
+// App.tsx
+&lt;MotionConfig reducedMotion="user"&gt;
+  &lt;App /&gt;
+&lt;/MotionConfig&gt;</pre>
+</div>
+<p class="why" style="margin-top: 12px"><b>Правила:</b> анимируем только <span class="mono">opacity</span> и <span class="mono">transform</span>. <span class="mono">layout</span> используем лишь для индикатора таба и сворачивания меню. <span class="mono">AnimatePresence</span> оборачивает всё, что монтируется условно. Длительности и кривые берутся из <span class="mono">motion.ts</span>, а не пишутся числами в компоненте.</p>
+</div>
+</section>
+
+<section style="margin-top: 64px; padding: 32px; border: 1px solid #3A3A3A; border-radius: 12px">
+<p class="ov" style="color: #DCDCDC">prefers-reduced-motion: reduce · обязательно</p>
+<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px">
+<div><p style="margin: 0; font-size: 15px; font-weight: 600">Перемещения → прозрачность</p><p class="why" style="margin-top: 6px">Сдвиги и масштаб заменяются чистым fade за 120 мс. <span class="mono">MotionConfig reducedMotion="user"</span> делает это сам.</p></div>
+<div><p style="margin: 0; font-size: 15px; font-weight: 600">Циклы останавливаются</p><p class="why" style="margin-top: 6px">Пульс LIVE становится статичной точкой с обводкой, у скелетона пропадает блик и остаётся ровная заливка.</p></div>
+<div><p style="margin: 0; font-size: 15px; font-weight: 600">Декор выключается</p><p class="why" style="margin-top: 6px">Падающие звёзды и параллакс не рендерятся совсем, а не просто замедляются.</p></div>
+<div><p style="margin: 0; font-size: 15px; font-weight: 600">Автоскролл чата — прыжком</p><p class="why" style="margin-top: 6px"><span class="mono">scroll-behavior: auto</span> вместо smooth: позиция меняется сразу, без плавной прокрутки.</p></div>
+</div>
+</section>
+
+<section style="margin-top: 80px">
+<p class="ov">Состояния</p>
+<h2 class="h2">Семь состояний на любом интерактивном элементе</h2>
+<p class="lead">Ниже показана primary-кнопка и поле ввода. Остальные компоненты следуют тем же правилам, полная матрица — на артборде 22.</p>
+<div style="margin-top: 28px; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 16px">
+<div class="st"><span class="l">default</span><span class="btn" style="background: #FFFFFF; color: #0A0A0A">Сохранить</span></div>
+<div class="st"><span class="l">hover</span><span class="btn" style="background: #DCDCDC; color: #0A0A0A">Сохранить</span></div>
+<div class="st"><span class="l">active</span><span class="btn" style="background: #B4B4B4; color: #0A0A0A; transform: scale(0.98)">Сохранить</span></div>
+<div class="st"><span class="l">focus-visible</span><span class="btn" style="background: #FFFFFF; color: #0A0A0A; box-shadow: 0 0 0 2px #0A0A0A, 0 0 0 4px #FFFFFF">Сохранить</span></div>
+<div class="st"><span class="l">disabled</span><span class="btn" style="background: #2A2A2A; color: #6E6E6E">Сохранить</span></div>
+<div class="st"><span class="l">loading</span><span class="btn" style="background: #FFFFFF; color: #0A0A0A" aria-busy="true"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="#B4B4B4" stroke-width="2"></circle><path d="M12 3a9 9 0 0 1 9 9" fill="none" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round"></path></svg>Сохраняем…</span></div>
+<div class="st"><span class="l">error</span><span class="btn" style="background: #FFFFFF; color: #0A0A0A; box-shadow: 0 0 0 2px #0A0A0A, 0 0 0 4px #F2F2F2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.5" aria-hidden="true"><path d="M7.9 2h8.2L22 7.9v8.2L16.1 22H7.9L2 16.1V7.9z"></path><path d="M15 9l-6 6M9 9l6 6"></path></svg>Повторить</span></div>
+</div>
+<div style="margin-top: 28px; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 16px">
+<div class="st"><span class="l">default</span><span class="fld" style="color: #8F8F8F">!команда</span></div>
+<div class="st"><span class="l">hover</span><span class="fld" style="border-color: #8F8F8F; color: #8F8F8F">!команда</span></div>
+<div class="st"><span class="l">active · ввод</span><span class="fld" style="border-color: #F2F2F2">!дс<span style="width: 1px; height: 18px; background: #F2F2F2; margin-left: 1px"></span></span></div>
+<div class="st"><span class="l">focus-visible</span><span class="fld" style="border-color: #F2F2F2; box-shadow: 0 0 0 2px #0A0A0A, 0 0 0 4px #FFFFFF">!дс</span></div>
+<div class="st"><span class="l">disabled</span><span class="fld" style="background: transparent; border-color: #2A2A2A; color: #525252">!дс</span></div>
+<div class="st"><span class="l">loading</span><span class="fld" style="justify-content: space-between">!дс<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="#3A3A3A" stroke-width="2"></circle><path d="M12 3a9 9 0 0 1 9 9" fill="none" stroke="#F2F2F2" stroke-width="2" stroke-linecap="round"></path></svg></span></div>
+<div class="st" style="gap: 6px"><span class="l">error</span><span class="fld" style="border: 2px solid #F2F2F2; padding: 0 11px; background: repeating-linear-gradient(135deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 6px)">!дс</span><span style="font-size: 12px; line-height: 16px; color: #F2F2F2; font-weight: 500">Такая команда уже есть</span></div>
+</div>
+
+<div style="margin-top: 40px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px">
+<div style="grid-column: span 5; padding: 28px; border: 1px solid #2A2A2A; border-radius: 8px; background: #111111">
+<p class="ov">Фокус-кольцо</p>
+<div style="margin-top: 20px; display: flex; gap: 24px; align-items: center">
+<span style="width: 120px; height: 44px; border-radius: 6px; background: #171717; border: 1px solid #6E6E6E; box-shadow: 0 0 0 2px #0A0A0A, 0 0 0 4px #FFFFFF"></span>
+<span style="position: relative; width: 140px; height: 64px; border-radius: 8px; background: linear-gradient(90deg, #F2F2F2, #3A3A3A); display: flex; align-items: center; justify-content: center"><span style="width: 96px; height: 32px; border-radius: 6px; background: rgba(18,18,18,0.62); box-shadow: 0 0 0 2px #0A0A0A, 0 0 0 4px #FFFFFF"></span></span>
+</div>
+<pre style="margin-top: 20px">--focus-ring:
+  0 0 0 2px var(--bg-page),
+  0 0 0 4px var(--focus-color);</pre>
+<p class="why" style="margin-top: 12px"><b>Почему двойное кольцо:</b> кольцо из двух контрастных колец — тёмного внутреннего и светлого внешнего. Поверх любой картинки пользователя хотя бы одно из них даёт ≥ 3:1 к соседнему пикселю. Цвет для этого не нужен.</p>
+</div>
+<div style="grid-column: 7 / span 6">
+<table class="t">
+<thead><tr><th style="width: 22%">Состояние</th><th>Общее правило</th></tr></thead>
+<tbody>
+<tr><td>default</td><td>Рамка контрола N8 (≥ 3:1), текст N12, фон по слою</td></tr>
+<tr><td>hover</td><td>Поверх кладётся <span class="mono">--state-hover</span> 4% или рамка N8 → N9. Primary: N13 → N11</td></tr>
+<tr><td>active</td><td><span class="mono">--state-active</span> 8%, у кнопок scale .98</td></tr>
+<tr><td>focus-visible</td><td>Двойное кольцо 2 + 2 px. Только при клавиатуре, при клике мышью не показываем</td></tr>
+<tr><td>disabled</td><td>Текст N7, рамка N5, без hover. <span class="mono">aria-disabled</span>, если нужен тултип с причиной</td></tr>
+<tr><td>loading</td><td>Спиннер 16 px вместо иконки. Ширина фиксирована, подпись меняется на «…ем», <span class="mono">aria-busy</span></td></tr>
+<tr><td>error</td><td>Рамка 2 px N12 и штриховка 5%. Сообщение под полем с иконкой восьмиугольника, связано через <span class="mono">aria-describedby</span></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</div>
+</template>
+<script src="../assets/dc-lite.js"></script>
+<script>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+DCMount(Component);
+</script>
+</body>
+</html>

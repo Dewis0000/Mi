@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>StreOps — типографика</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0A0A0A}
+a{color:#F2F2F2}a:hover{color:#FFFFFF}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.why{font-size:13px;line-height:18px;color:#8F8F8F;margin:0}
+.why b{color:#B4B4B4;font-weight:500}
+.h2{margin:12px 0 0;font-size:32px;line-height:38px;letter-spacing:-.02em;font-weight:600}
+.lead{margin:12px 0 0;font-size:15px;line-height:22px;color:#B4B4B4;max-width:760px}
+.row{display:grid;grid-template-columns:200px 220px minmax(0,1fr);gap:24px;align-items:baseline;padding:18px 0;border-top:1px solid #1F1F1F}
+.meta{font-family:'JetBrains Mono',monospace;font-size:12px;line-height:18px;color:#8F8F8F}
+.meta b{color:#DCDCDC;font-weight:500}
+.t{width:100%;border-collapse:collapse;font-size:13px;line-height:18px}
+.t th{text-align:left;font-weight:500;color:#8F8F8F;padding:10px 12px;font-size:12px;border-bottom:1px solid #3A3A3A}
+.t td{border-top:1px solid #1F1F1F;padding:9px 12px;vertical-align:top;color:#DCDCDC}
+</style>
+</helmet>
+<div style="width: 1440px; min-height: 2300px; box-sizing: border-box; padding: 72px 96px 96px; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
+<p class="ov">03 · Типографика</p>
+<h1 style="margin: 16px 0 0; font-size: 56px; line-height: 60px; letter-spacing: -0.03em; font-weight: 500">Два голоса: слова и числа</h1>
+
+<section style="margin-top: 40px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+<div style="padding: 32px; border: 1px solid #2A2A2A; border-radius: 8px; background: #111111">
+<p class="ov">Основная · гротеск</p>
+<p style="margin: 16px 0 0; font-size: 96px; line-height: 96px; letter-spacing: -0.04em; font-weight: 500">Onest</p>
+<p style="margin: 20px 0 0; font-size: 20px; line-height: 28px; letter-spacing: -0.01em">АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ<br>абвгдеёжзийклмнопрстуфхцчшщъыьэюя<br>ABCDEFGHIJKLMNOPQRSTUVWXYZ · ₽ № « » — …</p>
+<p class="meta" style="margin-top: 16px">Веса <b>400 · 500 · 600</b> (700 — только бейдж LIVE) · Google Fonts · OFL</p>
+<p class="why" style="margin-top: 12px"><b>Почему:</b> Onest рисовали в первую очередь под кириллицу. У «д», «л», «ж» собственная форма, а не перерисовка латиницы, поэтому интерфейс выглядит сделанным для русского языка. Широкие апроши помогают в мелком размере чата. <b>Кириллица:</b> полная, включая Ё и ₽ — проверено по набору глифов.</p>
+</div>
+<div style="padding: 32px; border: 1px solid #2A2A2A; border-radius: 8px; background: #111111">
+<p class="ov">Моноширинная · числа и код</p>
+<p class="mono" style="margin: 16px 0 0; font-size: 80px; line-height: 96px; letter-spacing: -0.04em; font-weight: 500">JetBrains Mono</p>
+<p class="mono" style="margin: 20px 0 0; font-size: 18px; line-height: 28px">0123456789 · 02:47:13 · 1 284 · +12,4%<br>!дс  !музыка  {user}  {count}  {uptime}<br>ID 7f3a-91c2 · −299 ₽ · 0O 1lI</p>
+<p class="meta" style="margin-top: 16px">Веса <b>400 · 500</b> · Google Fonts · OFL</p>
+<p class="why" style="margin-top: 12px"><b>Почему:</b> цифры одинаковой ширины, а 0/O и 1/l/I чётко различаются, поэтому ID и ники в командах не путаются. Шрифт поддерживает кириллицу, так что команда «!дс» набирается тем же шрифтом, что и «!song».</p>
+</div>
+</section>
+<p class="why" style="margin-top: 12px"><b>Стеки:</b> <span class="mono">'Onest', 'Golos Text', system-ui, -apple-system, 'Segoe UI', sans-serif</span> · <span class="mono">'JetBrains Mono', 'SF Mono', 'Cascadia Mono', Consolas, monospace</span>. Шрифты загружаются с <span class="mono">font-display: swap</span>, предзагружаются только Onest 400/600 и Mono 500. Golos Text идёт первым запасным, потому что тоже нарисован под кириллицу.</p>
+
+<section style="margin-top: 72px">
+<p class="ov">Шкала гротеска · 10 ступеней</p>
+<div style="margin-top: 16px">
+<div class="row"><span class="mono" style="font-size: 13px">display-2xl</span><span class="meta"><b>72</b>/76 · −0.035em · 500</span><span style="font-size: 72px; line-height: 76px; letter-spacing: -0.035em; font-weight: 500">Стрим под контролем</span></div>
+<div class="row"><span class="mono" style="font-size: 13px">display-xl</span><span class="meta"><b>52</b>/56 · −0.03em · 500</span><span style="font-size: 52px; line-height: 56px; letter-spacing: -0.03em; font-weight: 500">Тарифы StreOps</span></div>
+<div class="row"><span class="mono" style="font-size: 13px">h1</span><span class="meta"><b>32</b>/38 · −0.02em · 600</span><span style="font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Стрим-панель</span></div>
+<div class="row"><span class="mono" style="font-size: 13px">h2</span><span class="meta"><b>24</b>/30 · −0.015em · 600</span><span style="font-size: 24px; line-height: 30px; letter-spacing: -0.015em; font-weight: 600">Команды чат-бота</span></div>
+<div class="row"><span class="mono" style="font-size: 13px">h3</span><span class="meta"><b>20</b>/26 · −0.01em · 600</span><span style="font-size: 20px; line-height: 26px; letter-spacing: -0.01em; font-weight: 600">Активность чата за стрим</span></div>
+<div class="row"><span class="mono" style="font-size: 13px">body-l</span><span class="meta"><b>17</b>/26 · −0.005em · 400</span><span style="font-size: 17px; line-height: 26px; letter-spacing: -0.005em; color: #B4B4B4">Бот отвечает на команды, модерирует чат и включает музыку по заказу зрителей.</span></div>
+<div class="row"><span class="mono" style="font-size: 13px">body</span><span class="meta"><b>15</b>/22 · 0 · 400 / 500</span><span style="font-size: 15px; line-height: 22px">Кулдаун не даёт одному зрителю вызывать команду чаще, чем раз в 30 секунд.</span></div>
+<div class="row"><span class="mono" style="font-size: 13px">body-s</span><span class="meta"><b>13</b>/18 · 0.005em · 400 / 500</span><span style="font-size: 13px; line-height: 18px; letter-spacing: 0.005em; color: #B4B4B4">Сообщения в чате, ячейки таблиц, описания полей.</span></div>
+<div class="row"><span class="mono" style="font-size: 13px">caption</span><span class="meta"><b>12</b>/16 · 0.01em · 500</span><span style="font-size: 12px; line-height: 16px; letter-spacing: 0.01em; font-weight: 500; color: #8F8F8F">Обновлено 2 минуты назад · Модератор</span></div>
+<div class="row"><span class="mono" style="font-size: 13px">overline</span><span class="meta"><b>11</b>/14 · 0.08em · 600 · CAPS</span><span style="font-size: 11px; line-height: 14px; letter-spacing: 0.08em; font-weight: 600; text-transform: uppercase; color: #8F8F8F">Опасная зона</span></div>
+</div>
+<p class="why" style="margin-top: 12px"><b>Почему 15, а не 16 для body:</b> русский текст в среднем на 15–20% длиннее английского. 15/22 помещает подписи в колонки панели без переносов, а планка 4.5:1 по контрасту остаётся. На мобильном body поднимается до 16 ради читаемости и чтобы iOS не зумил поля ввода.</p>
+</section>
+
+<section style="margin-top: 72px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px">
+<div style="grid-column: span 6">
+<p class="ov">Шкала моноширинного · 5 ступеней</p>
+<div style="margin-top: 16px">
+<div class="row" style="grid-template-columns: 140px 190px minmax(0, 1fr)"><span class="mono" style="font-size: 13px">mono-display</span><span class="meta"><b>40</b>/44 · −0.02em · 500</span><span class="mono" style="font-size: 40px; line-height: 44px; letter-spacing: -0.02em; font-weight: 500">12 480</span></div>
+<div class="row" style="grid-template-columns: 140px 190px minmax(0, 1fr)"><span class="mono" style="font-size: 13px">mono-l</span><span class="meta"><b>24</b>/28 · −0.01em · 500</span><span class="mono" style="font-size: 24px; line-height: 28px; letter-spacing: -0.01em; font-weight: 500">1 284</span></div>
+<div class="row" style="grid-template-columns: 140px 190px minmax(0, 1fr)"><span class="mono" style="font-size: 13px">mono-m</span><span class="meta"><b>15</b>/22 · 0 · 400</span><span class="mono" style="font-size: 15px; line-height: 22px">02:47:13</span></div>
+<div class="row" style="grid-template-columns: 140px 190px minmax(0, 1fr)"><span class="mono" style="font-size: 13px">mono-s</span><span class="meta"><b>13</b>/18 · 0 · 400</span><span class="mono" style="font-size: 13px; line-height: 18px">!музыка {user}</span></div>
+<div class="row" style="grid-template-columns: 140px 190px minmax(0, 1fr)"><span class="mono" style="font-size: 13px">mono-xs</span><span class="meta"><b>11</b>/14 · 0.02em · 500</span><span class="mono" style="font-size: 11px; line-height: 14px; letter-spacing: 0.02em; color: #8F8F8F">21:00  21:30  22:00</span></div>
+</div>
+</div>
+<div style="grid-column: 8 / span 5">
+<p class="ov">Правило табличных цифр</p>
+<p style="margin: 16px 0 0; font-size: 15px; line-height: 22px; color: #DCDCDC">Любое число, которое обновляется в реальном времени или стоит в колонке рядом с другими, набирается в <span class="mono">JetBrains Mono</span> с <span class="mono">font-variant-numeric: tabular-nums</span>. Числа внутри обычной фразы («осталось 3 дня») остаются в Onest.</p>
+<div style="margin-top: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div style="padding: 16px; border: 1px dashed #3A3A3A; border-radius: 8px"><p class="ov">Пропорциональные</p><p style="margin: 10px 0 0; font-size: 20px; line-height: 30px; text-align: right; font-variant-numeric: proportional-nums">1 111<br>8 808<br>12 041</p></div>
+<div style="padding: 16px; border: 1px solid #6E6E6E; border-radius: 8px"><p class="ov" style="color: #DCDCDC">Табличные</p><p class="mono" style="margin: 10px 0 0; font-size: 20px; line-height: 30px; text-align: right">1 111<br>8 808<br>12 041</p></div>
+</div>
+<p class="why" style="margin-top: 12px"><b>Почему:</b> счётчик зрителей обновляется раз в 10 секунд. Пропорциональные цифры при каждом тике меняют ширину и «дрожат», табличные стоят на месте. Разряды отделяются неразрывным узким пробелом <span class="mono">U+202F</span>.</p>
+</div>
+</section>
+
+<section style="margin-top: 72px">
+<p class="ov">Правила набора</p>
+<table class="t" style="margin-top: 12px">
+<thead><tr><th style="width: 30%">Правило</th><th>Почему</th></tr></thead>
+<tbody>
+<tr><td>Длина строки текста — не больше 68 знаков (<span class="mono">max-width: 68ch</span>)</td><td>Длинная кириллическая строка теряет глаз при переходе на следующую.</td></tr>
+<tr><td>Капслок только в overline и бейдже LIVE</td><td>Заглавные кириллические слова на 25% шире и тяжело читаются, поэтому оставляем их сигналам.</td></tr>
+<tr><td>Иерархия задаётся весом 400 → 500 → 600, без 300 и 800</td><td>Тонкие начертания разваливаются на тёмном фоне, а сверхжирные кричат.</td></tr>
+<tr><td>Отрицательный трекинг только от 20 px и выше</td><td>Мелкий кириллический текст с отрицательным трекингом слипается: «ш», «щ», «ы».</td></tr>
+<tr><td>Кавычки «ёлочки», тире —, многоточие …, неразрывный пробел перед ₽</td><td>Это нормы русской типографики. Без них интерфейс выглядит переводным.</td></tr>
+<tr><td>Ник пользователя в Onest 500, команда и тег в JetBrains Mono</td><td>Видно, что человек, а что машинный ввод, который нужно скопировать точно.</td></tr>
+<tr><td>На светлой теме вес body не меняется, контраст компенсирует N1</td><td>Метрики текста одинаковы в обеих темах, и переключение темы не сдвигает вёрстку.</td></tr>
+</tbody>
+</table>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2300}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

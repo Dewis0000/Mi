@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StreOps — навигация и каркас</title>
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0A0A0A}
+a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.why{font-size:13px;line-height:18px;color:#8F8F8F;margin:0}
+.why b{color:#B4B4B4;font-weight:500}
+.h2{margin:8px 0 0;font-size:24px;line-height:30px;letter-spacing:-.015em;font-weight:600}
+.spec{display:grid;grid-template-columns:120px minmax(0,1fr);border-top:1px solid #2A2A2A;font-size:13px;line-height:18px}
+.spec dt{padding:8px 12px 8px 0;color:#8F8F8F;border-bottom:1px solid #1F1F1F;margin:0}
+.spec dd{padding:8px 0;color:#DCDCDC;border-bottom:1px solid #1F1F1F;margin:0}
+.spec dd.no{color:#B4B4B4}
+.ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.hdr{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:rgba(18,18,18,.62);border:1px solid rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);border-radius:8px}
+.logo{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600;letter-spacing:-.01em;color:#F2F2F2}
+.av{width:32px;height:32px;border-radius:999px;background:linear-gradient(135deg,#B4B4B4,#3A3A3A);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#0A0A0A;flex:none}
+.nav-i{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;color:#B4B4B4}
+.lbl{font-family:'JetBrains Mono',monospace;font-size:11px;color:#6E6E6E}
+.prop{display:inline-flex;font-size:11px;line-height:14px;padding:2px 6px;border:1px dashed #6E6E6E;border-radius:4px;color:#B4B4B4}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="dc">
+
+<div style="width: 1440px; min-height: 2600px; box-sizing: border-box; padding: 72px 96px 96px; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
+<p class="ov">10 · Компоненты</p>
+<h1 style="margin: 16px 0 0; font-size: 56px; line-height: 60px; letter-spacing: -0.03em; font-weight: 500">Навигация и каркас</h1>
+
+<section style="margin-top: 48px">
+<p class="ov">Хедер · Header</p>
+<div style="margin-top: 16px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="lbl">variant="guest"</span>
+<header class="hdr"><a href="#" class="logo"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</a><a href="#" style="height: 40px; padding: 0 16px; border-radius: 6px; background: #FFFFFF; color: #0A0A0A; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center">Начать</a></header></div>
+
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="lbl">variant="user" · меню открыто</span>
+<div style="position: relative; height: 300px">
+<header class="hdr"><a href="#" class="logo"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</a>
+<button type="button" aria-haspopup="menu" aria-expanded="true" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 8px 0 6px; border-radius: 6px; border: 0; background: rgba(255,255,255,0.08); color: #F2F2F2; font: 500 14px/20px 'Onest', sans-serif"><span class="av">КС</span>kira_stream<svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="transform: rotate(180deg)"><path d="M6 9l6 6 6-6"></path></svg></button></header>
+<div role="menu" aria-label="Меню профиля" style="position: absolute; right: 16px; top: 72px; width: 248px; padding: 6px; box-sizing: border-box; border-radius: 8px; background: rgba(14,14,14,0.84); border: 1px solid rgba(255,255,255,0.14); box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 4px 12px -2px rgba(0,0,0,0.5)">
+<div style="padding: 10px 10px 12px; border-bottom: 1px solid #2A2A2A; margin-bottom: 6px"><p style="margin: 0; font-size: 14px; font-weight: 500">kira_stream</p><p style="margin: 2px 0 0; font-size: 12px; color: #8F8F8F">Тариф «Про» · до 14.11.2026</p></div>
+<a role="menuitem" href="#" class="nav-i" style="background: rgba(255,255,255,0.04); color: #F2F2F2"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2"></circle><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4"></path></svg>Стрим-панель</a>
+<a role="menuitem" href="#" class="nav-i"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>Мои стримеры</a>
+<a role="menuitem" href="#" class="nav-i"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path></svg>Настройки</a>
+<div role="separator" style="height: 1px; background: #2A2A2A; margin: 6px 0"></div>
+<button role="menuitem" type="button" class="nav-i" style="width: 100%; border: 0; background: transparent; font-family: 'Onest', sans-serif"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg>Выйти</button>
+</div>
+</div></div>
+
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="lbl">variant="stream" · в эфире</span>
+<header class="hdr"><a href="#" class="logo"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</a>
+<div style="display: flex; align-items: center; gap: 4px">
+<div role="status" aria-live="off" aria-label="В эфире 2 часа 47 минут, 1284 зрителя" style="display: flex; align-items: center; height: 40px; border: 1px solid #2A2A2A; border-radius: 6px; margin-right: 8px">
+<span style="display: inline-flex; align-items: center; gap: 6px; height: 100%; padding: 0 12px; border-right: 1px solid #2A2A2A"><span style="position: relative; width: 8px; height: 8px"><span style="position: absolute; inset: -4px; border-radius: 999px; background: rgba(217,45,32,0.25)"></span><span style="position: absolute; inset: 0; border-radius: 999px; background: #D92D20"></span></span><span style="font-size: 11px; font-weight: 700; letter-spacing: .08em">В ЭФИРЕ</span></span>
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 100%; padding: 0 12px; border-right: 1px solid #2A2A2A"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="color: #8F8F8F"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg><span class="mono" style="font-size: 15px">02:47:13</span></span>
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 100%; padding: 0 12px"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="color: #8F8F8F"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="mono" style="font-size: 15px">1 284</span></span>
+</div>
+<button type="button" aria-haspopup="menu" aria-expanded="false" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 8px 0 6px; border-radius: 6px; border: 0; background: transparent; color: #F2F2F2; font: 500 14px/20px 'Onest', sans-serif"><span style="position: relative"><span class="av">КС</span><span style="position: absolute; right: -2px; bottom: -2px; width: 10px; height: 10px; border-radius: 999px; background: #D92D20; box-shadow: 0 0 0 2px #121212"></span></span>kira_stream<svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+</div></header></div>
+
+<div style="display: grid; grid-template-columns: 390px minmax(0, 1fr); gap: 24px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="lbl">mobile · 390 · stream</span>
+<header style="height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 8px 0 16px; background: rgba(18,18,18,0.62); border: 1px solid rgba(255,255,255,0.10); border-radius: 8px"><span class="logo"><svg width="22" height="22" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg></span><span style="display: flex; align-items: center; gap: 12px"><span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 8px; height: 8px; border-radius: 999px; background: #D92D20"></span><span class="mono" style="font-size: 13px">02:47:13</span></span><span class="mono" style="font-size: 13px; color: #B4B4B4">1 284</span><button type="button" aria-label="Меню профиля" style="width: 44px; height: 44px; border: 0; background: transparent; display: inline-flex; align-items: center; justify-content: center"><span class="av">КС</span></button></span></header>
+</div>
+<dl class="spec" style="margin: 22px 0 0">
+<dt>Назначение</dt><dd>Опознать продукт, войти или открыть свой профиль. На стрим-панели — дополнительно постоянно видеть статус эфира.</dd>
+<dt>Анатомия</dt><dd>Знак 24 + «StreOps» (ссылка на главную) · справа: кнопка «Начать» либо триггер профиля (аватар 32 + ник + шеврон) · в stream-варианте перед аватаром идёт группа метрик: «В ЭФИРЕ», таймер, зрители.</dd>
+<dt>Варианты</dt><dd><span class="mono">guest · user · stream</span>. Если эфира нет, stream-вариант выглядит как user, а на месте метрик стоит «Не в эфире» (N9).</dd>
+<dt>Состояния</dt><dd>Триггер профиля: hover 4% · open 8% и шеврон вверх · focus — двойное кольцо. При скролле больше 8 px хедер получает стекло raised, до этого он прозрачный.</dd>
+<dt>Размеры</dt><dd>Высота 64 (моб. 56), поля 24 (моб. 16), группа метрик 40, цель профиля 44. Липкий, <span class="mono">z-header 200</span>.</dd>
+<dt>Адаптив</dt><dd>&lt; 640: ник скрывается, остаётся аватар; метрики сжимаются до точки, таймера и числа без иконок; «В ЭФИРЕ» передаёт красная точка и <span class="mono">aria-label</span>.</dd>
+<dt>Доступность</dt><dd><span class="mono">&lt;header role="banner"&gt;</span>; триггер — <span class="mono">button aria-haspopup="menu" aria-expanded</span>; метрики — <span class="mono">role="status" aria-live="off"</span> (таймер не зачитывается каждую секунду), число зрителей объявляется только при запросе; первым идёт skip-link «К содержимому».</dd>
+<dt>Не делать</dt><dd class="no">Не ставить больше одной CTA для гостя. Не анимировать счётчик зрителей. Не красить таймер в красный: красная только точка.</dd>
+</dl>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px">
+<dl class="spec" style="margin: 0">
+<dt>Меню профиля</dt><dd>Стрим-панель · Мои стримеры · Настройки · разделитель · Выйти. Шапка меню — ник и тариф. Ширина 248, пункт 40, иконка 16.</dd>
+<dt>Поведение</dt><dd>Открывается по клику, Enter, Space и ↓. Стрелки двигают фокус, Home/End — к краям, Esc закрывает и возвращает фокус на триггер. Клик снаружи тоже закрывает.</dd>
+<dt>ARIA</dt><dd><span class="mono">role="menu"</span>, пункты <span class="mono">menuitem</span>, разделитель <span class="mono">separator</span>. Текущая страница помечается <span class="mono">aria-current="page"</span> и фоном 4%.</dd>
+<dt>Не делать</dt><dd class="no">Не прятать «Выйти» в подменю и не красить его в красный: выход обратим.</dd>
+</dl>
+<p class="why"><b>Почему метрики в хедере, а не в панели:</b> длительность и зрители — единственное, что стример проверяет каждые несколько минут на любом экране. Хедер — единственное место, которое видно всегда. <b>Почему точка эфира дублируется на аватаре:</b> на мобильном группа метрик сжимается, а точка на аватаре остаётся.</p>
+</div>
+</div>
+</section>
+
+<section style="margin-top: 72px; display: grid; grid-template-columns: 560px minmax(0, 1fr); gap: 40px">
+<div>
+<p class="ov">Боковое меню · Sidebar</p>
+<div style="margin-top: 16px; display: flex; gap: 16px; align-items: flex-start">
+<nav aria-label="Разделы стрим-панели" style="width: 248px; box-sizing: border-box; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 2px">
+<p class="ov" style="padding: 8px 12px">Эфир</p>
+<a href="#" aria-current="page" class="nav-i" style="background: rgba(255,255,255,0.10); color: #F2F2F2; box-shadow: inset 2px 0 0 #F2F2F2"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M7 15l4-4 3 3 5-6"></path></svg>Обзор</a>
+<a href="#" class="nav-i"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>Чат<span class="mono" style="margin-left: auto; font-size: 12px; color: #8F8F8F">3 912</span></a>
+<a href="#" class="nav-i"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>Модерация</a>
+<p class="ov" style="padding: 16px 12px 8px">Бот</p>
+<a href="#" class="nav-i" style="background: rgba(255,255,255,0.04); color: #F2F2F2"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l6-6-6-6M12 19h8"></path></svg>Команды<span class="mono" style="margin-left: auto; font-size: 12px; color: #8F8F8F">24</span></a>
+<a href="#" class="nav-i"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>Музыка</a>
+<a href="#" class="nav-i"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>Виджеты</a>
+<a href="#" class="nav-i" style="color: #525252" aria-disabled="true"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"></rect><path d="M2 10h20"></path></svg>Донаты<span style="margin-left: auto; font-size: 11px; padding: 1px 6px; border: 1px solid #3A3A3A; border-radius: 4px; color: #8F8F8F">Про</span></a>
+<div style="height: 1px; background: #2A2A2A; margin: 10px 0"></div>
+<button type="button" aria-expanded="true" aria-controls="sb" class="nav-i" style="border: 0; background: transparent; font-family: 'Onest', sans-serif"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M9 3v18M16 15l-3-3 3-3"></path></svg>Свернуть</button>
+</nav>
+<nav aria-label="Разделы стрим-панели, свёрнуто" style="width: 64px; box-sizing: border-box; padding: 12px 8px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 2px; align-items: center">
+<a href="#" aria-label="Обзор" aria-current="page" style="width: 44px; height: 44px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.10); color: #F2F2F2"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M7 15l4-4 3 3 5-6"></path></svg></a>
+<a href="#" aria-label="Чат" style="width: 44px; height: 44px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #B4B4B4"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></a>
+<a href="#" aria-label="Модерация" style="width: 44px; height: 44px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #B4B4B4"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></a>
+<div style="width: 24px; height: 1px; background: #2A2A2A; margin: 8px 0"></div>
+<a href="#" aria-label="Команды" style="width: 44px; height: 44px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #B4B4B4; position: relative"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l6-6-6-6M12 19h8"></path></svg><span role="tooltip" style="position: absolute; left: 54px; white-space: nowrap; padding: 4px 8px; border-radius: 4px; background: #F2F2F2; color: #0A0A0A; font-size: 12px; font-weight: 500">Команды · 24</span></a>
+<a href="#" aria-label="Музыка" style="width: 44px; height: 44px; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #B4B4B4"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></a>
+</nav>
+</div>
+</div>
+<div>
+<dl class="spec" style="margin: 30px 0 0">
+<dt>Назначение</dt><dd>Переход между разделами стрим-панели (Обзор, Чат, Модерация, Команды, Музыка, Виджеты) и настроек (Профиль, Платформы, Безопасность, Оформление, Тариф).</dd>
+<dt>Анатомия</dt><dd>Заголовки групп (overline) · пункты: иконка 20 + подпись + необязательный счётчик (mono 12) или бейдж тарифа · разделитель · кнопка «Свернуть».</dd>
+<dt>Варианты</dt><dd><span class="mono">expanded 248 · collapsed 64 · drawer</span> (мобильный). Состояние свёрнутости запоминается в <span class="mono">localStorage</span>.</dd>
+<dt>Состояния</dt><dd>hover 4% и текст N12 · current: фон 10%, линия 2 px слева, текст N12 · focus — двойное кольцо · locked (нет в тарифе): текст N7 и бейдж тарифа, клик открывает поповер «Доступно в “Про”».</dd>
+<dt>Размеры</dt><dd>Пункт 40 (свёрнуто 44×44), отступ 12, gap иконки 12, группы разделены 16. Анимация ширины — <span class="mono">dur-slow</span>, layout.</dd>
+<dt>Адаптив</dt><dd>≥ 1024 раскрыто · 640–1023 свёрнуто · &lt; 640 меню уходит в drawer слева, открывается кнопкой в хедере, ширина 280.</dd>
+<dt>Доступность</dt><dd><span class="mono">&lt;nav aria-label&gt;</span>, <span class="mono">aria-current="page"</span>. В свёрнутом виде у каждой иконки есть <span class="mono">aria-label</span> и тултип при фокусе и hover. «Свернуть» — <span class="mono">aria-expanded</span>.</dd>
+<dt>Не делать</dt><dd class="no">Не отмечать текущий пункт только фоном: линия слева обязательна. Не вкладывать подменю глубже одного уровня. Не прятать заблокированные пункты, пусть показывают, что есть в тарифе.</dd>
+</dl>
+<p class="why" style="margin-top: 12px"><b>Почему стекло ambient:</b> меню — второстепенная плоскость. Оно должно пропускать пользовательский фон и не спорить с контентом. Состав разделов — <span class="prop">Предложение</span></p>
+</div>
+</section>
+
+<section style="margin-top: 72px">
+<p class="ov">Хлебные крошки · табы · пагинация</p>
+<div style="margin-top: 20px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px">
+
+<div style="display: flex; flex-direction: column; gap: 16px">
+<nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px; line-height: 18px"><li><a href="#" style="color: #8F8F8F">Настройки</a></li><li aria-hidden="true" style="color: #525252">/</li><li><a href="#" style="color: #8F8F8F">Чат-бот</a></li><li aria-hidden="true" style="color: #525252">/</li><li><a href="#" style="color: #8F8F8F">Команды</a></li><li aria-hidden="true" style="color: #525252">/</li><li aria-current="page" class="mono" style="color: #F2F2F2">!дс</li></ol></nav>
+<nav aria-label="Хлебные крошки, мобильный"><a href="#" style="display: inline-flex; align-items: center; gap: 6px; height: 44px; font-size: 13px; color: #B4B4B4"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>Команды</a></nav>
+<dl class="spec" style="margin: 0">
+<dt>Назначение</dt><dd>Показать путь в настройках глубиной 3 и больше и вернуться на уровень вверх.</dd>
+<dt>Анатомия</dt><dd>Ссылки N9 · разделитель «/» N7 · текущий уровень N12 без ссылки. Команды и ID — mono.</dd>
+<dt>Адаптив</dt><dd>&lt; 640 остаётся одна ссылка «← родитель» высотой 44.</dd>
+<dt>Доступность</dt><dd><span class="mono">nav › ol</span>, разделители <span class="mono">aria-hidden</span>, последний — <span class="mono">aria-current="page"</span>.</dd>
+<dt>Не делать</dt><dd class="no">Не дублировать заголовок страницы и не показывать крошки на глубине 1–2.</dd>
+</dl>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div role="tablist" aria-label="Фильтр команд" style="display: flex; gap: 24px; border-bottom: 1px solid #2A2A2A">
+<button role="tab" aria-selected="true" type="button" style="height: 44px; padding: 0; border: 0; background: transparent; color: #F2F2F2; font: 500 14px/20px 'Onest', sans-serif; box-shadow: inset 0 -2px 0 #F2F2F2; display: flex; gap: 6px; align-items: center">Все<span class="mono" style="font-size: 12px; color: #8F8F8F">24</span></button>
+<button role="tab" aria-selected="false" type="button" style="height: 44px; padding: 0; border: 0; background: transparent; color: #8F8F8F; font: 500 14px/20px 'Onest', sans-serif; display: flex; gap: 6px; align-items: center">Включённые<span class="mono" style="font-size: 12px">18</span></button>
+<button role="tab" aria-selected="false" type="button" style="height: 44px; padding: 0; border: 0; background: transparent; color: #8F8F8F; font: 500 14px/20px 'Onest', sans-serif; display: flex; gap: 6px; align-items: center">Выключенные<span class="mono" style="font-size: 12px">6</span></button>
+</div>
+<div role="tablist" aria-label="Период" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px">
+<button role="tab" aria-selected="false" type="button" class="mono" style="height: 32px; padding: 0 12px; border: 0; border-radius: 4px; background: transparent; color: #8F8F8F; font-size: 13px">1 ч</button>
+<button role="tab" aria-selected="true" type="button" class="mono" style="height: 32px; padding: 0 12px; border: 0; border-radius: 4px; background: #F2F2F2; color: #0A0A0A; font-size: 13px">Стрим</button>
+<button role="tab" aria-selected="false" type="button" class="mono" style="height: 32px; padding: 0 12px; border: 0; border-radius: 4px; background: transparent; color: #8F8F8F; font-size: 13px">24 ч</button>
+<button role="tab" aria-selected="false" type="button" class="mono" style="height: 32px; padding: 0 12px; border: 0; border-radius: 4px; background: transparent; color: #8F8F8F; font-size: 13px">7 д</button>
+</div>
+<dl class="spec" style="margin: 0">
+<dt>Варианты</dt><dd><span class="mono">underline</span> — разделы страницы · <span class="mono">segmented</span> — переключатель вида или периода (≤ 5 вариантов).</dd>
+<dt>Состояния</dt><dd>Выбранный: N12 + линия 2 px или инверсная заливка · hover: N10 · focus — кольцо · disabled: N7.</dd>
+<dt>Размеры</dt><dd>Цель 44 (segmented 32 внутри зоны 44), gap 24. Индикатор переезжает через <span class="mono">layoutId</span>, spring-snap.</dd>
+<dt>Адаптив</dt><dd>Табы скроллятся по горизонтали, у краёв появляется градиентная маска. Активный таб докручивается в видимую зону.</dd>
+<dt>Доступность</dt><dd><span class="mono">tablist / tab / tabpanel</span>, <span class="mono">aria-selected</span>, <span class="mono">aria-controls</span>. Стрелки ← → переключают, Tab уходит в панель, roving tabindex.</dd>
+<dt>Не делать</dt><dd class="no">Не помечать выбор только цветом текста. Не класть больше 7 табов, иначе это навигация.</dd>
+</dl>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 16px">
+<nav aria-label="Страницы" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap">
+<span style="font-size: 13px; color: #8F8F8F">Показано <span class="mono" style="color: #DCDCDC">21–40</span> из <span class="mono" style="color: #DCDCDC">236</span></span>
+<span style="display: flex; gap: 4px">
+<a href="#" aria-label="Предыдущая страница" style="width: 36px; height: 36px; border-radius: 6px; border: 1px solid #3A3A3A; display: inline-flex; align-items: center; justify-content: center; color: #B4B4B4"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></a>
+<a href="#" class="mono" style="width: 36px; height: 36px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; color: #B4B4B4">1</a>
+<a href="#" aria-current="page" class="mono" style="width: 36px; height: 36px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; background: #F2F2F2; color: #0A0A0A">2</a>
+<a href="#" class="mono" style="width: 36px; height: 36px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; color: #B4B4B4">3</a>
+<span aria-hidden="true" style="width: 24px; height: 36px; display: inline-flex; align-items: center; justify-content: center; color: #6E6E6E">…</span>
+<a href="#" class="mono" style="width: 36px; height: 36px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; color: #B4B4B4">12</a>
+<a href="#" aria-label="Следующая страница" style="width: 36px; height: 36px; border-radius: 6px; border: 1px solid #3A3A3A; display: inline-flex; align-items: center; justify-content: center; color: #F2F2F2"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></a>
+</span>
+</nav>
+<dl class="spec" style="margin: 0">
+<dt>Назначение</dt><dd>Листать таблицы транзакций, истории банов и списка стримеров. Ленты и чат не пагинируются, они подгружаются при скролле.</dd>
+<dt>Анатомия</dt><dd>Счётчик «Показано X–Y из N» · ← · номера (≤ 7 элементов с «…») · →. Номера в mono.</dd>
+<dt>Состояния</dt><dd>Текущая — инверсная заливка и <span class="mono">aria-current</span> · крайняя стрелка: disabled N7 · hover 4%.</dd>
+<dt>Размеры</dt><dd>Кнопка 36 с расширенной зоной нажатия 44 (<span class="mono">.hit-44</span>), gap 4.</dd>
+<dt>Адаптив</dt><dd>&lt; 640 остаются ← «2 из 12» → и счётчик над ними.</dd>
+<dt>Доступность</dt><dd><span class="mono">nav aria-label="Страницы"</span>, стрелки с <span class="mono">aria-label</span>, фокус после перехода — на заголовок таблицы.</dd>
+<dt>Не делать</dt><dd class="no">Не сбрасывать фильтры при смене страницы. Не прятать общее число записей.</dd>
+</dl>
+</div>
+</div>
+</section>
+</div>
+</template>
+<script src="../assets/dc-lite.js"></script>
+<script>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+DCMount(Component);
+</script>
+</body>
+</html>

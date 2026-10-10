@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>StreOps — пользовательская кастомизация</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0A0A0A}
+a{color:#F2F2F2}a:hover{color:#FFFFFF}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.why{font-size:13px;line-height:18px;color:#8F8F8F;margin:0}
+.why b{color:#B4B4B4;font-weight:500}
+.h2{margin:12px 0 0;font-size:32px;line-height:38px;letter-spacing:-.02em;font-weight:600}
+.lead{margin:12px 0 0;font-size:15px;line-height:22px;color:#B4B4B4;max-width:760px}
+.t{width:100%;border-collapse:collapse;font-size:13px;line-height:18px}
+.t th{text-align:left;font-weight:500;color:#8F8F8F;padding:10px 12px;font-size:12px;border-bottom:1px solid #3A3A3A}
+.t td{border-top:1px solid #1F1F1F;padding:9px 12px;vertical-align:top;color:#DCDCDC}
+pre{margin:0;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:19px;color:#DCDCDC;white-space:pre}
+.layer{display:grid;grid-template-columns:60px 200px minmax(0,1fr);gap:12px;align-items:center;padding:12px 16px;border:1px solid #2A2A2A;border-radius:6px;background:#111111}
+.prop{display:inline-flex;font-size:11px;line-height:14px;padding:3px 7px;border:1px dashed #6E6E6E;border-radius:4px;color:#B4B4B4}
+.star{position:absolute;height:1px;width:90px;transform:rotate(-28deg);background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.9))}
+.pv{position:relative;height:240px;border-radius:8px;overflow:hidden}
+.pvh{position:absolute;left:0;right:0;top:0;height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:12px;font-weight:600}
+.pvc{position:absolute;left:12px;right:12px;top:52px;bottom:12px;border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:6px}
+</style>
+</helmet>
+<div style="width: 1440px; min-height: 2900px; box-sizing: border-box; padding: 72px 96px 96px; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
+<p class="ov">06 · Кастомизация пользователем</p>
+<h1 style="margin: 16px 0 0; font-size: 56px; line-height: 60px; letter-spacing: -0.03em; font-weight: 500">Атмосфера — твоя, читаемость — наша</h1>
+<p class="lead">Пользователь меняет то, что лежит под интерфейсом: цвет и картинку фона, размытие, градиент и эффекты. Всё, что лежит поверх (текст, контролы, фокус, статусы), система держит сама. Кастомизация — это отдельный слой токенов <span class="mono">--user-*</span>, который читается только декоративными слоями и не может перекрасить компоненты.</p>
+
+<section style="margin-top: 48px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px">
+<div style="grid-column: span 6">
+<p class="ov">Стек слоёв · снизу вверх</p>
+<div style="margin-top: 12px; display: flex; flex-direction: column-reverse; gap: 6px">
+<div class="layer" style="border-style: dashed"><span class="mono" style="font-size: 12px; color: #8F8F8F">1</span><span class="mono" style="font-size: 13px">--user-bg-color</span><span style="font-size: 13px; color: #B4B4B4">Сплошной цвет, ограничен по светлоте</span></div>
+<div class="layer" style="border-style: dashed"><span class="mono" style="font-size: 12px; color: #8F8F8F">2</span><span class="mono" style="font-size: 13px">--user-bg-image</span><span style="font-size: 13px; color: #B4B4B4">Своя картинка, <span class="mono">cover</span>, фиксирована к окну</span></div>
+<div class="layer" style="border-style: dashed"><span class="mono" style="font-size: 12px; color: #8F8F8F">3</span><span class="mono" style="font-size: 13px">--user-bg-blur</span><span style="font-size: 13px; color: #B4B4B4"><span class="mono">filter: blur()</span> на слое картинки, 0–40 px</span></div>
+<div class="layer" style="border-style: dashed"><span class="mono" style="font-size: 12px; color: #8F8F8F">4</span><span class="mono" style="font-size: 13px">--user-gradient</span><span style="font-size: 13px; color: #B4B4B4">Две точки и угол, наложение поверх картинки</span></div>
+<div class="layer" style="border-style: dashed"><span class="mono" style="font-size: 12px; color: #8F8F8F">5</span><span class="mono" style="font-size: 13px">--user-effect</span><span style="font-size: 13px; color: #B4B4B4">Звёзды, виньетка, усиленное зерно</span></div>
+<div class="layer" style="border-color: #6E6E6E"><span class="mono" style="font-size: 12px; color: #DCDCDC">6</span><span class="mono" style="font-size: 13px">--scrim · авто</span><span style="font-size: 13px; color: #DCDCDC">Затемнение: рассчитывается системой, его нельзя опустить ниже порога</span></div>
+<div class="layer" style="border-color: #6E6E6E"><span class="mono" style="font-size: 12px; color: #DCDCDC">7</span><span class="mono" style="font-size: 13px">--grain</span><span style="font-size: 13px; color: #DCDCDC">Зерно, 3–8%</span></div>
+<div class="layer" style="border-color: #F2F2F2; background: rgba(18,18,18,0.62)"><span class="mono" style="font-size: 12px; color: #F2F2F2">8</span><span class="mono" style="font-size: 13px">glass · UI</span><span style="font-size: 13px; color: #F2F2F2">Поверхности, текст, контролы — замороженные токены</span></div>
+</div>
+<p class="why" style="margin-top: 12px">Слои 1–7 лежат в одном контейнере <span class="mono">position: fixed; inset: 0; z-index: -1; pointer-events: none</span> с <span class="mono">aria-hidden</span> и <span class="mono">inert</span>. Пунктир — пользовательский слой, сплошная рамка — системный.</p>
+</div>
+<div style="grid-column: 7 / span 6">
+<p class="ov">Что можно менять, а что заморожено</p>
+<table class="t" style="margin-top: 12px">
+<thead><tr><th>Токен</th><th>Диапазон</th><th>Ограничение и почему</th></tr></thead>
+<tbody>
+<tr><td class="mono">--user-theme</td><td class="mono">dark · light</td><td>Меняет весь набор ролей сразу, а не отдельные цвета</td></tr>
+<tr><td class="mono">--user-bg-color</td><td>любой</td><td>Dark: OKLCH L ≤ 0.24, light: L ≥ 0.92, чтобы фон не спорил с текстом</td></tr>
+<tr><td class="mono">--user-bg-image</td><td>JPG · PNG · WebP, ≤ 8 МБ</td><td>Сервер пережимает в WebP 2560 px, чтобы фон не тормозил первую отрисовку</td></tr>
+<tr><td class="mono">--user-bg-blur</td><td class="mono">0–40 px · шаг 2</td><td>Выше 40 px картинка превращается в пятно, а GPU платит больше</td></tr>
+<tr><td class="mono">--user-bg-dim</td><td class="mono">порог…0.9</td><td>Нижняя граница считается по картинке (см. ниже), ползунок не уходит ниже неё</td></tr>
+<tr><td class="mono">--user-gradient</td><td>2 цвета + угол</td><td>Хрома OKLCH ≤ 0.15. Неон и кислотные цвета недоступны</td></tr>
+<tr><td class="mono">--user-tint</td><td>1 оттенок</td><td>Окрашивает только декор и подложку стекла, максимум 6%. Текст и контролы не трогает</td></tr>
+<tr><td class="mono">--user-effect</td><td>нет · звёзды · виньетка · зерно+</td><td>Только один эффект за раз, чтобы не набирать нагрузку слоями</td></tr>
+<tr><td class="mono">--user-glass-boost</td><td class="mono">0…+0.2</td><td>Стекло можно сделать плотнее, но не прозрачнее минимума</td></tr>
+<tr><td colspan="3" style="padding-top: 16px; color: #8F8F8F; font-size: 12px; border-top-color: #3A3A3A">ЗАМОРОЖЕНО: <span class="mono" style="color: #DCDCDC">--text-* · --focus-* · --live* · --status-* · --border-strong · --fill-inverse · минимальная плотность стекла · шрифты · радиусы · отступы · z-index · длительности</span></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section style="margin-top: 72px">
+<p class="ov">Гарантия контраста поверх любой картинки</p>
+<h2 class="h2">Затемнение считается, а не угадывается</h2>
+<div style="margin-top: 24px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px">
+<div style="grid-column: span 5; display: flex; flex-direction: column; gap: 14px">
+<div style="display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px"><span class="mono" style="color: #8F8F8F">1</span><p style="margin: 0; font-size: 15px; line-height: 22px">При загрузке картинка сжимается до сетки 64×36 в Web Worker. Считается яркость каждой ячейки и берётся 95-й перцентиль самых светлых. Для светлой темы берётся 5-й перцентиль самых тёмных.</p></div>
+<div style="display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px"><span class="mono" style="color: #8F8F8F">2</span><p style="margin: 0; font-size: 15px; line-height: 22px">По формуле считается, какая доля чёрного нужна, чтобы этот участок под стеклом raised дал тексту N12 контраст ≥ 4.5:1. Результат сохраняется как <span class="mono">--user-bg-dim-min</span>.</p></div>
+<div style="display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px"><span class="mono" style="color: #8F8F8F">3</span><p style="margin: 0; font-size: 15px; line-height: 22px">Ползунок затемнения начинается с этого порога. Ниже опустить нельзя, и пользователь видит подсказку «Темнее нельзя: текст станет нечитаемым».</p></div>
+<div style="display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px"><span class="mono" style="color: #8F8F8F">4</span><p style="margin: 0; font-size: 15px; line-height: 22px">Если у пользовательского фона включено стекло уровня ambient, текст на нём автоматически переходит на raised. На ambient остаются только иконки и крупные заголовки (3:1).</p></div>
+<div style="display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px"><span class="mono" style="color: #8F8F8F">5</span><p style="margin: 0; font-size: 15px; line-height: 22px">Если нет <span class="mono">backdrop-filter</span> или включено <span class="mono">prefers-reduced-transparency</span>, затемнение увеличивается на 0.15, а стекло становится сплошным.</p></div>
+</div>
+<div style="grid-column: 7 / span 6; display: flex; flex-direction: column; gap: 16px">
+<div style="padding: 16px; border: 1px solid #2A2A2A; border-radius: 8px; background: #111111">
+<pre>// L — относительная яркость по WCAG
+const L_text   = 0.888;               // N12 #F2F2F2
+const L_max    = (L_text + .05) / 4.5 - .05;  // ≈ 0.158
+const glass    = 0.62;                // raised, #121212
+const L_glass  = 0.006;
+// яркость под стеклом = стекло + картинка·(1−dim)
+// L_img·(1−dim)·(1−glass) + L_glass·glass ≤ L_max
+const dimMin = clamp(
+  1 - (L_max - L_glass*glass) / (L_p95 * (1-glass)),
+  0.35, 0.90);</pre>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+<div style="position: relative; height: 140px; border-radius: 8px; overflow: hidden; background: linear-gradient(135deg, #E8E8E8, #9A9A9A)"><div style="position: absolute; inset: 0; background: rgba(0,0,0,0.1)"></div><div style="position: absolute; left: 12px; right: 12px; bottom: 12px; padding: 10px; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); color: #F2F2F2; font-size: 13px">Текст на ambient</div></div>
+<div style="position: relative; height: 140px; border-radius: 8px; overflow: hidden; background: linear-gradient(135deg, #E8E8E8, #9A9A9A)"><div style="position: absolute; inset: 0; background: rgba(0,0,0,0.45)"></div><div style="position: absolute; left: 12px; right: 12px; bottom: 12px; padding: 10px; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); color: #F2F2F2; font-size: 13px">Текст на ambient</div></div>
+<div style="position: relative; height: 140px; border-radius: 8px; overflow: hidden; background: linear-gradient(135deg, #E8E8E8, #9A9A9A)"><div style="position: absolute; inset: 0; background: rgba(0,0,0,0.64)"></div><div style="position: absolute; left: 12px; right: 12px; bottom: 12px; padding: 10px; border-radius: 6px; background: rgba(18,18,18,0.62); border: 1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); color: #F2F2F2; font-size: 13px">Текст на raised</div></div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px" class="mono">
+<span style="font-size: 12px; color: #8F8F8F">dim 0.10 · ≈ 1.4:1 · запрещено</span>
+<span style="font-size: 12px; color: #8F8F8F">dim 0.45 · ≈ 3.2:1 · только крупное</span>
+<span style="font-size: 12px; color: #F2F2F2">dim 0.64 + raised · ≥ 4.5:1</span>
+</div>
+</div>
+</div>
+</section>
+
+<section style="margin-top: 72px">
+<p class="ov">Декоративные слои не мешают работе</p>
+<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<div style="padding: 20px; border: 1px solid #2A2A2A; border-radius: 8px"><p style="margin: 0; font-size: 15px; font-weight: 600">Не ловят курсор</p><p class="why" style="margin-top: 6px"><span class="mono">pointer-events: none</span>, <span class="mono">inert</span>, <span class="mono">aria-hidden</span>, <span class="mono">z-index: -1</span>. Клик всегда достаётся интерфейсу, скринридер декор не видит.</p></div>
+<div style="padding: 20px; border: 1px solid #2A2A2A; border-radius: 8px"><p style="margin: 0; font-size: 15px; font-weight: 600">Стоят дёшево</p><p class="why" style="margin-top: 6px">Один <span class="mono">&lt;canvas&gt;</span> на все частицы, не больше 60 звёзд, 30 fps, <span class="mono">contain: strict</span>. Анимация только через <span class="mono">transform</span>, фон с blur рендерится один раз в отдельный слой.</p></div>
+<div style="padding: 20px; border: 1px solid #2A2A2A; border-radius: 8px"><p style="margin: 0; font-size: 15px; font-weight: 600">Засыпают</p><p class="why" style="margin-top: 6px">Пауза на <span class="mono">visibilitychange</span>, при <span class="mono">prefers-reduced-motion</span>, <span class="mono">Save-Data</span> и когда FPS падает ниже 40 три секунды подряд.</p></div>
+<div style="padding: 20px; border: 1px solid #6E6E6E; border-radius: 8px"><p style="margin: 0; font-size: 15px; font-weight: 600">Тихий режим эфира</p><p class="why" style="margin-top: 6px">Когда стример в эфире, на стрим-панели эффекты автоматически замирают в статичный кадр: OBS на том же компьютере важнее звёзд. <span class="prop">Предложение</span></p></div>
+</div>
+</section>
+
+<section style="margin-top: 72px">
+<p class="ov">Готовые пресеты</p>
+<h2 class="h2">Четыре отправные точки</h2>
+<div style="margin-top: 24px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div class="pv" style="background: #0A0A0A; border: 1px solid #2A2A2A">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: radial-gradient(240px 160px at 20% 0%, rgba(255,255,255,0.08), transparent 70%)"></div>
+<div class="pvh" style="background: rgba(18,18,18,0.62); border-bottom: 1px solid rgba(255,255,255,0.10); color: #F2F2F2"><span>StreOps</span><span style="width: 18px; height: 18px; border-radius: 999px; background: #8F8F8F"></span></div>
+<div class="pvc" style="background: #111111; border: 1px solid #2A2A2A"><span style="font-size: 11px; color: #8F8F8F">Зрители</span><span class="mono" style="font-size: 26px; font-weight: 500">1 284</span><span style="margin-top: auto; align-self: flex-start; padding: 6px 10px; border-radius: 6px; background: #FFFFFF; color: #0A0A0A; font-size: 12px; font-weight: 500">Сохранить</span></div>
+</div>
+<p style="margin: 0; font-size: 17px; font-weight: 600">Графит <span class="mono" style="font-size: 12px; color: #8F8F8F; font-weight: 400">по умолчанию</span></p>
+<p class="mono" style="margin: 0; font-size: 11px; line-height: 17px; color: #8F8F8F">theme dark · bg #0A0A0A<br>image — · blur 0 · effect —<br>grain 4% · dim —</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div class="pv" style="background: #000000; border: 1px solid #2A2A2A">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: radial-gradient(1px 1px at 20% 30%, #FFFFFF, transparent), radial-gradient(1px 1px at 70% 20%, #DCDCDC, transparent), radial-gradient(1px 1px at 85% 60%, #FFFFFF, transparent), radial-gradient(1px 1px at 40% 70%, #B4B4B4, transparent), radial-gradient(1px 1px at 10% 80%, #FFFFFF, transparent), radial-gradient(1px 1px at 55% 45%, #DCDCDC, transparent)"></div>
+<span class="star" aria-hidden="true" style="left: 150px; top: 70px"></span>
+<span class="star" aria-hidden="true" style="left: 40px; top: 120px; width: 60px; opacity: 0.6"></span>
+<div class="pvh" style="background: rgba(14,14,14,0.62); border-bottom: 1px solid rgba(255,255,255,0.10); color: #F2F2F2"><span>StreOps</span><span style="width: 18px; height: 18px; border-radius: 999px; background: #8F8F8F"></span></div>
+<div class="pvc" style="top: 120px; background: rgba(18,18,18,0.62); border: 1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08)"><span style="font-size: 11px; color: #B4B4B4">Зрители</span><span class="mono" style="font-size: 26px; font-weight: 500">1 284</span></div>
+</div>
+<p style="margin: 0; font-size: 17px; font-weight: 600">Полночь</p>
+<p class="mono" style="margin: 0; font-size: 11px; line-height: 17px; color: #8F8F8F">theme dark · bg #000000<br>effect stars · density 40<br>grain 3% · glass-boost 0</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div class="pv" style="background: #F2F2F2; border: 1px solid #DCDCDC">
+<div class="pvh" style="background: rgba(255,255,255,0.72); border-bottom: 1px solid rgba(0,0,0,0.08); color: #0A0A0A"><span>StreOps</span><span style="width: 18px; height: 18px; border-radius: 999px; background: #6E6E6E"></span></div>
+<div class="pvc" style="background: #FFFFFF; border: 1px solid #DCDCDC; color: #0A0A0A"><span style="font-size: 11px; color: #525252">Зрители</span><span class="mono" style="font-size: 26px; font-weight: 500">1 284</span><span style="margin-top: auto; align-self: flex-start; padding: 6px 10px; border-radius: 6px; background: #0A0A0A; color: #F2F2F2; font-size: 12px; font-weight: 500">Сохранить</span></div>
+</div>
+<p style="margin: 0; font-size: 17px; font-weight: 600">Бумага</p>
+<p class="mono" style="margin: 0; font-size: 11px; line-height: 17px; color: #8F8F8F">theme light · bg #F2F2F2<br>image — · effect —<br>grain 3%</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div class="pv" style="background: linear-gradient(160deg, #5E6B63 0%, #2B302D 45%, #0D0F0E 100%); border: 1px solid #2A2A2A">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: radial-gradient(180px 120px at 75% 25%, rgba(220,230,224,0.45), transparent 70%); filter: blur(6px)"></div>
+<div aria-hidden="true" style="position: absolute; inset: 0; background: rgba(0,0,0,0.52)"></div>
+<div class="pvh" style="background: rgba(18,18,18,0.62); border-bottom: 1px solid rgba(255,255,255,0.10); color: #F2F2F2"><span>StreOps</span><span style="width: 18px; height: 18px; border-radius: 999px; background: #8F8F8F"></span></div>
+<div class="pvc" style="background: rgba(18,20,19,0.70); border: 1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08)"><span style="font-size: 11px; color: #B4B4B4">Зрители</span><span class="mono" style="font-size: 26px; font-weight: 500">1 284</span><span style="margin-top: auto; align-self: flex-start; padding: 6px 10px; border-radius: 6px; background: #FFFFFF; color: #0A0A0A; font-size: 12px; font-weight: 500">Сохранить</span></div>
+</div>
+<p style="margin: 0; font-size: 17px; font-weight: 600">Туман</p>
+<p class="mono" style="margin: 0; font-size: 11px; line-height: 17px; color: #8F8F8F">theme dark · image своё фото<br>blur 24 · dim авто 0.52<br>tint #6F7F75 · glass-boost +0.08</p>
+</div>
+</div>
+<p class="why" style="margin-top: 16px"><b>Почему именно эти четыре:</b> «Графит» и «Бумага» покрывают обе базовые темы. «Полночь» показывает эффект без картинки. «Туман» — весь путь своей картинки: блюр, автозатемнение и приглушённый оттенок. Кнопки, текст и фокус во всех четырёх одинаковые, меняется только атмосфера. Названия пресетов — <span class="prop">Предложение</span></p>
+</section>
+
+<section style="margin-top: 72px">
+<p class="ov">Хранение и применение</p>
+<div style="margin-top: 12px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+<div style="padding: 16px; border: 1px solid #2A2A2A; border-radius: 8px; background: #111111">
+<pre>// theme.ts — применяем пользовательские токены
+const ALLOWED = ['--user-bg-color','--user-bg-image',
+  '--user-bg-blur','--user-bg-dim','--user-gradient',
+  '--user-tint','--user-effect','--user-glass-boost'];
+
+export function applyUserTheme(t: UserTheme) {
+  const root = document.documentElement;
+  root.dataset.theme = t.theme;          // dark | light
+  for (const [k, v] of Object.entries(t.vars)) {
+    if (ALLOWED.includes(k)) root.style.setProperty(k, v);
+  }
+  root.style.setProperty('--user-bg-dim',
+    String(Math.max(t.dim, t.dimMin)));   // порог
+}</pre>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<p class="why"><b>Белый список.</b> В рантайме можно записать только <span class="mono">--user-*</span>. Попытка передать <span class="mono">--text-primary</span> игнорируется, поэтому сломать читаемость через сохранённую тему нельзя.</p>
+<p class="why"><b>Где хранится.</b> Тема лежит в профиле на сервере, а последняя применённая — в <span class="mono">localStorage</span>. Её inline-скрипт в <span class="mono">&lt;head&gt;</span> применяет до первой отрисовки, чтобы не мигала тёмная тема.</p>
+<p class="why"><b>Предпросмотр.</b> Изменения сразу видны на живой странице. Применённые пишутся только по кнопке «Сохранить тему», а «Сбросить» возвращает «Графит».</p>
+</div>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2900}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

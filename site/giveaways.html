@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StreOps — розыгрыши</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0A0A0A}
+a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.nav-i{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;color:#B4B4B4}
+.nav-i:hover{background:rgba(255,255,255,.04);color:#F2F2F2}
+.sec{padding:20px;border-radius:8px;border:1px solid #2A2A2A;background:#111111;display:flex;flex-direction:column;gap:14px}
+.sec h2{margin:0;font-size:17px;line-height:24px;font-weight:600}
+.lab{font-size:13px;line-height:18px;font-weight:500;color:#DCDCDC}
+.inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 15px/22px 'Onest',sans-serif;width:100%}
+.inp:disabled{border-color:#2A2A2A;color:#8F8F8F}
+.hint{font-size:12px;line-height:16px;color:#8F8F8F;margin:0}
+.seg{height:34px;padding:0 12px;border:0;border-radius:4px;background:transparent;color:#B4B4B4;font:500 13px/18px 'Onest',sans-serif;cursor:pointer;white-space:nowrap}
+.seg:hover{color:#F2F2F2}
+.seg:disabled{cursor:not-allowed}
+.sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid #6E6E6E;background:transparent;cursor:pointer;flex:none;padding:0}
+.sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:#8F8F8F;transition:transform 180ms cubic-bezier(.2,0,0,1)}
+.sw[aria-checked="true"]{background:#FFFFFF;border-color:#FFFFFF}
+.sw[aria-checked="true"] span{transform:translateX(16px);background:#0A0A0A}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:40px;font-size:14px;border-top:1px solid #1F1F1F}
+.mode{flex:1 1 120px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:12px;border-radius:8px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font-family:'Onest',sans-serif;cursor:pointer;text-align:left}
+.mode:hover{border-color:#8F8F8F}
+.bp{height:44px;padding:0 18px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 15px/20px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.bp:hover{background:#DCDCDC}
+.bp:disabled{background:#2A2A2A;color:#6E6E6E;cursor:not-allowed}
+.bs{height:44px;padding:0 16px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 14px/20px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.bs:hover{background:rgba(255,255,255,.04);border-color:#6E6E6E}
+.bs:disabled{color:#525252;border-color:#2A2A2A;cursor:not-allowed}
+.card{flex:none;width:120px;height:148px;box-sizing:border-box;border-radius:8px;background:#171717;border:1px solid #3A3A3A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:10px;position:relative;overflow:hidden}
+.av{border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-weight:600;color:#0A0A0A;flex:none}
+.pr{display:grid;grid-template-columns:28px minmax(0,1fr) 84px 56px;gap:10px;align-items:center;padding:8px 0;border-top:1px solid #1F1F1F;font-size:13px}
+.step{display:flex;align-items:center;gap:8px;font-size:13px;color:#8F8F8F}
+.step b{width:22px;height:22px;border-radius:999px;border:1px solid #3A3A3A;display:inline-flex;align-items:center;justify-content:center;font:500 11px/1 'JetBrains Mono',monospace}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="dc">
+
+<div style="min-height: 100vh; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
+
+<header style="position: sticky; top: 0; z-index: 200; background: rgba(10,10,10,0.72); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.08)">
+<div style="height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 24px; flex-wrap: wrap">
+<a href="index.html" style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</a>
+<div style="display: flex; align-items: center; gap: 8px">
+<div role="status" aria-label="В эфире 2 часа 47 минут, 1284 зрителя" style="display: flex; align-items: center; height: 40px; border: 1px solid #2A2A2A; border-radius: 6px">
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 100%; padding: 0 12px; border-right: 1px solid #2A2A2A"><span style="width: 8px; height: 8px; border-radius: 999px; background: #D92D20; box-shadow: 0 0 0 4px rgba(217,45,32,0.25)"></span><span style="font-size: 11px; font-weight: 700; letter-spacing: .08em">В ЭФИРЕ</span></span>
+<span class="mono" style="padding: 0 12px; border-right: 1px solid #2A2A2A; font-size: 15px">02:47:13</span><span class="mono" style="padding: 0 12px; font-size: 15px">1 284</span>
+</div>
+<a href="settings.html" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 8px 0 6px; font-size: 14px; font-weight: 500"><span class="av" style="width: 32px; height: 32px; font-size: 12px; background: linear-gradient(135deg, #B4B4B4, #3A3A3A)">КС</span>kira_stream</a>
+</div>
+</div>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; box-sizing: border-box; max-width: 1920px; margin: 0 auto">
+<nav aria-label="Разделы стрим-панели" style="flex: 1 1 200px; max-width: 248px; min-width: 200px; align-self: flex-start; box-sizing: border-box; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 2px">
+<p class="ov" style="padding: 8px 12px">Эфир</p>
+<a href="panel.html" class="nav-i">Обзор</a>
+<a href="chat.html" class="nav-i">Чат и эмоуты</a>
+<a href="moderation.html" class="nav-i">Модерация</a>
+<p class="ov" style="padding: 16px 12px 8px">Бот</p>
+<a href="commands.html" class="nav-i">Команды</a>
+<a href="music.html" class="nav-i">Музыка</a>
+<a href="widgets.html" class="nav-i">Виджеты</a>
+<p class="ov" style="padding: 16px 12px 8px">Интерактив</p>
+<a href="giveaways.html" aria-current="page" class="nav-i" style="background: rgba(255,255,255,0.10); color: #F2F2F2; box-shadow: inset 2px 0 0 #F2F2F2">Розыгрыши<template data-if="isLive"><span style="margin-left: auto; width: 8px; height: 8px; border-radius: 999px; background: #F2F2F2"></span></template></a>
+<a href="#" class="nav-i" aria-disabled="true" style="color: #525252">Аукционы<span style="margin-left: auto; font-size: 11px; padding: 1px 6px; border: 1px dashed #3A3A3A; border-radius: 4px; color: #6E6E6E">скоро</span></a>
+<div style="height: 1px; background: #2A2A2A; margin: 10px 0"></div>
+<a href="settings.html" class="nav-i">Настройки</a>
+</nav>
+
+<main style="flex: 999 1 720px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
+<div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Розыгрыши</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; max-width: 640px">Зрители участвуют словом в чате, за баллы канала или просто за активность. Победителя выбирает рулетка прямо на стриме, а результат можно проверить.</p></div>
+<ol aria-label="Этапы розыгрыша" style="list-style: none; margin: 0; padding: 0; display: flex; gap: 16px; flex-wrap: wrap">
+<template data-for="steps" data-as="s"><li class="step" style="{{ s.style }}" aria-current="{{ s.cur }}"><b style="{{ s.dot }}">{{ s.n }}</b>{{ s.label }}</li></template>
+</ol>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+<!-- ===== НАСТРОЙКА ===== -->
+<form aria-label="Настройки розыгрыша" style="flex: 1 1 380px; max-width: 460px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<template data-if="locked"><p style="margin: 0; display: flex; gap: 8px; padding: 10px 12px; border: 1px dashed #8F8F8F; border-radius: 6px; font-size: 13px; color: #DCDCDC"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Пока идёт розыгрыш, условия менять нельзя: так честнее для участников.</p></template>
+
+<section class="sec" aria-labelledby="pz">
+<h2 id="pz">Приз</h2>
+<div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="prize">Что разыгрываем</label><input id="prize" class="inp" value="Ключ Cyberpunk 2077 · Steam" disabled="{{ locked }}"></div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="lab" id="wn">Победителей</span><span role="radiogroup" aria-labelledby="wn" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px"><template data-for="winnersOpt" data-as="o"><button type="button" role="radio" class="seg mono" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ locked }}" style="{{ o.style }}">{{ o.label }}</button></template></span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="dl">Как выдать приз</label><select id="dl" class="inp" disabled="{{ locked }}" style="font-size: 14px"><option>Личным сообщением</option><option>Код в ЛС на Twitch</option><option>Сам свяжусь</option></select></div>
+</div>
+</section>
+
+<section class="sec" aria-labelledby="hw">
+<h2 id="hw">Как участвовать</h2>
+<div role="radiogroup" aria-label="Способ участия" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<template data-for="entryOpt" data-as="o"><button type="button" role="radio" class="mode" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ locked }}" style="{{ o.style }}"><span style="font-size: 14px; font-weight: 500">{{ o.label }}</span><span class="hint">{{ o.note }}</span></button></template>
+</div>
+<template data-if="entryWord"><div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="kw">Слово для участия</label><input id="kw" class="inp mono" value="!участвую" disabled="{{ locked }}"><p class="hint">Регистр и лишние пробелы не важны. Повторные сообщения не дают лишних шансов.</p></div></template>
+<template data-if="entryPoints"><div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px"><div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="tp">Цена билета</label><input id="tp" class="inp mono" value="1 000 баллов" disabled="{{ locked }}"></div><div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="tm">Билетов на зрителя</label><input id="tm" class="inp mono" value="до 5" disabled="{{ locked }}"></div><p class="hint" style="grid-column: span 2">Если розыгрыш отменят, баллы за билеты вернутся автоматически.</p></div></template>
+<template data-if="entryActive"><div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="am">Писали в чат за последние</label><select id="am" class="inp" disabled="{{ locked }}"><option>10 минут</option><option selected="">30 минут</option><option>Весь стрим</option></select><p class="hint">Слово писать не нужно, участвуют все, кто был активен.</p></div></template>
+<template data-if="entryList"><div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="ls">Ники через запятую или с новой строки</label><textarea id="ls" rows="3" class="inp" style="height: auto; padding: 10px 12px; resize: vertical" disabled="{{ locked }}">moroz_tv, lenta_ln, tixiy_bard, polyana_live</textarea></div></template>
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="lab" id="tmr">Сбор участников</span><span role="radiogroup" aria-labelledby="tmr" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px"><template data-for="timerOpt" data-as="o"><button type="button" role="radio" class="seg" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ locked }}" style="{{ o.style }}">{{ o.label }}</button></template></span></div>
+</section>
+
+<section class="sec" aria-labelledby="rl">
+<h2 id="rl">Правила и защита от накрутки</h2>
+<div>
+<template data-for="rules" data-as="r"><div class="row"><span><span style="display: block">{{ r.label }}</span><span class="hint">{{ r.note }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ r.on }}" aria-label="{{ r.label }}" onClick="{{ r.toggle }}" disabled="{{ locked }}"><span></span></button></div></template>
+</div>
+</section>
+
+<section class="sec" aria-labelledby="an">
+<h2 id="an">Как выбрать победителя</h2>
+<div role="radiogroup" aria-label="Анимация выбора" style="display: flex; gap: 8px; flex-wrap: wrap">
+<template data-for="modeOpt" data-as="o"><button type="button" role="radio" class="mode" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ spinningNow }}" style="{{ o.style }}"><span style="font-size: 14px; font-weight: 500">{{ o.label }}</span><span class="hint">{{ o.note }}</span></button></template>
+</div>
+<div class="row" style="border-top: 0"><span><span style="display: block">Победитель подтверждает участие</span><span class="hint">Должен написать в чат за 60 секунд, иначе перевыбор</span></span><button type="button" role="switch" class="sw" aria-checked="{{ confirmOn }}" aria-label="Подтверждение победителем" onClick="{{ toggleConfirm }}"><span></span></button></div>
+<div class="row"><span><span style="display: block">Показывать на стриме</span><span class="hint">Виджет «Розыгрыш» в OBS: сбор, рулетка, победитель</span></span><button type="button" role="switch" class="sw" aria-checked="true" aria-label="Показывать на стриме"><span></span></button></div>
+</section>
+</form>
+
+<!-- ===== СЦЕНА ===== -->
+<section aria-label="Ход розыгрыша" style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+
+<div role="region" aria-label="Сцена розыгрыша" style="{{ stageStyle }}">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid #2A2A2A; flex-wrap: wrap">
+<div><p class="ov">{{ phaseLabel }}</p><p style="margin: 4px 0 0; font-size: 20px; line-height: 26px; font-weight: 600">Ключ Cyberpunk 2077 · Steam</p></div>
+<div style="display: flex; gap: 20px; align-items: baseline">
+<span><span class="mono" style="font-size: 24px; font-weight: 500">{{ count }}</span> <span style="font-size: 13px; color: #8F8F8F">участников</span></span>
+<template data-if="collecting"><span><span class="mono" style="font-size: 24px; font-weight: 500">1:24</span> <span style="font-size: 13px; color: #8F8F8F">до конца сбора</span></span></template>
+<button type="button" onClick="{{ toggleFs }}" aria-pressed="{{ fsPressed }}" style="align-self: center; height: 36px; padding: 0 12px; border-radius: 6px; border: 1px solid #3A3A3A; background: rgba(10,10,10,0.6); color: #F2F2F2; font: 500 13px/18px 'Onest', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 8px"><template data-if="fsOff"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"></path></svg></template><template data-if="fs"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3v6H3M15 3v6h6M9 21v-6H3M15 21v-6h6"></path></svg></template>{{ fsLabel }}</button>
+</div>
+</div>
+
+<div style="position: relative; {{ arenaH }}; display: flex; align-items: center; justify-content: center">
+
+<template data-if="isSetup"><div style="text-align: center; max-width: 420px; padding: 24px"><svg class="ic" width="40" height="40" viewBox="0 0 24 24" aria-hidden="true" style="color: #8F8F8F"><rect x="3" y="8" width="18" height="13" rx="1"></rect><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1s6 1 6 1zM12 8c2-4 6-4 6-1s-6 1-6 1z"></path></svg><p style="margin: 16px 0 0; font-size: 20px; font-weight: 600">Розыгрыш ещё не начат</p><p style="margin: 8px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">Проверь условия слева и запусти сбор. Бот напишет в чат, как участвовать.</p></div></template>
+
+<template data-if="showRoulette">
+<div style="position: absolute; inset: 0; overflow: hidden">
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 50%; height: 148px; margin-top: -74px; background: linear-gradient(90deg, #0E0E0E 0%, transparent 18%, transparent 82%, #0E0E0E 100%); z-index: 2; pointer-events: none"></div>
+<div aria-hidden="true" style="position: absolute; left: 50%; top: 40px; bottom: 40px; width: 2px; margin-left: -1px; background: #F2F2F2; z-index: 3; box-shadow: 0 0 0 1px #0E0E0E"></div>
+<div aria-hidden="true" style="position: absolute; left: 50%; top: 32px; margin-left: -8px; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 10px solid #F2F2F2; z-index: 3"></div>
+<div aria-hidden="true" style="position: absolute; left: 50%; bottom: 32px; margin-left: -8px; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 10px solid #F2F2F2; z-index: 3"></div>
+<div style="position: absolute; left: 50%; top: 50%; margin-top: -74px; display: flex; gap: 8px; will-change: transform; transform: translateX({{ stripX }}px); transition: {{ stripT }}">
+<template data-for="strip" data-as="c">
+<div class="card" style="{{ c.style }}">
+<span aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: 3px; {{ c.bar }}"></span>
+<span class="av" style="width: 52px; height: 52px; font-size: 16px; background: {{ c.bg }}">{{ c.ini }}</span>
+<span style="font-size: 13px; font-weight: 500; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ c.nick }}</span>
+<span style="font-size: 11px; color: #8F8F8F">{{ c.role }}</span>
+</div>
+</template>
+</div>
+</div>
+</template>
+
+<template data-if="showWheel">
+<div style="position: relative; width: 280px; height: 280px">
+<div aria-hidden="true" style="position: absolute; left: 50%; top: -8px; margin-left: -10px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 18px solid #F2F2F2; z-index: 2"></div>
+<div style="position: absolute; inset: 0; border-radius: 999px; border: 2px solid #3A3A3A; background: repeating-conic-gradient(#232323 0 30deg, #161616 30deg 60deg); transform: rotate({{ wheelDeg }}deg); transition: {{ wheelT }}">
+<template data-for="wheel" data-as="w"><span style="position: absolute; left: 50%; top: 50%; width: 120px; height: 16px; margin-top: -8px; transform-origin: 0 50%; transform: rotate({{ w.rot }}deg); font: 500 11px/16px 'JetBrains Mono', monospace; color: #DCDCDC; text-align: right; padding-right: 12px; box-sizing: border-box">{{ w.nick }}</span></template>
+<span style="position: absolute; left: 50%; top: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 999px; background: #F2F2F2; box-shadow: 0 0 0 4px #0E0E0E"></span>
+</div>
+</div>
+</template>
+
+<template data-if="showInstant"><div style="text-align: center"><p class="mono" style="margin: 0; font-size: 56px; line-height: 1; color: #3A3A3A">{{ instantGlyph }}</p><p style="margin: 12px 0 0; font-size: 14px; color: #8F8F8F">Победитель выбирается мгновенно, без анимации</p></div></template>
+
+<template data-if="isWinner">
+<div role="status" aria-live="assertive" style="position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(320px 200px at 50% 50%, rgba(255,255,255,0.10), rgba(14,14,14,0.92) 70%); backdrop-filter: blur(4px)">
+<p class="ov" style="color: #DCDCDC">{{ winnerTitle }}</p>
+<span class="av" style="margin-top: 16px; width: 88px; height: 88px; font-size: 28px; background: {{ winner.bg }}; box-shadow: 0 0 0 2px #0E0E0E, 0 0 0 4px #F2F2F2">{{ winner.ini }}</span>
+<p style="margin: 14px 0 0; font-size: 32px; line-height: 38px; font-weight: 600; letter-spacing: -0.02em">{{ winner.nick }}</p>
+<p style="margin: 4px 0 0; font-size: 13px; color: #B4B4B4">{{ winner.role }} · шанс <span class="mono">{{ winner.chance }}</span> · билетов <span class="mono">{{ winner.tickets }}</span></p>
+<template data-if="waitConfirm"><div style="margin-top: 16px; width: 260px"><div style="display: flex; justify-content: space-between; font-size: 12px; color: #DCDCDC"><span>Ждём ответа в чате</span><span class="mono">0:47</span></div><div style="margin-top: 6px; height: 4px; background: #2A2A2A; border-radius: 2px"><div style="width: 78%; height: 100%; background: #F2F2F2; border-radius: 2px"></div></div></div></template>
+<template data-if="confirmed"><p style="margin: 16px 0 0; display: inline-flex; gap: 8px; align-items: center; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#F2F2F2"></circle><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round"></path></svg>Победитель на месте: «я тут!!» в 23:04</p></template>
+</div>
+</template>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 20px; border-top: 1px solid #2A2A2A; flex-wrap: wrap">
+<span class="mono" style="font-size: 11px; color: #6E6E6E">seed sha256: 9f2c…a71e · <a href="#" style="color: #8F8F8F; text-decoration: underline">проверить честность</a></span>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<template data-if="isSetup"><button type="button" class="bp" onClick="{{ start }}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="#0A0A0A"></path></svg>Начать сбор участников</button></template>
+<template data-if="collecting"><button type="button" class="bs" onClick="{{ cancel }}">Отменить</button><button type="button" class="bp" onClick="{{ spin }}">{{ spinLabel }}</button></template>
+<template data-if="spinningNow"><button type="button" class="bp" disabled="">Крутим…</button></template>
+<template data-if="isWinner"><button type="button" class="bs" onClick="{{ reroll }}" disabled="{{ noReroll }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"></path></svg>Перевыбрать</button><template data-if="waitConfirm"><button type="button" class="bs" onClick="{{ confirm }}">Засчитать ответ</button></template><button type="button" class="bp" onClick="{{ finish }}">{{ finishLabel }}</button></template>
+</div>
+</div>
+</div>
+
+<section class="sec" aria-labelledby="obs-t">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap"><div><h2 id="obs-t">Вывод на стрим</h2><p class="hint" style="margin-top: 4px">Розыгрыш на экране: сбор, рулетка и победитель. Управляешь отсюда, а зрители видят анимацию в OBS.</p></div><a href="#" onClick="{{ toggleFs }}" style="display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: 6px; border: 1px solid #3A3A3A; font-size: 13px"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"></rect><path d="M14 4h7v7"></path></svg>Открыть в отдельном окне</a></div>
+<div style="display: flex; flex-wrap: wrap; gap: 20px">
+<div aria-hidden="true" style="flex: 0 0 260px; aspect-ratio: 16 / 9; border-radius: 8px; border: 1px solid #3A3A3A; position: relative; overflow: hidden; background: {{ obsPreviewBg }}">
+<div style="position: absolute; left: 0; right: 0; top: 50%; margin-top: -22px; display: flex; gap: 4px; justify-content: center"><span style="width: 34px; height: 44px; border-radius: 3px; background: rgba(23,23,23,0.9); border: 1px solid #3A3A3A"></span><span style="width: 34px; height: 44px; border-radius: 3px; background: rgba(23,23,23,0.9); border: 1px solid #3A3A3A"></span><span style="width: 34px; height: 44px; border-radius: 3px; background: #1F1F1F; border: 2px solid #F2F2F2; box-sizing: border-box"></span><span style="width: 34px; height: 44px; border-radius: 3px; background: rgba(23,23,23,0.9); border: 1px solid #3A3A3A"></span><span style="width: 34px; height: 44px; border-radius: 3px; background: rgba(23,23,23,0.9); border: 1px solid #3A3A3A"></span></div>
+<span style="position: absolute; left: 50%; top: 22px; bottom: 22px; width: 1px; background: #F2F2F2"></span>
+<span class="mono" style="position: absolute; left: 8px; bottom: 6px; font-size: 10px; color: #DCDCDC">1920 × 1080</span>
+</div>
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; gap: 8px"><input aria-label="Ссылка на виджет розыгрыша для OBS" class="inp mono" readonly="" value="{{ obsUrl }}" style="font-size: 13px"><button type="button" class="bs" style="height: 40px; flex: none" onClick="{{ toggleObsShow }}" aria-label="{{ obsShowLabel }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button type="button" class="bp" style="height: 40px; flex: none" onClick="{{ copyObs }}">{{ obsCopyLabel }}</button></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="lab" id="obg">Фон</span><span role="radiogroup" aria-labelledby="obg" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px"><template data-for="obsBgOpt" data-as="o"><button type="button" role="radio" class="seg" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</button></template></span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="lab" id="osh">Когда показывать</span><span role="radiogroup" aria-labelledby="osh" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px"><template data-for="obsWhenOpt" data-as="o"><button type="button" role="radio" class="seg" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</button></template></span></div>
+</div>
+<div class="row" style="border-top: 0; min-height: 32px"><span><span style="display: block">Звук рулетки и победы</span><span class="hint">Щелчки ленты и короткий сигнал, громкость 60%</span></span><button type="button" role="switch" class="sw" aria-checked="{{ obsSound }}" aria-label="Звук рулетки" onClick="{{ toggleObsSound }}"><span></span></button></div>
+<ol style="margin: 0; padding-left: 20px; font-size: 13px; line-height: 20px; color: #B4B4B4"><li>Скопируй ссылку</li><li>OBS: «Источники» → «+» → «Браузер», вставь ссылку, размер <span class="mono" style="color: #F2F2F2">1920 × 1080</span></li><li>Поставь источник поверх игры. Без розыгрыша он прозрачный и ничего не перекрывает</li></ol>
+<p style="margin: 0; display: flex; gap: 8px; padding: 10px 12px; border: 1px dashed #B4B4B4; border-radius: 6px; font-size: 13px; line-height: 18px; color: #DCDCDC"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M10.3 3.9L2.4 17.5a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4M12 17h.01"></path></svg>Не показывай ссылку в эфире. Если она утекла — <a href="#" style="text-decoration: underline">создай новую</a>, старая перестанет работать.</p>
+</div>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<section class="sec" aria-labelledby="pt" style="flex: 1 1 340px; min-width: 0">
+<div style="display: flex; justify-content: space-between; align-items: center"><h2 id="pt">Участники</h2><span class="hint">шанс с учётом удачи</span></div>
+<template data-if="isSetup"><p style="margin: 0; padding: 24px 0; text-align: center; font-size: 14px; color: #8F8F8F">Список появится после старта сбора</p></template>
+<template data-if="hasPeople"><div>
+<template data-for="people" data-as="p"><div class="pr" style="{{ p.rowStyle }}"><span class="av" style="width: 24px; height: 24px; font-size: 10px; background: {{ p.bg }}">{{ p.ini }}</span><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap"><b style="font-weight: 500">{{ p.nick }}</b> <span style="color: #8F8F8F">{{ p.role }}</span></span><span style="height: 4px; background: #2A2A2A"><span style="display: block; height: 100%; width: {{ p.bar }}; background: #DCDCDC"></span></span><span class="mono" style="text-align: right">{{ p.chance }}</span></div></template>
+<p class="hint" style="padding-top: 8px; border-top: 1px solid #1F1F1F">и ещё <span class="mono">196</span> участников · исключено <span class="mono">7</span>: новые аккаунты и боты</p>
+</div></template>
+</section>
+
+<section class="sec" aria-labelledby="bm" style="flex: 1 1 300px; min-width: 0">
+<h2 id="bm">Сообщения бота</h2>
+<div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; line-height: 19px">
+<p style="margin: 0; padding: 8px 10px; border-radius: 4px; background: rgba(255,255,255,0.04)"><b style="font-weight: 500; color: #8F8F8F">StreOps</b> Розыгрыш: ключ Cyberpunk 2077! Пиши <span class="mono">!участвую</span>, сбор 2 минуты. Подписчикам шанс ×2</p>
+<p style="margin: 0; padding: 8px 10px; border-radius: 4px; background: rgba(255,255,255,0.04)"><b style="font-weight: 500; color: #8F8F8F">StreOps</b> Осталось 30 секунд, участников: <span class="mono">212</span></p>
+<p style="margin: 0; padding: 8px 10px; border-radius: 4px; background: rgba(255,255,255,0.04)"><b style="font-weight: 500; color: #8F8F8F">StreOps</b> @{winner}, ты выиграл! Напиши что-нибудь в чат за 60 секунд</p>
+<p style="margin: 0; padding: 8px 10px; border-radius: 4px; background: rgba(255,255,255,0.04)"><b style="font-weight: 500; color: #8F8F8F">StreOps</b> @{winner} не ответил, крутим заново</p>
+</div>
+<a href="#" style="font-size: 13px; color: #B4B4B4; text-decoration: underline">Изменить тексты</a>
+</section>
+</div>
+
+<section class="sec" aria-labelledby="hs">
+<h2 id="hs">История розыгрышей</h2>
+<div style="overflow-x: auto"><table style="width: 100%; min-width: 620px; border-collapse: collapse; font-size: 13px">
+<thead><tr style="text-align: left; color: #8F8F8F"><th style="font-weight: 500; padding: 8px 12px 8px 0">Дата</th><th style="font-weight: 500; padding: 8px 12px">Приз</th><th style="font-weight: 500; padding: 8px 12px">Участников</th><th style="font-weight: 500; padding: 8px 12px">Победитель</th><th style="font-weight: 500; padding: 8px 12px">Статус</th></tr></thead>
+<tbody>
+<template data-for="history" data-as="h"><tr style="border-top: 1px solid #1F1F1F"><td class="mono" style="padding: 10px 12px 10px 0; color: #8F8F8F">{{ h.d }}</td><td style="padding: 10px 12px">{{ h.p }}</td><td class="mono" style="padding: 10px 12px">{{ h.n }}</td><td style="padding: 10px 12px">{{ h.w }}</td><td style="padding: 10px 12px"><span style="display: inline-flex; height: 22px; align-items: center; padding: 0 8px; border-radius: 4px; font-size: 12px; {{ h.style }}">{{ h.s }}</span></td></tr></template>
+</tbody></table></div>
+</section>
+</section>
+</div>
+</main>
+</div>
+</div>
+</template>
+<script src="assets/dc-lite.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      phase: 'setup', mode: 0, entry: 0, winners: 0, timer: 1, confirmOn: true,
+      rules: [true, true, true, true, true, false],
+      winIdx: -1, excluded: [], stripX: -444, anim: false, wheelDeg: 0, wheelAnim: false,
+      confirmed: false, drawn: [], history: null,
+      fs: false, obsShow: false, obsCopied: false, obsBg: 0, obsWhen: 1, obsSound: true
+    };
+  }
+  people() {
+    const P = [
+      ['moroz_tv', 'подписчик', 1], ['lenta_ln', 'фолловер', 1], ['tixiy_bard', 'подписчик', 1], ['polyana_live', 'VIP', 1],
+      ['gleb_1999', 'фолловер', 1], ['nastya_k', 'фолловер', 1], ['sever_ops', 'подписчик', 1], ['dasha_draws', 'фолловер', 1],
+      ['ivan_gg', 'фолловер', 1], ['katya_meow', 'подписчик', 1], ['artem_cs', 'фолловер', 1], ['rina_vibe', 'VIP', 1]
+    ];
+    const luck = this.state.rules[3];
+    const mult = (r) => luck ? (r === 'подписчик' ? 2 : (r === 'VIP' ? 1.5 : 1)) : 1;
+    const shades = ['#F2F2F2', '#DCDCDC', '#B4B4B4', '#8F8F8F'];
+    const total = P.reduce((a, p) => a + p[2] * mult(p[1]), 0) + 196;
+    return P.map((p, i) => ({
+      nick: p[0], role: p[1], tickets: p[2], w: p[2] * mult(p[1]),
+      ini: p[0].slice(0, 2).toUpperCase(),
+      bg: 'linear-gradient(135deg, ' + shades[i % 4] + ', #2A2A2A)',
+      chance: ((p[2] * mult(p[1])) / total * 100).toFixed(2).replace('.', ',') + '%'
+    }));
+  }
+  pick(ppl) {
+    const pool = ppl.map((p, i) => i).filter((i) => this.state.excluded.indexOf(i) < 0 && this.state.drawn.indexOf(i) < 0);
+    if (!pool.length) return -1;
+    const sum = pool.reduce((a, i) => a + ppl[i].w, 0);
+    let r = Math.random() * sum;
+    for (const i of pool) { r -= ppl[i].w; if (r <= 0) return i; }
+    return pool[pool.length - 1];
+  }
+  runSpin(extraExclude) {
+    const ppl = this.people();
+    const excluded = this.state.excluded.concat(extraExclude || []);
+    this.state.excluded = excluded;
+    const idx = this.pick(ppl);
+    if (idx < 0) return;
+    const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mode = this.state.mode;
+    if (mode === 2 || reduce) {
+      this.setState({ excluded, winIdx: idx, phase: 'winner', confirmed: false });
+      return;
+    }
+    if (mode === 0) {
+      const target = 52;
+      const jitter = Math.round((Math.random() - 0.5) * 80);
+      this.setState({ excluded, winIdx: idx, phase: 'spinning', anim: false, stripX: -(3 * 128 + 60), confirmed: false });
+      setTimeout(() => this.setState({ anim: true, stripX: -(target * 128 + 60 + jitter) }), 60);
+      setTimeout(() => this.setState({ phase: 'winner' }), 6200);
+    } else {
+      const seg = 30;
+      const pos = idx % 12;
+      const base = this.state.wheelDeg - (this.state.wheelDeg % 360);
+      const final = base + 360 * 6 + (360 - (pos * seg + seg / 2)) - 90 + Math.round((Math.random() - 0.5) * 16);
+      this.setState({ excluded, winIdx: idx, phase: 'spinning', wheelAnim: true, wheelDeg: final, confirmed: false });
+      setTimeout(() => this.setState({ phase: 'winner' }), 5600);
+    }
+  }
+  renderVals() {
+    const s = this.state;
+    const ppl = this.people();
+    const phases = ['setup', 'collecting', 'spinning', 'winner'];
+    const pi = phases.indexOf(s.phase);
+    const stepNames = ['Настройка', 'Сбор', 'Выбор', 'Победитель'];
+    const seg = (cur, i) => cur === i ? 'background: #F2F2F2; color: #0A0A0A' : '';
+    const card = (cur, i) => cur === i ? 'border: 2px solid #F2F2F2; padding: 11px; background: rgba(255,255,255,0.04)' : '';
+    const locked = pi > 0;
+    const EN = [['Слово в чат', 'Пишут !участвую'], ['Баллы канала', 'Билеты за баллы, можно несколько'], ['Активные зрители', 'Все, кто писал в чат'], ['Список ников', 'Вставь вручную']];
+    const MO = [['Рулетка', 'Лента карточек, как при открытии кейса'], ['Колесо', 'Барабан с никами'], ['Мгновенно', 'Без анимации']];
+    const RU = [
+      ['Только фолловеры', 'Фолловят канал не меньше 24 часов'],
+      ['Без новых аккаунтов', 'Аккаунтам меньше 7 дней участие закрыто'],
+      ['Без модераторов и ботов', 'Модераторы, Nightbot, StreamElements не участвуют'],
+      ['Удача подписчиков', 'Подписчикам шанс ×2, VIP ×1,5'],
+      ['Без недавних победителей', 'Кто выигрывал за 7 дней, не участвует'],
+      ['Только присутствующие', 'Победитель должен быть в чате в момент выбора']
+    ];
+    const strip = [];
+    const win = s.winIdx >= 0 ? ppl[s.winIdx] : null;
+    for (let k = 0; k < 60; k++) {
+      const p = (k === 52 && win) ? win : ppl[(k * 7 + 3) % ppl.length];
+      const isW = k === 52 && s.phase === 'winner';
+      strip.push({
+        nick: p.nick, ini: p.ini, bg: p.bg, role: p.role,
+        bar: p.role === 'подписчик' ? 'background: #F2F2F2' : (p.role === 'VIP' ? 'background: repeating-linear-gradient(90deg, #F2F2F2 0 6px, transparent 6px 10px)' : 'background: #3A3A3A'),
+        style: isW ? 'border: 2px solid #F2F2F2; background: #1F1F1F' : ''
+      });
+    }
+    const wheel = ppl.map((p, i) => ({ nick: p.nick, rot: i * 30 + 15 - 90 }));
+    const nDrawn = s.drawn.length;
+    const needW = s.winners + 1;
+    const H0 = [
+      { d: '07.10', p: 'Скин AK-47 | Redline', n: '318', w: 'sever_ops', s: 'Выдан', style: 'border: 1px solid #6E6E6E; color: #F2F2F2' },
+      { d: '03.10', p: '500 ₽ на Steam', n: '264', w: 'nastya_k', s: 'Перевыбран 1 раз', style: 'border: 1px dashed #B4B4B4; color: #DCDCDC' },
+      { d: '29.09', p: 'Подписка Twitch ×3', n: '187', w: 'gleb_1999, ivan_gg, rina_vibe', s: 'Выдан', style: 'border: 1px solid #6E6E6E; color: #F2F2F2' },
+      { d: '24.09', p: 'Ключ Hades II', n: '402', w: '—', s: 'Отменён', style: 'border: 1px dotted #6E6E6E; color: #8F8F8F' }
+    ];
+    const history = s.history || H0;
+    const stageBase = 'background: radial-gradient(900px 360px at 50% 0%, rgba(255,255,255,0.08), transparent 70%), #0E0E0E; overflow: hidden; ';
+    const obsBgs = ['repeating-conic-gradient(#1F1F1F 0 25%, #171717 0 50%) 0 0 / 16px 16px', '#0E0E0E', '#00B140'];
+    return {
+      stageStyle: s.fs
+        ? stageBase + 'position: fixed; inset: 0; z-index: 600; display: flex; flex-direction: column; border-radius: 0'
+        : stageBase + 'position: relative; border-radius: 12px; border: 1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08)',
+      arenaH: s.fs ? 'flex: 1; min-height: 360px' : 'height: 340px',
+      fs: s.fs, fsOff: !s.fs, fsPressed: s.fs ? 'true' : 'false',
+      fsLabel: s.fs ? 'Свернуть' : 'На весь экран',
+      toggleFs: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ fs: !s.fs }); },
+      obsUrl: s.obsShow ? 'https://streops.ru/w/giveaway/3c81e0f7a2d4' : 'https://streops.ru/w/giveaway/••••••••••••',
+      obsShowLabel: s.obsShow ? 'Скрыть ссылку' : 'Показать ссылку',
+      toggleObsShow: () => this.setState({ obsShow: !s.obsShow }),
+      obsCopyLabel: s.obsCopied ? 'Скопировано' : 'Скопировать',
+      copyObs: () => this.setState({ obsCopied: true }),
+      obsPreviewBg: obsBgs[s.obsBg],
+      obsBgOpt: ['Прозрачный', 'Тёмный', 'Хромакей'].map((l, i) => ({ label: l, sel: s.obsBg === i ? 'true' : 'false', style: seg(s.obsBg, i), pick: () => this.setState({ obsBg: i }) })),
+      obsWhenOpt: ['Всегда', 'Только во время розыгрыша'].map((l, i) => ({ label: l, sel: s.obsWhen === i ? 'true' : 'false', style: seg(s.obsWhen, i), pick: () => this.setState({ obsWhen: i }) })),
+      obsSound: s.obsSound ? 'true' : 'false',
+      toggleObsSound: () => this.setState({ obsSound: !s.obsSound }),
+      steps: stepNames.map((n, i) => ({ n: i + 1, label: n, cur: i === pi ? 'step' : 'false', style: i <= pi ? 'color: #F2F2F2' : '', dot: i < pi ? 'background: #F2F2F2; color: #0A0A0A; border-color: #F2F2F2' : (i === pi ? 'border-color: #F2F2F2; color: #F2F2F2' : '') })),
+      locked, isLive: pi > 0,
+      winnersOpt: ['1', '2', '3', '5'].map((l, i) => ({ label: l, sel: s.winners === i ? 'true' : 'false', style: seg(s.winners, i), pick: () => this.setState({ winners: i }) })),
+      entryOpt: EN.map((e, i) => ({ label: e[0], note: e[1], sel: s.entry === i ? 'true' : 'false', style: card(s.entry, i), pick: () => this.setState({ entry: i }) })),
+      entryWord: s.entry === 0, entryPoints: s.entry === 1, entryActive: s.entry === 2, entryList: s.entry === 3,
+      timerOpt: ['1 мин', '2 мин', '5 мин', 'Вручную'].map((l, i) => ({ label: l, sel: s.timer === i ? 'true' : 'false', style: seg(s.timer, i), pick: () => this.setState({ timer: i }) })),
+      rules: RU.map((r, i) => ({ label: r[0], note: r[1], on: s.rules[i] ? 'true' : 'false', toggle: () => { const n = s.rules.slice(); n[i] = !n[i]; this.setState({ rules: n }); } })),
+      modeOpt: MO.map((m, i) => ({ label: m[0], note: m[1], sel: s.mode === i ? 'true' : 'false', style: card(s.mode, i), pick: () => this.setState({ mode: i, anim: false, stripX: -(3 * 128 + 60) }) })),
+      confirmOn: s.confirmOn ? 'true' : 'false', toggleConfirm: () => this.setState({ confirmOn: !s.confirmOn }),
+      phaseLabel: ['Подготовка', 'Идёт сбор участников', 'Выбираем победителя', 'Победитель'][pi],
+      count: pi === 0 ? '0' : '208',
+      isSetup: pi === 0, collecting: pi === 1, spinningNow: pi === 2, isWinner: pi === 3,
+      showRoulette: pi > 0 && s.mode === 0, showWheel: pi > 0 && s.mode === 1, showInstant: pi > 0 && pi < 3 && s.mode === 2,
+      instantGlyph: '? ? ?',
+      strip, stripX: s.stripX, stripT: s.anim ? 'transform 6s cubic-bezier(.08,.62,.12,1)' : 'none',
+      wheel, wheelDeg: s.wheelDeg, wheelT: s.wheelAnim ? 'transform 5.4s cubic-bezier(.1,.7,.12,1)' : 'none',
+      winner: win || { nick: '', ini: '', bg: '#3A3A3A', role: '', chance: '', tickets: '' },
+      winnerTitle: needW > 1 ? 'Победитель ' + (nDrawn + 1) + ' из ' + needW : 'Победитель',
+      waitConfirm: s.confirmOn && !s.confirmed, confirmed: s.confirmOn && s.confirmed,
+      noReroll: ppl.length - s.excluded.length - s.drawn.length <= 1,
+      hasPeople: pi > 0,
+      people: ppl.map((p, i) => Object.assign({}, p, {
+        bar: Math.min(100, p.w * 50) + '%',
+        rowStyle: (s.excluded.indexOf(i) >= 0) ? 'opacity: .4; text-decoration: line-through' : ((i === s.winIdx && pi === 3) || s.drawn.indexOf(i) >= 0 ? 'background: rgba(255,255,255,0.06)' : '')
+      })),
+      spinLabel: ['Крутить рулетку', 'Крутить колесо', 'Выбрать победителя'][s.mode],
+      start: () => this.setState({ phase: 'collecting', excluded: [], drawn: [], winIdx: -1, anim: false, stripX: -(3 * 128 + 60) }),
+      cancel: () => this.setState({ phase: 'setup', winIdx: -1 }),
+      spin: () => this.runSpin([]),
+      reroll: () => this.runSpin([s.winIdx]),
+      confirm: () => this.setState({ confirmed: true }),
+      finishLabel: nDrawn + 1 < needW ? 'Следующий победитель' : 'Завершить розыгрыш',
+      finish: () => {
+        const drawn = s.drawn.concat([s.winIdx]);
+        if (drawn.length < needW) { this.state.drawn = drawn; this.setState({ drawn }); this.runSpin([]); return; }
+        const names = drawn.map((i) => ppl[i].nick).join(', ');
+        this.setState({ phase: 'setup', drawn: [], excluded: [], winIdx: -1, anim: false, stripX: -(3 * 128 + 60),
+          history: [{ d: '10.10', p: 'Ключ Cyberpunk 2077', n: '208', w: names, s: 'Выдан', style: 'border: 1px solid #6E6E6E; color: #F2F2F2' }].concat(history) });
+      },
+      history
+    };
+  }
+}
+DCMount(Component);
+</script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>StreOps — стекло, радиусы, тени</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0A0A0A}
+a{color:#F2F2F2}a:hover{color:#FFFFFF}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.why{font-size:13px;line-height:18px;color:#8F8F8F;margin:0}
+.why b{color:#B4B4B4;font-weight:500}
+.h2{margin:12px 0 0;font-size:32px;line-height:38px;letter-spacing:-.02em;font-weight:600}
+.lead{margin:12px 0 0;font-size:15px;line-height:22px;color:#B4B4B4;max-width:760px}
+.t{width:100%;border-collapse:collapse;font-size:13px;line-height:18px}
+.t th{text-align:left;font-weight:500;color:#8F8F8F;padding:10px 12px;font-size:12px;border-bottom:1px solid #3A3A3A}
+.t td{border-top:1px solid #1F1F1F;padding:9px 12px;vertical-align:top;color:#DCDCDC}
+</style>
+</helmet>
+<div style="width: 1440px; min-height: 2500px; box-sizing: border-box; padding: 72px 96px 96px; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
+<p class="ov">02 · Прозрачность и стекло</p>
+<h1 style="margin: 16px 0 0; font-size: 56px; line-height: 60px; letter-spacing: -0.03em; font-weight: 500">Три уровня стекла</h1>
+<p class="lead">Стекло показывает, что под слоем что-то продолжается. У каждого уровня четыре параметра: заливка, размытие, граница и внутренний блик сверху. Чем выше уровень, тем плотнее заливка и сильнее размытие, потому что верхнему слою нужен самый спокойный фон под текстом.</p>
+
+<div style="position: relative; margin-top: 40px; height: 560px; border-radius: 12px; overflow: hidden; border: 1px solid #2A2A2A; background: #050505">
+<div aria-hidden="true" style="position: absolute; inset: 0; background: radial-gradient(600px 320px at 18% 30%, rgba(255,255,255,0.22), transparent 70%), radial-gradient(500px 400px at 82% 75%, rgba(255,255,255,0.14), transparent 70%), linear-gradient(115deg, transparent 38%, rgba(255,255,255,0.10) 44%, transparent 50%, transparent 58%, rgba(255,255,255,0.06) 61%, transparent 66%)"></div>
+<div aria-hidden="true" style="position: absolute; left: 60px; top: 300px; right: 60px; display: flex; gap: 6px; align-items: flex-end; height: 200px; opacity: 0.55"><span style="flex: 1; height: 30%; background: #F2F2F2"></span><span style="flex: 1; height: 55%; background: #F2F2F2"></span><span style="flex: 1; height: 42%; background: #F2F2F2"></span><span style="flex: 1; height: 80%; background: #F2F2F2"></span><span style="flex: 1; height: 64%; background: #F2F2F2"></span><span style="flex: 1; height: 95%; background: #F2F2F2"></span><span style="flex: 1; height: 50%; background: #F2F2F2"></span><span style="flex: 1; height: 72%; background: #F2F2F2"></span><span style="flex: 1; height: 38%; background: #F2F2F2"></span><span style="flex: 1; height: 60%; background: #F2F2F2"></span><span style="flex: 1; height: 85%; background: #F2F2F2"></span><span style="flex: 1; height: 45%; background: #F2F2F2"></span></div>
+<svg aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.06; pointer-events: none"><filter id="g1"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#g1)"></rect></svg>
+
+<div style="position: absolute; left: 40px; top: 40px; width: 360px; height: 460px; box-sizing: border-box; padding: 24px; border-radius: 8px; background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04)">
+<p class="ov" style="color: #B4B4B4">ambient</p>
+<p style="margin: 8px 0 0; font-size: 20px; line-height: 26px; font-weight: 600">Боковое меню, фон секций</p>
+<p style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: #DCDCDC">Слой почти незаметен: фон под ним остаётся атмосферой. Текст сюда кладём только крупный и только на тёмные участки фона.</p>
+</div>
+<div style="position: absolute; left: 440px; top: 72px; width: 380px; height: 400px; box-sizing: border-box; padding: 24px; border-radius: 8px; background: rgba(18,18,18,0.62); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 12px -2px rgba(0,0,0,0.5)">
+<p class="ov" style="color: #B4B4B4">raised</p>
+<p style="margin: 8px 0 0; font-size: 20px; line-height: 26px; font-weight: 600">Хедер, карточки, панель чата</p>
+<p style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: #DCDCDC">Основной рабочий слой. Плотность 62% гарантирует контраст текста ≥ 4.5:1 поверх любого фона, если включено затемнение фона (см. «Кастомизация»).</p>
+<div style="margin-top: 20px; display: flex; align-items: baseline; gap: 8px"><span class="mono" style="font-size: 32px; font-weight: 500; letter-spacing: -0.02em">3 912</span><span style="font-size: 13px; color: #B4B4B4">сообщений за стрим</span></div>
+</div>
+<div style="position: absolute; left: 860px; top: 110px; width: 380px; height: 330px; box-sizing: border-box; padding: 24px; border-radius: 12px; background: rgba(14,14,14,0.84); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border: 1px solid rgba(255,255,255,0.14); box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 32px 80px -16px rgba(0,0,0,0.75)">
+<p class="ov" style="color: #B4B4B4">overlay</p>
+<p style="margin: 8px 0 0; font-size: 20px; line-height: 26px; font-weight: 600">Модалки, меню, тосты</p>
+<p style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: #DCDCDC">Слой почти сплошной, фон угадывается только по краю. Сюда кладём любой текст, включая мелкий.</p>
+<div style="margin-top: 20px; display: flex; gap: 8px"><button type="button" style="height: 36px; padding: 0 14px; border-radius: 6px; border: 1px solid #3A3A3A; background: transparent; color: #F2F2F2; font: 500 14px/20px 'Onest', sans-serif">Отмена</button><button type="button" style="height: 36px; padding: 0 14px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 14px/20px 'Onest', sans-serif">Сохранить</button></div>
+</div>
+</div>
+
+<section style="margin-top: 48px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px">
+<div>
+<p class="ov">Dark</p>
+<table class="t" style="margin-top: 12px">
+<thead><tr><th>Токен</th><th>ambient</th><th>raised</th><th>overlay</th></tr></thead>
+<tbody>
+<tr><td class="mono">--glass-*-bg</td><td class="mono">#FFF / 3%</td><td class="mono">#121212 / 62%</td><td class="mono">#0E0E0E / 84%</td></tr>
+<tr><td class="mono">--glass-*-blur</td><td class="mono">12px</td><td class="mono">24px</td><td class="mono">40px</td></tr>
+<tr><td class="mono">--glass-*-border</td><td class="mono">#FFF / 6%</td><td class="mono">#FFF / 10%</td><td class="mono">#FFF / 14%</td></tr>
+<tr><td class="mono">--glass-*-highlight</td><td class="mono">inset 0 1px #FFF/4%</td><td class="mono">inset 0 1px #FFF/8%</td><td class="mono">inset 0 1px #FFF/12%</td></tr>
+<tr><td class="mono">--glass-*-shadow</td><td class="mono">none</td><td class="mono">shadow-2</td><td class="mono">shadow-4</td></tr>
+<tr><td class="mono">fallback</td><td class="mono">N1</td><td class="mono">N2</td><td class="mono">N4</td></tr>
+</tbody>
+</table>
+</div>
+<div>
+<p class="ov">Light</p>
+<table class="t" style="margin-top: 12px">
+<thead><tr><th>Токен</th><th>ambient</th><th>raised</th><th>overlay</th></tr></thead>
+<tbody>
+<tr><td class="mono">--glass-*-bg</td><td class="mono">#FFF / 45%</td><td class="mono">#FFF / 72%</td><td class="mono">#FFF / 90%</td></tr>
+<tr><td class="mono">--glass-*-blur</td><td class="mono">12px</td><td class="mono">24px</td><td class="mono">40px</td></tr>
+<tr><td class="mono">--glass-*-border</td><td class="mono">#000 / 6%</td><td class="mono">#000 / 8%</td><td class="mono">#000 / 10%</td></tr>
+<tr><td class="mono">--glass-*-highlight</td><td class="mono">inset 0 1px #FFF/70%</td><td class="mono">inset 0 1px #FFF/90%</td><td class="mono">inset 0 1px #FFF</td></tr>
+<tr><td class="mono">--glass-*-shadow</td><td class="mono">none</td><td class="mono">shadow-2</td><td class="mono">shadow-4</td></tr>
+<tr><td class="mono">fallback</td><td class="mono">N12</td><td class="mono">N13</td><td class="mono">N13</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<div style="margin-top: 20px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+<p class="why"><b>Фолбэк.</b> Если не работает <span class="mono">backdrop-filter</span> или включено <span class="mono">prefers-reduced-transparency</span>, стекло заменяется сплошной ступенью из строки fallback. Так читаемость не зависит от возможностей браузера.</p>
+<p class="why"><b>Блик сверху.</b> Блик — это внутренняя тень <span class="mono">inset 0 1px</span>, а не градиент. Она даёт срез кромки стекла и не окрашивает содержимое.</p>
+<p class="why"><b>Зерно.</b> Шум <span class="mono">--grain-opacity</span> 4% (dark) и 3% (light) тайлом 160 px лежит один раз на фоне страницы, а не на каждой карточке. Это убирает бандинг в градиентах и ничего не стоит при скролле.</p>
+</div>
+
+<section style="margin-top: 80px">
+<p class="ov">Радиусы</p>
+<h2 class="h2">Сдержанно: от 0 до 12, плюс капсула для круглых</h2>
+<div style="margin-top: 28px; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 10px"><div style="height: 88px; border: 1px solid #6E6E6E; border-radius: 0; background: #111111"></div><p class="mono" style="margin: 0; font-size: 13px">radius-0 · 0</p><p class="why">Таблицы, разделители, полосы графиков</p></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><div style="height: 88px; border: 1px solid #6E6E6E; border-radius: 2px; background: #111111"></div><p class="mono" style="margin: 0; font-size: 13px">radius-xs · 2</p><p class="why">Мини-график, кромка выделения в тексте</p></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><div style="height: 88px; border: 1px solid #6E6E6E; border-radius: 4px; background: #111111"></div><p class="mono" style="margin: 0; font-size: 13px">radius-sm · 4</p><p class="why">Бейджи, чипы, чекбокс, тултип</p></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><div style="height: 88px; border: 1px solid #6E6E6E; border-radius: 6px; background: #111111"></div><p class="mono" style="margin: 0; font-size: 13px">radius-md · 6</p><p class="why">Кнопки, поля, пункты меню</p></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><div style="height: 88px; border: 1px solid #6E6E6E; border-radius: 8px; background: #111111"></div><p class="mono" style="margin: 0; font-size: 13px">radius-lg · 8</p><p class="why">Карточки, меню, тосты, поповеры</p></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><div style="height: 88px; border: 1px solid #6E6E6E; border-radius: 12px; background: #111111"></div><p class="mono" style="margin: 0; font-size: 13px">radius-xl · 12</p><p class="why">Модалки, превью стримов, drawer</p></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><div style="height: 88px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px dashed #3A3A3A; border-radius: 8px"><span style="width: 40px; height: 40px; border-radius: 999px; background: #B4B4B4"></span><span style="width: 36px; height: 20px; border-radius: 999px; background: #FFFFFF"></span></div><p class="mono" style="margin: 0; font-size: 13px">radius-full</p><p class="why">Только аватар, точка статуса, тумблер, ползунок</p></div>
+</div>
+<p class="why" style="margin-top: 16px"><b>Правило вложенности:</b> внутренний радиус = внешний − отступ (не меньше 2). Например, карточка 8 с отступом 4 даёт превью 4. <b>Почему:</b> концентричные углы выглядят выточенными, а не наклеенными.</p>
+</section>
+
+<section style="margin-top: 80px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px">
+<div>
+<p class="ov">Границы</p>
+<table class="t" style="margin-top: 12px">
+<thead><tr><th>Токен</th><th>Значение</th><th>Где применяется</th></tr></thead>
+<tbody>
+<tr><td class="mono">--border-w-1</td><td class="mono">1px</td><td>Все рамки и разделители по умолчанию</td></tr>
+<tr><td class="mono">--border-w-2</td><td class="mono">2px</td><td>Фокус, ошибка, активный таб, выбранная карточка тарифа</td></tr>
+<tr><td class="mono">--border-style-warn</td><td class="mono">dashed</td><td>Предупреждение, зона перетаскивания файла</td></tr>
+<tr><td class="mono">--icon-stroke</td><td class="mono">1.5px</td><td>Штрих иконок; толще рамок, чтобы не теряться</td></tr>
+</tbody>
+</table>
+</div>
+<div>
+<p class="ov">Тени</p>
+<table class="t" style="margin-top: 12px">
+<thead><tr><th>Токен</th><th>Dark</th><th>Light</th><th>Где</th></tr></thead>
+<tbody>
+<tr><td class="mono">shadow-1</td><td class="mono">0 1px 2px #000/50%</td><td class="mono">0 1px 2px #000/6%</td><td>Поля и кнопки в light</td></tr>
+<tr><td class="mono">shadow-2</td><td class="mono">0 4px 12px -2px #000/50%</td><td class="mono">0 4px 12px -2px #000/8%</td><td>Меню, поповер, raised-стекло</td></tr>
+<tr><td class="mono">shadow-3</td><td class="mono">0 12px 32px -8px #000/60%</td><td class="mono">0 12px 32px -8px #000/12%</td><td>Тост, drawer, перетаскиваемое</td></tr>
+<tr><td class="mono">shadow-4</td><td class="mono">0 32px 80px -16px #000/75%</td><td class="mono">0 32px 80px -16px #000/18%</td><td>Модальное окно</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<div style="margin-top: 32px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+<div style="padding: 20px; border: 1px solid #2A2A2A; border-radius: 8px; background: #111111"><p style="margin: 0; font-size: 15px; font-weight: 600">Граница — если элемент в той же плоскости</p><p class="why" style="margin-top: 6px">Карточки, поля, таблицы и секции лежат на странице и отделяются линией 1 px. В покое у них нет тени.</p></div>
+<div style="padding: 20px; border: 1px solid rgba(255,255,255,0.14); border-radius: 8px; background: #1F1F1F; box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 12px 32px -8px rgba(0,0,0,0.6)"><p style="margin: 0; font-size: 15px; font-weight: 600">Тень — если элемент парит</p><p class="why" style="margin-top: 6px">Тень получают только оверлеи и перетаскиваемые элементы. В тёмной теме она всегда идёт вместе с границей и бликом, а не вместо них.</p></div>
+<div style="padding: 20px; border: 1px dashed #3A3A3A; border-radius: 8px"><p style="margin: 0; font-size: 15px; font-weight: 600">Никогда</p><p class="why" style="margin-top: 6px">Тень у карточки в покое, тень вместо границы на тёмном фоне, цветные свечения (glow) и тени на тексте.</p></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2500}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

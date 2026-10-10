@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StreOps — код токенов</title>
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0A0A0A}
+a{color:#F2F2F2}a:hover{color:#FFFFFF}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.why{font-size:13px;line-height:18px;color:#8F8F8F;margin:0}
+.why b{color:#B4B4B4;font-weight:500}
+.file{border:1px solid #2A2A2A;border-radius:8px;background:#0E0E0E;overflow:hidden}
+.fh{display:flex;justify-content:space-between;align-items:center;height:40px;padding:0 16px;border-bottom:1px solid #2A2A2A;background:#111111;font-family:'JetBrains Mono',monospace;font-size:12px;color:#DCDCDC}
+pre{margin:0;padding:16px;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:17px;color:#DCDCDC;white-space:pre;overflow:hidden}
+.c{color:#6E6E6E}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="dc">
+
+<div style="width: 1440px; min-height: 4200px; box-sizing: border-box; padding: 72px 96px 96px; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
+<p class="ov">07 · Код</p>
+<h1 style="margin: 16px 0 0; font-size: 56px; line-height: 60px; letter-spacing: -0.03em; font-weight: 500">CSS-переменные → Tailwind → JSON</h1>
+<p style="margin: 12px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; max-width: 820px">Источник правды — CSS-переменные. Tailwind только ссылается на них через <span class="mono">var()</span>, поэтому смена темы и пользовательские <span class="mono">--user-*</span> применяются в рантайме без пересборки. JSON в формате W3C Design Tokens нужен для Figma, документации и проверок контраста в CI. Полные файлы лежат в репозитории: <span class="mono">design-system/tokens.css</span>, <span class="mono">tailwind.config.ts</span>, <span class="mono">tokens.json</span>.</p>
+<p class="why" style="margin-top: 10px"><b>Почему без alpha-модификаторов Tailwind (bg-fg/50):</b> они требуют хранить цвета как RGB-каналы. Вместо этого полупрозрачности заданы отдельными токенами <span class="mono">--state-*</span> и <span class="mono">--glass-*</span>, чтобы прозрачность была решением системы, а не случайной цифрой в разметке.</p>
+
+<div style="margin-top: 40px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+<div class="file">
+<div class="fh"><span>design-system/tokens.css · 1/2</span><span style="color: #8F8F8F">:root — dark</span></div>
+<pre><span class="c">/* Тёмная тема — основная */</span>
+:root, [data-theme="dark"] {
+  color-scheme: dark;
+  <span class="c">/* Нейтральная шкала N0–N13 */</span>
+  --n-0: #000000;  --n-1: #0A0A0A;  --n-2: #111111;
+  --n-3: #171717;  --n-4: #1F1F1F;  --n-5: #2A2A2A;
+  --n-6: #3A3A3A;  --n-7: #525252;  --n-8: #6E6E6E;
+  --n-9: #8F8F8F;  --n-10: #B4B4B4; --n-11: #DCDCDC;
+  --n-12: #F2F2F2; --n-13: #FFFFFF;
+
+  --bg-void: var(--n-0);
+  --bg-page: var(--n-1);
+  --bg-surface: var(--n-2);
+  --bg-raised: var(--n-3);
+  --bg-overlay: var(--n-4);
+
+  --state-hover: rgba(255,255,255,.04);
+  --state-active: rgba(255,255,255,.08);
+  --state-selected: rgba(255,255,255,.10);
+
+  --border-subtle: var(--n-5);
+  --border-default: var(--n-6);
+  --border-strong: var(--n-8);   <span class="c">/* ≥ 3:1 */</span>
+
+  --text-primary: var(--n-12);   <span class="c">/* 17.68:1 */</span>
+  --text-secondary: var(--n-10); <span class="c">/*  9.55:1 */</span>
+  --text-muted: var(--n-9);      <span class="c">/*  6.12:1 */</span>
+  --text-disabled: var(--n-7);
+  --text-on-inverse: var(--n-1);
+
+  --fill-inverse: var(--n-13);
+  --fill-inverse-hover: var(--n-11);
+  --fill-inverse-active: var(--n-10);
+
+  --focus-color: var(--n-13);
+  --focus-gap: var(--n-1);
+  --focus-ring: 0 0 0 2px var(--focus-gap),
+                0 0 0 4px var(--focus-color);
+
+  <span class="c">/* Единственный акцент */</span>
+  --live: #D92D20;        <span class="c">/* белый текст 4.83:1 */</span>
+  --live-hover: #C42B1C;
+  --live-text: #FF6369;   <span class="c">/* на N1 6.83:1 */</span>
+  --live-border: rgba(255,99,105,.40);
+  --live-on: #FFFFFF;
+
+  <span class="c">/* Семантика: рисунок + иконка */</span>
+  --status-success-border: 1px solid var(--n-8);
+  --status-success-bg: rgba(255,255,255,.04);
+  --status-warning-border: 1px dashed var(--n-10);
+  --status-warning-bg: repeating-linear-gradient(
+    135deg, rgba(255,255,255,.05) 0 1px,
+    transparent 1px 7px);
+  --status-error-border: 2px solid var(--n-12);
+  --status-error-bg: repeating-linear-gradient(
+    135deg, rgba(255,255,255,.09) 0 2px,
+    transparent 2px 6px);
+  --status-info-border: 1px solid var(--n-6);
+  --status-info-bg: transparent;
+
+  <span class="c">/* Стекло */</span>
+  --glass-ambient-bg: rgba(255,255,255,.03);
+  --glass-ambient-blur: 12px;
+  --glass-ambient-border: rgba(255,255,255,.06);
+  --glass-ambient-highlight: inset 0 1px 0 rgba(255,255,255,.04);
+  --glass-raised-bg: rgba(18,18,18,
+    calc(.62 + var(--user-glass-boost)));
+  --glass-raised-blur: 24px;
+  --glass-raised-border: rgba(255,255,255,.10);
+  --glass-raised-highlight: inset 0 1px 0 rgba(255,255,255,.08);
+  --glass-overlay-bg: rgba(14,14,14,
+    calc(.84 + var(--user-glass-boost)));
+  --glass-overlay-blur: 40px;
+  --glass-overlay-border: rgba(255,255,255,.14);
+  --glass-overlay-highlight: inset 0 1px 0 rgba(255,255,255,.12);
+
+  --shadow-1: 0 1px 2px rgba(0,0,0,.50);
+  --shadow-2: 0 4px 12px -2px rgba(0,0,0,.50);
+  --shadow-3: 0 12px 32px -8px rgba(0,0,0,.60);
+  --shadow-4: 0 32px 80px -16px rgba(0,0,0,.75);
+  --scrim: rgba(0,0,0,.64);
+  --grain-opacity: .04;
+
+  <span class="c">/* ===== Пользовательский слой ===== */</span>
+  --user-bg-color: var(--n-1);
+  --user-bg-image: none;
+  --user-bg-blur: 0px;
+  --user-bg-dim: 0;
+  --user-bg-dim-min: 0;
+  --user-gradient: none;
+  --user-tint: transparent;
+  --user-effect: none;
+  --user-glass-boost: 0;
+}</pre>
+</div>
+<div class="file">
+<div class="fh"><span>design-system/tokens.css · 2/2</span><span style="color: #8F8F8F">light + общие</span></div>
+<pre>[data-theme="light"] {
+  color-scheme: light;
+  --bg-page: var(--n-12);
+  --bg-surface: var(--n-13);
+  --bg-raised: var(--n-13);
+  --bg-overlay: var(--n-13);
+  --state-hover: rgba(0,0,0,.04);
+  --state-active: rgba(0,0,0,.07);
+  --state-selected: rgba(0,0,0,.08);
+  --border-subtle: var(--n-11);
+  --border-default: var(--n-10);
+  --border-strong: var(--n-8);
+  --text-primary: var(--n-1);
+  --text-secondary: var(--n-7);
+  --text-muted: var(--n-8);
+  --text-disabled: var(--n-10);
+  --text-on-inverse: var(--n-12);
+  --fill-inverse: var(--n-1);
+  --fill-inverse-hover: var(--n-5);
+  --focus-color: var(--n-0);
+  --focus-gap: var(--n-12);
+  --live-hover: #B42318;
+  --live-text: #C42B1C;   <span class="c">/* на N12 5.06:1 */</span>
+  --status-error-border: 2px solid var(--n-1);
+  --glass-ambient-bg: rgba(255,255,255,.45);
+  --glass-raised-bg: rgba(255,255,255,
+    calc(.72 + var(--user-glass-boost)));
+  --glass-overlay-bg: rgba(255,255,255,
+    calc(.90 + var(--user-glass-boost)));
+  --glass-raised-border: rgba(0,0,0,.08);
+  --shadow-2: 0 4px 12px -2px rgba(0,0,0,.08);
+  --shadow-4: 0 32px 80px -16px rgba(0,0,0,.18);
+  --grain-opacity: .03;
+  --user-bg-color: var(--n-12);
+  <span class="c">/* …полный список — в файле */</span>
+}
+
+:root {
+  --font-sans: 'Onest', 'Golos Text', system-ui,
+    -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono',
+    'Cascadia Mono', Consolas, monospace;
+
+  --radius-0: 0; --radius-xs: 2px; --radius-sm: 4px;
+  --radius-md: 6px; --radius-lg: 8px; --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  --dur-instant: 0ms;  --dur-fast: 80ms;
+  --dur-quick: 120ms;  --dur-base: 180ms;
+  --dur-moderate: 240ms; --dur-slow: 320ms;
+  --dur-deliberate: 480ms;
+  --dur-shimmer: 1600ms; --dur-pulse: 2000ms;
+  --ease-standard: cubic-bezier(.2,0,0,1);
+  --ease-enter: cubic-bezier(.16,1,.3,1);
+  --ease-exit: cubic-bezier(.4,0,1,1);
+
+  --z-decor: -1; --z-base: 0; --z-raised: 10;
+  --z-sticky: 100; --z-header: 200; --z-dropdown: 300;
+  --z-drawer: 400; --z-modal: 500; --z-toast: 600;
+  --z-tooltip: 700; --z-skiplink: 900;
+
+  --header-h: 64px; --sidebar-w: 248px;
+  --sidebar-w-collapsed: 64px;
+  --chat-w: 360px; --drawer-w: 480px;
+}
+
+.num { font-family: var(--font-mono);
+       font-variant-numeric: tabular-nums; }
+:focus-visible { box-shadow: var(--focus-ring); }
+
+.user-backdrop { position: fixed; inset: 0;
+  z-index: var(--z-decor); pointer-events: none;
+  contain: strict; background: var(--user-bg-color); }
+.user-backdrop__image { position: absolute;
+  inset: calc(var(--user-bg-blur) * -2);
+  background: var(--user-bg-image) center/cover;
+  filter: blur(var(--user-bg-blur)); }
+.user-backdrop__scrim { position: absolute; inset: 0;
+  background: rgba(0,0,0,
+    max(var(--user-bg-dim), var(--user-bg-dim-min))); }
+
+@media (prefers-reduced-transparency: reduce) {
+  :root { --glass-raised-bg: var(--bg-surface);
+          --glass-overlay-bg: var(--bg-overlay); }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0ms; --dur-base: 120ms;
+    --dur-moderate: 120ms; --dur-slow: 120ms; }
+  *, *::before, *::after {
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important; }
+  .user-effects { display: none; }
+}</pre>
+</div>
+</div>
+
+<div style="margin-top: 24px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+<div class="file">
+<div class="fh"><span>design-system/tailwind.config.ts</span><span style="color: #8F8F8F">Tailwind 3.4</span></div>
+<pre>import type { Config } from 'tailwindcss';
+import plugin from 'tailwindcss/plugin';
+
+const v = (n: string) => `var(--${n})`;
+
+export default {
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  darkMode: ['selector', '[data-theme="dark"]'],
+  theme: {
+    screens: { sm: '640px', lg: '1024px',
+               xl: '1280px', '2xl': '1536px' },
+    colors: {
+      transparent: 'transparent',
+      current: 'currentColor',
+      n: Object.fromEntries(Array.from(
+        { length: 14 }, (_, i) => [i, v(`n-${i}`)])),
+      bg: { void: v('bg-void'), page: v('bg-page'),
+        surface: v('bg-surface'), raised: v('bg-raised'),
+        overlay: v('bg-overlay') },
+      state: { hover: v('state-hover'),
+        active: v('state-active'),
+        selected: v('state-selected') },
+      line: { subtle: v('border-subtle'),
+        DEFAULT: v('border-default'),
+        strong: v('border-strong') },
+      fg: { DEFAULT: v('text-primary'),
+        secondary: v('text-secondary'),
+        muted: v('text-muted'),
+        disabled: v('text-disabled'),
+        'on-inverse': v('text-on-inverse') },
+      inverse: { DEFAULT: v('fill-inverse'),
+        hover: v('fill-inverse-hover'),
+        active: v('fill-inverse-active') },
+      live: { DEFAULT: v('live'), hover: v('live-hover'),
+        text: v('live-text'), border: v('live-border'),
+        on: v('live-on') },
+      focus: v('focus-color'),
+    },
+    fontFamily: { sans: [v('font-sans')],
+                  mono: [v('font-mono')] },
+    fontSize: {
+      'display-2xl': ['72px', { lineHeight: '76px',
+        letterSpacing: '-0.035em', fontWeight: '500' }],
+      'display-xl': ['52px', { lineHeight: '56px',
+        letterSpacing: '-0.03em', fontWeight: '500' }],
+      h1: ['32px', { lineHeight: '38px',
+        letterSpacing: '-0.02em', fontWeight: '600' }],
+      h2: ['24px', { lineHeight: '30px',
+        letterSpacing: '-0.015em', fontWeight: '600' }],
+      h3: ['20px', { lineHeight: '26px',
+        letterSpacing: '-0.01em', fontWeight: '600' }],
+      'body-l': ['17px', { lineHeight: '26px' }],
+      body: ['15px', { lineHeight: '22px' }],
+      'body-s': ['13px', { lineHeight: '18px' }],
+      caption: ['12px', { lineHeight: '16px',
+        fontWeight: '500' }],
+      overline: ['11px', { lineHeight: '14px',
+        letterSpacing: '0.08em', fontWeight: '600' }],
+      'mono-display': ['40px', { lineHeight: '44px' }],
+      'mono-l': ['24px', { lineHeight: '28px' }],
+      'mono-m': ['15px', { lineHeight: '22px' }],
+      'mono-s': ['13px', { lineHeight: '18px' }],
+      'mono-xs': ['11px', { lineHeight: '14px' }],
+    },
+    spacing: { 0: '0px', px: '1px', 0.5: '2px', 1: '4px',
+      2: '8px', 3: '12px', 4: '16px', 5: '20px',
+      6: '24px', 8: '32px', 10: '40px', 12: '48px',
+      16: '64px', 20: '80px', 24: '96px', 32: '128px',
+      header: v('header-h'), sidebar: v('sidebar-w'),
+      chat: v('chat-w'), drawer: v('drawer-w') },
+    maxWidth: { prose: '680px', form: '880px',
+      page: '1280px', wide: '1440px', full: '100%' },
+    borderRadius: { none: v('radius-0'),
+      xs: v('radius-xs'), sm: v('radius-sm'),
+      DEFAULT: v('radius-md'), md: v('radius-md'),
+      lg: v('radius-lg'), xl: v('radius-xl'),
+      full: v('radius-full') },
+    boxShadow: { none: 'none', 1: v('shadow-1'),
+      2: v('shadow-2'), 3: v('shadow-3'),
+      4: v('shadow-4'), focus: v('focus-ring') },
+    zIndex: { decor: v('z-decor'), base: v('z-base'),
+      raised: v('z-raised'), sticky: v('z-sticky'),
+      header: v('z-header'), dropdown: v('z-dropdown'),
+      drawer: v('z-drawer'), modal: v('z-modal'),
+      toast: v('z-toast'), tooltip: v('z-tooltip') },
+    transitionDuration: { fast: v('dur-fast'),
+      quick: v('dur-quick'), base: v('dur-base'),
+      moderate: v('dur-moderate'), slow: v('dur-slow'),
+      DEFAULT: v('dur-quick') },
+    transitionTimingFunction: {
+      DEFAULT: v('ease-standard'),
+      enter: v('ease-enter'), exit: v('ease-exit') },
+  },
+  plugins: [plugin(({ addComponents, addUtilities }) => {
+    const glass = (l: 'ambient' | 'raised' | 'overlay') => ({
+      backgroundColor: v(`glass-${l}-bg`),
+      backdropFilter: `blur(${v(`glass-${l}-blur`)})`,
+      border: `1px solid ${v(`glass-${l}-border`)}`,
+      boxShadow: v(`glass-${l}-highlight`),
+    });
+    addComponents({
+      '.glass-ambient': glass('ambient'),
+      '.glass-raised': glass('raised'),
+      '.glass-overlay': glass('overlay'),
+      '.status-error': {
+        border: v('status-error-border'),
+        background: v('status-error-bg') },
+    });
+    addUtilities({
+      '.num': { fontFamily: v('font-mono'),
+        fontVariantNumeric: 'tabular-nums' },
+      '.focus-ring': { '&amp;:focus-visible': {
+        outline: 'none', boxShadow: v('focus-ring') } },
+    });
+  })],
+} satisfies Config;</pre>
+</div>
+<div class="file">
+<div class="fh"><span>design-system/tokens.json</span><span style="color: #8F8F8F">W3C DTCG · фрагмент</span></div>
+<pre>{
+  "neutral": {
+    "$type": "color",
+    "0":  { "$value": "#000000" },
+    "1":  { "$value": "#0A0A0A" },
+    "8":  { "$value": "#6E6E6E",
+      "$description": "рамки контролов ≥3:1" },
+    "9":  { "$value": "#8F8F8F",
+      "$description": "приглушённый текст ≥4.5:1" },
+    "12": { "$value": "#F2F2F2" },
+    "13": { "$value": "#FFFFFF" }
+  },
+  "theme": {
+    "dark": {
+      "$type": "color",
+      "bg": {
+        "page":    { "$value": "{neutral.1}" },
+        "surface": { "$value": "{neutral.2}" },
+        "raised":  { "$value": "{neutral.3}" },
+        "overlay": { "$value": "{neutral.4}" }
+      },
+      "text": {
+        "primary":   { "$value": "{neutral.12}" },
+        "secondary": { "$value": "{neutral.10}" },
+        "muted":     { "$value": "{neutral.9}" },
+        "disabled":  { "$value": "{neutral.7}" }
+      },
+      "live": {
+        "default": { "$value": "#D92D20" },
+        "text":    { "$value": "#FF6369" }
+      }
+    },
+    "light": { "…": "зеркально, см. файл" }
+  },
+  "glass": {
+    "dark": {
+      "raised": {
+        "bg":        { "$value": "rgba(18,18,18,0.62)" },
+        "blur":      { "$value": "24px" },
+        "border":    { "$value": "rgba(255,255,255,0.10)" },
+        "highlight": { "$value":
+          "inset 0 1px 0 rgba(255,255,255,0.08)" },
+        "minOpacity": { "$value": 0.62 }
+      }
+    }
+  },
+  "font": {
+    "scale": {
+      "$type": "typography",
+      "body": { "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "15px", "lineHeight": "22px",
+        "letterSpacing": "0", "fontWeight": 400 } },
+      "mono-l": { "$value": {
+        "fontFamily": "{font.family.mono}",
+        "fontSize": "24px", "lineHeight": "28px",
+        "fontWeight": 500 } }
+    },
+    "numeric": { "$value": "tabular-nums" }
+  },
+  "motion": {
+    "duration": { "$type": "duration",
+      "quick": { "$value": "120ms" },
+      "slow":  { "$value": "320ms" } },
+    "easing": { "$type": "cubicBezier",
+      "enter": { "$value": [0.16, 1, 0.3, 1] } }
+  },
+  "z": { "$type": "number",
+    "modal": { "$value": 500 },
+    "toast": { "$value": 600 } },
+  "user": {
+    "bg-blur": { "$type": "dimension",
+      "$value": "0px", "min": "0px", "max": "40px" },
+    "bg-dim":  { "$value": 0,
+      "min": "auto (dimMin)", "max": 0.9 },
+    "effect":  { "$value": "none",
+      "options": ["none", "stars",
+                  "vignette", "grain-plus"] },
+    "glass-boost": { "$value": 0,
+      "min": 0, "max": 0.2 }
+  },
+  "presets": {
+    "graphite": { "name": "Графит", "theme": "dark" },
+    "midnight": { "name": "Полночь",
+                  "effect": "stars" },
+    "paper":    { "name": "Бумага", "theme": "light" },
+    "fog":      { "name": "Туман", "bg-blur": "24px",
+                  "bg-dim": "auto", "tint": "#6F7F75" }
+  }
+}</pre>
+</div>
+</div>
+
+<section style="margin-top: 40px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+<div style="padding: 20px; border: 1px solid #2A2A2A; border-radius: 8px"><p class="ov">Пример в разметке</p><pre style="padding: 12px 0 0; font-size: 12px">&lt;button className="h-10 px-4 rounded
+  bg-inverse text-fg-on-inverse
+  hover:bg-inverse-hover
+  active:scale-[.98] duration-fast
+  focus-ring"&gt;
+  Сохранить
+&lt;/button&gt;</pre></div>
+<div style="padding: 20px; border: 1px solid #2A2A2A; border-radius: 8px"><p class="ov">Именование</p><p class="why" style="margin-top: 10px"><span class="mono">--{категория}-{роль}-{вариант}</span>: <span class="mono">--text-muted</span>, <span class="mono">--glass-raised-blur</span>. Ступени шкалы <span class="mono">--n-*</span> в компонентах напрямую не используются, только через роли. <b>Почему:</b> светлая тема переназначает роли, а не компоненты.</p></div>
+<div style="padding: 20px; border: 1px solid #2A2A2A; border-radius: 8px"><p class="ov">Проверка в CI</p><p class="why" style="margin-top: 10px">Скрипт читает <span class="mono">tokens.json</span>, проходит пары «текст × фон» из таблицы на артборде 21 и роняет сборку, если любая пара ниже 4.5:1 (текст) или 3:1 (контролы). <b>Почему:</b> контраст ломается тихо, при правке одного hex. <span style="display: inline-flex; font-size: 11px; padding: 2px 6px; border: 1px dashed #6E6E6E; border-radius: 4px; color: #B4B4B4">Предложение</span></p></div>
+</section>
+</div>
+</template>
+<script src="../assets/dc-lite.js"></script>
+<script>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+DCMount(Component);
+</script>
+</body>
+</html>

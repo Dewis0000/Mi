@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>StreOps — философия системы</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0A0A0A}
+a{color:#F2F2F2}a:hover{color:#FFFFFF}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.why{font-size:13px;line-height:18px;color:#8F8F8F;margin:0}
+.why b{color:#B4B4B4;font-weight:500}
+.card{background:#111111;border:1px solid #2A2A2A;border-radius:8px}
+.t{width:100%;border-collapse:collapse;font-size:13px;line-height:18px}
+.t th{text-align:left;font-weight:500;color:#8F8F8F;padding:10px 12px;font-size:12px;border-bottom:1px solid #3A3A3A}
+.t td{border-top:1px solid #1F1F1F;padding:10px 12px;vertical-align:top;color:#DCDCDC}
+.prop{display:inline-flex;align-items:center;gap:6px;font-size:11px;line-height:14px;padding:3px 7px;border:1px dashed #6E6E6E;border-radius:4px;color:#B4B4B4;letter-spacing:.02em}
+</style>
+</helmet>
+<div style="position: relative; width: 1440px; min-height: 1640px; box-sizing: border-box; padding: 72px 96px 96px; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif; overflow: hidden">
+<svg aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.05; pointer-events: none; mix-blend-mode: screen"><filter id="g0"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#g0)"></rect></svg>
+<div aria-hidden="true" style="position: absolute; left: -200px; top: -320px; width: 1100px; height: 800px; background: radial-gradient(closest-side, rgba(255,255,255,0.07), rgba(255,255,255,0) 70%); pointer-events: none"></div>
+
+<header style="position: relative; display: flex; justify-content: space-between; align-items: center; padding-bottom: 24px; border-bottom: 1px solid #2A2A2A">
+<div style="display: flex; align-items: center; gap: 12px">
+<svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>
+<span style="font-size: 17px; font-weight: 600; letter-spacing: -0.01em">StreOps</span>
+<span class="mono" style="font-size: 12px; color: #8F8F8F; margin-left: 8px">streops.ru</span>
+</div>
+<div class="mono" style="font-size: 12px; color: #8F8F8F; display: flex; gap: 24px"><span>Дизайн-система v1.0</span><span>Октябрь 2026</span><span>Тёмная тема — основная</span></div>
+</header>
+
+<section style="position: relative; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; margin-top: 96px">
+<div style="grid-column: span 8">
+<p class="ov">00 · Философия</p>
+<h1 style="margin: 20px 0 0; font-size: 72px; line-height: 76px; letter-spacing: -0.035em; font-weight: 500">Монохром — это&#160;инструмент, а&#160;не&#160;настроение.</h1>
+<p style="margin: 32px 0 0; font-size: 17px; line-height: 26px; color: #B4B4B4; max-width: 680px">У стримера на экране и так шумно: игра, чат, донаты, оверлеи. Пульт управления этим шумом должен быть тихим. Поэтому в StreOps нет цвета, на который нужно отвлекаться. Иерархию задают яркость, слой, граница и шрифт, а единственный цвет оставлен для того, что важнее всего: «ты в эфире» и «это нельзя отменить».</p>
+</div>
+<div style="grid-column: span 4; align-self: end; display: flex; flex-direction: column; gap: 12px">
+<div class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 14px; background: rgba(20,20,20,0.62); border-color: rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08)">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<span style="display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; background: #D92D20; color: #FFFFFF; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: .08em"><span style="width: 6px; height: 6px; border-radius: 999px; background: #FFFFFF"></span>В ЭФИРЕ</span>
+<span class="mono" style="font-size: 13px; color: #DCDCDC">02:47:13</span>
+</div>
+<div style="display: flex; align-items: baseline; gap: 10px"><span class="mono" style="font-size: 40px; line-height: 44px; letter-spacing: -0.02em; font-weight: 500">1 284</span><span style="font-size: 13px; color: #8F8F8F">зрителя сейчас</span></div>
+<p class="why" style="margin: 0">Красный стоит только там, где «В ЭФИРЕ». Остальную иерархию держат размер, моноширинные цифры и яркость.</p>
+</div>
+</div>
+</section>
+
+<section style="position: relative; margin-top: 96px">
+<p class="ov">Как читается иерархия</p>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin-top: 24px">
+<div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; gap: 4px; height: 40px; align-items: flex-end"><span style="flex: 1; height: 40px; background: #F2F2F2; border-radius: 2px"></span><span style="flex: 1; height: 40px; background: #B4B4B4; border-radius: 2px"></span><span style="flex: 1; height: 40px; background: #8F8F8F; border-radius: 2px"></span><span style="flex: 1; height: 40px; background: #525252; border-radius: 2px"></span></div>
+<h3 style="margin: 4px 0 0; font-size: 20px; line-height: 26px; font-weight: 600; letter-spacing: -0.01em">1. Яркость</h3>
+<p style="margin: 0; font-size: 15px; line-height: 22px; color: #B4B4B4">Чем светлее текст, тем он важнее. Четыре уровня: основной, вторичный, приглушённый и недоступный.</p>
+<p class="why"><b>Почему:</b> глаз ранжирует яркость быстрее оттенка, а в монохроме это главный рычаг.</p>
+</div>
+<div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<div style="position: relative; height: 40px"><span style="position: absolute; left: 0; top: 12px; width: 70%; height: 28px; background: #111111; border: 1px solid #2A2A2A; border-radius: 4px"></span><span style="position: absolute; left: 18%; top: 6px; width: 64%; height: 28px; background: #171717; border: 1px solid #3A3A3A; border-radius: 4px"></span><span style="position: absolute; left: 36%; top: 0; width: 60%; height: 28px; background: #1F1F1F; border: 1px solid rgba(255,255,255,0.14); border-radius: 4px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.1)"></span></div>
+<h3 style="margin: 4px 0 0; font-size: 20px; line-height: 26px; font-weight: 600; letter-spacing: -0.01em">2. Слой</h3>
+<p style="margin: 0; font-size: 15px; line-height: 22px; color: #B4B4B4">Чем выше слой, тем он светлее, прозрачнее по краю и сильнее размыт под собой. Слоёв три: ambient, raised и overlay.</p>
+<p class="why"><b>Почему:</b> на тёмном фоне тень почти не видна, поэтому глубину показываем светом.</p>
+</div>
+<div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; gap: 8px; height: 40px; align-items: center"><span style="flex: 1; height: 32px; border: 1px solid #2A2A2A; border-radius: 4px"></span><span style="flex: 1; height: 32px; border: 1px solid #6E6E6E; border-radius: 4px"></span><span style="flex: 1; height: 32px; border: 1px dashed #8F8F8F; border-radius: 4px"></span><span style="flex: 1; height: 32px; border: 2px solid #F2F2F2; border-radius: 4px"></span></div>
+<h3 style="margin: 4px 0 0; font-size: 20px; line-height: 26px; font-weight: 600; letter-spacing: -0.01em">3. Граница</h3>
+<p style="margin: 0; font-size: 15px; line-height: 22px; color: #B4B4B4">Тонкая линия в 1px отделяет плоскости. Пунктир означает предупреждение, двойная толщина — ошибку или фокус.</p>
+<p class="why"><b>Почему:</b> форма линии работает и при дальтонизме, и в оттенках серого.</p>
+</div>
+<div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; gap: 12px; height: 40px; align-items: baseline"><span style="font-size: 36px; font-weight: 500; letter-spacing: -0.03em">Аа</span><span class="mono" style="font-size: 28px; font-weight: 500">0:42</span></div>
+<h3 style="margin: 4px 0 0; font-size: 20px; line-height: 26px; font-weight: 600; letter-spacing: -0.01em">4. Типографика</h3>
+<p style="margin: 0; font-size: 15px; line-height: 22px; color: #B4B4B4">Слова набираем гротеском, а цифры, команды, ID и таймеры — моноширинным шрифтом с табличными цифрами.</p>
+<p class="why"><b>Почему:</b> два голоса разделяют «что это» и «сколько», и цифры не дрожат при обновлении.</p>
+</div>
+</div>
+</section>
+
+<section style="position: relative; margin-top: 96px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px">
+<div style="grid-column: span 5">
+<p class="ov">Правило одного красного</p>
+<h2 style="margin: 16px 0 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Красный означает только «эфир» или «необратимо»</h2>
+<p style="margin: 16px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4">Акцент <span class="mono">--live</span> #D92D20 можно использовать ровно в двух местах: в статусе «В эфире» и в действиях, которые нельзя отменить (бан, удаление, отключение платформы). Ошибки форм, предупреждения и «успех» не окрашиваем: их решают яркость, иконка и рисунок границы.</p>
+<p class="why" style="margin-top: 12px"><b>Почему:</b> красный, который стоит везде, перестаёт что-либо значить. Когда он один, взгляд за долю секунды находит, где ты в эфире и что сейчас удалится.</p>
+</div>
+<div style="grid-column: 7 / span 6; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<p class="ov" style="color: #DCDCDC">Можно</p>
+<div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center">
+<span style="display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; background: #D92D20; color: #FFFFFF; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: .08em"><span style="width: 6px; height: 6px; border-radius: 999px; background: #FFFFFF"></span>В ЭФИРЕ</span>
+<button type="button" style="height: 36px; padding: 0 14px; background: #D92D20; color: #FFFFFF; border: 0; border-radius: 6px; font: 500 14px/20px 'Onest', sans-serif">Удалить аккаунт</button>
+</div>
+<p class="why">Индикатор эфира на аватаре, LIVE-бейдж, кнопка подтверждения бана или удаления, рамка блока «Опасная зона».</p>
+</div>
+<div class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<p class="ov" style="color: #DCDCDC">Нельзя</p>
+<div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; opacity: 0.55">
+<span style="height: 22px; padding: 0 8px; border: 1px solid #FF6369; color: #FF6369; border-radius: 4px; font-size: 12px; line-height: 20px; text-decoration: line-through">Обязательное поле</span>
+<span style="height: 22px; padding: 0 8px; background: #D92D20; color: #FFFFFF; border-radius: 4px; font-size: 12px; line-height: 22px; text-decoration: line-through">−12%</span>
+</div>
+<p class="why">Ошибки валидации, отрицательная дельта метрики, «горячие» тарифы, графики и декоративные акценты.</p>
+</div>
+</div>
+</section>
+
+<section style="position: relative; margin-top: 96px">
+<p class="ov">Принципы</p>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-top: 24px; border-top: 1px solid #2A2A2A">
+<div style="padding: 24px 24px 24px 0; border-bottom: 1px solid #2A2A2A"><p class="mono" style="margin: 0; color: #6E6E6E; font-size: 12px">01</p><h3 style="margin: 8px 0 6px; font-size: 17px; line-height: 24px; font-weight: 600">Тише, чем эфир</h3><p class="why">Интерфейс не спорит с игрой и чатом: никаких движущихся акцентов без причины.</p></div>
+<div style="padding: 24px; border-bottom: 1px solid #2A2A2A; border-left: 1px solid #2A2A2A"><p class="mono" style="margin: 0; color: #6E6E6E; font-size: 12px">02</p><h3 style="margin: 8px 0 6px; font-size: 17px; line-height: 24px; font-weight: 600">Цифры — главные</h3><p class="why">Метрики набираем моноширинным шрифтом с табличными цифрами, чтобы их можно было сравнивать столбцом.</p></div>
+<div style="padding: 24px; border-bottom: 1px solid #2A2A2A; border-left: 1px solid #2A2A2A"><p class="mono" style="margin: 0; color: #6E6E6E; font-size: 12px">03</p><h3 style="margin: 8px 0 6px; font-size: 17px; line-height: 24px; font-weight: 600">Смысл не только в сером</h3><p class="why">Любой статус дублируем иконкой, подписью или формой, потому что серый на сером можно прочесть по-разному.</p></div>
+<div style="padding: 24px 24px 24px 0"><p class="mono" style="margin: 0; color: #6E6E6E; font-size: 12px">04</p><h3 style="margin: 8px 0 6px; font-size: 17px; line-height: 24px; font-weight: 600">Острые углы</h3><p class="why">Радиусы не больше 12 px, а капсулы — только у аватаров, точек статуса и тумблеров. Так получается инструмент, а не игрушка.</p></div>
+<div style="padding: 24px; border-left: 1px solid #2A2A2A"><p class="mono" style="margin: 0; color: #6E6E6E; font-size: 12px">05</p><h3 style="margin: 8px 0 6px; font-size: 17px; line-height: 24px; font-weight: 600">Стекло — по делу</h3><p class="why">Размытие нужно только там, где под слоем есть контекст: хедер над лентой, модалка над панелью.</p></div>
+<div style="padding: 24px; border-left: 1px solid #2A2A2A"><p class="mono" style="margin: 0; color: #6E6E6E; font-size: 12px">06</p><h3 style="margin: 8px 0 6px; font-size: 17px; line-height: 24px; font-weight: 600">Твой фон, наша читаемость</h3><p class="why">Пользователь меняет атмосферу, а контраст текста и фокус заморожены системой.</p></div>
+</div>
+</section>
+
+<section style="position: relative; margin-top: 96px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px">
+<div style="grid-column: span 4">
+<p class="ov">Ключевые решения</p>
+<p class="why" style="margin-top: 12px">Пометка <span class="prop">Предложение</span> на любом артборде значит, что этой детали не было в брифе и её нужно подтвердить.</p>
+</div>
+<div style="grid-column: span 8">
+<table class="t">
+<thead><tr><th style="width: 30%">Решение</th><th style="width: 30%">Выбор</th><th>Почему</th></tr></thead>
+<tbody>
+<tr><td>Основная гарнитура</td><td>Onest</td><td>Гротеск, изначально нарисованный под кириллицу, без «латинских» пропорций. Бесплатный, есть в Google Fonts.</td></tr>
+<tr><td>Моноширинная</td><td class="mono">JetBrains Mono</td><td>Полная кириллица, отчётливые 0/O и 1/l, хорошо читается в мелком размере таймеров.</td></tr>
+<tr><td>Базовая единица</td><td class="mono">4 px</td><td>Делит все размеры кнопок (32 / 40 / 48) и согласуется с line-height шрифтов.</td></tr>
+<tr><td>Иконки</td><td>Lucide, штрих 1.5</td><td>Линейный открытый набор. Штрих 1.5 вместо 2 легче и точнее сочетается с весом Onest 400–500.</td></tr>
+<tr><td>Движение</td><td>Framer Motion, 80–320 мс</td><td>Анимации короткие и без отскоков, при reduced-motion остаётся только прозрачность.</td></tr>
+<tr><td>Логотип-знак</td><td>Квадрат с тремя строками <span class="prop">Предложение</span></td><td>Строки похожи на лог чата и очередь команд. Знак временный, пока нет утверждённого логотипа.</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<footer style="position: relative; margin-top: 96px; padding-top: 24px; border-top: 1px solid #2A2A2A; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px">
+<div><p class="ov">Основа</p><p class="why" style="margin-top: 8px">01 Цвет · 02 Стекло, радиусы, тени · 03 Типографика · 04 Сетка, иконки, z-index · 05 Движение и состояния</p></div>
+<div><p class="ov">Кастомизация и код</p><p class="why" style="margin-top: 8px">06 Пользовательские темы и пресеты · 07 :root, tailwind.config.ts, tokens.json</p></div>
+<div><p class="ov">Компоненты</p><p class="why" style="margin-top: 8px">10 Навигация · 11 Базовые · 12 Оверлеи · 13 Данные · 14 Продуктовые блоки</p></div>
+<div><p class="ov">Качество</p><p class="why" style="margin-top: 8px">20 Служебные состояния · 21 Доступность и тексты · 22 Матрица, зависимости, чек-лист</p></div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1640}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

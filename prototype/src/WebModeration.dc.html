@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>StreOps — модерация</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0A0A0A}
+a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.card{background:#111111;border:1px solid #2A2A2A;border-radius:8px}
+.nav-i{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;color:#B4B4B4}
+.nav-i:hover{background:rgba(255,255,255,.04);color:#F2F2F2}
+.tab{height:44px;padding:0;border:0;background:transparent;color:#8F8F8F;font:500 14px/20px 'Onest',sans-serif;display:flex;gap:6px;align-items:center;cursor:pointer;white-space:nowrap}
+.tab:hover{color:#F2F2F2}
+.sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid #6E6E6E;background:transparent;cursor:pointer;flex:none;padding:0}
+.sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:#8F8F8F;transition:transform 180ms cubic-bezier(.2,0,0,1)}
+.sw[aria-checked="true"]{background:#FFFFFF;border-color:#FFFFFF}
+.sw[aria-checked="true"] span{transform:translateX(16px);background:#0A0A0A}
+.sel{height:36px;box-sizing:border-box;padding:0 30px 0 10px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 13px/18px 'Onest',sans-serif;appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,#B4B4B4 50%),linear-gradient(135deg,#B4B4B4 50%,transparent 50%);background-position:calc(100% - 15px) 15px,calc(100% - 10px) 15px;background-size:5px 5px;background-repeat:no-repeat;cursor:pointer}
+.sel:hover{border-color:#8F8F8F}
+.sel:disabled{border-color:#2A2A2A;color:#525252;cursor:not-allowed}
+.bs{height:36px;padding:0 12px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 13px/18px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.bs:hover{background:rgba(255,255,255,.04);border-color:#6E6E6E}
+.bp{height:36px;padding:0 12px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 13px/18px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.bp:hover{background:#DCDCDC}
+.flt{padding:18px 20px;border-radius:8px;border:1px solid #2A2A2A;background:#111111;display:flex;flex-direction:column;gap:14px}
+.k{font-size:13px;color:#8F8F8F;margin:0}
+.big{margin:8px 0 0;font-size:28px;line-height:32px;font-weight:500;letter-spacing:-.02em}
+.hb{display:grid;grid-template-columns:150px minmax(0,1fr) 48px;gap:12px;align-items:center;font-size:13px;padding:6px 0}
+.tr{display:grid;grid-template-columns:60px 150px 150px minmax(0,1fr) 120px 110px;gap:12px;align-items:center;padding:10px 12px;border-top:1px solid #1F1F1F;font-size:13px;line-height:18px}
+.tr:hover{background:rgba(255,255,255,.03)}
+.badge{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:4px;font-size:12px;white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 4px 0 10px;border-radius:4px;background:#1F1F1F;border:1px solid #3A3A3A;font-size:13px}
+.chip button{width:20px;height:20px;border:0;border-radius:3px;background:transparent;color:#8F8F8F;cursor:pointer}
+.step{flex:1 1 150px;min-width:150px;padding:14px;border-radius:8px;border:1px solid #3A3A3A;background:#171717;display:flex;flex-direction:column;gap:10px;position:relative}
+.mode{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid #1F1F1F}
+@media (max-width: 900px){.tr{grid-template-columns:52px minmax(0,1fr) 110px}.tr .hide{display:none}}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
+
+<header style="position: sticky; top: 0; z-index: 200; background: rgba(10,10,10,0.72); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.08)">
+<div style="height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 24px; flex-wrap: wrap">
+<a href="WebLanding.dc.html" style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</a>
+<div style="display: flex; align-items: center; gap: 8px">
+<div role="status" aria-label="В эфире 2 часа 47 минут, 1284 зрителя" style="display: flex; align-items: center; height: 40px; border: 1px solid #2A2A2A; border-radius: 6px">
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 100%; padding: 0 12px; border-right: 1px solid #2A2A2A"><span style="width: 8px; height: 8px; border-radius: 999px; background: #D92D20; box-shadow: 0 0 0 4px rgba(217,45,32,0.25)"></span><span style="font-size: 11px; font-weight: 700; letter-spacing: .08em">В ЭФИРЕ</span></span>
+<span class="mono" style="padding: 0 12px; border-right: 1px solid #2A2A2A; font-size: 15px">02:47:13</span><span class="mono" style="padding: 0 12px; font-size: 15px">1 284</span>
+</div>
+<a href="WebSettings.dc.html" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 8px 0 6px; font-size: 14px; font-weight: 500"><span style="width: 32px; height: 32px; border-radius: 999px; background: linear-gradient(135deg, #B4B4B4, #3A3A3A); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #0A0A0A">КС</span>kira_stream</a>
+</div>
+</div>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; box-sizing: border-box; max-width: 1920px; margin: 0 auto">
+<nav aria-label="Разделы стрим-панели" style="flex: 1 1 200px; max-width: 248px; min-width: 200px; align-self: flex-start; box-sizing: border-box; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 2px">
+<p class="ov" style="padding: 8px 12px">Эфир</p>
+<a href="WebDashboard.dc.html" class="nav-i">Обзор</a>
+<a href="WebChat.dc.html" class="nav-i">Чат и эмоуты</a>
+<a href="WebModeration.dc.html" aria-current="page" class="nav-i" style="background: rgba(255,255,255,0.10); color: #F2F2F2; box-shadow: inset 2px 0 0 #F2F2F2">Модерация<span class="mono" style="margin-left: auto; font-size: 12px; color: #8F8F8F">{{ heldCount }}</span></a>
+<p class="ov" style="padding: 16px 12px 8px">Бот</p>
+<a href="WebCommands.dc.html" class="nav-i">Команды</a>
+<a href="WebMusic.dc.html" class="nav-i">Музыка</a>
+<a href="WebWidgets.dc.html" class="nav-i">Виджеты</a>
+<div style="height: 1px; background: #2A2A2A; margin: 10px 0"></div>
+<a href="WebSettings.dc.html" class="nav-i">Настройки</a>
+</nav>
+
+<main style="flex: 999 1 680px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
+<div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Модерация</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; max-width: 640px">Чат Twitch · twitch.tv/kira_stream. Бот действует от имени аккаунта StreOps с правами модератора канала.</p></div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<div style="display: flex; align-items: center; gap: 12px; padding: 6px 6px 6px 14px; border-radius: 8px; border: 1px solid #3A3A3A"><span style="font-size: 14px">Автомодерация</span><button type="button" role="switch" class="sw" aria-checked="{{ autoOn }}" aria-label="Автомодерация" onClick="{{ toggleAuto }}"><span></span></button></div>
+<button type="button" onClick="{{ toggleShield }}" aria-pressed="{{ shieldPressed }}" style="{{ shieldStyle }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>{{ shieldLabel }}</button>
+</div>
+</div>
+
+<sc-if value="{{ shield }}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border: 2px solid #F2F2F2; border-radius: 8px; background: repeating-linear-gradient(135deg, rgba(255,255,255,0.08) 0 2px, transparent 2px 6px)"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><div><p style="margin: 0; font-weight: 600">Режим щита включён</p><p style="margin: 2px 0 0; font-size: 13px; color: #DCDCDC">Писать могут только фолловеры старше 10 минут, медленный режим 10 с, новые аккаунты младше 7 дней молчат, чувствительность фильтров максимальная. Выключи, когда атака закончится.</p></div></div>
+</sc-if>
+
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 1px solid #2A2A2A; overflow-x: auto">
+<div role="tablist" aria-label="Разделы модерации" style="display: flex; gap: 28px">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4"><button role="tab" type="button" class="tab" aria-selected="{{ t.sel }}" onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}<sc-if value="{{ t.hasN }}" hint-placeholder-val="{{ false }}"><span class="mono" style="font-size: 12px; color: #8F8F8F">{{ t.n }}</span></sc-if></button></sc-for>
+</div>
+</div>
+
+<!-- ============ АНАЛИТИКА ============ -->
+<sc-if value="{{ tA }}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center"><p style="margin: 0; font-size: 14px; color: #B4B4B4">Текущий стрим · с 20:06 · обновляется каждые 10 секунд</p><span style="display: inline-flex; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px"><button type="button" class="mono" style="height: 30px; padding: 0 12px; border: 0; border-radius: 4px; background: #F2F2F2; color: #0A0A0A; font-size: 12px">Стрим</button><button type="button" class="mono" style="height: 30px; padding: 0 12px; border: 0; border-radius: 4px; background: transparent; color: #8F8F8F; font-size: 12px">7 д</button><button type="button" class="mono" style="height: 30px; padding: 0 12px; border: 0; border-radius: 4px; background: transparent; color: #8F8F8F; font-size: 12px">30 д</button></span></div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px">
+<div class="card" style="padding: 18px"><p class="k">Сообщений</p><p class="mono big">3 912</p><p class="mono" style="margin: 6px 0 0; font-size: 12px; color: #B4B4B4">641 уникальный автор</p></div>
+<div class="card" style="padding: 18px"><p class="k">Удалено</p><p class="mono big">37</p><p class="mono" style="margin: 6px 0 0; font-size: 12px; color: #B4B4B4">0,9% · 31 ботом, 6 вручную</p></div>
+<div class="card" style="padding: 18px"><p class="k">Предупреждений</p><p class="mono big">24</p><p class="mono" style="margin: 6px 0 0; font-size: 12px; color: #B4B4B4">у 19 зрителей</p></div>
+<div class="card" style="padding: 18px"><p class="k">Муты / баны</p><p class="mono big">12 / 3</p><p class="mono" style="margin: 6px 0 0; font-size: 12px; color: #B4B4B4">2 бана — боты-спамеры</p></div>
+<div class="card" style="padding: 18px"><p class="k">Реакция модераторов</p><p class="mono big">14 с</p><p class="mono" style="margin: 6px 0 0; font-size: 12px; color: #B4B4B4">медиана до действия</p></div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<section class="card" aria-labelledby="tox-t" style="flex: 1 1 280px; padding: 20px; box-sizing: border-box">
+<h2 id="tox-t" style="margin: 0; font-size: 17px; font-weight: 600">Индекс токсичности</h2>
+<p style="margin: 12px 0 0; display: flex; align-items: baseline; gap: 8px"><span class="mono" style="font-size: 44px; line-height: 48px; font-weight: 500">7</span><span style="font-size: 14px; color: #8F8F8F">из 100 · низкий</span></p>
+<div aria-hidden="true" style="margin-top: 14px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3px; height: 10px"><span style="background: #F2F2F2"></span><span style="background: repeating-linear-gradient(90deg, #6E6E6E 0 2px, transparent 2px 4px)"></span><span style="background: repeating-linear-gradient(90deg, #6E6E6E 0 1px, transparent 1px 5px)"></span><span style="border: 1px solid #3A3A3A; box-sizing: border-box"></span></div>
+<div class="mono" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 6px; font-size: 11px; color: #8F8F8F"><span>0–25</span><span>26–50</span><span>51–75</span><span>76–100</span></div>
+<p style="margin: 14px 0 0; font-size: 13px; line-height: 18px; color: #B4B4B4">Доля сообщений, которые ИИ-анализ счёл оскорбительными, взвешенная по тяжести. Пик <span class="mono" style="color: #F2F2F2">23</span> — в 22:31, во время рейда.</p>
+</section>
+
+<section class="card" aria-labelledby="act-t" style="flex: 3 1 480px; min-width: 0; padding: 20px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap"><h2 id="act-t" style="margin: 0; font-size: 17px; font-weight: 600">Активность и нарушения</h2><div style="display: flex; gap: 16px; font-size: 12px; color: #B4B4B4"><span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 12px; height: 12px; background: #3A3A3A"></span>Сообщения</span><span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 12px; height: 12px; background: repeating-linear-gradient(135deg, #F2F2F2 0 2px, #0A0A0A 2px 4px)"></span>Нарушения</span></div></div>
+<div role="img" aria-label="Сообщения и нарушения по 10 минут: пик нарушений в 22:30 во время рейда" style="position: relative; margin-top: 16px; height: 180px; display: flex; align-items: flex-end; gap: 4px; border-bottom: 1px solid #3A3A3A">
+<sc-for list="{{ bars }}" as="b" hint-placeholder-count="17"><span style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%"><span style="height: {{ b.v }}; background: repeating-linear-gradient(135deg, #F2F2F2 0 2px, #0A0A0A 2px 4px)"></span><span style="height: {{ b.m }}; background: #3A3A3A"></span></span></sc-for>
+<span style="position: absolute; left: 76%; top: 0; bottom: 0; border-left: 1px dashed #8F8F8F"></span><span style="position: absolute; left: calc(76% + 6px); top: 0; font-size: 11px; color: #DCDCDC">Рейд sever_ops · 212</span>
+</div>
+<div class="mono" style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: #8F8F8F"><span>20:10</span><span>21:00</span><span>21:50</span><span>22:40</span></div>
+</section>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<section class="card" aria-labelledby="cat-t" style="flex: 1 1 360px; padding: 20px; box-sizing: border-box">
+<h2 id="cat-t" style="margin: 0 0 10px; font-size: 17px; font-weight: 600">Нарушения по типам</h2>
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="8"><div class="hb"><span style="color: #DCDCDC">{{ c.name }}</span><span style="height: 8px; background: #1F1F1F"><span style="display: block; height: 100%; width: {{ c.w }}; background: #F2F2F2"></span></span><span class="mono" style="text-align: right">{{ c.n }}</span></div></sc-for>
+</section>
+<section class="card" aria-labelledby="watch-t" style="flex: 1 1 360px; padding: 20px; box-sizing: border-box">
+<h2 id="watch-t" style="margin: 0; font-size: 17px; font-weight: 600">На заметке</h2>
+<p style="margin: 4px 0 10px; font-size: 13px; color: #8F8F8F">Зрители, у которых растёт число нарушений</p>
+<sc-for list="{{ watch }}" as="w" hint-placeholder-count="4"><div style="display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid #1F1F1F"><span style="min-width: 0"><span style="display: block; font-size: 14px; font-weight: 500">{{ w.nick }}</span><span style="display: block; font-size: 12px; color: #8F8F8F">{{ w.note }}</span></span><span class="mono" style="font-size: 12px; padding: 2px 8px; border: 1px dashed #8F8F8F; border-radius: 4px">{{ w.strikes }}</span><span style="display: flex; gap: 4px"><button type="button" class="bs" style="height: 32px">Мут 10 мин</button><button type="button" class="bs" style="height: 32px; color: #FF6369">Бан</button></span></div></sc-for>
+</section>
+</div>
+
+<section class="card" aria-labelledby="top-t" style="padding: 20px">
+<h2 id="top-t" style="margin: 0 0 10px; font-size: 17px; font-weight: 600">Самые активные в чате</h2>
+<div style="overflow-x: auto"><table style="width: 100%; min-width: 560px; border-collapse: collapse; font-size: 13px">
+<thead><tr style="color: #8F8F8F; text-align: left"><th style="font-weight: 500; padding: 8px 12px 8px 0">Зритель</th><th style="font-weight: 500; padding: 8px 12px">Сообщений</th><th style="font-weight: 500; padding: 8px 12px">Токсичность</th><th style="font-weight: 500; padding: 8px 12px">Нарушений</th><th style="font-weight: 500; padding: 8px 12px">Роль</th></tr></thead>
+<tbody>
+<tr style="border-top: 1px solid #1F1F1F"><td style="padding: 10px 12px 10px 0">lenta_ln</td><td class="mono" style="padding: 10px 12px">214</td><td class="mono" style="padding: 10px 12px">0,0%</td><td class="mono" style="padding: 10px 12px">0</td><td style="padding: 10px 12px; color: #B4B4B4">Модератор</td></tr>
+<tr style="border-top: 1px solid #1F1F1F"><td style="padding: 10px 12px 10px 0">gleb_1999</td><td class="mono" style="padding: 10px 12px">187</td><td class="mono" style="padding: 10px 12px">3,2%</td><td class="mono" style="padding: 10px 12px">2</td><td style="padding: 10px 12px; color: #B4B4B4">Фолловер</td></tr>
+<tr style="border-top: 1px solid #1F1F1F"><td style="padding: 10px 12px 10px 0">polyana_live</td><td class="mono" style="padding: 10px 12px">152</td><td class="mono" style="padding: 10px 12px">0,0%</td><td class="mono" style="padding: 10px 12px">0</td><td style="padding: 10px 12px; color: #B4B4B4">VIP</td></tr>
+<tr style="border-top: 1px solid #1F1F1F"><td style="padding: 10px 12px 10px 0">KAPSLOCK_VASYA</td><td class="mono" style="padding: 10px 12px">96</td><td class="mono" style="padding: 10px 12px">8,3%</td><td class="mono" style="padding: 10px 12px">3</td><td style="padding: 10px 12px; color: #B4B4B4">Зритель</td></tr>
+<tr style="border-top: 1px solid #1F1F1F"><td style="padding: 10px 12px 10px 0">tixiy_bard</td><td class="mono" style="padding: 10px 12px">88</td><td class="mono" style="padding: 10px 12px">0,0%</td><td class="mono" style="padding: 10px 12px">0</td><td style="padding: 10px 12px; color: #B4B4B4">Подписчик</td></tr>
+</tbody></table></div>
+</section>
+</div>
+</sc-if>
+
+<!-- ============ ФИЛЬТРЫ И НАКАЗАНИЯ ============ -->
+<sc-if value="{{ tF }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 24px">
+
+<section class="card" aria-labelledby="lad-t" style="padding: 24px">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap">
+<div><h2 id="lad-t" style="margin: 0; font-size: 20px; font-weight: 600">Лестница наказаний</h2><p style="margin: 4px 0 0; font-size: 14px; color: #B4B4B4; max-width: 560px">Срабатывает для фильтров с действием «По лестнице». Каждое новое нарушение зрителя поднимает его на ступень выше.</p></div>
+<div role="group" aria-label="Готовые варианты" style="display: flex; gap: 6px; flex-wrap: wrap"><sc-for list="{{ presets }}" as="p" hint-placeholder-count="4"><button type="button" class="bs" aria-pressed="{{ p.sel }}" onClick="{{ p.pick }}" style="{{ p.style }}">{{ p.label }}</button></sc-for></div>
+</div>
+<ol style="list-style: none; margin: 20px 0 0; padding: 0; display: flex; gap: 10px; flex-wrap: wrap; align-items: stretch">
+<sc-for list="{{ ladder }}" as="s" hint-placeholder-count="4">
+<li class="step" style="{{ s.style }}">
+<div style="display: flex; justify-content: space-between; align-items: center"><span class="mono" style="font-size: 12px; color: #8F8F8F">{{ s.title }}</span><button type="button" aria-label="{{ s.delLabel }}" onClick="{{ s.del }}" style="width: 24px; height: 24px; border: 0; border-radius: 4px; background: transparent; color: #8F8F8F; cursor: pointer">✕</button></div>
+<select class="sel" aria-label="{{ s.actLabel }}" value="{{ s.a }}" onChange="{{ s.setA }}"><option value="warn">Предупреждение</option><option value="delete">Только удалить</option><option value="timeout">Мут на время</option><option value="ban">Бан</option></select>
+<sc-if value="{{ s.isTimeout }}" hint-placeholder-val="{{ false }}"><select class="sel" aria-label="{{ s.durLabel }}" value="{{ s.d }}" onChange="{{ s.setD }}"><option>30 с</option><option>1 мин</option><option>5 мин</option><option>10 мин</option><option>1 ч</option><option>24 ч</option><option>7 дней</option></select></sc-if>
+<span style="font-size: 12px; line-height: 16px; color: {{ s.noteColor }}">{{ s.note }}</span>
+</li>
+</sc-for>
+<li style="flex: 0 0 auto; display: flex"><button type="button" onClick="{{ addStep }}" disabled="{{ ladderFull }}" style="min-width: 120px; border-radius: 8px; border: 1px dashed #6E6E6E; background: transparent; color: #B4B4B4; font: 500 13px/18px 'Onest', sans-serif; cursor: pointer">+ Ступень</button></li>
+</ol>
+<p style="margin: 14px 0 0; font-size: 14px; color: #DCDCDC">{{ ladderSummary }}</p>
+<div style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 500; color: #DCDCDC">Сбрасывать счётчик нарушений через<select class="sel"><option>24 часа</option><option selected="">7 дней</option><option>30 дней</option><option>Никогда</option></select></label>
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 500; color: #DCDCDC">Текст предупреждения в чате<input value="@{user}, {reason}. Предупреждение {n} из {max}" class="mono" style="height: 36px; box-sizing: border-box; padding: 0 10px; border-radius: 6px; background: #171717; border: 1px solid #6E6E6E; color: #F2F2F2; font-size: 12px"></label>
+<div style="display: flex; flex-direction: column; gap: 10px; font-size: 13px; color: #DCDCDC"><span style="display: flex; justify-content: space-between; align-items: center; gap: 8px">Писать причину в Twitch<button type="button" role="switch" class="sw" aria-checked="true" aria-label="Писать причину"><span></span></button></span><span style="display: flex; justify-content: space-between; align-items: center; gap: 8px">Сообщать о муте в чат<button type="button" role="switch" class="sw" aria-checked="true" aria-label="Сообщать о муте"><span></span></button></span></div>
+</div>
+</section>
+
+<section aria-labelledby="flt-t">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap"><div><h2 id="flt-t" style="margin: 0; font-size: 20px; font-weight: 600">Фильтры</h2><p style="margin: 4px 0 0; font-size: 14px; color: #B4B4B4">Включено <span class="mono">{{ fOn }}</span> из <span class="mono">{{ fTotal }}</span>. Для каждого фильтра выбери, что делать с нарушителем.</p></div><p style="margin: 0; font-size: 13px; color: #8F8F8F">Не действуют на: модераторов, VIP <span style="text-decoration: underline">изменить</span></p></div>
+<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); gap: 12px">
+<sc-for list="{{ filters }}" as="f" hint-placeholder-count="12">
+<div class="flt" style="{{ f.cardStyle }}">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px"><span style="min-width: 0"><span style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 15px; font-weight: 500">{{ f.name }}<sc-if value="{{ f.ai }}" hint-placeholder-val="{{ false }}"><span style="font-size: 11px; padding: 1px 6px; border: 1px solid #6E6E6E; border-radius: 4px; color: #DCDCDC">ИИ</span></sc-if></span><span style="display: block; margin-top: 2px; font-size: 13px; line-height: 18px; color: #8F8F8F">{{ f.desc }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ f.on }}" aria-label="{{ f.name }}" onClick="{{ f.toggle }}"><span></span></button></div>
+<sc-if value="{{ f.hasSens }}" hint-placeholder-val="{{ false }}"><div style="display: flex; flex-direction: column; gap: 6px"><span style="display: flex; justify-content: space-between; font-size: 12px; color: #B4B4B4"><span>Чувствительность</span><span>{{ f.sensLabel }}</span></span><input type="range" min="1" max="4" step="1" value="{{ f.sens }}" onChange="{{ f.setSens }}" aria-label="{{ f.sensAria }}" disabled="{{ f.off }}" style="accent-color: #F2F2F2"></div></sc-if>
+<sc-if value="{{ f.hasParam }}" hint-placeholder-val="{{ false }}"><p class="mono" style="margin: 0; font-size: 12px; color: #B4B4B4">{{ f.param }}</p></sc-if>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span style="font-size: 12px; color: #8F8F8F; width: 100%">Наказание</span>
+<select class="sel" aria-label="{{ f.actAria }}" value="{{ f.action }}" onChange="{{ f.setAction }}" disabled="{{ f.off }}" style="flex: 1 1 200px"><option value="delete">Удалить сообщение</option><option value="warn">Удалить и предупредить</option><option value="timeout">Удалить и замутить</option><option value="ladder">По лестнице наказаний</option><option value="review">На проверку модератору</option><option value="ban">Бан сразу</option></select>
+<sc-if value="{{ f.isTimeout }}" hint-placeholder-val="{{ false }}"><select class="sel" aria-label="{{ f.durAria }}" value="{{ f.dur }}" onChange="{{ f.setDur }}" disabled="{{ f.off }}" style="flex: 0 0 110px"><option>30 с</option><option>1 мин</option><option>5 мин</option><option>10 мин</option><option>1 ч</option><option>24 ч</option><option>7 дней</option></select></sc-if>
+</div>
+<span style="font-size: 12px; line-height: 16px; {{ f.hintStyle }}">{{ f.hint }}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section class="card" aria-labelledby="modes-t" style="padding: 24px">
+<h2 id="modes-t" style="margin: 0; font-size: 20px; font-weight: 600">Режимы чата Twitch</h2>
+<p style="margin: 4px 0 8px; font-size: 14px; color: #B4B4B4">Меняются сразу на канале, то же самое делают команды /slow, /followers и другие.</p>
+<sc-for list="{{ modes }}" as="m" hint-placeholder-count="5"><div class="mode"><span><span style="display: block; font-size: 14px">{{ m.name }}</span><span style="display: block; font-size: 12px; color: #8F8F8F">{{ m.note }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ m.on }}" aria-label="{{ m.name }}" onClick="{{ m.toggle }}"><span></span></button></div></sc-for>
+</section>
+</div>
+</sc-if>
+
+<!-- ============ ОЧЕРЕДЬ И ЖУРНАЛ ============ -->
+<sc-if value="{{ tJ }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 24px">
+<section aria-labelledby="held-t">
+<h2 id="held-t" style="margin: 0; font-size: 20px; font-weight: 600">На проверке <span class="mono" style="font-size: 15px; color: #8F8F8F">{{ heldCount }}</span></h2>
+<p style="margin: 4px 0 12px; font-size: 14px; color: #B4B4B4">Сообщения задержаны и не видны в чате, пока модератор не решит.</p>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{ held }}" as="h" hint-placeholder-count="3">
+<div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; padding: 14px 16px; border-radius: 8px; border: 1px dashed #8F8F8F; background: repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 7px)">
+<span style="flex: 1 1 320px; min-width: 0"><span style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 13px"><b style="font-weight: 600">{{ h.nick }}</b><span style="color: #8F8F8F">{{ h.reason }}</span><span class="mono" style="color: #8F8F8F">{{ h.time }}</span></span><span style="display: block; margin-top: 4px; font-size: 14px; color: #DCDCDC; filter: {{ h.blur }}">{{ h.text }}</span></span>
+<span style="display: flex; gap: 6px; flex-wrap: wrap"><button type="button" class="bs" onClick="{{ h.reveal }}">{{ h.revealLabel }}</button><button type="button" class="bs" onClick="{{ h.deny }}">Отклонить</button><button type="button" class="bs" onClick="{{ h.timeout }}">Мут 10 мин</button><button type="button" class="bp" onClick="{{ h.allow }}">Пропустить</button></span>
+</div>
+</sc-for>
+<sc-if value="{{ noHeld }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 24px; text-align: center; border: 1px solid #2A2A2A; border-radius: 8px; color: #8F8F8F; font-size: 14px">Очередь пуста, всё проверено</p></sc-if>
+</div>
+</section>
+
+<section aria-labelledby="log-t">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap"><h2 id="log-t" style="margin: 0; font-size: 20px; font-weight: 600">Журнал действий</h2>
+<div role="group" aria-label="Тип действия" style="display: flex; gap: 6px; flex-wrap: wrap"><sc-for list="{{ logF }}" as="l" hint-placeholder-count="5"><button type="button" class="bs" style="height: 32px; {{ l.style }}" aria-pressed="{{ l.sel }}" onClick="{{ l.pick }}">{{ l.label }}</button></sc-for></div></div>
+<div style="margin-top: 12px">
+<div class="tr" style="border-top: 0; color: #8F8F8F; font-size: 12px"><span>Время</span><span>Зритель</span><span class="hide">Действие</span><span class="hide">Причина</span><span class="hide">Кто</span><span></span></div>
+<sc-for list="{{ log }}" as="r" hint-placeholder-count="7">
+<div class="tr" style="{{ r.rowStyle }}">
+<span class="mono" style="color: #8F8F8F">{{ r.time }}</span>
+<span style="min-width: 0"><span style="display: block; font-weight: 500; overflow: hidden; text-overflow: ellipsis">{{ r.nick }}</span><span class="mono" style="font-size: 11px; color: #8F8F8F">{{ r.strikes }}</span></span>
+<span class="hide"><span class="badge" style="{{ r.badge }}">{{ r.action }}</span></span>
+<span class="hide" style="color: #B4B4B4">{{ r.reason }}</span>
+<span class="hide" style="color: #B4B4B4">{{ r.by }}</span>
+<span style="text-align: right"><sc-if value="{{ r.canUndo }}" hint-placeholder-val="{{ true }}"><button type="button" class="bs" style="height: 30px" onClick="{{ r.undo }}">{{ r.undoLabel }}</button></sc-if><sc-if value="{{ r.undone }}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: #8F8F8F">Отменено</span></sc-if></span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section class="card" aria-labelledby="unban-t" style="padding: 20px">
+<h2 id="unban-t" style="margin: 0; font-size: 17px; font-weight: 600">Запросы на разбан <span class="mono" style="font-size: 14px; color: #8F8F8F">2</span></h2>
+<div style="margin-top: 12px; display: flex; flex-direction: column">
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid #1F1F1F"><span><b style="font-weight: 600">toxic_dima</b> <span class="mono" style="font-size: 12px; color: #8F8F8F">забанен 03.10 · оскорбления</span><span style="display: block; margin-top: 4px; font-size: 13px; color: #DCDCDC">«Был неправ, погорячился после проигрыша. Больше не повторится»</span></span><span style="display: flex; gap: 6px"><button type="button" class="bs">Отказать</button><button type="button" class="bp">Разбанить</button></span></div>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid #1F1F1F"><span><b style="font-weight: 600">vovan_play</b> <span class="mono" style="font-size: 12px; color: #8F8F8F">забанен 09.10 · ссылки</span><span style="display: block; margin-top: 4px; font-size: 13px; color: #DCDCDC">«Кидал ссылку на свой клип, не знал про правило»</span></span><span style="display: flex; gap: 6px"><button type="button" class="bs">Отказать</button><button type="button" class="bp">Разбанить</button></span></div>
+</div>
+</section>
+</div>
+</sc-if>
+
+<!-- ============ СПИСКИ И КОМАНДА ============ -->
+<sc-if value="{{ tL }}" hint-placeholder-val="{{ false }}">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 16px">
+<section class="card" aria-labelledby="bw-t" style="padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 id="bw-t" style="margin: 0; font-size: 17px; font-weight: 600">Запрещённые слова <span class="mono" style="font-size: 14px; color: #8F8F8F">{{ wordsN }}</span></h2>
+<p style="margin: 0; font-size: 13px; color: #8F8F8F">Ловим обход: замену букв цифрами и латиницей, пробелы и точки между буквами. Можно задать маску <span class="mono">*</span>.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{ words }}" as="w" hint-placeholder-count="6"><span class="chip mono">{{ w.text }}<button type="button" aria-label="{{ w.label }}" onClick="{{ w.del }}">✕</button></span></sc-for></div>
+<div style="display: flex; gap: 8px"><label for="nw" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Новое слово</label><input id="nw" value="{{ draft }}" onChange="{{ setDraft }}" placeholder="Слово или фраза" style="flex: 1; min-width: 0; height: 36px; box-sizing: border-box; padding: 0 10px; border-radius: 6px; background: #171717; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px/20px 'Onest', sans-serif"><button type="button" class="bp" onClick="{{ addWord }}">Добавить</button></div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px"><span style="color: #B4B4B4">Наказание за слово из списка</span><select class="sel"><option>По лестнице наказаний</option><option>Мут 10 мин</option><option>Бан сразу</option></select></div>
+</section>
+
+<section class="card" aria-labelledby="dm-t" style="padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 id="dm-t" style="margin: 0; font-size: 17px; font-weight: 600">Разрешённые ссылки</h2>
+<p style="margin: 0; font-size: 13px; color: #8F8F8F">Остальные ссылки удаляются фильтром «Ссылки».</p>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><span class="chip mono">clips.twitch.tv<button type="button" aria-label="Убрать clips.twitch.tv">✕</button></span><span class="chip mono">youtube.com<button type="button" aria-label="Убрать youtube.com">✕</button></span><span class="chip mono">music.yandex.ru<button type="button" aria-label="Убрать music.yandex.ru">✕</button></span><span class="chip mono">7tv.app<button type="button" aria-label="Убрать 7tv.app">✕</button></span><span class="chip mono">discord.gg/kira<button type="button" aria-label="Убрать discord.gg/kira">✕</button></span></div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px; padding-top: 8px; border-top: 1px solid #1F1F1F"><span style="color: #B4B4B4">Подписчики могут кидать любые ссылки</span><button type="button" role="switch" class="sw" aria-checked="true" aria-label="Подписчики могут кидать ссылки"><span></span></button></div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px"><span style="color: #B4B4B4">Разрешать по команде <span class="mono">!permit ник</span></span><button type="button" role="switch" class="sw" aria-checked="true" aria-label="Команда permit"><span></span></button></div>
+</section>
+
+<section class="card" aria-labelledby="ex-t" style="padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 id="ex-t" style="margin: 0; font-size: 17px; font-weight: 600">Исключения</h2>
+<p style="margin: 0; font-size: 13px; color: #8F8F8F">На кого фильтры не действуют вообще.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><span class="chip">Модераторы</span><span class="chip">VIP</span><span class="chip" style="border-style: dashed; color: #8F8F8F; padding-right: 10px">Подписчики</span><span class="chip">Nightbot<button type="button" aria-label="Убрать Nightbot">✕</button></span><span class="chip">StreamElements<button type="button" aria-label="Убрать StreamElements">✕</button></span></div>
+<p style="margin: 0; font-size: 12px; color: #8F8F8F">Пунктир — роль выключена: нажми, чтобы добавить в исключения.</p>
+</section>
+
+<section class="card" aria-labelledby="team-t" style="padding: 20px">
+<div style="display: flex; justify-content: space-between; align-items: center"><h2 id="team-t" style="margin: 0; font-size: 17px; font-weight: 600">Модераторы</h2><button type="button" class="bs">+ Добавить</button></div>
+<div style="margin-top: 12px">
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 80px 150px; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid #1F1F1F; font-size: 13px"><span><b style="font-weight: 500">lenta_ln</b><span style="display: block; font-size: 12px; color: #8F8F8F">в сети · 41 действие за стрим</span></span><span class="mono">41</span><select class="sel"><option>Всё, кроме банов</option><option>Полный доступ</option><option>Только очередь</option></select></div>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 80px 150px; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid #1F1F1F; font-size: 13px"><span><b style="font-weight: 500">moroz_tv</b><span style="display: block; font-size: 12px; color: #8F8F8F">в сети · 17 действий</span></span><span class="mono">17</span><select class="sel"><option>Полный доступ</option><option>Всё, кроме банов</option><option>Только очередь</option></select></div>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 80px 150px; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid #1F1F1F; font-size: 13px; color: #8F8F8F"><span><b style="font-weight: 500; color: #B4B4B4">sever_ops</b><span style="display: block; font-size: 12px">не в сети</span></span><span class="mono">0</span><select class="sel"><option>Только очередь</option><option>Всё, кроме банов</option><option>Полный доступ</option></select></div>
+</div>
+<p style="margin: 10px 0 0; font-size: 12px; color: #8F8F8F">Доступ модераторов к панели StreOps — тариф «Максимум». Права модератора в самом Twitch-чате не меняются.</p>
+</section>
+</div>
+</sc-if>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2300}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tab: 1, auto: true, shield: false, preset: 1,
+      ladder: [{ a: 'warn', d: '' }, { a: 'warn', d: '' }, { a: 'warn', d: '' }, { a: 'ban', d: '' }],
+      f: {
+        tox: { on: true, sens: 2, action: 'review', dur: '10 мин' },
+        caps: { on: true, action: 'ladder', dur: '1 мин' },
+        links: { on: true, action: 'warn', dur: '1 мин' },
+        spam: { on: true, action: 'timeout', dur: '5 мин' },
+        flood: { on: true, action: 'delete', dur: '1 мин' },
+        words: { on: true, action: 'ladder', dur: '10 мин' },
+        threat: { on: true, sens: 3, action: 'ban', dur: '24 ч' },
+        bots: { on: true, action: 'ban', dur: '24 ч' },
+        promo: { on: true, action: 'timeout', dur: '10 мин' },
+        personal: { on: true, action: 'delete', dur: '1 мин' },
+        mentions: { on: false, action: 'timeout', dur: '1 мин' },
+        long: { on: false, action: 'delete', dur: '1 мин' },
+        zalgo: { on: true, action: 'delete', dur: '1 мин' },
+        newacc: { on: false, action: 'review', dur: '1 мин' }
+      },
+      modes: [true, false, false, false, false],
+      held: [
+        { id: 1, nick: 'anon_4421', reason: 'ИИ: оскорбление · уверенность 86%', time: '22:57', text: 'ты играешь как ****, удаляй игру', shown: false },
+        { id: 2, nick: 'new_acc_77', reason: 'Новый аккаунт, 2 дня', time: '22:58', text: 'заходите ко мне на канал, раздача скинов', shown: false },
+        { id: 3, nick: 'gleb_1999', reason: 'ИИ: возможна травля · уверенность 61%', time: '22:58', text: 'опять этот vasya со своим капсом, уйди уже', shown: false }
+      ],
+      logFilter: 'Все', undone: {}, words: ['к*зёл', 'дебил', 'скины бесплатно', 'free followers', 'п*д*р'], draft: ''
+    };
+  }
+  renderVals() {
+    const s = this.state;
+    const ACT = { warn: 'Предупреждение', delete: 'Только удалить', timeout: 'Мут', ban: 'Бан' };
+    const tabs = [['Аналитика', null], ['Фильтры и наказания', null], ['Очередь и журнал', s.held.length], ['Списки и команда', null]];
+    const PRE = [
+      ['Мягко', [{ a: 'delete', d: '' }, { a: 'warn', d: '' }, { a: 'timeout', d: '1 мин' }, { a: 'timeout', d: '10 мин' }]],
+      ['Стандарт', [{ a: 'warn', d: '' }, { a: 'warn', d: '' }, { a: 'warn', d: '' }, { a: 'ban', d: '' }]],
+      ['Строго', [{ a: 'warn', d: '' }, { a: 'timeout', d: '10 мин' }, { a: 'timeout', d: '24 ч' }, { a: 'ban', d: '' }]],
+      ['Ноль терпимости', [{ a: 'ban', d: '' }]]
+    ];
+    const setLadder = (n) => this.setState({ ladder: n, preset: -1 });
+    const L = s.ladder;
+    const ladder = L.map((st, i) => {
+      const isBan = st.a === 'ban';
+      return {
+        title: (i + 1) + '-е нарушение' + (i === L.length - 1 ? ' и далее' : ''),
+        a: st.a, d: st.d || '10 мин', isTimeout: st.a === 'timeout',
+        note: isBan ? 'Необратимо: разбан только вручную или по запросу' : (st.a === 'warn' ? 'Сообщение удаляется, бот пишет предупреждение' : (st.a === 'timeout' ? 'Сообщение удаляется, зритель молчит' : 'Сообщение удаляется без ответа')),
+        noteColor: isBan ? '#FF6369' : '#8F8F8F',
+        style: isBan ? 'border-color: rgba(255,99,105,0.55)' : '',
+        actLabel: 'Действие на ступени ' + (i + 1), durLabel: 'Длительность мута на ступени ' + (i + 1), delLabel: 'Убрать ступень ' + (i + 1),
+        setA: (e) => { const n = L.slice(); n[i] = { a: e.target.value, d: e.target.value === 'timeout' ? (st.d || '10 мин') : '' }; setLadder(n); },
+        setD: (e) => { const n = L.slice(); n[i] = { a: st.a, d: e.target.value }; setLadder(n); },
+        del: () => { if (L.length > 1) setLadder(L.filter((_, j) => j !== i)); }
+      };
+    });
+    const warnsBeforeBan = L.findIndex((x) => x.a === 'ban');
+    const nWarn = L.filter((x) => x.a === 'warn').length;
+    let summary = 'Итог: ';
+    summary += L.map((x, i) => (i + 1) + ' → ' + (x.a === 'timeout' ? 'мут ' + (x.d || '10 мин') : ACT[x.a].toLowerCase())).join(' · ');
+    if (warnsBeforeBan === L.length - 1 && nWarn === L.length - 1 && nWarn > 0) summary = 'Итог: бан после ' + nWarn + ' предупреждений';
+    if (L.length === 1 && L[0].a === 'ban') summary = 'Итог: бан с первого нарушения';
+
+    const FD = [
+      ['tox', 'Токсичность и оскорбления', 'ИИ-анализ смысла сообщения: оскорбления, травля, унижение. Работает на русском и английском', true, null],
+      ['threat', 'Угрозы и дискриминация', 'Угрозы, призывы к насилию, ненависть по признаку национальности, пола, ориентации', true, null],
+      ['caps', 'Капс', null, false, 'больше 70% заглавных · сообщение от 12 символов'],
+      ['links', 'Ссылки', 'Любые ссылки, кроме разрешённого списка', false, null],
+      ['spam', 'Спам и повторы', null, false, '3 одинаковых сообщения за 30 с · похожесть от 90%'],
+      ['flood', 'Флуд символами и эмоутами', null, false, 'больше 8 эмоутов · символ повторяется 10+ раз'],
+      ['words', 'Запрещённые слова', 'Свой список, с поиском обхода: «к0з3л», «д е б и л»', false, null],
+      ['bots', 'Боты-спамеры', 'Известные спам-боты и аккаунты из списка подозрительных Twitch', false, null],
+      ['promo', 'Самопиар', '«Заходите на мой канал», продажа фолловеров и скинов', true, null],
+      ['personal', 'Личные данные', 'Номера телефонов, адреса, номера карт — в том числе стримера', false, null],
+      ['zalgo', 'Юникод-мусор', 'Зальго, невидимые символы, перевёрнутый текст', false, null],
+      ['mentions', 'Массовые упоминания', null, false, 'больше 5 @упоминаний в сообщении'],
+      ['long', 'Длинные сообщения', null, false, 'больше 400 символов'],
+      ['newacc', 'Новые аккаунты', 'Аккаунты младше 7 дней пишут только через проверку', false, null]
+    ];
+    const SENS = ['Мягко', 'Средне', 'Строго', 'Максимум'];
+    const hintFor = (a, d) => ({
+      delete: ['Сообщение удаляется, зритель не наказывается', 'color: #8F8F8F'],
+      warn: ['Удаляем и пишем в чат предупреждение', 'color: #8F8F8F'],
+      timeout: ['Удаляем и выдаём мут на ' + d, 'color: #B4B4B4'],
+      ladder: [summary.replace('Итог: ', 'Лестница: '), 'color: #DCDCDC'],
+      review: ['Сообщение задерживается до решения модератора', 'color: #DCDCDC; border: 1px dashed #6E6E6E; border-radius: 4px; padding: 4px 8px; align-self: flex-start'],
+      ban: ['Бан без предупреждения. Используй для угроз и ботов', 'color: #FF6369']
+    })[a];
+    const upd = (id, patch) => this.setState({ f: Object.assign({}, s.f, { [id]: Object.assign({}, s.f[id], patch) }) });
+    const filters = FD.map((x) => {
+      const c = s.f[x[0]];
+      const h = hintFor(c.action, c.dur);
+      return {
+        name: x[1], desc: x[2] || '', ai: x[3], hasParam: !!x[4], param: x[4] || '',
+        hasSens: c.sens !== undefined, sens: c.sens || 2, sensLabel: SENS[(c.sens || 2) - 1], sensAria: 'Чувствительность: ' + x[1],
+        on: c.on ? 'true' : 'false', off: !c.on,
+        action: c.action, dur: c.dur, isTimeout: c.action === 'timeout',
+        actAria: 'Наказание: ' + x[1], durAria: 'Длительность мута: ' + x[1],
+        hint: c.on ? h[0] : 'Фильтр выключен', hintStyle: c.on ? h[1] : 'color: #525252',
+        cardStyle: c.on ? (c.action === 'ban' ? 'border-color: rgba(255,99,105,0.45)' : 'border-color: #3A3A3A') : 'background: transparent',
+        toggle: () => upd(x[0], { on: !c.on }),
+        setAction: (e) => upd(x[0], { action: e.target.value }),
+        setDur: (e) => upd(x[0], { dur: e.target.value }),
+        setSens: (e) => upd(x[0], { sens: Number(e.target.value) })
+      };
+    });
+    const MD = [['Медленный режим', 'Одно сообщение раз в 5 секунд'], ['Только фолловеры', 'Фолловеры не меньше 10 минут'], ['Только подписчики', 'Остальные видят чат, но не пишут'], ['Только эмоуты', 'Сообщения без текста'], ['Уникальный чат', 'Запрет повторять одно сообщение дважды']];
+    const LOG = [
+      ['22:58', 'spam_bot_77', 'ban', 'Бот-спамер', 'Бот', ''],
+      ['22:51', 'KAPSLOCK_VASYA', 'ban', 'Капс · 4-е нарушение', 'Бот · лестница', '4 из 4'],
+      ['22:48', 'KAPSLOCK_VASYA', 'warn', 'Капс', 'Бот · лестница', '3 из 4'],
+      ['22:44', 'new_acc_12', 'timeout', 'Самопиар · мут 10 мин', 'Бот', ''],
+      ['22:40', 'gleb_1999', 'warn', 'Токсичность', 'lenta_ln', '1 из 4'],
+      ['22:31', 'raid_guest_5', 'delete', 'Флуд эмоутами', 'Бот', ''],
+      ['22:29', 'anon_1180', 'timeout', 'Ссылка · мут 1 мин', 'moroz_tv', '']
+    ];
+    const BADGE = { ban: 'border: 2px solid #FF6369; color: #FF6369', timeout: 'border: 1px dashed #B4B4B4; color: #F2F2F2', warn: 'border: 1px solid #6E6E6E; color: #DCDCDC', delete: 'border: 1px dotted #6E6E6E; color: #B4B4B4' };
+    const ALBL = { ban: 'Бан', timeout: 'Мут', warn: 'Предупреждение', delete: 'Удалено' };
+    const LF = [['Все', null], ['Баны', 'ban'], ['Муты', 'timeout'], ['Предупреждения', 'warn'], ['Удаления', 'delete']];
+    const curLF = LF.find((x) => x[0] === s.logFilter)[1];
+    const log = LOG.filter((r) => !curLF || r[2] === curLF).map((r, i) => {
+      const key = r[0] + r[1];
+      const und = !!s.undone[key];
+      return {
+        time: r[0], nick: r[1], action: ALBL[r[2]], badge: BADGE[r[2]], reason: r[3], by: r[4],
+        strikes: r[5] ? 'нарушений: ' + r[5] : '',
+        canUndo: !und && r[2] !== 'delete', undone: und,
+        undoLabel: r[2] === 'ban' ? 'Разбанить' : (r[2] === 'timeout' ? 'Снять мут' : 'Снять'),
+        rowStyle: und ? 'opacity: 0.55' : '',
+        undo: () => this.setState({ undone: Object.assign({}, s.undone, { [key]: true }) })
+      };
+    });
+    const drop = (id) => this.setState({ held: s.held.filter((h) => h.id !== id) });
+    const bars = [[30, 1], [38, 1], [35, 0], [44, 2], [52, 1], [48, 1], [60, 2], [58, 1], [66, 3], [62, 2], [70, 2], [74, 3], [72, 2], [96, 12], [88, 7], [80, 3], [76, 2]];
+    const CATS = [['Капс', 11], ['Спам и повторы', 9], ['Ссылки', 7], ['Токсичность', 6], ['Самопиар', 5], ['Флуд эмоутами', 4], ['Запрещённые слова', 3], ['Угрозы', 0]];
+    return {
+      tabs: tabs.map((t, i) => ({ label: t[0], n: t[1], hasN: t[1] !== null && t[1] > 0, sel: s.tab === i ? 'true' : 'false', style: s.tab === i ? 'color: #F2F2F2; box-shadow: inset 0 -2px 0 #F2F2F2' : '', pick: () => this.setState({ tab: i }) })),
+      tA: s.tab === 0, tF: s.tab === 1, tJ: s.tab === 2, tL: s.tab === 3,
+      autoOn: s.auto ? 'true' : 'false', toggleAuto: () => this.setState({ auto: !s.auto }),
+      shield: s.shield, shieldPressed: s.shield ? 'true' : 'false',
+      shieldLabel: s.shield ? 'Выключить режим щита' : 'Режим щита',
+      shieldStyle: 'height: 40px; padding: 0 14px; border-radius: 6px; font: 500 14px/20px Onest, sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; ' + (s.shield ? 'background: #F2F2F2; color: #0A0A0A; border: 0' : 'background: transparent; color: #F2F2F2; border: 1px solid #6E6E6E'),
+      toggleShield: () => this.setState({ shield: !s.shield }),
+      heldCount: s.held.length, noHeld: s.held.length === 0,
+      bars: bars.map((b) => ({ m: (b[0] - b[1] * 2) + '%', v: (b[1] * 2) + '%' })),
+      cats: CATS.map((c) => ({ name: c[0], n: c[1], w: Math.round(c[1] / 11 * 100) + '%' })),
+      watch: [
+        { nick: 'KAPSLOCK_VASYA', note: 'капс · 3 предупреждения за 20 минут', strikes: '3 из 4' },
+        { nick: 'gleb_1999', note: 'токсичность растёт: 0% → 3,2%', strikes: '1 из 4' },
+        { nick: 'anon_4421', note: 'аккаунту 11 дней, сообщение на проверке', strikes: '0 из 4' }
+      ],
+      presets: PRE.map((p, i) => ({ label: p[0], sel: s.preset === i ? 'true' : 'false', style: s.preset === i ? 'background: #F2F2F2; color: #0A0A0A; border-color: #F2F2F2' : '', pick: () => this.setState({ ladder: p[1], preset: i }) })),
+      ladder, ladderSummary: summary, ladderFull: L.length >= 6,
+      addStep: () => { if (L.length < 6) setLadder(L.concat([{ a: 'timeout', d: '24 ч' }])); },
+      filters, fOn: FD.filter((x) => s.f[x[0]].on).length, fTotal: FD.length,
+      modes: MD.map((m, i) => ({ name: m[0], note: m[1], on: s.modes[i] ? 'true' : 'false', toggle: () => { const n = s.modes.slice(); n[i] = !n[i]; this.setState({ modes: n }); } })),
+      held: s.held.map((h) => ({
+        nick: h.nick, reason: h.reason, time: h.time, text: h.text,
+        blur: h.shown ? 'none' : 'blur(5px)', revealLabel: h.shown ? 'Скрыть' : 'Показать',
+        reveal: () => this.setState({ held: s.held.map((x) => x.id === h.id ? Object.assign({}, x, { shown: !x.shown }) : x) }),
+        deny: () => drop(h.id), timeout: () => drop(h.id), allow: () => drop(h.id)
+      })),
+      logF: LF.map((l) => ({ label: l[0], sel: s.logFilter === l[0] ? 'true' : 'false', style: s.logFilter === l[0] ? 'background: #F2F2F2; color: #0A0A0A; border-color: #F2F2F2' : '', pick: () => this.setState({ logFilter: l[0] }) })),
+      log,
+      words: s.words.map((w) => ({ text: w, label: 'Убрать «' + w + '»', del: () => this.setState({ words: s.words.filter((x) => x !== w) }) })),
+      wordsN: s.words.length,
+      draft: s.draft, setDraft: (e) => this.setState({ draft: e.target.value }),
+      addWord: () => { const t = s.draft.trim(); if (t && s.words.indexOf(t) < 0) this.setState({ words: s.words.concat([t]), draft: '' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

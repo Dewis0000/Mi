@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>StreOps — музыка и заказы</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0A0A0A}
+a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.card{background:#111111;border:1px solid #2A2A2A;border-radius:8px}
+.nav-i{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;color:#B4B4B4}
+.nav-i:hover{background:rgba(255,255,255,.04);color:#F2F2F2}
+.tab{height:44px;padding:0;border:0;background:transparent;color:#8F8F8F;font:500 14px/20px 'Onest',sans-serif;display:flex;gap:6px;align-items:center;cursor:pointer}
+.tab:hover{color:#F2F2F2}
+.sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid #6E6E6E;background:transparent;cursor:pointer;flex:none;padding:0}
+.sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:#8F8F8F;transition:transform 180ms cubic-bezier(.2,0,0,1)}
+.sw[aria-checked="true"]{background:#FFFFFF;border-color:#FFFFFF}
+.sw[aria-checked="true"] span{transform:translateX(16px);background:#0A0A0A}
+.ib{width:36px;height:36px;border-radius:6px;border:0;background:transparent;color:#B4B4B4;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+.ib:hover{background:rgba(255,255,255,.06);color:#F2F2F2}
+.ib.d:hover{color:#FF6369}
+.pb{width:48px;height:48px;border-radius:999px;border:0;background:#FFFFFF;color:#0A0A0A;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.pb:hover{background:#DCDCDC}
+.row{display:grid;grid-template-columns:28px minmax(0,1fr) 110px 170px 52px 80px;gap:12px;align-items:center;padding:10px 12px;border-top:1px solid #1F1F1F;font-size:14px;line-height:20px}
+.row:hover{background:rgba(255,255,255,.03)}
+.src{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:4px;border:1px solid #3A3A3A;font-size:12px;color:#DCDCDC;white-space:nowrap}
+.how{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#B4B4B4;white-space:nowrap}
+.meth{padding:18px;border-radius:8px;border:1px solid #2A2A2A;background:#111111;display:flex;flex-direction:column;gap:10px}
+.kv{display:flex;justify-content:space-between;gap:12px;font-size:13px;line-height:18px;padding:8px 0;border-top:1px solid #1F1F1F}
+.kv span:first-child{color:#8F8F8F}
+.chk{display:flex;align-items:center;gap:12px;min-height:40px;font-size:14px;color:#DCDCDC}
+.box{width:18px;height:18px;border-radius:4px;border:1px solid #6E6E6E;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.box.on{background:#FFFFFF;border-color:#FFFFFF;color:#0A0A0A}
+.bot{display:flex;gap:8px;font-size:13px;line-height:19px;padding:6px 0}
+@media (max-width: 760px){.row{grid-template-columns:24px minmax(0,1fr) 80px}.row .hide{display:none}}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
+
+<header style="position: sticky; top: 0; z-index: 200; background: rgba(10,10,10,0.72); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.08)">
+<div style="height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 24px; flex-wrap: wrap">
+<a href="WebLanding.dc.html" style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</a>
+<div style="display: flex; align-items: center; gap: 8px">
+<div role="status" aria-label="В эфире 2 часа 47 минут, 1284 зрителя" style="display: flex; align-items: center; height: 40px; border: 1px solid #2A2A2A; border-radius: 6px">
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 100%; padding: 0 12px; border-right: 1px solid #2A2A2A"><span style="width: 8px; height: 8px; border-radius: 999px; background: #D92D20; box-shadow: 0 0 0 4px rgba(217,45,32,0.25)"></span><span style="font-size: 11px; font-weight: 700; letter-spacing: .08em">В ЭФИРЕ</span></span>
+<span class="mono" style="padding: 0 12px; border-right: 1px solid #2A2A2A; font-size: 15px">02:47:13</span><span class="mono" style="padding: 0 12px; font-size: 15px">1 284</span>
+</div>
+<a href="WebSettings.dc.html" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 8px 0 6px; font-size: 14px; font-weight: 500"><span style="width: 32px; height: 32px; border-radius: 999px; background: linear-gradient(135deg, #B4B4B4, #3A3A3A); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #0A0A0A">КС</span>kira_stream</a>
+</div>
+</div>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; box-sizing: border-box; max-width: 1920px; margin: 0 auto">
+<nav aria-label="Разделы стрим-панели" style="flex: 1 1 200px; max-width: 248px; min-width: 200px; align-self: flex-start; box-sizing: border-box; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 2px">
+<p class="ov" style="padding: 8px 12px">Эфир</p>
+<a href="WebDashboard.dc.html" class="nav-i">Обзор</a>
+<a href="WebChat.dc.html" class="nav-i">Чат и эмоуты</a>
+<a href="WebModeration.dc.html" class="nav-i">Модерация</a>
+<p class="ov" style="padding: 16px 12px 8px">Бот</p>
+<a href="WebCommands.dc.html" class="nav-i">Команды</a>
+<a href="WebMusic.dc.html" aria-current="page" class="nav-i" style="background: rgba(255,255,255,0.10); color: #F2F2F2; box-shadow: inset 2px 0 0 #F2F2F2">Музыка<span class="mono" style="margin-left: auto; font-size: 12px; color: #8F8F8F">{{ qCount }}</span></a>
+<a href="WebWidgets.dc.html" class="nav-i">Виджеты</a>
+<div style="height: 1px; background: #2A2A2A; margin: 10px 0"></div>
+<a href="WebSettings.dc.html" class="nav-i">Настройки</a>
+</nav>
+
+<main style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
+<div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Музыка и заказы</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; max-width: 640px">Зрители присылают ссылку или название трека командой в чате, за баллы канала или с донатом. Трек проверяется и встаёт в очередь.</p></div>
+<div style="display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 16px; border-radius: 8px; border: 1px solid #3A3A3A"><span style="font-size: 14px">Приём заказов</span><span style="font-size: 13px; color: #8F8F8F; min-width: 64px">{{ openLabel }}</span><button type="button" role="switch" class="sw" aria-checked="{{ open }}" aria-label="Приём заказов" onClick="{{ toggleOpen }}"><span></span></button></div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<section aria-label="Сейчас играет" style="flex: 2 1 560px; min-width: 0; padding: 24px; border-radius: 12px; background: rgba(18,18,18,0.62); border: 1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); display: flex; gap: 24px; align-items: center; flex-wrap: wrap">
+<div aria-hidden="true" style="width: 120px; height: 120px; flex: none; border-radius: 8px; background: radial-gradient(60px 60px at 30% 30%, #8F8F8F, transparent 70%), #1F1F1F; display: flex; align-items: flex-end; gap: 4px; padding: 14px; box-sizing: border-box">
+<span style="flex: 1; height: 40%; background: #F2F2F2"></span><span style="flex: 1; height: 75%; background: #F2F2F2"></span><span style="flex: 1; height: 55%; background: #F2F2F2"></span><span style="flex: 1; height: 90%; background: #F2F2F2"></span><span style="flex: 1; height: 35%; background: #F2F2F2"></span>
+</div>
+<div style="flex: 1 1 280px; min-width: 0">
+<p class="ov">Сейчас играет</p>
+<p style="margin: 8px 0 0; font-size: 24px; line-height: 30px; font-weight: 600; letter-spacing: -0.015em">{{ now.t }}</p>
+<p style="margin: 2px 0 0; font-size: 15px; color: #B4B4B4">{{ now.a }}</p>
+<p style="margin: 8px 0 0; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 13px; color: #8F8F8F"><span class="src">{{ now.src }}</span>заказал <b style="color: #DCDCDC; font-weight: 500">{{ now.by }}</b> · {{ now.how }}</p>
+<div style="margin-top: 16px; display: grid; grid-template-columns: 40px minmax(0, 1fr) 40px; gap: 10px; align-items: center"><span class="mono" style="font-size: 12px; color: #B4B4B4">1:12</span><div role="progressbar" aria-label="Прогресс трека" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100" style="height: 4px; border-radius: 2px; background: #3A3A3A"><div style="width: 34%; height: 100%; border-radius: 2px; background: #F2F2F2"></div></div><span class="mono" style="font-size: 12px; color: #B4B4B4">{{ now.d }}</span></div>
+</div>
+<div style="display: flex; align-items: center; gap: 8px">
+<button type="button" class="pb" aria-label="{{ playLabel }}" onClick="{{ togglePlay }}"><sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1" fill="#0A0A0A"></rect><rect x="14" y="4" width="4" height="16" rx="1" fill="#0A0A0A"></rect></svg></sc-if><sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="#0A0A0A"></path></svg></sc-if></button>
+<button type="button" class="ib" style="width: 44px; height: 44px; border: 1px solid #3A3A3A" aria-label="Пропустить трек" onClick="{{ skip }}"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4l10 8-10 8z"></path><path d="M19 5v14"></path></svg></button>
+<label style="display: flex; align-items: center; gap: 8px; margin-left: 8px; color: #8F8F8F"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7"></path></svg><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Громкость</span><input type="range" min="0" max="100" value="{{ vol }}" onChange="{{ setVol }}" style="width: 96px; accent-color: #F2F2F2"><span class="mono" style="font-size: 12px; width: 28px">{{ vol }}</span></label>
+</div>
+</section>
+<section class="card" aria-label="Сводка за стрим" style="flex: 1 1 280px; box-sizing: border-box; padding: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div><p style="margin: 0; font-size: 13px; color: #8F8F8F">Заказов за стрим</p><p class="mono" style="margin: 6px 0 0; font-size: 24px; font-weight: 500">38</p></div>
+<div><p style="margin: 0; font-size: 13px; color: #8F8F8F">Отклонено</p><p class="mono" style="margin: 6px 0 0; font-size: 24px; font-weight: 500">5</p></div>
+<div><p style="margin: 0; font-size: 13px; color: #8F8F8F">В очереди</p><p class="mono" style="margin: 6px 0 0; font-size: 24px; font-weight: 500">{{ qCount }}</p></div>
+<div><p style="margin: 0; font-size: 13px; color: #8F8F8F">Длительность очереди</p><p class="mono" style="margin: 6px 0 0; font-size: 24px; font-weight: 500">{{ qTime }}</p></div>
+</section>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<section style="flex: 999 1 560px; min-width: 0" aria-label="Очередь заказов">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid #2A2A2A">
+<div role="tablist" aria-label="Заказы" style="display: flex; gap: 24px">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3"><button role="tab" type="button" class="tab" aria-selected="{{ t.sel }}" onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}<span class="mono" style="font-size: 12px; color: #8F8F8F">{{ t.n }}</span></button></sc-for>
+</div>
+<a href="#" style="display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; margin-bottom: 4px; border-radius: 6px; border: 1px solid #3A3A3A; font-size: 13px"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="2"></rect><path d="M8 22h8M12 18v4"></path></svg>Плеер для OBS</a>
+</div>
+
+<sc-if value="{{ tabQueue }}" hint-placeholder-val="{{ true }}">
+<div role="table" aria-label="Очередь" style="margin-top: 8px">
+<div role="row" class="row" style="border-top: 0; font-size: 12px; color: #8F8F8F"><span role="columnheader">#</span><span role="columnheader">Трек</span><span role="columnheader" class="hide">Источник</span><span role="columnheader" class="hide">Кто и как</span><span role="columnheader">Время</span><span role="columnheader"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Действия</span></span></div>
+<sc-for list="{{ queue }}" as="q" hint-placeholder-count="6">
+<div role="row" class="row" style="{{ q.rowStyle }}">
+<span role="cell" class="mono" style="font-size: 13px; color: #8F8F8F">{{ q.n }}</span>
+<span role="cell" style="min-width: 0"><span style="display: block; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ q.t }}</span><span style="display: block; font-size: 13px; color: #8F8F8F; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ q.a }}</span></span>
+<span role="cell" class="hide"><span class="src">{{ q.src }}</span></span>
+<span role="cell" class="hide" style="min-width: 0"><span style="display: block; color: #DCDCDC; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ q.by }}</span><span class="how">{{ q.how }}</span></span>
+<span role="cell" class="mono" style="font-size: 13px">{{ q.d }}</span>
+<span role="cell" style="display: flex; justify-content: flex-end"><button type="button" class="ib" aria-label="{{ q.upLabel }}" onClick="{{ q.up }}" disabled="{{ q.first }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></button><button type="button" class="ib d" aria-label="{{ q.delLabel }}" onClick="{{ q.del }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button></span>
+</div>
+</sc-for>
+<sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}"><div style="padding: 48px 16px; text-align: center; border-top: 1px solid #1F1F1F"><p style="margin: 0; font-size: 15px; font-weight: 500">Очередь пуста</p><p style="margin: 6px 0 0; font-size: 13px; color: #8F8F8F">Напомни зрителям: <span class="mono" style="color: #DCDCDC">!музыка ссылка или название</span></p></div></sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ tabPending }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top: 16px; display: flex; flex-direction: column; gap: 8px">
+<p style="margin: 0 0 4px; font-size: 13px; color: #8F8F8F">Включена ручная проверка: трек попадёт в очередь только после одобрения. Если отклонить заказ за баллы, баллы вернутся зрителю.</p>
+<sc-for list="{{ pending }}" as="p" hint-placeholder-count="2">
+<div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; padding: 14px 16px; border-radius: 8px; border: 1px dashed #8F8F8F; background: repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 7px)">
+<span style="flex: 1 1 240px; min-width: 0"><span style="display: block; font-weight: 500">{{ p.t }}</span><span style="display: block; font-size: 13px; color: #8F8F8F">{{ p.a }} · <span class="mono">{{ p.d }}</span> · {{ p.src }} · {{ p.by }}, {{ p.how }}</span><span style="display: block; margin-top: 4px; font-size: 12px; color: #DCDCDC">{{ p.note }}</span></span>
+<span style="display: flex; gap: 8px"><button type="button" onClick="{{ p.reject }}" style="height: 36px; padding: 0 12px; border-radius: 6px; border: 1px solid #3A3A3A; background: transparent; color: #F2F2F2; font: 500 13px/18px 'Onest', sans-serif; cursor: pointer">{{ p.rejectLabel }}</button><button type="button" onClick="{{ p.approve }}" style="height: 36px; padding: 0 12px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 13px/18px 'Onest', sans-serif; cursor: pointer">В очередь</button></span>
+</div>
+</sc-for>
+<sc-if value="{{ noPending }}" hint-placeholder-val="{{ false }}"><p style="margin: 24px 0; text-align: center; font-size: 14px; color: #8F8F8F">Новых заказов на проверке нет</p></sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ tabHistory }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top: 8px">
+<div class="row" style="grid-template-columns: 60px minmax(0, 1fr) 140px 120px"><span class="mono" style="font-size: 12px; color: #8F8F8F">22:41</span><span>Сплин — Романс</span><span style="font-size: 13px; color: #B4B4B4">moroz_tv</span><span style="font-size: 13px; color: #B4B4B4">Сыграл</span></div>
+<div class="row" style="grid-template-columns: 60px minmax(0, 1fr) 140px 120px"><span class="mono" style="font-size: 12px; color: #8F8F8F">22:37</span><span>10 часов дождя для сна</span><span style="font-size: 13px; color: #B4B4B4">troll_2007</span><span style="display: inline-flex; gap: 6px; align-items: center; font-size: 13px; color: #F2F2F2"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 2h8.2L22 7.9v8.2L16.1 22H7.9L2 16.1V7.9z"></path><path d="M15 9l-6 6M9 9l6 6"></path></svg>Длиннее 6:00</span></div>
+<div class="row" style="grid-template-columns: 60px minmax(0, 1fr) 140px 120px"><span class="mono" style="font-size: 12px; color: #8F8F8F">22:33</span><span>Ария — Беспечный ангел</span><span style="font-size: 13px; color: #B4B4B4">gleb_1999</span><span style="font-size: 13px; color: #B4B4B4">Пропущен</span></div>
+<div class="row" style="grid-template-columns: 60px minmax(0, 1fr) 140px 120px"><span class="mono" style="font-size: 12px; color: #8F8F8F">22:29</span><span>Звери — Всё, что касается</span><span style="font-size: 13px; color: #B4B4B4">nastya_k</span><span style="font-size: 13px; color: #B4B4B4">Сыграл</span></div>
+</div>
+</sc-if>
+
+<section class="card" aria-labelledby="bot-t" style="margin-top: 24px; padding: 20px">
+<h2 id="bot-t" style="margin: 0; font-size: 17px; font-weight: 600">Как это выглядит в чате</h2>
+<div style="margin-top: 12px; display: flex; flex-direction: column">
+<div class="bot"><span class="mono" style="font-size: 11px; color: #6E6E6E">22:53</span><span><b style="font-weight: 500; color: #DCDCDC">tixiy_bard</b> <span class="mono" style="font-size: 12px">!музыка https://music.yandex.ru/album/4766/track/38634</span></span></div>
+<div class="bot" style="background: rgba(255,255,255,0.04); padding-left: 8px; margin-left: -8px; border-radius: 4px"><span class="mono" style="font-size: 11px; color: #6E6E6E">22:53</span><span><b style="font-weight: 500; color: #8F8F8F">StreOps</b> @tixiy_bard «Сплин — Выхода нет» в очереди, позиция <span class="mono">3</span>, примерно через <span class="mono">8</span> мин</span></div>
+<div class="bot"><span class="mono" style="font-size: 11px; color: #6E6E6E">22:54</span><span><b style="font-weight: 500; color: #DCDCDC">nastya_k</b> <span class="mono" style="font-size: 12px">!музыка грибы тает лёд</span></span></div>
+<div class="bot" style="background: rgba(255,255,255,0.04); padding-left: 8px; margin-left: -8px; border-radius: 4px"><span class="mono" style="font-size: 11px; color: #6E6E6E">22:54</span><span><b style="font-weight: 500; color: #8F8F8F">StreOps</b> @nastya_k нашёл «Грибы — Тает лёд» (<span class="mono">3:46</span>), позиция <span class="mono">4</span></span></div>
+<div class="bot"><span class="mono" style="font-size: 11px; color: #6E6E6E">22:55</span><span><b style="font-weight: 500; color: #DCDCDC">troll_2007</b> <span class="mono" style="font-size: 12px">!музыка youtu.be/x9R2…</span></span></div>
+<div class="bot" style="background: rgba(255,255,255,0.04); padding-left: 8px; margin-left: -8px; border-radius: 4px"><span class="mono" style="font-size: 11px; color: #6E6E6E">22:55</span><span><b style="font-weight: 500; color: #8F8F8F">StreOps</b> @troll_2007 трек длиннее <span class="mono">6:00</span>, выбери покороче</span></div>
+<div class="bot"><span class="mono" style="font-size: 11px; color: #6E6E6E">22:56</span><span style="display: inline-flex; gap: 6px; align-items: center; color: #B4B4B4"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v10M8.5 10h5a2 2 0 0 1 0 4h-5"></path></svg><b style="font-weight: 500; color: #DCDCDC">gleb_1999</b> потратил <span class="mono">500</span> баллов на «Заказать трек»: Звери — Районы-кварталы</span></div>
+</div>
+</section>
+</section>
+
+<aside style="flex: 1 1 340px; max-width: 440px; min-width: 0; display: flex; flex-direction: column; gap: 16px" aria-label="Настройки заказов">
+<h2 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Способы заказа</h2>
+
+<div class="meth">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><span style="display: inline-flex; gap: 10px; align-items: center; font-weight: 500"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l6-6-6-6M12 19h8"></path></svg>Команда в чате</span><button type="button" role="switch" class="sw" aria-checked="{{ m0 }}" aria-label="Заказ командой" onClick="{{ t0 }}"><span></span></button></div>
+<p class="mono" style="margin: 0; padding: 10px 12px; border-radius: 6px; background: #171717; border: 1px solid #2A2A2A; font-size: 13px">!музыка &lt;ссылка или название&gt;</p>
+<div class="kv"><span>Кто может</span><span>Фолловеры</span></div>
+<div class="kv"><span>Кулдаун на зрителя</span><span class="mono">60 с</span></div>
+<a href="WebCommands.dc.html" style="font-size: 13px; color: #B4B4B4; text-decoration: underline">Настроить команду</a>
+</div>
+
+<div class="meth">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><span style="display: inline-flex; gap: 10px; align-items: center; font-weight: 500"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v10M8.5 10h5a2 2 0 0 1 0 4h-5"></path></svg>Баллы канала</span><button type="button" role="switch" class="sw" aria-checked="{{ m1 }}" aria-label="Заказ за баллы" onClick="{{ t1 }}"><span></span></button></div>
+<p style="margin: 0; font-size: 13px; line-height: 18px; color: #B4B4B4">Создадим награду «Заказать трек» на Twitch и VK Видео Live. Зритель вводит ссылку или название в поле награды.</p>
+<div class="kv"><span>Стоимость</span><span class="mono">500 баллов</span></div>
+<div class="kv"><span>Если трек отклонён</span><span>Вернуть баллы</span></div>
+<div class="kv"><span>Пропуск очереди</span><span class="mono">2 000 баллов</span></div>
+</div>
+
+<div class="meth">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><span style="display: inline-flex; gap: 10px; align-items: center; font-weight: 500"><span style="width: 18px; text-align: center; font-weight: 600">₽</span>Донат с треком</span><button type="button" role="switch" class="sw" aria-checked="{{ m2 }}" aria-label="Заказ с донатом" onClick="{{ t2 }}"><span></span></button></div>
+<p style="margin: 0; font-size: 13px; line-height: 18px; color: #B4B4B4">Ссылка в сообщении к донату. Чем больше сумма, тем выше трек в очереди.</p>
+<div class="kv"><span>Минимум</span><span class="mono">100 ₽</span></div>
+</div>
+
+<div class="meth">
+<span style="font-weight: 500">Источники</span>
+<sc-for list="{{ sources }}" as="s" hint-placeholder-count="5"><button type="button" role="checkbox" aria-checked="{{ s.sel }}" onClick="{{ s.pick }}" class="chk" style="border: 0; background: transparent; padding: 0; width: 100%; text-align: left; font-family: 'Onest', sans-serif; cursor: pointer"><span class="{{ s.boxCls }}"><sc-if value="{{ s.on }}" hint-placeholder-val="{{ true }}"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width: 3"><path d="M20 6L9 17l-5-5"></path></svg></sc-if></span><span style="flex: 1"><span style="display: block">{{ s.name }}</span><span style="display: block; font-size: 12px; color: #8F8F8F">{{ s.note }}</span></span></button></sc-for>
+</div>
+
+<div class="meth">
+<span style="font-weight: 500">Ограничения</span>
+<div class="kv"><span>Максимальная длина трека</span><span class="mono">6:00</span></div>
+<div class="kv"><span>Треков от зрителя в очереди</span><span class="mono">2</span></div>
+<div class="kv"><span>Мин. просмотров на YouTube</span><span class="mono">1 000</span></div>
+<div class="kv"><span>Ручная проверка заказов</span><button type="button" role="switch" class="sw" aria-checked="{{ manual }}" aria-label="Ручная проверка" onClick="{{ toggleManual }}"><span></span></button></div>
+<div class="kv" style="flex-direction: column"><span>Стоп-слова в названии</span><span style="display: flex; flex-wrap: wrap; gap: 6px"><span class="src">ear rape</span><span class="src">10 часов</span><span class="src">bass boosted</span><span class="src" style="border-style: dashed; color: #8F8F8F">+ добавить</span></span></div>
+</div>
+</aside>
+</div>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      playing: true, vol: 70, open: true, tab: 0, manual: true,
+      methods: [true, true, false],
+      src: [true, true, true, false, true],
+      now: { t: 'Выхода нет', a: 'Сплин', src: 'Яндекс Музыка', by: 'tixiy_bard', how: 'командой', d: '3:31' },
+      queue: [
+        { id: 1, t: 'Звезда по имени Солнце', a: 'Кино', src: 'YouTube', by: 'moroz_tv', how: '₽ Донат 300 ₽', d: '3:46', s: 226 },
+        { id: 2, t: 'Тает лёд', a: 'Грибы', src: 'VK Музыка', by: 'nastya_k', how: '› Команда', d: '3:46', s: 226 },
+        { id: 3, t: 'Районы-кварталы', a: 'Звери', src: 'Яндекс Музыка', by: 'gleb_1999', how: '◎ 500 баллов', d: '3:27', s: 207 },
+        { id: 4, t: 'Я свободен', a: 'Кипелов', src: 'YouTube', by: 'polyana_live', how: '› Команда', d: '4:43', s: 283 },
+        { id: 5, t: 'Владивосток 2000', a: 'Мумий Тролль', src: 'VK Музыка', by: 'sever_ops', how: '◎ 500 баллов', d: '2:38', s: 158 },
+        { id: 6, t: 'Группа крови', a: 'Кино', src: 'YouTube', by: 'lenta_ln', how: '› Команда', d: '4:45', s: 285 }
+      ],
+      pending: [
+        { id: 7, t: 'Lithium', a: 'Nirvana', src: 'YouTube', by: 'anon_user', how: 'за баллы', d: '4:17', s: 257, note: 'Первый заказ от этого зрителя', points: true },
+        { id: 8, t: 'Опять метель', a: 'Ирина Аллегрова', src: 'Яндекс Музыка', by: 'gleb_1999', how: 'командой', d: '4:05', s: 245, note: 'Уже есть 1 трек в очереди от этого зрителя', points: false }
+      ]
+    };
+  }
+  renderVals() {
+    const st = this.state;
+    const q = st.queue;
+    const total = q.reduce((a, x) => a + x.s, 0);
+    const mm = Math.floor(total / 60), ss = total % 60;
+    const tabsDef = [['Очередь', q.length], ['На проверке', st.pending.length], ['История', 33]];
+    const srcDef = [
+      ['YouTube', 'Ссылки и поиск по названию'],
+      ['Яндекс Музыка', 'Играет через твой аккаунт с подпиской Плюс'],
+      ['VK Музыка', 'Через твой аккаунт VK'],
+      ['SoundCloud', 'Ссылки на публичные треки'],
+      ['Поиск по названию', 'Если прислали текст, а не ссылку']
+    ];
+    const swapUp = (i) => { const n = q.slice(); const t = n[i - 1]; n[i - 1] = n[i]; n[i] = t; this.setState({ queue: n }); };
+    return {
+      qCount: q.length,
+      qTime: mm + ':' + (ss < 10 ? '0' : '') + ss,
+      now: st.now,
+      playing: st.playing, paused: !st.playing,
+      playLabel: st.playing ? 'Пауза' : 'Продолжить',
+      togglePlay: () => this.setState({ playing: !st.playing }),
+      skip: () => { if (!q.length) return; const nx = q[0]; this.setState({ now: { t: nx.t, a: nx.a, src: nx.src, by: nx.by, how: nx.how, d: nx.d }, queue: q.slice(1) }); },
+      vol: st.vol,
+      setVol: (e) => this.setState({ vol: Number(e.target.value) }),
+      open: st.open ? 'true' : 'false',
+      openLabel: st.open ? 'Открыт' : 'Закрыт',
+      toggleOpen: () => this.setState({ open: !st.open }),
+      tabs: tabsDef.map((t, i) => ({ label: t[0], n: t[1], sel: st.tab === i ? 'true' : 'false', style: st.tab === i ? 'color: #F2F2F2; box-shadow: inset 0 -2px 0 #F2F2F2' : '', pick: () => this.setState({ tab: i }) })),
+      tabQueue: st.tab === 0, tabPending: st.tab === 1, tabHistory: st.tab === 2,
+      empty: q.length === 0,
+      queue: q.map((x, i) => Object.assign({}, x, {
+        n: i + 1, first: i === 0,
+        rowStyle: x.how.indexOf('Донат') >= 0 ? 'box-shadow: inset 2px 0 0 #F2F2F2' : '',
+        upLabel: 'Поднять «' + x.t + '»', delLabel: 'Убрать «' + x.t + '» из очереди',
+        up: () => swapUp(i),
+        del: () => this.setState({ queue: q.filter((y) => y.id !== x.id) })
+      })),
+      pending: st.pending.map((p) => Object.assign({}, p, {
+        rejectLabel: p.points ? 'Отклонить и вернуть баллы' : 'Отклонить',
+        reject: () => this.setState({ pending: st.pending.filter((y) => y.id !== p.id) }),
+        approve: () => this.setState({ pending: st.pending.filter((y) => y.id !== p.id), queue: q.concat([{ id: p.id, t: p.t, a: p.a, src: p.src, by: p.by, how: p.points ? '◎ 500 баллов' : '› Команда', d: p.d, s: p.s }]) })
+      })),
+      noPending: st.pending.length === 0,
+      m0: st.methods[0] ? 'true' : 'false', m1: st.methods[1] ? 'true' : 'false', m2: st.methods[2] ? 'true' : 'false',
+      t0: () => this.setState({ methods: [!st.methods[0], st.methods[1], st.methods[2]] }),
+      t1: () => this.setState({ methods: [st.methods[0], !st.methods[1], st.methods[2]] }),
+      t2: () => this.setState({ methods: [st.methods[0], st.methods[1], !st.methods[2]] }),
+      sources: srcDef.map((s, i) => ({
+        name: s[0], note: s[1], on: st.src[i], sel: st.src[i] ? 'true' : 'false',
+        boxCls: st.src[i] ? 'box on' : 'box',
+        pick: () => { const n = st.src.slice(); n[i] = !n[i]; this.setState({ src: n }); }
+      })),
+      manual: st.manual ? 'true' : 'false',
+      toggleManual: () => this.setState({ manual: !st.manual })
+    };
+  }
+}
+</script>
+</body>
+</html>

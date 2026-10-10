@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StreOps — цвет</title>
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0A0A0A}
+a{color:#F2F2F2}a:hover{color:#FFFFFF}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.why{font-size:13px;line-height:18px;color:#8F8F8F;margin:0}
+.why b{color:#B4B4B4;font-weight:500}
+.h2{margin:12px 0 0;font-size:32px;line-height:38px;letter-spacing:-.02em;font-weight:600}
+.lead{margin:12px 0 0;font-size:15px;line-height:22px;color:#B4B4B4;max-width:760px}
+.t{width:100%;border-collapse:collapse;font-size:13px;line-height:18px}
+.t th{text-align:left;font-weight:500;color:#8F8F8F;padding:10px 12px;font-size:12px;border-bottom:1px solid #3A3A3A}
+.t td{border-top:1px solid #1F1F1F;padding:9px 12px;vertical-align:middle;color:#DCDCDC}
+.sw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:8px;border:1px solid rgba(255,255,255,.18)}
+.tile{height:120px;display:flex;flex-direction:column;justify-content:space-between;padding:10px;box-sizing:border-box}
+.tl .t td{border-top-color:#DCDCDC;color:#2A2A2A}
+.tl .t th{color:#525252;border-bottom-color:#B4B4B4}
+.prop{display:inline-flex;font-size:11px;line-height:14px;padding:3px 7px;border:1px dashed #6E6E6E;border-radius:4px;color:#B4B4B4}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="dc">
+
+<div style="width: 1440px; min-height: 2900px; box-sizing: border-box; padding: 72px 96px 96px; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
+<p class="ov">01 · Цвет</p>
+<h1 style="margin: 16px 0 0; font-size: 56px; line-height: 60px; letter-spacing: -0.03em; font-weight: 500">Нейтральная шкала N0–N13</h1>
+<p class="lead">В шкале 14 ступеней без цветового оттенка: от чистого чёрного до чистого белого. Шаг между ступенями неравный. Внизу шкалы шаги мелкие, потому что там живут фоны и глаз различает 3–5 единиц яркости. В середине шаги крупные, чтобы текстовые уровни уверенно расходились по контрасту.</p>
+
+<div style="margin-top: 40px; display: grid; grid-template-columns: repeat(14, minmax(0, 1fr)); border: 1px solid #2A2A2A; border-radius: 8px; overflow: hidden">
+<div class="tile" style="background: #000000; color: #B4B4B4"><span class="mono" style="font-size: 12px">N0</span><span class="mono" style="font-size: 11px">#000000<br>void</span></div>
+<div class="tile" style="background: #0A0A0A; color: #B4B4B4; border-left: 1px solid #1F1F1F"><span class="mono" style="font-size: 12px">N1</span><span class="mono" style="font-size: 11px">#0A0A0A<br>page</span></div>
+<div class="tile" style="background: #111111; color: #B4B4B4"><span class="mono" style="font-size: 12px">N2</span><span class="mono" style="font-size: 11px">#111111<br>surface</span></div>
+<div class="tile" style="background: #171717; color: #B4B4B4"><span class="mono" style="font-size: 12px">N3</span><span class="mono" style="font-size: 11px">#171717<br>raised</span></div>
+<div class="tile" style="background: #1F1F1F; color: #B4B4B4"><span class="mono" style="font-size: 12px">N4</span><span class="mono" style="font-size: 11px">#1F1F1F<br>overlay</span></div>
+<div class="tile" style="background: #2A2A2A; color: #DCDCDC"><span class="mono" style="font-size: 12px">N5</span><span class="mono" style="font-size: 11px">#2A2A2A<br>divider</span></div>
+<div class="tile" style="background: #3A3A3A; color: #DCDCDC"><span class="mono" style="font-size: 12px">N6</span><span class="mono" style="font-size: 11px">#3A3A3A<br>border</span></div>
+<div class="tile" style="background: #525252; color: #F2F2F2"><span class="mono" style="font-size: 12px">N7</span><span class="mono" style="font-size: 11px">#525252<br>disabled</span></div>
+<div class="tile" style="background: #6E6E6E; color: #FFFFFF"><span class="mono" style="font-size: 12px">N8</span><span class="mono" style="font-size: 11px">#6E6E6E<br>control</span></div>
+<div class="tile" style="background: #8F8F8F; color: #0A0A0A"><span class="mono" style="font-size: 12px">N9</span><span class="mono" style="font-size: 11px">#8F8F8F<br>muted</span></div>
+<div class="tile" style="background: #B4B4B4; color: #0A0A0A"><span class="mono" style="font-size: 12px">N10</span><span class="mono" style="font-size: 11px">#B4B4B4<br>secondary</span></div>
+<div class="tile" style="background: #DCDCDC; color: #0A0A0A"><span class="mono" style="font-size: 12px">N11</span><span class="mono" style="font-size: 11px">#DCDCDC<br>hover inv.</span></div>
+<div class="tile" style="background: #F2F2F2; color: #0A0A0A"><span class="mono" style="font-size: 12px">N12</span><span class="mono" style="font-size: 11px">#F2F2F2<br>text</span></div>
+<div class="tile" style="background: #FFFFFF; color: #0A0A0A"><span class="mono" style="font-size: 12px">N13</span><span class="mono" style="font-size: 11px">#FFFFFF<br>focus</span></div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(14, minmax(0, 1fr)); margin-top: 8px" class="mono">
+<span style="font-size: 11px; color: #6E6E6E; padding: 0 10px">—</span><span style="font-size: 11px; color: #6E6E6E; padding: 0 10px">—</span><span style="font-size: 11px; color: #6E6E6E; padding: 0 10px">—</span><span style="font-size: 11px; color: #6E6E6E; padding: 0 10px">—</span><span style="font-size: 11px; color: #6E6E6E; padding: 0 10px">—</span><span style="font-size: 11px; color: #6E6E6E; padding: 0 10px">—</span>
+<span style="font-size: 11px; color: #8F8F8F; padding: 0 10px">1.74</span><span style="font-size: 11px; color: #8F8F8F; padding: 0 10px">2.53</span><span style="font-size: 11px; color: #B4B4B4; padding: 0 10px">3.88</span><span style="font-size: 11px; color: #DCDCDC; padding: 0 10px">6.12</span><span style="font-size: 11px; color: #DCDCDC; padding: 0 10px">9.55</span><span style="font-size: 11px; color: #DCDCDC; padding: 0 10px">14.44</span><span style="font-size: 11px; color: #DCDCDC; padding: 0 10px">17.68</span><span style="font-size: 11px; color: #DCDCDC; padding: 0 10px">19.80</span>
+</div>
+<p class="why" style="margin-top: 8px">Нижняя строка — контраст ступени к фону страницы N1. Из шкалы следует: N9 — самый тёмный цвет для текста (≥ 4.5:1), а N8 — самая тёмная граница интерактивного элемента (≥ 3:1).</p>
+
+<section style="margin-top: 72px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px">
+<div>
+<p class="ov">Тёмная тема · основная</p>
+<h2 class="h2">Роли ступеней</h2>
+<table class="t" style="margin-top: 20px">
+<thead><tr><th>Токен</th><th>Значение</th><th>Где применяется</th></tr></thead>
+<tbody>
+<tr><td class="mono">--bg-void</td><td class="mono"><span class="sw" style="background:#000000"></span>N0</td><td>Подложка видео-превью, плеер, 404</td></tr>
+<tr><td class="mono">--bg-page</td><td class="mono"><span class="sw" style="background:#0A0A0A"></span>N1</td><td>Фон страницы под всем контентом</td></tr>
+<tr><td class="mono">--bg-surface</td><td class="mono"><span class="sw" style="background:#111111"></span>N2</td><td>Карточки, панели, таблицы</td></tr>
+<tr><td class="mono">--bg-raised</td><td class="mono"><span class="sw" style="background:#171717"></span>N3</td><td>Поля ввода, карточка внутри карточки, строка в hover</td></tr>
+<tr><td class="mono">--bg-overlay</td><td class="mono"><span class="sw" style="background:#1F1F1F"></span>N4</td><td>Меню, поповеры, тосты (плотная основа под стеклом)</td></tr>
+<tr><td class="mono">--state-hover</td><td class="mono">#FFF / 4%</td><td>Наложение при наведении на любой фон</td></tr>
+<tr><td class="mono">--state-active</td><td class="mono">#FFF / 8%</td><td>Нажатие, открытый пункт меню</td></tr>
+<tr><td class="mono">--state-selected</td><td class="mono">#FFF / 10%</td><td>Выбранная строка, активный таб-фон</td></tr>
+<tr><td class="mono">--border-subtle</td><td class="mono"><span class="sw" style="background:#2A2A2A"></span>N5</td><td>Разделители, рамки карточек (декоративные)</td></tr>
+<tr><td class="mono">--border-default</td><td class="mono"><span class="sw" style="background:#3A3A3A"></span>N6</td><td>Шапка таблицы, границы секций, чекбокс выкл.</td></tr>
+<tr><td class="mono">--border-strong</td><td class="mono"><span class="sw" style="background:#6E6E6E"></span>N8</td><td>Рамки полей, тумблеров и радио: ≥ 3:1 к фону</td></tr>
+<tr><td class="mono">--text-primary</td><td class="mono"><span class="sw" style="background:#F2F2F2"></span>N12</td><td>Заголовки, основной текст, значения</td></tr>
+<tr><td class="mono">--text-secondary</td><td class="mono"><span class="sw" style="background:#B4B4B4"></span>N10</td><td>Описания, подписи полей, ник в чате</td></tr>
+<tr><td class="mono">--text-muted</td><td class="mono"><span class="sw" style="background:#8F8F8F"></span>N9</td><td>Метки времени, подсказки, плейсхолдеры</td></tr>
+<tr><td class="mono">--text-disabled</td><td class="mono"><span class="sw" style="background:#525252"></span>N7</td><td>Недоступные элементы (исключение WCAG)</td></tr>
+<tr><td class="mono">--fill-inverse</td><td class="mono"><span class="sw" style="background:#FFFFFF"></span>N13</td><td>Primary-кнопка, активный тумблер, выбранный чекбокс</td></tr>
+<tr><td class="mono">--fill-inverse-hover</td><td class="mono"><span class="sw" style="background:#DCDCDC"></span>N11</td><td>Hover primary-кнопки</td></tr>
+<tr><td class="mono">--text-on-inverse</td><td class="mono"><span class="sw" style="background:#0A0A0A"></span>N1</td><td>Текст на белой заливке</td></tr>
+<tr><td class="mono">--focus-ring</td><td class="mono"><span class="sw" style="background:#FFFFFF"></span>N13</td><td>Кольцо фокуса, 2 px + зазор 2 px цвета фона</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="tl" style="background: #F2F2F2; color: #0A0A0A; border-radius: 12px; padding: 32px; margin-top: -32px">
+<p class="ov" style="color: #525252">Светлая тема · вторичная</p>
+<h2 class="h2">Роли ступеней</h2>
+<table class="t" style="margin-top: 20px">
+<thead><tr><th>Токен</th><th>Значение</th><th>Где применяется</th></tr></thead>
+<tbody>
+<tr><td class="mono">--bg-void</td><td class="mono"><span class="sw" style="background:#000000"></span>N0</td><td>Видео остаётся на чёрном</td></tr>
+<tr><td class="mono">--bg-page</td><td class="mono"><span class="sw" style="background:#F2F2F2;border-color:#B4B4B4"></span>N12</td><td>Фон страницы</td></tr>
+<tr><td class="mono">--bg-surface</td><td class="mono"><span class="sw" style="background:#FFFFFF;border-color:#B4B4B4"></span>N13</td><td>Карточки, панели</td></tr>
+<tr><td class="mono">--bg-raised</td><td class="mono"><span class="sw" style="background:#FFFFFF;border-color:#B4B4B4"></span>N13 + тень-1</td><td>Поля, вложенные карточки</td></tr>
+<tr><td class="mono">--bg-overlay</td><td class="mono"><span class="sw" style="background:#FFFFFF;border-color:#B4B4B4"></span>N13 + тень-3</td><td>Меню, поповеры, тосты</td></tr>
+<tr><td class="mono">--state-hover</td><td class="mono">#000 / 4%</td><td>Наведение</td></tr>
+<tr><td class="mono">--state-active</td><td class="mono">#000 / 7%</td><td>Нажатие</td></tr>
+<tr><td class="mono">--state-selected</td><td class="mono">#000 / 8%</td><td>Выбранная строка</td></tr>
+<tr><td class="mono">--border-subtle</td><td class="mono"><span class="sw" style="background:#DCDCDC"></span>N11</td><td>Разделители</td></tr>
+<tr><td class="mono">--border-default</td><td class="mono"><span class="sw" style="background:#B4B4B4"></span>N10</td><td>Границы секций</td></tr>
+<tr><td class="mono">--border-strong</td><td class="mono"><span class="sw" style="background:#6E6E6E"></span>N8</td><td>Рамки полей: 4.55:1 к N12</td></tr>
+<tr><td class="mono">--text-primary</td><td class="mono"><span class="sw" style="background:#0A0A0A"></span>N1</td><td>Основной текст</td></tr>
+<tr><td class="mono">--text-secondary</td><td class="mono"><span class="sw" style="background:#525252"></span>N7</td><td>Описания: 6.98:1</td></tr>
+<tr><td class="mono">--text-muted</td><td class="mono"><span class="sw" style="background:#6E6E6E"></span>N8</td><td>Подсказки: 4.55:1 к N12</td></tr>
+<tr><td class="mono">--text-disabled</td><td class="mono"><span class="sw" style="background:#B4B4B4"></span>N10</td><td>Недоступные элементы</td></tr>
+<tr><td class="mono">--fill-inverse</td><td class="mono"><span class="sw" style="background:#0A0A0A"></span>N1</td><td>Primary-кнопка</td></tr>
+<tr><td class="mono">--fill-inverse-hover</td><td class="mono"><span class="sw" style="background:#2A2A2A"></span>N5</td><td>Hover primary</td></tr>
+<tr><td class="mono">--text-on-inverse</td><td class="mono"><span class="sw" style="background:#F2F2F2;border-color:#B4B4B4"></span>N12</td><td>Текст на чёрной заливке</td></tr>
+<tr><td class="mono">--focus-ring</td><td class="mono"><span class="sw" style="background:#000000"></span>N0</td><td>Кольцо фокуса</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section style="margin-top: 80px">
+<p class="ov">Семантика без цвета</p>
+<h2 class="h2">Статус = яркость + иконка + рисунок границы</h2>
+<p class="lead">Четыре семантических статуса различаются тремя признаками сразу. Если пропадёт один из них (серый плохо виден на ярком мониторе, пользователь не различает оттенки), два оставшихся всё равно передадут смысл.</p>
+<div style="margin-top: 32px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div role="status" style="display: flex; gap: 12px; padding: 14px 16px; background: rgba(255,255,255,0.04); border: 1px solid #6E6E6E; border-radius: 8px">
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="10" fill="#F2F2F2"></circle><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<div><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Twitch подключён</p><p style="margin: 2px 0 0; font-size: 13px; line-height: 18px; color: #B4B4B4">Чат-бот видит сообщения канала.</p></div>
+</div>
+<table class="t"><tbody>
+<tr><td class="mono">--status-success</td><td>Сплошная 1 px N8, иконка с заливкой, фон 4%</td></tr>
+</tbody></table>
+<p class="why"><b>Почему:</b> заливка иконки и спокойная рамка означают «готово», и при этом не перетягивают внимание.</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div role="status" style="display: flex; gap: 12px; padding: 14px 16px; background: repeating-linear-gradient(135deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 7px); border: 1px dashed #B4B4B4; border-radius: 8px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F2F2F2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M10.3 3.9L2.4 17.5a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4M12 17h.01"></path></svg>
+<div><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Токен YouTube истекает через 3 дня</p><p style="margin: 2px 0 0; font-size: 13px; line-height: 18px; color: #B4B4B4">Переподключи платформу, чтобы бот не остановился.</p></div>
+</div>
+<table class="t"><tbody>
+<tr><td class="mono">--status-warning</td><td>Пунктир 1 px N10, треугольник, штриховка 5%</td></tr>
+</tbody></table>
+<p class="why"><b>Почему:</b> пунктир читается как «пока не сломано, но внимание», а штриховка заметна даже в отрыве от иконки.</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div role="alert" style="display: flex; gap: 12px; padding: 13px 15px; background: repeating-linear-gradient(135deg, rgba(255,255,255,0.09) 0 2px, transparent 2px 6px); border: 2px solid #F2F2F2; border-radius: 8px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F2F2F2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M7.9 2h8.2L22 7.9v8.2L16.1 22H7.9L2 16.1V7.9z"></path><path d="M15 9l-6 6M9 9l6 6"></path></svg>
+<div><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 600">Не удалось сохранить команду</p><p style="margin: 2px 0 0; font-size: 13px; line-height: 18px; color: #DCDCDC">Команда «!дс» уже существует. Выбери другое название.</p></div>
+</div>
+<table class="t"><tbody>
+<tr><td class="mono">--status-error</td><td>Сплошная 2 px N12, восьмиугольник, плотная штриховка, жирный заголовок</td></tr>
+</tbody></table>
+<p class="why"><b>Почему:</b> ошибка — самый яркий и самый толстый элемент на экране. Красный не нужен, потому что это не необратимое действие.</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div role="status" style="display: flex; gap: 12px; padding: 14px 16px; background: transparent; border: 1px solid #3A3A3A; border-radius: 8px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B4B4B4" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-5M12 8h.01"></path></svg>
+<div><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500; color: #DCDCDC">Статистика обновляется раз в минуту</p><p style="margin: 2px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">Данные за последние 60 секунд появятся позже.</p></div>
+</div>
+<table class="t"><tbody>
+<tr><td class="mono">--status-info</td><td>Сплошная 1 px N6, контурная «i», без фона, текст N10</td></tr>
+</tbody></table>
+<p class="why"><b>Почему:</b> справка — самый тихий уровень и не должна конкурировать с данными.</p>
+</div>
+</div>
+</section>
+
+<section style="margin-top: 80px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px">
+<div style="grid-column: span 5">
+<p class="ov">Единственный акцент</p>
+<h2 class="h2">«Живой» красный</h2>
+<p class="lead">Тон один, у него четыре роли. Заливку #D92D20 подобрали так, чтобы белая подпись на ней давала 4.83:1 и проходила AA для мелкого текста. Для красного текста на тёмном фоне есть отдельный, более светлый тон.</p>
+<p class="why" style="margin-top: 12px"><b>Почему:</b> один и тот же красный не может быть и фоном под белым текстом, и текстом на чёрном. Поэтому роль одна, а тонов два.</p>
+</div>
+<div style="grid-column: 7 / span 6">
+<table class="t">
+<thead><tr><th>Токен</th><th>Dark</th><th>Light</th><th>Где применяется</th></tr></thead>
+<tbody>
+<tr><td class="mono">--live</td><td class="mono"><span class="sw" style="background:#D92D20"></span>#D92D20</td><td class="mono">#D92D20</td><td>LIVE-бейдж, точка эфира, кнопка необратимого действия. Белый текст 4.83:1</td></tr>
+<tr><td class="mono">--live-hover</td><td class="mono"><span class="sw" style="background:#C42B1C"></span>#C42B1C</td><td class="mono">#B42318</td><td>Hover и press деструктивной кнопки</td></tr>
+<tr><td class="mono">--live-text</td><td class="mono"><span class="sw" style="background:#FF6369"></span>#FF6369</td><td class="mono">#C42B1C</td><td>Текст «Удалить» в меню, заголовок «Опасной зоны». 6.83:1 / 5.06:1</td></tr>
+<tr><td class="mono">--live-border</td><td class="mono">#FF6369 / 40%</td><td class="mono">#C42B1C / 40%</td><td>Рамка «Опасной зоны», декоративная</td></tr>
+<tr><td class="mono">--live-pulse</td><td class="mono">#D92D20 / 0→35%</td><td class="mono">то же</td><td>Кольцо пульса у точки эфира, отключается при reduced-motion</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</template>
+<script src="../assets/dc-lite.js"></script>
+<script>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+DCMount(Component);
+</script>
+</body>
+</html>
