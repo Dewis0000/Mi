@@ -11,6 +11,7 @@ header('Cache-Control: no-store');
 <head>
 <meta charset="utf-8">
 <title>StreOps · розыгрыш</title>
+<link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
 <style>
