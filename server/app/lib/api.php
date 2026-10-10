@@ -616,6 +616,12 @@ function gw_public(array $g, bool $withEntries): array {
         $total = (int)db_one('SELECT COALESCE(SUM(weight),0) s FROM giveaway_entries WHERE giveaway_id = ?', [$g['id']])['s'];
         $out['entries'] = array_map(fn($e) => ['login' => $e['login'], 'name' => $e['display'], 'role' => $e['role'], 'weight' => (int)$e['weight'], 'chance' => $total ? round((int)$e['weight'] / $total * 100, 2) : 0],
             db_all('SELECT * FROM giveaway_entries WHERE giveaway_id = ? ORDER BY id DESC LIMIT 60', [$g['id']]));
+        // для проверки честности: все участники по порядку вступления и веса — только после завершения
+        if (in_array($g['status'], ['done', 'cancelled'], true)) {
+            $out['entriesOrdered'] = array_map(fn($e) => ['login' => $e['login'], 'weight' => (int)$e['weight']],
+                db_all('SELECT login, weight FROM giveaway_entries WHERE giveaway_id = ? ORDER BY id', [$g['id']]));
+            $out['excluded'] = json_decode((string)$g['excluded'], true) ?: [];
+        }
         // ответил ли последний победитель в чате после выбора
         $last = end($out['winners']);
         $out['lastReplied'] = $last ? (bool)db_one('SELECT id FROM chat_messages WHERE user_id = ? AND chatter_id = ? AND created_at >= ?', [$g['user_id'], $last['id'], (int)$last['at']]) : false;
