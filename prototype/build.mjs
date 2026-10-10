@@ -82,7 +82,7 @@ const SIDEBAR = [
   ['WebDashboard', 'Обзор', 'overview'],
   ['WebModeration', 'Модерация', 'mod'],
   ['Бот'],
-  ['WebCommands', 'Команды', 'cmd', '24'],
+  ['WebCommands', 'Команды', 'cmd'],
   ['WebMusic', 'Музыка', 'music'],
   ['WebWidgets', 'Виджеты', 'widgets'],
   ['Интерактив'],

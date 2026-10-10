@@ -147,6 +147,7 @@ function api_dispatch(string $r): never {
             if ($act === 'ban') $ok = tw_ban($u['twitch_id'], $chatterId, 0, 'StreOps: решение модератора');
             if (!$ok) fail('Twitch не выполнил действие. Бот должен быть модератором канала.');
             if ($act === 'delete') db_exec('UPDATE chat_messages SET deleted = 1 WHERE user_id = ? AND msg_id = ?', [$u['id'], in_str('msgId', 64)]);
+            if (in_array($act, ['timeout', 'ban'], true) && $ok) db_exec('UPDATE chat_messages SET deleted = 1 WHERE user_id = ? AND chatter_id = ?', [$u['id'], $chatterId]);
             log_action($u, ['chatterId' => $chatterId, 'login' => $login, 'text' => in_str('text', 500)], $act, 'вручную из панели', $act === 'timeout' ? in_int('duration', 600) : 0, $u['login']);
             json_out(['ok' => true]);
         }
