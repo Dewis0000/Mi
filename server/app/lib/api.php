@@ -49,7 +49,7 @@ function action_row(array $a): array {
 
 function song_row(array $s): array {
     return ['id' => (int)$s['id'], 'videoId' => $s['video_id'], 'url' => $s['url'], 'source' => $s['source'], 'title' => $s['title'], 'duration' => (int)$s['duration'],
-        'requester' => $s['requester'], 'method' => $s['method'], 'status' => $s['status'], 'at' => (int)$s['created_at']];
+        'requester' => $s['requester'], 'method' => $s['method'], 'status' => $s['status'], 'at' => (int)$s['created_at'], 'playedAt' => (int)($s['played_at'] ?? 0)];
 }
 
 function cmd_row(array $c): array {

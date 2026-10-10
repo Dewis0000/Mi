@@ -29,7 +29,7 @@ html,body{margin:0;background:transparent;overflow:hidden;width:1920px;height:10
 </head>
 <body>
 <div id="w"></div>
-<script src="/assets/widgets-lib.js"></script>
-<script src="/assets/widget-render.js"></script>
+<script src="/assets/widgets-lib.js?v=<?= @filemtime(__DIR__ . "/../assets/widgets-lib.js") ?: 1 ?>"></script>
+<script src="/assets/widget-render.js?v=<?= @filemtime(__DIR__ . "/../assets/widget-render.js") ?: 1 ?>"></script>
 </body>
 </html>
