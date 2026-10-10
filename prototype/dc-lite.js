@@ -137,6 +137,8 @@
       if (l.nodeValue !== f.nodeValue) l.nodeValue = f.nodeValue;
       return;
     }
+    // data-dc-keep: блок наполняет внешний скрипт (профиль, статус эфира, меню) — перерисовка его не трогает
+    if (l.hasAttribute('data-dc-keep')) return;
     for (const a of Array.from(l.attributes)) {
       if (!f.hasAttribute(a.name)) l.removeAttribute(a.name);
     }

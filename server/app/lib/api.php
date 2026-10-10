@@ -456,6 +456,16 @@ function api_dispatch(string $r): never {
             settings_set((int)$u['id'], 'widgets', ['on' => $on, 'cfg' => (array)($data['cfg'] ?? [])]);
             json_out(['ok' => true]);
         }
+        case 'player.next': { // плеер музыки (панель или OBS /w/player.php): трек доиграл, либо очередь ждёт запуска
+            $u = db_one('SELECT * FROM users WHERE widget_token = ?', [in_str('t', 64)]);
+            if (!$u || (int)$u['banned']) fail('Плеер не найден', 404);
+            $cur = db_one("SELECT id FROM songs WHERE user_id = ? AND status = 'playing' ORDER BY id DESC LIMIT 1", [$u['id']]);
+            $finished = in_int('finished');
+            // переключаем, только если доиграл именно текущий трек: два открытых плеера не пропустят трек дважды
+            if (($cur && (int)$cur['id'] === $finished) || (!$cur && $finished === 0)) music_next($u);
+            $c = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'playing' ORDER BY id DESC LIMIT 1", [$u['id']]);
+            json_out(['ok' => true, 'current' => $c ? song_row($c) : null, 'volume' => (int)music_config((int)$u['id'])['volume']]);
+        }
         case 'widget.data': {
             $u = db_one('SELECT * FROM users WHERE widget_token = ?', [in_str('t', 64)]);
             if (!$u || (int)$u['banned']) fail('Виджет не найден', 404);
@@ -648,6 +658,8 @@ function widget_payload(array $u, string $w, int $after): array {
         case 'np':
             $c = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'playing' ORDER BY id DESC LIMIT 1", [$uid]);
             $data['current'] = $c ? song_row($c) : null;
+            $data['queued'] = (int)db_one("SELECT COUNT(*) c FROM songs WHERE user_id = ? AND status = 'queued'", [$uid])['c'];
+            $data['volume'] = (int)music_config($uid)['volume'];
             break;
         case 'queue':
             $data['items'] = array_map('song_row', db_all("SELECT * FROM songs WHERE user_id = ? AND status = 'queued' ORDER BY pos, id LIMIT 5", [$uid]));
@@ -663,6 +675,10 @@ function widget_payload(array $u, string $w, int $after): array {
             $g = db_one('SELECT data, updated_at FROM gsi WHERE user_id = ? AND game = ?', [$uid, $w]);
             $data['gsi'] = $g ? json_decode((string)$g['data'], true) : null;
             $data['updatedAt'] = $g ? (int)$g['updated_at'] : 0;
+            break;
+        case 'giveaway': // оверлей розыгрыша /w/giveaway.php: активный розыгрыш или только что завершённый
+            $g = db_one("SELECT * FROM giveaways WHERE user_id = ? AND (status IN ('collecting','closed','drawing') OR (status = 'done' AND drawn_at > ?)) ORDER BY id DESC LIMIT 1", [$uid, now() - 90]);
+            $data['giveaway'] = $g ? gw_public($g, true) : null;
             break;
         case 'faceit':
         case 'fmatch':

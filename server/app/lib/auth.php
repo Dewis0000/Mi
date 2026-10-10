@@ -24,8 +24,13 @@ function current_user(): ?array {
 
 function admin_login(): string { return strtolower((string)cfg('ADMIN_LOGIN', 'zaka_00')); }
 
+// Админ — аккаунт Twitch с ником ADMIN_LOGIN. При первом входе запоминаем его Twitch ID:
+// если ник когда-нибудь займёт другой человек, доступа он не получит.
 function is_admin(?array $u): bool {
-    return $u !== null && strtolower((string)$u['login']) === admin_login();
+    if ($u === null || strtolower((string)$u['login']) !== admin_login()) return false;
+    $pinned = kv_get('admin_twitch_id');
+    if ($pinned === null) { kv_set('admin_twitch_id', (string)$u['twitch_id']); return true; }
+    return (string)$pinned === (string)$u['twitch_id'];
 }
 
 function require_user(): array {

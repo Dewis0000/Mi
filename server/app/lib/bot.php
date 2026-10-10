@@ -278,7 +278,10 @@ function punish(array $ctx, array $cfg, string $action, int $dur, string $reason
         $action = (string)$step['a'];
         $dur = isset($step['d']) ? parse_dur((string)$step['d']) : $dur;
         $strikesLabel = $cnt . ' из ' . count($ladder);
-        $ctx['strikeN'] = $cnt; $ctx['strikeMax'] = count($ladder);
+        // «Предупреждение 2 из 3»: считаем только ступени-предупреждения, а не всю лестницу
+        $warnSteps = array_keys(array_filter($ladder, fn($s) => ($s['a'] ?? '') === 'warn'));
+        $ctx['strikeN'] = count(array_filter($warnSteps, fn($i) => $i < $cnt)) ?: 1;
+        $ctx['strikeMax'] = max(1, count($warnSteps));
     }
     $ok = true;
     switch ($action) {

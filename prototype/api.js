@@ -60,18 +60,21 @@
 
   function applyUser(me) {
     const u = me.user;
-    const header = document.querySelector('header');
-    if (header && u) {
-      header.querySelectorAll('a').forEach((a) => {
-        if (!/kira_stream/.test(a.textContent)) return;
-        const av = a.querySelector('span');
-        const img = u.avatar ? '<img src="' + u.avatar.replace(/"/g, '') + '" alt="" width="32" height="32" style="width:32px;height:32px;border-radius:999px;object-fit:cover;display:block">' : '';
-        if (av && img) { av.innerHTML = img; av.style.background = 'none'; }
-        else if (av) av.textContent = initials(u.name);
-        a.childNodes.forEach((n) => { if (n.nodeType === 3 && /kira_stream/.test(n.nodeValue)) n.nodeValue = u.name; });
-        a.setAttribute('aria-label', 'Профиль ' + u.name);
-      });
-    }
+    document.querySelectorAll('[data-stre-user]').forEach((a) => {
+      if (!u) return;
+      const av = a.querySelector('[data-av]');
+      const name = a.querySelector('[data-name]');
+      if (av) {
+        if (u.avatar) {
+          const img = document.createElement('img');
+          img.src = u.avatar; img.alt = ''; img.width = 32; img.height = 32;
+          img.style.cssText = 'width:100%;height:100%;border-radius:999px;object-fit:cover;display:block';
+          av.replaceChildren(img);
+        } else av.textContent = initials(u.name);
+      }
+      if (name) name.textContent = u.name;
+      a.setAttribute('aria-label', 'Профиль ' + u.name);
+    });
     const sb = document.querySelector('nav.sb');
     if (sb && u) {
       if (u.isAdmin && !sb.querySelector('[data-admin]')) {
@@ -79,7 +82,7 @@
         a.href = '/admin.html';
         a.className = 'sb-i';
         a.dataset.admin = '1';
-        if (location.pathname.endsWith('/admin.html')) a.setAttribute('aria-current', 'page');
+        if (/\/admin\.html$/.test(location.pathname)) a.setAttribute('aria-current', 'page');
         a.innerHTML = '<svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>Админ-панель';
         sb.appendChild(a);
       }
@@ -92,37 +95,25 @@
         sb.appendChild(a);
       }
     }
-    // лендинг: кнопки входа
-    if (!u) document.querySelectorAll('a[href$="panel.html"]').forEach((a) => { a.href = '/auth/login.php?next=/panel.html'; });
     applyStream(me.stream);
   }
 
   let streamState = null;
+  let ticking = false;
   function applyStream(st) {
-    streamState = st || streamState;
-    const box = document.querySelector('header [role="status"]');
+    if (st) streamState = st;
+    const box = document.querySelector('[data-stre-live]');
     if (!box || !streamState) return;
-    const spans = box.querySelectorAll(':scope > span');
-    if (!box.dataset.wired) {
-      box.dataset.wired = '1';
-      setInterval(() => applyStream(null), 1000);
-    }
-    const live = streamState.live;
-    const dot = spans[0] && spans[0].querySelector('span');
-    const label = spans[0] && spans[0].lastElementChild;
-    if (label) label.textContent = live ? 'В ЭФИРЕ' : 'НЕ В ЭФИРЕ';
-    if (dot) dot.style.opacity = live ? '1' : '0.25';
-    const timer = spans[1];
-    const viewers = spans[2];
-    if (timer) {
-      const m = timer.classList.contains('mono') ? timer : timer.querySelector('.mono');
-      if (m) m.textContent = live ? StreAPI.fmtDur(Date.now() / 1000 - streamState.startedAt) : '—';
-    }
-    if (viewers) {
-      const m = viewers.classList.contains('mono') ? viewers : viewers.querySelector('.mono');
-      if (m) m.textContent = live ? StreAPI.fmtNum(streamState.viewers) : '—';
-    }
-    box.setAttribute('aria-label', live ? 'В эфире, ' + streamState.viewers + ' зрителей' : 'Не в эфире');
+    if (!ticking) { ticking = true; setInterval(() => applyStream(null), 1000); }
+    const live = !!streamState.live;
+    const q = (sel) => box.querySelector(sel);
+    q('[data-label]').textContent = live ? 'В ЭФИРЕ' : 'НЕ В ЭФИРЕ';
+    const dot = q('[data-dot]');
+    dot.style.background = live ? 'var(--accent, #D92D20)' : 'var(--n-8, #6E6E6E)';
+    dot.style.boxShadow = live ? '0 0 0 4px rgb(var(--accent-rgb, 217 45 32) / .25)' : 'none';
+    q('[data-timer]').textContent = live ? StreAPI.fmtDur(Date.now() / 1000 - streamState.startedAt) : '—';
+    q('[data-viewers]').textContent = live ? StreAPI.fmtNum(streamState.viewers) : '—';
+    box.setAttribute('aria-label', live ? 'В эфире, зрителей: ' + streamState.viewers : 'Не в эфире');
   }
 
   async function boot() {

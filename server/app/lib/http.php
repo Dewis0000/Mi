@@ -2,6 +2,8 @@
 // HTTP-клиент на curl: JSON-запросы к Twitch, YouTube, DonationAlerts.
 
 function http_request(string $method, string $url, array $headers = [], $body = null, int $timeout = 8): array {
+    // локальные тесты подменяют внешние сервисы (на хостинге функции http_mock нет)
+    if (function_exists('http_mock')) return http_mock($method, $url, $headers, $body);
     $ch = curl_init($url);
     $h = [];
     foreach ($headers as $k => $v) $h[] = $k . ': ' . $v;

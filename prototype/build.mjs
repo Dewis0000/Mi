@@ -1,12 +1,13 @@
 // Сборка статического сайта StreOps из артбордов холста (prototype/src/*.dc.html).
 // Запуск: node prototype/build.mjs  →  результат в site/
 import { readFileSync, writeFileSync, mkdirSync, rmSync, copyFileSync, readdirSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const srcDir = join(here, 'src');
-const outDir = join(here, '..', 'site');
+const outDir = process.env.STRE_OUT || join(here, '..', 'site');
 
 // Артборд → путь на сайте
 const PAGES = {
@@ -19,6 +20,7 @@ const PAGES = {
   WebModeration: 'moderation.html',
   WebGiveaways: 'giveaways.html',
   WebSettings: 'settings.html',
+  WebAdmin: 'admin.html',
   WebNotFound: '404.html',
   Main: 'design/index.html',
   Color: 'design/color.html',
@@ -89,7 +91,7 @@ const SIDEBAR = [
   ['-'],
   ['WebSettings', 'Настройки', 'settings'],
 ];
-const CURRENT_ALIAS = { WebWidgetEditor: 'WebWidgets' };
+const CURRENT_ALIAS = { WebWidgetEditor: 'WebWidgets' }; // пункт «Админ-панель» добавляет assets/api.js только администратору
 function sidebar(page) {
   const cur = CURRENT_ALIAS[page] || page;
   const svg = (k) => `<svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg>`;
@@ -101,7 +103,7 @@ function sidebar(page) {
     const count = badge ? `<span class="sb-n">${badge}</span>` : '';
     return `<a href="${target}.dc.html" class="sb-i"${current}>${svg(icon)}${label}${count}</a>`;
   }).join('\n');
-  return `<nav aria-label="Разделы стрим-панели" class="sb">\n${items}\n</nav>`;
+  return `<nav aria-label="Разделы стрим-панели" class="sb" data-dc-keep>\n${items}\n</nav>`;
 }
 const SIDEBAR_CSS = `<style>
 .sb{flex:1 1 200px;max-width:248px;min-width:200px;align-self:flex-start;position:sticky;top:88px;box-sizing:border-box;padding:12px;border-radius:8px;background:rgb(var(--n-13-rgb) / .03);border:1px solid rgb(var(--n-13-rgb) / .06);display:flex;flex-direction:column;gap:2px;font-family:var(--font-sans),system-ui,sans-serif}
@@ -118,11 +120,31 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 @media (max-width: 900px){.sb{position:static;max-width:none;flex-basis:100%;flex-direction:row;flex-wrap:wrap}.sb-h,.sb-sep{display:none}}
 </style>`;
 
+// Шапка панели: профиль и статус эфира наполняет assets/api.js настоящими данными
+const LIVE_STATUS = `<div role="status" data-dc-keep data-stre-live aria-label="Статус эфира" style="display: flex; align-items: center; height: 40px; border: 1px solid #2A2A2A; border-radius: 6px">
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 100%; padding: 0 12px; border-right: 1px solid #2A2A2A"><span data-dot style="width: 8px; height: 8px; border-radius: 999px; background: #6E6E6E"></span><span data-label style="font-size: 11px; font-weight: 700; letter-spacing: .08em">НЕ В ЭФИРЕ</span></span>
+<span class="mono" data-timer title="Длительность эфира" style="padding: 0 12px; border-right: 1px solid #2A2A2A; font-size: 15px">—</span><span class="mono" data-viewers title="Зрителей сейчас" style="padding: 0 12px; font-size: 15px">—</span>
+</div>`;
+function liveChrome(body) {
+  body = body.replace(/<div role="status" aria-label="В эфире[\s\S]*?\n<\/div>/, LIVE_STATUS);
+  return body.replace(/<header\b[\s\S]*?<\/header>/, (header) => header.replace(/<a\b([^>]*)>((?:(?!<\/a>)[\s\S])*?>КС<\/span>(?:(?!<\/a>)[\s\S])*?)<\/a>/, (m, attrs, inner) => {
+    attrs = attrs.replace(/\saria-label="[^"]*"/, '') + ' aria-label="Профиль" data-dc-keep data-stre-user';
+    inner = inner.replace(/<span([^>]*)>КС<\/span>/, '<span$1 data-av></span>').replace('kira_stream', '<span data-name>Профиль</span>');
+    return `<a${attrs}>${inner}</a>`;
+  }));
+}
+
 function pick(re, text, what, file) {
   const m = text.match(re);
   if (!m) throw new Error(`${file}: не найден ${what}`);
   return m[1];
 }
+
+// ?v=хеш содержимого: после обновления браузер сразу берёт новые скрипты
+const ASSETS = { 'dc-lite.js': 'dc-lite.js', 'theme.js': 'theme.js', 'widgets-lib.js': 'widgets-lib.js', 'api.js': 'api.js', 'widget-render.js': 'widget-render.js' };
+const VER = {};
+for (const [k, f] of Object.entries(ASSETS)) VER[k] = createHash('sha1').update(readFileSync(join(here, f))).digest('hex').slice(0, 8);
+function asset(fromPath, name) { return relLink(fromPath, 'assets/' + name) + '?v=' + VER[name]; }
 
 function relLink(fromPath, toPath) {
   // 404 отдаётся сервером по любому адресу, поэтому ссылки в нём от корня сайта
@@ -140,6 +162,7 @@ function convert(file, outPath) {
   const pageName = file.replace(/\.dc\.html$/, '');
   const hasSidebar = /<nav aria-label="Разделы стрим-панели"/.test(body) && !outPath.startsWith('design/');
   if (hasSidebar) body = body.replace(/<nav aria-label="Разделы стрим-панели"[\s\S]*?<\/nav>/, sidebar(pageName));
+  if (!outPath.startsWith('design/')) body = liveChrome(body);
   let script = pick(/<script type="text\/x-dc"[^>]*>([\s\S]*?)<\/script>/, src, 'script', file);
 
   // <sc-for>/<sc-if> → <template>: так они переживают разбор внутри таблиц и списков
@@ -172,11 +195,11 @@ function convert(file, outPath) {
     script = themeizeCss(script);
     head = themeizeCss(head);
   }
-  const libTag = /^Web(Widgets|WidgetEditor)$/.test(pageName) ? `<script src="${relLink(outPath, 'assets/widgets-lib.js')}"></script>\n` : '';
-  const themeTag = themed ? `<script src="${relLink(outPath, 'assets/theme.js')}"></script>\n` : '';
+  const libTag = /^Web(Widgets|WidgetEditor)$/.test(pageName) ? `<script src="${asset(outPath, 'widgets-lib.js')}"></script>\n` : '';
+  const themeTag = themed ? `<script src="${asset(outPath, 'theme.js')}"></script>\n<script src="${asset(outPath, 'api.js')}"></script>\n` : '';
   if (hasSidebar) head += '\n' + SIDEBAR_CSS;
 
-  const runtime = relLink(outPath, 'assets/dc-lite.js');
+  const runtime = asset(outPath, 'dc-lite.js');
   const html = `<!doctype html>
 <html lang="ru">
 <head>
@@ -206,9 +229,7 @@ DCMount(Component);
 
 rmSync(outDir, { recursive: true, force: true });
 mkdirSync(join(outDir, 'assets'), { recursive: true });
-copyFileSync(join(here, 'dc-lite.js'), join(outDir, 'assets', 'dc-lite.js'));
-copyFileSync(join(here, 'theme.js'), join(outDir, 'assets', 'theme.js'));
-copyFileSync(join(here, 'widgets-lib.js'), join(outDir, 'assets', 'widgets-lib.js'));
+for (const f of Object.values(ASSETS)) copyFileSync(join(here, f), join(outDir, 'assets', f));
 copyFileSync(join(here, '..', 'design-system', 'tokens.css'), join(outDir, 'assets', 'tokens.css'));
 writeFileSync(join(outDir, 'assets', 'favicon.svg'), '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><rect width="28" height="28" rx="6" fill="#0A0A0A"/><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"/><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"/><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"/><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"/></svg>\n');
 
@@ -220,9 +241,16 @@ for (const f of files) {
   console.log(`${f} → site/${PAGES[name]}`);
 }
 
-writeFileSync(join(outDir, '.htaccess'), `DirectoryIndex index.html
+writeFileSync(join(outDir, '.htaccess'), `DirectoryIndex index.html index.php
 ErrorDocument 404 /404.html
 AddDefaultCharset UTF-8
+
+# Вход через Twitch и вебхуки EventSub работают только по https.
+# Когда SSL-сертификат выпущен (ISPmanager → SSL-сертификаты), раскомментируй 4 строки ниже.
+# RewriteEngine On
+# RewriteCond %{HTTPS} !=on
+# RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 <IfModule mod_expires.c>
   ExpiresActive On
