@@ -1,6 +1,13 @@
-DirectoryIndex index.html
+DirectoryIndex index.html index.php
 ErrorDocument 404 /404.html
 AddDefaultCharset UTF-8
+
+# Вход через Twitch и вебхуки EventSub работают только по https.
+# Когда SSL-сертификат выпущен (ISPmanager → SSL-сертификаты), раскомментируй 4 строки ниже.
+# RewriteEngine On
+# RewriteCond %{HTTPS} !=on
+# RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 <IfModule mod_expires.c>
   ExpiresActive On

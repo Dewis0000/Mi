@@ -7,42 +7,61 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<script src="assets/theme.js"></script>
+<script src="assets/theme.js?v=460ce522"></script>
+<script src="assets/api.js?v=47744cb2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:var(--n-1)}
 a{color:var(--n-12);text-decoration:none}a:hover{color: var(--accent-on)}
+button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--n-12);outline-offset:2px}
 .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
 .ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--n-9);margin:0}
 .ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .card{background:var(--s-2);border:1px solid var(--n-5);border-radius:8px}
-.nav-i{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;color:var(--n-10)}
-.nav-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 .tab{height:44px;padding:0;border:0;background:transparent;color:var(--n-9);font:500 14px/20px var(--font-sans),sans-serif;display:flex;gap:6px;align-items:center;cursor:pointer;white-space:nowrap}
 .tab:hover{color:var(--n-12)}
 .sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid var(--n-8);background:transparent;cursor:pointer;flex:none;padding:0}
 .sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:var(--n-9);transition:transform 180ms cubic-bezier(.2,0,0,1)}
 .sw[aria-checked="true"]{background:var(--n-13);border-color:var(--n-13)}
 .sw[aria-checked="true"] span{transform:translateX(16px);background:var(--n-1)}
-.sel{height:36px;box-sizing:border-box;padding:0 30px 0 10px;border-radius:6px;background:var(--s-3);border:1px solid var(--n-8);color:var(--n-12);font:400 13px/18px var(--font-sans),sans-serif;appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--n-10) 50%),linear-gradient(135deg,var(--n-10) 50%,transparent 50%);background-position:calc(100% - 15px) 15px,calc(100% - 10px) 15px;background-size:5px 5px;background-repeat:no-repeat;cursor:pointer}
+.sw:disabled{opacity:.45;cursor:not-allowed}
+.sel{height:36px;box-sizing:border-box;padding:0 30px 0 10px;border-radius:6px;background:var(--s-3);border:1px solid var(--n-8);color:var(--n-12);font:400 13px/18px var(--font-sans),sans-serif;appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--n-10) 50%),linear-gradient(135deg,var(--n-10) 50%,transparent 50%);background-position:calc(100% - 15px) 15px,calc(100% - 10px) 15px;background-size:5px 5px;background-repeat:no-repeat;cursor:pointer;min-width:0}
 .sel:hover{border-color:var(--n-9)}
 .sel:disabled{border-color:var(--n-5);color:var(--n-7);cursor:not-allowed}
+.inp{height:36px;box-sizing:border-box;padding:0 10px;border-radius:6px;background:var(--s-3);border:1px solid var(--n-8);color:var(--n-12);font:400 14px/20px var(--font-sans),sans-serif;min-width:0}
+.inp:hover{border-color:var(--n-9)}
+.inp:disabled{border-color:var(--n-5);color:var(--n-7)}
+.inp[aria-invalid="true"]{border:2px solid var(--n-12)}
 .bs{height:36px;padding:0 12px;border-radius:6px;border:1px solid var(--n-6);background:transparent;color:var(--n-12);font:500 13px/18px var(--font-sans),sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
 .bs:hover{background:rgb(var(--n-13-rgb) / .04);border-color:var(--n-8)}
-.bp{height:36px;padding:0 12px;border-radius:6px;border:0;background:var(--n-13);color:var(--n-1);font:500 13px/18px var(--font-sans),sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.bp{height:36px;padding:0 12px;border-radius:6px;border:0;background:var(--n-13);color:var(--n-1);font:500 13px/18px var(--font-sans),sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
 .bp:hover{background:var(--n-11)}
-.flt{padding:18px 20px;border-radius:8px;border:1px solid var(--n-5);background:var(--s-2);display:flex;flex-direction:column;gap:14px}
+.bs:disabled,.bp:disabled{opacity:.5;cursor:not-allowed}
+.danger{color:var(--accent-text)}
+.flt{padding:18px 20px;border-radius:8px;border:1px solid var(--n-5);background:var(--s-2);display:flex;flex-direction:column;gap:14px;min-width:0}
 .k{font-size:13px;color:var(--n-9);margin:0}
 .big{margin:8px 0 0;font-size:28px;line-height:32px;font-weight:500;letter-spacing:-.02em}
-.hb{display:grid;grid-template-columns:150px minmax(0,1fr) 48px;gap:12px;align-items:center;font-size:13px;padding:6px 0}
-.tr{display:grid;grid-template-columns:60px 150px 150px minmax(0,1fr) 120px 110px;gap:12px;align-items:center;padding:10px 12px;border-top:1px solid var(--n-4);font-size:13px;line-height:18px}
+.hb{display:grid;grid-template-columns:170px minmax(0,1fr) 48px;gap:12px;align-items:center;font-size:13px;padding:6px 0}
+.tr{display:grid;grid-template-columns:84px 150px 140px minmax(0,1fr) 110px 110px;gap:12px;align-items:center;padding:10px 12px;border-top:1px solid var(--n-4);font-size:13px;line-height:18px}
 .tr:hover{background:rgb(var(--n-13-rgb) / .03)}
+.mob{display:none}
 .badge{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:4px;font-size:12px;white-space:nowrap}
-.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 4px 0 10px;border-radius:4px;background:var(--n-4);border:1px solid var(--n-6);font-size:13px}
-.chip button{width:20px;height:20px;border:0;border-radius:3px;background:transparent;color:var(--n-9);cursor:pointer}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 4px 0 10px;border-radius:4px;background:var(--n-4);border:1px solid var(--n-6);font-size:13px;max-width:100%}
+.chip button{width:20px;height:20px;border:0;border-radius:3px;background:transparent;color:var(--n-9);cursor:pointer;flex:none}
+.chip button:hover{color:var(--n-12);background:rgb(var(--n-13-rgb) / .08)}
 .step{flex:1 1 150px;min-width:150px;padding:14px;border-radius:8px;border:1px solid var(--n-6);background:var(--s-3);display:flex;flex-direction:column;gap:10px;position:relative}
 .mode{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--n-4)}
-@media (max-width: 900px){.tr{grid-template-columns:52px minmax(0,1fr) 110px}.tr .hide{display:none}}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px}
+.lbl{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--n-10);min-width:0}
+.err{font-size:12px;line-height:16px;color:var(--n-12);font-weight:500}
+.note{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between;padding:12px 16px;border:1px solid var(--n-6);border-radius:8px;font-size:14px;line-height:20px;color:var(--n-11)}
+.alert{padding:12px 16px;border:2px solid var(--n-12);border-radius:8px;font-size:14px;line-height:20px}
+.empty{margin:0;padding:24px;text-align:center;border:1px solid var(--n-5);border-radius:8px;color:var(--n-9);font-size:14px;line-height:20px}
+.held{display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding:14px 16px;border-radius:8px;border:1px dashed var(--n-9);background:repeating-linear-gradient(135deg,rgb(var(--n-13-rgb) / .03) 0 1px,transparent 1px 7px)}
+.tag{height:26px;padding:0 8px;border-radius:4px;border:1px solid var(--n-6);background:transparent;color:var(--n-11);font:400 12px/16px 'JetBrains Mono',monospace;cursor:pointer}
+.tag:hover{border-color:var(--n-9);background:rgb(var(--n-13-rgb) / .04)}
+@media (max-width: 900px){.tr{grid-template-columns:52px minmax(0,1fr) auto}.tr .hide{display:none}.mob{display:block}.hb{grid-template-columns:120px minmax(0,1fr) 40px}}
 </style>
 <style>
 .sb{flex:1 1 200px;max-width:248px;min-width:200px;align-self:flex-start;position:sticky;top:88px;box-sizing:border-box;padding:12px;border-radius:8px;background:rgb(var(--n-13-rgb) / .03);border:1px solid rgb(var(--n-13-rgb) / .06);display:flex;flex-direction:column;gap:2px;font-family:var(--font-sans),system-ui,sans-serif}
@@ -69,22 +88,22 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 <div style="height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 24px; flex-wrap: wrap">
 <a href="index.html" style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2" data-stroke="12"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2" data-fill="12"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2" data-fill="12"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F" data-fill="9"></rect></svg>StreOps</a>
 <div style="display: flex; align-items: center; gap: 8px">
-<div role="status" aria-label="В эфире 2 часа 47 минут, 1284 зрителя" style="display: flex; align-items: center; height: 40px; border: 1px solid var(--n-5); border-radius: 6px">
-<span style="display: inline-flex; align-items: center; gap: 8px; height: 100%; padding: 0 12px; border-right: 1px solid var(--n-5)"><span style="width: 8px; height: 8px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 0 4px rgb(var(--accent-rgb) / 0.25)"></span><span style="font-size: 11px; font-weight: 700; letter-spacing: .08em">В ЭФИРЕ</span></span>
-<span class="mono" style="padding: 0 12px; border-right: 1px solid var(--n-5); font-size: 15px">02:47:13</span><span class="mono" style="padding: 0 12px; font-size: 15px">1 284</span>
+<div role="status" data-dc-keep data-stre-live aria-label="Статус эфира" style="display: flex; align-items: center; height: 40px; border: 1px solid var(--n-5); border-radius: 6px">
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 100%; padding: 0 12px; border-right: 1px solid var(--n-5)"><span data-dot style="width: 8px; height: 8px; border-radius: 999px; background: var(--n-8)"></span><span data-label style="font-size: 11px; font-weight: 700; letter-spacing: .08em">НЕ В ЭФИРЕ</span></span>
+<span class="mono" data-timer title="Длительность эфира" style="padding: 0 12px; border-right: 1px solid var(--n-5); font-size: 15px">—</span><span class="mono" data-viewers title="Зрителей сейчас" style="padding: 0 12px; font-size: 15px">—</span>
 </div>
-<a href="settings.html" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 8px 0 6px; font-size: 14px; font-weight: 500"><span style="width: 32px; height: 32px; border-radius: 999px; background: linear-gradient(135deg, var(--n-10), var(--n-6)); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--n-1)">КС</span>kira_stream</a>
+<a href="settings.html" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 8px 0 6px; font-size: 14px; font-weight: 500" aria-label="Профиль" data-dc-keep data-stre-user><span style="width: 32px; height: 32px; border-radius: 999px; background: linear-gradient(135deg, var(--n-10), var(--n-6)); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--n-1)" data-av></span><span data-name>Профиль</span></a>
 </div>
 </div>
 </header>
 
 <div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; box-sizing: border-box; max-width: 1920px; margin: 0 auto">
-<nav aria-label="Разделы стрим-панели" class="sb">
+<nav aria-label="Разделы стрим-панели" class="sb" data-dc-keep>
 <p class="sb-h">Эфир</p>
 <a href="panel.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Обзор</a>
 <a href="moderation.html" class="sb-i" aria-current="page"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Модерация</a>
 <p class="sb-h">Бот</p>
-<a href="commands.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l6-6-6-6M12 19h8"/></svg>Команды<span class="sb-n">24</span></a>
+<a href="commands.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l6-6-6-6M12 19h8"/></svg>Команды</a>
 <a href="music.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Музыка</a>
 <a href="widgets.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Виджеты</a>
 <p class="sb-h">Интерактив</p>
@@ -96,394 +115,993 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 
 <main style="flex: 999 1 680px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
 <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
-<div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Модерация</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--n-10); max-width: 640px">Чат Twitch · twitch.tv/kira_stream. Бот действует от имени аккаунта StreOps с правами модератора канала.</p></div>
+<div style="min-width: 0"><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Модерация</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--n-10); max-width: 640px">{{ subtitle }}</p></div>
 <div style="display: flex; gap: 8px; flex-wrap: wrap">
-<div style="display: flex; align-items: center; gap: 12px; padding: 6px 6px 6px 14px; border-radius: 8px; border: 1px solid var(--n-6)"><span style="font-size: 14px">Автомодерация</span><button type="button" role="switch" class="sw" aria-checked="{{ autoOn }}" aria-label="Автомодерация" onClick="{{ toggleAuto }}"><span></span></button></div>
-<button type="button" onClick="{{ toggleShield }}" aria-pressed="{{ shieldPressed }}" style="{{ shieldStyle }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>{{ shieldLabel }}</button>
+<div style="display: flex; align-items: center; gap: 12px; padding: 6px 6px 6px 14px; border-radius: 8px; border: 1px solid var(--n-6)"><span id="auto-l" style="font-size: 14px">Автомодерация</span><button type="button" role="switch" class="sw" aria-checked="{{ autoOn }}" aria-labelledby="auto-l" onClick="{{ toggleAuto }}" disabled="{{ noCfg }}"><span></span></button></div>
+<button type="button" onClick="{{ toggleShield }}" aria-pressed="{{ shieldPressed }}" disabled="{{ shieldDisabled }}" title="{{ shieldTitle }}" style="{{ shieldStyle }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>{{ shieldLabel }}</button>
 </div>
 </div>
 
-<template data-if="shield">
-<div role="alert" style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border: 2px solid var(--n-12); border-radius: 8px; background: repeating-linear-gradient(135deg, rgb(var(--n-13-rgb) / 0.08) 0 2px, transparent 2px 6px)"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><div><p style="margin: 0; font-weight: 600">Режим щита включён</p><p style="margin: 2px 0 0; font-size: 13px; color: var(--n-11)">Писать могут только фолловеры старше 10 минут, медленный режим 10 с, новые аккаунты младше 7 дней молчат, чувствительность фильтров максимальная. Выключи, когда атака закончится.</p></div></div>
+<template data-if="botOff">
+<div class="note"><span style="flex: 1 1 320px"><b style="font-weight: 600">Бот выключен.</b> Фильтры не проверяют чат, очередь и журнал не пополняются. Включи бота — он станет модератором канала и начнёт следить за сообщениями.</span><button type="button" class="bp" onClick="{{ enableBot }}" disabled="{{ botBusy }}">{{ botBtn }}</button></div>
+</template>
+<template data-if="botWarn">
+<div class="note"><span style="flex: 1 1 320px"><b style="font-weight: 600">Бот включён, но Twitch сообщил о проблеме:</b> {{ botError }}</span><button type="button" class="bs" onClick="{{ enableBot }}" disabled="{{ botBusy }}">{{ botRetryBtn }}</button></div>
+</template>
+<template data-if="autoOff">
+<div class="note"><span style="flex: 1 1 320px"><b style="font-weight: 600">Автомодерация выключена.</b> Бот не проверяет сообщения фильтрами. Режимы чата, очередь, журнал и ручные действия работают.</span><button type="button" class="bs" onClick="{{ toggleAuto }}">Включить</button></div>
+</template>
+<template data-if="shieldOn">
+<div role="status" style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border: 2px solid var(--n-12); border-radius: 8px; background: repeating-linear-gradient(135deg, rgb(var(--n-13-rgb) / 0.08) 0 2px, transparent 2px 6px)"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><div><p style="margin: 0; font-weight: 600">Режим щита включён</p><p style="margin: 2px 0 0; font-size: 13px; line-height: 18px; color: var(--n-11)">Twitch применяет ограничения щита, которые настроены в панели автора на Twitch: например, писать могут только проверенные аккаунты. Выключи, когда атака закончится.</p></div></div>
+</template>
+<template data-if="saveFailed">
+<div role="alert" class="alert" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: space-between"><span style="flex: 1 1 320px"><b style="font-weight: 600">Настройки не сохранились:</b> {{ saveErr }}. Повторим автоматически, изменения на странице не потеряются.</span><span style="display: flex; gap: 6px; flex-wrap: wrap"><button type="button" class="bs" onClick="{{ revert }}">Вернуть сохранённое</button><button type="button" class="bp" onClick="{{ retrySave }}">Повторить сейчас</button></span></div>
 </template>
 
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 1px solid var(--n-5); overflow-x: auto">
-<div role="tablist" aria-label="Разделы модерации" style="display: flex; gap: 28px">
-<template data-for="tabs" data-as="t"><button role="tab" type="button" class="tab" aria-selected="{{ t.sel }}" onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}<template data-if="t.hasN"><span class="mono" style="font-size: 12px; color: var(--n-9)">{{ t.n }}</span></template></button></template>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 4px 16px; flex-wrap: wrap; border-bottom: 1px solid var(--n-5)">
+<div role="tablist" aria-label="Разделы модерации" style="display: flex; gap: 28px; overflow-x: auto; max-width: 100%">
+<template data-for="tabs" data-as="t"><button role="tab" type="button" class="tab" id="{{ t.id }}" aria-controls="{{ t.panel }}" aria-selected="{{ t.sel }}" tabindex="{{ t.ti }}" onClick="{{ t.pick }}" onKeyDown="{{ t.key }}" style="{{ t.style }}">{{ t.label }}<template data-if="t.hasN"><span class="mono" style="font-size: 12px; padding: 1px 6px; border: 1px solid var(--n-8); border-radius: 4px; color: var(--n-12)">{{ t.n }}</span></template></button></template>
 </div>
+<span role="status" aria-live="polite" style="display: inline-flex; align-items: center; gap: 6px; min-height: 32px; font-size: 12px; color: {{ saveColor }}"><template data-if="saveOk"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg></template>{{ saveLabel }}</span>
 </div>
 
 <!-- ============ АНАЛИТИКА ============ -->
 <template data-if="tA">
-<div style="display: flex; flex-direction: column; gap: 24px">
-<div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center"><p style="margin: 0; font-size: 14px; color: var(--n-10)">Текущий стрим · с 20:06 · обновляется каждые 10 секунд</p><span style="display: inline-flex; padding: 2px; border: 1px solid var(--n-6); border-radius: 6px"><button type="button" class="mono" style="height: 30px; padding: 0 12px; border: 0; border-radius: 4px; background: var(--n-12); color: var(--n-1); font-size: 12px">Стрим</button><button type="button" class="mono" style="height: 30px; padding: 0 12px; border: 0; border-radius: 4px; background: transparent; color: var(--n-9); font-size: 12px">7 д</button><button type="button" class="mono" style="height: 30px; padding: 0 12px; border: 0; border-radius: 4px; background: transparent; color: var(--n-9); font-size: 12px">30 д</button></span></div>
+<div role="tabpanel" id="panel-analytics" aria-labelledby="tab-analytics" style="display: flex; flex-direction: column; gap: 24px">
+<p style="margin: 0; font-size: 14px; color: var(--n-10)">{{ periodLabel }}</p>
+<template data-if="statsFailed"><p role="alert" class="alert" style="margin: 0">Не удалось загрузить статистику: {{ statsErr }}. Пробуем снова каждые 10 секунд.</p></template>
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px">
-<div class="card" style="padding: 18px"><p class="k">Сообщений</p><p class="mono big">3 912</p><p class="mono" style="margin: 6px 0 0; font-size: 12px; color: var(--n-10)">641 уникальный автор</p></div>
-<div class="card" style="padding: 18px"><p class="k">Удалено</p><p class="mono big">37</p><p class="mono" style="margin: 6px 0 0; font-size: 12px; color: var(--n-10)">0,9% · 31 ботом, 6 вручную</p></div>
-<div class="card" style="padding: 18px"><p class="k">Предупреждений</p><p class="mono big">24</p><p class="mono" style="margin: 6px 0 0; font-size: 12px; color: var(--n-10)">у 19 зрителей</p></div>
-<div class="card" style="padding: 18px"><p class="k">Муты / баны</p><p class="mono big">12 / 3</p><p class="mono" style="margin: 6px 0 0; font-size: 12px; color: var(--n-10)">2 бана — боты-спамеры</p></div>
-<div class="card" style="padding: 18px"><p class="k">Реакция модераторов</p><p class="mono big">14 с</p><p class="mono" style="margin: 6px 0 0; font-size: 12px; color: var(--n-10)">медиана до действия</p></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px">
+<template data-for="statCards" data-as="c"><div class="card" style="padding: 18px"><p class="k">{{ c.k }}</p><p class="mono big">{{ c.v }}</p><p style="margin: 6px 0 0; font-size: 12px; line-height: 16px; color: var(--n-10)">{{ c.sub }}</p></div></template>
 </div>
 
 <div style="display: flex; flex-wrap: wrap; gap: 16px">
 <section class="card" aria-labelledby="tox-t" style="flex: 1 1 280px; padding: 20px; box-sizing: border-box">
-<h2 id="tox-t" style="margin: 0; font-size: 17px; font-weight: 600">Индекс токсичности</h2>
-<p style="margin: 12px 0 0; display: flex; align-items: baseline; gap: 8px"><span class="mono" style="font-size: 44px; line-height: 48px; font-weight: 500">7</span><span style="font-size: 14px; color: var(--n-9)">из 100 · низкий</span></p>
-<div aria-hidden="true" style="margin-top: 14px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3px; height: 10px"><span style="background: var(--n-12)"></span><span style="background: repeating-linear-gradient(90deg, var(--n-8) 0 2px, transparent 2px 4px)"></span><span style="background: repeating-linear-gradient(90deg, var(--n-8) 0 1px, transparent 1px 5px)"></span><span style="border: 1px solid var(--n-6); box-sizing: border-box"></span></div>
+<div style="display: flex; justify-content: space-between; gap: 8px; align-items: center; flex-wrap: wrap"><h2 id="tox-t" style="margin: 0; font-size: 17px; font-weight: 600">Индекс токсичности</h2><span style="font-size: 11px; padding: 1px 6px; border: 1px solid var(--n-8); border-radius: 4px; color: var(--n-11)">по словарю, не ИИ</span></div>
+<p style="margin: 12px 0 0; display: flex; align-items: baseline; gap: 8px"><span class="mono" style="font-size: 44px; line-height: 48px; font-weight: 500">{{ toxV }}</span><span style="font-size: 14px; color: var(--n-9)">{{ toxLevel }}</span></p>
+<div aria-hidden="true" style="margin-top: 14px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3px; height: 10px"><template data-for="toxSegs" data-as="g"><span style="background: var(--n-4); display: block; height: 100%"><span style="display: block; height: 100%; width: {{ g.w }}; background: var(--n-12)"></span></span></template></div>
 <div class="mono" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 6px; font-size: 11px; color: var(--n-9)"><span>0–25</span><span>26–50</span><span>51–75</span><span>76–100</span></div>
-<p style="margin: 14px 0 0; font-size: 13px; line-height: 18px; color: var(--n-10)">Доля сообщений, которые ИИ-анализ счёл оскорбительными, взвешенная по тяжести. Пик <span class="mono" style="color: var(--n-12)">23</span> — в 22:31, во время рейда.</p>
+<p style="margin: 14px 0 0; font-size: 13px; line-height: 18px; color: var(--n-10)">Сколько сообщений из каждой тысячи бот наказал за оскорбления и угрозы. Считается по словарям фильтров «Оскорбления» и «Угрозы» — смысл фраз бот не понимает. 100 — каждое десятое сообщение.</p>
 </section>
 
 <section class="card" aria-labelledby="act-t" style="flex: 3 1 480px; min-width: 0; padding: 20px">
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap"><h2 id="act-t" style="margin: 0; font-size: 17px; font-weight: 600">Активность и нарушения</h2><div style="display: flex; gap: 16px; font-size: 12px; color: var(--n-10)"><span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 12px; height: 12px; background: var(--n-6)"></span>Сообщения</span><span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 12px; height: 12px; background: repeating-linear-gradient(135deg, var(--n-12) 0 2px, var(--n-1) 2px 4px)"></span>Нарушения</span></div></div>
-<div role="img" aria-label="Сообщения и нарушения по 10 минут: пик нарушений в 22:30 во время рейда" style="position: relative; margin-top: 16px; height: 180px; display: flex; align-items: flex-end; gap: 4px; border-bottom: 1px solid var(--n-6)">
-<template data-for="bars" data-as="b"><span style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%"><span style="height: {{ b.v }}; background: repeating-linear-gradient(135deg, var(--n-12) 0 2px, var(--n-1) 2px 4px)"></span><span style="height: {{ b.m }}; background: var(--n-6)"></span></span></template>
-<span style="position: absolute; left: 76%; top: 0; bottom: 0; border-left: 1px dashed var(--n-9)"></span><span style="position: absolute; left: calc(76% + 6px); top: 0; font-size: 11px; color: var(--n-11)">Рейд sever_ops · 212</span>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap"><h2 id="act-t" style="margin: 0; font-size: 17px; font-weight: 600">Активность и нарушения за 3 часа</h2><div style="display: flex; gap: 16px; font-size: 12px; color: var(--n-10)"><span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 12px; height: 12px; background: var(--n-6)"></span>Сообщения</span><span style="display: inline-flex; gap: 6px; align-items: center"><span style="width: 12px; height: 12px; background: repeating-linear-gradient(135deg, var(--n-12) 0 2px, var(--n-1) 2px 4px)"></span>Нарушения</span></div></div>
+<div role="img" aria-label="{{ chartAria }}" style="position: relative; margin-top: 16px; height: 180px; display: flex; align-items: flex-end; gap: 4px; border-bottom: 1px solid var(--n-6)">
+<template data-for="bars" data-as="b"><span title="{{ b.title }}" style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%"><span style="height: {{ b.v }}; background: repeating-linear-gradient(135deg, var(--n-12) 0 2px, var(--n-1) 2px 4px)"></span><span style="height: {{ b.m }}; background: var(--n-6)"></span></span></template>
+<template data-if="chartEmpty"><span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 16px; font-size: 13px; color: var(--n-9)">{{ chartEmptyText }}</span></template>
 </div>
-<div class="mono" style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: var(--n-9)"><span>20:10</span><span>21:00</span><span>21:50</span><span>22:40</span></div>
+<div class="mono" style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: var(--n-9)"><template data-for="ticks" data-as="x"><span>{{ x.t }}</span></template></div>
 </section>
 </div>
 
 <div style="display: flex; flex-wrap: wrap; gap: 16px">
-<section class="card" aria-labelledby="cat-t" style="flex: 1 1 360px; padding: 20px; box-sizing: border-box">
-<h2 id="cat-t" style="margin: 0 0 10px; font-size: 17px; font-weight: 600">Нарушения по типам</h2>
-<template data-for="cats" data-as="c"><div class="hb"><span style="color: var(--n-11)">{{ c.name }}</span><span style="height: 8px; background: var(--n-4)"><span style="display: block; height: 100%; width: {{ c.w }}; background: var(--n-12)"></span></span><span class="mono" style="text-align: right">{{ c.n }}</span></div></template>
+<section class="card" aria-labelledby="cat-t" style="flex: 1 1 360px; min-width: 0; padding: 20px; box-sizing: border-box">
+<h2 id="cat-t" style="margin: 0; font-size: 17px; font-weight: 600">Причины нарушений</h2>
+<p style="margin: 4px 0 10px; font-size: 13px; color: var(--n-9)">Что ловил бот за период: по фильтрам</p>
+<template data-for="reasons" data-as="c"><div class="hb"><span style="color: var(--n-11); overflow: hidden; text-overflow: ellipsis; white-space: nowrap" title="{{ c.title }}">{{ c.name }}</span><span style="height: 8px; background: var(--n-4)"><span style="display: block; height: 100%; width: {{ c.w }}; background: var(--n-12)"></span></span><span class="mono" style="text-align: right">{{ c.n }}</span></div></template>
+<template data-if="reasonsEmpty"><p style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">{{ reasonsEmptyText }}</p></template>
 </section>
-<section class="card" aria-labelledby="watch-t" style="flex: 1 1 360px; padding: 20px; box-sizing: border-box">
-<h2 id="watch-t" style="margin: 0; font-size: 17px; font-weight: 600">На заметке</h2>
-<p style="margin: 4px 0 10px; font-size: 13px; color: var(--n-9)">Зрители, у которых растёт число нарушений</p>
-<template data-for="watch" data-as="w"><div style="display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--n-4)"><span style="min-width: 0"><span style="display: block; font-size: 14px; font-weight: 500">{{ w.nick }}</span><span style="display: block; font-size: 12px; color: var(--n-9)">{{ w.note }}</span></span><span class="mono" style="font-size: 12px; padding: 2px 8px; border: 1px dashed var(--n-9); border-radius: 4px">{{ w.strikes }}</span><span style="display: flex; gap: 4px"><button type="button" class="bs" style="height: 32px">Мут 10 мин</button><button type="button" class="bs" style="height: 32px; color: var(--accent-text)">Бан</button></span></div></template>
+<section class="card" aria-labelledby="watch-t" style="flex: 1 1 360px; min-width: 0; padding: 20px; box-sizing: border-box">
+<h2 id="watch-t" style="margin: 0; font-size: 17px; font-weight: 600">Под наблюдением</h2>
+<p style="margin: 4px 0 10px; font-size: 13px; color: var(--n-9)">Зрители со страйками лестницы наказаний за 7 дней</p>
+<template data-for="watch" data-as="w"><div style="display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--n-4)"><span style="min-width: 0"><span style="display: block; font-size: 14px; font-weight: 500; overflow: hidden; text-overflow: ellipsis">{{ w.nick }}</span><span style="display: block; font-size: 12px; color: var(--n-9)">{{ w.note }}</span></span><span class="mono" title="Ступень лестницы" style="font-size: 12px; padding: 2px 8px; border: 1px dashed var(--n-9); border-radius: 4px; white-space: nowrap">{{ w.strikes }}</span><span style="display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end"><button type="button" class="bs" style="height: 32px" onClick="{{ w.mute }}" disabled="{{ w.busy }}" aria-label="{{ w.muteAria }}">Мут 10 мин</button><button type="button" class="bs danger" style="height: 32px" onClick="{{ w.ban }}" disabled="{{ w.busy }}" aria-label="{{ w.banAria }}">Бан</button></span></div></template>
+<template data-if="watchEmpty"><p style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">{{ watchEmptyText }}</p></template>
 </section>
 </div>
 
 <section class="card" aria-labelledby="top-t" style="padding: 20px">
-<h2 id="top-t" style="margin: 0 0 10px; font-size: 17px; font-weight: 600">Самые активные в чате</h2>
-<div style="overflow-x: auto"><table style="width: 100%; min-width: 560px; border-collapse: collapse; font-size: 13px">
-<thead><tr style="color: var(--n-9); text-align: left"><th style="font-weight: 500; padding: 8px 12px 8px 0">Зритель</th><th style="font-weight: 500; padding: 8px 12px">Сообщений</th><th style="font-weight: 500; padding: 8px 12px">Токсичность</th><th style="font-weight: 500; padding: 8px 12px">Нарушений</th><th style="font-weight: 500; padding: 8px 12px">Роль</th></tr></thead>
+<h2 id="top-t" style="margin: 0; font-size: 17px; font-weight: 600">Самые активные в чате</h2>
+<p style="margin: 4px 0 10px; font-size: 13px; color: var(--n-9)">Шесть зрителей с наибольшим числом сообщений и сколько раз их наказывали</p>
+<template data-if="topHas">
+<div style="overflow-x: auto"><table style="width: 100%; min-width: 320px; border-collapse: collapse; font-size: 13px">
+<thead><tr style="color: var(--n-9); text-align: left"><th scope="col" style="font-weight: 500; padding: 8px 12px 8px 0">Зритель</th><th scope="col" style="font-weight: 500; padding: 8px 12px; text-align: right">Сообщений</th><th scope="col" style="font-weight: 500; padding: 8px 0 8px 12px; text-align: right">Нарушений</th></tr></thead>
 <tbody>
-<tr style="border-top: 1px solid var(--n-4)"><td style="padding: 10px 12px 10px 0">lenta_ln</td><td class="mono" style="padding: 10px 12px">214</td><td class="mono" style="padding: 10px 12px">0,0%</td><td class="mono" style="padding: 10px 12px">0</td><td style="padding: 10px 12px; color: var(--n-10)">Модератор</td></tr>
-<tr style="border-top: 1px solid var(--n-4)"><td style="padding: 10px 12px 10px 0">gleb_1999</td><td class="mono" style="padding: 10px 12px">187</td><td class="mono" style="padding: 10px 12px">3,2%</td><td class="mono" style="padding: 10px 12px">2</td><td style="padding: 10px 12px; color: var(--n-10)">Фолловер</td></tr>
-<tr style="border-top: 1px solid var(--n-4)"><td style="padding: 10px 12px 10px 0">polyana_live</td><td class="mono" style="padding: 10px 12px">152</td><td class="mono" style="padding: 10px 12px">0,0%</td><td class="mono" style="padding: 10px 12px">0</td><td style="padding: 10px 12px; color: var(--n-10)">VIP</td></tr>
-<tr style="border-top: 1px solid var(--n-4)"><td style="padding: 10px 12px 10px 0">KAPSLOCK_VASYA</td><td class="mono" style="padding: 10px 12px">96</td><td class="mono" style="padding: 10px 12px">8,3%</td><td class="mono" style="padding: 10px 12px">3</td><td style="padding: 10px 12px; color: var(--n-10)">Зритель</td></tr>
-<tr style="border-top: 1px solid var(--n-4)"><td style="padding: 10px 12px 10px 0">tixiy_bard</td><td class="mono" style="padding: 10px 12px">88</td><td class="mono" style="padding: 10px 12px">0,0%</td><td class="mono" style="padding: 10px 12px">0</td><td style="padding: 10px 12px; color: var(--n-10)">Подписчик</td></tr>
+<template data-for="top" data-as="r"><tr style="border-top: 1px solid var(--n-4)"><td style="padding: 10px 12px 10px 0; font-weight: 500">{{ r.login }}</td><td class="mono" style="padding: 10px 12px; text-align: right">{{ r.c }}</td><td class="mono" style="padding: 10px 0 10px 12px; text-align: right; {{ r.vStyle }}">{{ r.v }}</td></tr></template>
 </tbody></table></div>
+</template>
+<template data-if="topEmpty"><p style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">{{ topEmptyText }}</p></template>
 </section>
 </div>
 </template>
 
 <!-- ============ ФИЛЬТРЫ И НАКАЗАНИЯ ============ -->
 <template data-if="tF">
-<div style="display: flex; flex-direction: column; gap: 24px">
+<div role="tabpanel" id="panel-filters" aria-labelledby="tab-filters" style="display: flex; flex-direction: column; gap: 24px">
+<template data-if="cfgLoading"><p class="empty">Загрузка настроек…</p></template>
+<template data-if="cfgFailed"><div role="alert" class="alert" style="display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap"><span>Не удалось загрузить настройки: {{ cfgErr }}</span><button type="button" class="bp" onClick="{{ reloadCfg }}">Повторить</button></div></template>
+<template data-if="hasCfg">
 
 <section class="card" aria-labelledby="lad-t" style="padding: 24px">
 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap">
-<div><h2 id="lad-t" style="margin: 0; font-size: 20px; font-weight: 600">Лестница наказаний</h2><p style="margin: 4px 0 0; font-size: 14px; color: var(--n-10); max-width: 560px">Срабатывает для фильтров с действием «По лестнице». Каждое новое нарушение зрителя поднимает его на ступень выше.</p></div>
-<div role="group" aria-label="Готовые варианты" style="display: flex; gap: 6px; flex-wrap: wrap"><template data-for="presets" data-as="p"><button type="button" class="bs" aria-pressed="{{ p.sel }}" onClick="{{ p.pick }}" style="{{ p.style }}">{{ p.label }}</button></template></div>
+<div style="flex: 1 1 320px; min-width: 0"><h2 id="lad-t" style="margin: 0; font-size: 20px; font-weight: 600">Лестница наказаний</h2><p style="margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--n-10); max-width: 600px">Для фильтров с наказанием «По лестнице». Каждое нарушение поднимает зрителя на ступень выше, последняя ступень повторяется. {{ ladderUsers }}</p></div>
 </div>
-<ol style="list-style: none; margin: 20px 0 0; padding: 0; display: flex; gap: 10px; flex-wrap: wrap; align-items: stretch">
+<div role="group" aria-label="Готовые варианты лестницы" style="margin-top: 16px; display: flex; gap: 6px; flex-wrap: wrap"><template data-for="presets" data-as="p"><button type="button" class="bs" aria-pressed="{{ p.sel }}" onClick="{{ p.pick }}" style="{{ p.style }}">{{ p.label }}</button></template></div>
+<ol aria-label="Ступени" style="list-style: none; margin: 16px 0 0; padding: 0; display: flex; gap: 10px; flex-wrap: wrap; align-items: stretch">
 <template data-for="ladder" data-as="s">
 <li class="step" style="{{ s.style }}">
-<div style="display: flex; justify-content: space-between; align-items: center"><span class="mono" style="font-size: 12px; color: var(--n-9)">{{ s.title }}</span><button type="button" aria-label="{{ s.delLabel }}" onClick="{{ s.del }}" style="width: 24px; height: 24px; border: 0; border-radius: 4px; background: transparent; color: var(--n-9); cursor: pointer">✕</button></div>
-<select class="sel" aria-label="{{ s.actLabel }}" value="{{ s.a }}" onChange="{{ s.setA }}"><option value="warn">Предупреждение</option><option value="delete">Только удалить</option><option value="timeout">Мут на время</option><option value="ban">Бан</option></select>
-<template data-if="s.isTimeout"><select class="sel" aria-label="{{ s.durLabel }}" value="{{ s.d }}" onChange="{{ s.setD }}"><option>30 с</option><option>1 мин</option><option>5 мин</option><option>10 мин</option><option>1 ч</option><option>24 ч</option><option>7 дней</option></select></template>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><span class="mono" style="font-size: 12px; color: var(--n-9)">{{ s.title }}</span><button type="button" aria-label="{{ s.delLabel }}" onClick="{{ s.del }}" disabled="{{ s.lone }}" style="width: 28px; height: 28px; border: 0; border-radius: 4px; background: transparent; color: var(--n-9); cursor: pointer"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button></div>
+<select class="sel" aria-label="{{ s.actLabel }}" value="{{ s.a }}" onChange="{{ s.setA }}"><option value="warn">Предупреждение</option><option value="delete">Удалить молча</option><option value="timeout">Мут на время</option><option value="ban">Бан навсегда</option></select>
+<template data-if="s.isTimeout"><select class="sel" aria-label="{{ s.durLabel }}" value="{{ s.d }}" onChange="{{ s.setD }}"><template data-for="s.durOpts" data-as="o"><option value="{{ o.v }}">{{ o.label }}</option></template></select></template>
 <span style="font-size: 12px; line-height: 16px; color: {{ s.noteColor }}">{{ s.note }}</span>
 </li>
 </template>
-<li style="flex: 0 0 auto; display: flex"><button type="button" onClick="{{ addStep }}" disabled="{{ ladderFull }}" style="min-width: 120px; border-radius: 8px; border: 1px dashed var(--n-8); background: transparent; color: var(--n-10); font: 500 13px/18px var(--font-sans), sans-serif; cursor: pointer">+ Ступень</button></li>
+<li style="flex: 0 0 auto; display: flex"><button type="button" onClick="{{ addStep }}" disabled="{{ ladderFull }}" title="{{ addStepTitle }}" style="min-width: 120px; min-height: 44px; border-radius: 8px; border: 1px dashed var(--n-8); background: transparent; color: var(--n-10); font: 500 13px/18px var(--font-sans), sans-serif; cursor: pointer">+ Ступень</button></li>
 </ol>
 <p style="margin: 14px 0 0; font-size: 14px; color: var(--n-11)">{{ ladderSummary }}</p>
-<div style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
-<label style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 500; color: var(--n-11)">Сбрасывать счётчик нарушений через<select class="sel"><option>24 часа</option><option selected="">7 дней</option><option>30 дней</option><option>Никогда</option></select></label>
-<label style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 500; color: var(--n-11)">Текст предупреждения в чате<input value="@{user}, {reason}. Предупреждение {n} из {max}" class="mono" style="height: 36px; box-sizing: border-box; padding: 0 10px; border-radius: 6px; background: var(--s-3); border: 1px solid var(--n-8); color: var(--n-12); font-size: 12px"></label>
-<div style="display: flex; flex-direction: column; gap: 10px; font-size: 13px; color: var(--n-11)"><span style="display: flex; justify-content: space-between; align-items: center; gap: 8px">Писать причину в Twitch<button type="button" role="switch" class="sw" aria-checked="true" aria-label="Писать причину"><span></span></button></span><span style="display: flex; justify-content: space-between; align-items: center; gap: 8px">Сообщать о муте в чат<button type="button" role="switch" class="sw" aria-checked="true" aria-label="Сообщать о муте"><span></span></button></span></div>
+<div style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 16px; align-items: start">
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 500; color: var(--n-11)">Обнулять счётчик, если зритель не нарушал<select class="sel" value="{{ resetDays }}" onChange="{{ setReset }}"><template data-for="resetOpts" data-as="o"><option value="{{ o.v }}">{{ o.label }}</option></template></select><span style="font-size: 12px; font-weight: 400; color: var(--n-9)">После этого он снова начнёт с первой ступени</span></label>
+<div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 500; color: var(--n-11)"><label for="wt">Текст предупреждения в чате</label><input id="wt" class="inp mono" maxlength="300" value="{{ warnText }}" onChange="{{ setWarn }}" onBlur="{{ blurWarn }}" aria-invalid="{{ warnBad }}" aria-describedby="wt-h" style="font-size: 12px"><span style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center"><span style="font-size: 12px; font-weight: 400; color: var(--n-9)">Вставить:</span><template data-for="warnTags" data-as="t"><button type="button" class="tag" title="{{ t.title }}" onClick="{{ t.pick }}">{{ t.tag }}</button></template></span><template data-if="warnBad"><span role="alert" class="err">Текст не может быть пустым — сохраняем прежний</span></template><span id="wt-h" style="font-size: 12px; font-weight: 400; line-height: 16px; color: var(--n-9)">Пример: <span style="color: var(--n-11)">{{ warnPreview }}</span>. {n} и {max} — номер предупреждения и сколько их на лестнице.</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--n-11)"><span style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><span id="ann-l">Сообщать о муте в чат</span><button type="button" role="switch" class="sw" aria-checked="{{ announceOn }}" aria-labelledby="ann-l" onClick="{{ toggleAnnounce }}"><span></span></button></span><span style="font-size: 12px; line-height: 16px; color: var(--n-9)">Бот пишет: «@ник — мут на 10 мин: причина». Работает для любого мута от фильтров.</span></div>
 </div>
 </section>
 
 <section aria-labelledby="flt-t">
-<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap"><div><h2 id="flt-t" style="margin: 0; font-size: 20px; font-weight: 600">Фильтры</h2><p style="margin: 4px 0 0; font-size: 14px; color: var(--n-10)">Включено <span class="mono">{{ fOn }}</span> из <span class="mono">{{ fTotal }}</span>. Для каждого фильтра выбери, что делать с нарушителем.</p></div><p style="margin: 0; font-size: 13px; color: var(--n-9)">Не действуют на: модераторов, VIP <span style="text-decoration: underline">изменить</span></p></div>
-<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap"><div style="min-width: 0"><h2 id="flt-t" style="margin: 0; font-size: 20px; font-weight: 600">Фильтры</h2><p style="margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--n-10)">Включено <span class="mono">{{ fOn }}</span> из <span class="mono">{{ fTotal }}</span>. Бот проверяет фильтры сверху вниз и наказывает по первому сработавшему.</p></div><p style="margin: 0; font-size: 13px; color: var(--n-9)">Не действуют на {{ exemptText }} · <button type="button" onClick="{{ goLists }}" style="padding: 0; border: 0; background: none; color: var(--n-12); font: inherit; text-decoration: underline; cursor: pointer">изменить</button></p></div>
+<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr)); gap: 12px">
 <template data-for="filters" data-as="f">
 <div class="flt" style="{{ f.cardStyle }}">
-<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px"><span style="min-width: 0"><span style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 15px; font-weight: 500">{{ f.name }}<template data-if="f.ai"><span style="font-size: 11px; padding: 1px 6px; border: 1px solid var(--n-8); border-radius: 4px; color: var(--n-11)">ИИ</span></template></span><span style="display: block; margin-top: 2px; font-size: 13px; line-height: 18px; color: var(--n-9)">{{ f.desc }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ f.on }}" aria-label="{{ f.name }}" onClick="{{ f.toggle }}"><span></span></button></div>
-<template data-if="f.hasSens"><div style="display: flex; flex-direction: column; gap: 6px"><span style="display: flex; justify-content: space-between; font-size: 12px; color: var(--n-10)"><span>Чувствительность</span><span>{{ f.sensLabel }}</span></span><input type="range" min="1" max="4" step="1" value="{{ f.sens }}" onChange="{{ f.setSens }}" aria-label="{{ f.sensAria }}" disabled="{{ f.off }}" style="accent-color: var(--n-12)"></div></template>
-<template data-if="f.hasParam"><p class="mono" style="margin: 0; font-size: 12px; color: var(--n-10)">{{ f.param }}</p></template>
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px"><span style="min-width: 0"><span style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 15px; font-weight: 500"><span id="{{ f.nameId }}">{{ f.name }}</span><template data-if="f.dict"><span style="font-size: 11px; padding: 1px 6px; border: 1px solid var(--n-8); border-radius: 4px; color: var(--n-11); font-weight: 400">словарь</span></template></span><span style="display: block; margin-top: 2px; font-size: 13px; line-height: 18px; color: var(--n-9)">{{ f.desc }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ f.on }}" aria-label="{{ f.swLabel }}" onClick="{{ f.toggle }}"><span></span></button></div>
+<template data-if="f.hasSens"><div style="display: flex; flex-direction: column; gap: 6px"><span style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--n-10)"><span>Чувствительность</span><span style="color: var(--n-12)">{{ f.sensLabel }}</span></span><input type="range" min="1" max="4" step="1" value="{{ f.sens }}" onChange="{{ f.setSens }}" aria-label="{{ f.sensAria }}" aria-valuetext="{{ f.sensLabel }}" disabled="{{ f.off }}" style="accent-color: var(--n-12)"><span style="font-size: 12px; line-height: 16px; color: var(--n-9)">{{ f.sensNote }}</span></div></template>
+<template data-if="f.hasParams"><div style="display: flex; gap: 12px; flex-wrap: wrap"><template data-for="f.params" data-as="p"><label class="lbl" style="flex: 1 1 140px"><span>{{ p.label }}</span><input class="inp mono" type="number" inputmode="numeric" min="{{ p.min }}" max="{{ p.max }}" step="1" value="{{ p.value }}" onChange="{{ p.set }}" onBlur="{{ p.blur }}" aria-invalid="{{ p.bad }}" disabled="{{ f.off }}" style="width: 100%"><template data-if="p.bad"><span role="alert" class="err">{{ p.err }}</span></template></label></template></div></template>
 <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span style="font-size: 12px; color: var(--n-9); width: 100%">Наказание</span>
-<select class="sel" aria-label="{{ f.actAria }}" value="{{ f.action }}" onChange="{{ f.setAction }}" disabled="{{ f.off }}" style="flex: 1 1 200px"><option value="delete">Удалить сообщение</option><option value="warn">Удалить и предупредить</option><option value="timeout">Удалить и замутить</option><option value="ladder">По лестнице наказаний</option><option value="review">На проверку модератору</option><option value="ban">Бан сразу</option></select>
-<template data-if="f.isTimeout"><select class="sel" aria-label="{{ f.durAria }}" value="{{ f.dur }}" onChange="{{ f.setDur }}" disabled="{{ f.off }}" style="flex: 0 0 110px"><option>30 с</option><option>1 мин</option><option>5 мин</option><option>10 мин</option><option>1 ч</option><option>24 ч</option><option>7 дней</option></select></template>
+<select class="sel" aria-label="{{ f.actAria }}" value="{{ f.action }}" onChange="{{ f.setAction }}" disabled="{{ f.off }}" style="flex: 1 1 200px"><option value="ladder">По лестнице наказаний</option><option value="review">На проверку модератору</option><option value="delete">Удалить сообщение</option><option value="warn">Удалить и предупредить</option><option value="timeout">Мут на время</option><option value="ban">Бан сразу</option></select>
+<template data-if="f.isTimeout"><select class="sel" aria-label="{{ f.durAria }}" value="{{ f.dur }}" onChange="{{ f.setDur }}" disabled="{{ f.off }}" style="flex: 0 0 120px"><template data-for="f.durOpts" data-as="o"><option value="{{ o.v }}">{{ o.label }}</option></template></select></template>
 </div>
 <span style="font-size: 12px; line-height: 16px; {{ f.hintStyle }}">{{ f.hint }}</span>
 </div>
 </template>
 </div>
 </section>
+</template>
 
 <section class="card" aria-labelledby="modes-t" style="padding: 24px">
 <h2 id="modes-t" style="margin: 0; font-size: 20px; font-weight: 600">Режимы чата Twitch</h2>
-<p style="margin: 4px 0 8px; font-size: 14px; color: var(--n-10)">Меняются сразу на канале, то же самое делают команды /slow, /followers и другие.</p>
-<template data-for="modes" data-as="m"><div class="mode"><span><span style="display: block; font-size: 14px">{{ m.name }}</span><span style="display: block; font-size: 12px; color: var(--n-9)">{{ m.note }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ m.on }}" aria-label="{{ m.name }}" onClick="{{ m.toggle }}"><span></span></button></div></template>
+<p style="margin: 4px 0 8px; font-size: 14px; line-height: 20px; color: var(--n-10)">Меняются сразу на канале от имени бота — то же делают команды /slow, /followers и другие. Состояние обновляется само раз в полминуты.</p>
+<template data-if="modesLoading"><p style="margin: 8px 0; font-size: 13px; color: var(--n-9)">Загрузка…</p></template>
+<template data-if="modesNA"><div class="note" style="margin: 8px 0"><span style="flex: 1 1 320px">{{ modesNAText }}</span><button type="button" class="bs" onClick="{{ reloadModes }}">Проверить снова</button></div></template>
+<template data-if="modesFailed"><p role="alert" class="alert" style="margin: 8px 0">{{ modesErr }}</p></template>
+<template data-for="modes" data-as="m"><div class="mode"><span style="min-width: 0"><span id="{{ m.id }}" style="display: block; font-size: 14px">{{ m.name }}</span><span style="display: block; font-size: 12px; color: var(--n-9)">{{ m.note }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ m.on }}" aria-labelledby="{{ m.id }}" onClick="{{ m.toggle }}" disabled="{{ m.disabled }}"><span></span></button></div></template>
 </section>
 </div>
 </template>
 
 <!-- ============ ОЧЕРЕДЬ И ЖУРНАЛ ============ -->
 <template data-if="tJ">
-<div style="display: flex; flex-direction: column; gap: 24px">
+<div role="tabpanel" id="panel-queue" aria-labelledby="tab-queue" style="display: flex; flex-direction: column; gap: 24px">
 <section aria-labelledby="held-t">
-<h2 id="held-t" style="margin: 0; font-size: 20px; font-weight: 600">На проверке <span class="mono" style="font-size: 15px; color: var(--n-9)">{{ heldCount }}</span></h2>
-<p style="margin: 4px 0 12px; font-size: 14px; color: var(--n-10)">Сообщения задержаны и не видны в чате, пока модератор не решит.</p>
+<h2 id="held-t" style="margin: 0; font-size: 20px; font-weight: 600">На проверке <span class="mono" style="font-size: 15px; color: var(--n-9)">{{ queueN }}</span></h2>
+<p style="margin: 4px 0 12px; font-size: 14px; line-height: 20px; color: var(--n-10)">Сюда попадают сообщения фильтров с наказанием «На проверку модератору». Бот их не трогает: сообщение остаётся в чате, пока ты не решишь.</p>
 <div style="display: flex; flex-direction: column; gap: 8px">
-<template data-for="held" data-as="h">
-<div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; padding: 14px 16px; border-radius: 8px; border: 1px dashed var(--n-9); background: repeating-linear-gradient(135deg, rgb(var(--n-13-rgb) / 0.03) 0 1px, transparent 1px 7px)">
-<span style="flex: 1 1 320px; min-width: 0"><span style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 13px"><b style="font-weight: 600">{{ h.nick }}</b><span style="color: var(--n-9)">{{ h.reason }}</span><span class="mono" style="color: var(--n-9)">{{ h.time }}</span></span><span style="display: block; margin-top: 4px; font-size: 14px; color: var(--n-11); filter: {{ h.blur }}">{{ h.text }}</span></span>
-<span style="display: flex; gap: 6px; flex-wrap: wrap"><button type="button" class="bs" onClick="{{ h.reveal }}">{{ h.revealLabel }}</button><button type="button" class="bs" onClick="{{ h.deny }}">Отклонить</button><button type="button" class="bs" onClick="{{ h.timeout }}">Мут 10 мин</button><button type="button" class="bp" onClick="{{ h.allow }}">Пропустить</button></span>
+<template data-for="queue" data-as="h">
+<div class="held">
+<span style="flex: 1 1 320px; min-width: 0"><span style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 13px"><b style="font-weight: 600">{{ h.login }}</b><span style="color: var(--n-9)">{{ h.reason }}</span><span class="mono" style="color: var(--n-9)">{{ h.time }}</span></span><span style="display: block; margin-top: 4px; font-size: 14px; line-height: 20px; color: var(--n-11); overflow-wrap: anywhere; filter: {{ h.blur }}">{{ h.text }}</span></span>
+<span style="display: flex; gap: 6px; flex-wrap: wrap"><button type="button" class="bs" aria-pressed="{{ h.shown }}" onClick="{{ h.reveal }}">{{ h.revealLabel }}</button><button type="button" class="bp" onClick="{{ h.allow }}" aria-label="{{ h.allowAria }}">Разрешить</button><button type="button" class="bs" onClick="{{ h.deny }}" aria-label="{{ h.denyAria }}">Удалить</button><button type="button" class="bs" onClick="{{ h.timeout }}" aria-label="{{ h.muteAria }}">Мут 10 мин</button><button type="button" class="bs danger" onClick="{{ h.ban }}" aria-label="{{ h.banAria }}">Бан</button></span>
 </div>
 </template>
-<template data-if="noHeld"><p style="margin: 0; padding: 24px; text-align: center; border: 1px solid var(--n-5); border-radius: 8px; color: var(--n-9); font-size: 14px">Очередь пуста, всё проверено</p></template>
+<template data-if="queueLoading"><p class="empty">Загрузка…</p></template>
+<template data-if="queueEmpty"><p class="empty">{{ queueEmptyText }}</p></template>
 </div>
 </section>
 
 <section aria-labelledby="log-t">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap"><h2 id="log-t" style="margin: 0; font-size: 20px; font-weight: 600">Журнал действий</h2>
 <div role="group" aria-label="Тип действия" style="display: flex; gap: 6px; flex-wrap: wrap"><template data-for="logF" data-as="l"><button type="button" class="bs" style="height: 32px; {{ l.style }}" aria-pressed="{{ l.sel }}" onClick="{{ l.pick }}">{{ l.label }}</button></template></div></div>
+<p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">Последние 100 действий бота и модераторов. «Отменить» снимает бан или мут в Twitch и обнуляет счётчик нарушений зрителя.</p>
 <div style="margin-top: 12px">
-<div class="tr" style="border-top: 0; color: var(--n-9); font-size: 12px"><span>Время</span><span>Зритель</span><span class="hide">Действие</span><span class="hide">Причина</span><span class="hide">Кто</span><span></span></div>
+<div class="tr" aria-hidden="true" style="border-top: 0; color: var(--n-9); font-size: 12px"><span>Время</span><span>Зритель</span><span class="hide">Действие</span><span class="hide">Причина и сообщение</span><span class="hide">Кто</span><span></span></div>
 <template data-for="log" data-as="r">
 <div class="tr" style="{{ r.rowStyle }}">
-<span class="mono" style="color: var(--n-9)">{{ r.time }}</span>
-<span style="min-width: 0"><span style="display: block; font-weight: 500; overflow: hidden; text-overflow: ellipsis">{{ r.nick }}</span><span class="mono" style="font-size: 11px; color: var(--n-9)">{{ r.strikes }}</span></span>
+<span class="mono" style="color: var(--n-9); font-size: 12px">{{ r.time }}</span>
+<span style="min-width: 0"><span style="display: block; font-weight: 500; overflow: hidden; text-overflow: ellipsis">{{ r.nick }}</span><span class="mono" style="display: block; font-size: 11px; color: var(--n-9)">{{ r.strikes }}</span><span class="mob" style="margin-top: 4px"><span class="badge" style="{{ r.badge }}">{{ r.action }}</span> <span style="color: var(--n-10)">{{ r.reason }}</span></span></span>
 <span class="hide"><span class="badge" style="{{ r.badge }}">{{ r.action }}</span></span>
-<span class="hide" style="color: var(--n-10)">{{ r.reason }}</span>
-<span class="hide" style="color: var(--n-10)">{{ r.by }}</span>
-<span style="text-align: right"><template data-if="r.canUndo"><button type="button" class="bs" style="height: 30px" onClick="{{ r.undo }}">{{ r.undoLabel }}</button></template><template data-if="r.undone"><span style="font-size: 12px; color: var(--n-9)">Отменено</span></template></span>
+<span class="hide" style="min-width: 0"><span style="display: block; color: var(--n-11)">{{ r.reason }}</span><span title="{{ r.message }}" style="display: block; font-size: 12px; color: var(--n-9); overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ r.msgShort }}</span></span>
+<span class="hide" style="color: var(--n-10); overflow: hidden; text-overflow: ellipsis">{{ r.by }}</span>
+<span style="text-align: right"><template data-if="r.canUndo"><button type="button" class="bs" style="height: 30px" aria-label="{{ r.undoAria }}" title="{{ r.undoTitle }}" onClick="{{ r.undo }}" disabled="{{ r.busy }}">{{ r.undoLabel }}</button></template><template data-if="r.hasState"><span style="font-size: 12px; color: var(--n-9)">{{ r.stateLabel }}</span></template></span>
 </div>
 </template>
+<template data-if="logLoading"><p class="empty" style="margin-top: 8px">Загрузка…</p></template>
+<template data-if="logEmpty"><p class="empty" style="margin-top: 8px">{{ logEmptyText }}</p></template>
 </div>
 </section>
 
 <section class="card" aria-labelledby="unban-t" style="padding: 20px">
-<h2 id="unban-t" style="margin: 0; font-size: 17px; font-weight: 600">Запросы на разбан <span class="mono" style="font-size: 14px; color: var(--n-9)">2</span></h2>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap"><h2 id="unban-t" style="margin: 0; font-size: 17px; font-weight: 600">Запросы на разбан <span class="mono" style="font-size: 14px; color: var(--n-9)">{{ unbanN }}</span></h2><button type="button" class="bs" style="height: 32px" onClick="{{ reloadUnban }}" disabled="{{ unbanLoading }}">Обновить</button></div>
+<p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">Забаненные зрители отправляют их на Twitch. Решение сразу уходит в Twitch от имени бота.</p>
 <div style="margin-top: 12px; display: flex; flex-direction: column">
-<div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--n-4)"><span><b style="font-weight: 600">toxic_dima</b> <span class="mono" style="font-size: 12px; color: var(--n-9)">забанен 03.10 · оскорбления</span><span style="display: block; margin-top: 4px; font-size: 13px; color: var(--n-11)">«Был неправ, погорячился после проигрыша. Больше не повторится»</span></span><span style="display: flex; gap: 6px"><button type="button" class="bs">Отказать</button><button type="button" class="bp">Разбанить</button></span></div>
-<div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--n-4)"><span><b style="font-weight: 600">vovan_play</b> <span class="mono" style="font-size: 12px; color: var(--n-9)">забанен 09.10 · ссылки</span><span style="display: block; margin-top: 4px; font-size: 13px; color: var(--n-11)">«Кидал ссылку на свой клип, не знал про правило»</span></span><span style="display: flex; gap: 6px"><button type="button" class="bs">Отказать</button><button type="button" class="bp">Разбанить</button></span></div>
+<template data-for="unban" data-as="u"><div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--n-4)"><span style="min-width: 0"><b style="font-weight: 600">{{ u.login }}</b> <span class="mono" style="font-size: 12px; color: var(--n-9)">{{ u.when }}</span><span style="display: block; margin-top: 4px; font-size: 13px; line-height: 18px; color: var(--n-11); overflow-wrap: anywhere">{{ u.text }}</span></span><span style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end"><button type="button" class="bs" onClick="{{ u.deny }}" disabled="{{ u.busy }}" aria-label="{{ u.denyAria }}">Отказать</button><button type="button" class="bp" onClick="{{ u.approve }}" disabled="{{ u.busy }}" aria-label="{{ u.approveAria }}">Разбанить</button></span></div></template>
+<template data-if="unbanLoadingFirst"><p style="margin: 0; padding: 12px 0; border-top: 1px solid var(--n-4); font-size: 13px; color: var(--n-9)">Загрузка…</p></template>
+<template data-if="unbanEmpty"><p style="margin: 0; padding: 12px 0; border-top: 1px solid var(--n-4); font-size: 13px; line-height: 18px; color: var(--n-9)">{{ unbanEmptyText }}</p></template>
 </div>
 </section>
 </div>
 </template>
 
-<!-- ============ СПИСКИ И КОМАНДА ============ -->
+<!-- ============ СПИСКИ И ИСКЛЮЧЕНИЯ ============ -->
 <template data-if="tL">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 16px">
-<section class="card" aria-labelledby="bw-t" style="padding: 20px; display: flex; flex-direction: column; gap: 12px">
-<h2 id="bw-t" style="margin: 0; font-size: 17px; font-weight: 600">Запрещённые слова <span class="mono" style="font-size: 14px; color: var(--n-9)">{{ wordsN }}</span></h2>
-<p style="margin: 0; font-size: 13px; color: var(--n-9)">Ловим обход: замену букв цифрами и латиницей, пробелы и точки между буквами. Можно задать маску <span class="mono">*</span>.</p>
-<div style="display: flex; flex-wrap: wrap; gap: 6px"><template data-for="words" data-as="w"><span class="chip mono">{{ w.text }}<button type="button" aria-label="{{ w.label }}" onClick="{{ w.del }}">✕</button></span></template></div>
-<div style="display: flex; gap: 8px"><label for="nw" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Новое слово</label><input id="nw" value="{{ draft }}" onChange="{{ setDraft }}" placeholder="Слово или фраза" style="flex: 1; min-width: 0; height: 36px; box-sizing: border-box; padding: 0 10px; border-radius: 6px; background: var(--s-3); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px/20px var(--font-sans), sans-serif"><button type="button" class="bp" onClick="{{ addWord }}">Добавить</button></div>
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px"><span style="color: var(--n-10)">Наказание за слово из списка</span><select class="sel"><option>По лестнице наказаний</option><option>Мут 10 мин</option><option>Бан сразу</option></select></div>
+<div role="tabpanel" id="panel-lists" aria-labelledby="tab-lists" style="display: flex; flex-direction: column; gap: 16px">
+<template data-if="cfgLoading"><p class="empty">Загрузка настроек…</p></template>
+<template data-if="cfgFailed"><div role="alert" class="alert" style="display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap"><span>Не удалось загрузить настройки: {{ cfgErr }}</span><button type="button" class="bp" onClick="{{ reloadCfg }}">Повторить</button></div></template>
+<template data-if="hasCfg">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 16px; align-items: start">
+<section class="card" aria-labelledby="bw-t" style="padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0">
+<div class="row"><h2 id="bw-t" style="margin: 0; font-size: 17px; font-weight: 600">Запрещённые слова <span class="mono" style="font-size: 14px; color: var(--n-9)">{{ wordsN }}</span></h2><span style="display: inline-flex; align-items: center; gap: 8px; color: var(--n-10)">{{ wf.stateLabel }}<button type="button" role="switch" class="sw" aria-checked="{{ wf.on }}" aria-label="Фильтр «Запрещённые слова»" onClick="{{ wf.toggle }}"><span></span></button></span></div>
+<p style="margin: 0; font-size: 13px; line-height: 18px; color: var(--n-9)">Слова и фразы без учёта регистра. Бот ловит обход: латиницу вместо кириллицы, «0» вместо «о», пробелы и точки между буквами. Звёздочка <span class="mono">*</span> — любые символы: <span class="mono">к*зел</span>.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><template data-for="words" data-as="w"><span class="chip mono"><span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ w.text }}</span><button type="button" aria-label="{{ w.label }}" onClick="{{ w.del }}">✕</button></span></template><template data-if="wordsEmpty"><span style="font-size: 13px; color: var(--n-9)">Список пуст — добавь слова, которые не хочешь видеть в чате.</span></template></div>
+<form onSubmit="{{ addWord }}" style="display: flex; gap: 8px"><label for="nw" class="sr">Новое слово или фраза</label><input id="nw" class="inp" maxlength="200" value="{{ wordDraft }}" onChange="{{ setWordDraft }}" placeholder="Слово, фраза или несколько через запятую" autocomplete="off" aria-invalid="{{ wordBad }}" style="flex: 1"><button type="submit" class="bp">Добавить</button></form>
+<template data-if="wordBad"><span role="alert" class="err">{{ wordErr }}</span></template>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 12px; border-top: 1px solid var(--n-4); font-size: 13px"><span style="color: var(--n-10); flex: 1 1 140px">Наказание за слово из списка</span><select class="sel" aria-label="Наказание за запрещённое слово" value="{{ wf.action }}" onChange="{{ wf.setAction }}" disabled="{{ wf.off }}" style="flex: 1 1 190px"><option value="ladder">По лестнице наказаний</option><option value="review">На проверку модератору</option><option value="delete">Удалить сообщение</option><option value="warn">Удалить и предупредить</option><option value="timeout">Мут на время</option><option value="ban">Бан сразу</option></select><template data-if="wf.isTimeout"><select class="sel" aria-label="Длительность мута за запрещённое слово" value="{{ wf.dur }}" onChange="{{ wf.setDur }}" disabled="{{ wf.off }}" style="flex: 0 0 110px"><template data-for="wf.durOpts" data-as="o"><option value="{{ o.v }}">{{ o.label }}</option></template></select></template></div>
 </section>
 
-<section class="card" aria-labelledby="dm-t" style="padding: 20px; display: flex; flex-direction: column; gap: 12px">
-<h2 id="dm-t" style="margin: 0; font-size: 17px; font-weight: 600">Разрешённые ссылки</h2>
-<p style="margin: 0; font-size: 13px; color: var(--n-9)">Остальные ссылки удаляются фильтром «Ссылки».</p>
-<div style="display: flex; flex-wrap: wrap; gap: 6px"><span class="chip mono">clips.twitch.tv<button type="button" aria-label="Убрать clips.twitch.tv">✕</button></span><span class="chip mono">youtube.com<button type="button" aria-label="Убрать youtube.com">✕</button></span><span class="chip mono">music.yandex.ru<button type="button" aria-label="Убрать music.yandex.ru">✕</button></span><span class="chip mono">7tv.app<button type="button" aria-label="Убрать 7tv.app">✕</button></span><span class="chip mono">discord.gg/kira<button type="button" aria-label="Убрать discord.gg/kira">✕</button></span></div>
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px; padding-top: 8px; border-top: 1px solid var(--n-4)"><span style="color: var(--n-10)">Подписчики могут кидать любые ссылки</span><button type="button" role="switch" class="sw" aria-checked="true" aria-label="Подписчики могут кидать ссылки"><span></span></button></div>
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px"><span style="color: var(--n-10)">Разрешать по команде <span class="mono">!permit ник</span></span><button type="button" role="switch" class="sw" aria-checked="true" aria-label="Команда permit"><span></span></button></div>
+<section class="card" aria-labelledby="dm-t" style="padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0">
+<div class="row"><h2 id="dm-t" style="margin: 0; font-size: 17px; font-weight: 600">Разрешённые ссылки <span class="mono" style="font-size: 14px; color: var(--n-9)">{{ domainsN }}</span></h2><span style="display: inline-flex; align-items: center; gap: 8px; color: var(--n-10)">{{ lf.stateLabel }}<button type="button" role="switch" class="sw" aria-checked="{{ lf.on }}" aria-label="Фильтр «Ссылки»" onClick="{{ lf.toggle }}"><span></span></button></span></div>
+<p style="margin: 0; font-size: 13px; line-height: 18px; color: var(--n-9)">Ссылки на эти сайты и их поддомены фильтр «Ссылки» пропускает, остальные — наказывает: {{ lf.actionText }}.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><template data-for="domains" data-as="d"><span class="chip mono"><span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ d.text }}</span><button type="button" aria-label="{{ d.label }}" onClick="{{ d.del }}">✕</button></span></template><template data-if="domainsEmpty"><span style="font-size: 13px; color: var(--n-9)">Ни одного сайта — фильтр «Ссылки» наказывает за любую ссылку.</span></template></div>
+<form onSubmit="{{ addDomain }}" style="display: flex; gap: 8px"><label for="nd" class="sr">Новый сайт</label><input id="nd" class="inp mono" maxlength="120" value="{{ domDraft }}" onChange="{{ setDomDraft }}" placeholder="youtube.com" autocomplete="off" inputmode="url" aria-invalid="{{ domBad }}" aria-describedby="nd-h" style="flex: 1; font-size: 13px"><button type="submit" class="bp">Добавить</button></form>
+<template data-if="domBad"><span role="alert" class="err">{{ domErr }}</span></template>
+<span id="nd-h" style="font-size: 12px; line-height: 16px; color: var(--n-9)">Только адрес сайта, без пути: discord.gg/kira превратится в discord.gg.</span>
+<div style="display: flex; flex-direction: column; gap: 4px; padding-top: 12px; border-top: 1px solid var(--n-4)"><div class="row"><span id="sl-l" style="color: var(--n-11)">Подписчики и VIP могут кидать любые ссылки</span><button type="button" role="switch" class="sw" aria-checked="{{ subsLinksOn }}" aria-labelledby="sl-l" onClick="{{ toggleSubsLinks }}"><span></span></button></div></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><div class="row"><span id="pm-l" style="color: var(--n-11)">Разрешать по команде <span class="mono">!permit ник</span></span><button type="button" role="switch" class="sw" aria-checked="{{ permitOn }}" aria-labelledby="pm-l" aria-describedby="pm-h" onClick="{{ togglePermit }}"><span></span></button></div><span id="pm-h" style="font-size: 12px; line-height: 16px; color: var(--n-9)">Модератор пишет в чат <span class="mono">!permit ник</span> — зритель может отправить ссылку в течение минуты. <span style="padding: 0 4px; border: 1px dashed var(--n-8); border-radius: 4px">скоро</span> Сейчас бот принимает команду всегда; выключатель начнёт действовать после обновления бота.</span></div>
 </section>
 
-<section class="card" aria-labelledby="ex-t" style="padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<section class="card" aria-labelledby="ex-t" style="padding: 20px; display: flex; flex-direction: column; gap: 4px; min-width: 0">
 <h2 id="ex-t" style="margin: 0; font-size: 17px; font-weight: 600">Исключения</h2>
-<p style="margin: 0; font-size: 13px; color: var(--n-9)">На кого фильтры не действуют вообще.</p>
-<div style="display: flex; flex-wrap: wrap; gap: 6px"><span class="chip">Модераторы</span><span class="chip">VIP</span><span class="chip" style="border-style: dashed; color: var(--n-9); padding-right: 10px">Подписчики</span><span class="chip">Nightbot<button type="button" aria-label="Убрать Nightbot">✕</button></span><span class="chip">StreamElements<button type="button" aria-label="Убрать StreamElements">✕</button></span></div>
-<p style="margin: 0; font-size: 12px; color: var(--n-9)">Пунктир — роль выключена: нажми, чтобы добавить в исключения.</p>
+<p style="margin: 0 0 8px; font-size: 13px; line-height: 18px; color: var(--n-9)">На кого фильтры не действуют вообще. Стримера, бота StreOps и известных ботов — Nightbot, StreamElements, Moobot и других — бот не проверяет никогда.</p>
+<template data-for="exempt" data-as="x"><div class="mode"><span style="min-width: 0"><span id="{{ x.id }}" style="display: block; font-size: 14px">{{ x.name }}</span><span style="display: block; font-size: 12px; color: var(--n-9)">{{ x.note }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ x.on }}" aria-labelledby="{{ x.id }}" onClick="{{ x.toggle }}"><span></span></button></div></template>
 </section>
-
-<section class="card" aria-labelledby="team-t" style="padding: 20px">
-<div style="display: flex; justify-content: space-between; align-items: center"><h2 id="team-t" style="margin: 0; font-size: 17px; font-weight: 600">Модераторы</h2><button type="button" class="bs">+ Добавить</button></div>
-<div style="margin-top: 12px">
-<div style="display: grid; grid-template-columns: minmax(0, 1fr) 80px 150px; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--n-4); font-size: 13px"><span><b style="font-weight: 500">lenta_ln</b><span style="display: block; font-size: 12px; color: var(--n-9)">в сети · 41 действие за стрим</span></span><span class="mono">41</span><select class="sel"><option>Всё, кроме банов</option><option>Полный доступ</option><option>Только очередь</option></select></div>
-<div style="display: grid; grid-template-columns: minmax(0, 1fr) 80px 150px; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--n-4); font-size: 13px"><span><b style="font-weight: 500">moroz_tv</b><span style="display: block; font-size: 12px; color: var(--n-9)">в сети · 17 действий</span></span><span class="mono">17</span><select class="sel"><option>Полный доступ</option><option>Всё, кроме банов</option><option>Только очередь</option></select></div>
-<div style="display: grid; grid-template-columns: minmax(0, 1fr) 80px 150px; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--n-4); font-size: 13px; color: var(--n-9)"><span><b style="font-weight: 500; color: var(--n-10)">sever_ops</b><span style="display: block; font-size: 12px">не в сети</span></span><span class="mono">0</span><select class="sel"><option>Только очередь</option><option>Всё, кроме банов</option><option>Полный доступ</option></select></div>
 </div>
-<p style="margin: 10px 0 0; font-size: 12px; color: var(--n-9)">Доступ модераторов к панели StreOps — тариф «Максимум». Права модератора в самом Twitch-чате не меняются.</p>
-</section>
+</template>
 </div>
 </template>
 </main>
 </div>
 </div>
 </template>
-<script src="assets/dc-lite.js"></script>
+<script src="assets/dc-lite.js?v=5f8ce08a"></script>
 <script>
+// Модерация: настройки бота (mod.config), очередь (mod.review), журнал (mod.journal / mod.undo),
+// аналитика (mod.stats), режимы чата Twitch (mod.chat), запросы на разбан (mod.unban).
+// Настройки сохраняются автоматически через полсекунды после изменения.
+const MOD_TABS = [['analytics', 'Аналитика'], ['filters', 'Фильтры и наказания'], ['queue', 'Очередь и журнал'], ['lists', 'Списки и исключения']];
+// Порядок — как в moderate() на сервере: срабатывает первый подходящий фильтр.
+const MOD_FKEYS = ['threat', 'tox', 'words', 'bots', 'links', 'promo', 'personal', 'zalgo', 'caps', 'flood', 'mentions', 'long', 'spam', 'newacc'];
+const MOD_FMETA = {
+  threat: { name: 'Угрозы', dict: true, sens: ['прямые угрозы: «убью тебя», «kys»', '«сдохни», «тебе конец»', '«знаю, где ты живёшь»', '«ответишь за это»'] },
+  tox: { name: 'Оскорбления', dict: true, sens: ['самые грубые оскорбления', '«дебил», «урод», «мразь»', '«тупой», «лох», «клоун»', '«удали игру», «позорище»'] },
+  words: { name: 'Запрещённые слова' },
+  bots: { name: 'Реклама накрутки' },
+  links: { name: 'Ссылки' },
+  promo: { name: 'Самопиар' },
+  personal: { name: 'Личные данные' },
+  zalgo: { name: 'Юникод-мусор' },
+  caps: { name: 'Капс', params: [['min', 'Сообщение от, букв', 1, 500], ['pct', 'Заглавных от, %', 10, 100]] },
+  flood: { name: 'Флуд', params: [['emotes', 'Эмоутов больше', 1, 100], ['chars', 'Символ подряд, раз', 4, 100]] },
+  mentions: { name: 'Массовые упоминания', params: [['max', 'Упоминаний больше', 1, 50]] },
+  long: { name: 'Длинные сообщения', params: [['max', 'Символов больше', 20, 500]] },
+  spam: { name: 'Повторы', params: [['repeats', 'Одинаковых сообщений', 2, 20], ['window', 'За сколько секунд', 5, 600]] },
+  newacc: { name: 'Новые аккаунты', params: [['days', 'Аккаунт моложе, дней', 1, 365]] },
+};
+// Причины из журнала → название фильтра
+const MOD_REASON = { 'угрозы в чате': 'threat', 'оскорбления': 'tox', 'запрещённое слово': 'words', 'спам-бот': 'bots', 'ссылки без разрешения': 'links', 'самопиар': 'promo', 'личные данные': 'personal',
+  'мусорные символы': 'zalgo', 'без капса, пожалуйста': 'caps', 'флуд': 'flood', 'массовые упоминания': 'mentions', 'слишком длинное сообщение': 'long', 'спам повторами': 'spam', 'новый аккаунт': 'newacc', 'вручную из панели': null };
+const MOD_ACTS = ['ladder', 'review', 'delete', 'warn', 'timeout', 'ban'];
+const MOD_STEP_ACTS = ['warn', 'delete', 'timeout', 'ban'];
+const MOD_DURS = [[30, '30 с'], [60, '1 мин'], [300, '5 мин'], [600, '10 мин'], [1800, '30 мин'], [3600, '1 ч'], [86400, '24 ч'], [604800, '7 дней'], [1209600, '14 дней']];
+// Подписи, которые понимает parse_dur() на сервере; остальные длительности пишем числом секунд
+const MOD_BACK = { 30: '30 с', 60: '1 мин', 300: '5 мин', 600: '10 мин', 3600: '1 ч', 86400: '24 ч', 604800: '7 дней' };
+const MOD_PRESETS = [
+  ['Бан сразу', [{ a: 'ban' }]],
+  ['Только предупреждения', [{ a: 'warn' }]],
+  ['Бан после 3 предупреждений', [{ a: 'warn' }, { a: 'warn' }, { a: 'warn' }, { a: 'ban' }]],
+  ['Мут на время', [{ a: 'timeout', d: '10 мин' }]],
+  ['Постепенно', [{ a: 'warn' }, { a: 'timeout', d: '10 мин' }, { a: 'timeout', d: '24 ч' }, { a: 'ban' }]],
+];
+const MOD_MODES = [
+  ['slow', 'Медленный режим', 'Одно сообщение раз в 5 секунд'],
+  ['followers', 'Только фолловеры', 'Писать могут фолловеры от 10 минут'],
+  ['subs', 'Только подписчики', 'Остальные читают, но не пишут'],
+  ['emote', 'Только эмоуты', 'Сообщения без текста'],
+  ['unique', 'Уникальный чат', 'Нельзя повторять одно и то же сообщение'],
+  ['shield', 'Режим щита', 'Защита Twitch от атак с настройками из панели автора'],
+];
+
+function modPl(n, a, b, c) { n = Math.abs(n) % 100; const d = n % 10; return n > 10 && n < 20 ? c : d === 1 ? a : d >= 2 && d <= 4 ? b : c; }
+function modSec(d) { const back = Object.keys(MOD_BACK).find((k) => MOD_BACK[k] === d); return back ? Number(back) : Math.max(1, parseInt(d, 10) || 1); }
+function modCanon(sec) { return MOD_BACK[sec] || String(sec); }
+function modHuman(sec) {
+  const k = MOD_DURS.find((x) => x[0] === sec);
+  if (k) return k[1];
+  if (sec >= 86400 && sec % 86400 === 0) { const n = sec / 86400; return n + ' ' + modPl(n, 'день', 'дня', 'дней'); }
+  if (sec >= 3600 && sec % 3600 === 0) return sec / 3600 + ' ч';
+  if (sec >= 60 && sec % 60 === 0) return sec / 60 + ' мин';
+  return sec + ' с';
+}
+function modWhen(ts) {
+  const d = new Date(ts * 1000);
+  if (d.toDateString() === new Date().toDateString()) return StreAPI.fmtTime(ts);
+  return d.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' }) + ' ' + StreAPI.fmtTime(ts);
+}
+function modNorm(c) {
+  c = c || {};
+  const f = c.filters || {};
+  const ex = c.exempt || {};
+  let ladder = (Array.isArray(c.ladder) ? c.ladder : []).filter((s) => s && MOD_STEP_ACTS.indexOf(s.a) >= 0).slice(0, 6)
+    .map((s) => (s.a === 'timeout' ? { a: 'timeout', d: modCanon(modSec(String(s.d == null ? '10 мин' : s.d))) } : { a: s.a }));
+  if (!ladder.length) ladder = [{ a: 'warn' }];
+  const out = {
+    auto: !!c.auto, exempt: { mods: !!ex.mods, vip: !!ex.vip, subs: !!ex.subs }, ladder,
+    resetDays: Math.max(0, parseInt(c.resetDays, 10) || 0), warnText: String(c.warnText == null ? '' : c.warnText), announce: !!c.announce,
+    filters: {}, words: (Array.isArray(c.words) ? c.words : []).map(String), domains: (Array.isArray(c.domains) ? c.domains : []).map(String),
+    subsLinks: !!c.subsLinks, permit: !!c.permit,
+  };
+  MOD_FKEYS.forEach((k) => {
+    const x = f[k] || {};
+    const o = { on: !!x.on, action: MOD_ACTS.indexOf(x.action) >= 0 ? x.action : 'delete', dur: Math.max(0, parseInt(x.dur, 10) || 0) };
+    if (MOD_FMETA[k].sens) o.sens = Math.min(4, Math.max(1, parseInt(x.sens, 10) || 2));
+    (MOD_FMETA[k].params || []).forEach((p) => { o[p[0]] = parseInt(x[p[0]], 10) || p[2]; });
+    out.filters[k] = o;
+  });
+  return out;
+}
+function modDurOpts(sec) {
+  const list = MOD_DURS.map((x) => ({ s: x[0], label: x[1] }));
+  if (!list.some((x) => x.s === sec)) { list.push({ s: sec, label: modHuman(sec) }); list.sort((a, b) => a.s - b.s); }
+  return list;
+}
+
 class Component extends DCLogic {
   constructor(props) {
     super(props);
+    const h = location.hash.replace('#', '');
+    const tab = Math.max(0, MOD_TABS.findIndex((t) => t[0] === h));
     this.state = {
-      tab: 1, auto: true, shield: false, preset: 1,
-      ladder: [{ a: 'warn', d: '' }, { a: 'warn', d: '' }, { a: 'warn', d: '' }, { a: 'ban', d: '' }],
-      f: {
-        tox: { on: true, sens: 2, action: 'review', dur: '10 мин' },
-        caps: { on: true, action: 'ladder', dur: '1 мин' },
-        links: { on: true, action: 'warn', dur: '1 мин' },
-        spam: { on: true, action: 'timeout', dur: '5 мин' },
-        flood: { on: true, action: 'delete', dur: '1 мин' },
-        words: { on: true, action: 'ladder', dur: '10 мин' },
-        threat: { on: true, sens: 3, action: 'ban', dur: '24 ч' },
-        bots: { on: true, action: 'ban', dur: '24 ч' },
-        promo: { on: true, action: 'timeout', dur: '10 мин' },
-        personal: { on: true, action: 'delete', dur: '1 мин' },
-        mentions: { on: false, action: 'timeout', dur: '1 мин' },
-        long: { on: false, action: 'delete', dur: '1 мин' },
-        zalgo: { on: true, action: 'delete', dur: '1 мин' },
-        newacc: { on: false, action: 'review', dur: '1 мин' }
-      },
-      modes: [true, false, false, false, false],
-      held: [
-        { id: 1, nick: 'anon_4421', reason: 'ИИ: оскорбление · уверенность 86%', time: '22:57', text: 'ты играешь как ****, удаляй игру', shown: false },
-        { id: 2, nick: 'new_acc_77', reason: 'Новый аккаунт, 2 дня', time: '22:58', text: 'заходите ко мне на канал, раздача скинов', shown: false },
-        { id: 3, nick: 'gleb_1999', reason: 'ИИ: возможна травля · уверенность 61%', time: '22:58', text: 'опять этот vasya со своим капсом, уйди уже', shown: false }
-      ],
-      logFilter: 'Все', undone: {}, words: ['к*зёл', 'дебил', 'скины бесплатно', 'free followers', 'п*д*р'], draft: ''
+      tab, me: null, cfg: null, cfgErr: '', save: 'saved', saveErr: '', drafts: {},
+      wordDraft: '', wordErr: '', domDraft: '', domErr: '',
+      modes: null, modesAvail: true, modesErr: '', modeBusy: {},
+      queue: null, qGone: {}, revealed: {},
+      journal: null, jType: '', jErr: '', undoBusy: {}, undoneLocal: {},
+      stats: null, statsErr: '',
+      unban: null, unbanBusy: {}, unbanLoading: false,
+      watchBusy: {}, botBusy: false,
+    };
+    this.savedJson = '';
+    this.saving = false;
+    this.again = false;
+    this.saveTimer = 0;
+    this.retryN = 0;
+    this.seen = {};
+    this.jSeq = 0;
+    this.ticks = 0;
+  }
+
+  componentDidMount() {
+    this.loadMe();
+    this.loadCfg();
+    this.loadModes();
+    this.loadQueue();
+    this.loadUnban();
+    this.loadTab(this.state.tab);
+    this.timer = setInterval(() => this.tick(), 10000);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) this.flush(); else this.tick(); });
+    window.addEventListener('beforeunload', (e) => {
+      if (this.state.save === 'saved') return;
+      this.flush();
+      e.preventDefault();
+      e.returnValue = '';
+    });
+  }
+
+  // ---------- опрос ----------
+  tick() {
+    if (document.hidden) return;
+    this.ticks++;
+    this.loadQueue();
+    if (this.state.tab === 0) this.loadStats();
+    if (this.state.tab === 2) { this.loadJournal(); if (this.ticks % 6 === 0) this.loadUnban(); }
+    if (this.ticks % 3 === 0) { this.loadModes(); this.loadMe(); }
+  }
+  loadTab(i) {
+    if (i === 0) this.loadStats();
+    if (i === 1) this.loadModes();
+    if (i === 2) { this.loadQueue(); this.loadJournal(); this.loadUnban(); }
+  }
+  // Перерисовываем, только если данные изменились
+  put(key, val, extra) {
+    const j = JSON.stringify(val);
+    if (this.seen[key] === j && !extra) return;
+    this.seen[key] = j;
+    this.setState(Object.assign({ [key]: val }, extra || {}));
+  }
+  pickTab(i) {
+    if (i === this.state.tab) return;
+    this.setState({ tab: i });
+    try { history.replaceState(null, '', '#' + MOD_TABS[i][0]); } catch (e) { /* без адреса */ }
+    this.loadTab(i);
+  }
+
+  async loadMe() {
+    try { const me = await StreAPI.me(); this.put('me', me); } catch (e) { /* шапка покажет вход */ }
+  }
+  async enableBot() {
+    this.setState({ botBusy: true });
+    try {
+      const r = await StreAPI.post('bot.enable');
+      const me = await StreAPI.refreshMe();
+      this.put('me', me);
+      StreAPI.toast(r.errors && r.errors.length ? 'Бот включён, но есть проблемы: ' + r.errors.join('; ') : 'Бот включён и следит за чатом');
+      this.loadModes();
+      this.loadUnban();
+    } catch (e) { StreAPI.toast(e.message, 'error'); }
+    this.setState({ botBusy: false });
+  }
+
+  // ---------- настройки: автосохранение ----------
+  async loadCfg() {
+    this.setState({ cfgErr: '' });
+    try {
+      const r = await StreAPI.get('mod.config');
+      const cfg = modNorm(r.config);
+      this.savedJson = JSON.stringify(cfg);
+      this.setState({ cfg, save: 'saved' });
+    } catch (e) { this.setState({ cfgErr: e.message }); }
+  }
+  edit(fn, delay) {
+    if (!this.state.cfg) return;
+    const cfg = JSON.parse(JSON.stringify(this.state.cfg));
+    fn(cfg);
+    this.setState({ cfg, save: JSON.stringify(cfg) === this.savedJson ? 'saved' : 'dirty' });
+    this.retryN = 0;
+    clearTimeout(this.saveTimer);
+    this.saveTimer = setTimeout(() => this.flush(), delay == null ? 400 : delay);
+  }
+  async flush() {
+    clearTimeout(this.saveTimer);
+    const cfg = this.state.cfg;
+    if (!cfg) return;
+    const snap = JSON.stringify(cfg);
+    if (snap === this.savedJson) { if (this.state.save !== 'saved') this.setState({ save: 'saved', saveErr: '' }); return; }
+    if (this.saving) { this.again = true; return; }
+    this.saving = true;
+    this.again = false;
+    this.setState({ save: 'saving' });
+    let failed = false;
+    try {
+      const r = await StreAPI.post('mod.config', { config: cfg });
+      const srv = modNorm(r.config);
+      this.savedJson = JSON.stringify(srv);
+      this.retryN = 0;
+      if (JSON.stringify(this.state.cfg) === snap) this.setState({ cfg: srv, save: 'saved', saveErr: '' });
+      else this.again = true;
+    } catch (e) {
+      failed = true;
+      this.setState({ save: 'error', saveErr: e.message.replace(/\.$/, '') });
+      if (this.retryN < 3) {
+        const wait = [4000, 10000, 30000][this.retryN++];
+        this.saveTimer = setTimeout(() => this.flush(), wait);
+      }
+    }
+    this.saving = false;
+    if (this.again && !failed) { this.again = false; this.saveTimer = setTimeout(() => this.flush(), 150); }
+  }
+  revert() {
+    clearTimeout(this.saveTimer);
+    this.retryN = 0;
+    this.setState({ cfg: JSON.parse(this.savedJson), save: 'saved', saveErr: '', drafts: {} });
+  }
+  setDraft(key, val) { this.setState({ drafts: Object.assign({}, this.state.drafts, { [key]: val }) }); }
+  dropDraft(key) { if (key in this.state.drafts) { const d = Object.assign({}, this.state.drafts); delete d[key]; this.setState({ drafts: d }); } }
+
+  // ---------- режимы чата ----------
+  async loadModes() {
+    if (this.modesBusy || Object.keys(this.state.modeBusy).some((k) => this.state.modeBusy[k])) return;
+    this.modesBusy = true;
+    try {
+      const r = await StreAPI.get('mod.chat');
+      this.put('modes', r.modes || {});
+      if (this.state.modesAvail !== !!r.available || this.state.modesErr) this.setState({ modesAvail: !!r.available, modesErr: '' });
+    } catch (e) { if (!this.state.modes) this.setState({ modes: {}, modesAvail: false, modesErr: e.message }); }
+    this.modesBusy = false;
+  }
+  async setMode(mode, on) {
+    const busy = (v) => this.setState({ modeBusy: Object.assign({}, this.state.modeBusy, { [mode]: v }) });
+    this.setState({ modes: Object.assign({}, this.state.modes, { [mode]: on }), modesErr: '' });
+    busy(true);
+    try {
+      const r = await StreAPI.post('mod.chat', { mode, on });
+      this.seen.modes = JSON.stringify(r.modes);
+      this.setState({ modes: r.modes, modesAvail: !!r.available });
+      const name = (MOD_MODES.find((m) => m[0] === mode) || [0, 'Режим'])[1];
+      StreAPI.toast(name + (on ? ' включён' : ' выключен'));
+    } catch (e) {
+      this.setState({ modes: Object.assign({}, this.state.modes, { [mode]: !on }), modesErr: e.message });
+      StreAPI.toast(e.message, 'error');
+    }
+    busy(false);
+  }
+
+  // ---------- очередь ----------
+  async loadQueue() {
+    if (this.qBusy) return;
+    this.qBusy = true;
+    try { const r = await StreAPI.get('mod.review'); this.put('queue', r.items || []); }
+    catch (e) { if (this.state.queue === null) this.setState({ queue: [] }); }
+    this.qBusy = false;
+  }
+  async review(h, action) {
+    if (action === 'ban' && !confirm('Забанить ' + h.login + ' навсегда? Снять бан можно будет в журнале.')) return;
+    this.setState({ qGone: Object.assign({}, this.state.qGone, { [h.id]: true }) });
+    try {
+      const r = await StreAPI.post('mod.review', { id: h.id, action });
+      this.seen.queue = JSON.stringify(r.items || []);
+      this.setState({ queue: r.items || [] });
+      StreAPI.toast({ allow: 'Сообщение разрешено', deny: 'Сообщение удалено', timeout: h.login + ' в муте на 10 минут', ban: h.login + ' забанен' }[action]);
+      if (this.state.tab === 2) this.loadJournal();
+    } catch (e) {
+      const g = Object.assign({}, this.state.qGone);
+      delete g[h.id];
+      this.setState({ qGone: g });
+      StreAPI.toast(e.message, 'error');
+      this.loadQueue();
+    }
+  }
+
+  // ---------- журнал ----------
+  async loadJournal() {
+    const seq = ++this.jSeq;
+    const type = this.state.jType;
+    try {
+      const r = await StreAPI.get('mod.journal', type ? { type } : null);
+      if (seq !== this.jSeq) return;
+      this.put('journal', r.items || [], this.state.jErr ? { jErr: '' } : null);
+    } catch (e) { if (seq === this.jSeq && this.state.journal === null) this.setState({ journal: [], jErr: e.message }); }
+  }
+  setJType(t) {
+    if (t === this.state.jType) return;
+    this.seen.journal = '';
+    this.setState({ jType: t, journal: null });
+    setTimeout(() => this.loadJournal(), 0);
+  }
+  async undo(row) {
+    this.setState({ undoBusy: Object.assign({}, this.state.undoBusy, { [row.id]: true }) });
+    try {
+      await StreAPI.post('mod.undo', { id: row.id });
+      this.setState({ undoneLocal: Object.assign({}, this.state.undoneLocal, { [row.id]: true }) });
+      StreAPI.toast({ ban: row.login + ' разбанен', timeout: 'Мут для ' + row.login + ' снят', warn: 'Предупреждение для ' + row.login + ' снято' }[row.action] + ', счётчик нарушений обнулён');
+      this.loadJournal();
+      this.loadStats();
+    } catch (e) { StreAPI.toast(e.message, 'error'); }
+    this.setState({ undoBusy: Object.assign({}, this.state.undoBusy, { [row.id]: false }) });
+  }
+
+  // ---------- аналитика ----------
+  async loadStats() {
+    if (this.sBusy) return;
+    this.sBusy = true;
+    try {
+      const r = await StreAPI.get('mod.stats');
+      delete r.ok;
+      this.put('stats', r, this.state.statsErr ? { statsErr: '' } : null);
+    } catch (e) { if (this.state.statsErr !== e.message) this.setState({ statsErr: e.message }); }
+    this.sBusy = false;
+  }
+  async watchAct(w, action) {
+    const login = w.login || w.chatter_id;
+    if (action === 'ban' && !confirm('Забанить ' + login + ' навсегда? Снять бан можно будет в журнале.')) return;
+    this.setState({ watchBusy: Object.assign({}, this.state.watchBusy, { [w.chatter_id]: true }) });
+    try {
+      await StreAPI.post('chat.mod', { action, chatterId: w.chatter_id, login, duration: 600 });
+      StreAPI.toast(action === 'ban' ? login + ' забанен' : login + ' в муте на 10 минут');
+      this.loadStats();
+    } catch (e) { StreAPI.toast(e.message, 'error'); }
+    this.setState({ watchBusy: Object.assign({}, this.state.watchBusy, { [w.chatter_id]: false }) });
+  }
+
+  // ---------- разбан ----------
+  async loadUnban() {
+    if (this.state.unbanLoading) return;
+    this.setState({ unbanLoading: true });
+    try { const r = await StreAPI.get('mod.unban'); this.put('unban', r.items || []); }
+    catch (e) { if (this.state.unban === null) this.setState({ unban: [] }); StreAPI.toast('Запросы на разбан: ' + e.message, 'error'); }
+    this.setState({ unbanLoading: false });
+  }
+  async unbanAct(u, approve) {
+    this.setState({ unbanBusy: Object.assign({}, this.state.unbanBusy, { [u.id]: true }) });
+    try {
+      const r = await StreAPI.post('mod.unban', { id: u.id, approve });
+      this.put('unban', r.items || []);
+      StreAPI.toast(approve ? u.login + ' разбанен' : 'Запрос ' + u.login + ' отклонён');
+    } catch (e) { StreAPI.toast(e.message, 'error'); }
+    this.setState({ unbanBusy: Object.assign({}, this.state.unbanBusy, { [u.id]: false }) });
+  }
+
+  // ---------- списки ----------
+  addWord() {
+    const parts = this.state.wordDraft.split(/[,\n]/).map((s) => s.trim().replace(/\s+/g, ' ')).filter(Boolean);
+    if (!parts.length) { this.setState({ wordErr: 'Напиши слово или фразу' }); return; }
+    const have = this.state.cfg.words.map((w) => w.toLowerCase());
+    const add = [];
+    parts.forEach((p) => { const l = p.toLowerCase(); if (have.indexOf(l) < 0 && add.map((x) => x.toLowerCase()).indexOf(l) < 0) add.push(p.slice(0, 100)); });
+    if (!add.length) { this.setState({ wordErr: parts.length > 1 ? 'Все эти слова уже в списке' : '«' + parts[0] + '» уже в списке' }); return; }
+    this.edit((c) => { c.words = c.words.concat(add); }, 200);
+    this.setState({ wordDraft: '', wordErr: '' });
+  }
+  addDomain() {
+    let d = this.state.domDraft.trim().toLowerCase().replace(/^[a-z]+:\/\//, '').replace(/^www\./, '').replace(/[/?#:].*$/, '').replace(/\.$/, '');
+    if (!d) { this.setState({ domErr: 'Напиши адрес сайта, например youtube.com' }); return; }
+    if (!/^[a-zа-яё0-9-]+(\.[a-zа-яё0-9-]+)+$/i.test(d)) { this.setState({ domErr: 'Не похоже на адрес сайта: нужно что-то вроде youtube.com' }); return; }
+    if (this.state.cfg.domains.map((x) => x.toLowerCase()).indexOf(d) >= 0) { this.setState({ domErr: d + ' уже в списке' }); return; }
+    this.edit((c) => { c.domains = c.domains.concat([d]); }, 200);
+    this.setState({ domDraft: '', domErr: '' });
+  }
+
+  // ---------- модели для разметки ----------
+  vmFilter(k, cfg, ladderText) {
+    const s = this.state;
+    const m = MOD_FMETA[k];
+    const c = cfg.filters[k];
+    const upd = (patch, delay) => this.edit((x) => { Object.assign(x.filters[k], patch); }, delay);
+    const descs = {
+      threat: 'Словарь угроз: «убью тебя», «сдохни», «знаю, где ты живёшь». Чем строже, тем шире список.',
+      tox: 'Словарь оскорблений с поиском обхода: «д е б и л», «т.у.п.о.й», латиница вместо кириллицы. Смысл фразы бот не понимает.',
+      words: 'Твой список на вкладке «Списки»: ' + cfg.words.length + ' ' + modPl(cfg.words.length, 'слово', 'слова', 'слов') + '. Ловит замену букв, пробелы и точки между буквами.',
+      bots: 'Типичная реклама накрутки от спам-ботов: «cheap viewers», «dogehype», «бесплатные зрители».',
+      links: 'Ссылки на сайты не из списка разрешённых (' + cfg.domains.length + ' на вкладке «Списки»).' + (cfg.subsLinks ? ' Подписчикам и VIP можно.' : ''),
+      promo: '«Заходите ко мне», «подпишись на мой канал», «мой канал», «follow me».',
+      personal: 'Номера телефонов и банковских карт.',
+      zalgo: 'Зальго-текст и невидимые символы.',
+      caps: 'Сообщение от ' + c.min + ' ' + modPl(c.min, 'буквы', 'букв', 'букв') + ', где заглавных ' + c.pct + '% и больше.',
+      flood: 'Больше ' + c.emotes + ' эмоутов или один символ ' + c.chars + ' раз подряд.',
+      mentions: 'Больше ' + c.max + ' @упоминаний в одном сообщении.',
+      long: 'Сообщения длиннее ' + c.max + ' ' + modPl(c.max, 'символа', 'символов', 'символов') + '.',
+      spam: c.repeats + '-е одинаковое сообщение от одного зрителя за ' + c.window + ' с.',
+      newacc: 'Аккаунты Twitch младше ' + c.days + ' ' + modPl(c.days, 'дня', 'дней', 'дней') + '. Возраст аккаунта бот узнаёт у Twitch.',
+    };
+    const durSec = c.dur > 0 ? c.dur : 600;
+    const hints = {
+      ladder: [ladderText, 'color: var(--n-11)'],
+      review: ['Сообщение остаётся в чате и попадает в очередь — решаешь ты', 'color: var(--n-11); border: 1px dashed var(--n-8); border-radius: 4px; padding: 4px 8px; align-self: flex-start'],
+      delete: ['Сообщение удаляется, зритель не наказывается', 'color: var(--n-9)'],
+      warn: ['Удаляем сообщение и пишем в чат предупреждение', 'color: var(--n-9)'],
+      timeout: ['Мут на ' + modHuman(durSec) + (cfg.announce ? ', бот сообщит об этом в чат' : ''), 'color: var(--n-10)'],
+      ban: ['Бан без предупреждения. Снять можно в журнале', 'color: var(--accent-text)'],
+    };
+    const h = hints[c.action];
+    const SENS = ['Мягко', 'Средне', 'Строго', 'Максимум'];
+    const params = (m.params || []).map((p) => {
+      const key = k + '.' + p[0];
+      const has = key in s.drafts;
+      const raw = has ? s.drafts[key] : String(c[p[0]]);
+      const n = Number(raw);
+      const bad = has && !(raw !== '' && Number.isInteger(n) && n >= p[2] && n <= p[3]);
+      return {
+        label: p[1], min: p[2], max: p[3], value: raw, bad, err: 'Целое число от ' + p[2] + ' до ' + p[3],
+        set: (e) => {
+          const v = e.target.value;
+          this.setDraft(key, v);
+          const x = Number(v);
+          if (v !== '' && Number.isInteger(x) && x >= p[2] && x <= p[3]) upd({ [p[0]]: x }, 800);
+        },
+        blur: () => this.dropDraft(key),
+      };
+    });
+    return {
+      key: k, name: m.name, nameId: 'fn-' + k, dict: !!m.dict, desc: descs[k],
+      hasSens: !!m.sens, sens: c.sens || 2, sensLabel: SENS[(c.sens || 2) - 1], sensNote: m.sens ? 'Ловит ' + m.sens[(c.sens || 2) - 1] + ((c.sens || 2) > 1 ? ' и всё, что ловят мягкие уровни' : '') : '', sensAria: 'Чувствительность фильтра «' + m.name + '»',
+      hasParams: params.length > 0, params,
+      on: c.on ? 'true' : 'false', off: !c.on, swLabel: 'Фильтр «' + m.name + '»', stateLabel: c.on ? 'включён' : 'выключен',
+      action: c.action, isTimeout: c.action === 'timeout', dur: String(durSec),
+      durOpts: modDurOpts(durSec).map((o) => ({ v: String(o.s), label: o.label })),
+      actAria: 'Наказание: ' + m.name, durAria: 'Длительность мута: ' + m.name,
+      actionText: ({ ladder: 'по лестнице наказаний', review: 'отправляет на проверку', delete: 'удаляет сообщение', warn: 'удаляет и предупреждает', timeout: 'мут на ' + modHuman(durSec), ban: 'бан сразу' })[c.action],
+      hint: c.on ? h[0] : 'Фильтр выключен', hintStyle: c.on ? h[1] : 'color: var(--n-8)',
+      cardStyle: c.on ? (c.action === 'ban' ? 'border-color: rgb(var(--accent-text-rgb) / 0.45)' : 'border-color: var(--n-6)') : 'background: transparent',
+      toggle: () => upd({ on: !c.on }, 250),
+      setAction: (e) => { const a = e.target.value; upd(a === 'timeout' && !(c.dur >= 1) ? { action: a, dur: 600 } : { action: a }, 250); },
+      setDur: (e) => upd({ dur: Number(e.target.value) || 600 }, 250),
+      setSens: (e) => upd({ sens: Number(e.target.value) || 2 }, 500),
     };
   }
+
   renderVals() {
     const s = this.state;
-    const ACT = { warn: 'Предупреждение', delete: 'Только удалить', timeout: 'Мут', ban: 'Бан' };
-    const tabs = [['Аналитика', null], ['Фильтры и наказания', null], ['Очередь и журнал', s.held.length], ['Списки и команда', null]];
-    const PRE = [
-      ['Мягко', [{ a: 'delete', d: '' }, { a: 'warn', d: '' }, { a: 'timeout', d: '1 мин' }, { a: 'timeout', d: '10 мин' }]],
-      ['Стандарт', [{ a: 'warn', d: '' }, { a: 'warn', d: '' }, { a: 'warn', d: '' }, { a: 'ban', d: '' }]],
-      ['Строго', [{ a: 'warn', d: '' }, { a: 'timeout', d: '10 мин' }, { a: 'timeout', d: '24 ч' }, { a: 'ban', d: '' }]],
-      ['Ноль терпимости', [{ a: 'ban', d: '' }]]
-    ];
-    const setLadder = (n) => this.setState({ ladder: n, preset: -1 });
-    const L = s.ladder;
-    const ladder = L.map((st, i) => {
-      const isBan = st.a === 'ban';
-      return {
-        title: (i + 1) + '-е нарушение' + (i === L.length - 1 ? ' и далее' : ''),
-        a: st.a, d: st.d || '10 мин', isTimeout: st.a === 'timeout',
-        note: isBan ? 'Необратимо: разбан только вручную или по запросу' : (st.a === 'warn' ? 'Сообщение удаляется, бот пишет предупреждение' : (st.a === 'timeout' ? 'Сообщение удаляется, зритель молчит' : 'Сообщение удаляется без ответа')),
-        noteColor: isBan ? 'var(--accent-text)' : 'var(--n-9)',
-        style: isBan ? 'border-color: rgb(var(--accent-text-rgb) / 0.55)' : '',
-        actLabel: 'Действие на ступени ' + (i + 1), durLabel: 'Длительность мута на ступени ' + (i + 1), delLabel: 'Убрать ступень ' + (i + 1),
-        setA: (e) => { const n = L.slice(); n[i] = { a: e.target.value, d: e.target.value === 'timeout' ? (st.d || '10 мин') : '' }; setLadder(n); },
-        setD: (e) => { const n = L.slice(); n[i] = { a: st.a, d: e.target.value }; setLadder(n); },
-        del: () => { if (L.length > 1) setLadder(L.filter((_, j) => j !== i)); }
-      };
-    });
-    const warnsBeforeBan = L.findIndex((x) => x.a === 'ban');
-    const nWarn = L.filter((x) => x.a === 'warn').length;
-    let summary = 'Итог: ';
-    summary += L.map((x, i) => (i + 1) + ' → ' + (x.a === 'timeout' ? 'мут ' + (x.d || '10 мин') : ACT[x.a].toLowerCase())).join(' · ');
-    if (warnsBeforeBan === L.length - 1 && nWarn === L.length - 1 && nWarn > 0) summary = 'Итог: бан после ' + nWarn + ' предупреждений';
-    if (L.length === 1 && L[0].a === 'ban') summary = 'Итог: бан с первого нарушения';
+    const cfg = s.cfg;
+    const me = s.me || {};
+    const user = me.user;
+    const modes = s.modes || {};
+    const qGone = s.qGone;
+    const queue = (s.queue || []).filter((x) => !qGone[x.id]);
 
-    const FD = [
-      ['tox', 'Токсичность и оскорбления', 'ИИ-анализ смысла сообщения: оскорбления, травля, унижение. Работает на русском и английском', true, null],
-      ['threat', 'Угрозы и дискриминация', 'Угрозы, призывы к насилию, ненависть по признаку национальности, пола, ориентации', true, null],
-      ['caps', 'Капс', null, false, 'больше 70% заглавных · сообщение от 12 символов'],
-      ['links', 'Ссылки', 'Любые ссылки, кроме разрешённого списка', false, null],
-      ['spam', 'Спам и повторы', null, false, '3 одинаковых сообщения за 30 с · похожесть от 90%'],
-      ['flood', 'Флуд символами и эмоутами', null, false, 'больше 8 эмоутов · символ повторяется 10+ раз'],
-      ['words', 'Запрещённые слова', 'Свой список, с поиском обхода: «к0з3л», «д е б и л»', false, null],
-      ['bots', 'Боты-спамеры', 'Известные спам-боты и аккаунты из списка подозрительных Twitch', false, null],
-      ['promo', 'Самопиар', '«Заходите на мой канал», продажа фолловеров и скинов', true, null],
-      ['personal', 'Личные данные', 'Номера телефонов, адреса, номера карт — в том числе стримера', false, null],
-      ['zalgo', 'Юникод-мусор', 'Зальго, невидимые символы, перевёрнутый текст', false, null],
-      ['mentions', 'Массовые упоминания', null, false, 'больше 5 @упоминаний в сообщении'],
-      ['long', 'Длинные сообщения', null, false, 'больше 400 символов'],
-      ['newacc', 'Новые аккаунты', 'Аккаунты младше 7 дней пишут только через проверку', false, null]
-    ];
-    const SENS = ['Мягко', 'Средне', 'Строго', 'Максимум'];
-    const hintFor = (a, d) => ({
-      delete: ['Сообщение удаляется, зритель не наказывается', 'color: var(--n-9)'],
-      warn: ['Удаляем и пишем в чат предупреждение', 'color: var(--n-9)'],
-      timeout: ['Удаляем и выдаём мут на ' + d, 'color: var(--n-10)'],
-      ladder: [summary.replace('Итог: ', 'Лестница: '), 'color: var(--n-11)'],
-      review: ['Сообщение задерживается до решения модератора', 'color: var(--n-11); border: 1px dashed var(--n-8); border-radius: 4px; padding: 4px 8px; align-self: flex-start'],
-      ban: ['Бан без предупреждения. Используй для угроз и ботов', 'color: var(--accent-text)']
-    })[a];
-    const upd = (id, patch) => this.setState({ f: Object.assign({}, s.f, { [id]: Object.assign({}, s.f[id], patch) }) });
-    const filters = FD.map((x) => {
-      const c = s.f[x[0]];
-      const h = hintFor(c.action, c.dur);
-      return {
-        name: x[1], desc: x[2] || '', ai: x[3], hasParam: !!x[4], param: x[4] || '',
-        hasSens: c.sens !== undefined, sens: c.sens || 2, sensLabel: SENS[(c.sens || 2) - 1], sensAria: 'Чувствительность: ' + x[1],
-        on: c.on ? 'true' : 'false', off: !c.on,
-        action: c.action, dur: c.dur, isTimeout: c.action === 'timeout',
-        actAria: 'Наказание: ' + x[1], durAria: 'Длительность мута: ' + x[1],
-        hint: c.on ? h[0] : 'Фильтр выключен', hintStyle: c.on ? h[1] : 'color: var(--n-7)',
-        cardStyle: c.on ? (c.action === 'ban' ? 'border-color: rgb(var(--accent-text-rgb) / 0.45)' : 'border-color: var(--n-6)') : 'background: transparent',
-        toggle: () => upd(x[0], { on: !c.on }),
-        setAction: (e) => upd(x[0], { action: e.target.value }),
-        setDur: (e) => upd(x[0], { dur: e.target.value }),
-        setSens: (e) => upd(x[0], { sens: Number(e.target.value) })
-      };
-    });
-    const MD = [['Медленный режим', 'Одно сообщение раз в 5 секунд'], ['Только фолловеры', 'Фолловеры не меньше 10 минут'], ['Только подписчики', 'Остальные видят чат, но не пишут'], ['Только эмоуты', 'Сообщения без текста'], ['Уникальный чат', 'Запрет повторять одно сообщение дважды']];
-    const LOG = [
-      ['22:58', 'spam_bot_77', 'ban', 'Бот-спамер', 'Бот', ''],
-      ['22:51', 'KAPSLOCK_VASYA', 'ban', 'Капс · 4-е нарушение', 'Бот · лестница', '4 из 4'],
-      ['22:48', 'KAPSLOCK_VASYA', 'warn', 'Капс', 'Бот · лестница', '3 из 4'],
-      ['22:44', 'new_acc_12', 'timeout', 'Самопиар · мут 10 мин', 'Бот', ''],
-      ['22:40', 'gleb_1999', 'warn', 'Токсичность', 'lenta_ln', '1 из 4'],
-      ['22:31', 'raid_guest_5', 'delete', 'Флуд эмоутами', 'Бот', ''],
-      ['22:29', 'anon_1180', 'timeout', 'Ссылка · мут 1 мин', 'moroz_tv', '']
-    ];
-    const BADGE = { ban: 'border: 2px solid var(--accent-text); color: var(--accent-text)', timeout: 'border: 1px dashed var(--n-10); color: var(--n-12)', warn: 'border: 1px solid var(--n-8); color: var(--n-11)', delete: 'border: 1px dotted var(--n-8); color: var(--n-10)' };
-    const ALBL = { ban: 'Бан', timeout: 'Мут', warn: 'Предупреждение', delete: 'Удалено' };
-    const LF = [['Все', null], ['Баны', 'ban'], ['Муты', 'timeout'], ['Предупреждения', 'warn'], ['Удаления', 'delete']];
-    const curLF = LF.find((x) => x[0] === s.logFilter)[1];
-    const log = LOG.filter((r) => !curLF || r[2] === curLF).map((r, i) => {
-      const key = r[0] + r[1];
-      const und = !!s.undone[key];
-      return {
-        time: r[0], nick: r[1], action: ALBL[r[2]], badge: BADGE[r[2]], reason: r[3], by: r[4],
-        strikes: r[5] ? 'нарушений: ' + r[5] : '',
-        canUndo: !und && r[2] !== 'delete', undone: und,
-        undoLabel: r[2] === 'ban' ? 'Разбанить' : (r[2] === 'timeout' ? 'Снять мут' : 'Снять'),
-        rowStyle: und ? 'opacity: 0.55' : '',
-        undo: () => this.setState({ undone: Object.assign({}, s.undone, { [key]: true }) })
-      };
-    });
-    const drop = (id) => this.setState({ held: s.held.filter((h) => h.id !== id) });
-    const bars = [[30, 1], [38, 1], [35, 0], [44, 2], [52, 1], [48, 1], [60, 2], [58, 1], [66, 3], [62, 2], [70, 2], [74, 3], [72, 2], [96, 12], [88, 7], [80, 3], [76, 2]];
-    const CATS = [['Капс', 11], ['Спам и повторы', 9], ['Ссылки', 7], ['Токсичность', 6], ['Самопиар', 5], ['Флуд эмоутами', 4], ['Запрещённые слова', 3], ['Угрозы', 0]];
-    return {
-      tabs: tabs.map((t, i) => ({ label: t[0], n: t[1], hasN: t[1] !== null && t[1] > 0, sel: s.tab === i ? 'true' : 'false', style: s.tab === i ? 'color: var(--n-12); box-shadow: inset 0 -2px 0 var(--n-12)' : '', pick: () => this.setState({ tab: i }) })),
+    // ----- шапка -----
+    const shieldOn = !!modes.shield;
+    const modesReady = !!s.modes && s.modesAvail;
+    const out = {
+      subtitle: user ? 'Чат twitch.tv/' + user.login + '. Бот ' + ((me.bot && me.bot.login) || 'StreOps') + ' проверяет сообщения и наказывает нарушителей как модератор канала.' : 'Фильтры чата Twitch, наказания, очередь на проверку и журнал действий.',
+      noCfg: !cfg, autoOn: cfg && cfg.auto ? 'true' : 'false',
+      toggleAuto: () => this.edit((c) => { c.auto = !c.auto; }, 0),
+      autoOff: !!cfg && !cfg.auto,
+      botOff: !!user && !user.botEnabled, botWarn: !!user && user.botEnabled && !!user.botError, botError: user ? String(user.botError || '').replace(/\.$/, '') + '.' : '',
+      botBusy: s.botBusy, botBtn: s.botBusy ? 'Включаем…' : 'Включить бота', botRetryBtn: s.botBusy ? 'Проверяем…' : 'Проверить снова',
+      enableBot: () => this.enableBot(),
+      shieldOn, shieldPressed: shieldOn ? 'true' : 'false', shieldDisabled: !modesReady || !!s.modeBusy.shield,
+      shieldLabel: shieldOn ? 'Выключить режим щита' : 'Режим щита',
+      shieldTitle: modesReady ? 'Режим щита Twitch: защита от атак на чат' : 'Недоступно: бот должен быть подключён и быть модератором канала',
+      shieldStyle: 'height: 40px; padding: 0 14px; border-radius: 6px; font: 500 14px/20px var(--font-sans), sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; ' + (shieldOn ? 'background: var(--n-12); color: var(--n-1); border: 0' : 'background: transparent; color: var(--n-12); border: 1px solid var(--n-8)') + (modesReady ? '' : '; opacity: 0.5; cursor: not-allowed'),
+      toggleShield: () => this.setMode('shield', !shieldOn),
+      saveFailed: s.save === 'error', saveErr: s.saveErr,
+      revert: () => this.revert(), retrySave: () => { this.retryN = 0; this.flush(); },
+      saveOk: !!cfg && s.save === 'saved',
+      saveLabel: !cfg ? '' : ({ saved: 'Все изменения сохранены', dirty: 'Сохраним через секунду…', saving: 'Сохраняем…', error: 'Не сохранено' })[s.save],
+      saveColor: s.save === 'error' ? 'var(--n-12)' : 'var(--n-9)',
       tA: s.tab === 0, tF: s.tab === 1, tJ: s.tab === 2, tL: s.tab === 3,
-      autoOn: s.auto ? 'true' : 'false', toggleAuto: () => this.setState({ auto: !s.auto }),
-      shield: s.shield, shieldPressed: s.shield ? 'true' : 'false',
-      shieldLabel: s.shield ? 'Выключить режим щита' : 'Режим щита',
-      shieldStyle: 'height: 40px; padding: 0 14px; border-radius: 6px; font: 500 14px/20px var(--font-sans), sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; ' + (s.shield ? 'background: var(--n-12); color: var(--n-1); border: 0' : 'background: transparent; color: var(--n-12); border: 1px solid var(--n-8)'),
-      toggleShield: () => this.setState({ shield: !s.shield }),
-      heldCount: s.held.length, noHeld: s.held.length === 0,
-      bars: bars.map((b) => ({ m: (b[0] - b[1] * 2) + '%', v: (b[1] * 2) + '%' })),
-      cats: CATS.map((c) => ({ name: c[0], n: c[1], w: Math.round(c[1] / 11 * 100) + '%' })),
-      watch: [
-        { nick: 'KAPSLOCK_VASYA', note: 'капс · 3 предупреждения за 20 минут', strikes: '3 из 4' },
-        { nick: 'gleb_1999', note: 'токсичность растёт: 0% → 3,2%', strikes: '1 из 4' },
-        { nick: 'anon_4421', note: 'аккаунту 11 дней, сообщение на проверке', strikes: '0 из 4' }
-      ],
-      presets: PRE.map((p, i) => ({ label: p[0], sel: s.preset === i ? 'true' : 'false', style: s.preset === i ? 'background: var(--n-12); color: var(--n-1); border-color: var(--n-12)' : '', pick: () => this.setState({ ladder: p[1], preset: i }) })),
-      ladder, ladderSummary: summary, ladderFull: L.length >= 6,
-      addStep: () => { if (L.length < 6) setLadder(L.concat([{ a: 'timeout', d: '24 ч' }])); },
-      filters, fOn: FD.filter((x) => s.f[x[0]].on).length, fTotal: FD.length,
-      modes: MD.map((m, i) => ({ name: m[0], note: m[1], on: s.modes[i] ? 'true' : 'false', toggle: () => { const n = s.modes.slice(); n[i] = !n[i]; this.setState({ modes: n }); } })),
-      held: s.held.map((h) => ({
-        nick: h.nick, reason: h.reason, time: h.time, text: h.text,
-        blur: h.shown ? 'none' : 'blur(5px)', revealLabel: h.shown ? 'Скрыть' : 'Показать',
-        reveal: () => this.setState({ held: s.held.map((x) => x.id === h.id ? Object.assign({}, x, { shown: !x.shown }) : x) }),
-        deny: () => drop(h.id), timeout: () => drop(h.id), allow: () => drop(h.id)
-      })),
-      logF: LF.map((l) => ({ label: l[0], sel: s.logFilter === l[0] ? 'true' : 'false', style: s.logFilter === l[0] ? 'background: var(--n-12); color: var(--n-1); border-color: var(--n-12)' : '', pick: () => this.setState({ logFilter: l[0] }) })),
-      log,
-      words: s.words.map((w) => ({ text: w, label: 'Убрать «' + w + '»', del: () => this.setState({ words: s.words.filter((x) => x !== w) }) })),
-      wordsN: s.words.length,
-      draft: s.draft, setDraft: (e) => this.setState({ draft: e.target.value }),
-      addWord: () => { const t = s.draft.trim(); if (t && s.words.indexOf(t) < 0) this.setState({ words: s.words.concat([t]), draft: '' }); }
+      hasCfg: !!cfg, cfgLoading: !cfg && !s.cfgErr, cfgFailed: !cfg && !!s.cfgErr, cfgErr: s.cfgErr, reloadCfg: () => this.loadCfg(),
     };
+    out.tabs = MOD_TABS.map((t, i) => {
+      const n = i === 2 ? queue.length : 0;
+      return {
+        id: 'tab-' + t[0], panel: 'panel-' + t[0], label: t[1], n, hasN: n > 0,
+        sel: s.tab === i ? 'true' : 'false', ti: s.tab === i ? '0' : '-1',
+        style: s.tab === i ? 'color: var(--n-12); box-shadow: inset 0 -2px 0 var(--n-12)' : '',
+        pick: () => this.pickTab(i),
+        key: (e) => {
+          const last = MOD_TABS.length - 1;
+          const j = { ArrowRight: i === last ? 0 : i + 1, ArrowLeft: i === 0 ? last : i - 1, Home: 0, End: last }[e.key];
+          if (j === undefined) return;
+          e.preventDefault();
+          this.pickTab(j);
+          setTimeout(() => { const el = document.getElementById('tab-' + MOD_TABS[j][0]); if (el) el.focus(); }, 0);
+        },
+      };
+    });
+
+    // ----- аналитика -----
+    const st = s.stats;
+    const live = me.stream && me.stream.live;
+    out.periodLabel = (live ? 'Текущий стрим · с ' + StreAPI.fmtTime(me.stream.startedAt) : 'Последние 24 часа — сейчас не в эфире') + ' · обновляется каждые 10 секунд';
+    out.statsFailed = !!s.statsErr;
+    out.statsErr = String(s.statsErr || '').replace(/\.$/, '');
+    const A = st && st.actions && !Array.isArray(st.actions) ? st.actions : {};
+    const num = (v) => (st ? StreAPI.fmtNum(v || 0) : '—');
+    out.statCards = [
+      { k: 'Сообщений', v: num(st && st.messages), sub: st ? StreAPI.fmtNum(st.chatters) + ' ' + modPl(st.chatters, 'автор', 'автора', 'авторов') : 'Загрузка…' },
+      { k: 'Удалено', v: num(A.delete), sub: 'сообщений без мута и бана' },
+      { k: 'Предупреждений', v: num(A.warn), sub: 'бот удалил сообщение и написал в чат' },
+      { k: 'Муты / баны', v: st ? StreAPI.fmtNum(A.timeout || 0) + ' / ' + StreAPI.fmtNum(A.ban || 0) : '—', sub: 'от бота и вручную' },
+      { k: 'На проверку', v: num(A.review), sub: queue.length ? queue.length + ' ' + modPl(queue.length, 'ждёт', 'ждут', 'ждут') + ' решения' : 'очередь пуста' },
+    ];
+    const tox = st ? Math.max(0, Math.min(100, st.toxIndex || 0)) : 0;
+    out.toxV = st ? String(tox) : '—';
+    out.toxLevel = st ? 'из 100 · ' + (tox <= 25 ? 'низкий' : tox <= 50 ? 'заметный' : tox <= 75 ? 'высокий' : 'критический') : 'из 100';
+    out.toxSegs = [0, 1, 2, 3].map((i) => ({ w: Math.max(0, Math.min(1, (tox - i * 25) / 25)) * 100 + '%' }));
+    const buckets = st && st.chart && Array.isArray(st.chart.buckets) ? st.chart.buckets : [];
+    const from = st && st.chart ? st.chart.from : Math.floor(Date.now() / 1000) - 3 * 3600;
+    const peak = Math.max(1, ...buckets.map((b) => Math.max(b.m, b.v)));
+    let totM = 0, totV = 0, peakV = -1, peakAt = 0;
+    out.bars = buckets.map((b, i) => {
+      totM += b.m; totV += b.v;
+      if (b.v > peakV) { peakV = b.v; peakAt = from + i * 600; }
+      const t0 = StreAPI.fmtTime(from + i * 600);
+      return {
+        v: b.v ? 'max(2px, ' + (b.v / peak * 100).toFixed(1) + '%)' : '0',
+        m: (Math.max(0, b.m - b.v) / peak * 100).toFixed(1) + '%',
+        title: t0 + ' — ' + b.m + ' ' + modPl(b.m, 'сообщение', 'сообщения', 'сообщений') + ', ' + b.v + ' ' + modPl(b.v, 'нарушение', 'нарушения', 'нарушений'),
+      };
+    });
+    out.chartEmpty = !st || (totM === 0 && totV === 0);
+    out.chartEmptyText = st ? 'За последние 3 часа в чате не было сообщений' : 'Загрузка…';
+    out.chartAria = 'Сообщения и нарушения по 10 минут за 3 часа: всего ' + totM + ' ' + modPl(totM, 'сообщение', 'сообщения', 'сообщений') + ', ' + totV + ' ' + modPl(totV, 'нарушение', 'нарушения', 'нарушений') + (totV > 0 ? ', больше всего нарушений в ' + StreAPI.fmtTime(peakAt) : '');
+    out.ticks = [0, 1, 2, 3].map((i) => ({ t: i === 3 ? 'сейчас' : StreAPI.fmtTime(from + i * 3600) }));
+    const rs = {};
+    ((st && st.reasons) || []).forEach((r) => {
+      const fk = MOD_REASON[r.reason];
+      const name = fk ? MOD_FMETA[fk].name : (r.reason || 'Без причины');
+      rs[name] = rs[name] || { name, n: 0, title: [] };
+      rs[name].n += Number(r.c) || 0;
+      rs[name].title.push(r.reason);
+    });
+    const rl = Object.keys(rs).map((k) => rs[k]).sort((a, b) => b.n - a.n);
+    const rmax = Math.max(1, ...rl.map((r) => r.n));
+    out.reasons = rl.map((r) => ({ name: r.name, n: r.n, w: Math.round(r.n / rmax * 100) + '%', title: 'Причина в журнале: ' + r.title.join(', ') }));
+    out.reasonsEmpty = rl.length === 0;
+    out.reasonsEmptyText = st ? 'Бот пока никого не наказал за этот период. Когда сработают фильтры, здесь появится разбивка по причинам.' : 'Загрузка…';
+    const L = cfg ? cfg.ladder.length : 0;
+    out.watch = ((st && st.watch) || []).map((w) => {
+      const nick = w.login || 'id ' + w.chatter_id;
+      const cnt = Number(w.cnt) || 0;
+      return {
+        nick, strikes: L ? (cnt >= L ? cnt + ' · последняя' : cnt + ' из ' + L) : String(cnt),
+        note: cnt + ' ' + modPl(cnt, 'нарушение', 'нарушения', 'нарушений') + ' · последнее ' + modWhen(Number(w.last_at)),
+        busy: !!s.watchBusy[w.chatter_id], muteAria: 'Мут 10 минут: ' + nick, banAria: 'Забанить ' + nick,
+        mute: () => this.watchAct(w, 'timeout'), ban: () => this.watchAct(w, 'ban'),
+      };
+    });
+    out.watchEmpty = out.watch.length === 0;
+    out.watchEmptyText = st ? 'Никого. Сюда попадают зрители, которых за последние 7 дней наказывали фильтры с наказанием «По лестнице».' : 'Загрузка…';
+    out.top = ((st && st.top) || []).map((r) => ({ login: r.chatter_login, c: StreAPI.fmtNum(r.c), v: r.violations, vStyle: r.violations > 0 ? 'color: var(--n-12); font-weight: 500' : 'color: var(--n-9)' }));
+    out.topHas = out.top.length > 0;
+    out.topEmpty = !out.topHas;
+    out.topEmptyText = st ? 'В чате пока никто не писал за этот период. Статистика появится, когда бот увидит сообщения.' : 'Загрузка…';
+
+    // ----- лестница -----
+    const ACT = { warn: 'предупреждение', delete: 'удаление', timeout: 'мут', ban: 'бан' };
+    let ladderText = '';
+    if (cfg) {
+      const Ld = cfg.ladder;
+      const warnN = Ld.filter((x) => x.a === 'warn').length;
+      const stepTxt = (x) => (x.a === 'timeout' ? 'мут ' + modHuman(modSec(x.d)) : ACT[x.a]);
+      if (Ld.length === 1) ladderText = Ld[0].a === 'ban' ? 'бан с первого нарушения' : 'каждое нарушение — ' + stepTxt(Ld[0]);
+      else if (Ld[Ld.length - 1].a === 'ban' && warnN === Ld.length - 1) ladderText = 'бан после ' + warnN + ' ' + modPl(warnN, 'предупреждения', 'предупреждений', 'предупреждений');
+      else ladderText = Ld.map((x, i) => (i + 1) + (i === Ld.length - 1 ? '+' : '') + ' → ' + stepTxt(x)).join(' · ');
+      const users = MOD_FKEYS.filter((k) => cfg.filters[k].on && cfg.filters[k].action === 'ladder').map((k) => MOD_FMETA[k].name);
+      out.ladderUsers = users.length ? 'Сейчас по лестнице: ' + users.join(', ') + '.' : 'Сейчас ни один включённый фильтр не использует лестницу.';
+      const sig = (L2) => JSON.stringify(L2.map((x) => (x.a === 'timeout' ? 'timeout' : x.a)));
+      const cur = JSON.stringify(Ld);
+      out.presets = MOD_PRESETS.map((p, i) => {
+        const sel = i === 3 ? sig(Ld) === sig(p[1]) : cur === JSON.stringify(p[1]);
+        return {
+          label: p[0], sel: sel ? 'true' : 'false',
+          style: sel ? 'background: var(--n-12); color: var(--n-1); border-color: var(--n-12)' : '',
+          pick: () => this.edit((c) => { c.ladder = JSON.parse(JSON.stringify(p[1])); }, 250),
+        };
+      });
+      const setL = (fn) => this.edit((c) => { fn(c.ladder); }, 250);
+      out.ladder = Ld.map((x, i) => {
+        const isBan = x.a === 'ban';
+        const sec = x.a === 'timeout' ? modSec(x.d) : 600;
+        return {
+          title: (i + 1) + '-е нарушение' + (i === Ld.length - 1 && Ld.length > 1 ? ' и далее' : (Ld.length === 1 ? ' и каждое' : '')),
+          a: x.a, d: modCanon(sec), isTimeout: x.a === 'timeout', lone: Ld.length < 2,
+          durOpts: modDurOpts(sec).map((o) => ({ v: modCanon(o.s), label: o.label })),
+          note: { warn: 'Сообщение удаляется, бот пишет предупреждение', delete: 'Сообщение удаляется молча', timeout: 'Зритель молчит ' + modHuman(sec) + (cfg.announce ? ', бот сообщит в чат' : ''), ban: 'Бан навсегда: снять можно в журнале или по запросу на разбан' }[x.a],
+          noteColor: isBan ? 'var(--accent-text)' : 'var(--n-9)', style: isBan ? 'border-color: rgb(var(--accent-text-rgb) / 0.55)' : '',
+          actLabel: 'Действие на ступени ' + (i + 1), durLabel: 'Длительность мута на ступени ' + (i + 1), delLabel: 'Убрать ступень ' + (i + 1),
+          setA: (e) => { const a = e.target.value; setL((l) => { l[i] = a === 'timeout' ? { a, d: '10 мин' } : { a }; }); },
+          setD: (e) => { const d = e.target.value; setL((l) => { l[i] = { a: 'timeout', d }; }); },
+          del: () => { if (Ld.length > 1) setL((l) => { l.splice(i, 1); }); },
+        };
+      });
+      out.ladderFull = Ld.length >= 6;
+      out.addStepTitle = Ld.length >= 6 ? 'Не больше 6 ступеней' : 'Добавить ступень в конец';
+      out.addStep = () => setL((l) => { if (l.length < 6) l.push({ a: 'timeout', d: '10 мин' }); });
+      out.ladderSummary = 'Итог: ' + ladderText + '.';
+      const rd = cfg.resetDays;
+      const RO = [[1, 'через 1 день'], [3, 'через 3 дня'], [7, 'через 7 дней'], [30, 'через 30 дней'], [0, 'никогда']];
+      if (!RO.some((o) => o[0] === rd)) RO.push([rd, 'через ' + rd + ' ' + modPl(rd, 'день', 'дня', 'дней')]);
+      out.resetOpts = RO.map((o) => ({ v: String(o[0]), label: o[1] }));
+      out.resetDays = String(rd);
+      out.setReset = (e) => this.edit((c) => { c.resetDays = Number(e.target.value) || 0; }, 250);
+      const wHas = 'warnText' in s.drafts;
+      const wt = wHas ? s.drafts.warnText : cfg.warnText;
+      out.warnText = wt;
+      out.warnBad = wHas && !wt.trim();
+      out.setWarn = (e) => { const v = e.target.value; this.setDraft('warnText', v); if (v.trim()) this.edit((c) => { c.warnText = v; }, 800); };
+      out.blurWarn = () => this.dropDraft('warnText');
+      out.warnTags = [['{user}', 'Ник нарушителя'], ['{reason}', 'Причина: «без капса, пожалуйста», «оскорбления»…'], ['{n}', 'Номер предупреждения'], ['{max}', 'Сколько предупреждений на лестнице']].map((t) => ({
+        tag: t[0], title: t[1],
+        pick: () => { const v = (wt && !/\s$/.test(wt) ? wt + ' ' : wt) + t[0]; this.dropDraft('warnText'); this.edit((c) => { c.warnText = v; }, 400); setTimeout(() => { const el = document.getElementById('wt'); if (el) el.focus(); }, 0); },
+      }));
+      out.warnPreview = (wt.trim() ? wt : cfg.warnText).replace(/\{user\}/g, 'ник').replace(/\{reason\}/g, 'без капса, пожалуйста').replace(/\{n\}/g, '1').replace(/\{max\}/g, String(Math.max(1, warnN)));
+      out.announceOn = cfg.announce ? 'true' : 'false';
+      out.toggleAnnounce = () => this.edit((c) => { c.announce = !c.announce; }, 250);
+
+      // ----- фильтры -----
+      const lt = 'Лестница: ' + ladderText;
+      out.filters = MOD_FKEYS.map((k) => this.vmFilter(k, cfg, lt));
+      out.fOn = MOD_FKEYS.filter((k) => cfg.filters[k].on).length;
+      out.fTotal = MOD_FKEYS.length;
+      const ex = ['стримера'];
+      if (cfg.exempt.mods) ex.push('модераторов');
+      if (cfg.exempt.vip) ex.push('VIP');
+      if (cfg.exempt.subs) ex.push('подписчиков');
+      ex.push('известных ботов');
+      out.exemptText = ex.slice(0, -1).join(', ') + ' и ' + ex[ex.length - 1];
+      out.goLists = () => this.pickTab(3);
+
+      // ----- списки -----
+      out.wf = out.filters.find((f) => f.key === 'words');
+      out.lf = out.filters.find((f) => f.key === 'links');
+      out.words = cfg.words.map((w, i) => ({ text: w, label: 'Убрать «' + w + '»', del: () => this.edit((c) => { c.words.splice(i, 1); }, 250) }));
+      out.wordsN = cfg.words.length;
+      out.wordsEmpty = cfg.words.length === 0;
+      out.domains = cfg.domains.map((d, i) => ({ text: d, label: 'Убрать ' + d, del: () => this.edit((c) => { c.domains.splice(i, 1); }, 250) }));
+      out.domainsN = cfg.domains.length;
+      out.domainsEmpty = cfg.domains.length === 0;
+      out.subsLinksOn = cfg.subsLinks ? 'true' : 'false';
+      out.toggleSubsLinks = () => this.edit((c) => { c.subsLinks = !c.subsLinks; }, 250);
+      out.permitOn = cfg.permit ? 'true' : 'false';
+      out.togglePermit = () => this.edit((c) => { c.permit = !c.permit; }, 250);
+      out.exempt = [['mods', 'Модераторы', 'Модераторов канала фильтры не проверяют'], ['vip', 'VIP', 'Зрители со значком VIP'], ['subs', 'Подписчики', 'Все платные подписчики канала']].map((x) => ({
+        id: 'ex-' + x[0], name: x[1], note: x[2], on: cfg.exempt[x[0]] ? 'true' : 'false',
+        toggle: () => this.edit((c) => { c.exempt[x[0]] = !c.exempt[x[0]]; }, 250),
+      }));
+    } else {
+      Object.assign(out, { presets: [], ladder: [], filters: [], words: [], domains: [], exempt: [], resetOpts: [], warnTags: [], wf: {}, lf: {} });
+    }
+    out.wordDraft = s.wordDraft;
+    out.setWordDraft = (e) => this.setState({ wordDraft: e.target.value, wordErr: '' });
+    out.addWord = () => this.addWord();
+    out.wordBad = !!s.wordErr;
+    out.wordErr = s.wordErr;
+    out.domDraft = s.domDraft;
+    out.setDomDraft = (e) => this.setState({ domDraft: e.target.value, domErr: '' });
+    out.addDomain = () => this.addDomain();
+    out.domBad = !!s.domErr;
+    out.domErr = s.domErr;
+
+    // ----- режимы чата -----
+    out.modesLoading = !s.modes;
+    out.modesNA = !!s.modes && !s.modesAvail && !s.modesErr;
+    out.modesNAText = 'Twitch не отдаёт настройки чата. Бот должен быть подключён и быть модератором канала' + (user && !user.botEnabled ? ' — включи бота кнопкой вверху страницы.' : '. Если бот только что включён, проверь снова через минуту.');
+    out.modesFailed = !!s.modesErr;
+    out.modesErr = s.modesErr;
+    out.reloadModes = () => this.loadModes();
+    out.modes = s.modes ? MOD_MODES.map((m) => ({
+      id: 'md-' + m[0], name: m[1], note: m[2], on: modes[m[0]] ? 'true' : 'false',
+      disabled: !s.modesAvail || !!s.modeBusy[m[0]],
+      toggle: () => this.setMode(m[0], !modes[m[0]]),
+    })) : [];
+
+    // ----- очередь -----
+    out.queue = queue.map((h) => {
+      const shown = !!s.revealed[h.id];
+      const fk = MOD_REASON[h.reason];
+      return {
+        login: h.login, reason: fk ? MOD_FMETA[fk].name.toLowerCase() : h.reason, time: modWhen(h.at), text: h.text,
+        shown: shown ? 'true' : 'false', blur: shown ? 'none' : 'blur(5px)', revealLabel: shown ? 'Скрыть' : 'Показать',
+        reveal: () => this.setState({ revealed: Object.assign({}, s.revealed, { [h.id]: !shown }) }),
+        allowAria: 'Разрешить сообщение ' + h.login, denyAria: 'Удалить сообщение ' + h.login, muteAria: 'Мут 10 минут: ' + h.login, banAria: 'Забанить ' + h.login,
+        allow: () => this.review(h, 'allow'), deny: () => this.review(h, 'deny'), timeout: () => this.review(h, 'timeout'), ban: () => this.review(h, 'ban'),
+      };
+    });
+    out.queueN = queue.length;
+    out.queueLoading = s.queue === null;
+    out.queueEmpty = s.queue !== null && queue.length === 0;
+    const reviewers = cfg ? MOD_FKEYS.filter((k) => cfg.filters[k].on && cfg.filters[k].action === 'review').map((k) => '«' + MOD_FMETA[k].name + '»') : [];
+    out.queueEmptyText = 'Очередь пуста. ' + (reviewers.length ? 'На проверку отправляют: ' + reviewers.join(', ') + '.' : 'Ни один включённый фильтр не отправляет сообщения на проверку — выбери «На проверку модератору» в карточке фильтра.');
+
+    // ----- журнал -----
+    const BADGE = { ban: 'border: 2px solid var(--accent-text); color: var(--accent-text)', timeout: 'border: 1px dashed var(--n-10); color: var(--n-12)', warn: 'border: 1px solid var(--n-8); color: var(--n-11)', delete: 'border: 1px dotted var(--n-8); color: var(--n-10)', review: 'border: 1px dashed var(--n-8); color: var(--n-10)' };
+    const LF = [['', 'Все'], ['ban', 'Баны'], ['timeout', 'Муты'], ['warn', 'Предупреждения'], ['delete', 'Удаления'], ['review', 'На проверку']];
+    out.logF = LF.map((l) => ({ label: l[1], sel: s.jType === l[0] ? 'true' : 'false', style: s.jType === l[0] ? 'background: var(--n-12); color: var(--n-1); border-color: var(--n-12)' : '', pick: () => this.setJType(l[0]) }));
+    const nowS = Date.now() / 1000;
+    out.log = (s.journal || []).map((r) => {
+      const und = r.undone || !!s.undoneLocal[r.id];
+      const expired = r.action === 'timeout' && r.duration > 0 && r.at + r.duration < nowS;
+      const undoable = ['ban', 'timeout', 'warn'].indexOf(r.action) >= 0;
+      const fk = MOD_REASON[r.reason];
+      const actLabel = { ban: 'Бан', timeout: 'Мут ' + modHuman(r.duration || 600), warn: 'Предупреждение', delete: 'Удалено', review: 'На проверку' }[r.action] || r.action;
+      const msg = r.message || '';
+      return {
+        time: modWhen(r.at), nick: r.login, strikes: r.strikes ? 'ступень ' + r.strikes : '',
+        action: actLabel, badge: BADGE[r.action] || BADGE.delete,
+        reason: fk ? MOD_FMETA[fk].name : (r.reason === 'вручную из панели' ? 'Вручную' : r.reason),
+        message: msg, msgShort: msg ? '«' + (msg.length > 120 ? msg.slice(0, 120) + '…' : msg) + '»' : '',
+        by: r.by === 'Бот' ? 'Бот' : r.by,
+        canUndo: undoable && !und && !expired, busy: !!s.undoBusy[r.id],
+        hasState: undoable && (und || expired), stateLabel: und ? 'Отменено' : 'Мут истёк',
+        undoLabel: s.undoBusy[r.id] ? 'Отменяем…' : 'Отменить',
+        undoAria: 'Отменить: ' + actLabel.toLowerCase() + ', ' + r.login,
+        undoTitle: { ban: 'Разбанить в Twitch', timeout: 'Снять мут в Twitch', warn: 'Снять предупреждение' }[r.action] + ' и обнулить счётчик нарушений зрителя',
+        rowStyle: und ? 'opacity: 0.55' : '',
+        undo: () => this.undo(r),
+      };
+    });
+    out.logLoading = s.journal === null;
+    out.logEmpty = s.journal !== null && s.journal.length === 0;
+    out.logEmptyText = s.jErr ? 'Не удалось загрузить журнал: ' + s.jErr : (s.jType ? 'Таких действий пока не было.' : 'Журнал пуст. Здесь появятся действия бота и решения модераторов: удаления, предупреждения, муты и баны.');
+
+    // ----- разбан -----
+    const ub = s.unban || [];
+    out.unban = ub.map((u) => ({
+      login: u.login, when: 'запрос от ' + modWhen(u.at), text: u.text ? '«' + u.text + '»' : 'Без текста',
+      busy: !!s.unbanBusy[u.id], denyAria: 'Отказать в разбане ' + u.login, approveAria: 'Разбанить ' + u.login,
+      deny: () => this.unbanAct(u, false), approve: () => this.unbanAct(u, true),
+    }));
+    out.unbanN = ub.length;
+    out.unbanLoading = s.unbanLoading;
+    out.unbanLoadingFirst = s.unban === null;
+    out.unbanEmpty = s.unban !== null && ub.length === 0;
+    out.unbanEmptyText = user && !user.botEnabled ? 'Запросы видит только подключённый бот — включи его кнопкой вверху страницы.' : 'Запросов нет. Если забаненный зритель попросит разбан на Twitch, запрос появится здесь.';
+    out.reloadUnban = () => this.loadUnban();
+    return out;
   }
 }
 DCMount(Component);

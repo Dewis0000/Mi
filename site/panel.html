@@ -7,7 +7,8 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<script src="assets/theme.js"></script>
+<script src="assets/theme.js?v=460ce522"></script>
+<script src="assets/api.js?v=47744cb2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:var(--n-1)}
@@ -17,22 +18,35 @@ a{color:var(--n-12);text-decoration:none}a:hover{color: var(--accent-on)}
 .ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .card{background:var(--s-2);border:1px solid var(--n-5);border-radius:8px}
 .av{border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-weight:600;color:var(--n-1);flex:none}
-.nav-i{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;color:var(--n-10)}
-.nav-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
-.seg{height:32px;padding:0 12px;border:0;border-radius:4px;background:transparent;color:var(--n-9);font:400 13px/18px 'JetBrains Mono',monospace;cursor:pointer}
-.seg:hover{color:var(--n-12)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--n-12);outline-offset:2px}
+.btn{height:40px;padding:0 16px;border-radius:6px;border:0;background:var(--n-13);color:var(--n-1);font:500 14px/20px var(--font-sans),sans-serif;display:inline-flex;align-items:center;gap:8px;cursor:pointer;flex:none}
+.btn:disabled{opacity:.6;cursor:default}
+.btn-s{height:40px;padding:0 16px;border-radius:6px;border:1px solid var(--n-6);background:transparent;color:var(--n-12);font:500 14px/20px var(--font-sans),sans-serif;cursor:pointer;flex:none}
+.btn-s:hover{border-color:var(--n-9)}
+.btn-s:disabled{opacity:.6;cursor:default}
+.met{padding:20px;min-width:0}
+.met-v{margin:10px 0 0;font-size:32px;line-height:36px;font-weight:500;letter-spacing:-0.02em}
+.met-c{margin:12px 0 0;font-size:12px;line-height:16px;color:var(--n-9)}
 .msg{position:relative;display:flex;gap:8px;padding:6px 16px;font-size:13px;line-height:19px}
 .msg:hover{background:rgb(var(--n-13-rgb) / .04)}
-.acts{display:none;position:absolute;right:12px;top:2px;gap:2px;padding:2px;border-radius:6px;background:var(--n-4);border:1px solid rgb(var(--n-13-rgb) / .14)}
-.msg:hover .acts{display:flex}
+.acts{display:flex;opacity:0;pointer-events:none;position:absolute;right:12px;top:2px;gap:2px;padding:2px;border-radius:6px;background:var(--n-4);border:1px solid rgb(var(--n-13-rgb) / .14)}
+.msg:hover .acts,.msg:focus-within .acts{opacity:1;pointer-events:auto}
+@media (hover: none){.msg[data-sel] .acts{opacity:1;pointer-events:auto}}
 .act{width:28px;height:28px;border:0;border-radius:4px;background:transparent;color:var(--n-10);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
 .act:hover{background:rgb(var(--n-13-rgb) / .08);color:var(--n-12)}
 .act.d:hover{color:var(--accent-text)}
+.act:disabled{opacity:.4;cursor:default}
+.mtag{display:inline-block;margin-left:6px;padding:0 5px;border:1px solid var(--n-6);border-radius:3px;font-size:11px;line-height:16px;color:var(--n-9);white-space:nowrap;text-decoration:none}
 .role{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:3px;border:1px solid var(--n-8);color:var(--n-11);flex:none;margin-top:1px}
 .ev{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px 0;border-top:1px solid var(--n-4)}
-.evi{width:32px;height:32px;border-radius:6px;border:1px solid var(--n-6);display:inline-flex;align-items:center;justify-content:center;color:var(--n-11)}
-.qc{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:14px;border-radius:8px;border:1px solid var(--n-5);background:var(--s-2);color:var(--n-12);font-family:var(--font-sans),sans-serif;cursor:pointer;text-align:left}
+.evi{width:32px;height:32px;border-radius:6px;border:1px solid var(--n-6);display:inline-flex;align-items:center;justify-content:center;color:var(--n-11);box-sizing:border-box;flex:none}
+.qc{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:14px;border-radius:8px;border:1px solid var(--n-5);background:var(--s-2);color:var(--n-12);font-family:var(--font-sans),sans-serif;text-align:left;min-width:0}
 .qc:hover{background:var(--s-3);border-color:var(--n-6)}
+.empty{margin:16px 0 0;padding:20px 16px;border:1px dashed var(--n-5);border-radius:8px;font-size:14px;line-height:20px;color:var(--n-9)}
+.chat{height:860px}
+@media (max-width: 560px){.xo{visibility:hidden}}
+@media (max-width: 700px){.chat{height:600px}.hdr{height:auto!important;padding:10px 16px!important}.wrap{padding:16px!important}}
 </style>
 <style>
 .sb{flex:1 1 200px;max-width:248px;min-width:200px;align-self:flex-start;position:sticky;top:88px;box-sizing:border-box;padding:12px;border-radius:8px;background:rgb(var(--n-13-rgb) / .03);border:1px solid rgb(var(--n-13-rgb) / .06);display:flex;flex-direction:column;gap:2px;font-family:var(--font-sans),system-ui,sans-serif}
@@ -56,27 +70,26 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 <div style="min-height: 100vh; background: var(--page-bg); color: var(--n-12); font-family: var(--font-sans), system-ui, sans-serif">
 
 <header style="position: sticky; top: 0; z-index: 200; background: rgb(var(--n-1-rgb) / 0.72); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgb(var(--n-13-rgb) / 0.08)">
-<div style="height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 24px; flex-wrap: wrap">
+<div class="hdr" style="height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 24px; flex-wrap: wrap">
 <a href="index.html" style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2" data-stroke="12"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2" data-fill="12"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2" data-fill="12"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F" data-fill="9"></rect></svg>StreOps</a>
-<div style="display: flex; align-items: center; gap: 8px">
-<div role="status" aria-label="В эфире 2 часа 47 минут, 1284 зрителя" style="display: flex; align-items: center; height: 40px; border: 1px solid var(--n-5); border-radius: 6px">
-<span style="display: inline-flex; align-items: center; gap: 8px; height: 100%; padding: 0 12px; border-right: 1px solid var(--n-5)"><span style="position: relative; width: 8px; height: 8px"><span style="position: absolute; inset: -4px; border-radius: 999px; background: rgb(var(--accent-rgb) / 0.25)"></span><span style="position: absolute; inset: 0; border-radius: 999px; background: var(--accent)"></span></span><span style="font-size: 11px; font-weight: 700; letter-spacing: .08em">В ЭФИРЕ</span></span>
-<span style="display: inline-flex; align-items: center; gap: 8px; height: 100%; padding: 0 12px; border-right: 1px solid var(--n-5)"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--n-9)"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg><span class="mono" style="font-size: 15px">02:47:13</span></span>
-<span style="display: inline-flex; align-items: center; gap: 8px; height: 100%; padding: 0 12px"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--n-9)"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="mono" style="font-size: 15px">1 284</span></span>
+<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+<div role="status" data-dc-keep data-stre-live aria-label="Статус эфира" style="display: flex; align-items: center; height: 40px; border: 1px solid var(--n-5); border-radius: 6px">
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 100%; padding: 0 12px; border-right: 1px solid var(--n-5)"><span data-dot style="width: 8px; height: 8px; border-radius: 999px; background: var(--n-8)"></span><span data-label style="font-size: 11px; font-weight: 700; letter-spacing: .08em">НЕ В ЭФИРЕ</span></span>
+<span class="mono" data-timer title="Длительность эфира" style="padding: 0 12px; border-right: 1px solid var(--n-5); font-size: 15px">—</span><span class="mono" data-viewers title="Зрителей сейчас" style="padding: 0 12px; font-size: 15px">—</span>
 </div>
-<a href="settings.html" aria-label="Профиль kira_stream" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 8px 0 6px; border-radius: 6px; font-size: 14px; font-weight: 500"><span style="position: relative"><span class="av" style="width: 32px; height: 32px; font-size: 12px; background: linear-gradient(135deg, var(--n-10), var(--n-6))">КС</span><span style="position: absolute; right: -2px; bottom: -2px; width: 10px; height: 10px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 0 2px var(--n-1)"></span></span>kira_stream<svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></a>
+<a href="settings.html" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 8px 0 6px; border-radius: 6px; font-size: 14px; font-weight: 500" aria-label="Профиль" data-dc-keep data-stre-user><span class="av" style="width: 32px; height: 32px; font-size: 12px; background: linear-gradient(135deg, var(--n-10), var(--n-6))" data-av></span><span data-name>Профиль</span><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></a>
 </div>
 </div>
 </header>
 
-<div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; box-sizing: border-box; max-width: 1920px; margin: 0 auto">
+<div class="wrap" style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; box-sizing: border-box; max-width: 1920px; margin: 0 auto">
 
-<nav aria-label="Разделы стрим-панели" class="sb">
+<nav aria-label="Разделы стрим-панели" class="sb" data-dc-keep>
 <p class="sb-h">Эфир</p>
 <a href="panel.html" class="sb-i" aria-current="page"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Обзор</a>
 <a href="moderation.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Модерация</a>
 <p class="sb-h">Бот</p>
-<a href="commands.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l6-6-6-6M12 19h8"/></svg>Команды<span class="sb-n">24</span></a>
+<a href="commands.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l6-6-6-6M12 19h8"/></svg>Команды</a>
 <a href="music.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Музыка</a>
 <a href="widgets.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Виджеты</a>
 <p class="sb-h">Интерактив</p>
@@ -88,111 +101,638 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 
 <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
 <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
-<div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Обзор эфира</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--n-10)">«Ранкед до утра, заходите» · Counter-Strike 2 · Twitch</p></div>
-<p class="mono" style="margin: 0; font-size: 12px; color: var(--n-9)">Обновлено 12 секунд назад</p>
+<div style="min-width: 0"><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Обзор эфира</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--n-10); display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 999px; flex: none; background: {{ head.dot }}"></span><span style="color: var(--n-12); font-weight: 500">{{ head.state }}</span><span>{{ head.info }}</span></p></div>
+<p class="mono" role="status" style="margin: 0; font-size: 12px; color: var(--n-9)">{{ head.sync }}</p>
 </div>
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px">
-<div class="card" style="padding: 20px"><p style="margin: 0; font-size: 13px; color: var(--n-9)">Зрители сейчас</p><p class="mono" style="margin: 10px 0 0; font-size: 32px; line-height: 36px; font-weight: 500; letter-spacing: -0.02em">1 284</p><div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: flex-end"><span class="mono" style="font-size: 12px; color: var(--n-11)">↑ 12,4% <span style="color: var(--n-9)">к прошлому</span></span><svg width="80" height="24" viewBox="0 0 80 24" aria-hidden="true"><path d="M0 20 L10 18 L20 19 L30 14 L40 15 L50 10 L60 11 L70 6 L80 4" fill="none" stroke="#F2F2F2" data-stroke="12" stroke-width="1.5"></path></svg></div></div>
-<div class="card" style="padding: 20px"><p style="margin: 0; font-size: 13px; color: var(--n-9)">Пик зрителей</p><p class="mono" style="margin: 10px 0 0; font-size: 32px; line-height: 36px; font-weight: 500; letter-spacing: -0.02em">1 517</p><div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: flex-end"><span class="mono" style="font-size: 12px; color: var(--n-9)">в 01:52 эфира</span><svg width="80" height="24" viewBox="0 0 80 24" aria-hidden="true"><path d="M0 18 L10 16 L20 12 L30 8 L40 3 L50 7 L60 9 L70 10 L80 9" fill="none" stroke="#B4B4B4" data-stroke="10" stroke-width="1.5"></path></svg></div></div>
-<div class="card" style="padding: 20px"><p style="margin: 0; font-size: 13px; color: var(--n-9)">Сообщений в чате</p><p class="mono" style="margin: 10px 0 0; font-size: 32px; line-height: 36px; font-weight: 500; letter-spacing: -0.02em">3 912</p><div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: flex-end"><span class="mono" style="font-size: 12px; color: var(--n-11)">↑ 8,1% <span style="color: var(--n-9)">к прошлому</span></span><svg width="80" height="24" viewBox="0 0 80 24" aria-hidden="true"><path d="M0 19 L10 17 L20 18 L30 12 L40 13 L50 9 L60 6 L70 8 L80 5" fill="none" stroke="#F2F2F2" data-stroke="12" stroke-width="1.5"></path></svg></div></div>
-<div class="card" style="padding: 20px"><p style="margin: 0; font-size: 13px; color: var(--n-9)">Новые фолловеры</p><p class="mono" style="margin: 10px 0 0; font-size: 32px; line-height: 36px; font-weight: 500; letter-spacing: -0.02em">86</p><div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: flex-end"><span class="mono" style="font-size: 12px; color: var(--n-11)">↓ 4,0% <span style="color: var(--n-9)">к прошлому</span></span><svg width="80" height="24" viewBox="0 0 80 24" aria-hidden="true"><path d="M0 8 L10 10 L20 9 L30 12 L40 11 L50 14 L60 13 L70 15 L80 14" fill="none" stroke="#B4B4B4" data-stroke="10" stroke-width="1.5" stroke-dasharray="3 2"></path></svg></div></div>
+<div style="display: contents"><template data-if="banner.show">
+<section aria-labelledby="bot-t" style="{{ banner.box }}">
+<span class="evi" style="width: 40px; height: 40px; {{ banner.iconStyle }}"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8V4H8"></path><rect x="4" y="8" width="16" height="12" rx="2"></rect><path d="M2 14h2M20 14h2M15 13v2M9 13v2"></path></svg></span>
+<div style="flex: 1 1 280px; min-width: 0">
+<h2 id="bot-t" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">{{ banner.title }}</h2>
+<p style="margin: 6px 0 0; font-size: 14px; line-height: 20px; color: var(--n-10)">{{ banner.text }}</p>
+<template data-if="banner.hasNote"><p style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">{{ banner.note }}</p></template>
+<template data-if="banner.hasErrs"><div role="alert" style="margin-top: 12px; padding: 10px 12px; border: 2px solid var(--n-12); border-radius: 6px; font-size: 13px; line-height: 18px"><p style="margin: 0; font-weight: 600">{{ banner.errTitle }}</p><ul style="margin: 4px 0 0; padding-left: 18px"><template data-for="banner.errs" data-as="e"><li style="overflow-wrap: anywhere">{{ e.text }}</li></template></ul></div></template>
+</div>
+<template data-if="banner.hasBtn"><button type="button" class="{{ banner.btnClass }}" onClick="{{ enableBot }}" disabled="{{ botBusy }}">{{ banner.btn }}</button></template>
+</section>
+</template></div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px" aria-label="Метрики" role="group">
+<template data-for="metrics" data-as="k"><div class="card met" title="{{ k.title }}"><p style="margin: 0; font-size: 13px; color: var(--n-9)">{{ k.label }}</p><p class="mono met-v">{{ k.value }}</p><p class="met-c">{{ k.caption }}</p></div></template>
 </div>
 
 <section class="card" style="padding: 24px" aria-labelledby="chart-t">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap">
 <div><h2 id="chart-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Активность чата</h2><div style="margin-top: 8px; display: flex; gap: 20px; font-size: 13px; color: var(--n-10)"><span style="display: inline-flex; align-items: center; gap: 8px"><svg width="20" height="4" aria-hidden="true"><path d="M0 2h20" stroke="#F2F2F2" data-stroke="12" stroke-width="2"></path></svg>Сообщения</span><span style="display: inline-flex; align-items: center; gap: 8px"><svg width="20" height="4" aria-hidden="true"><path d="M0 2h20" stroke="#B4B4B4" data-stroke="10" stroke-width="1.5" stroke-dasharray="4 3"></path></svg>Команды</span></div></div>
-<div role="tablist" aria-label="Период" style="display: inline-flex; padding: 2px; border: 1px solid var(--n-6); border-radius: 6px">
-<template data-for="ranges" data-as="r"><button role="tab" type="button" class="seg" aria-selected="{{ r.sel }}" onClick="{{ r.pick }}" style="{{ r.style }}">{{ r.label }}</button></template>
-</div>
+<p class="mono" style="margin: 0; font-size: 12px; color: var(--n-9)">последние 3 часа · по 10 минут</p>
 </div>
 <div style="position: relative; margin-top: 24px; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 8px">
-<div class="mono" style="display: flex; flex-direction: column; justify-content: space-between; height: 220px; font-size: 11px; color: var(--n-9); text-align: right"><span>120</span><span>90</span><span>60</span><span>30</span><span>0</span></div>
+<div class="mono" aria-hidden="true" style="display: flex; flex-direction: column; justify-content: space-between; height: 220px; font-size: 11px; color: var(--n-9); text-align: right"><template data-for="chart.ticks" data-as="t"><span>{{ t.v }}</span></template></div>
 <div style="position: relative; height: 220px">
-<svg width="100%" height="220" viewBox="0 0 800 220" preserveAspectRatio="none" role="img" aria-label="Сообщений в минуту: рост с 18 до 114 за эфир, команд — с 6 до 44">
+<svg width="100%" height="220" viewBox="0 0 800 220" preserveAspectRatio="none" aria-hidden="true" style="display: block; overflow: visible">
 <path d="M0 0H800M0 55H800M0 110H800M0 165H800" stroke="#1F1F1F" data-stroke="4" stroke-width="1" vector-effect="non-scaling-stroke"></path>
 <path d="M0 220H800" stroke="#3A3A3A" data-stroke="6" stroke-width="1" vector-effect="non-scaling-stroke"></path>
-<path d="M0 170 L47 150 L94 158 L141 130 L188 120 L235 135 L282 100 L329 92 L376 110 L423 80 L470 60 L517 72 L564 40 L611 52 L658 66 L705 48 L752 58 L800 44 L800 220 L0 220Z" fill="rgba(255,255,255,0.04)"></path>
-<path d="M0 170 L47 150 L94 158 L141 130 L188 120 L235 135 L282 100 L329 92 L376 110 L423 80 L470 60 L517 72 L564 40 L611 52 L658 66 L705 48 L752 58 L800 44" fill="none" stroke="#F2F2F2" data-stroke="12" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path>
-<path d="M0 200 L47 192 L94 196 L141 184 L188 180 L235 186 L282 170 L329 166 L376 174 L423 160 L470 150 L517 156 L564 138 L611 146 L658 152 L705 140 L752 148 L800 142" fill="none" stroke="#B4B4B4" data-stroke="10" stroke-width="1.5" stroke-dasharray="5 4" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path>
-<path d="M564 0V220" stroke="#6E6E6E" data-stroke="8" stroke-width="1" stroke-dasharray="2 3" vector-effect="non-scaling-stroke"></path>
+<path d="{{ chart.area }}" fill="rgba(255,255,255,0.04)"></path>
+<path d="{{ chart.mPath }}" fill="none" stroke="#F2F2F2" data-stroke="12" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"></path>
+<path d="{{ chart.cPath }}" fill="none" stroke="#B4B4B4" data-stroke="10" stroke-width="1.5" stroke-dasharray="5 4" vector-effect="non-scaling-stroke" stroke-linejoin="round"></path>
 </svg>
-<span aria-hidden="true" style="position: absolute; left: 70.5%; top: 40px; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 999px; background: var(--n-12); box-shadow: 0 0 0 2px var(--s-2)"></span>
-<span aria-hidden="true" style="position: absolute; left: 70.5%; top: 138px; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 2px; background: var(--s-2); border: 1.5px solid var(--n-10); box-sizing: border-box"></span>
-<div role="tooltip" style="position: absolute; left: calc(70.5% + 14px); top: 52px; min-width: 168px; padding: 10px 12px; border-radius: 6px; background: rgb(var(--n-2-rgb) / 0.92); border: 1px solid rgb(var(--n-13-rgb) / 0.14); box-shadow: 0 4px 12px -2px rgba(0,0,0,0.5); font-size: 12px; line-height: 18px">
-<p class="mono" style="margin: 0; color: var(--n-9)">01:40 эфира · 22:40</p>
-<p style="margin: 6px 0 0; display: flex; justify-content: space-between; gap: 16px"><span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 12px; height: 2px; background: var(--n-12)"></span>Сообщения</span><span class="mono">102/мин</span></p>
-<p style="margin: 2px 0 0; display: flex; justify-content: space-between; gap: 16px; color: var(--n-10)"><span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 12px; height: 0; border-top: 1.5px dashed var(--n-10)"></span>Команды</span><span class="mono">37/мин</span></p>
+<div tabindex="0" role="img" aria-label="{{ chart.label }}" onKeyDown="{{ chart.key }}" onFocus="{{ chart.focus }}" onBlur="{{ chart.leave }}" onMouseLeave="{{ chart.leave }}" style="position: absolute; inset: 0; display: flex; border-radius: 4px">
+<template data-for="chart.hits" data-as="h"><span onMouseEnter="{{ h.enter }}" style="flex: 1; height: 100%"></span></template>
+</div>
+<template data-if="chart.hasNote"><p style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; margin: 0; width: min(320px, 90%); text-align: center; font-size: 13px; line-height: 18px; color: var(--n-9)">{{ chart.note }}</p></template>
+<template data-if="chart.hasHover">
+<span aria-hidden="true" style="position: absolute; top: 0; bottom: 0; width: 0; pointer-events: none; border-left: 1px dashed var(--n-8); left: {{ chart.hx }}"></span>
+<span aria-hidden="true" style="position: absolute; pointer-events: none; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 999px; background: var(--n-12); box-shadow: 0 0 0 2px var(--s-2); left: {{ chart.hx }}; top: {{ chart.hmy }}"></span>
+<span aria-hidden="true" style="position: absolute; pointer-events: none; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 2px; background: var(--s-2); border: 1.5px solid var(--n-10); box-sizing: border-box; left: {{ chart.hx }}; top: {{ chart.hcy }}"></span>
+<div aria-hidden="true" style="position: absolute; z-index: 2; min-width: 168px; padding: 10px 12px; border-radius: 6px; background: rgb(var(--n-2-rgb) / 0.92); border: 1px solid rgb(var(--n-13-rgb) / 0.14); box-shadow: 0 4px 12px -2px rgba(0,0,0,0.5); font-size: 12px; line-height: 18px; pointer-events: none; {{ chart.tipPos }}">
+<p class="mono" style="margin: 0; color: var(--n-9)">{{ chart.tipTime }}</p>
+<p style="margin: 6px 0 0; display: flex; justify-content: space-between; gap: 16px"><span style="display: inline-flex; align-items: center; gap: 6px; color: var(--n-10)"><span style="width: 12px; height: 2px; background: var(--n-12)"></span>Сообщения</span><span class="mono" style="font-weight: 500">{{ chart.tipM }}</span></p>
+<p style="margin: 2px 0 0; display: flex; justify-content: space-between; gap: 16px"><span style="display: inline-flex; align-items: center; gap: 6px; color: var(--n-10)"><span style="width: 12px; height: 0; border-top: 1.5px dashed var(--n-10)"></span>Команды</span><span class="mono" style="font-weight: 500">{{ chart.tipC }}</span></p>
+</div>
+</template>
 </div>
 </div>
-</div>
-<div class="mono" style="margin-top: 8px; margin-left: 48px; display: flex; justify-content: space-between; font-size: 11px; color: var(--n-9)"><span>21:00</span><span>21:30</span><span>22:00</span><span>22:30</span><span>23:00</span><span>23:30</span></div>
+<div class="mono" aria-hidden="true" style="margin-top: 8px; margin-left: 48px; display: flex; justify-content: space-between; font-size: 11px; color: var(--n-9)"><template data-for="chart.xs" data-as="x"><span class="{{ x.cls }}">{{ x.t }}</span></template></div>
+<div class="sr"><table><caption>Сообщения и команды в чате по 10 минут за последние 3 часа</caption><thead><tr><th scope="col">Время</th><th scope="col">Сообщений</th><th scope="col">Команд</th></tr></thead><tbody><template data-for="chart.rows" data-as="r"><tr><td>{{ r.t }}</td><td>{{ r.m }}</td><td>{{ r.c }}</td></tr></template></tbody></table></div>
 </section>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 24px">
-<section id="events" class="card" style="padding: 24px" aria-labelledby="ev-t">
-<div style="display: flex; justify-content: space-between; align-items: center"><h2 id="ev-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">События</h2><a href="#" style="font-size: 13px; color: var(--n-10)">Вся история</a></div>
+<section id="events" class="card" style="padding: 24px; min-width: 0" aria-labelledby="ev-t">
+<h2 id="ev-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">События</h2>
+<p style="margin: 6px 0 0; font-size: 13px; color: var(--n-9)">Фолловы, подписки, рейды и донаты — последние 8</p>
+<template data-if="evLoading"><p class="empty">Загрузка…</p></template>
+<template data-if="evEmpty"><p class="empty">{{ evEmptyText }}</p></template>
 <ul style="list-style: none; margin: 16px 0 0; padding: 0">
-<li class="ev"><span class="evi" style="border: 2px solid var(--n-12)"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M4.9 4.9l14.2 14.2"></path></svg></span><span style="font-size: 14px; line-height: 20px"><b style="font-weight: 600">spam_bot_77</b> забанен<br><span style="font-size: 13px; color: var(--n-9)">автомодерация · ссылка в сообщении</span></span><span class="mono" style="font-size: 12px; color: var(--n-9)">22:51</span></li>
-<li class="ev"><span class="evi" style="border-style: dashed"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></span><span style="font-size: 14px; line-height: 20px"><b style="font-weight: 600">KAPSLOCK_VASYA</b> — таймаут 10 мин<br><span style="font-size: 13px; color: var(--n-9)">модератор lenta_ln · капс</span></span><span class="mono" style="font-size: 12px; color: var(--n-9)">22:48</span></li>
-<li class="ev"><span class="evi"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg></span><span style="font-size: 14px; line-height: 20px"><b style="font-weight: 600">tixiy_bard</b> подписался<br><span style="font-size: 13px; color: var(--n-9)">уровень 1 · 3-й месяц подряд</span></span><span class="mono" style="font-size: 12px; color: var(--n-9)">22:44</span></li>
-<li class="ev"><span class="evi"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.9"></path></svg></span><span style="font-size: 14px; line-height: 20px"><b style="font-weight: 600">sever_ops</b> зарейдил канал<br><span style="font-size: 13px; color: var(--n-9)"><span class="mono">212</span> зрителей</span></span><span class="mono" style="font-size: 12px; color: var(--n-9)">22:31</span></li>
-<li class="ev"><span class="evi"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"></path></svg></span><span style="font-size: 14px; line-height: 20px"><b style="font-weight: 600">polyana_live</b> и ещё <span class="mono">11</span> зафолловили<br><span style="font-size: 13px; color: var(--n-9)">за последние 15 минут</span></span><span class="mono" style="font-size: 12px; color: var(--n-9)">22:30</span></li>
+<template data-for="events" data-as="e">
+<li class="ev"><span class="evi"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ e.d }}"></path></svg></span><span style="font-size: 14px; line-height: 20px; min-width: 0; overflow-wrap: anywhere"><b style="font-weight: 600">{{ e.name }}</b> — {{ e.title }}<template data-if="e.hasSub"><br><span style="font-size: 13px; color: var(--n-9)">{{ e.sub }}</span></template></span><span class="mono" style="font-size: 12px; color: var(--n-9)">{{ e.time }}</span></li>
+</template>
 </ul>
 </section>
 
-<section class="card" style="padding: 24px" aria-labelledby="qc-t">
-<h2 id="qc-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Быстрые действия</h2>
-<p style="margin: 6px 0 0; font-size: 13px; color: var(--n-9)">Часто используемые команды за этот стрим</p>
+<section class="card" style="padding: 24px; min-width: 0" aria-labelledby="md-t">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 id="md-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Модерация</h2><a href="moderation.html" style="font-size: 13px; color: var(--n-10)">Весь журнал</a></div>
+<p style="margin: 6px 0 0; font-size: 13px; color: var(--n-9)">Последние действия бота и модераторов</p>
+<template data-if="acLoading"><p class="empty">Загрузка…</p></template>
+<template data-if="acEmpty"><p class="empty">Нарушений пока не было. Автомодерация следит за чатом, пока бот подключён, — фильтры настраиваются в разделе <a href="moderation.html" style="text-decoration: underline">«Модерация»</a>.</p></template>
+<ul style="list-style: none; margin: 16px 0 0; padding: 0">
+<template data-for="actions" data-as="a">
+<li class="ev"><span class="evi" style="{{ a.ring }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ a.d }}"></path></svg></span><span style="font-size: 14px; line-height: 20px; min-width: 0; overflow-wrap: anywhere"><b style="font-weight: 600">{{ a.name }}</b> — {{ a.title }}<br><span style="font-size: 13px; color: var(--n-9)">{{ a.sub }}</span></span><span class="mono" style="font-size: 12px; color: var(--n-9)">{{ a.time }}</span></li>
+</template>
+</ul>
+</section>
+
+<section class="card" style="padding: 24px; min-width: 0" aria-labelledby="qc-t">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 id="qc-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Популярные команды</h2><a href="commands.html" style="font-size: 13px; color: var(--n-10)">Все команды</a></div>
+<p style="margin: 6px 0 0; font-size: 13px; color: var(--n-9)">Чаще всего вызывают в чате за всё время</p>
+<template data-if="cmdLoading"><p class="empty">Загрузка…</p></template>
+<template data-if="cmdEmpty"><p class="empty">Команд пока нет. Создай первую в разделе <a href="commands.html" style="text-decoration: underline">«Команды»</a> — например, ссылку на Discord.</p></template>
 <div style="margin-top: 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
-<button type="button" class="qc"><span class="mono" style="font-size: 15px">!дс</span><span style="font-size: 12px; color: var(--n-9)">вызвана <span class="mono">184</span> раза</span></button>
-<button type="button" class="qc"><span class="mono" style="font-size: 15px">!музыка</span><span style="font-size: 12px; color: var(--n-9)">вызвана <span class="mono">96</span> раз</span></button>
-<button type="button" class="qc"><span class="mono" style="font-size: 15px">!аптайм</span><span style="font-size: 12px; color: var(--n-9)">вызвана <span class="mono">61</span> раз</span></button>
-<button type="button" class="qc"><span class="mono" style="font-size: 15px">!тг</span><span style="font-size: 12px; color: var(--n-9)">вызвана <span class="mono">40</span> раз</span></button>
-<button type="button" class="qc" style="border-style: dashed; background: transparent"><span style="display: inline-flex; gap: 6px; align-items: center; font-size: 14px"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Режим «только фолловеры»</span><span style="font-size: 12px; color: var(--n-9)">включить для чата</span></button>
-<button type="button" class="qc" style="border-style: dashed; background: transparent"><span style="display: inline-flex; gap: 6px; align-items: center; font-size: 14px"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>Пропустить трек</span><span style="font-size: 12px; color: var(--n-9)">Кино — Кукушка</span></button>
+<template data-for="cmds" data-as="c"><a href="commands.html" class="qc" aria-label="{{ c.aria }}"><span class="mono" style="font-size: 15px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: {{ c.color }}">{{ c.name }}</span><span style="font-size: 12px; color: var(--n-9)">{{ c.uses }}</span></a></template>
 </div>
 </section>
 </div>
 </main>
 
-<aside id="chat" aria-label="Чат стрима" style="flex: 1 1 320px; max-width: 420px; min-width: 300px; align-self: flex-start; position: relative; display: flex; flex-direction: column; height: 860px; border-radius: 8px; background: rgb(var(--n-2-rgb) / 0.62); border: 1px solid rgb(var(--n-13-rgb) / 0.10); box-shadow: inset 0 1px 0 rgb(var(--n-13-rgb) / 0.08); overflow: hidden">
-<div style="display: flex; justify-content: space-between; align-items: center; height: 56px; padding: 0 16px; border-bottom: 1px solid var(--n-5); flex: none"><h2 style="margin: 0; font-size: 15px; font-weight: 600">Чат</h2><span style="font-size: 12px; color: var(--n-9)"><span class="mono">104</span> сообщ./мин</span></div>
-<div role="log" aria-live="polite" aria-label="Сообщения чата" style="flex: 1; overflow: hidden; padding: 8px 0; display: flex; flex-direction: column; justify-content: flex-end">
-<div class="msg"><span class="mono" style="font-size: 11px; color: var(--n-8); flex: none">22:52</span><span><span style="font-weight: 500; color: var(--n-11)">lenta_ln</span> <span style="color: var(--n-12)">вот это клатч, 1 против 3</span></span></div>
-<div class="msg"><span class="mono" style="font-size: 11px; color: var(--n-8); flex: none">22:52</span><span class="role" title="Модератор" aria-label="Модератор"><svg class="ic" width="10" height="10" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span><span><span style="font-weight: 500; color: var(--n-11)">moroz_tv</span> <span style="color: var(--n-12)">!аптайм</span></span></div>
-<div class="msg" style="background: rgb(var(--n-13-rgb) / 0.04)"><span class="mono" style="font-size: 11px; color: var(--n-8); flex: none">22:52</span><span><span style="font-weight: 500; color: var(--n-9)">StreOps</span> <span style="color: var(--n-11)">Стрим идёт <span class="mono">2 ч 47 мин</span></span></span></div>
-<div class="msg"><span class="mono" style="font-size: 11px; color: var(--n-8); flex: none">22:53</span><span class="role" title="VIP" aria-label="VIP"><svg class="ic" width="10" height="10" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9z"></path></svg></span><span><span style="font-weight: 500; color: var(--n-11)">polyana_live</span> <span style="color: var(--n-12)">кира, ты сегодня в ударе</span></span><span class="acts"><button type="button" class="act" aria-label="Ответить"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14L4 9l5-5M4 9h11a5 5 0 0 1 0 10h-1"></path></svg></button><button type="button" class="act" aria-label="Удалить сообщение"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"></path></svg></button><button type="button" class="act" aria-label="Таймаут 10 минут"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></button><button type="button" class="act d" aria-label="Забанить"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M4.9 4.9l14.2 14.2"></path></svg></button></span></div>
-<div class="msg"><span class="mono" style="font-size: 11px; color: var(--n-8); flex: none">22:53</span><span class="role" title="Подписчик" aria-label="Подписчик"><svg class="ic" width="10" height="10" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg></span><span><span style="font-weight: 500; color: var(--n-11)">tixiy_bard</span> <span style="color: var(--n-12)">!музыка Сплин — Выхода нет</span></span></div>
-<div class="msg" style="background: rgb(var(--n-13-rgb) / 0.04)"><span class="mono" style="font-size: 11px; color: var(--n-8); flex: none">22:53</span><span><span style="font-weight: 500; color: var(--n-9)">StreOps</span> <span style="color: var(--n-11)">«Сплин — Выхода нет» в очереди, позиция <span class="mono">3</span></span></span></div>
-<div class="msg" style="justify-content: center"><span style="display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--n-9); padding: 4px 0"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>Сообщение <b style="color: var(--n-11); font-weight: 500">spam_bot_77</b> удалено автомодерацией</span></div>
-<div class="msg"><span class="mono" style="font-size: 11px; color: var(--n-8); flex: none">22:54</span><span class="role" title="Фолловер" aria-label="Фолловер"><svg class="ic" width="10" height="10" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"></path></svg></span><span><span style="font-weight: 500; color: var(--n-11)">nastya_k</span> <span style="color: var(--n-12)">первый раз на стриме, привет всем</span></span></div>
-<div class="msg"><span class="mono" style="font-size: 11px; color: var(--n-8); flex: none">22:54</span><span><span style="font-weight: 500; color: var(--n-11)">gleb_1999</span> <span style="color: var(--n-12)">какой прицел стоит?</span></span></div>
-<div class="msg"><span class="mono" style="font-size: 11px; color: var(--n-8); flex: none">22:54</span><span class="role" title="Модератор" aria-label="Модератор"><svg class="ic" width="10" height="10" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span><span><span style="font-weight: 500; color: var(--n-11)">lenta_ln</span> <span style="color: var(--n-12)">@gleb_1999 команда !прицел</span></span></div>
+<aside id="chat" class="chat" aria-labelledby="chat-t" style="flex: 1 1 320px; max-width: 420px; min-width: 0; align-self: flex-start; position: relative; display: flex; flex-direction: column; border-radius: 8px; background: rgb(var(--n-2-rgb) / 0.62); border: 1px solid rgb(var(--n-13-rgb) / 0.10); box-shadow: inset 0 1px 0 rgb(var(--n-13-rgb) / 0.08); overflow: hidden">
+<div style="display: flex; justify-content: space-between; align-items: center; height: 56px; padding: 0 16px; border-bottom: 1px solid var(--n-5); flex: none"><h2 id="chat-t" style="margin: 0; font-size: 15px; font-weight: 600">Чат</h2><span style="font-size: 12px; color: var(--n-9)" title="В среднем за последние 10 минут"><span class="mono">{{ rate }}</span> сообщ./мин</span></div>
+<div style="display: contents"><template data-if="chatHint.show"><p style="flex: none; margin: 0; padding: 10px 16px; border-bottom: 1px solid var(--n-5); font-size: 12px; line-height: 17px; color: var(--n-9)">{{ chatHint.text }}</p></template></div>
+<div style="position: relative; flex: 1; min-height: 0; display: flex">
+<div id="chat-log" role="log" aria-live="polite" aria-label="Сообщения чата" onScroll="{{ onLogScroll }}" style="flex: 1; min-width: 0; overflow-y: auto; overscroll-behavior: contain">
+<div style="min-height: 100%; box-sizing: border-box; padding: 8px 0; display: flex; flex-direction: column; justify-content: flex-end">
+<template data-if="chatNote.show"><p style="margin: auto 0; padding: 24px; text-align: center; font-size: 13px; line-height: 19px; color: var(--n-9)">{{ chatNote.text }}</p></template>
+<template data-for="msgs" data-as="m">
+<div class="msg" style="{{ m.rowStyle }}" data-sel="{{ m.sel }}" onClick="{{ m.select }}">
+<span class="mono" style="font-size: 11px; color: var(--n-8); flex: none">{{ m.time }}</span>
+<template data-if="m.hasRole"><span class="role" role="img" title="{{ m.roleTitle }}" aria-label="{{ m.roleTitle }}"><svg class="ic" width="10" height="10" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ m.roleD }}"></path></svg></span></template>
+<span style="min-width: 0; overflow-wrap: anywhere"><span style="font-weight: 500; color: {{ m.nameColor }}">{{ m.name }}</span> <span style="{{ m.textStyle }}">{{ m.text }}</span><template data-if="m.hasTag"> <span class="mtag">{{ m.tag }}</span></template></span>
+<template data-if="m.canMod"><span class="acts">
+<button type="button" class="act" aria-label="{{ m.replyLabel }}" title="Ответить" onClick="{{ m.reply }}"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14L4 9l5-5M4 9h11a5 5 0 0 1 0 10h-1"></path></svg></button>
+<template data-if="m.canDelete"><button type="button" class="act" aria-label="{{ m.delLabel }}" title="Удалить сообщение" onClick="{{ m.del }}" disabled="{{ m.busy }}"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"></path></svg></button></template>
+<button type="button" class="act" aria-label="{{ m.toLabel }}" title="Таймаут 10 минут" onClick="{{ m.timeout }}" disabled="{{ m.busy }}"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></button>
+<button type="button" class="act d" aria-label="{{ m.banLabel }}" title="Забанить" onClick="{{ m.ban }}" disabled="{{ m.busy }}"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M4.9 4.9l14.2 14.2"></path></svg></button>
+</span></template>
 </div>
-<a href="#chat" style="position: absolute; left: 50%; bottom: 76px; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: 999px; background: var(--n-12); color: var(--n-1); font-size: 13px; font-weight: 500; box-shadow: 0 12px 32px -8px rgba(0,0,0,0.6)"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7"></path></svg><span class="mono">23</span> новых</a>
-<form style="flex: none; padding: 12px; border-top: 1px solid var(--n-5); display: flex; gap: 8px">
-<label for="chat-in" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Сообщение в чат</label>
-<input id="chat-in" type="text" placeholder="Сообщение от kira_stream" style="flex: 1; min-width: 0; height: 40px; box-sizing: border-box; padding: 0 12px; border-radius: 6px; background: var(--s-3); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px/20px var(--font-sans), sans-serif">
-<button type="submit" aria-label="Отправить" style="width: 40px; height: 40px; border-radius: 6px; border: 0; background: var(--n-13); color: var(--n-1); display: inline-flex; align-items: center; justify-content: center"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"></path></svg></button>
+</template>
+</div>
+</div>
+<template data-if="hasNew"><button type="button" onClick="{{ toBottom }}" style="position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: 999px; border: 0; background: var(--n-12); color: var(--n-1); font: 500 13px/18px var(--font-sans), sans-serif; cursor: pointer; box-shadow: 0 12px 32px -8px rgba(0,0,0,0.6)"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7"></path></svg>{{ newLabel }}</button></template>
+</div>
+<div style="flex: none; padding: 12px; border-top: 1px solid var(--n-5)">
+<form onSubmit="{{ send }}" style="display: flex; gap: 8px">
+<label for="chat-in" class="sr">Сообщение в чат от имени бота</label>
+<input id="chat-in" type="text" maxlength="480" autocomplete="off" placeholder="Сообщение от имени бота" value="{{ text }}" onChange="{{ setText }}" style="flex: 1; min-width: 0; height: 40px; box-sizing: border-box; padding: 0 12px; border-radius: 6px; background: var(--s-3); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px/20px var(--font-sans), sans-serif">
+<button type="submit" aria-label="{{ sendLabel }}" disabled="{{ cantSend }}" style="width: 40px; height: 40px; flex: none; border-radius: 6px; border: 0; background: var(--n-13); color: var(--n-1); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; {{ sendStyle }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"></path></svg></button>
 </form>
+<template data-if="hasSendErr"><p role="alert" style="margin: 8px 0 0; padding: 8px 10px; border: 2px solid var(--n-12); border-radius: 6px; font-size: 12px; line-height: 17px">{{ sendErr }}</p></template>
+</div>
 </aside>
 </div>
 </div>
 </template>
-<script src="assets/dc-lite.js"></script>
+<script src="assets/dc-lite.js?v=5f8ce08a"></script>
 <script>
+const DASH_MS = 15000;
+const CHAT_MS = 2500;
+const CHAT_KEEP = 200;
+const CIRCLE = 'M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20';
+const ICONS = {
+  follow: 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z',
+  star: 'M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z',
+  gift: 'M3 8h18v4H3zM5 12v9h14v-9M12 8v13M12 8c-2-4-6-4-6-1s6 1 6 1zM12 8c2-4 6-4 6-1s-6 1-6 1z',
+  raid: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 3a4 4 0 1 0 0 8a4 4 0 1 0 0-8M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8',
+  donation: CIRCLE + 'M10 17V7h3a3 3 0 0 1 0 6H8M8 15h6',
+  redemption: 'M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z',
+  ban: CIRCLE + 'M4.9 4.9l14.2 14.2',
+  timeout: CIRCLE + 'M12 6v6l4 2',
+  del: 'M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6',
+  warn: 'M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z',
+  review: 'M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6',
+  unban: CIRCLE + 'M8 12l3 3 5-6',
+  broadcaster: 'M3 5h11a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zM23 7l-7 5 7 5z',
+  moderator: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
+  vip: 'M6 3h12l4 6-10 13L2 9z',
+};
+const ROLES = [['broadcaster', 'Стример', 'broadcaster'], ['moderator', 'Модератор', 'moderator'], ['vip', 'VIP', 'vip'], ['founder', 'Подписчик', 'star'], ['subscriber', 'Подписчик', 'star']];
+
+function plural(n, one, few, many) {
+  const a = Math.abs(n) % 100, b = a % 10;
+  if (a > 10 && a < 20) return many;
+  if (b > 1 && b < 5) return few;
+  if (b === 1) return one;
+  return many;
+}
+function humanDur(s) {
+  s = Number(s) || 0;
+  if (s < 60) return s + ' с';
+  if (s < 3600) return Math.round(s / 60) + ' мин';
+  if (s < 86400) return Math.round(s / 3600) + ' ч';
+  const d = Math.round(s / 86400);
+  return d + ' ' + plural(d, 'день', 'дня', 'дней');
+}
+function when(ts) {
+  const d = new Date(ts * 1000);
+  const today = new Date();
+  if (d.toDateString() === today.toDateString()) return StreAPI.fmtTime(ts);
+  return d.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+}
+function niceTop(max) {
+  if (max <= 4) return 4;
+  const raw = max / 4;
+  const p = Math.pow(10, Math.floor(Math.log10(raw)));
+  const n = raw / p;
+  const step = Math.ceil((n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * p);
+  return step * 4;
+}
+function tierLabel(t) {
+  const m = { '1000': 'уровень 1', '2000': 'уровень 2', '3000': 'уровень 3', prime: 'Prime' };
+  return m[String(t || '').toLowerCase()] || '';
+}
+
 class Component extends DCLogic {
-  constructor(props) { super(props); this.state = { range: 1 }; }
-  renderVals() {
-    const labels = ['1 ч', 'Стрим', '24 ч', '7 д'];
+  constructor(props) {
+    super(props);
+    this.state = {
+      me: null, dash: null, dashErr: '',
+      chat: [], chatLoaded: false, chatErr: '', newCount: 0, sel: null, busy: {}, notes: {},
+      text: '', sending: false, sendErr: '',
+      hover: -1, botBusy: false, botErrors: [],
+    };
+    this.lastId = 0;
+    this.dashSig = '';
+    this.localN = 0;
+    this.lastOk = 0;
+  }
+
+  componentDidMount() {
+    this.init();
+    this.tChat = setInterval(() => this.pollChat(), CHAT_MS);
+    this.tDash = setInterval(() => this.tick(), DASH_MS);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) { this.pollChat(); this.tick(); } });
+    window.addEventListener('pagehide', () => { clearInterval(this.tChat); clearInterval(this.tDash); });
+  }
+
+  async init() {
+    const me = await StreAPI.me();
+    if (me && me.user) this.setState({ me });
+    this.loadDash();
+    this.loadChat(true);
+  }
+
+  tick() {
+    if (document.hidden) return;
+    this.loadDash();
+    this.loadChat(true);
+  }
+
+  // ---------- обзор ----------
+  async loadDash() {
+    if (this.dashBusy) return;
+    this.dashBusy = true;
+    try {
+      const r = await StreAPI.get('dashboard');
+      const sig = JSON.stringify([r.stream, r.metrics, r.chart.buckets, Math.floor(r.chart.from / 60), r.events, r.actions, r.topCommands]);
+      if (sig !== this.dashSig || this.state.dashErr) {
+        this.dashSig = sig;
+        this.setState({ dash: r, dashErr: '' });
+      }
+      this.lastOk = Date.now(); // время последней удачной проверки — без перерисовки
+    } catch (e) {
+      if (this.state.dashErr !== e.message) this.setState({ dashErr: e.message });
+    } finally {
+      this.dashBusy = false;
+    }
+  }
+
+  // ---------- чат ----------
+  logEl() { return document.getElementById('chat-log'); }
+  atBottom() {
+    const el = this.logEl();
+    return !el || el.scrollHeight - el.scrollTop - el.clientHeight < 48;
+  }
+  scrollBottom() {
+    requestAnimationFrame(() => { const el = this.logEl(); if (el) el.scrollTop = el.scrollHeight; });
+  }
+  botLogin() {
+    const me = this.state.me;
+    return String((me && me.bot && me.bot.login) || '').toLowerCase();
+  }
+
+  // full=true: последние 40 без after — так подтягиваем пометки «удалено» у уже показанных сообщений
+  async loadChat(full) {
+    if (this.chatBusy) return;
+    this.chatBusy = true;
+    try {
+      const q = !full && this.lastId ? { after: this.lastId } : undefined;
+      const r = await StreAPI.get('chat.recent', q);
+      this.mergeChat(r.items || [], full);
+    } catch (e) {
+      if (!this.state.chatLoaded) this.setState({ chatErr: e.message, chatLoaded: true });
+    } finally {
+      this.chatBusy = false;
+    }
+  }
+  pollChat() {
+    if (document.hidden) return;
+    this.loadChat(false);
+  }
+  mergeChat(items, full) {
+    const s = this.state;
+    let changed = !s.chatLoaded || !!s.chatErr;
+    let chat = s.chat;
+    if (full && chat.length) {
+      const byId = new Map(items.map((m) => [m.id, m]));
+      chat = chat.map((m) => {
+        const f = !m.local && byId.get(m.id);
+        if (f && f.deleted !== m.deleted) { changed = true; return Object.assign({}, m, { deleted: f.deleted }); }
+        return m;
+      });
+    }
+    const fresh = items.filter((m) => m.id > this.lastId);
+    if (fresh.length) {
+      changed = true;
+      chat = chat.slice();
+      const bot = this.botLogin();
+      for (const m of fresh) {
+        this.lastId = Math.max(this.lastId, m.id);
+        if (bot && String(m.login).toLowerCase() === bot) {
+          const k = chat.findIndex((x) => x.local && x.text === m.text);
+          if (k >= 0) chat.splice(k, 1);
+        }
+        chat.push(m);
+      }
+      if (chat.length > CHAT_KEEP) chat = chat.slice(-CHAT_KEEP);
+    }
+    if (!changed) return;
+    const first = !s.chatLoaded;
+    const bottom = first || this.atBottom();
+    this.setState({ chat, chatLoaded: true, chatErr: '', newCount: bottom ? 0 : s.newCount + fresh.length });
+    if (bottom && (fresh.length || first)) this.scrollBottom();
+  }
+
+  async send(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const text = this.state.text.trim();
+    if (!text || this.state.sending) return;
+    this.setState({ sending: true, sendErr: '' });
+    try {
+      await StreAPI.post('chat.send', { text });
+      const me = this.state.me;
+      const name = (me && me.bot && me.bot.login) || 'Бот';
+      const echo = { id: 'l' + (++this.localN), local: true, login: name, name, text, badges: [], deleted: false, at: Math.floor(Date.now() / 1000) };
+      this.setState({ sending: false, text: '', chat: this.state.chat.concat([echo]), newCount: 0 });
+      this.scrollBottom();
+    } catch (err) {
+      this.setState({ sending: false, sendErr: err.message });
+    }
+  }
+
+  async mod(m, action) {
+    const who = m.name || m.login;
+    if (action === 'ban' && !confirm('Забанить ' + who + ' на канале навсегда? Снять бан можно в журнале модерации.')) return;
+    this.setState({ busy: Object.assign({}, this.state.busy, { [m.id]: true }) });
+    const body = { action, chatterId: m.chatterId, login: m.login, text: m.text };
+    if (action === 'delete') body.msgId = m.msgId;
+    if (action === 'timeout') body.duration = 600;
+    try {
+      await StreAPI.post('chat.mod', body);
+      const patch = {};
+      if (action === 'delete') {
+        patch.chat = this.state.chat.map((x) => (x.id === m.id ? Object.assign({}, x, { deleted: true }) : x));
+        StreAPI.toast('Сообщение ' + who + ' удалено');
+      } else {
+        patch.notes = Object.assign({}, this.state.notes, { [m.id]: action === 'ban' ? 'бан' : 'таймаут 10 мин' });
+        StreAPI.toast(action === 'ban' ? who + ' — бан на канале' : who + ' — таймаут на 10 минут');
+      }
+      this.setState(patch);
+      this.loadDash();
+    } catch (err) {
+      StreAPI.toast(err.message, 'error');
+    } finally {
+      const busy = Object.assign({}, this.state.busy);
+      delete busy[m.id];
+      this.setState({ busy });
+    }
+  }
+
+  // ---------- бот ----------
+  async enableBot() {
+    if (this.state.botBusy) return;
+    this.setState({ botBusy: true, botErrors: [] });
+    let errors = [];
+    try {
+      const r = await StreAPI.post('bot.enable', {});
+      errors = r.errors || [];
+      if (!errors.length) StreAPI.toast('Бот подключён к каналу');
+    } catch (err) {
+      errors = [err.message];
+    }
+    let me = this.state.me;
+    try { const m = await StreAPI.refreshMe(); if (m && m.user) me = m; } catch (e) { /* оставим прежние данные */ }
+    this.setState({ botBusy: false, botErrors: errors, me });
+  }
+
+  bannerView() {
+    const s = this.state;
+    const me = s.me;
+    if (!me || !me.user) return { show: false };
+    const u = me.user;
+    const ready = !!(me.bot && me.bot.ready);
+    const errs = [];
+    s.botErrors.concat(String(u.botError || '').split('; ')).forEach((t) => { t = String(t || '').trim(); if (t && errs.indexOf(t) < 0) errs.push(t); });
+    const loud = 'display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; padding: 20px 24px; border-radius: 8px; background: var(--s-3); border: 1px solid var(--n-8); box-shadow: inset 2px 0 0 var(--n-12)';
+    const calm = 'display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; padding: 16px 20px; border-radius: 8px; background: rgb(var(--n-13-rgb) / 0.03); border: 1px dashed var(--n-6)';
+    const base = { show: true, errs: errs.map((t) => ({ text: t })), hasErrs: errs.length > 0, errTitle: 'Что ответил сервер:', hasBtn: true };
+    if (!u.botEnabled) {
+      return Object.assign(base, {
+        box: loud, iconStyle: 'border: 2px solid var(--n-12)', btnClass: 'btn',
+        title: 'Бот не подключён к каналу',
+        text: 'Пока бота нет в канале, StreOps не видит чат: не работают команды, автомодерация, лента событий и статистика на этой странице. При подключении бот станет модератором канала и подпишется на события Twitch.',
+        hasNote: !ready, note: 'Администратор сервиса ещё не подключил аккаунт бота, поэтому чтение чата заработает только после этого. Подключить канал можно уже сейчас.',
+        btn: s.botBusy ? 'Подключаем…' : 'Подключить бота',
+      });
+    }
+    if (!ready) {
+      return Object.assign(base, {
+        box: calm, iconStyle: 'border-style: dashed', btnClass: 'btn-s', hasErrs: false,
+        title: 'Бот ждёт настройки администратором',
+        text: 'Администратор StreOps ещё не подключил аккаунт бота. Чтение чата, лента событий и автомодерация заработают после этого, а отправка сообщений от имени бота, возможно, работает уже сейчас — попробуй в чате на этой странице.',
+        hasNote: errs.length > 0, note: errs.length ? 'Ответ сервера: ' + errs.join('; ') : '',
+        btn: s.botBusy ? 'Проверяем…' : 'Проверить ещё раз',
+      });
+    }
+    if (errs.length) {
+      return Object.assign(base, {
+        box: loud, iconStyle: 'border-style: dashed', btnClass: 'btn',
+        title: 'Бот подключён, но Twitch вернул ошибку',
+        text: 'Часть событий может не приходить. Попробуй подключить бота заново — если ошибка повторится, напиши в поддержку и приложи текст ниже.',
+        hasNote: false, note: '', errTitle: 'Ошибка:',
+        btn: s.botBusy ? 'Подключаем…' : 'Подключить заново',
+      });
+    }
+    return { show: false };
+  }
+
+  // ---------- представления ----------
+  chartView(d) {
+    const W = 800, H = 220, N = 18;
+    const b = d && d.chart && d.chart.buckets && d.chart.buckets.length === N ? d.chart.buckets : null;
+    const from = d ? d.chart.from : 0;
+    const max = b ? Math.max(0, ...b.map((x) => x.m)) : 0;
+    const top = niceTop(max);
+    const X = (i) => (i + 0.5) / N * W;
+    const Y = (v) => H - Math.min(v, top) / top * H;
+    const line = (k) => b.map((x, i) => (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(x[k]).toFixed(1)).join(' ');
+    const range = (i) => StreAPI.fmtTime(from + i * 600) + '–' + (i === N - 1 ? 'сейчас' : StreAPI.fmtTime(from + (i + 1) * 600));
+    const h = b && this.state.hover >= 0 ? Math.min(this.state.hover, N - 1) : -1;
+    const sumM = b ? b.reduce((a, x) => a + x.m, 0) : 0;
+    const sumC = b ? b.reduce((a, x) => a + x.c, 0) : 0;
+    const v = {
+      ticks: [top, top * 3 / 4, top / 2, top / 4, 0].map((t) => ({ v: StreAPI.fmtNum(t) })),
+      area: b ? line('m') + ' L' + X(N - 1).toFixed(1) + ' ' + H + ' L' + X(0).toFixed(1) + ' ' + H + 'Z' : 'M0 220',
+      mPath: b ? line('m') : 'M0 220', cPath: b ? line('c') : 'M0 220',
+      hasNote: !b || max === 0,
+      note: !d ? (this.state.dashErr ? 'Не удалось загрузить: ' + this.state.dashErr : 'Загрузка…') : 'За последние 3 часа в чате не было сообщений. График оживёт, как только зрители начнут писать.',
+      xs: [0, 1, 2, 3, 4, 5, 6].map((k) => ({ cls: k % 2 ? 'xo' : '', t: !d ? '' : k === 6 ? 'сейчас' : StreAPI.fmtTime(from + k * 1800) })),
+      hits: b ? b.map((x, i) => ({ enter: () => { if (this.state.hover !== i) this.setState({ hover: i }); } })) : [],
+      rows: b ? b.map((x, i) => ({ t: range(i), m: x.m, c: x.c })) : [],
+      label: b ? 'График активности чата за 3 часа: ' + sumM + ' ' + plural(sumM, 'сообщение', 'сообщения', 'сообщений') + ', из них ' + sumC + ' ' + plural(sumC, 'команда', 'команды', 'команд') + '. Стрелки влево и вправо показывают значения по 10 минут.' : 'График активности чата загружается',
+      key: (e) => {
+        if (!b) return;
+        const cur = this.state.hover < 0 ? N - 1 : this.state.hover;
+        let n = cur;
+        if (e.key === 'ArrowLeft') n = Math.max(0, cur - 1);
+        else if (e.key === 'ArrowRight') n = Math.min(N - 1, cur + 1);
+        else if (e.key === 'Home') n = 0;
+        else if (e.key === 'End') n = N - 1;
+        else if (e.key === 'Escape') n = -1;
+        else return;
+        e.preventDefault();
+        this.setState({ hover: n });
+      },
+      focus: () => { if (b && this.state.hover < 0) this.setState({ hover: N - 1 }); },
+      leave: () => { if (this.state.hover >= 0) this.setState({ hover: -1 }); },
+      hasHover: h >= 0,
+    };
+    if (h >= 0) {
+      const pct = X(h) / W * 100;
+      const my = Y(b[h].m);
+      v.hx = pct.toFixed(2) + '%';
+      v.hmy = my.toFixed(1) + 'px';
+      v.hcy = Y(b[h].c).toFixed(1) + 'px';
+      const ty = Math.max(0, Math.min(my - 24, H - 84));
+      v.tipPos = (h < 11 ? 'left: calc(' + pct.toFixed(2) + '% + 14px)' : 'right: calc(' + (100 - pct).toFixed(2) + '% + 14px)') + '; top: ' + ty.toFixed(0) + 'px';
+      v.tipTime = range(h);
+      v.tipM = StreAPI.fmtNum(b[h].m);
+      v.tipC = StreAPI.fmtNum(b[h].c);
+    }
+    return v;
+  }
+
+  eventView(e) {
+    const d = e.data || {};
+    const name = e.name || e.login || 'Аноним';
+    let title = e.type, sub = '', icon = ICONS.star;
+    switch (e.type) {
+      case 'follow': title = 'новый фолловер'; icon = ICONS.follow; break;
+      case 'sub':
+        title = 'новая подписка';
+        sub = [tierLabel(d.tier), d.months > 1 ? 'сразу на ' + d.months + ' мес.' : ''].filter(Boolean).join(' · ');
+        break;
+      case 'resub':
+        title = 'продление подписки';
+        sub = [tierLabel(d.tier), d.months ? 'всего ' + d.months + ' ' + plural(d.months, 'месяц', 'месяца', 'месяцев') : ''].filter(Boolean).join(' · ');
+        break;
+      case 'gift':
+        icon = ICONS.gift;
+        title = d.total > 1 ? 'подарочные подписки' : 'подарочная подписка';
+        sub = d.total > 1 ? StreAPI.fmtNum(d.total) + ' ' + plural(d.total, 'подписка', 'подписки', 'подписок') + ' в подарок' : '';
+        break;
+      case 'raid':
+        icon = ICONS.raid;
+        title = 'рейд на канал';
+        sub = d.viewers ? StreAPI.fmtNum(d.viewers) + ' ' + plural(d.viewers, 'зритель', 'зрителя', 'зрителей') : '';
+        break;
+      case 'donation': {
+        icon = ICONS.donation;
+        title = 'донат';
+        const cur = d.currency === 'RUB' || !d.currency ? '₽' : d.currency;
+        sub = StreAPI.fmtNum(d.amount) + ' ' + cur + (d.message ? ' · «' + String(d.message).slice(0, 140) + '»' : '');
+        break;
+      }
+      case 'redemption':
+        icon = ICONS.redemption;
+        title = 'награда за баллы канала';
+        sub = [d.reward, d.input].filter(Boolean).join(' · ');
+        break;
+    }
+    return { name, title, sub, hasSub: !!sub, d: icon, time: when(e.at) };
+  }
+
+  actionView(a) {
+    const me = this.state.me;
+    const myLogin = me && me.user ? String(me.user.login).toLowerCase() : '';
+    const L = { delete: ['сообщение удалено', ICONS.del, ''], warn: ['предупреждение', ICONS.warn, ''], timeout: ['таймаут', ICONS.timeout, 'border-style: dashed'],
+      ban: ['бан', ICONS.ban, 'border: 2px solid var(--n-12)'], review: ['сообщение на проверке', ICONS.review, 'border-style: dashed'], unban: ['ограничение снято', ICONS.unban, ''] };
+    const t = L[a.action] || [a.action, ICONS.warn, ''];
+    const by = a.by === 'Бот' ? 'автомодерация' : String(a.by || '').toLowerCase() === myLogin ? '' : 'модератор ' + a.by;
+    const parts = [by, a.reason, a.strikes ? 'нарушение ' + a.strikes : '', a.undone ? 'отменено' : ''].filter(Boolean);
     return {
-      ranges: labels.map((label, i) => ({
-        label,
-        sel: this.state.range === i ? 'true' : 'false',
-        style: this.state.range === i ? 'background: var(--n-12); color: var(--n-1)' : '',
-        pick: () => this.setState({ range: i })
-      }))
+      name: a.login || 'зритель', title: t[0] + (a.action === 'timeout' && a.duration ? ' на ' + humanDur(a.duration) : ''),
+      sub: parts.join(' · ') || 'вручную', d: t[1], ring: t[2], time: when(a.at),
+    };
+  }
+
+  msgView(m) {
+    const s = this.state;
+    const me = s.me;
+    const myLogin = me && me.user ? String(me.user.login).toLowerCase() : '';
+    const bot = this.botLogin();
+    const login = String(m.login || '').toLowerCase();
+    const isBot = !!m.local || (!!bot && login === bot);
+    const badges = m.badges || [];
+    const role = ROLES.find((r) => badges.indexOf(r[0]) >= 0) || (login && login === myLogin ? ROLES[0] : null);
+    const isOwner = login === myLogin || badges.indexOf('broadcaster') >= 0;
+    const name = m.name || m.login;
+    const tags = [];
+    if (m.local) tags.push('отправлено');
+    if (m.deleted) tags.push('удалено');
+    if (s.notes[m.id]) tags.push(s.notes[m.id]);
+    const busy = !!s.busy[m.id];
+    return {
+      time: StreAPI.fmtTime(m.at), name, text: m.text,
+      hasRole: !!role, roleTitle: role ? role[1] : '', roleD: role ? ICONS[role[2]] : '',
+      nameColor: isBot ? 'var(--n-9)' : 'var(--n-11)',
+      textStyle: m.deleted ? 'color: var(--n-8); text-decoration: line-through' : isBot ? 'color: var(--n-11)' : 'color: var(--n-12)',
+      rowStyle: isBot ? 'background: rgb(var(--n-13-rgb) / 0.04)' : '',
+      hasTag: tags.length > 0, tag: tags.join(' · '),
+      sel: s.sel === m.id,
+      select: () => { if (s.sel !== m.id) this.setState({ sel: m.id }); },
+      canMod: !isBot && !isOwner && !!m.chatterId,
+      canDelete: !m.deleted && !!m.msgId,
+      busy,
+      replyLabel: 'Ответить ' + name, delLabel: 'Удалить сообщение ' + name, toLabel: 'Таймаут 10 минут для ' + name, banLabel: 'Забанить ' + name,
+      reply: () => {
+        this.setState({ text: '@' + name + ' ' });
+        requestAnimationFrame(() => { const el = document.getElementById('chat-in'); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } });
+      },
+      del: () => this.mod(m, 'delete'),
+      timeout: () => this.mod(m, 'timeout'),
+      ban: () => this.mod(m, 'ban'),
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const d = s.dash;
+    const me = s.me;
+    const st = d ? d.stream : null;
+    const live = !!(st && st.live);
+    const period = live ? 'за этот эфир' : 'за последние 24 часа';
+
+    let sync = 'автообновление каждые 15 с';
+    if (s.dashErr) sync = 'нет связи' + (this.lastOk ? ' · данные на ' + new Date(this.lastOk).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }) : '');
+    const info = !d ? '' : live
+      ? ['с ' + StreAPI.fmtTime(st.startedAt), st.title ? '«' + st.title + '»' : '', st.game].filter(Boolean).join(' · ')
+      : 'цифры ниже — за последние 24 часа';
+    const head = { state: !d ? (s.dashErr ? 'Не удалось загрузить' : 'Загрузка…') : live ? 'В эфире' : 'Не в эфире', info, dot: live ? 'var(--accent)' : 'var(--n-8)', sync };
+
+    const mt = d ? d.metrics : null;
+    const val = (k) => (mt ? StreAPI.fmtNum(mt[k]) : '—');
+    const metrics = [
+      { label: 'Сообщений в чате', value: val('messages'), caption: period },
+      { label: 'Зрителей в чате', value: val('chatters'), caption: 'писали в чат ' + period },
+      { label: 'Новых фолловеров', value: val('follows'), caption: period },
+      { label: 'Удалено и наказано', value: val('deleted'), caption: period, title: 'Удаления, предупреждения, таймауты и баны' },
+    ];
+
+    const events = d ? d.events.map((e) => this.eventView(e)) : [];
+    const daHint = me && me.user && !me.user.daConnected ? ' Донаты появятся после подключения DonationAlerts в настройках.' : '';
+    const actions = d ? d.actions.map((a) => this.actionView(a)) : [];
+    const cmds = d ? d.topCommands.map((c) => {
+      const n = c.prefix + c.name;
+      const uses = c.uses ? 'вызвана ' + StreAPI.fmtNum(c.uses) + ' ' + plural(c.uses, 'раз', 'раза', 'раз') : 'ещё не вызывали';
+      return { name: n, uses: uses + (c.enabled ? '' : ' · выключена'), color: c.enabled ? 'var(--n-12)' : 'var(--n-9)', aria: n + ', ' + uses + '. Открыть команды' };
+    }) : [];
+
+    // чат
+    const msgs = s.chat.map((m) => this.msgView(m));
+    const botOn = !!(me && me.user && me.user.botEnabled);
+    const ready = !!(me && me.bot && me.bot.ready);
+    let note = '';
+    if (!s.chatLoaded) note = 'Загрузка чата…';
+    else if (s.chatErr) note = 'Не удалось загрузить чат: ' + s.chatErr;
+    else if (!msgs.length) note = !botOn ? 'Сообщения появятся здесь, когда бот будет подключён к каналу.' : !ready ? 'Сообщения появятся здесь, когда администратор подключит аккаунт бота.' : 'Сообщений пока нет. Как только кто-нибудь напишет в чат, сообщение появится здесь.';
+    const lastB = d && d.chart && d.chart.buckets.length ? d.chart.buckets[d.chart.buckets.length - 1].m : null;
+    const rate = lastB == null ? '—' : String(Math.round(lastB) / 10).replace('.', ',');
+    const cantSend = s.sending || !s.text.trim();
+
+    return {
+      head,
+      banner: this.bannerView(),
+      enableBot: () => this.enableBot(),
+      botBusy: s.botBusy,
+      metrics,
+      chart: this.chartView(d),
+      events, evLoading: !d, evEmpty: !!d && !events.length,
+      evEmptyText: 'Событий пока нет. Здесь появятся фолловы, подписки, подарки, рейды и донаты — пока бот подключён к каналу.' + daHint,
+      actions, acLoading: !d, acEmpty: !!d && !actions.length,
+      cmds, cmdLoading: !d, cmdEmpty: !!d && !cmds.length,
+      rate,
+      chatHint: { show: !!me && botOn && !ready, text: 'Чтение чата ещё не настроено администратором. Отправить сообщение от имени бота можно уже сейчас.' },
+      chatNote: { show: !!note, text: note },
+      msgs,
+      onLogScroll: () => { if (s.newCount && this.atBottom()) this.setState({ newCount: 0 }); },
+      hasNew: s.newCount > 0,
+      newLabel: s.newCount + ' ' + plural(s.newCount, 'новое', 'новых', 'новых'),
+      toBottom: () => { this.setState({ newCount: 0 }); this.scrollBottom(); },
+      text: s.text,
+      setText: (e) => this.setState({ text: e.target.value, sendErr: '' }),
+      send: (e) => this.send(e),
+      cantSend,
+      sendStyle: cantSend ? 'opacity: 0.5; cursor: default' : '',
+      sendLabel: s.sending ? 'Отправляем…' : 'Отправить',
+      hasSendErr: !!s.sendErr, sendErr: s.sendErr,
     };
   }
 }
