@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>StreOps — редактор виджета</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0A0A0A}
+a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.sec{padding:20px;border-radius:8px;border:1px solid #2A2A2A;background:#111111}
+.tabs{display:flex;gap:2px;padding:2px;border:1px solid #3A3A3A;border-radius:6px;flex-wrap:wrap}
+.tabs button{flex:1 1 auto;height:34px;padding:0 10px;border:0;border-radius:4px;background:transparent;color:#B4B4B4;font:500 13px/18px 'Onest',sans-serif;cursor:pointer}
+.tabs button:hover{color:#F2F2F2}
+.tabs button[aria-selected="true"]{background:#F2F2F2;color:#0A0A0A}
+.fl{display:flex;flex-direction:column;gap:6px;margin-top:14px;font-size:13px;line-height:18px;color:#DCDCDC}
+.fl-h{display:flex;justify-content:space-between;gap:12px}
+.fl-h b{font-weight:500;color:#F2F2F2}
+.fl input[type=range]{width:100%;accent-color:#F2F2F2;height:22px;margin:0}
+.inp{height:38px;box-sizing:border-box;padding:0 10px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 14px/20px 'Onest',sans-serif;width:100%}
+.inp:hover{border-color:#8F8F8F}
+.crow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;font-size:13px;color:#DCDCDC}
+.crow input[type=color]{width:52px;height:32px;padding:0;border:1px solid #3A3A3A;border-radius:6px;background:none;cursor:pointer}
+.crow .hexv{font:400 12px/1 'JetBrains Mono',monospace;color:#8F8F8F}
+.trow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;font-size:13px;color:#DCDCDC}
+.trow small{display:block;margin-top:2px;font-size:12px;line-height:16px;color:#8F8F8F}
+.sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid #6E6E6E;background:transparent;cursor:pointer;flex:none;padding:0}
+.sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:#8F8F8F;transition:transform 180ms cubic-bezier(.2,0,0,1)}
+.sw[aria-checked="true"]{background:#FFFFFF;border-color:#FFFFFF}
+.sw[aria-checked="true"] span{transform:translateX(16px);background:#0A0A0A}
+.segw{display:inline-flex;flex-wrap:wrap;gap:2px;padding:2px;border:1px solid #3A3A3A;border-radius:6px}
+.segw button{height:30px;padding:0 10px;border:0;border-radius:4px;background:transparent;color:#B4B4B4;font:500 12px/16px 'Onest',sans-serif;cursor:pointer}
+.segw button:hover{color:#F2F2F2}
+.segw button[aria-pressed="true"]{background:#F2F2F2;color:#0A0A0A}
+.pres{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:4px}
+.pres button{display:flex;flex-direction:column;gap:6px;padding:0;border:0;background:none;color:#DCDCDC;font:500 12px/16px 'Onest',sans-serif;cursor:pointer;text-align:left}
+.pres button span{height:44px;border-radius:6px;border:1px solid #3A3A3A}
+.pres button[aria-pressed="true"] span{outline:2px solid #F2F2F2;outline-offset:2px}
+.anc{display:grid;grid-template-columns:repeat(3,44px);gap:4px;margin-top:8px}
+.anc button{width:44px;height:30px;border:1px solid #3A3A3A;border-radius:4px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.anc button i{width:8px;height:8px;border-radius:2px;background:#6E6E6E}
+.anc button[aria-pressed="true"]{border-color:#F2F2F2;background:rgba(255,255,255,.08)}
+.anc button[aria-pressed="true"] i{background:#F2F2F2}
+.bp{height:38px;padding:0 14px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 13px/18px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.bp:hover{background:#DCDCDC}
+.bs{height:38px;padding:0 12px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 13px/18px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.bs:hover{background:rgba(255,255,255,.04);border-color:#6E6E6E}
+.stagebar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.wbox{box-sizing:border-box;padding:var(--w-pad);background:var(--w-bg);backdrop-filter:blur(var(--w-blur));-webkit-backdrop-filter:blur(var(--w-blur));border:var(--w-bd);border-radius:var(--w-rad);box-shadow:var(--w-shadow);color:var(--w-fg);font-family:var(--w-font);font-size:var(--w-size);font-weight:var(--w-weight);text-align:var(--w-align);letter-spacing:var(--w-ls);text-shadow:var(--w-tshadow);text-transform:var(--w-upper);line-height:1.35;overflow:hidden}
+.w2{color:var(--w-fg2)}
+.wacc{color:var(--w-acc)}
+.wov{font-size:.7em;letter-spacing:.08em;text-transform:uppercase;color:var(--w-fg2);font-weight:600}
+.wnum{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+.wbar{border-radius:calc(var(--w-rad) / 3);background:var(--w-acc-soft);overflow:hidden}
+.wrow{display:flex;justify-content:space-between;gap:.8em;align-items:baseline}
+@keyframes wa-fade-0{from{opacity:0}to{opacity:1}}@keyframes wa-fade-1{from{opacity:0}to{opacity:1}}
+@keyframes wa-up-0{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}@keyframes wa-up-1{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
+@keyframes wa-down-0{from{opacity:0;transform:translateY(-60px)}to{opacity:1;transform:none}}@keyframes wa-down-1{from{opacity:0;transform:translateY(-60px)}to{opacity:1;transform:none}}
+@keyframes wa-side-0{from{opacity:0;transform:translateX(-140px)}to{opacity:1;transform:none}}@keyframes wa-side-1{from{opacity:0;transform:translateX(-140px)}to{opacity:1;transform:none}}
+@keyframes wa-zoom-0{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}@keyframes wa-zoom-1{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+@keyframes wa-spring-0{0%{opacity:0;transform:scale(.4)}60%{opacity:1;transform:scale(1.08)}80%{transform:scale(.97)}100%{transform:none}}@keyframes wa-spring-1{0%{opacity:0;transform:scale(.4)}60%{opacity:1;transform:scale(1.08)}80%{transform:scale(.97)}100%{transform:none}}
+@keyframes wa-blur-0{from{opacity:0;filter:blur(18px)}to{opacity:1;filter:none}}@keyframes wa-blur-1{from{opacity:0;filter:blur(18px)}to{opacity:1;filter:none}}
+@keyframes wa-ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion: reduce){.wbox{animation:none!important}.wtick{animation:none!important}}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
+
+<header style="position: sticky; top: 0; z-index: 200; background: rgba(10,10,10,0.72); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.08)">
+<div style="height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 24px">
+<a href="WebLanding.dc.html" style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</a>
+<a href="WebSettings.dc.html" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 8px 0 6px; font-size: 14px; font-weight: 500"><span style="width: 32px; height: 32px; border-radius: 999px; background: linear-gradient(135deg, #B4B4B4, #3A3A3A); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #0A0A0A">КС</span>kira_stream</a>
+</div>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; box-sizing: border-box; max-width: 1920px; margin: 0 auto">
+<nav aria-label="Разделы стрим-панели"></nav>
+<main style="flex: 999 1 720px; min-width: 0">
+<nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px"><li><a href="WebDashboard.dc.html" style="color: #8F8F8F">Стрим-панель</a></li><li aria-hidden="true" style="color: #525252">/</li><li><a href="WebWidgets.dc.html" style="color: #8F8F8F">Виджеты</a></li><li aria-hidden="true" style="color: #525252">/</li><li aria-current="page">{{ name }}</li></ol></nav>
+
+<div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
+<div style="min-width: 0">
+<label for="wpick" class="ov">Виджет</label>
+<select id="wpick" class="inp" value="{{ id }}" onChange="{{ pickWidget }}" style="margin-top: 6px; height: 44px; font-size: 20px; font-weight: 600; width: auto; min-width: 320px; padding-right: 32px">
+<sc-for list="{{ widgetOptions }}" as="o" hint-placeholder-count="16"><option value="{{ o.v }}">{{ o.l }}</option></sc-for>
+</select>
+<p style="margin: 8px 0 0; font-size: 14px; color: #B4B4B4">{{ desc }}</p>
+</div>
+<div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
+<span style="display: inline-flex; align-items: center; gap: 10px; height: 38px; padding: 0 6px 0 12px; border: 1px solid #3A3A3A; border-radius: 6px; font-size: 13px">{{ onLabel }}<button type="button" role="switch" class="sw" aria-checked="{{ isOn }}" aria-label="Виджет включён" onClick="{{ toggleOn }}" disabled="{{ locked }}"><span></span></button></span>
+<button type="button" class="bs" onClick="{{ applyAll }}">{{ applyAllLabel }}</button>
+<button type="button" class="bs" onClick="{{ reset }}">Сбросить</button>
+</div>
+</div>
+<sc-if value="{{ hasNote }}" hint-placeholder-val="{{ false }}"><p style="margin: 12px 0 0; display: inline-flex; gap: 8px; padding: 8px 12px; border: 1px dashed #B4B4B4; border-radius: 6px; font-size: 13px; color: #DCDCDC">{{ note }}</p></sc-if>
+
+<div style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<section class="sec" aria-label="Настройки виджета" style="flex: 1 1 360px; max-width: 460px; min-width: 0; box-sizing: border-box">
+<div role="tablist" aria-label="Разделы настроек" class="tabs">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="6"><button type="button" role="tab" aria-selected="{{ t.sel }}" onClick="{{ t.pick }}">{{ t.label }}</button></sc-for>
+</div>
+
+<sc-if value="{{ showPresets }}" hint-placeholder-val="{{ true }}">
+<p class="ov" style="margin-top: 18px">Готовый стиль</p>
+<div class="pres" role="group" aria-label="Готовый стиль">
+<sc-for list="{{ presets }}" as="p" hint-placeholder-count="6"><button type="button" aria-pressed="{{ p.sel }}" onClick="{{ p.pick }}"><span style="{{ p.swatch }}"></span>{{ p.name }}</button></sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ showAnchor }}" hint-placeholder-val="{{ false }}">
+<p class="ov" style="margin-top: 18px">Привязка к краю экрана</p>
+<div class="anc" role="group" aria-label="Привязка"><sc-for list="{{ anchors }}" as="a" hint-placeholder-count="9"><button type="button" aria-label="{{ a.label }}" aria-pressed="{{ a.sel }}" onClick="{{ a.pick }}"><i></i></button></sc-for></div>
+</sc-if>
+
+<sc-for list="{{ controls }}" as="f" hint-placeholder-count="8">
+<sc-if value="{{ f.isHead }}" hint-placeholder-val="{{ false }}"><p class="ov" style="margin: 22px 0 0">{{ f.label }}</p></sc-if>
+<sc-if value="{{ f.isRange }}" hint-placeholder-val="{{ true }}"><label class="fl"><span class="fl-h"><span>{{ f.label }}</span><b class="mono">{{ f.val }}{{ f.unit }}</b></span><input type="range" min="{{ f.min }}" max="{{ f.max }}" step="{{ f.step }}" value="{{ f.val }}" onChange="{{ f.on }}"></label></sc-if>
+<sc-if value="{{ f.isColor }}" hint-placeholder-val="{{ false }}"><label class="crow"><span>{{ f.label }}</span><span style="display: inline-flex; align-items: center; gap: 10px"><span class="hexv">{{ f.val }}</span><input type="color" value="{{ f.val }}" onChange="{{ f.on }}"></span></label></sc-if>
+<sc-if value="{{ f.isToggle }}" hint-placeholder-val="{{ false }}"><div class="trow"><span>{{ f.label }}<sc-if value="{{ f.hint }}" hint-placeholder-val="{{ false }}"><small>{{ f.hint }}</small></sc-if></span><button type="button" role="switch" class="sw" aria-checked="{{ f.state }}" aria-label="{{ f.label }}" onClick="{{ f.on }}"><span></span></button></div></sc-if>
+<sc-if value="{{ f.isSelect }}" hint-placeholder-val="{{ false }}"><label class="fl"><span>{{ f.label }}</span><select class="inp" value="{{ f.val }}" onChange="{{ f.on }}"><sc-for list="{{ f.options }}" as="o" hint-placeholder-count="3"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label></sc-if>
+<sc-if value="{{ f.isSeg }}" hint-placeholder-val="{{ false }}"><div class="fl"><span>{{ f.label }}</span><span class="segw" role="group" aria-label="{{ f.label }}"><sc-for list="{{ f.opts }}" as="o" hint-placeholder-count="3"><button type="button" aria-pressed="{{ o.sel }}" onClick="{{ o.pick }}">{{ o.l }}</button></sc-for></span></div></sc-if>
+<sc-if value="{{ f.isText }}" hint-placeholder-val="{{ false }}"><label class="fl"><span>{{ f.label }}</span><input class="inp" value="{{ f.val }}" onChange="{{ f.on }}"></label></sc-if>
+<sc-if value="{{ f.isNumber }}" hint-placeholder-val="{{ false }}"><label class="fl"><span>{{ f.label }}</span><input class="inp mono" type="number" value="{{ f.val }}" onChange="{{ f.on }}"></label></sc-if>
+</sc-for>
+
+<sc-if value="{{ showObs }}" hint-placeholder-val="{{ false }}">
+<p class="ov" style="margin-top: 18px">Ссылка для OBS</p>
+<div style="margin-top: 8px; display: flex; gap: 8px"><input aria-label="Ссылка на виджет" class="inp mono" readonly="" value="{{ url }}" style="font-size: 12px"><button type="button" class="bs" onClick="{{ toggleShow }}" aria-label="{{ showLabel }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button type="button" class="bp" onClick="{{ copy }}">{{ copyLabel }}</button></div>
+<ol style="margin: 14px 0 0; padding-left: 20px; font-size: 13px; line-height: 21px; color: #B4B4B4"><li>OBS → «Источники» → «+» → «Браузер»</li><li>Вставь ссылку, размер <span class="mono" style="color: #F2F2F2">1920 × 1080</span></li><li>Виджет встанет туда, куда ты его поставил во вкладке «Позиция». Фон источника прозрачный</li><li>Изменения подхватываются на лету, перезагружать сцену не нужно</li></ol>
+<p style="margin: 14px 0 0; display: flex; gap: 8px; padding: 10px 12px; border: 1px dashed #B4B4B4; border-radius: 6px; font-size: 13px; line-height: 18px; color: #DCDCDC">Не показывай ссылку в эфире: по ней любой может вставить виджет к себе.</p>
+<div style="margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="bs" onClick="{{ copyCfg }}">{{ copyCfgLabel }}</button><button type="button" class="bs" onClick="{{ pasteCfg }}">Вставить настройки</button></div>
+</sc-if>
+
+<p class="mono" style="margin: 20px 0 0; font-size: 11px; color: #6E6E6E">{{ savedLabel }}</p>
+</section>
+
+<section aria-label="Предпросмотр" style="flex: 999 1 560px; min-width: 0; position: sticky; top: 88px">
+<div class="stagebar">
+<span role="group" aria-label="Фон предпросмотра" class="segw"><sc-for list="{{ stages }}" as="s" hint-placeholder-count="4"><button type="button" aria-pressed="{{ s.sel }}" onClick="{{ s.pick }}">{{ s.label }}</button></sc-for></span>
+<span style="display: flex; gap: 8px; align-items: center"><span style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #B4B4B4">Сетка<button type="button" role="switch" class="sw" aria-checked="{{ guides }}" aria-label="Безопасная зона" onClick="{{ toggleGuides }}"><span></span></button></span><button type="button" class="bs" onClick="{{ replay }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z"></path></svg>Проиграть анимацию</button></span>
+</div>
+
+<div id="wstage" style="position: relative; margin-top: 12px; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; border: 1px solid #2A2A2A; background: {{ stageBg }}">
+<sc-if value="{{ isGame }}" hint-placeholder-val="{{ true }}"><div aria-hidden="true" style="position: absolute; inset: 0; background: radial-gradient(40% 50% at 70% 40%, rgb(150 150 150 / .45), transparent 70%), linear-gradient(180deg, rgb(58 58 58) 0%, rgb(31 31 31) 55%, rgb(42 42 42) 56%, rgb(17 17 17) 100%)"></div></sc-if>
+<div style="position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; transform: scale({{ k }})">
+<sc-if value="{{ guidesOn }}" hint-placeholder-val="{{ true }}"><div aria-hidden="true" style="position: absolute; left: 96px; top: 54px; right: 96px; bottom: 54px; border: 2px dashed rgb(255 255 255 / .18); border-radius: 8px"></div><div aria-hidden="true" style="position: absolute; left: 50%; top: 0; bottom: 0; border-left: 2px dashed rgb(255 255 255 / .10)"></div><div aria-hidden="true" style="position: absolute; top: 50%; left: 0; right: 0; border-top: 2px dashed rgb(255 255 255 / .10)"></div></sc-if>
+
+<div style="{{ wrapStyle }}">
+<div class="wbox" style="{{ boxStyle }}">
+
+<sc-if value="{{ k_alerts }}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: .9em; align-items: center; justify-content: {{ pv.justify }}"><sc-if value="{{ c.image }}" hint-placeholder-val="{{ true }}"><span style="flex: none; width: 3.4em; height: 3.4em; border-radius: calc(var(--w-rad) * .6); background: radial-gradient(circle at 35% 30%, var(--w-acc), var(--w-acc-soft))"></span></sc-if><div><div class="wov">{{ pv.typeLabel }}</div><div style="font-size: 1.8em; font-weight: 700; line-height: 1.15; color: var(--w-acc)">{{ c.name }}</div><div class="w2">{{ pv.msg }}</div></div></div></sc-if>
+
+<sc-if value="{{ k_goal }}" hint-placeholder-val="{{ false }}"><div class="wrow"><span style="font-weight: 600">{{ c.title }}</span><sc-if value="{{ c.pct }}" hint-placeholder-val="{{ true }}"><span class="wnum wacc">{{ pv.pct }}%</span></sc-if></div><div class="wbar" style="margin-top: .6em; height: {{ c.barH }}px"><div style="height: 100%; width: {{ pv.pct }}%; {{ pv.fill }}"></div></div><div class="wnum w2" style="margin-top: .45em; font-size: .85em">{{ pv.cur }} / {{ pv.tgt }} ₽</div></sc-if>
+
+<sc-if value="{{ k_subgoal }}" hint-placeholder-val="{{ false }}"><div class="wrow"><span style="font-weight: 600">{{ c.title }}</span><span class="wnum wacc">{{ pv.cur }} / {{ pv.tgt }}<sc-if value="{{ c.pct }}" hint-placeholder-val="{{ false }}"> · {{ pv.pct }}%</sc-if></span></div><div class="wbar" style="margin-top: .6em; height: {{ c.barH }}px"><div style="height: 100%; width: {{ pv.pct }}%; {{ pv.fill }}"></div></div></sc-if>
+
+<sc-if value="{{ k_chat }}" hint-placeholder-val="{{ false }}"><div style="display: flex; flex-direction: column; gap: .35em"><sc-for list="{{ pv.lines }}" as="l" hint-placeholder-count="4"><div><sc-if value="{{ c.badges }}" hint-placeholder-val="{{ true }}"><sc-if value="{{ l.badge }}" hint-placeholder-val="{{ false }}"><span style="display: inline-block; min-width: 1.1em; padding: 0 .3em; margin-right: .35em; border-radius: .25em; border: 1px solid var(--w-fg2); font-size: .7em; line-height: 1.5; text-align: center; vertical-align: .15em" class="w2">{{ l.badge }}</span></sc-if></sc-if><b style="font-weight: 700; {{ l.nickStyle }}">{{ l.nick }}</b> {{ l.text }}</div></sc-for></div></sc-if>
+
+<sc-if value="{{ k_events }}" hint-placeholder-val="{{ false }}"><div class="wov" style="margin-bottom: .4em">Последние события</div><sc-for list="{{ pv.events }}" as="e" hint-placeholder-count="3"><div class="wrow" style="padding: .25em 0"><span><b style="font-weight: 600">{{ e.who }}</b> <span class="w2">{{ e.what }}</span></span><sc-if value="{{ c.amounts }}" hint-placeholder-val="{{ true }}"><span class="wnum wacc">{{ e.amount }}</span></sc-if></div></sc-for></sc-if>
+
+<sc-if value="{{ k_topdon }}" hint-placeholder-val="{{ false }}"><div class="wov" style="margin-bottom: .4em">Топ донатеров · {{ pv.period }}</div><sc-for list="{{ pv.tops }}" as="e" hint-placeholder-count="3"><div class="wrow" style="padding: .2em 0"><span><span class="wnum w2">{{ e.n }}.</span> {{ e.who }}</span><span class="wnum wacc">{{ e.sum }}</span></div></sc-for></sc-if>
+
+<sc-if value="{{ k_faceit }}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: .9em; align-items: center; justify-content: {{ pv.justify }}"><sc-if value="{{ c.level }}" hint-placeholder-val="{{ true }}"><span class="wnum" style="flex: none; width: 3em; height: 3em; border-radius: 999px; border: .22em solid var(--w-acc); border-right-color: var(--w-acc-soft); box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1em">9</span></sc-if><div><sc-if value="{{ c.elo }}" hint-placeholder-val="{{ true }}"><div class="wnum" style="font-size: 1.6em; font-weight: 600; line-height: 1.1">1 874 <span class="w2" style="font-size: .5em">ELO</span></div></sc-if><sc-if value="{{ c.delta }}" hint-placeholder-val="{{ true }}"><div class="wnum wacc" style="font-size: .85em">▲ +25 за стрим</div></sc-if><sc-if value="{{ c.last5 }}" hint-placeholder-val="{{ true }}"><div style="display: flex; gap: .25em; margin-top: .35em; justify-content: {{ pv.justify }}"><span class="wnum" style="padding: 0 .35em; border-radius: .2em; background: var(--w-acc); color: rgb(10 10 10); font-size: .75em; font-weight: 700">W</span><span class="wnum" style="padding: 0 .35em; border-radius: .2em; background: var(--w-acc); font-size: .75em; font-weight: 700; color: rgb(10 10 10)">W</span><span class="wnum" style="padding: 0 .35em; border-radius: .2em; border: 1px dashed var(--w-fg2); font-size: .75em; font-weight: 700">L</span><span class="wnum" style="padding: 0 .35em; border-radius: .2em; background: var(--w-acc); font-size: .75em; font-weight: 700; color: rgb(10 10 10)">W</span><span class="wnum" style="padding: 0 .35em; border-radius: .2em; background: var(--w-acc); font-size: .75em; font-weight: 700; color: rgb(10 10 10)">W</span></div></sc-if></div></div><div class="w2" style="margin-top: .4em; font-size: .75em">{{ c.nick }} · FACEIT</div></sc-if>
+
+<sc-if value="{{ k_fmatch }}" hint-placeholder-val="{{ false }}"><div class="wov" style="margin-bottom: .4em">{{ c.nick }} · за стрим</div><div style="display: flex; gap: 1.4em; justify-content: {{ pv.justify }}"><sc-if value="{{ c.kd }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">K/D</div><div class="wnum wacc" style="font-size: 1.5em; font-weight: 600">1.32</div></div></sc-if><sc-if value="{{ c.hs }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">HS</div><div class="wnum" style="font-size: 1.5em; font-weight: 600">54%</div></div></sc-if><sc-if value="{{ c.wl }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">Матчи</div><div class="wnum" style="font-size: 1.5em; font-weight: 600">4W 1L</div></div></sc-if></div></sc-if>
+
+<sc-if value="{{ k_cs }}" hint-placeholder-val="{{ false }}"><div class="wnum" style="font-size: 1.9em; font-weight: 600">CT 9 <span class="w2">:</span> <span class="wacc">7</span> T</div><sc-if value="{{ pv.csSub }}" hint-placeholder-val="{{ true }}"><div class="w2" style="font-size: .8em">{{ pv.csSub }}</div></sc-if></sc-if>
+
+<sc-if value="{{ k_dota }}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: 1.4em; justify-content: {{ pv.justify }}"><sc-if value="{{ c.mmr }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">MMR</div><div class="wnum wacc" style="font-size: 1.5em; font-weight: 600">4 210</div></div></sc-if><sc-if value="{{ c.wl }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">Стрим</div><div class="wnum" style="font-size: 1.5em; font-weight: 600">3W 1L</div></div></sc-if><sc-if value="{{ c.hero }}" hint-placeholder-val="{{ true }}"><div><div class="w2" style="font-size: .75em">Герой</div><div style="font-size: 1.1em; font-weight: 600; line-height: 1.9">Invoker · ур. 18</div></div></sc-if></div></sc-if>
+
+<sc-if value="{{ k_np }}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: .8em; align-items: center; justify-content: {{ pv.justify }}"><sc-if value="{{ c.cover }}" hint-placeholder-val="{{ true }}"><span style="flex: none; width: 3em; height: 3em; border-radius: calc(var(--w-rad) * .5); background: linear-gradient(135deg, var(--w-acc), var(--w-acc-soft)); display: flex; align-items: flex-end; gap: .12em; padding: .45em; box-sizing: border-box"><i style="flex: 1; height: 40%; background: var(--w-fg)"></i><i style="flex: 1; height: 90%; background: var(--w-fg)"></i><i style="flex: 1; height: 60%; background: var(--w-fg)"></i></span></sc-if><div style="min-width: 0"><div style="font-weight: 700">Выхода нет</div><div class="w2" style="font-size: .85em">Сплин<sc-if value="{{ c.requester }}" hint-placeholder-val="{{ true }}"> · заказал tixiy_bard</sc-if></div></div></div><sc-if value="{{ c.progress }}" hint-placeholder-val="{{ true }}"><div class="wbar" style="margin-top: .6em; height: 4px"><div style="height: 100%; width: 34%; background: var(--w-acc)"></div></div></sc-if></sc-if>
+
+<sc-if value="{{ k_queue }}" hint-placeholder-val="{{ false }}"><div class="wov" style="margin-bottom: .4em">Дальше в очереди</div><sc-for list="{{ pv.queue }}" as="q" hint-placeholder-count="3"><div style="padding: .2em 0"><span class="wnum wacc">{{ q.n }}</span> {{ q.t }}<sc-if value="{{ c.requester }}" hint-placeholder-val="{{ false }}"> <span class="w2">· {{ q.by }}</span></sc-if></div></sc-for></sc-if>
+
+<sc-if value="{{ k_uptime }}" hint-placeholder-val="{{ false }}"><div class="wov">{{ c.label }}</div><div class="wnum wacc" style="font-size: 1.4em; font-weight: 600">{{ pv.uptime }}</div></sc-if>
+
+<sc-if value="{{ k_deaths }}" hint-placeholder-val="{{ false }}"><div style="display: flex; align-items: baseline; gap: .6em; justify-content: {{ pv.justify }}"><span class="w2">{{ c.label }}</span><span class="wnum wacc" style="font-size: 2em; font-weight: 700">{{ c.value }}</span></div></sc-if>
+
+<sc-if value="{{ k_poll }}" hint-placeholder-val="{{ false }}"><div style="font-weight: 700; margin-bottom: .5em">{{ c.q }}</div><div class="wrow"><span>1. {{ c.a }}</span><span class="wnum wacc">62%</span></div><div class="wbar" style="height: 6px; margin: .3em 0 .6em"><div style="height: 100%; width: 62%; background: var(--w-acc)"></div></div><div class="wrow"><span>2. {{ c.b }}</span><span class="wnum w2">38%</span></div><div class="wbar" style="height: 6px; margin-top: .3em"><div style="height: 100%; width: 38%; background: var(--w-fg2)"></div></div><div class="w2" style="margin-top: .6em; font-size: .75em">Пиши 1 или 2 в чат · {{ c.secs }} с</div></sc-if>
+
+<sc-if value="{{ k_ticker }}" hint-placeholder-val="{{ false }}"><div style="overflow: hidden; white-space: nowrap"><div class="wtick" style="display: inline-block; {{ pv.tickAnim }}">{{ c.text }}   ·   {{ c.text }}   ·   </div></div></sc-if>
+
+</div>
+</div>
+</div>
+</div>
+<p style="margin: 10px 0 0; font-size: 12px; color: #8F8F8F">Предпросмотр в масштабе экрана 1920 × 1080. Пунктир — безопасная зона, которую не перекрывают интерфейсы Twitch.</p>
+</section>
+</div>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1400}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const W = window.StreWidgets;
+    const q = new URLSearchParams(location.search).get('w');
+    const id = W.LIST.some((w) => w[0] === q) ? q : 'goal';
+    this.state = { all: W.loadAll(), id, tab: 'look', stage: 0, k: 0.45, animKey: 0, guides: true, show: false, copied: false, cfgCopied: false, applied: false, saved: '' };
+  }
+  componentDidMount() {
+    const el = document.getElementById('wstage');
+    const fit = () => { if (el) this.setState({ k: el.clientWidth / 1920 }); };
+    fit();
+    if (window.ResizeObserver && el) new ResizeObserver(fit).observe(el);
+  }
+  write(all, msg) {
+    window.StreWidgets.saveAll(all);
+    const t = new Date();
+    const hh = String(t.getHours()).padStart(2, '0'), mm = String(t.getMinutes()).padStart(2, '0'), ss = String(t.getSeconds()).padStart(2, '0');
+    this.setState({ all, saved: (msg || 'Сохранено') + ' в этом браузере · ' + hh + ':' + mm + ':' + ss });
+  }
+  patch(p, replay) {
+    const all = JSON.parse(JSON.stringify(this.state.all));
+    const id = this.state.id;
+    all.cfg[id] = Object.assign({}, all.cfg[id] || {}, p);
+    this.write(all);
+    if (replay) this.setState({ animKey: 1 - this.state.animKey });
+  }
+  patchContent(key, v) {
+    const all = JSON.parse(JSON.stringify(this.state.all));
+    const id = this.state.id;
+    const cur = all.cfg[id] || {};
+    all.cfg[id] = Object.assign({}, cur, { content: Object.assign({}, cur.content || {}, { [key]: v }) });
+    this.write(all);
+  }
+  renderVals() {
+    const W = window.StreWidgets;
+    const s = this.state;
+    const id = s.id;
+    const meta = W.LIST.find((w) => w[0] === id);
+    const c = W.cfg(id, s.all);
+    W.useFont(c.font);
+    const fmt = (n) => String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+    // --- контролы ---
+    const range = (label, key, min, max, step, unit, replay) => ({ isRange: true, label, val: c[key], min, max, step, unit: unit || '', on: (e) => this.patch({ [key]: Number(e.target.value) }, replay) });
+    const color = (label, key) => ({ isColor: true, label, val: c[key], on: (e) => this.patch({ [key]: e.target.value }) });
+    const toggle = (label, key, hint) => ({ isToggle: true, label, hint: hint || '', state: c[key] ? 'true' : 'false', on: () => this.patch({ [key]: !c[key] }) });
+    const select = (label, key, options, replay) => ({ isSelect: true, label, val: c[key], options: options.map((o) => ({ v: o[0], l: o[1] })), on: (e) => this.patch({ [key]: e.target.value }, replay) });
+    const seg = (label, key, opts, replay) => ({ isSeg: true, label, opts: opts.map((o) => ({ l: o[1], sel: String(c[key]) === String(o[0]) ? 'true' : 'false', pick: () => this.patch({ [key]: o[0] }, replay) })) });
+    const head = (label) => ({ isHead: true, label });
+
+    const TABS = [['look', 'Вид'], ['text', 'Текст'], ['anim', 'Анимация'], ['pos', 'Позиция'], ['content', 'Содержимое'], ['obs', 'OBS']];
+    let controls = [];
+    if (s.tab === 'look') {
+      controls = [
+        head('Фон'), color('Цвет фона', 'bg'), range('Непрозрачность фона', 'bgA', 0, 100, 1, '%'), range('Эффект стекла (размытие)', 'blur', 0, 40, 1, ' px'),
+        head('Рамка и форма'), range('Толщина рамки', 'bw', 0, 6, 1, ' px'), color('Цвет рамки', 'bc'), range('Непрозрачность рамки', 'bcA', 0, 100, 1, '%'), range('Скругление', 'radius', 0, 40, 1, ' px'),
+        head('Глубина'), range('Тень', 'shadow', 0, 100, 1, '%'), range('Свечение', 'glow', 0, 60, 1, ' px'), color('Цвет свечения', 'glowC'),
+        head('Размер'), range('Ширина', 'width', 160, 1920, 10, ' px'), range('Масштаб', 'scale', 40, 250, 5, '%'), range('Внутренний отступ', 'pad', 0, 48, 1, ' px'),
+      ];
+    } else if (s.tab === 'text') {
+      controls = [
+        select('Шрифт', 'font', W.FONTS.map((f) => [f, f])),
+        color('Основной текст', 'fg'), color('Второстепенный текст', 'fg2'), color('Акцент: полосы, ники, цифры', 'acc'),
+        range('Размер текста', 'size', 10, 64, 1, ' px'),
+        seg('Жирность', 'weight', [[400, 'Обычный'], [500, 'Средний'], [600, 'Полужирный'], [700, 'Жирный'], [800, 'Чёрный']]),
+        seg('Выравнивание', 'align', [['left', 'Слева'], ['center', 'По центру'], ['right', 'Справа']]),
+        range('Межбуквенный интервал', 'ls', -5, 20, 1, '%'),
+        toggle('Тень у текста', 'tshadow', 'Читается поверх любой игры даже без фона'),
+        toggle('Всё заглавными', 'upper'),
+      ];
+    } else if (s.tab === 'anim') {
+      controls = [
+        select('Появление', 'anim', [['none', 'Без анимации'], ['fade', 'Проявление'], ['up', 'Снизу'], ['down', 'Сверху'], ['side', 'Сбоку'], ['zoom', 'Увеличение'], ['spring', 'Пружина'], ['blur', 'Из размытия']], true),
+        range('Длительность появления', 'dur', 100, 2000, 50, ' мс', true),
+      ];
+      if (id === 'alerts' || id === 'poll') controls.push(range('Время на экране', 'hold', 2, 30, 1, ' с'));
+      if (id === 'alerts') controls.push(head('Звук'), toggle('Звук алерта', 'sound'), range('Громкость', 'vol', 0, 100, 5, '%'));
+      controls.push(toggle('Прятать, когда нечего показывать', 'hideIdle', 'Например, цель без донатов или пустая очередь'));
+    } else if (s.tab === 'pos') {
+      controls = [range('Отступ по горизонтали', 'x', 0, 600, 4, ' px'), range('Отступ по вертикали', 'y', 0, 400, 4, ' px')];
+    } else if (s.tab === 'content') {
+      controls = (W.CONTENT[id] || []).map((f) => {
+        const [key, label, type, def, opts] = f;
+        const val = c.content[key];
+        if (type === 'toggle') return { isToggle: true, label, hint: '', state: val ? 'true' : 'false', on: () => this.patchContent(key, !val) };
+        if (type === 'select') return { isSelect: true, label, val, options: opts.map((o) => ({ v: o[0], l: o[1] })), on: (e) => this.patchContent(key, e.target.value) };
+        if (type === 'number') return { isNumber: true, label, val, on: (e) => this.patchContent(key, Number(e.target.value)) };
+        return { isText: true, label, val, on: (e) => this.patchContent(key, e.target.value) };
+      });
+    }
+
+    // --- превью: позиция и стиль ---
+    const A = c.anchor;
+    const h = A[1], v = A[0];
+    const pos = [];
+    let tr = '';
+    if (h === 'l') pos.push('left: ' + c.x + 'px'); else if (h === 'r') pos.push('right: ' + c.x + 'px'); else { pos.push('left: 50%'); tr += 'translateX(-50%) '; }
+    if (v === 't') pos.push('top: ' + c.y + 'px'); else if (v === 'b') pos.push('bottom: ' + c.y + 'px'); else { pos.push('top: 50%'); tr += 'translateY(-50%) '; }
+    const origin = (v === 't' ? 'top' : v === 'b' ? 'bottom' : 'center') + ' ' + (h === 'l' ? 'left' : h === 'r' ? 'right' : 'center');
+    const wrapStyle = 'position: absolute; ' + pos.join('; ') + '; transform: ' + tr + 'scale(' + c.scale / 100 + '); transform-origin: ' + origin;
+    const anim = c.anim === 'none' ? 'none' : 'wa-' + c.anim + '-' + s.animKey + ' ' + c.dur + 'ms cubic-bezier(.16,1,.3,1) both';
+    const boxStyle = W.vars(c) + '; width: ' + c.width + 'px; animation: ' + anim;
+
+    // --- превью: данные ---
+    const ct = c.content;
+    const pv = { justify: c.align === 'center' ? 'center' : c.align === 'right' ? 'flex-end' : 'flex-start' };
+    if (id === 'alerts') {
+      pv.typeLabel = { follow: 'Новый фолловер', sub: 'Новая подписка', donate: 'Донат · 300 ₽', raid: 'Рейд · 212 зрителей' }[ct.type] || 'Событие';
+      pv.msg = String(ct.tpl || '').replace(/\{name\}/g, ct.name);
+    }
+    if (id === 'goal' || id === 'subgoal') {
+      pv.pct = Math.max(0, Math.min(100, Math.round((Number(ct.current) || 0) / Math.max(1, Number(ct.target) || 1) * 100)));
+      pv.cur = fmt(ct.current); pv.tgt = fmt(ct.target);
+      pv.fill = ct.bar === 'hatch' ? 'background: repeating-linear-gradient(135deg, var(--w-acc) 0 8px, var(--w-acc-soft) 8px 14px)' : ct.bar === 'gradient' ? 'background: linear-gradient(90deg, var(--w-acc-soft), var(--w-acc))' : 'background: var(--w-acc)';
+    }
+    if (id === 'chat') {
+      const L = [
+        { nick: 'lenta_ln', text: 'вот это клатч, 1 против 3', badge: 'M', tw: 'rgb(92 200 255)' },
+        { nick: 'moroz_tv', text: '!аптайм', badge: '', cmd: true, tw: 'rgb(255 122 26)' },
+        { nick: 'Nightbot', text: 'Стрим идёт 2 ч 47 мин', badge: '', bot: true, tw: 'rgb(140 140 140)' },
+        { nick: 'polyana_live', text: 'кира, ты сегодня в ударе', badge: 'VIP', tw: 'rgb(255 79 163)' },
+        { nick: 'tixiy_bard', text: 'первый раз на стриме, привет', badge: 'S', tw: 'rgb(43 182 115)' },
+        { nick: 'nastya_k', text: 'какой прицел стоит?', badge: '', tw: 'rgb(245 197 24)' },
+        { nick: 'gleb_1999', text: 'GG', badge: '', tw: 'rgb(139 92 246)' },
+      ].filter((l) => !(ct.hideCmd && l.cmd) && !(ct.hideBots && l.bot));
+      pv.lines = L.slice(-Math.max(1, Math.min(12, Number(ct.max) || 5))).map((l) => Object.assign({}, l, {
+        nickStyle: ct.nick === 'accent' ? 'color: var(--w-acc)' : ct.nick === 'platform' ? 'color: ' + l.tw : 'color: var(--w-fg)',
+      }));
+    }
+    if (id === 'events') {
+      pv.events = [
+        { who: 'sever_ops', what: 'рейд', amount: '212' }, { who: 'tixiy_bard', what: 'подписка', amount: '3 мес' }, { who: 'moroz_tv', what: 'донат', amount: '300 ₽' },
+        { who: 'nastya_k', what: 'фоллов', amount: '' }, { who: 'gleb_1999', what: 'донат', amount: '150 ₽' },
+      ].slice(0, Math.max(1, Math.min(5, Number(ct.count) || 3)));
+    }
+    if (id === 'topdon') {
+      pv.period = { stream: 'стрим', week: 'неделя', month: 'месяц' }[ct.period];
+      pv.tops = [['moroz_tv', 4300], ['polyana_live', 2150], ['gleb_1999', 900], ['nastya_k', 600], ['sever_ops', 450]]
+        .slice(0, Math.max(1, Math.min(5, Number(ct.count) || 3))).map((t, i) => ({ n: i + 1, who: t[0], sum: fmt(t[1]) + ' ₽' }));
+    }
+    if (id === 'cs') pv.csSub = [ct.map ? 'Mirage' : '', ct.round ? 'раунд 17' : ''].filter(Boolean).join(' · ');
+    if (id === 'queue') {
+      pv.queue = [['Звезда по имени Солнце — Кино', 'moroz_tv'], ['Тает лёд — Грибы', 'nastya_k'], ['Районы-кварталы — Звери', 'gleb_1999'], ['Я свободен — Кипелов', 'polyana_live'], ['Владивосток 2000 — Мумий Тролль', 'sever_ops']]
+        .slice(0, Math.max(1, Math.min(5, Number(ct.count) || 3))).map((q, i) => ({ n: i + 1, t: q[0], by: q[1] }));
+    }
+    if (id === 'uptime') pv.uptime = { hms: '02:47:13', hm: '02:47', words: '2 ч 47 мин' }[ct.format];
+    if (id === 'ticker') {
+      const secs = Math.max(4, Math.round(String(ct.text || '').length * c.size * 0.55 / Math.max(10, Number(ct.speed) || 60)));
+      pv.tickAnim = 'animation: wa-ticker ' + secs + 's linear infinite';
+    }
+
+    const kinds = {};
+    W.LIST.forEach((w) => { kinds['k_' + w[0]] = w[0] === id; });
+
+    const stagesDef = [['Игра', 'rgb(17 17 17)'], ['Чёрный', 'rgb(0 0 0)'], ['Шахматка', 'repeating-conic-gradient(rgb(36 36 36) 0 25%, rgb(26 26 26) 0 50%) 0 0 / 32px 32px'], ['Хромакей', '#00B140']];
+    const isOn = !!s.all.on[id];
+    const locked = meta[5] === 'locked';
+    const presets = Object.keys(W.PRESETS).map((k) => {
+      const p = Object.assign({}, W.STYLE, W.PRESETS[k]);
+      return {
+        name: p.name, sel: c.preset === k ? 'true' : 'false',
+        swatch: 'background: ' + W.rgba(p.bg, Math.max(p.bgA, 8)) + '; border: ' + (p.bw ? p.bw + 'px solid ' + W.rgba(p.bc, p.bcA) : '1px dashed rgb(110 110 110)') + '; box-shadow: ' + (p.glow ? '0 0 12px ' + W.rgba(p.glowC, 70) : 'none') + ', inset 10px -10px 0 -4px ' + p.acc,
+        pick: () => this.patch(Object.assign({ preset: k }, W.PRESETS[k], { name: undefined }), true),
+      };
+    });
+    const ANCH = [['tl', 'Сверху слева'], ['tc', 'Сверху по центру'], ['tr', 'Сверху справа'], ['ml', 'Слева по центру'], ['mc', 'По центру'], ['mr', 'Справа по центру'], ['bl', 'Снизу слева'], ['bc', 'Снизу по центру'], ['br', 'Снизу справа']];
+
+    return Object.assign(kinds, {
+      id, name: meta[1], desc: meta[3],
+      widgetOptions: W.LIST.map((w) => ({ v: w[0], l: w[1] })),
+      pickWidget: (e) => { const nid = e.target.value; history.replaceState(null, '', '?w=' + nid); this.setState({ id: nid, animKey: 1 - s.animKey, show: false, copied: false }); },
+      isOn: isOn ? 'true' : 'false', onLabel: locked ? 'Доступно в «Максимум»' : (isOn ? 'Включён' : 'Выключен'), locked,
+      toggleOn: () => { const all = JSON.parse(JSON.stringify(s.all)); all.on[id] = !isOn; this.write(all, isOn ? 'Выключен' : 'Включён'); },
+      hasNote: meta[5] === 'setup', note: id === 'cs' ? 'Нужен файл конфигурации CS2: скачай его во вкладке OBS и положи в папку игры cfg' : 'Нужен файл конфигурации Dota 2: скачай его во вкладке OBS и положи в папку игры',
+      applyAllLabel: s.applied ? 'Стиль применён ко всем' : 'Применить стиль ко всем',
+      applyAll: () => {
+        const all = JSON.parse(JSON.stringify(s.all));
+        const styleKeys = ['preset', 'bg', 'bgA', 'blur', 'bw', 'bc', 'bcA', 'radius', 'shadow', 'glow', 'glowC', 'pad', 'font', 'fg', 'fg2', 'acc', 'weight', 'ls', 'tshadow', 'upper', 'anim', 'dur'];
+        W.LIST.forEach((w) => {
+          if (w[0] === id) return;
+          const cur = all.cfg[w[0]] || {};
+          styleKeys.forEach((k) => { cur[k] = c[k]; });
+          all.cfg[w[0]] = cur;
+        });
+        this.write(all, 'Стиль скопирован во все виджеты');
+        this.setState({ applied: true });
+      },
+      reset: () => { const all = JSON.parse(JSON.stringify(s.all)); delete all.cfg[id]; this.write(all, 'Сброшено'); this.setState({ animKey: 1 - s.animKey }); },
+      tabs: TABS.map((t) => ({ label: t[1], sel: s.tab === t[0] ? 'true' : 'false', pick: () => this.setState({ tab: t[0] }) })),
+      showPresets: s.tab === 'look', presets,
+      showAnchor: s.tab === 'pos',
+      anchors: ANCH.map((a) => ({ label: a[1], sel: c.anchor === a[0] ? 'true' : 'false', pick: () => this.patch({ anchor: a[0] }, true) })),
+      controls,
+      showObs: s.tab === 'obs',
+      url: s.show ? 'https://streops.ru/w/' + id + '/' + W.token(id) : 'https://streops.ru/w/' + id + '/••••••••••••',
+      showLabel: s.show ? 'Скрыть ссылку' : 'Показать ссылку',
+      toggleShow: () => this.setState({ show: !s.show }),
+      copyLabel: s.copied ? 'Скопировано' : 'Скопировать',
+      copy: () => { try { navigator.clipboard.writeText('https://streops.ru/w/' + id + '/' + W.token(id)); } catch (e) { /* нет доступа к буферу */ } this.setState({ copied: true }); },
+      copyCfgLabel: s.cfgCopied ? 'Настройки скопированы' : 'Скопировать настройки',
+      copyCfg: () => { try { navigator.clipboard.writeText(JSON.stringify(s.all.cfg[id] || {})); } catch (e) { /* нет доступа */ } this.setState({ cfgCopied: true }); },
+      pasteCfg: () => {
+        const text = prompt('Вставь настройки виджета:');
+        if (!text) return;
+        try { const data = JSON.parse(text); const all = JSON.parse(JSON.stringify(s.all)); all.cfg[id] = data; this.write(all, 'Настройки вставлены'); } catch (e) { alert('Не получилось прочитать настройки'); }
+      },
+      savedLabel: s.saved || 'Изменения сохраняются автоматически в этом браузере',
+      stages: stagesDef.map((st, i) => ({ label: st[0], sel: s.stage === i ? 'true' : 'false', pick: () => this.setState({ stage: i }) })),
+      stageBg: stagesDef[s.stage][1], isGame: s.stage === 0,
+      guides: s.guides ? 'true' : 'false', guidesOn: s.guides, toggleGuides: () => this.setState({ guides: !s.guides }),
+      replay: () => this.setState({ animKey: 1 - s.animKey }),
+      k: s.k.toFixed(4), wrapStyle, boxStyle, c: ct, pv,
+    });
+  }
+}
+</script>
+</body>
+</html>

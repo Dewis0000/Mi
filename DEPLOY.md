@@ -9,10 +9,11 @@
 | `site/` | Готовый сайт. Это содержимое папки сайта на хостинге |
 | `site/index.html` | Главная (лендинг) |
 | `site/panel.html` | Стрим-панель |
-| `site/commands.html`, `music.html`, `widgets.html`, `widget-faceit.html`, `moderation.html`, `giveaways.html`, `settings.html` | Разделы панели |
+| `site/commands.html`, `music.html`, `widgets.html`, `widget-editor.html`, `moderation.html`, `giveaways.html`, `settings.html` | Разделы панели |
 | `site/404.html` + `site/.htaccess` | Страница «не найдено» и настройки Apache |
 | `site/design/` | Дизайн-система: цвет, типографика, стекло, движение, код |
 | `site/assets/dc-lite.js` | Маленький движок шаблонов страниц |
+| `site/assets/widgets-lib.js` | Виджеты: список, стили, содержимое, хранение настроек (localStorage) |
 | `site/assets/theme.js` | Пользовательское оформление: редактор, палитра, фон, эффекты. Тема хранится в браузере (localStorage) |
 | `prototype/src/*.dc.html` | Исходники экранов (артборды холста) |
 | `prototype/build.mjs` | Сборка `site/` из исходников |

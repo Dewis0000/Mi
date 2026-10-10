@@ -15,7 +15,7 @@ const PAGES = {
   WebCommands: 'commands.html',
   WebMusic: 'music.html',
   WebWidgets: 'widgets.html',
-  WebWidgetFaceit: 'widget-faceit.html',
+  WebWidgetEditor: 'widget-editor.html',
   WebModeration: 'moderation.html',
   WebGiveaways: 'giveaways.html',
   WebSettings: 'settings.html',
@@ -64,6 +64,60 @@ function themeizeMarkup(body) {
   return body.replace(/<div\b[^>]*>/, (tag) => tag.replace(/background: var\(--n-[01]\)/, 'background: var(--page-bg)'));
 }
 
+// ---- Общее боковое меню стрим-панели: одно на все страницы ----
+const ICON = {
+  overview: '<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',
+  mod: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+  cmd: '<path d="M4 17l6-6-6-6M12 19h8"/>',
+  music: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+  widgets: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+  gift: '<rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1s6 1 6 1zM12 8c2-4 6-4 6-1s-6 1-6 1z"/>',
+  auction: '<path d="M14 13l-7.5 7.5a2.1 2.1 0 0 1-3-3L11 10M16 16l6-6M8 8l6-6M9 7l8 8M21 11l-8-8"/>',
+  settings: '<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
+};
+const SIDEBAR = [
+  ['Эфир'],
+  ['WebDashboard', 'Обзор', 'overview'],
+  ['WebModeration', 'Модерация', 'mod'],
+  ['Бот'],
+  ['WebCommands', 'Команды', 'cmd', '24'],
+  ['WebMusic', 'Музыка', 'music'],
+  ['WebWidgets', 'Виджеты', 'widgets'],
+  ['Интерактив'],
+  ['WebGiveaways', 'Розыгрыши', 'gift'],
+  [null, 'Аукционы', 'auction', 'скоро'],
+  ['-'],
+  ['WebSettings', 'Настройки', 'settings'],
+];
+const CURRENT_ALIAS = { WebWidgetEditor: 'WebWidgets' };
+function sidebar(page) {
+  const cur = CURRENT_ALIAS[page] || page;
+  const svg = (k) => `<svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg>`;
+  const items = SIDEBAR.map((it) => {
+    if (it.length === 1) return it[0] === '-' ? '<div class="sb-sep"></div>' : `<p class="sb-h">${it[0]}</p>`;
+    const [target, label, icon, badge] = it;
+    if (!target) return `<span class="sb-i sb-off" aria-disabled="true">${svg(icon)}${label}<span class="sb-tag">${badge}</span></span>`;
+    const current = target === cur ? ' aria-current="page"' : '';
+    const count = badge ? `<span class="sb-n">${badge}</span>` : '';
+    return `<a href="${target}.dc.html" class="sb-i"${current}>${svg(icon)}${label}${count}</a>`;
+  }).join('\n');
+  return `<nav aria-label="Разделы стрим-панели" class="sb">\n${items}\n</nav>`;
+}
+const SIDEBAR_CSS = `<style>
+.sb{flex:1 1 200px;max-width:248px;min-width:200px;align-self:flex-start;position:sticky;top:88px;box-sizing:border-box;padding:12px;border-radius:8px;background:rgb(var(--n-13-rgb) / .03);border:1px solid rgb(var(--n-13-rgb) / .06);display:flex;flex-direction:column;gap:2px;font-family:var(--font-sans),system-ui,sans-serif}
+.sb-h{margin:0;padding:16px 12px 8px;font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--n-9)}
+.sb-h:first-child{padding-top:8px}
+.sb-i{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;color:var(--n-10);text-decoration:none}
+a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
+.sb-i[aria-current="page"]{background:rgb(var(--n-13-rgb) / .10);color:var(--n-12);box-shadow:inset 2px 0 0 var(--n-12)}
+.sb-ic{flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.sb-n{margin-left:auto;font:400 12px/1 'JetBrains Mono',monospace;color:var(--n-9)}
+.sb-off{color:var(--n-7)}
+.sb-tag{margin-left:auto;font-size:11px;padding:1px 6px;border:1px dashed var(--n-6);border-radius:4px;color:var(--n-8)}
+.sb-sep{height:1px;background:var(--n-5);margin:10px 0}
+@media (max-width: 900px){.sb{position:static;max-width:none;flex-basis:100%;flex-direction:row;flex-wrap:wrap}.sb-h,.sb-sep{display:none}}
+</style>`;
+
 function pick(re, text, what, file) {
   const m = text.match(re);
   if (!m) throw new Error(`${file}: не найден ${what}`);
@@ -83,6 +137,9 @@ function convert(file, outPath) {
   const xdc = pick(/<x-dc>([\s\S]*?)<\/x-dc>/, src, '<x-dc>', file);
   const helmet = (xdc.match(/<helmet>([\s\S]*?)<\/helmet>/) || ['', ''])[1];
   let body = xdc.replace(/<helmet>[\s\S]*?<\/helmet>/, '');
+  const pageName = file.replace(/\.dc\.html$/, '');
+  const hasSidebar = /<nav aria-label="Разделы стрим-панели"/.test(body) && !outPath.startsWith('design/');
+  if (hasSidebar) body = body.replace(/<nav aria-label="Разделы стрим-панели"[\s\S]*?<\/nav>/, sidebar(pageName));
   let script = pick(/<script type="text\/x-dc"[^>]*>([\s\S]*?)<\/script>/, src, 'script', file);
 
   // <sc-for>/<sc-if> → <template>: так они переживают разбор внутри таблиц и списков
@@ -115,7 +172,9 @@ function convert(file, outPath) {
     script = themeizeCss(script);
     head = themeizeCss(head);
   }
+  const libTag = /^Web(Widgets|WidgetEditor)$/.test(pageName) ? `<script src="${relLink(outPath, 'assets/widgets-lib.js')}"></script>\n` : '';
   const themeTag = themed ? `<script src="${relLink(outPath, 'assets/theme.js')}"></script>\n` : '';
+  if (hasSidebar) head += '\n' + SIDEBAR_CSS;
 
   const runtime = relLink(outPath, 'assets/dc-lite.js');
   const html = `<!doctype html>
@@ -127,7 +186,7 @@ function convert(file, outPath) {
 <link rel="icon" type="image/svg+xml" href="${relLink(outPath, 'assets/favicon.svg')}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-${themeTag}${head}
+${themeTag}${libTag}${head}
 </head>
 <body>
 <div id="app"></div>
@@ -149,6 +208,7 @@ rmSync(outDir, { recursive: true, force: true });
 mkdirSync(join(outDir, 'assets'), { recursive: true });
 copyFileSync(join(here, 'dc-lite.js'), join(outDir, 'assets', 'dc-lite.js'));
 copyFileSync(join(here, 'theme.js'), join(outDir, 'assets', 'theme.js'));
+copyFileSync(join(here, 'widgets-lib.js'), join(outDir, 'assets', 'widgets-lib.js'));
 copyFileSync(join(here, '..', 'design-system', 'tokens.css'), join(outDir, 'assets', 'tokens.css'));
 writeFileSync(join(outDir, 'assets', 'favicon.svg'), '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><rect width="28" height="28" rx="6" fill="#0A0A0A"/><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"/><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"/><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"/><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"/></svg>\n');
 

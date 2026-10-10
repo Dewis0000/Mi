@@ -41,6 +41,20 @@ a{color:var(--n-12);text-decoration:none}a:hover{color: var(--accent-on)}
 .chip button{width:20px;height:20px;border:0;border-radius:3px;background:transparent;color:var(--n-9);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
 .chip button:hover{color:var(--n-12);background:rgb(var(--n-13-rgb) / .08)}
 </style>
+<style>
+.sb{flex:1 1 200px;max-width:248px;min-width:200px;align-self:flex-start;position:sticky;top:88px;box-sizing:border-box;padding:12px;border-radius:8px;background:rgb(var(--n-13-rgb) / .03);border:1px solid rgb(var(--n-13-rgb) / .06);display:flex;flex-direction:column;gap:2px;font-family:var(--font-sans),system-ui,sans-serif}
+.sb-h{margin:0;padding:16px 12px 8px;font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--n-9)}
+.sb-h:first-child{padding-top:8px}
+.sb-i{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;color:var(--n-10);text-decoration:none}
+a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
+.sb-i[aria-current="page"]{background:rgb(var(--n-13-rgb) / .10);color:var(--n-12);box-shadow:inset 2px 0 0 var(--n-12)}
+.sb-ic{flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.sb-n{margin-left:auto;font:400 12px/1 'JetBrains Mono',monospace;color:var(--n-9)}
+.sb-off{color:var(--n-7)}
+.sb-tag{margin-left:auto;font-size:11px;padding:1px 6px;border:1px dashed var(--n-6);border-radius:4px;color:var(--n-8)}
+.sb-sep{height:1px;background:var(--n-5);margin:10px 0}
+@media (max-width: 900px){.sb{position:static;max-width:none;flex-basis:100%;flex-direction:row;flex-wrap:wrap}.sb-h,.sb-sep{display:none}}
+</style>
 </head>
 <body>
 <div id="app"></div>
@@ -55,7 +69,22 @@ a{color:var(--n-12);text-decoration:none}a:hover{color: var(--accent-on)}
 </div>
 </header>
 
-<div style="max-width: 1440px; margin: 0 auto; padding: 24px; box-sizing: border-box">
+<div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; box-sizing: border-box; max-width: 1920px; margin: 0 auto">
+<nav aria-label="Разделы стрим-панели" class="sb">
+<p class="sb-h">Эфир</p>
+<a href="panel.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Обзор</a>
+<a href="moderation.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Модерация</a>
+<p class="sb-h">Бот</p>
+<a href="commands.html" class="sb-i" aria-current="page"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l6-6-6-6M12 19h8"/></svg>Команды<span class="sb-n">24</span></a>
+<a href="music.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Музыка</a>
+<a href="widgets.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Виджеты</a>
+<p class="sb-h">Интерактив</p>
+<a href="giveaways.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1s6 1 6 1zM12 8c2-4 6-4 6-1s-6 1-6 1z"/></svg>Розыгрыши</a>
+<span class="sb-i sb-off" aria-disabled="true"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 13l-7.5 7.5a2.1 2.1 0 0 1-3-3L11 10M16 16l6-6M8 8l6-6M9 7l8 8M21 11l-8-8"/></svg>Аукционы<span class="sb-tag">скоро</span></span>
+<div class="sb-sep"></div>
+<a href="settings.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>Настройки</a>
+</nav>
+<div style="flex: 999 1 640px; min-width: 0">
 <nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px"><li><a href="panel.html" style="color: var(--n-9)">Стрим-панель</a></li><li aria-hidden="true" style="color: var(--n-7)">/</li><li><a href="#" style="color: var(--n-9)">Чат-бот</a></li><li aria-hidden="true" style="color: var(--n-7)">/</li><li aria-current="page" style="color: var(--n-12)">Команды</li></ol></nav>
 <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
 <div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Команды чат-бота</h1><p style="margin: 6px 0 0; font-size: 15px; color: var(--n-10)">Бот отвечает на них во всех подключённых чатах.</p></div>
@@ -139,6 +168,7 @@ a{color:var(--n-12);text-decoration:none}a:hover{color: var(--accent-on)}
 </div>
 </form>
 </section>
+</div>
 </div>
 </div>
 </div>

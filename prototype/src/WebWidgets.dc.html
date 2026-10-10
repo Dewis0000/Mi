@@ -28,7 +28,8 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 .wc{display:flex;flex-direction:column;border-radius:8px;border:1px solid #2A2A2A;background:#111111;overflow:hidden}
 .wc:hover{border-color:#3A3A3A}
 .pv{position:relative;height:136px;background:radial-gradient(220px 120px at 70% 20%,rgba(255,255,255,.08),transparent 70%),linear-gradient(160deg,#1F1F1F,#0A0A0A);display:flex;align-items:center;justify-content:center;padding:14px;box-sizing:border-box;border-bottom:1px solid #2A2A2A;overflow:hidden}
-.ob{background:rgba(10,10,10,.78);border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:8px 10px;color:#F2F2F2}
+.ob{background:var(--w-bg);backdrop-filter:blur(var(--w-blur));border:var(--w-bd);border-radius:var(--w-rad);box-shadow:var(--w-shadow);padding:8px 10px;color:var(--w-fg);font-family:var(--w-font);text-shadow:var(--w-tshadow);text-transform:var(--w-upper)}
+.pv .mono{font-family:inherit}
 .em{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:3px;background:linear-gradient(135deg,#B4B4B4,#525252);vertical-align:-5px;color:#0A0A0A}
 .ib{width:36px;height:36px;border-radius:6px;border:0;background:transparent;color:#B4B4B4;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
 .ib:hover{background:rgba(255,255,255,.06);color:#F2F2F2}
@@ -61,8 +62,8 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
 <div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Виджеты</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; max-width: 640px">Включи нужные и добавь в OBS как источник «Браузер». У каждого виджета своя ссылка, а настройки применяются на лету, без перезагрузки сцены.</p></div>
 <div style="min-width: 260px; padding: 14px 16px; border-radius: 8px; border: 1px solid #3A3A3A">
-<div style="display: flex; justify-content: space-between; font-size: 13px"><span style="color: #B4B4B4">Включено на тарифе «Про»</span><span class="mono">{{ active }} из 10</span></div>
-<div role="progressbar" aria-label="Включено виджетов" aria-valuenow="{{ active }}" aria-valuemin="0" aria-valuemax="10" style="margin-top: 10px; height: 4px; border-radius: 2px; background: #2A2A2A"><div style="height: 100%; border-radius: 2px; background: #F2F2F2; width: {{ pct }}"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 13px"><span style="color: #B4B4B4">Включено на тарифе «Про»</span><span class="mono">{{ active }} из {{ limit }}</span></div>
+<div role="progressbar" aria-label="Включено виджетов" aria-valuenow="{{ active }}" aria-valuemin="0" aria-valuemax="{{ limit }}" style="margin-top: 10px; height: 4px; border-radius: 2px; background: #2A2A2A"><div style="height: 100%; border-radius: 2px; background: #F2F2F2; width: {{ pct }}"></div></div>
 <sc-if value="{{ full }}" hint-placeholder-val="{{ false }}"><p style="margin: 8px 0 0; font-size: 12px; color: #DCDCDC">Лимит исчерпан. Выключи один из виджетов или перейди на «Максимум».</p></sc-if>
 </div>
 </div>
@@ -77,7 +78,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 16px">
 <sc-for list="{{ shown }}" as="w" hint-placeholder-count="9">
 <li class="wc" style="{{ w.cardStyle }}">
-<div class="pv" aria-hidden="true">
+<div class="pv" aria-hidden="true" style="{{ w.vars }}">
 <sc-if value="{{ w.k.alerts }}" hint-placeholder-val="{{ false }}"><div style="text-align: center"><p class="ov" style="color: #B4B4B4">Новая подписка</p><p style="margin: 6px 0 0; font-size: 22px; font-weight: 600; letter-spacing: -0.02em">tixiy_bard</p><p style="margin: 2px 0 0; font-size: 12px; color: #B4B4B4">3 месяца подряд</p></div></sc-if>
 <sc-if value="{{ w.k.goal }}" hint-placeholder-val="{{ false }}"><div class="ob" style="width: 100%"><div style="display: flex; justify-content: space-between; font-size: 12px"><span>Новая видеокарта</span><span class="mono">41%</span></div><div style="margin-top: 8px; height: 10px; border-radius: 2px; background: #2A2A2A; overflow: hidden"><div style="width: 41%; height: 100%; background: repeating-linear-gradient(135deg, #F2F2F2 0 6px, #DCDCDC 6px 12px)"></div></div><p class="mono" style="margin: 6px 0 0; font-size: 11px; color: #B4B4B4">12 400 / 30 000 ₽</p></div></sc-if>
 <sc-if value="{{ w.k.subgoal }}" hint-placeholder-val="{{ false }}"><div class="ob" style="width: 100%"><div style="display: flex; justify-content: space-between; font-size: 12px"><span>Подписчики</span><span class="mono">186 / 250</span></div><div style="margin-top: 8px; height: 10px; border-radius: 2px; background: #2A2A2A"><div style="width: 74%; height: 100%; border-radius: 2px; background: #F2F2F2"></div></div></div></sc-if>
@@ -117,30 +118,14 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { cat: 'Все', onlyOn: false, on: { alerts: true, goal: true, chat: true, events: true, faceit: true, np: true, uptime: true } };
+    this.all = window.StreWidgets.loadAll();
+    this.state = { cat: 'Все', onlyOn: false, on: this.all.on };
   }
   renderVals() {
-    const W = [
-      ['alerts', 'Алерты', 'Алерты', 'Фолловы, подписки, рейды и донаты со звуком', '', 'ok'],
-      ['goal', 'Цель доната', 'Цели', 'Полоса прогресса к сумме, обновляется сразу после доната', '', 'ok'],
-      ['subgoal', 'Цель подписчиков', 'Цели', 'Сколько подписок осталось до цели', '', 'ok'],
-      ['chat', 'Чат на экране', 'Чат', 'Сообщения чата поверх сцены, с ролями и никами', '', 'ok'],
-      ['events', 'Последние события', 'Алерты', 'Лента: рейды, подписки, донаты', '', 'ok'],
-      ['topdon', 'Топ донатеров', 'Алерты', 'За стрим, неделю или месяц', '', 'ok'],
-      ['faceit', 'FACEIT: уровень и ELO', 'Игры', 'Уровень, ELO и изменение за стрим', '', 'ok'],
-      ['fmatch', 'FACEIT: статистика стрима', 'Игры', 'K/D, хедшоты, победы и поражения', '', 'ok'],
-      ['cs', 'CS2: счёт матча', 'Игры', 'Счёт и раунд через Game State Integration', '', 'setup'],
-      ['dota', 'Dota 2: статистика', 'Игры', 'MMR, результат за стрим, уровень героя Dota Plus', '', 'setup'],
-      ['np', 'Сейчас играет', 'Музыка', 'Трек и кто его заказал', '', 'ok'],
-      ['queue', 'Очередь заказов', 'Музыка', 'Ближайшие 3–5 треков', '', 'ok'],
-      ['uptime', 'Таймер эфира', 'Таймеры', 'Сколько идёт стрим', '', 'ok'],
-      ['deaths', 'Счётчик', 'Таймеры', 'Смерти, победы, что угодно. Модераторы ведут командой !+1', '', 'ok'],
-      ['poll', 'Голосование', 'Интерактив', 'Зрители голосуют цифрой в чате', 'Максимум', 'locked'],
-      ['ticker', 'Бегущая строка', 'Интерактив', 'Ссылки, расписание, правила чата', '', 'ok']
-    ];
+    const W = window.StreWidgets.LIST;
     const on = this.state.on;
     const active = Object.keys(on).filter((k) => on[k]).length;
-    const full = active >= 10;
+    const full = active >= window.StreWidgets.LIMIT;
     const cats = ['Все', 'Алерты', 'Цели', 'Чат', 'Игры', 'Музыка', 'Таймеры', 'Интерактив'];
     const all = W.map((w) => {
       const isOn = !!on[w[0]];
@@ -154,15 +139,16 @@ class Component extends DCLogic {
         id: w[0], name: w[1], cat: w[2], desc: w[3], tier: w[4], hasTier: !!w[4], isOn, k, locked,
         on: isOn ? 'true' : 'false', status, statusStyle,
         cardStyle: isOn ? 'border-color: #6E6E6E' : '',
-        href: w[0] === 'faceit' ? 'WebWidgetFaceit.dc.html' : '#',
+        href: 'WebWidgetEditor.dc.html?w=' + w[0], vars: window.StreWidgets.vars(window.StreWidgets.cfg(w[0], this.all)),
         swLabel: 'Виджет ' + w[1], cfgLabel: 'Настроить ' + w[1],
-        toggle: () => { if (locked && !isOn) return; this.setState({ on: Object.assign({}, on, { [w[0]]: !isOn }) }); }
+        toggle: () => { if (locked && !isOn) return; const next = Object.assign({}, on, { [w[0]]: !isOn }); this.all.on = next; window.StreWidgets.saveAll(this.all); this.setState({ on: next }); }
       };
     });
     let shown = this.state.cat === 'Все' ? all : all.filter((w) => w.cat === this.state.cat);
     if (this.state.onlyOn) shown = shown.filter((w) => w.isOn);
     return {
-      active, full, pct: (active * 10) + '%',
+      limit: window.StreWidgets.LIMIT,
+      active, full, pct: Math.round(active / window.StreWidgets.LIMIT * 100) + '%',
       onlyOn: this.state.onlyOn ? 'true' : 'false',
       toggleOnly: () => this.setState({ onlyOn: !this.state.onlyOn }),
       cats: cats.map((c) => ({
