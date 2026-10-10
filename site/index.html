@@ -7,51 +7,52 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="assets/theme.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
-body{margin:0;background:#0A0A0A}
-a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
+body{margin:0;background:var(--n-1)}
+a{color:var(--n-12);text-decoration:none}a:hover{color: var(--accent-on)}
 .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
-.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--n-9);margin:0}
 .ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .wrap{max-width:1280px;margin:0 auto;padding:0 24px;box-sizing:border-box}
-.btn-p{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border-radius:6px;background:#FFFFFF;color:#0A0A0A;font-size:15px;font-weight:500;border:0;font-family:'Onest',sans-serif;cursor:pointer}
-.btn-p:hover{background:#DCDCDC;color:#0A0A0A}
-.btn-s{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border-radius:6px;background:transparent;color:#F2F2F2;font-size:15px;font-weight:500;border:1px solid #3A3A3A;font-family:'Onest',sans-serif;cursor:pointer}
-.btn-s:hover{background:rgba(255,255,255,.04);border-color:#6E6E6E}
+.btn-p{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border-radius:6px;background:var(--n-13);color:var(--n-1);font-size:15px;font-weight:500;border:0;font-family:var(--font-sans),sans-serif;cursor:pointer}
+.btn-p:hover{background:var(--n-11);color:var(--n-1)}
+.btn-s{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border-radius:6px;background:transparent;color:var(--n-12);font-size:15px;font-weight:500;border:1px solid var(--n-6);font-family:var(--font-sans),sans-serif;cursor:pointer}
+.btn-s:hover{background:rgb(var(--n-13-rgb) / .04);border-color:var(--n-8)}
 .h2{margin:12px 0 0;font-size:clamp(32px,4vw,44px);line-height:1.1;letter-spacing:-.025em;font-weight:500}
-.lead{margin:16px 0 0;font-size:17px;line-height:26px;color:#B4B4B4;max-width:620px}
-.card{background:#111111;border:1px solid #2A2A2A;border-radius:8px}
+.lead{margin:16px 0 0;font-size:17px;line-height:26px;color:var(--n-10);max-width:620px}
+.card{background:var(--s-2);border:1px solid var(--n-5);border-radius:8px}
 .feat{padding:28px;display:flex;flex-direction:column;gap:12px}
 .feat h3{margin:8px 0 0;font-size:20px;line-height:26px;letter-spacing:-.01em;font-weight:600}
-.feat p{margin:0;font-size:15px;line-height:22px;color:#B4B4B4}
-.li{display:flex;gap:10px;font-size:14px;line-height:20px;color:#DCDCDC}
+.feat p{margin:0;font-size:15px;line-height:22px;color:var(--n-10)}
+.li{display:flex;gap:10px;font-size:14px;line-height:20px;color:var(--n-11)}
 .li svg{flex:none;margin-top:2px}
 .ct{width:100%;border-collapse:collapse;font-size:14px;line-height:20px;min-width:640px}
-.ct th{text-align:left;font-weight:500;color:#F2F2F2;padding:14px 16px;border-bottom:1px solid #3A3A3A}
-.ct td{padding:12px 16px;border-top:1px solid #1F1F1F;color:#B4B4B4}
-.ct td.v{color:#F2F2F2}
-.arrow{width:44px;height:44px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.arrow:hover{background:rgba(255,255,255,.04);border-color:#6E6E6E}
-.arrow:disabled{color:#525252;border-color:#2A2A2A;cursor:default;background:transparent}
-.faq-b{width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:64px;padding:16px 0;border:0;background:transparent;color:#F2F2F2;font:500 17px/24px 'Onest',sans-serif;text-align:left;cursor:pointer}
-.faq-b:hover{color:#FFFFFF}
-.foot a{color:#8F8F8F;font-size:14px;line-height:28px}
-.foot a:hover{color:#F2F2F2}
+.ct th{text-align:left;font-weight:500;color:var(--n-12);padding:14px 16px;border-bottom:1px solid var(--n-6)}
+.ct td{padding:12px 16px;border-top:1px solid var(--n-4);color:var(--n-10)}
+.ct td.v{color:var(--n-12)}
+.arrow{width:44px;height:44px;border-radius:6px;border:1px solid var(--n-6);background:transparent;color:var(--n-12);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.arrow:hover{background:rgb(var(--n-13-rgb) / .04);border-color:var(--n-8)}
+.arrow:disabled{color:var(--n-7);border-color:var(--n-5);cursor:default;background:transparent}
+.faq-b{width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:64px;padding:16px 0;border:0;background:transparent;color:var(--n-12);font:500 17px/24px var(--font-sans),sans-serif;text-align:left;cursor:pointer}
+.faq-b:hover{color: var(--accent-on)}
+.foot a{color:var(--n-9);font-size:14px;line-height:28px}
+.foot a:hover{color:var(--n-12)}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <template id="dc">
 
-<div style="position: relative; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif; overflow: hidden">
+<div style="position: relative; background: var(--page-bg); color: var(--n-12); font-family: var(--font-sans), system-ui, sans-serif; overflow: hidden">
 <svg aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.045; pointer-events: none"><filter id="gl"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#gl)"></rect></svg>
-<div aria-hidden="true" style="position: absolute; left: 50%; top: -420px; width: 1400px; height: 1000px; transform: translateX(-50%); background: radial-gradient(closest-side, rgba(255,255,255,0.09), rgba(255,255,255,0) 72%); pointer-events: none"></div>
+<div aria-hidden="true" style="position: absolute; left: 50%; top: -420px; width: 1400px; height: 1000px; transform: translateX(-50%); background: radial-gradient(closest-side, rgb(var(--n-13-rgb) / 0.09), rgb(var(--n-13-rgb) / 0) 72%); pointer-events: none"></div>
 
-<header style="position: sticky; top: 0; z-index: 200; background: rgba(10,10,10,0.62); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.08)">
+<header style="position: sticky; top: 0; z-index: 200; background: rgb(var(--n-1-rgb) / 0.62); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgb(var(--n-13-rgb) / 0.08)">
 <div class="wrap" style="height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px">
-<a href="index.html" style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; letter-spacing: -0.01em"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</a>
-<nav aria-label="Разделы главной" style="display: flex; gap: 28px; font-size: 14px; flex-wrap: wrap"><a href="#features" style="color: #B4B4B4">Возможности</a><a href="#live" style="color: #B4B4B4">Сейчас в эфире</a><a href="#pricing" style="color: #B4B4B4">Тарифы</a><a href="#faq" style="color: #B4B4B4">Вопросы</a></nav>
+<a href="index.html" style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; letter-spacing: -0.01em"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2" data-stroke="12"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2" data-fill="12"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2" data-fill="12"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F" data-fill="9"></rect></svg>StreOps</a>
+<nav aria-label="Разделы главной" style="display: flex; gap: 28px; font-size: 14px; flex-wrap: wrap"><a href="#features" style="color: var(--n-10)">Возможности</a><a href="#live" style="color: var(--n-10)">Сейчас в эфире</a><a href="#pricing" style="color: var(--n-10)">Тарифы</a><a href="#faq" style="color: var(--n-10)">Вопросы</a></nav>
 <a href="panel.html" class="btn-p" style="height: 40px; padding: 0 16px; font-size: 14px">Начать</a>
 </div>
 </header>
@@ -63,26 +64,26 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <h1 style="margin: 24px 0 0; font-size: clamp(44px, 6vw, 72px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 500">Пульт управления стримом</h1>
 <p class="lead">Один сервис вместо пяти вкладок. Бот отвечает на команды, модерация держит чат чистым, а метрики эфира всегда видны. Ты занимаешься стримом.</p>
 <div style="margin-top: 36px; display: flex; gap: 12px; flex-wrap: wrap"><a href="panel.html" class="btn-p">Подключить канал</a><a href="#pricing" class="btn-s">Посмотреть тарифы</a></div>
-<p style="margin: 20px 0 0; font-size: 13px; color: #8F8F8F">Twitch, VK Видео Live и YouTube · Настройка за 5 минут</p>
+<p style="margin: 20px 0 0; font-size: 13px; color: var(--n-9)">Twitch, VK Видео Live и YouTube · Настройка за 5 минут</p>
 </div>
 
-<div aria-label="Пример стрим-панели" role="img" style="position: relative; border-radius: 12px; padding: 20px; background: rgba(18,18,18,0.62); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 32px 80px -16px rgba(0,0,0,0.75)">
-<div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid #2A2A2A">
-<span style="display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; background: #D92D20; color: #FFFFFF; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: .08em"><span style="width: 6px; height: 6px; border-radius: 999px; background: #FFFFFF"></span>В ЭФИРЕ</span>
-<span class="mono" style="font-size: 13px; color: #B4B4B4">02:47:13</span>
+<div aria-label="Пример стрим-панели" role="img" style="position: relative; border-radius: 12px; padding: 20px; background: rgb(var(--n-2-rgb) / 0.62); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgb(var(--n-13-rgb) / 0.10); box-shadow: inset 0 1px 0 rgb(var(--n-13-rgb) / 0.08), 0 32px 80px -16px rgba(0,0,0,0.75)">
+<div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--n-5)">
+<span style="display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; background: var(--accent); color: var(--accent-on); border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: .08em"><span style="width: 6px; height: 6px; border-radius: 999px; background: var(--n-13)"></span>В ЭФИРЕ</span>
+<span class="mono" style="font-size: 13px; color: var(--n-10)">02:47:13</span>
 </div>
 <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 16px">
-<div class="card" style="padding: 14px"><p style="margin: 0; font-size: 12px; color: #8F8F8F">Зрители</p><p class="mono" style="margin: 6px 0 0; font-size: 24px; font-weight: 500">1 284</p><p class="mono" style="margin: 4px 0 0; font-size: 11px; color: #B4B4B4">↑ 12,4%</p></div>
-<div class="card" style="padding: 14px"><p style="margin: 0; font-size: 12px; color: #8F8F8F">Сообщений</p><p class="mono" style="margin: 6px 0 0; font-size: 24px; font-weight: 500">3 912</p><p class="mono" style="margin: 4px 0 0; font-size: 11px; color: #B4B4B4">↑ 8,1%</p></div>
-<div class="card" style="padding: 14px"><p style="margin: 0; font-size: 12px; color: #8F8F8F">Удалено</p><p class="mono" style="margin: 6px 0 0; font-size: 24px; font-weight: 500">37</p><p class="mono" style="margin: 4px 0 0; font-size: 11px; color: #B4B4B4">↓ 3,0%</p></div>
+<div class="card" style="padding: 14px"><p style="margin: 0; font-size: 12px; color: var(--n-9)">Зрители</p><p class="mono" style="margin: 6px 0 0; font-size: 24px; font-weight: 500">1 284</p><p class="mono" style="margin: 4px 0 0; font-size: 11px; color: var(--n-10)">↑ 12,4%</p></div>
+<div class="card" style="padding: 14px"><p style="margin: 0; font-size: 12px; color: var(--n-9)">Сообщений</p><p class="mono" style="margin: 6px 0 0; font-size: 24px; font-weight: 500">3 912</p><p class="mono" style="margin: 4px 0 0; font-size: 11px; color: var(--n-10)">↑ 8,1%</p></div>
+<div class="card" style="padding: 14px"><p style="margin: 0; font-size: 12px; color: var(--n-9)">Удалено</p><p class="mono" style="margin: 6px 0 0; font-size: 24px; font-weight: 500">37</p><p class="mono" style="margin: 4px 0 0; font-size: 11px; color: var(--n-10)">↓ 3,0%</p></div>
 </div>
 <div class="card" style="margin-top: 12px; padding: 14px; height: 120px; display: flex; align-items: flex-end; gap: 4px">
-<span style="flex: 1; height: 22%; background: #3A3A3A"></span><span style="flex: 1; height: 30%; background: #3A3A3A"></span><span style="flex: 1; height: 26%; background: #3A3A3A"></span><span style="flex: 1; height: 42%; background: #3A3A3A"></span><span style="flex: 1; height: 38%; background: #3A3A3A"></span><span style="flex: 1; height: 55%; background: #6E6E6E"></span><span style="flex: 1; height: 61%; background: #6E6E6E"></span><span style="flex: 1; height: 48%; background: #6E6E6E"></span><span style="flex: 1; height: 72%; background: #B4B4B4"></span><span style="flex: 1; height: 88%; background: #F2F2F2"></span><span style="flex: 1; height: 76%; background: #B4B4B4"></span><span style="flex: 1; height: 64%; background: #B4B4B4"></span>
+<span style="flex: 1; height: 22%; background: var(--n-6)"></span><span style="flex: 1; height: 30%; background: var(--n-6)"></span><span style="flex: 1; height: 26%; background: var(--n-6)"></span><span style="flex: 1; height: 42%; background: var(--n-6)"></span><span style="flex: 1; height: 38%; background: var(--n-6)"></span><span style="flex: 1; height: 55%; background: var(--n-8)"></span><span style="flex: 1; height: 61%; background: var(--n-8)"></span><span style="flex: 1; height: 48%; background: var(--n-8)"></span><span style="flex: 1; height: 72%; background: var(--n-10)"></span><span style="flex: 1; height: 88%; background: var(--n-12)"></span><span style="flex: 1; height: 76%; background: var(--n-10)"></span><span style="flex: 1; height: 64%; background: var(--n-10)"></span>
 </div>
 <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 13px; line-height: 18px">
-<div style="display: flex; gap: 8px"><span class="mono" style="color: #6E6E6E; font-size: 11px; line-height: 18px">21:46</span><span style="font-weight: 500">moroz_tv</span><span style="color: #DCDCDC">!дс</span></div>
-<div style="display: flex; gap: 8px; padding: 6px 8px; margin: 0 -8px; border-radius: 4px; background: rgba(255,255,255,0.04)"><span class="mono" style="color: #6E6E6E; font-size: 11px; line-height: 18px">21:46</span><span style="font-weight: 500; color: #B4B4B4">StreOps</span><span style="color: #DCDCDC">Сервер: discord.gg/kira · заходи, moroz_tv</span></div>
-<div style="display: flex; gap: 8px"><span class="mono" style="color: #6E6E6E; font-size: 11px; line-height: 18px">21:47</span><span style="font-weight: 500">lenta_ln</span><span style="color: #DCDCDC">!музыка Кино — Кукушка</span></div>
+<div style="display: flex; gap: 8px"><span class="mono" style="color: var(--n-8); font-size: 11px; line-height: 18px">21:46</span><span style="font-weight: 500">moroz_tv</span><span style="color: var(--n-11)">!дс</span></div>
+<div style="display: flex; gap: 8px; padding: 6px 8px; margin: 0 -8px; border-radius: 4px; background: rgb(var(--n-13-rgb) / 0.04)"><span class="mono" style="color: var(--n-8); font-size: 11px; line-height: 18px">21:46</span><span style="font-weight: 500; color: var(--n-10)">StreOps</span><span style="color: var(--n-11)">Сервер: discord.gg/kira · заходи, moroz_tv</span></div>
+<div style="display: flex; gap: 8px"><span class="mono" style="color: var(--n-8); font-size: 11px; line-height: 18px">21:47</span><span style="font-weight: 500">lenta_ln</span><span style="color: var(--n-11)">!музыка Кино — Кукушка</span></div>
 </div>
 </div>
 </section>
@@ -91,7 +92,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <p class="ov">Возможности</p>
 <h2 class="h2">Пять инструментов, одна панель</h2>
 <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 16px">
-<div class="card feat"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l6-6-6-6M12 19h8"></path></svg><h3>Чат-бот</h3><p>Команды с префиксом или без, кулдауны, права доступа и подстановки вроде <span class="mono" style="color: #F2F2F2">{user}</span> и <span class="mono" style="color: #F2F2F2">{uptime}</span>.</p></div>
+<div class="card feat"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l6-6-6-6M12 19h8"></path></svg><h3>Чат-бот</h3><p>Команды с префиксом или без, кулдауны, права доступа и подстановки вроде <span class="mono" style="color: var(--n-12)">{user}</span> и <span class="mono" style="color: var(--n-12)">{uptime}</span>.</p></div>
 <div class="card feat"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><h3>Модерация</h3><p>Фильтры ссылок, капса и спама. Баны и таймауты в один клик из чата, история всех действий модераторов.</p></div>
 <div class="card feat"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg><h3>Виджеты</h3><p>Алерты, цели, последние события и чат на экране. Ссылка для OBS, без плагинов.</p></div>
 <div class="card feat"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg><h3>Музыка</h3><p>Зрители заказывают треки командой. Очередь, лимиты на человека и пропуск трека модератором.</p></div>
@@ -109,14 +110,14 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <ul style="list-style: none; margin: 0; padding: 0; display: flex; gap: 16px; transition: transform 320ms cubic-bezier(.16,1,.3,1); transform: {{ trackX }}">
 <template data-for="streams" data-as="s">
 <li style="flex: none; width: 296px">
-<a href="#" style="display: block; border-radius: 12px; overflow: hidden; border: 1px solid #2A2A2A; background: #111111">
+<a href="#" style="display: block; border-radius: 12px; overflow: hidden; border: 1px solid var(--n-5); background: var(--s-2)">
 <div style="position: relative; height: 166px; background: {{ s.bg }}">
-<span style="position: absolute; left: 10px; top: 10px; display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; background: #D92D20; color: #FFFFFF; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: .08em"><span style="width: 6px; height: 6px; border-radius: 999px; background: #FFFFFF"></span>LIVE</span>
+<span style="position: absolute; left: 10px; top: 10px; display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; background: var(--accent); color: var(--accent-on); border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: .08em"><span style="width: 6px; height: 6px; border-radius: 999px; background: var(--n-13)"></span>LIVE</span>
 <span class="mono" style="position: absolute; right: 10px; bottom: 10px; display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; border-radius: 4px; background: rgba(0,0,0,0.72); font-size: 12px"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>{{ s.viewers }}</span>
 </div>
 <div style="display: flex; gap: 12px; padding: 14px">
-<span style="position: relative; flex: none; width: 36px; height: 36px; border-radius: 999px; background: {{ s.av }}; box-shadow: 0 0 0 2px #111111, 0 0 0 4px #D92D20"></span>
-<span style="min-width: 0"><span style="display: block; font-size: 15px; line-height: 20px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ s.title }}</span><span style="display: block; margin-top: 2px; font-size: 13px; line-height: 18px; color: #B4B4B4">{{ s.nick }}</span><span style="display: inline-block; margin-top: 8px; font-size: 12px; line-height: 16px; padding: 2px 8px; border: 1px solid #3A3A3A; border-radius: 4px; color: #B4B4B4">{{ s.cat }}</span></span>
+<span style="position: relative; flex: none; width: 36px; height: 36px; border-radius: 999px; background: {{ s.av }}; box-shadow: 0 0 0 2px var(--s-2), 0 0 0 4px var(--accent)"></span>
+<span style="min-width: 0"><span style="display: block; font-size: 15px; line-height: 20px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ s.title }}</span><span style="display: block; margin-top: 2px; font-size: 13px; line-height: 18px; color: var(--n-10)">{{ s.nick }}</span><span style="display: inline-block; margin-top: 8px; font-size: 12px; line-height: 16px; padding: 2px 8px; border: 1px solid var(--n-6); border-radius: 4px; color: var(--n-10)">{{ s.cat }}</span></span>
 </div>
 </a>
 </li>
@@ -132,8 +133,8 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 16px; align-items: stretch">
 
 <div class="card" style="padding: 28px; display: flex; flex-direction: column; gap: 20px">
-<div><h3 style="margin: 0; font-size: 20px; font-weight: 600">Продвинутая</h3><p style="margin: 6px 0 0; font-size: 14px; color: #8F8F8F">Для старта: бот и базовая модерация</p></div>
-<p style="margin: 0; display: flex; align-items: baseline; gap: 6px"><span class="mono" style="font-size: 40px; line-height: 44px; font-weight: 500; letter-spacing: -0.02em">299&nbsp;₽</span><span style="font-size: 14px; color: #8F8F8F">в месяц</span></p>
+<div><h3 style="margin: 0; font-size: 20px; font-weight: 600">Продвинутая</h3><p style="margin: 6px 0 0; font-size: 14px; color: var(--n-9)">Для старта: бот и базовая модерация</p></div>
+<p style="margin: 0; display: flex; align-items: baseline; gap: 6px"><span class="mono" style="font-size: 40px; line-height: 44px; font-weight: 500; letter-spacing: -0.02em">299&nbsp;₽</span><span style="font-size: 14px; color: var(--n-9)">в месяц</span></p>
 <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
 <li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>До 30 команд чат-бота</li>
 <li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Автомодерация: ссылки, капс, спам</li>
@@ -144,10 +145,10 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <a href="panel.html" class="btn-s" style="margin-top: auto">Выбрать «Продвинутую»</a>
 </div>
 
-<div style="position: relative; padding: 27px; display: flex; flex-direction: column; gap: 20px; border-radius: 8px; border: 2px solid #F2F2F2; background: rgba(18,18,18,0.62); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08)">
-<span style="position: absolute; top: -12px; left: 26px; height: 24px; padding: 0 10px; display: inline-flex; align-items: center; gap: 6px; border-radius: 4px; background: #F2F2F2; color: #0A0A0A; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg>Рекомендуем</span>
-<div><h3 style="margin: 0; font-size: 20px; font-weight: 600">Про</h3><p style="margin: 6px 0 0; font-size: 14px; color: #B4B4B4">Для регулярных стримов с активным чатом</p></div>
-<p style="margin: 0; display: flex; align-items: baseline; gap: 6px"><span class="mono" style="font-size: 40px; line-height: 44px; font-weight: 500; letter-spacing: -0.02em">499&nbsp;₽</span><span style="font-size: 14px; color: #8F8F8F">в месяц</span></p>
+<div style="position: relative; padding: 27px; display: flex; flex-direction: column; gap: 20px; border-radius: 8px; border: 2px solid var(--n-12); background: rgb(var(--n-2-rgb) / 0.62); box-shadow: inset 0 1px 0 rgb(var(--n-13-rgb) / 0.08)">
+<span style="position: absolute; top: -12px; left: 26px; height: 24px; padding: 0 10px; display: inline-flex; align-items: center; gap: 6px; border-radius: 4px; background: var(--n-12); color: var(--n-1); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg>Рекомендуем</span>
+<div><h3 style="margin: 0; font-size: 20px; font-weight: 600">Про</h3><p style="margin: 6px 0 0; font-size: 14px; color: var(--n-10)">Для регулярных стримов с активным чатом</p></div>
+<p style="margin: 0; display: flex; align-items: baseline; gap: 6px"><span class="mono" style="font-size: 40px; line-height: 44px; font-weight: 500; letter-spacing: -0.02em">499&nbsp;₽</span><span style="font-size: 14px; color: var(--n-9)">в месяц</span></p>
 <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
 <li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Всё из «Продвинутой»</li>
 <li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Команды без лимита</li>
@@ -159,8 +160,8 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 </div>
 
 <div class="card" style="padding: 28px; display: flex; flex-direction: column; gap: 20px">
-<div><h3 style="margin: 0; font-size: 20px; font-weight: 600">Максимум</h3><p style="margin: 6px 0 0; font-size: 14px; color: #8F8F8F">Для команды модераторов и больших каналов</p></div>
-<p style="margin: 0; display: flex; align-items: baseline; gap: 6px"><span class="mono" style="font-size: 40px; line-height: 44px; font-weight: 500; letter-spacing: -0.02em">967&nbsp;₽</span><span style="font-size: 14px; color: #8F8F8F">в месяц</span></p>
+<div><h3 style="margin: 0; font-size: 20px; font-weight: 600">Максимум</h3><p style="margin: 6px 0 0; font-size: 14px; color: var(--n-9)">Для команды модераторов и больших каналов</p></div>
+<p style="margin: 0; display: flex; align-items: baseline; gap: 6px"><span class="mono" style="font-size: 40px; line-height: 44px; font-weight: 500; letter-spacing: -0.02em">967&nbsp;₽</span><span style="font-size: 14px; color: var(--n-9)">в месяц</span></p>
 <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
 <li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Всё из «Про»</li>
 <li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Доступ к панели для модераторов</li>
@@ -172,17 +173,17 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 </div>
 </div>
 
-<div style="margin-top: 48px; overflow-x: auto; border: 1px solid #2A2A2A; border-radius: 8px">
+<div style="margin-top: 48px; overflow-x: auto; border: 1px solid var(--n-5); border-radius: 8px">
 <table class="ct">
 <caption style="text-align: left; padding: 16px; font-size: 15px; font-weight: 600; caption-side: top">Сравнение тарифов</caption>
 <thead><tr><th scope="col" style="width: 34%"></th><th scope="col">Продвинутая</th><th scope="col">Про</th><th scope="col">Максимум</th></tr></thead>
 <tbody>
-<tr><th scope="row" style="font-weight: 400; color: #B4B4B4; padding: 12px 16px; border-top: 1px solid #1F1F1F">Команды чат-бота</th><td class="mono">30</td><td class="mono v">∞</td><td class="mono v">∞</td></tr>
-<tr><th scope="row" style="font-weight: 400; color: #B4B4B4; padding: 12px 16px; border-top: 1px solid #1F1F1F">Виджеты</th><td class="mono">3</td><td class="mono v">10</td><td class="mono v">∞</td></tr>
-<tr><th scope="row" style="font-weight: 400; color: #B4B4B4; padding: 12px 16px; border-top: 1px solid #1F1F1F">Музыка по заказу</th><td>— нет</td><td class="v">✓ есть</td><td class="v">✓ есть</td></tr>
-<tr><th scope="row" style="font-weight: 400; color: #B4B4B4; padding: 12px 16px; border-top: 1px solid #1F1F1F">История аналитики</th><td class="mono">7 д</td><td class="mono v">90 д</td><td class="v">без срока</td></tr>
-<tr><th scope="row" style="font-weight: 400; color: #B4B4B4; padding: 12px 16px; border-top: 1px solid #1F1F1F">Платформы</th><td class="mono">1</td><td class="mono v">3</td><td class="mono v">3</td></tr>
-<tr><th scope="row" style="font-weight: 400; color: #B4B4B4; padding: 12px 16px; border-top: 1px solid #1F1F1F">Доступ для модераторов</th><td>— нет</td><td>— нет</td><td class="v">✓ есть</td></tr>
+<tr><th scope="row" style="font-weight: 400; color: var(--n-10); padding: 12px 16px; border-top: 1px solid var(--n-4)">Команды чат-бота</th><td class="mono">30</td><td class="mono v">∞</td><td class="mono v">∞</td></tr>
+<tr><th scope="row" style="font-weight: 400; color: var(--n-10); padding: 12px 16px; border-top: 1px solid var(--n-4)">Виджеты</th><td class="mono">3</td><td class="mono v">10</td><td class="mono v">∞</td></tr>
+<tr><th scope="row" style="font-weight: 400; color: var(--n-10); padding: 12px 16px; border-top: 1px solid var(--n-4)">Музыка по заказу</th><td>— нет</td><td class="v">✓ есть</td><td class="v">✓ есть</td></tr>
+<tr><th scope="row" style="font-weight: 400; color: var(--n-10); padding: 12px 16px; border-top: 1px solid var(--n-4)">История аналитики</th><td class="mono">7 д</td><td class="mono v">90 д</td><td class="v">без срока</td></tr>
+<tr><th scope="row" style="font-weight: 400; color: var(--n-10); padding: 12px 16px; border-top: 1px solid var(--n-4)">Платформы</th><td class="mono">1</td><td class="mono v">3</td><td class="mono v">3</td></tr>
+<tr><th scope="row" style="font-weight: 400; color: var(--n-10); padding: 12px 16px; border-top: 1px solid var(--n-4)">Доступ для модераторов</th><td>— нет</td><td>— нет</td><td class="v">✓ есть</td></tr>
 </tbody>
 </table>
 </div>
@@ -190,20 +191,20 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 
 <section id="faq" class="wrap" style="padding-top: 48px; padding-bottom: 112px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 48px">
 <div><p class="ov">Вопросы</p><h2 class="h2">Коротко о главном</h2><p class="lead">Не нашёл ответа — напиши в поддержку, отвечаем в течение дня.</p></div>
-<div style="border-top: 1px solid #2A2A2A">
+<div style="border-top: 1px solid var(--n-5)">
 <template data-for="faq" data-as="q">
-<div style="border-bottom: 1px solid #2A2A2A">
+<div style="border-bottom: 1px solid var(--n-5)">
 <h3 style="margin: 0"><button type="button" class="faq-b" aria-expanded="{{ q.expanded }}" onClick="{{ q.toggle }}">{{ q.q }}<svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; transition: transform 240ms cubic-bezier(.2,0,0,1); transform: {{ q.rot }}"><path d="M6 9l6 6 6-6"></path></svg></button></h3>
-<template data-if="q.open"><p style="margin: 0; padding: 0 40px 20px 0; font-size: 15px; line-height: 22px; color: #B4B4B4">{{ q.a }}</p></template>
+<template data-if="q.open"><p style="margin: 0; padding: 0 40px 20px 0; font-size: 15px; line-height: 22px; color: var(--n-10)">{{ q.a }}</p></template>
 </div>
 </template>
 </div>
 </section>
 </main>
 
-<footer style="border-top: 1px solid #2A2A2A">
+<footer style="border-top: 1px solid var(--n-5)">
 <div class="wrap foot" style="padding-top: 48px; padding-bottom: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px">
-<div><span style="display: flex; align-items: center; gap: 10px; font-weight: 600"><svg width="20" height="20" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</span><p class="mono" style="margin: 12px 0 0; font-size: 12px; color: #6E6E6E">streops.ru · © 2026</p></div>
+<div><span style="display: flex; align-items: center; gap: 10px; font-weight: 600"><svg width="20" height="20" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2" data-stroke="12"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2" data-fill="12"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2" data-fill="12"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F" data-fill="9"></rect></svg>StreOps</span><p class="mono" style="margin: 12px 0 0; font-size: 12px; color: var(--n-8)">streops.ru · © 2026</p></div>
 <nav aria-label="Продукт" style="display: flex; flex-direction: column"><a href="#features">Возможности</a><a href="#pricing">Тарифы</a><a href="panel.html">Стрим-панель</a></nav>
 <nav aria-label="Помощь" style="display: flex; flex-direction: column"><a href="#faq">Вопросы</a><a href="#">Поддержка</a><a href="#">Статус сервиса</a></nav>
 <nav aria-label="Документы" style="display: flex; flex-direction: column"><a href="#">Оферта</a><a href="#">Политика конфиденциальности</a></nav>
@@ -217,12 +218,12 @@ class Component extends DCLogic {
   constructor(props) { super(props); this.state = { slide: 0, open: 0 }; }
   renderVals() {
     const streams = [
-      { nick: 'moroz_tv', title: 'Ночной спидран Hollow Knight', cat: 'Игры', viewers: '2 340', bg: 'radial-gradient(160px 100px at 30% 40%, #8F8F8F, transparent 70%), linear-gradient(135deg, #2A2A2A, #0A0A0A)', av: 'linear-gradient(135deg, #DCDCDC, #525252)' },
-      { nick: 'lenta_ln', title: 'Рисую обложку для альбома', cat: 'Творчество', viewers: '418', bg: 'linear-gradient(115deg, #111111 30%, #6E6E6E 50%, #111111 70%)', av: 'linear-gradient(135deg, #B4B4B4, #2A2A2A)' },
-      { nick: 'kira_stream', title: 'Ранкед до утра, заходите', cat: 'Counter-Strike 2', viewers: '5 120', bg: 'radial-gradient(200px 120px at 75% 70%, #B4B4B4, transparent 70%), #171717', av: 'linear-gradient(135deg, #F2F2F2, #6E6E6E)' },
-      { nick: 'tixiy_bard', title: 'Играю ваши заявки на гитаре', cat: 'Музыка', viewers: '761', bg: 'repeating-linear-gradient(90deg, #1F1F1F 0 2px, #111111 2px 14px)', av: 'linear-gradient(135deg, #8F8F8F, #1F1F1F)' },
-      { nick: 'sever_ops', title: 'Разбираем Rust с нуля', cat: 'Программирование', viewers: '1 093', bg: 'radial-gradient(120px 120px at 50% 50%, #525252, transparent 70%), #0A0A0A', av: 'linear-gradient(135deg, #DCDCDC, #3A3A3A)' },
-      { nick: 'polyana_live', title: 'Утренний кофе и разговоры', cat: 'Общение', viewers: '286', bg: 'linear-gradient(180deg, #3A3A3A, #0A0A0A)', av: 'linear-gradient(135deg, #B4B4B4, #525252)' }
+      { nick: 'moroz_tv', title: 'Ночной спидран Hollow Knight', cat: 'Игры', viewers: '2 340', bg: 'radial-gradient(160px 100px at 30% 40%, var(--n-9), transparent 70%), linear-gradient(135deg, var(--n-5), var(--n-1))', av: 'linear-gradient(135deg, var(--n-11), var(--n-7))' },
+      { nick: 'lenta_ln', title: 'Рисую обложку для альбома', cat: 'Творчество', viewers: '418', bg: 'linear-gradient(115deg, var(--s-2) 30%, var(--n-8) 50%, var(--s-2) 70%)', av: 'linear-gradient(135deg, var(--n-10), var(--n-5))' },
+      { nick: 'kira_stream', title: 'Ранкед до утра, заходите', cat: 'Counter-Strike 2', viewers: '5 120', bg: 'radial-gradient(200px 120px at 75% 70%, var(--n-10), transparent 70%), var(--s-3)', av: 'linear-gradient(135deg, var(--n-12), var(--n-8))' },
+      { nick: 'tixiy_bard', title: 'Играю ваши заявки на гитаре', cat: 'Музыка', viewers: '761', bg: 'repeating-linear-gradient(90deg, var(--n-4) 0 2px, var(--s-2) 2px 14px)', av: 'linear-gradient(135deg, var(--n-9), var(--n-4))' },
+      { nick: 'sever_ops', title: 'Разбираем Rust с нуля', cat: 'Программирование', viewers: '1 093', bg: 'radial-gradient(120px 120px at 50% 50%, var(--n-7), transparent 70%), var(--n-1)', av: 'linear-gradient(135deg, var(--n-11), var(--n-6))' },
+      { nick: 'polyana_live', title: 'Утренний кофе и разговоры', cat: 'Общение', viewers: '286', bg: 'linear-gradient(180deg, var(--n-6), var(--n-1))', av: 'linear-gradient(135deg, var(--n-10), var(--n-7))' }
     ];
     const max = streams.length - 3;
     const slide = Math.min(this.state.slide, max);
