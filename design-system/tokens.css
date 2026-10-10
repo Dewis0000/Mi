@@ -1,0 +1,292 @@
+/* StreOps Design System v1.0 — токены.
+   Тёмная тема — основная, светлая — вторичная.
+   --user-* переопределяются в рантайме (см. theme.ts), остальное заморожено. */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Нейтральная шкала N0–N13 */
+  --n-0: #000000;
+  --n-1: #0A0A0A;
+  --n-2: #111111;
+  --n-3: #171717;
+  --n-4: #1F1F1F;
+  --n-5: #2A2A2A;
+  --n-6: #3A3A3A;
+  --n-7: #525252;
+  --n-8: #6E6E6E;
+  --n-9: #8F8F8F;
+  --n-10: #B4B4B4;
+  --n-11: #DCDCDC;
+  --n-12: #F2F2F2;
+  --n-13: #FFFFFF;
+
+  /* Фоны */
+  --bg-void: var(--n-0);
+  --bg-page: var(--n-1);
+  --bg-surface: var(--n-2);
+  --bg-raised: var(--n-3);
+  --bg-overlay: var(--n-4);
+
+  /* Наложения состояний */
+  --state-hover: rgba(255, 255, 255, 0.04);
+  --state-active: rgba(255, 255, 255, 0.08);
+  --state-selected: rgba(255, 255, 255, 0.10);
+
+  /* Границы */
+  --border-subtle: var(--n-5);
+  --border-default: var(--n-6);
+  --border-strong: var(--n-8);
+
+  /* Текст */
+  --text-primary: var(--n-12);
+  --text-secondary: var(--n-10);
+  --text-muted: var(--n-9);
+  --text-disabled: var(--n-7);
+  --text-on-inverse: var(--n-1);
+
+  /* Инверсная заливка (primary) */
+  --fill-inverse: var(--n-13);
+  --fill-inverse-hover: var(--n-11);
+  --fill-inverse-active: var(--n-10);
+
+  /* Фокус: двойное кольцо — тёмное внутреннее + светлое внешнее */
+  --focus-color: var(--n-13);
+  --focus-gap: var(--n-1);
+  --focus-ring: 0 0 0 2px var(--focus-gap), 0 0 0 4px var(--focus-color);
+
+  /* Единственный акцент: LIVE и необратимые действия */
+  --live: #D92D20;
+  --live-hover: #C42B1C;
+  --live-text: #FF6369;
+  --live-border: rgba(255, 99, 105, 0.40);
+  --live-on: #FFFFFF;
+
+  /* Семантика без цвета: яркость + рисунок границы + иконка */
+  --status-success-border: 1px solid var(--n-8);
+  --status-success-bg: rgba(255, 255, 255, 0.04);
+  --status-warning-border: 1px dashed var(--n-10);
+  --status-warning-bg: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 7px);
+  --status-error-border: 2px solid var(--n-12);
+  --status-error-bg: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0 2px, transparent 2px 6px);
+  --status-info-border: 1px solid var(--n-6);
+  --status-info-bg: transparent;
+
+  /* Стекло: ambient / raised / overlay */
+  --glass-ambient-bg: rgba(255, 255, 255, 0.03);
+  --glass-ambient-blur: 12px;
+  --glass-ambient-border: rgba(255, 255, 255, 0.06);
+  --glass-ambient-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --glass-raised-bg: rgba(18, 18, 18, calc(0.62 + var(--user-glass-boost)));
+  --glass-raised-blur: 24px;
+  --glass-raised-border: rgba(255, 255, 255, 0.10);
+  --glass-raised-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --glass-overlay-bg: rgba(14, 14, 14, calc(0.84 + var(--user-glass-boost)));
+  --glass-overlay-blur: 40px;
+  --glass-overlay-border: rgba(255, 255, 255, 0.14);
+  --glass-overlay-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+
+  /* Тени — только для того, что парит */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.50);
+  --shadow-2: 0 4px 12px -2px rgba(0, 0, 0, 0.50);
+  --shadow-3: 0 12px 32px -8px rgba(0, 0, 0, 0.60);
+  --shadow-4: 0 32px 80px -16px rgba(0, 0, 0, 0.75);
+  --scrim: rgba(0, 0, 0, 0.64);
+
+  --grain-opacity: 0.04;
+
+  /* ===== Пользовательский слой (переопределяемый) ===== */
+  --user-bg-color: var(--n-1);
+  --user-bg-image: none;
+  --user-bg-blur: 0px;
+  --user-bg-dim: 0;
+  --user-bg-dim-min: 0;
+  --user-gradient: none;
+  --user-tint: transparent;
+  --user-effect: none;
+  --user-glass-boost: 0;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-void: var(--n-0);
+  --bg-page: var(--n-12);
+  --bg-surface: var(--n-13);
+  --bg-raised: var(--n-13);
+  --bg-overlay: var(--n-13);
+
+  --state-hover: rgba(0, 0, 0, 0.04);
+  --state-active: rgba(0, 0, 0, 0.07);
+  --state-selected: rgba(0, 0, 0, 0.08);
+
+  --border-subtle: var(--n-11);
+  --border-default: var(--n-10);
+  --border-strong: var(--n-8);
+
+  --text-primary: var(--n-1);
+  --text-secondary: var(--n-7);
+  --text-muted: var(--n-8);
+  --text-disabled: var(--n-10);
+  --text-on-inverse: var(--n-12);
+
+  --fill-inverse: var(--n-1);
+  --fill-inverse-hover: var(--n-5);
+  --fill-inverse-active: var(--n-6);
+
+  --focus-color: var(--n-0);
+  --focus-gap: var(--n-12);
+
+  --live: #D92D20;
+  --live-hover: #B42318;
+  --live-text: #C42B1C;
+  --live-border: rgba(196, 43, 28, 0.40);
+
+  --status-success-border: 1px solid var(--n-8);
+  --status-success-bg: rgba(0, 0, 0, 0.03);
+  --status-warning-border: 1px dashed var(--n-7);
+  --status-warning-bg: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.05) 0 1px, transparent 1px 7px);
+  --status-error-border: 2px solid var(--n-1);
+  --status-error-bg: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.08) 0 2px, transparent 2px 6px);
+  --status-info-border: 1px solid var(--n-10);
+
+  --glass-ambient-bg: rgba(255, 255, 255, 0.45);
+  --glass-ambient-border: rgba(0, 0, 0, 0.06);
+  --glass-ambient-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.70);
+  --glass-raised-bg: rgba(255, 255, 255, calc(0.72 + var(--user-glass-boost)));
+  --glass-raised-border: rgba(0, 0, 0, 0.08);
+  --glass-raised-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.90);
+  --glass-overlay-bg: rgba(255, 255, 255, calc(0.90 + var(--user-glass-boost)));
+  --glass-overlay-border: rgba(0, 0, 0, 0.10);
+  --glass-overlay-highlight: inset 0 1px 0 rgba(255, 255, 255, 1);
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-2: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+  --shadow-3: 0 12px 32px -8px rgba(0, 0, 0, 0.12);
+  --shadow-4: 0 32px 80px -16px rgba(0, 0, 0, 0.18);
+  --scrim: rgba(10, 10, 10, 0.40);
+
+  --grain-opacity: 0.03;
+  --user-bg-color: var(--n-12);
+}
+
+/* Темо-независимые токены */
+:root {
+  --font-sans: 'Onest', 'Golos Text', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+
+  --radius-0: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  --border-w-1: 1px;
+  --border-w-2: 2px;
+  --icon-stroke: 1.5;
+
+  --dur-instant: 0ms;
+  --dur-fast: 80ms;
+  --dur-quick: 120ms;
+  --dur-base: 180ms;
+  --dur-moderate: 240ms;
+  --dur-slow: 320ms;
+  --dur-deliberate: 480ms;
+  --dur-shimmer: 1600ms;
+  --dur-pulse: 2000ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  --z-decor: -1;
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 100;
+  --z-header: 200;
+  --z-dropdown: 300;
+  --z-drawer: 400;
+  --z-modal: 500;
+  --z-toast: 600;
+  --z-tooltip: 700;
+  --z-skiplink: 900;
+
+  --header-h: 64px;
+  --sidebar-w: 248px;
+  --sidebar-w-collapsed: 64px;
+  --chat-w: 360px;
+  --drawer-w: 480px;
+}
+
+@media (max-width: 639px) {
+  :root { --header-h: 56px; }
+}
+
+/* Табличные цифры для всей статистики */
+.num,
+[data-num] {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Фокус — только клавиатурный */
+:focus { outline: none; }
+:focus-visible { box-shadow: var(--focus-ring); }
+
+/* Слой пользовательского фона */
+.user-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-decor);
+  pointer-events: none;
+  contain: strict;
+  background-color: var(--user-bg-color);
+}
+.user-backdrop__image {
+  position: absolute;
+  inset: calc(var(--user-bg-blur) * -2);
+  background: var(--user-bg-image) center / cover no-repeat;
+  filter: blur(var(--user-bg-blur));
+}
+.user-backdrop__gradient { position: absolute; inset: 0; background: var(--user-gradient); }
+.user-backdrop__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, max(var(--user-bg-dim), var(--user-bg-dim-min)));
+}
+
+/* Фолбэк для стекла */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root {
+    --glass-ambient-bg: var(--bg-page);
+    --glass-raised-bg: var(--bg-surface);
+    --glass-overlay-bg: var(--bg-overlay);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --glass-ambient-bg: var(--bg-page);
+    --glass-raised-bg: var(--bg-surface);
+    --glass-overlay-bg: var(--bg-overlay);
+  }
+}
+
+/* Уменьшенное движение */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 120ms;
+    --dur-moderate: 120ms;
+    --dur-slow: 120ms;
+    --dur-deliberate: 120ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+  .user-effects { display: none; }
+}
