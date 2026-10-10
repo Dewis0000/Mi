@@ -30,7 +30,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 .msg{position:relative;display:flex;gap:8px;padding:6px 16px;font-size:13px;line-height:19px}
 .msg:hover{background:rgba(255,255,255,.04)}
 .acts{display:flex;opacity:0;pointer-events:none;position:absolute;right:12px;top:2px;gap:2px;padding:2px;border-radius:6px;background:#1F1F1F;border:1px solid rgba(255,255,255,.14)}
-.msg:hover .acts,.msg:focus-within .acts,.msg[data-sel] .acts{opacity:1;pointer-events:auto}
+.msg:hover .acts,.msg:focus-within .acts{opacity:1;pointer-events:auto}
+@media (hover: none){.msg[data-sel] .acts{opacity:1;pointer-events:auto}}
 .act{width:28px;height:28px;border:0;border-radius:4px;background:transparent;color:#B4B4B4;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
 .act:hover{background:rgba(255,255,255,.08);color:#F2F2F2}
 .act.d:hover{color:#FF6369}
@@ -43,6 +44,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 .qc:hover{background:#171717;border-color:#3A3A3A}
 .empty{margin:16px 0 0;padding:20px 16px;border:1px dashed #2A2A2A;border-radius:8px;font-size:14px;line-height:20px;color:#8F8F8F}
 .chat{height:860px}
+@media (max-width: 560px){.xo{visibility:hidden}}
 @media (max-width: 700px){.chat{height:600px}.hdr{height:auto!important;padding:10px 16px!important}.wrap{padding:16px!important}}
 </style>
 </helmet>
@@ -84,7 +86,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 </sc-if>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px" aria-label="Метрики" role="group">
-<sc-for list="{{ metrics }}" as="k" hint-placeholder-count="4"><div class="card met"><p style="margin: 0; font-size: 13px; color: #8F8F8F">{{ k.label }}</p><p class="mono met-v">{{ k.value }}</p><p class="met-c">{{ k.caption }}</p></div></sc-for>
+<sc-for list="{{ metrics }}" as="k" hint-placeholder-count="4"><div class="card met" title="{{ k.title }}"><p style="margin: 0; font-size: 13px; color: #8F8F8F">{{ k.label }}</p><p class="mono met-v">{{ k.value }}</p><p class="met-c">{{ k.caption }}</p></div></sc-for>
 </div>
 
 <section class="card" style="padding: 24px" aria-labelledby="chart-t">
@@ -118,8 +120,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 </div>
 </div>
 </div>
-<div class="mono" aria-hidden="true" style="margin-top: 8px; margin-left: 48px; display: flex; justify-content: space-between; font-size: 11px; color: #8F8F8F"><sc-for list="{{ chart.xs }}" as="x" hint-placeholder-count="7"><span>{{ x.t }}</span></sc-for></div>
-<table class="sr"><caption>Сообщения и команды в чате по 10 минут за последние 3 часа</caption><thead><tr><th scope="col">Время</th><th scope="col">Сообщений</th><th scope="col">Команд</th></tr></thead><tbody><sc-for list="{{ chart.rows }}" as="r" hint-placeholder-count="3"><tr><td>{{ r.t }}</td><td>{{ r.m }}</td><td>{{ r.c }}</td></tr></sc-for></tbody></table>
+<div class="mono" aria-hidden="true" style="margin-top: 8px; margin-left: 48px; display: flex; justify-content: space-between; font-size: 11px; color: #8F8F8F"><sc-for list="{{ chart.xs }}" as="x" hint-placeholder-count="7"><span class="{{ x.cls }}">{{ x.t }}</span></sc-for></div>
+<div class="sr"><table><caption>Сообщения и команды в чате по 10 минут за последние 3 часа</caption><thead><tr><th scope="col">Время</th><th scope="col">Сообщений</th><th scope="col">Команд</th></tr></thead><tbody><sc-for list="{{ chart.rows }}" as="r" hint-placeholder-count="3"><tr><td>{{ r.t }}</td><td>{{ r.m }}</td><td>{{ r.c }}</td></tr></sc-for></tbody></table></div>
 </section>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 24px">
@@ -170,7 +172,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 <div class="msg" style="{{ m.rowStyle }}" data-sel="{{ m.sel }}" onClick="{{ m.select }}">
 <span class="mono" style="font-size: 11px; color: #6E6E6E; flex: none">{{ m.time }}</span>
 <sc-if value="{{ m.hasRole }}" hint-placeholder-val="{{ false }}"><span class="role" role="img" title="{{ m.roleTitle }}" aria-label="{{ m.roleTitle }}"><svg class="ic" width="10" height="10" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ m.roleD }}"></path></svg></span></sc-if>
-<span style="min-width: 0; overflow-wrap: anywhere"><span style="font-weight: 500; color: {{ m.nameColor }}">{{ m.name }}</span> <span style="{{ m.textStyle }}">{{ m.text }}</span><sc-if value="{{ m.hasTag }}" hint-placeholder-val="{{ false }}"><span class="mtag">{{ m.tag }}</span></sc-if></span>
+<span style="min-width: 0; overflow-wrap: anywhere"><span style="font-weight: 500; color: {{ m.nameColor }}">{{ m.name }}</span> <span style="{{ m.textStyle }}">{{ m.text }}</span><sc-if value="{{ m.hasTag }}" hint-placeholder-val="{{ false }}"> <span class="mtag">{{ m.tag }}</span></sc-if></span>
 <sc-if value="{{ m.canMod }}" hint-placeholder-val="{{ false }}"><span class="acts">
 <button type="button" class="act" aria-label="{{ m.replyLabel }}" title="Ответить" onClick="{{ m.reply }}"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14L4 9l5-5M4 9h11a5 5 0 0 1 0 10h-1"></path></svg></button>
 <sc-if value="{{ m.canDelete }}" hint-placeholder-val="{{ true }}"><button type="button" class="act" aria-label="{{ m.delLabel }}" title="Удалить сообщение" onClick="{{ m.del }}" disabled="{{ m.busy }}"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"></path></svg></button></sc-if>
@@ -495,7 +497,7 @@ class Component extends DCLogic {
       mPath: b ? line('m') : 'M0 220', cPath: b ? line('c') : 'M0 220',
       hasNote: !b || max === 0,
       note: !d ? (this.state.dashErr ? 'Не удалось загрузить: ' + this.state.dashErr : 'Загрузка…') : 'За последние 3 часа в чате не было сообщений. График оживёт, как только зрители начнут писать.',
-      xs: [0, 1, 2, 3, 4, 5, 6].map((k) => ({ t: !d ? '' : k === 6 ? 'сейчас' : StreAPI.fmtTime(from + k * 1800) })),
+      xs: [0, 1, 2, 3, 4, 5, 6].map((k) => ({ cls: k % 2 ? 'xo' : '', t: !d ? '' : k === 6 ? 'сейчас' : StreAPI.fmtTime(from + k * 1800) })),
       hits: b ? b.map((x, i) => ({ enter: () => { if (this.state.hover !== i) this.setState({ hover: i }); } })) : [],
       rows: b ? b.map((x, i) => ({ t: range(i), m: x.m, c: x.c })) : [],
       label: b ? 'График активности чата за 3 часа: всего ' + b.reduce((a, x) => a + x.m, 0) + ' сообщений, из них ' + b.reduce((a, x) => a + x.c, 0) + ' команд. Стрелки влево и вправо показывают значения по 10 минут.' : 'График активности чата загружается',
@@ -645,7 +647,7 @@ class Component extends DCLogic {
       { label: 'Сообщений в чате', value: val('messages'), caption: period },
       { label: 'Зрителей в чате', value: val('chatters'), caption: 'писали в чат ' + period },
       { label: 'Новых фолловеров', value: val('follows'), caption: period },
-      { label: 'Удалено и наказано', value: val('deleted'), caption: 'удаления, предупреждения, таймауты и баны ' + period },
+      { label: 'Удалено и наказано', value: val('deleted'), caption: period, title: 'Удаления, предупреждения, таймауты и баны' },
     ];
 
     const events = d ? d.events.map((e) => this.eventView(e)) : [];

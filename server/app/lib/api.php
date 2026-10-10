@@ -529,13 +529,13 @@ function api_dispatch(string $r): never {
             foreach ($subs as $s) $byStatus[$s['status']] = ($byStatus[$s['status']] ?? 0) + 1;
             json_out(['ok' => true,
                 'users' => (int)db_one('SELECT COUNT(*) c FROM users')['c'],
-                'paid' => (int)db_one("SELECT COUNT(*) c FROM users WHERE plan <> 'free' AND plan_until > ?", [now()])['c'],
+                'paid' => (int)db_one("SELECT COUNT(*) c FROM users WHERE plan <> 'free' AND (plan_until = 0 OR plan_until > ?)", [now()])['c'],
                 'botChannels' => (int)db_one('SELECT COUNT(*) c FROM users WHERE bot_enabled = 1')['c'],
                 'live' => (int)db_one('SELECT COUNT(*) c FROM streams WHERE live = 1')['c'],
                 'balances' => (int)db_one('SELECT COALESCE(SUM(balance),0) s FROM users')['s'],
                 'income30' => -(int)db_one("SELECT COALESCE(SUM(amount),0) s FROM transactions WHERE kind = 'plan' AND created_at > ?", [now() - 30 * 86400])['s'],
                 'bot' => $b ? ['login' => $b['login'], 'ownApp' => !empty($b['own_app'])] : null,
-                'eventsub' => ['total' => count($subs), 'byStatus' => $byStatus],
+                'eventsub' => ['total' => count($subs), 'byStatus' => (object)$byStatus],
                 'cronLast' => (int)(kv_get('cron_last') ?? 0),
                 'config' => ['appUrl' => base_url(), 'youtube' => (bool)cfg('YOUTUBE_API_KEY'), 'da' => (bool)cfg('DA_CLIENT_ID'), 'faceit' => (bool)cfg('FACEIT_API_KEY')]]);
         }

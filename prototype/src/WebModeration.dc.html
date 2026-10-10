@@ -332,8 +332,8 @@ const MOD_TABS = [['analytics', 'Аналитика'], ['filters', 'Фильтр
 // Порядок — как в moderate() на сервере: срабатывает первый подходящий фильтр.
 const MOD_FKEYS = ['threat', 'tox', 'words', 'bots', 'links', 'promo', 'personal', 'zalgo', 'caps', 'flood', 'mentions', 'long', 'spam', 'newacc'];
 const MOD_FMETA = {
-  threat: { name: 'Угрозы', dict: true, sens: ['«убью тебя», «kys»', 'плюс «сдохни», «тебе конец»', 'плюс «знаю, где ты живёшь»', 'плюс «ответишь за это»'] },
-  tox: { name: 'Оскорбления', dict: true, sens: ['только самые грубые слова', 'плюс «дебил», «урод», «мразь»', 'плюс «тупой», «лох», «клоун»', 'плюс «удали игру», «позорище»'] },
+  threat: { name: 'Угрозы', dict: true, sens: ['прямые угрозы: «убью тебя», «kys»', '«сдохни», «тебе конец»', '«знаю, где ты живёшь»', '«ответишь за это»'] },
+  tox: { name: 'Оскорбления', dict: true, sens: ['самые грубые оскорбления', '«дебил», «урод», «мразь»', '«тупой», «лох», «клоун»', '«удали игру», «позорище»'] },
   words: { name: 'Запрещённые слова' },
   bots: { name: 'Реклама накрутки' },
   links: { name: 'Ссылки' },
@@ -469,7 +469,7 @@ class Component extends DCLogic {
   loadTab(i) {
     if (i === 0) this.loadStats();
     if (i === 1) this.loadModes();
-    if (i === 2) { this.loadJournal(); this.loadUnban(); }
+    if (i === 2) { this.loadQueue(); this.loadJournal(); this.loadUnban(); }
   }
   // Перерисовываем, только если данные изменились
   put(key, val, extra) {
@@ -752,7 +752,7 @@ class Component extends DCLogic {
     });
     return {
       key: k, name: m.name, nameId: 'fn-' + k, dict: !!m.dict, desc: descs[k],
-      hasSens: !!m.sens, sens: c.sens || 2, sensLabel: SENS[(c.sens || 2) - 1], sensNote: m.sens ? 'Ловит: ' + m.sens[(c.sens || 2) - 1] : '', sensAria: 'Чувствительность фильтра «' + m.name + '»',
+      hasSens: !!m.sens, sens: c.sens || 2, sensLabel: SENS[(c.sens || 2) - 1], sensNote: m.sens ? 'Ловит ' + m.sens[(c.sens || 2) - 1] + ((c.sens || 2) > 1 ? ' и всё, что ловят мягкие уровни' : '') : '', sensAria: 'Чувствительность фильтра «' + m.name + '»',
       hasParams: params.length > 0, params,
       on: c.on ? 'true' : 'false', off: !c.on, swLabel: 'Фильтр «' + m.name + '»', stateLabel: c.on ? 'включён' : 'выключен',
       action: c.action, isTimeout: c.action === 'timeout', dur: String(durSec),
