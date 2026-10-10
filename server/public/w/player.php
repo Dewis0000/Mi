@@ -17,7 +17,7 @@ header('X-Robots-Tag: noindex');
 html,body{margin:0;background:transparent;overflow:hidden;width:100%;height:100%}
 body{font-family:'Onest',system-ui,sans-serif;color:#F2F2F2}
 #yt{position:fixed;left:0;top:0;width:320px;height:180px;opacity:0;pointer-events:none}
-#yt.show{opacity:1;pointer-events:auto;z-index:3}
+#yt.show{left:24px;top:120px;opacity:1;pointer-events:auto;z-index:3}
 #np{position:fixed;left:24px;bottom:24px;display:flex;align-items:center;gap:14px;max-width:560px;box-sizing:border-box;padding:12px 18px 12px 12px;border-radius:12px;
   background:rgba(10,10,10,.78);border:1px solid rgba(255,255,255,.12);box-shadow:0 12px 32px -8px rgba(0,0,0,.6);
   opacity:0;transform:translateY(12px);transition:opacity .35s,transform .35s}

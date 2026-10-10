@@ -486,8 +486,8 @@ function song_request(array $user, string $query, string $requester, string $met
     if ((int)$cfg['minViews'] > 0 && $v['views'] < (int)$cfg['minViews']) return ['ok' => false, 'message' => 'у видео слишком мало просмотров'];
     if (text_has_any($v['title'], $cfg['stop'] ?? [])) return ['ok' => false, 'message' => 'этот трек нельзя заказать'];
     $mine = db_one("SELECT COUNT(*) AS c FROM songs WHERE user_id = ? AND requester = ? AND status IN ('queued','pending')", [$user['id'], $requester]);
-    if ((int)$cfg['perUser'] > 0 && (int)$mine['c'] >= (int)$cfg['perUser'] && $method !== 'donate') return ['ok' => false, 'message' => 'у тебя уже ' . $mine['c'] . ' трека в очереди'];
-    $status = !empty($cfg['manual']) ? 'pending' : 'queued';
+    if ((int)$cfg['perUser'] > 0 && (int)$mine['c'] >= (int)$cfg['perUser'] && !in_array($method, ['donate', 'manual'], true)) return ['ok' => false, 'message' => 'у тебя уже ' . $mine['c'] . ' трека в очереди'];
+    $status = !empty($cfg['manual']) && $method !== 'manual' ? 'pending' : 'queued'; // стример добавляет сам — без одобрения и лимита
     $pos = (int)(db_one("SELECT MAX(pos) AS m FROM songs WHERE user_id = ? AND status = 'queued'", [$user['id']])['m'] ?? 0) + 1;
     if ($method === 'donate') {
         $pos = (int)(db_one("SELECT MIN(pos) AS m FROM songs WHERE user_id = ? AND status = 'queued'", [$user['id']])['m'] ?? 1) - 1;
