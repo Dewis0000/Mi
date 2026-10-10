@@ -5,8 +5,9 @@ function api_input(): array {
     static $in = null;
     if ($in !== null) return $in;
     $raw = (string)file_get_contents('php://input');
-    $in = $raw !== '' ? (json_decode($raw, true) ?: []) : [];
-    return $in + $_GET;
+    $body = $raw !== '' ? json_decode($raw, true) : [];
+    $in = (is_array($body) ? $body : []) + $_GET;
+    return $in;
 }
 
 function in_str(string $k, int $max = 500, string $def = ''): string {

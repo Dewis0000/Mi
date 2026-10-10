@@ -445,14 +445,38 @@ function render_vars(string $tpl, array $user, array $ctx, int $count, string $a
 }
 
 // ---------- музыка ----------
+// Название трека по ссылке на музыкальный сервис (кроме YouTube): Spotify — через oEmbed, остальные — по og:title страницы.
+function music_link_title(string $url): ?string {
+    $host = preg_replace('/^(www|m)\./', '', strtolower((string)parse_url($url, PHP_URL_HOST)));
+    if ($host === 'open.spotify.com') {
+        $r = http_request('GET', 'https://open.spotify.com/oembed?url=' . rawurlencode($url), [], null, 6);
+        $t = trim((string)($r['json']['title'] ?? ''));
+        return $t !== '' ? mb_substr($t, 0, 120) : null;
+    }
+    if (!preg_match('~^(music\.yandex\.(ru|com|by|kz)|music\.apple\.com|soundcloud\.com|deezer\.com|vk\.com|vk\.ru|zvuk\.com|music\.mts\.ru)$~', $host)) return null;
+    $r = http_request('GET', $url, ['Accept-Language' => 'ru'], null, 6);
+    if ($r['code'] !== 200) return null;
+    if (!preg_match('~<meta[^>]+property=["\']og:title["\'][^>]+content=["\']([^"\']+)~i', $r['raw'], $m) && !preg_match('~<title>([^<]+)</title>~i', $r['raw'], $m)) return null;
+    $t = html_entity_decode(trim($m[1]), ENT_QUOTES);
+    $t = preg_replace('~\s*[.:|]\s*(слушать|listen)\b.*$~ui', '', $t);
+    $t = preg_replace('~\s*[|—–-]\s*(Яндекс[ .]?Музык[аи]|Yandex Music|SoundCloud|Apple Music|Deezer|VK|ВКонтакте|Звук)\s*$~ui', '', $t);
+    $t = trim((string)$t);
+    return mb_strlen($t) >= 2 && !preg_match('~^(Яндекс Музыка|Yandex Music|SoundCloud|ВКонтакте|VK)$~ui', $t) ? mb_substr($t, 0, 120) : null;
+}
+
 function song_request(array $user, string $query, string $requester, string $method, ?string $redemptionId = null, ?string $rewardId = null): array {
     $cfg = music_config((int)$user['id']);
     if (empty($cfg['open'])) return ['ok' => false, 'message' => 'приём заказов сейчас закрыт'];
     $query = trim($query);
     if ($query === '') return ['ok' => false, 'message' => 'напиши ссылку на YouTube или название трека: !' . $cfg['cmd']['name'] . ' Кино — Группа крови'];
     $id = yt_parse_id($query);
-    if (!$id && preg_match('~https?://~i', $query)) return ['ok' => false, 'message' => 'пока играю только YouTube: пришли ссылку на YouTube или просто название трека'];
     if (!cfg('YOUTUBE_API_KEY')) return ['ok' => false, 'message' => 'музыка не настроена: нет ключа YouTube'];
+    if (!$id && preg_match('~https?://\S+~i', $query, $lm)) {
+        // Яндекс Музыка, Spotify, VK, SoundCloud…: берём название трека со страницы и ищем его на YouTube
+        $title = !empty($cfg['search']) ? music_link_title($lm[0]) : null;
+        if (!$title) return ['ok' => false, 'message' => 'по этой ссылке не получилось узнать трек: пришли ссылку на YouTube или название трека'];
+        $query = $title;
+    }
     $v = $id ? yt_video($id) : (!empty($cfg['search']) ? yt_search($query) : null);
     if (!$v) return ['ok' => false, 'message' => $id ? 'не нашёл это видео' : 'ничего не нашёл по запросу'];
     if ($v['live']) return ['ok' => false, 'message' => 'прямые трансляции заказывать нельзя'];

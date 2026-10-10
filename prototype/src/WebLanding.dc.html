@@ -49,7 +49,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <div class="wrap" style="height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px">
 <a href="WebLanding.dc.html" style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; letter-spacing: -0.01em"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</a>
 <nav aria-label="Разделы главной" style="display: flex; gap: 28px; font-size: 14px; flex-wrap: wrap"><a href="#features" style="color: #B4B4B4">Возможности</a><a href="#live" style="color: #B4B4B4">Сейчас в эфире</a><a href="#pricing" style="color: #B4B4B4">Тарифы</a><a href="#faq" style="color: #B4B4B4">Вопросы</a></nav>
-<a href="WebDashboard.dc.html" class="btn-p" style="height: 40px; padding: 0 16px; font-size: 14px">Начать</a>
+<a href="{{ panelHref }}" class="btn-p" style="height: 40px; padding: 0 16px; font-size: 14px">{{ startLabel }}</a>
 </div>
 </header>
 
@@ -59,8 +59,8 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <p class="ov">Чат-бот · модерация · виджеты · музыка · аналитика</p>
 <h1 style="margin: 24px 0 0; font-size: clamp(44px, 6vw, 72px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 500">Пульт управления стримом</h1>
 <p class="lead">Один сервис вместо пяти вкладок. Бот отвечает на команды, модерация держит чат чистым, а метрики эфира всегда видны. Ты занимаешься стримом.</p>
-<div style="margin-top: 36px; display: flex; gap: 12px; flex-wrap: wrap"><a href="WebDashboard.dc.html" class="btn-p">Подключить канал</a><a href="#pricing" class="btn-s">Посмотреть тарифы</a></div>
-<p style="margin: 20px 0 0; font-size: 13px; color: #8F8F8F">Twitch, VK Видео Live и YouTube · Настройка за 5 минут</p>
+<div style="margin-top: 36px; display: flex; gap: 12px; flex-wrap: wrap"><a href="{{ panelHref }}" class="btn-p">{{ heroLabel }}</a><a href="#pricing" class="btn-s">Посмотреть тарифы</a></div>
+<p style="margin: 20px 0 0; font-size: 13px; color: #8F8F8F">Twitch · Вход через аккаунт Twitch · Настройка за 5 минут</p>
 </div>
 
 <div aria-label="Пример стрим-панели" role="img" style="position: relative; border-radius: 12px; padding: 20px; background: rgba(18,18,18,0.62); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 32px 80px -16px rgba(0,0,0,0.75)">
@@ -92,7 +92,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <div class="card feat"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><h3>Модерация</h3><p>Фильтры ссылок, капса и спама. Баны и таймауты в один клик из чата, история всех действий модераторов.</p></div>
 <div class="card feat"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg><h3>Виджеты</h3><p>Алерты, цели, последние события и чат на экране. Ссылка для OBS, без плагинов.</p></div>
 <div class="card feat"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg><h3>Музыка</h3><p>Зрители заказывают треки командой. Очередь, лимиты на человека и пропуск трека модератором.</p></div>
-<div class="card feat"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M7 15l4-4 3 3 5-6"></path></svg><h3>Аналитика</h3><p>Активность чата, пики зрителей и самые используемые команды. Каждый стрим можно сравнить с прошлым.</p></div>
+<div class="card feat"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M7 15l4-4 3 3 5-6"></path></svg><h3>Аналитика</h3><p>Активность чата, нарушения и самые используемые команды — по текущему эфиру и за прошлые сутки.</p></div>
 <div class="card feat" style="background: transparent; border-style: dashed"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20"></path></svg><h3>Твоё оформление</h3><p>Свой фон, размытие и эффекты. Интерфейс останется читаемым на любой картинке.</p></div>
 </div>
 </section>
@@ -102,17 +102,18 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <div><p class="ov">Сейчас в эфире</p><h2 class="h2">Стримят с StreOps</h2></div>
 <div style="display: flex; gap: 8px"><button type="button" class="arrow" aria-label="Предыдущие стримы" onClick="{{ prev }}" disabled="{{ atStart }}"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button><button type="button" class="arrow" aria-label="Следующие стримы" onClick="{{ next }}" disabled="{{ atEnd }}"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></button></div>
 </div>
+<sc-if value="{{ noStreams }}" hint-placeholder-val="{{ false }}"><p style="margin: 32px 0 0; padding: 32px; border: 1px dashed #3A3A3A; border-radius: 12px; font-size: 15px; line-height: 22px; color: #B4B4B4">{{ emptyLive }}</p></sc-if>
 <div role="region" aria-roledescription="карусель" aria-label="Стримеры в эфире" style="margin-top: 32px; overflow: hidden">
 <ul style="list-style: none; margin: 0; padding: 0; display: flex; gap: 16px; transition: transform 320ms cubic-bezier(.16,1,.3,1); transform: {{ trackX }}">
 <sc-for list="{{ streams }}" as="s" hint-placeholder-count="5">
 <li style="flex: none; width: 296px">
-<a href="#" style="display: block; border-radius: 12px; overflow: hidden; border: 1px solid #2A2A2A; background: #111111">
-<div style="position: relative; height: 166px; background: {{ s.bg }}">
+<a href="{{ s.href }}" target="_blank" rel="noopener" aria-label="{{ s.aria }}" style="display: block; border-radius: 12px; overflow: hidden; border: 1px solid #2A2A2A; background: #111111">
+<div style="position: relative; height: 166px; background: {{ s.bg }}; background-size: cover; background-position: center">
 <span style="position: absolute; left: 10px; top: 10px; display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; background: #D92D20; color: #FFFFFF; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: .08em"><span style="width: 6px; height: 6px; border-radius: 999px; background: #FFFFFF"></span>LIVE</span>
 <span class="mono" style="position: absolute; right: 10px; bottom: 10px; display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; border-radius: 4px; background: rgba(0,0,0,0.72); font-size: 12px"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>{{ s.viewers }}</span>
 </div>
 <div style="display: flex; gap: 12px; padding: 14px">
-<span style="position: relative; flex: none; width: 36px; height: 36px; border-radius: 999px; background: {{ s.av }}; box-shadow: 0 0 0 2px #111111, 0 0 0 4px #D92D20"></span>
+<span style="position: relative; flex: none; width: 36px; height: 36px; border-radius: 999px; background: {{ s.av }}; background-size: cover; box-shadow: 0 0 0 2px #111111, 0 0 0 4px #D92D20"></span>
 <span style="min-width: 0"><span style="display: block; font-size: 15px; line-height: 20px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ s.title }}</span><span style="display: block; margin-top: 2px; font-size: 13px; line-height: 18px; color: #B4B4B4">{{ s.nick }}</span><span style="display: inline-block; margin-top: 8px; font-size: 12px; line-height: 16px; padding: 2px 8px; border: 1px solid #3A3A3A; border-radius: 4px; color: #B4B4B4">{{ s.cat }}</span></span>
 </div>
 </a>
@@ -125,7 +126,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <section id="pricing" class="wrap" style="padding-top: 48px; padding-bottom: 96px">
 <p class="ov">Тарифы</p>
 <h2 class="h2">Плати за то, чем пользуешься</h2>
-<p class="lead">Оплата помесячно, отменить можно в любой момент. Смена тарифа сразу пересчитывает остаток.</p>
+<p class="lead">Бесплатно — 10 команд и 2 виджета. Платные тарифы оплачиваются с баланса на 30 дней, без автосписаний.</p>
 <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 16px; align-items: stretch">
 
 <div class="card" style="padding: 28px; display: flex; flex-direction: column; gap: 20px">
@@ -135,10 +136,10 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>До 30 команд чат-бота</li>
 <li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Автомодерация: ссылки, капс, спам</li>
 <li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>3 виджета для OBS</li>
-<li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Статистика за 7 дней</li>
-<li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>1 платформа</li>
+<li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Аналитика текущего эфира</li>
+<li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Розыгрыши с рулеткой и колесом</li>
 </ul>
-<a href="WebDashboard.dc.html" class="btn-s" style="margin-top: auto">Выбрать «Продвинутую»</a>
+<a href="{{ plansHref }}" class="btn-s" style="margin-top: auto">Выбрать «Продвинутую»</a>
 </div>
 
 <div style="position: relative; padding: 27px; display: flex; flex-direction: column; gap: 20px; border-radius: 8px; border: 2px solid #F2F2F2; background: rgba(18,18,18,0.62); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08)">
@@ -149,23 +150,21 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Всё из «Продвинутой»</li>
 <li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Команды без лимита</li>
 <li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Музыка по заказу зрителей</li>
-<li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>10 виджетов, аналитика за 90 дней</li>
-<li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>3 платформы одновременно</li>
+<li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>10 виджетов для OBS</li>
+<li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Заказ треков за баллы канала и донаты</li>
 </ul>
-<a href="WebDashboard.dc.html" class="btn-p" style="margin-top: auto">Выбрать «Про»</a>
+<a href="{{ plansHref }}" class="btn-p" style="margin-top: auto">Выбрать «Про»</a>
 </div>
 
 <div class="card" style="padding: 28px; display: flex; flex-direction: column; gap: 20px">
-<div><h3 style="margin: 0; font-size: 20px; font-weight: 600">Максимум</h3><p style="margin: 6px 0 0; font-size: 14px; color: #8F8F8F">Для команды модераторов и больших каналов</p></div>
+<div><h3 style="margin: 0; font-size: 20px; font-weight: 600">Максимум</h3><p style="margin: 6px 0 0; font-size: 14px; color: #8F8F8F">Для больших каналов с десятками виджетов</p></div>
 <p style="margin: 0; display: flex; align-items: baseline; gap: 6px"><span class="mono" style="font-size: 40px; line-height: 44px; font-weight: 500; letter-spacing: -0.02em">967&nbsp;₽</span><span style="font-size: 14px; color: #8F8F8F">в месяц</span></p>
 <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
 <li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Всё из «Про»</li>
-<li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Доступ к панели для модераторов</li>
-<li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Аналитика без срока и экспорт в CSV</li>
-<li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Безлимит виджетов</li>
+<li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>До 100 виджетов для OBS</li>
 <li class="li"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>Приоритетная поддержка</li>
 </ul>
-<a href="WebDashboard.dc.html" class="btn-s" style="margin-top: auto">Выбрать «Максимум»</a>
+<a href="{{ plansHref }}" class="btn-s" style="margin-top: auto">Выбрать «Максимум»</a>
 </div>
 </div>
 
@@ -177,9 +176,9 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <tr><th scope="row" style="font-weight: 400; color: #B4B4B4; padding: 12px 16px; border-top: 1px solid #1F1F1F">Команды чат-бота</th><td class="mono">30</td><td class="mono v">∞</td><td class="mono v">∞</td></tr>
 <tr><th scope="row" style="font-weight: 400; color: #B4B4B4; padding: 12px 16px; border-top: 1px solid #1F1F1F">Виджеты</th><td class="mono">3</td><td class="mono v">10</td><td class="mono v">∞</td></tr>
 <tr><th scope="row" style="font-weight: 400; color: #B4B4B4; padding: 12px 16px; border-top: 1px solid #1F1F1F">Музыка по заказу</th><td>— нет</td><td class="v">✓ есть</td><td class="v">✓ есть</td></tr>
-<tr><th scope="row" style="font-weight: 400; color: #B4B4B4; padding: 12px 16px; border-top: 1px solid #1F1F1F">История аналитики</th><td class="mono">7 д</td><td class="mono v">90 д</td><td class="v">без срока</td></tr>
-<tr><th scope="row" style="font-weight: 400; color: #B4B4B4; padding: 12px 16px; border-top: 1px solid #1F1F1F">Платформы</th><td class="mono">1</td><td class="mono v">3</td><td class="mono v">3</td></tr>
-<tr><th scope="row" style="font-weight: 400; color: #B4B4B4; padding: 12px 16px; border-top: 1px solid #1F1F1F">Доступ для модераторов</th><td>— нет</td><td>— нет</td><td class="v">✓ есть</td></tr>
+<tr><th scope="row" style="font-weight: 400; color: #B4B4B4; padding: 12px 16px; border-top: 1px solid #1F1F1F">Розыгрыши</th><td>✓ есть</td><td class="v">✓ есть</td><td class="v">✓ есть</td></tr>
+<tr><th scope="row" style="font-weight: 400; color: #B4B4B4; padding: 12px 16px; border-top: 1px solid #1F1F1F">Платформа</th><td>Twitch</td><td class="v">Twitch</td><td class="v">Twitch</td></tr>
+<tr><th scope="row" style="font-weight: 400; color: #B4B4B4; padding: 12px 16px; border-top: 1px solid #1F1F1F">Приоритетная поддержка</th><td>— нет</td><td>— нет</td><td class="v">✓ есть</td></tr>
 </tbody>
 </table>
 </div>
@@ -201,41 +200,55 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <footer style="border-top: 1px solid #2A2A2A">
 <div class="wrap foot" style="padding-top: 48px; padding-bottom: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px">
 <div><span style="display: flex; align-items: center; gap: 10px; font-weight: 600"><svg width="20" height="20" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</span><p class="mono" style="margin: 12px 0 0; font-size: 12px; color: #6E6E6E">streops.ru · © 2026</p></div>
-<nav aria-label="Продукт" style="display: flex; flex-direction: column"><a href="#features">Возможности</a><a href="#pricing">Тарифы</a><a href="WebDashboard.dc.html">Стрим-панель</a></nav>
-<nav aria-label="Помощь" style="display: flex; flex-direction: column"><a href="#faq">Вопросы</a><a href="#">Поддержка</a><a href="#">Статус сервиса</a></nav>
-<nav aria-label="Документы" style="display: flex; flex-direction: column"><a href="#">Оферта</a><a href="#">Политика конфиденциальности</a></nav>
+<nav aria-label="Продукт" style="display: flex; flex-direction: column"><a href="#features">Возможности</a><a href="#pricing">Тарифы</a><a href="{{ panelHref }}">Стрим-панель</a></nav>
+<nav aria-label="Помощь" style="display: flex; flex-direction: column"><a href="#faq">Вопросы</a><a href="https://www.twitch.tv/zaka_00" target="_blank" rel="noopener">Поддержка в Twitch</a></nav>
 </div>
 </footer>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":4700}}'>
 class Component extends DCLogic {
-  constructor(props) { super(props); this.state = { slide: 0, open: 0 }; }
+  constructor(props) { super(props); this.state = { slide: 0, open: 0, streams: [], loaded: false, user: null }; }
+  componentDidMount() {
+    if (!window.StreAPI) return;
+    StreAPI.me().then((m) => this.setState({ user: m.user || null }));
+    const load = () => StreAPI.get('live.list').then((r) => this.setState({ streams: r.items, loaded: true })).catch(() => this.setState({ loaded: true }));
+    load();
+    setInterval(load, 60000);
+  }
   renderVals() {
-    const streams = [
-      { nick: 'moroz_tv', title: 'Ночной спидран Hollow Knight', cat: 'Игры', viewers: '2 340', bg: 'radial-gradient(160px 100px at 30% 40%, #8F8F8F, transparent 70%), linear-gradient(135deg, #2A2A2A, #0A0A0A)', av: 'linear-gradient(135deg, #DCDCDC, #525252)' },
-      { nick: 'lenta_ln', title: 'Рисую обложку для альбома', cat: 'Творчество', viewers: '418', bg: 'linear-gradient(115deg, #111111 30%, #6E6E6E 50%, #111111 70%)', av: 'linear-gradient(135deg, #B4B4B4, #2A2A2A)' },
-      { nick: 'kira_stream', title: 'Ранкед до утра, заходите', cat: 'Counter-Strike 2', viewers: '5 120', bg: 'radial-gradient(200px 120px at 75% 70%, #B4B4B4, transparent 70%), #171717', av: 'linear-gradient(135deg, #F2F2F2, #6E6E6E)' },
-      { nick: 'tixiy_bard', title: 'Играю ваши заявки на гитаре', cat: 'Музыка', viewers: '761', bg: 'repeating-linear-gradient(90deg, #1F1F1F 0 2px, #111111 2px 14px)', av: 'linear-gradient(135deg, #8F8F8F, #1F1F1F)' },
-      { nick: 'sever_ops', title: 'Разбираем Rust с нуля', cat: 'Программирование', viewers: '1 093', bg: 'radial-gradient(120px 120px at 50% 50%, #525252, transparent 70%), #0A0A0A', av: 'linear-gradient(135deg, #DCDCDC, #3A3A3A)' },
-      { nick: 'polyana_live', title: 'Утренний кофе и разговоры', cat: 'Общение', viewers: '286', bg: 'linear-gradient(180deg, #3A3A3A, #0A0A0A)', av: 'linear-gradient(135deg, #B4B4B4, #525252)' }
-    ];
-    const max = streams.length - 3;
+    const clean = (u) => String(u || '').replace(/["'()\\\s]/g, '');
+    const streams = this.state.streams.map((x) => ({
+      nick: x.name, title: x.title || 'Без названия', cat: x.game || 'Без категории', viewers: StreAPI.fmtNum(x.viewers),
+      bg: x.thumb ? 'url("' + clean(x.thumb) + '"), #171717' : 'linear-gradient(135deg, #2A2A2A, #0A0A0A)',
+      av: x.avatar ? 'url("' + clean(x.avatar) + '"), #3A3A3A' : 'linear-gradient(135deg, #B4B4B4, #3A3A3A)',
+      href: 'https://www.twitch.tv/' + encodeURIComponent(x.login), aria: x.name + ' в эфире: ' + (x.title || 'без названия') + ', зрителей ' + x.viewers,
+    }));
+    const max = Math.max(0, streams.length - 3);
     const slide = Math.min(this.state.slide, max);
+    const user = this.state.user;
+    const login = '/auth/login.php?next=' + encodeURIComponent('/panel.html');
     const faqData = [
-      ['Какие платформы поддерживаются?', 'Twitch, VK Видео Live и YouTube. На тарифе «Продвинутая» подключается одна платформа, на «Про» и «Максимум» — до трёх одновременно, и бот отвечает во всех чатах.'],
+      ['Какие платформы поддерживаются?', 'Пока только Twitch: вход через аккаунт Twitch, бот работает в твоём чате. Другие платформы — в планах.'],
       ['Нужно ли что-то устанавливать?', 'Нет. Бот работает на наших серверах, а виджеты подключаются в OBS как источник «Браузер» по ссылке из панели.'],
-      ['Что будет с командами, если я понижу тариф?', 'Команды сверх лимита выключатся, но не удалятся. Вернёшься на старший тариф — они снова заработают.'],
-      ['Можно ли дать доступ модератору?', 'Да, на тарифе «Максимум». Модератор входит со своим аккаунтом и видит только разделы, которые ты ему открыл.'],
-      ['Как отменить подписку?', 'Настройки → Тариф → «Отменить подписку». Доступ сохранится до конца оплаченного периода, деньги за остаток не списываются повторно.']
+      ['Как бот попадает в мой чат?', 'Нажми «Подключить бота» в панели. Бот StreOps станет модератором канала — это нужно, чтобы удалять сообщения и выдавать муты.'],
+      ['Что будет с командами, если я понижу тариф?', 'Они сохранятся. Создавать новые сверх лимита тарифа будет нельзя, пока не удалишь лишние или не вернёшься на старший тариф.'],
+      ['Как оплатить и отменить тариф?', 'Тариф оплачивается с баланса в настройках на 30 дней. Автосписаний нет: не продлишь — по окончании срока аккаунт перейдёт на бесплатный тариф.'],
+      ['Откуда музыка?', 'Играет плеер YouTube. Зрители присылают ссылку YouTube или просто название трека. Ссылки Яндекс Музыки, Spotify, VK и SoundCloud тоже подойдут: бот возьмёт название трека со страницы и найдёт его на YouTube.']
     ];
     return {
       streams,
+      noStreams: this.state.loaded && !streams.length,
+      emptyLive: 'Сейчас никто из стримеров StreOps не в эфире. Подключи свой канал — и он появится здесь, когда начнёшь стрим.',
       trackX: 'translateX(-' + (slide * 312) + 'px)',
       atStart: slide === 0,
       atEnd: slide >= max,
       prev: () => this.setState({ slide: Math.max(0, slide - 1) }),
       next: () => this.setState({ slide: Math.min(max, slide + 1) }),
+      panelHref: user ? 'WebDashboard.dc.html' : login,
+      plansHref: user ? 'WebSettings.dc.html' : '/auth/login.php?next=' + encodeURIComponent('/settings.html'),
+      startLabel: user ? 'Открыть панель' : 'Войти через Twitch',
+      heroLabel: user ? 'Открыть панель' : 'Подключить канал',
       faq: faqData.map((f, i) => ({
         q: f[0], a: f[1], open: this.state.open === i,
         expanded: this.state.open === i ? 'true' : 'false',
