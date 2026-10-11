@@ -261,7 +261,11 @@
   }
 
   // ---------- ссылки ----------
-  function obsUrl(token, id) { return location.origin + '/w/?t=' + encodeURIComponent(token || '') + '&w=' + encodeURIComponent(id); }
+  // «Сейчас играет» играет звук: для него ссылка на плеер (он же показывает карточку трека), остальные виджеты — обычная страница
+  function obsUrl(token, id) {
+    if (id === 'np') return location.origin + '/w/player.php?t=' + encodeURIComponent(token || '');
+    return location.origin + '/w/?t=' + encodeURIComponent(token || '') + '&w=' + encodeURIComponent(id);
+  }
   // Game State Integration: адрес и параметры — строго как ждёт server/public/gsi/index.php (?t=токен&g=cs|dota)
   function gsiUrl(token, game) { return location.origin + '/gsi/index.php?t=' + encodeURIComponent(token || '') + '&g=' + game; }
   const GSI = {
