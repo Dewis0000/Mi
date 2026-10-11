@@ -432,8 +432,28 @@ function handle_command(array $ctx): bool {
     return false;
 }
 
-function render_vars(string $tpl, array $user, array $ctx, int $count, string $args = ''): string {
+// Статус эфира свежий всегда: если данные старше минуты, спрашиваем Twitch прямо сейчас (не зависим от cron)
+function stream_fresh(array $user): ?array {
     $st = db_one('SELECT * FROM streams WHERE user_id = ?', [$user['id']]);
+    if ($st && (int)$st['updated_at'] > now() - 60) return $st;
+    $r = helix('GET', 'streams', ['user_id' => $user['twitch_id']]);
+    if ($r['code'] !== 200) return $st; // Twitch не ответил — оставляем последнее известное
+    $s = $r['json']['data'][0] ?? null;
+    if (!$s) {
+        db_exec('DELETE FROM streams WHERE user_id = ?', [$user['id']]);
+        db_insert('streams', ['user_id' => $user['id'], 'live' => 0, 'started_at' => 0, 'viewers' => 0, 'peak' => 0, 'title' => '', 'game' => '', 'thumbnail' => '', 'updated_at' => now()]);
+    } else {
+        $started = strtotime($s['started_at']) ?: now();
+        $peak = ($st && (int)$st['started_at'] === $started) ? max((int)$st['peak'], (int)$s['viewer_count']) : (int)$s['viewer_count'];
+        db_exec('DELETE FROM streams WHERE user_id = ?', [$user['id']]);
+        db_insert('streams', ['user_id' => $user['id'], 'live' => 1, 'started_at' => $started, 'viewers' => (int)$s['viewer_count'], 'peak' => $peak,
+            'title' => $s['title'], 'game' => $s['game_name'], 'thumbnail' => $s['thumbnail_url'], 'updated_at' => now()]);
+    }
+    return db_one('SELECT * FROM streams WHERE user_id = ?', [$user['id']]);
+}
+
+function render_vars(string $tpl, array $user, array $ctx, int $count, string $args = ''): string {
+    $st = stream_fresh($user);
     $live = $st && (int)$st['live'];
     $target = $args !== '' ? ltrim(explode(' ', $args)[0], '@') : $ctx['name'];
     return strtr($tpl, [
