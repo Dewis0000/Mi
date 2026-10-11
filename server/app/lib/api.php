@@ -196,6 +196,30 @@ function api_dispatch(string $r): never {
             json_out(['ok' => true]);
         }
 
+        // ---------- таймеры сообщений ----------
+        case 'timers.get': {
+            $u = require_user();
+            json_out(['ok' => true, 'items' => timers_list((int)$u['id']), 'limit' => 10]);
+        }
+        case 'timers.save': {
+            $u = require_user();
+            $in = api_input()['items'] ?? null;
+            if (!is_array($in)) fail('Нет данных');
+            $old = [];
+            foreach (timers_list((int)$u['id']) as $t) $old[$t['id']] = $t;
+            $items = [];
+            foreach (array_slice($in, 0, 10) as $t) {
+                $text = mb_substr(trim((string)($t['text'] ?? '')), 0, 300);
+                if ($text === '') fail('Таймер без текста: напиши, что отправить в чат');
+                $every = max(5, min(240, (int)($t['every'] ?? 15)));
+                $id = (string)($t['id'] ?? '');
+                $last = $old[$id]['last'] ?? now(); // новый таймер первый раз сработает через интервал
+                $items[] = ['id' => $id !== '' ? $id : rand_token(4), 'text' => $text, 'every' => $every, 'liveOnly' => !empty($t['liveOnly']), 'on' => !empty($t['on']), 'last' => (int)$last];
+            }
+            settings_set((int)$u['id'], 'timers', $items);
+            json_out(['ok' => true, 'items' => timers_list((int)$u['id'])]);
+        }
+
         // ---------- музыка ----------
         case 'music.state': {
             $u = require_user();
@@ -604,6 +628,11 @@ function api_dispatch(string $r): never {
         }
     }
     fail('Неизвестный запрос: ' . $r, 404);
+}
+
+function timers_list(int $uid): array {
+    $items = settings_get($uid, 'timers', []);
+    return array_values(array_map(fn($t) => ['id' => (string)$t['id'], 'text' => (string)$t['text'], 'every' => (int)$t['every'], 'liveOnly' => (bool)$t['liveOnly'], 'on' => (bool)$t['on'], 'last' => (int)($t['last'] ?? 0)], is_array($items) ? $items : []));
 }
 
 function gw_public(array $g, bool $withEntries): array {
