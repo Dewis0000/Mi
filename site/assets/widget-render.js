@@ -241,6 +241,24 @@
     render(p);
   }
 
+  // Предпросмотр в обычном браузере (?preview=1): тёмный фон и подсказка, почему виджет пустой.
+  // В OBS ссылка без preview — фон прозрачный, как и раньше.
+  if (new URLSearchParams(location.search).get('preview') === '1') {
+    document.documentElement.style.background = '#151515';
+    document.body.style.background = '#151515';
+    const note = document.createElement('div');
+    note.style.cssText = 'position:fixed;left:16px;top:16px;max-width:520px;padding:12px 14px;border-radius:8px;background:rgba(10,10,10,.85);border:1px solid #2A2A2A;font:400 14px/20px Onest,system-ui,sans-serif;color:#DCDCDC';
+    note.id = 'stre-preview';
+    document.body.appendChild(note);
+    const label = (txt) => { note.textContent = txt; };
+    const every0 = () => {
+      if (!lastP) { label('Загрузка…'); return; }
+      if (!lastP.on) { label('Виджет выключен. Включи его в разделе «Виджеты» в панели StreOps. В OBS он будет прозрачным.'); return; }
+      label('Виджет включён. В браузере он виден на тёмном фоне; в OBS на прозрачном появляется при событиях и эфире.');
+    };
+    setInterval(every0, 1000);
+  }
+
   const every = { uptime: 10000, faceit: 15000, fmatch: 15000 }[id] || 2000;
   tick();
   setInterval(tick, every);
