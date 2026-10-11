@@ -88,6 +88,7 @@ try {
             db_exec('UPDATE streams SET live = 0, updated_at = ? WHERE user_id = ?', [now(), $user['id']]);
             break;
     }
+    jobs_fast();
 } catch (Throwable $e) {
     logline('eventsub', $subType . ' error: ' . $e->getMessage() . ' @' . $e->getFile() . ':' . $e->getLine());
 }

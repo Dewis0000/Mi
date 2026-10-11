@@ -65,6 +65,7 @@ function since_for(int $uid): int {
 
 function api_dispatch(string $r): never {
     require_same_origin();
+    jobs_fast(); // фоновые задачи идут от запросов панели и виджетов — отдельный cron не нужен
     switch ($r) {
         // ---------- профиль ----------
         case 'me': {
