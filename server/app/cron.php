@@ -46,7 +46,7 @@ function cron_timers(): void {
     foreach (db_all("SELECT u.* FROM users u JOIN settings s ON s.user_id = u.id AND s.skey = 'timers' WHERE u.bot_enabled = 1 AND u.banned = 0") as $u) {
         $raw = settings_get((int)$u['id'], 'timers', []);
         if (!is_array($raw) || !$raw) continue;
-        $live = (bool)(stream_row((int)$u['id'])['live'] ?? false);
+        $live = (bool)(db_one('SELECT live FROM streams WHERE user_id = ?', [$u['id']])['live'] ?? false);
         $changed = false;
         foreach ($raw as &$t) {
             if (empty($t['on']) || (!empty($t['liveOnly']) && !$live) || now() - (int)($t['last'] ?? 0) < (int)$t['every'] * 60) continue;
