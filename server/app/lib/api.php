@@ -600,6 +600,7 @@ function api_dispatch(string $r): never {
             json_out(['ok' => true, 'login' => $target['login']]);
         }
         case 'account.supportExit': {
+            session_boot();
             if (!isset($_SESSION['support_admin'])) fail('Ты не в режиме поддержки');
             $who = (string)(current_user()['login'] ?? '');
             $_SESSION['uid'] = (int)$_SESSION['support_admin'];
