@@ -74,7 +74,7 @@ function api_dispatch(string $r): never {
             $b = bot_account();
             json_out(['ok' => true, 'user' => user_public($u), 'stream' => stream_row((int)$u['id']),
                 'bot' => ['login' => $b['login'] ?? cfg('BOT_LOGIN', 'streopsbot'), 'ready' => (bool)($b['own_app'] ?? false)],
-                'announcement' => announcement_for($u)]);
+                'announcement' => announcement_for($u), 'support' => isset($_SESSION['support_admin'])]);
         }
         case 'live.list': {
             $rows = db_all('SELECT u.login, u.display_name, u.avatar, s.title, s.game, s.viewers, s.thumbnail FROM streams s JOIN users u ON u.id = s.user_id WHERE s.live = 1 AND u.banned = 0 ORDER BY s.viewers DESC LIMIT 20');
@@ -576,6 +576,39 @@ function api_dispatch(string $r): never {
                 : db_all('SELECT * FROM users ORDER BY id DESC LIMIT 100');
             json_out(['ok' => true, 'items' => array_map(fn($x) => user_public($x) + ['twitchId' => $x['twitch_id'], 'banned' => (bool)$x['banned'], 'lastLogin' => (int)$x['last_login'], 'rawPlan' => $x['plan']], $rows)]);
         }
+        // ---------- поддержка по согласию: пользователь создаёт код, админ входит по нему ----------
+        case 'account.supportCode': {
+            $u = require_user();
+            if (isset($_SESSION['support_admin'])) fail('Нельзя создать код из режима поддержки');
+            $code = strtoupper(bin2hex(random_bytes(4)));
+            kv_set('sc:' . $code, ['uid' => (int)$u['id'], 'until' => now() + 3600], 3600);
+            logline('support', $u['login'] . ' created support code');
+            json_out(['ok' => true, 'code' => $code, 'until' => now() + 3600]);
+        }
+        case 'admin.support.enter': {
+            $admin = require_admin();
+            $code = strtoupper(preg_replace('/[^A-Za-z0-9]/', '', in_str('code', 16)));
+            $c = $code !== '' ? kv_get('sc:' . $code) : null;
+            if (!$c || (int)$c['until'] < now()) fail('Код не подошёл или истёк. Попроси пользователя создать новый.');
+            db_exec('DELETE FROM kv WHERE k = ?', ['sc:' . $code]); // одноразовый
+            $target = db_one('SELECT * FROM users WHERE id = ?', [(int)$c['uid']]);
+            if (!$target) fail('Пользователь не найден', 404);
+            session_regenerate_id(true);
+            $_SESSION['support_admin'] = (int)$admin['id'];
+            $_SESSION['uid'] = (int)$target['id'];
+            logline('support', $admin['login'] . ' entered account ' . $target['login'] . ' by user code');
+            json_out(['ok' => true, 'login' => $target['login']]);
+        }
+        case 'account.supportExit': {
+            if (!isset($_SESSION['support_admin'])) fail('Ты не в режиме поддержки');
+            $who = (string)(current_user()['login'] ?? '');
+            $_SESSION['uid'] = (int)$_SESSION['support_admin'];
+            unset($_SESSION['support_admin']);
+            session_regenerate_id(true);
+            logline('support', 'left account ' . $who);
+            json_out(['ok' => true]);
+        }
+
         // ---------- объявления для всех пользователей (баннер в панели) ----------
         case 'announce.dismiss': {
             $u = require_user();
