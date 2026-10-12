@@ -610,6 +610,48 @@ function api_dispatch(string $r): never {
             json_out(['ok' => true]);
         }
 
+        // ---------- чат с поддержкой: пользователь пишет, администратор отвечает ----------
+        case 'support.list': {
+            $u = require_user();
+            json_out(['ok' => true, 'items' => support_thread((int)$u['id'])]);
+        }
+        case 'support.send': {
+            $u = require_user();
+            $text = in_str('text', 1000);
+            if ($text === '') fail('Напиши сообщение');
+            support_add((int)$u['id'], 'user', $text);
+            json_out(['ok' => true, 'items' => support_thread((int)$u['id'])]);
+        }
+        case 'admin.support.inbox': {
+            require_admin();
+            $items = [];
+            foreach (db_all("SELECT s.user_id, s.value, u.login, u.display_name FROM settings s JOIN users u ON u.id = s.user_id WHERE s.skey = 'support_chat'") as $r) {
+                $t = json_decode((string)$r['value'], true);
+                if (!is_array($t) || !$t) continue;
+                $last = end($t);
+                $items[] = ['id' => (int)$r['user_id'], 'login' => $r['login'], 'name' => $r['display_name'] ?: $r['login'],
+                    'last' => $last['text'], 'from' => $last['from'], 'at' => (int)$last['at']];
+            }
+            usort($items, fn($a, $b) => $b['at'] <=> $a['at']);
+            json_out(['ok' => true, 'items' => $items]);
+        }
+        case 'admin.support.thread': {
+            require_admin();
+            $id = in_int('id');
+            if (!db_one('SELECT id FROM users WHERE id = ?', [$id])) fail('Пользователь не найден', 404);
+            json_out(['ok' => true, 'items' => support_thread($id)]);
+        }
+        case 'admin.support.reply': {
+            $admin = require_admin();
+            $id = in_int('id');
+            if (!db_one('SELECT id FROM users WHERE id = ?', [$id])) fail('Пользователь не найден', 404);
+            $text = in_str('text', 1000);
+            if ($text === '') fail('Напиши ответ');
+            support_add($id, 'admin', $text);
+            logline('support', $admin['login'] . ' replied to user ' . $id);
+            json_out(['ok' => true, 'items' => support_thread($id)]);
+        }
+
         // ---------- объявления для всех пользователей (баннер в панели) ----------
         case 'announce.dismiss': {
             $u = require_user();
@@ -734,6 +776,18 @@ function api_dispatch(string $r): never {
         }
     }
     fail('Неизвестный запрос: ' . $r, 404);
+}
+
+// Переписка с поддержкой: последние 60 сообщений, from = user | admin
+function support_thread(int $uid): array {
+    $t = settings_get($uid, 'support_chat', []);
+    return is_array($t) ? array_values($t) : [];
+}
+
+function support_add(int $uid, string $from, string $text): void {
+    $t = support_thread($uid);
+    $t[] = ['from' => $from, 'text' => mb_substr($text, 0, 1000), 'at' => now()];
+    settings_set($uid, 'support_chat', array_slice($t, -60));
 }
 
 // Объявление, которое пользователь ещё не закрыл (для всех или только для него)
