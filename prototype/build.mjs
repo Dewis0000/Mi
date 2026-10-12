@@ -15,6 +15,7 @@ const PAGES = {
   WebDashboard: 'panel.html',
   WebCommands: 'commands.html',
   WebTimers: 'timers.html',
+  WebSupport: 'support.html',
   WebMusic: 'music.html',
   WebWidgets: 'widgets.html',
   WebWidgetEditor: 'widget-editor.html',
@@ -76,6 +77,7 @@ const ICON = {
   widgets: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
   gift: '<rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1s6 1 6 1zM12 8c2-4 6-4 6-1s-6 1-6 1z"/>',
   auction: '<path d="M14 13l-7.5 7.5a2.1 2.1 0 0 1-3-3L11 10M16 16l6-6M8 8l6-6M9 7l8 8M21 11l-8-8"/>',
+  support: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',
   timer: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6M12 2v3"/>',
   settings: '<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
 };
@@ -93,6 +95,7 @@ const SIDEBAR = [
   [null, 'Аукционы', 'auction', 'скоро'],
   ['-'],
   ['WebSettings', 'Настройки', 'settings'],
+  ['WebSupport', 'Поддержка', 'support'],
 ];
 const CURRENT_ALIAS = { WebWidgetEditor: 'WebWidgets' }; // пункт «Админ-панель» добавляет assets/api.js только администратору
 function sidebar(page) {

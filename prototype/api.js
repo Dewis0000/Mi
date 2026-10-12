@@ -97,117 +97,226 @@
     }
     applyStream(me.stream);
     if (me.announcement) showBanner(me.announcement);
-    if (u && u.isAdmin && /admin\.html$/.test(location.pathname)) adminAnnounceForm();
     if (me.support && u) supportBanner(u.login);
-    if (u && !me.support && /settings\.html$/.test(location.pathname)) settingsSupportBlock();
-    if (u && u.isAdmin && /admin\.html$/.test(location.pathname)) adminSupportEnter();
+    if (u && u.isAdmin && /admin\.html$/.test(location.pathname)) adminPanels();
   }
 
-  // ---------- объявления: баннер для всех и форма администратора ----------
+  // ---------- блоки, которые добавляет скрипт: общий стиль из стеклянной темы ----------
+  const CSS = [
+    '.stre-card{box-sizing:border-box;padding:20px 22px;border-radius:12px;background:rgba(18,18,18,.72);border:1px solid rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);color:#F2F2F2;font:400 14px/20px Onest,system-ui,sans-serif}',
+    '.stre-h{margin:0 0 4px;font-size:18px;line-height:24px;font-weight:600;color:#F2F2F2}',
+    '.stre-p{margin:0 0 14px;color:#B4B4B4}',
+    '.stre-lbl{display:block;margin:0 0 6px;font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F}',
+    '.stre-in{box-sizing:border-box;height:38px;padding:0 12px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 14px/20px Onest,system-ui,sans-serif}',
+    '.stre-ta{box-sizing:border-box;width:100%;padding:10px 12px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 14px/20px Onest,system-ui,sans-serif;resize:vertical}',
+    '.stre-btn{height:36px;padding:0 14px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 14px/20px Onest,system-ui,sans-serif;cursor:pointer}',
+    '.stre-btn:hover{border-color:#8F8F8F}',
+    '.stre-btn-p{height:36px;padding:0 14px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 14px/20px Onest,system-ui,sans-serif;cursor:pointer}',
+    '.stre-btn-p:disabled{opacity:.5;cursor:default}',
+    '.stre-row{display:flex;gap:12px;align-items:center;width:100%;box-sizing:border-box;padding:10px 12px;border-radius:8px;border:1px solid #2A2A2A;background:#111111;color:#F2F2F2;font:400 14px/20px Onest,system-ui,sans-serif;text-align:left;cursor:pointer}',
+    '.stre-row:hover,.stre-row[aria-current="true"]{border-color:#8F8F8F}',
+    '.stre-msg{max-width:80%;padding:8px 12px;border-radius:10px;font:400 14px/20px Onest,system-ui,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere}',
+    '.stre-msg-u{background:#F2F2F2;color:#0A0A0A;margin-left:auto}',
+    '.stre-msg-a{background:#1F1F1F;border:1px solid #2A2A2A;color:#F2F2F2}',
+    '.stre-banner{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:550;max-width:min(680px,calc(100vw - 32px));display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:12px;background:rgba(10,10,10,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.16);box-shadow:0 12px 32px -8px rgba(0,0,0,.6);font:400 14px/20px Onest,system-ui,sans-serif;color:#F2F2F2}',
+    '.stre-support-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:560;display:flex;gap:12px;align-items:center;padding:10px 14px;border-radius:12px;background:#FFFFFF;color:#0A0A0A;font:500 14px/20px Onest,system-ui,sans-serif;box-shadow:0 12px 32px -8px rgba(0,0,0,.6)}',
+    '.stre-kbd{font:500 22px/26px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.14em;color:#F2F2F2}',
+    '.stre-grid{max-width:1200px;margin:24px auto 0;padding:0 16px;display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}',
+    '.stre-wide{grid-column:1/-1}'
+  ].join('\n');
+
+  function styles() {
+    if (document.getElementById('stre-css')) return;
+    const st = document.createElement('style');
+    st.id = 'stre-css';
+    st.textContent = CSS;
+    document.head.appendChild(st);
+  }
+
+  function el(tag, cls, text) {
+    const n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function when(ts) { return new Date(ts * 1000).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }); }
+
   function showBanner(a) {
+    styles();
     if (!a || document.getElementById('stre-ann')) return;
-    const box = document.createElement('div');
+    const box = el('div', 'stre-banner');
     box.id = 'stre-ann';
     box.setAttribute('role', 'region');
     box.setAttribute('aria-label', 'Объявление от StreOps');
-    box.style.cssText = 'position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:550;max-width:min(680px,calc(100vw - 32px));display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:10px;background:rgba(10,10,10,.92);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.16);box-shadow:0 12px 32px -8px rgba(0,0,0,.6);font:400 14px/20px Onest,system-ui,sans-serif;color:#F2F2F2';
-    const txt = document.createElement('span');
+    const txt = el('span', null, a.text);
     txt.style.flex = '1';
-    txt.textContent = a.text;
-    const ok = document.createElement('button');
+    const ok = el('button', 'stre-btn-p', 'Понятно');
     ok.type = 'button';
-    ok.textContent = 'Понятно';
-    ok.style.cssText = 'height:32px;padding:0 12px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 13px/16px Onest,system-ui,sans-serif;cursor:pointer;flex:none';
+    ok.style.height = '32px';
     ok.onclick = () => { box.remove(); StreAPI.post('announce.dismiss', { id: a.id }).catch(() => {}); };
     box.append(txt, ok);
     document.body.appendChild(box);
   }
 
-  function adminAnnounceForm() {
-    if (document.getElementById('stre-ann-admin')) return;
-    const wrap = document.createElement('section');
-    wrap.id = 'stre-ann-admin';
-    wrap.setAttribute('aria-labelledby', 'stre-ann-admin-h');
-    wrap.style.cssText = 'margin:24px auto 0;max-width:1200px;padding:16px 20px;border-radius:12px;background:rgba(18,18,18,.7);border:1px solid #2A2A2A;font:400 14px/20px Onest,system-ui,sans-serif;color:#F2F2F2';
-    wrap.innerHTML = '<h2 id="stre-ann-admin-h" style="margin:0 0 4px;font-size:18px;font-weight:600">Объявление пользователям</h2>' +
-      '<p style="margin:0 0 12px;color:#B4B4B4">Баннер увидят все, кто зайдёт в панель. Пользователь закрывает его сам. Оставь ник пустым, чтобы показать всем.</p>' +
-      '<div id="stre-ann-now" style="margin:0 0 12px;color:#8F8F8F"></div>' +
-      '<label style="display:block;margin-bottom:10px">Текст (до 300 символов)<textarea id="stre-ann-text" maxlength="300" rows="2" style="display:block;width:100%;box-sizing:border-box;margin-top:4px;padding:8px 10px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 14px/20px Onest,system-ui,sans-serif"></textarea></label>' +
-      '<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-bottom:12px">' +
-      '<label>Сколько часов показывать<input id="stre-ann-hours" type="number" min="1" max="720" value="24" style="display:block;margin-top:4px;width:110px;height:36px;padding:0 10px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2"></label>' +
-      '<label>Ник (необязательно)<input id="stre-ann-login" type="text" placeholder="всем" style="display:block;margin-top:4px;width:200px;height:36px;padding:0 10px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2"></label></div>' +
-      '<div style="display:flex;gap:8px"><button type="button" id="stre-ann-pub" style="height:36px;padding:0 14px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 14px/20px Onest,system-ui,sans-serif;cursor:pointer">Опубликовать</button>' +
-      '<button type="button" id="stre-ann-clr" style="height:36px;padding:0 14px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 14px/20px Onest,system-ui,sans-serif;cursor:pointer">Убрать объявление</button></div>';
-    document.querySelector('main, body').prepend(wrap);
-    const now = document.getElementById('stre-ann-now');
-    const showNow = () => StreAPI.get('admin.announce.get').then((r) => {
-      const a = r.item;
-      now.textContent = a && a.until > Date.now() / 1000 ? 'Сейчас показывается: «' + a.text + '»' + (a.userId ? ' (одному пользователю)' : ' (всем)') : 'Сейчас объявления нет.';
-    }).catch(() => {});
-    showNow();
-    document.getElementById('stre-ann-pub').onclick = () => {
-      const text = document.getElementById('stre-ann-text').value.trim();
-      const hours = Number(document.getElementById('stre-ann-hours').value) || 24;
-      const login = document.getElementById('stre-ann-login').value.trim();
-      if (!text) { toast('Напиши текст объявления', 'error'); return; }
-      StreAPI.post('admin.announce.set', { text, hours, login }).then(() => { toast('Объявление опубликовано'); showNow(); }).catch((e) => toast(e.message, 'error'));
-    };
-    document.getElementById('stre-ann-clr').onclick = () => {
-      if (!confirm('Убрать объявление у всех?')) return;
-      StreAPI.post('admin.announce.clear').then(() => { toast('Объявление убрано'); showNow(); }).catch((e) => toast(e.message, 'error'));
-    };
-  }
-
-  // ---------- поддержка по согласию ----------
   function supportBanner(login) {
+    styles();
     if (document.getElementById('stre-support')) return;
-    const box = document.createElement('div');
+    const box = el('div', 'stre-support-bar');
     box.id = 'stre-support';
     box.setAttribute('role', 'status');
-    box.style.cssText = 'position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:560;display:flex;gap:12px;align-items:center;padding:10px 14px;border-radius:10px;background:#FFFFFF;color:#0A0A0A;font:500 14px/20px Onest,system-ui,sans-serif;box-shadow:0 12px 32px -8px rgba(0,0,0,.6)';
-    const t = document.createElement('span');
-    t.textContent = 'Режим поддержки: ты в аккаунте ' + login + '. Все действия идут от его имени.';
-    const b = document.createElement('button');
+    box.append(el('span', null, 'Режим поддержки: ты в аккаунте ' + login + '. Все действия идут от его имени.'));
+    const b = el('button', 'stre-btn', 'Выйти из поддержки');
     b.type = 'button';
-    b.textContent = 'Выйти из поддержки';
-    b.style.cssText = 'height:32px;padding:0 12px;border-radius:6px;border:0;background:#0A0A0A;color:#FFFFFF;font:500 13px/16px Onest,system-ui,sans-serif;cursor:pointer';
+    b.style.cssText = 'background:#0A0A0A;color:#FFFFFF;border:0;height:32px';
     b.onclick = () => StreAPI.post('account.supportExit').then(() => { location.href = '/admin.html'; }).catch((e) => toast(e.message, 'error'));
-    box.append(t, b);
+    box.appendChild(b);
     document.body.appendChild(box);
   }
 
-  function settingsSupportBlock() {
-    const anchor = document.getElementById('platforms') || document.querySelector('main') || document.body;
-    if (document.getElementById('stre-support-code')) return;
-    const wrap = document.createElement('section');
-    wrap.id = 'stre-support-code';
-    wrap.setAttribute('aria-labelledby', 'stre-support-code-h');
-    wrap.style.cssText = 'margin:24px auto 0;max-width:720px;padding:16px 20px;border-radius:12px;background:rgba(18,18,18,.7);border:1px solid #2A2A2A;font:400 14px/20px Onest,system-ui,sans-serif;color:#F2F2F2';
-    wrap.innerHTML = '<h2 id="stre-support-code-h" style="margin:0 0 4px;font-size:18px;font-weight:600">Помощь с настройкой</h2>' +
-      '<p style="margin:0 0 12px;color:#B4B4B4">Если хочешь, чтобы поддержка помогла настроить канал, создай код. Он действует один час и работает один раз. Доступ можно закрыть, просто подождав окончания часа. Все входы записываются.</p>' +
-      '<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button type="button" id="stre-support-make" style="height:36px;padding:0 14px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 14px/20px Onest,system-ui,sans-serif;cursor:pointer">Создать код на 1 час</button><span id="stre-support-out" class="mono" style="font-size:18px;letter-spacing:.12em"></span></div>';
-    anchor.parentNode.insertBefore(wrap, anchor.nextSibling);
-    document.getElementById('stre-support-make').onclick = () => StreAPI.post('account.supportCode').then((r) => {
-      document.getElementById('stre-support-out').textContent = r.code;
-      toast('Код создан. Передай его администратору.');
-    }).catch((e) => toast(e.message, 'error'));
+  // Карточка администратора: объявление, вход по коду, обращения в поддержку
+  function adminPanels() {
+    styles();
+    if (document.getElementById('stre-admin-panels')) return;
+    const host = document.querySelector('main') || document.body;
+    const wrap = el('div', 'stre-grid');
+    wrap.id = 'stre-admin-panels';
+    wrap.append(announceCard(), enterCard(), inboxCard());
+    host.prepend(wrap);
   }
 
-  function adminSupportEnter() {
-    const form = document.getElementById('stre-ann-admin');
-    if (!form || document.getElementById('stre-support-enter')) return;
-    const box = document.createElement('div');
-    box.id = 'stre-support-enter';
-    box.style.cssText = 'margin-top:16px;padding-top:16px;border-top:1px solid #2A2A2A';
-    box.innerHTML = '<h3 style="margin:0 0 4px;font-size:16px;font-weight:600">Войти в аккаунт по коду поддержки</h3>' +
-      '<p style="margin:0 0 10px;color:#B4B4B4">Код даёт сам пользователь (Настройки → «Создать код на 1 час»). Код одноразовый.</p>' +
-      '<div style="display:flex;gap:8px;flex-wrap:wrap"><input id="stre-support-in" type="text" maxlength="16" placeholder="Код" style="height:36px;width:180px;padding:0 10px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;letter-spacing:.1em"><button type="button" id="stre-support-go" style="height:36px;padding:0 14px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 14px/20px Onest,system-ui,sans-serif;cursor:pointer">Войти</button></div>';
-    form.appendChild(box);
-    document.getElementById('stre-support-go').onclick = () => {
-      const code = document.getElementById('stre-support-in').value.trim();
+  function announceCard() {
+    const card = el('section', 'stre-card');
+    card.setAttribute('aria-labelledby', 'stre-ann-h');
+    card.append(el('h2', 'stre-h', 'Объявление пользователям'), el('p', 'stre-p', 'Баннер увидят все, кто зайдёт в панель. Пользователь закрывает его сам. Ник оставь пустым, чтобы показать всем.'));
+    const now = el('p', 'stre-p');
+    now.style.color = '#8F8F8F';
+    const lab1 = el('label', 'stre-lbl', 'Текст (до 300 символов)');
+    const ta = el('textarea', 'stre-ta');
+    ta.rows = 2; ta.maxLength = 300;
+    lab1.appendChild(ta);
+    const row = el('div');
+    row.style.cssText = 'display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin:12px 0';
+    const hLab = el('label', 'stre-lbl', 'Часов показывать');
+    const hours = el('input', 'stre-in'); hours.type = 'number'; hours.min = '1'; hours.max = '720'; hours.value = '24'; hours.style.width = '110px';
+    const nLab = el('label', 'stre-lbl', 'Ник (необязательно)');
+    const login = el('input', 'stre-in'); login.type = 'text'; login.placeholder = 'всем'; login.style.width = '200px';
+    hLab.appendChild(hours); nLab.appendChild(login);
+    row.append(hLab, nLab);
+    const btns = el('div');
+    btns.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap';
+    const pub = el('button', 'stre-btn-p', 'Опубликовать'); pub.type = 'button';
+    const clr = el('button', 'stre-btn', 'Убрать объявление'); clr.type = 'button';
+    btns.append(pub, clr);
+    const showNow = () => StreAPI.get('admin.announce.get').then((r) => {
+      const a = r.item;
+      now.textContent = a && a.until > Date.now() / 1000 ? 'Сейчас показывается: «' + a.text + '»' + (a.userId ? ' — одному пользователю' : ' — всем') : 'Сейчас объявления нет.';
+    }).catch(() => {});
+    pub.onclick = () => {
+      const text = ta.value.trim();
+      if (!text) { toast('Напиши текст объявления', 'error'); return; }
+      StreAPI.post('admin.announce.set', { text, hours: Number(hours.value) || 24, login: login.value.trim() })
+        .then(() => { toast('Объявление опубликовано'); ta.value = ''; showNow(); })
+        .catch((e) => toast(e.message, 'error'));
+    };
+    clr.onclick = () => {
+      if (!confirm('Убрать объявление у всех?')) return;
+      StreAPI.post('admin.announce.clear').then(() => { toast('Объявление убрано'); showNow(); }).catch((e) => toast(e.message, 'error'));
+    };
+    card.append(now, lab1, row, btns);
+    showNow();
+    return card;
+  }
+
+  function enterCard() {
+    const card = el('section', 'stre-card');
+    card.setAttribute('aria-labelledby', 'stre-enter-h');
+    card.append(el('h2', 'stre-h', 'Войти в аккаунт по коду'), el('p', 'stre-p', 'Код даёт сам пользователь: Поддержка → «Создать код на 1 час». Код одноразовый, а вход записывается в журнал.'));
+    const row = el('div');
+    row.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;align-items:center';
+    const inp = el('input', 'stre-in'); inp.type = 'text'; inp.maxLength = 16; inp.placeholder = 'Код'; inp.style.cssText += ';width:180px;letter-spacing:.1em';
+    inp.setAttribute('aria-label', 'Код поддержки');
+    const go = el('button', 'stre-btn-p', 'Войти'); go.type = 'button';
+    row.append(inp, go);
+    card.appendChild(row);
+    go.onclick = () => {
+      const code = inp.value.trim();
       if (!code) { toast('Введи код', 'error'); return; }
       StreAPI.post('admin.support.enter', { code }).then((r) => { toast('Ты в аккаунте ' + r.login); location.href = '/panel.html'; }).catch((e) => toast(e.message, 'error'));
     };
+    return card;
+  }
+
+  function inboxCard() {
+    const card = el('section', 'stre-card stre-wide');
+    card.setAttribute('aria-labelledby', 'stre-inbox-h');
+    const head = el('div');
+    head.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap';
+    head.append(el('h2', 'stre-h', 'Обращения в поддержку'));
+    const refresh = el('button', 'stre-btn', 'Обновить'); refresh.type = 'button';
+    head.appendChild(refresh);
+    const list = el('div');
+    list.style.cssText = 'display:flex;flex-direction:column;gap:8px;margin-top:12px';
+    const thread = el('div');
+    thread.style.cssText = 'margin-top:16px;display:none;flex-direction:column;gap:8px';
+    const replyBox = el('div');
+    replyBox.style.cssText = 'margin-top:12px;display:none;gap:8px;align-items:flex-end';
+    const ta = el('textarea', 'stre-ta'); ta.rows = 2; ta.maxLength = 1000; ta.placeholder = 'Ответ пользователю'; ta.setAttribute('aria-label', 'Ответ пользователю');
+    const send = el('button', 'stre-btn-p', 'Ответить'); send.type = 'button';
+    replyBox.append(ta, send);
+    let current = 0;
+    const renderThread = (items) => {
+      thread.textContent = '';
+      items.forEach((m) => {
+        const bub = el('div', 'stre-msg ' + (m.from === 'admin' ? 'stre-msg-a' : 'stre-msg-u'), m.text);
+        const meta = el('div', null, (m.from === 'admin' ? 'Ты' : 'Пользователь') + ' · ' + when(m.at));
+        meta.style.cssText = 'font-size:11px;opacity:.7;margin-bottom:2px';
+        const wrapM = el('div');
+        wrapM.style.cssText = 'display:flex;flex-direction:column;max-width:100%;align-items:' + (m.from === 'admin' ? 'flex-end' : 'flex-start');
+        wrapM.append(meta, bub);
+        thread.appendChild(wrapM);
+      });
+      thread.scrollTop = thread.scrollHeight;
+    };
+    const openThread = (id, login) => {
+      current = id;
+      thread.style.display = 'flex';
+      replyBox.style.display = 'flex';
+      card.querySelector('#stre-thread-h') && card.querySelector('#stre-thread-h').remove();
+      const th = el('h3', 'stre-lbl', 'Переписка с ' + login);
+      th.id = 'stre-thread-h';
+      card.insertBefore(th, thread);
+      StreAPI.get('admin.support.thread', { id }).then((r) => renderThread(r.items)).catch((e) => toast(e.message, 'error'));
+    };
+    const loadInbox = () => StreAPI.get('admin.support.inbox').then((r) => {
+      list.textContent = '';
+      if (!r.items.length) { list.appendChild(el('p', 'stre-p', 'Обращений пока нет.')); return; }
+      r.items.forEach((x) => {
+        const row = el('button', 'stre-row');
+        row.type = 'button';
+        row.setAttribute('aria-current', String(current === x.id));
+        const txt = el('span');
+        txt.style.cssText = 'flex:1;min-width:0;display:block';
+        txt.append(el('span', null, x.login), el('span', 'stre-p', x.last));
+        txt.lastChild.style.cssText = 'display:block;margin:2px 0 0;color:#8F8F8F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
+        const t = el('span', null, when(x.at));
+        t.style.cssText = 'font-size:12px;color:#8F8F8F;flex:none';
+        row.append(txt, t);
+        row.onclick = () => openThread(x.id, x.login);
+        list.appendChild(row);
+      });
+    }).catch((e) => toast(e.message, 'error'));
+    send.onclick = () => {
+      const text = ta.value.trim();
+      if (!text || !current) return;
+      send.disabled = true;
+      StreAPI.post('admin.support.reply', { id: current, text }).then((r) => { ta.value = ''; renderThread(r.items); loadInbox(); })
+        .catch((e) => toast(e.message, 'error')).then(() => { send.disabled = false; });
+    };
+    refresh.onclick = () => { loadInbox(); if (current) openThread(current, (card.querySelector('#stre-thread-h') || { textContent: '' }).textContent.replace('Переписка с ', '')); };
+    card.append(head, list, thread, replyBox);
+    loadInbox();
+    return card;
   }
 
   let streamState = null;
