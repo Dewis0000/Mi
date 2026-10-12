@@ -98,6 +98,9 @@
     applyStream(me.stream);
     if (me.announcement) showBanner(me.announcement);
     if (u && u.isAdmin && /admin\.html$/.test(location.pathname)) adminAnnounceForm();
+    if (me.support && u) supportBanner(u.login);
+    if (u && !me.support && /settings\.html$/.test(location.pathname)) settingsSupportBlock();
+    if (u && u.isAdmin && /admin\.html$/.test(location.pathname)) adminSupportEnter();
   }
 
   // ---------- объявления: баннер для всех и форма администратора ----------
@@ -152,6 +155,58 @@
     document.getElementById('stre-ann-clr').onclick = () => {
       if (!confirm('Убрать объявление у всех?')) return;
       StreAPI.post('admin.announce.clear').then(() => { toast('Объявление убрано'); showNow(); }).catch((e) => toast(e.message, 'error'));
+    };
+  }
+
+  // ---------- поддержка по согласию ----------
+  function supportBanner(login) {
+    if (document.getElementById('stre-support')) return;
+    const box = document.createElement('div');
+    box.id = 'stre-support';
+    box.setAttribute('role', 'status');
+    box.style.cssText = 'position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:560;display:flex;gap:12px;align-items:center;padding:10px 14px;border-radius:10px;background:#FFFFFF;color:#0A0A0A;font:500 14px/20px Onest,system-ui,sans-serif;box-shadow:0 12px 32px -8px rgba(0,0,0,.6)';
+    const t = document.createElement('span');
+    t.textContent = 'Режим поддержки: ты в аккаунте ' + login + '. Все действия идут от его имени.';
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = 'Выйти из поддержки';
+    b.style.cssText = 'height:32px;padding:0 12px;border-radius:6px;border:0;background:#0A0A0A;color:#FFFFFF;font:500 13px/16px Onest,system-ui,sans-serif;cursor:pointer';
+    b.onclick = () => StreAPI.post('account.supportExit').then(() => { location.href = '/admin.html'; }).catch((e) => toast(e.message, 'error'));
+    box.append(t, b);
+    document.body.appendChild(box);
+  }
+
+  function settingsSupportBlock() {
+    const anchor = document.getElementById('platforms') || document.querySelector('main') || document.body;
+    if (document.getElementById('stre-support-code')) return;
+    const wrap = document.createElement('section');
+    wrap.id = 'stre-support-code';
+    wrap.setAttribute('aria-labelledby', 'stre-support-code-h');
+    wrap.style.cssText = 'margin:24px auto 0;max-width:720px;padding:16px 20px;border-radius:12px;background:rgba(18,18,18,.7);border:1px solid #2A2A2A;font:400 14px/20px Onest,system-ui,sans-serif;color:#F2F2F2';
+    wrap.innerHTML = '<h2 id="stre-support-code-h" style="margin:0 0 4px;font-size:18px;font-weight:600">Помощь с настройкой</h2>' +
+      '<p style="margin:0 0 12px;color:#B4B4B4">Если хочешь, чтобы поддержка помогла настроить канал, создай код. Он действует один час и работает один раз. Доступ можно закрыть, просто подождав окончания часа. Все входы записываются.</p>' +
+      '<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button type="button" id="stre-support-make" style="height:36px;padding:0 14px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 14px/20px Onest,system-ui,sans-serif;cursor:pointer">Создать код на 1 час</button><span id="stre-support-out" class="mono" style="font-size:18px;letter-spacing:.12em"></span></div>';
+    anchor.parentNode.insertBefore(wrap, anchor.nextSibling);
+    document.getElementById('stre-support-make').onclick = () => StreAPI.post('account.supportCode').then((r) => {
+      document.getElementById('stre-support-out').textContent = r.code;
+      toast('Код создан. Передай его администратору.');
+    }).catch((e) => toast(e.message, 'error'));
+  }
+
+  function adminSupportEnter() {
+    const form = document.getElementById('stre-ann-admin');
+    if (!form || document.getElementById('stre-support-enter')) return;
+    const box = document.createElement('div');
+    box.id = 'stre-support-enter';
+    box.style.cssText = 'margin-top:16px;padding-top:16px;border-top:1px solid #2A2A2A';
+    box.innerHTML = '<h3 style="margin:0 0 4px;font-size:16px;font-weight:600">Войти в аккаунт по коду поддержки</h3>' +
+      '<p style="margin:0 0 10px;color:#B4B4B4">Код даёт сам пользователь (Настройки → «Создать код на 1 час»). Код одноразовый.</p>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap"><input id="stre-support-in" type="text" maxlength="16" placeholder="Код" style="height:36px;width:180px;padding:0 10px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;letter-spacing:.1em"><button type="button" id="stre-support-go" style="height:36px;padding:0 14px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 14px/20px Onest,system-ui,sans-serif;cursor:pointer">Войти</button></div>';
+    form.appendChild(box);
+    document.getElementById('stre-support-go').onclick = () => {
+      const code = document.getElementById('stre-support-in').value.trim();
+      if (!code) { toast('Введи код', 'error'); return; }
+      StreAPI.post('admin.support.enter', { code }).then((r) => { toast('Ты в аккаунте ' + r.login); location.href = '/panel.html'; }).catch((e) => toast(e.message, 'error'));
     };
   }
 
