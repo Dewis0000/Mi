@@ -96,6 +96,63 @@
       }
     }
     applyStream(me.stream);
+    if (me.announcement) showBanner(me.announcement);
+    if (u && u.isAdmin && /admin\.html$/.test(location.pathname)) adminAnnounceForm();
+  }
+
+  // ---------- объявления: баннер для всех и форма администратора ----------
+  function showBanner(a) {
+    if (!a || document.getElementById('stre-ann')) return;
+    const box = document.createElement('div');
+    box.id = 'stre-ann';
+    box.setAttribute('role', 'region');
+    box.setAttribute('aria-label', 'Объявление от StreOps');
+    box.style.cssText = 'position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:550;max-width:min(680px,calc(100vw - 32px));display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:10px;background:rgba(10,10,10,.92);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.16);box-shadow:0 12px 32px -8px rgba(0,0,0,.6);font:400 14px/20px Onest,system-ui,sans-serif;color:#F2F2F2';
+    const txt = document.createElement('span');
+    txt.style.flex = '1';
+    txt.textContent = a.text;
+    const ok = document.createElement('button');
+    ok.type = 'button';
+    ok.textContent = 'Понятно';
+    ok.style.cssText = 'height:32px;padding:0 12px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 13px/16px Onest,system-ui,sans-serif;cursor:pointer;flex:none';
+    ok.onclick = () => { box.remove(); StreAPI.post('announce.dismiss', { id: a.id }).catch(() => {}); };
+    box.append(txt, ok);
+    document.body.appendChild(box);
+  }
+
+  function adminAnnounceForm() {
+    if (document.getElementById('stre-ann-admin')) return;
+    const wrap = document.createElement('section');
+    wrap.id = 'stre-ann-admin';
+    wrap.setAttribute('aria-labelledby', 'stre-ann-admin-h');
+    wrap.style.cssText = 'margin:24px auto 0;max-width:1200px;padding:16px 20px;border-radius:12px;background:rgba(18,18,18,.7);border:1px solid #2A2A2A;font:400 14px/20px Onest,system-ui,sans-serif;color:#F2F2F2';
+    wrap.innerHTML = '<h2 id="stre-ann-admin-h" style="margin:0 0 4px;font-size:18px;font-weight:600">Объявление пользователям</h2>' +
+      '<p style="margin:0 0 12px;color:#B4B4B4">Баннер увидят все, кто зайдёт в панель. Пользователь закрывает его сам. Оставь ник пустым, чтобы показать всем.</p>' +
+      '<div id="stre-ann-now" style="margin:0 0 12px;color:#8F8F8F"></div>' +
+      '<label style="display:block;margin-bottom:10px">Текст (до 300 символов)<textarea id="stre-ann-text" maxlength="300" rows="2" style="display:block;width:100%;box-sizing:border-box;margin-top:4px;padding:8px 10px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 14px/20px Onest,system-ui,sans-serif"></textarea></label>' +
+      '<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-bottom:12px">' +
+      '<label>Сколько часов показывать<input id="stre-ann-hours" type="number" min="1" max="720" value="24" style="display:block;margin-top:4px;width:110px;height:36px;padding:0 10px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2"></label>' +
+      '<label>Ник (необязательно)<input id="stre-ann-login" type="text" placeholder="всем" style="display:block;margin-top:4px;width:200px;height:36px;padding:0 10px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2"></label></div>' +
+      '<div style="display:flex;gap:8px"><button type="button" id="stre-ann-pub" style="height:36px;padding:0 14px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 14px/20px Onest,system-ui,sans-serif;cursor:pointer">Опубликовать</button>' +
+      '<button type="button" id="stre-ann-clr" style="height:36px;padding:0 14px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 14px/20px Onest,system-ui,sans-serif;cursor:pointer">Убрать объявление</button></div>';
+    document.querySelector('main, body').prepend(wrap);
+    const now = document.getElementById('stre-ann-now');
+    const showNow = () => StreAPI.get('admin.announce.get').then((r) => {
+      const a = r.item;
+      now.textContent = a && a.until > Date.now() / 1000 ? 'Сейчас показывается: «' + a.text + '»' + (a.userId ? ' (одному пользователю)' : ' (всем)') : 'Сейчас объявления нет.';
+    }).catch(() => {});
+    showNow();
+    document.getElementById('stre-ann-pub').onclick = () => {
+      const text = document.getElementById('stre-ann-text').value.trim();
+      const hours = Number(document.getElementById('stre-ann-hours').value) || 24;
+      const login = document.getElementById('stre-ann-login').value.trim();
+      if (!text) { toast('Напиши текст объявления', 'error'); return; }
+      StreAPI.post('admin.announce.set', { text, hours, login }).then(() => { toast('Объявление опубликовано'); showNow(); }).catch((e) => toast(e.message, 'error'));
+    };
+    document.getElementById('stre-ann-clr').onclick = () => {
+      if (!confirm('Убрать объявление у всех?')) return;
+      StreAPI.post('admin.announce.clear').then(() => { toast('Объявление убрано'); showNow(); }).catch((e) => toast(e.message, 'error'));
+    };
   }
 
   let streamState = null;
