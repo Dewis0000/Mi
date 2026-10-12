@@ -174,15 +174,19 @@
     document.body.appendChild(box);
   }
 
-  // Карточка администратора: объявление, вход по коду, обращения в поддержку
-  function adminPanels() {
+  // Вкладки админки «Объявления» и «Поддержка»: блоки кладём в контейнеры, которые страница не перерисовывает
+  function adminPanels(tries) {
     styles();
-    if (document.getElementById('stre-admin-panels')) return;
-    // вне #app: перерисовка страницы не трогает эти блоки
-    const wrap = el('div', 'stre-grid');
-    wrap.id = 'stre-admin-panels';
-    wrap.append(announceCard(), enterCard(), inboxCard());
-    (document.getElementById('app') || document.body).after(wrap);
+    const ann = document.getElementById('stre-ann-host');
+    const sup = document.getElementById('stre-support-host');
+    if (!ann || !sup) { // страница ещё не отрисовала вкладки — попробуем чуть позже
+      if ((tries || 0) < 40) setTimeout(() => adminPanels((tries || 0) + 1), 150);
+      return;
+    }
+    if (ann.dataset.filled) return;
+    ann.dataset.filled = '1';
+    ann.appendChild(announceCard());
+    sup.append(enterCard(), inboxCard());
   }
 
   function announceCard() {
