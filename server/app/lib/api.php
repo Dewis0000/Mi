@@ -73,7 +73,8 @@ function api_dispatch(string $r): never {
             if (!$u) json_out(['ok' => true, 'user' => null]);
             $b = bot_account();
             json_out(['ok' => true, 'user' => user_public($u), 'stream' => stream_row((int)$u['id']),
-                'bot' => ['login' => $b['login'] ?? cfg('BOT_LOGIN', 'streopsbot'), 'ready' => (bool)($b['own_app'] ?? false)]]);
+                'bot' => ['login' => $b['login'] ?? cfg('BOT_LOGIN', 'streopsbot'), 'ready' => (bool)($b['own_app'] ?? false)],
+                'announcement' => announcement_for($u)]);
         }
         case 'live.list': {
             $rows = db_all('SELECT u.login, u.display_name, u.avatar, s.title, s.game, s.viewers, s.thumbnail FROM streams s JOIN users u ON u.id = s.user_id WHERE s.live = 1 AND u.banned = 0 ORDER BY s.viewers DESC LIMIT 20');
@@ -575,6 +576,41 @@ function api_dispatch(string $r): never {
                 : db_all('SELECT * FROM users ORDER BY id DESC LIMIT 100');
             json_out(['ok' => true, 'items' => array_map(fn($x) => user_public($x) + ['twitchId' => $x['twitch_id'], 'banned' => (bool)$x['banned'], 'lastLogin' => (int)$x['last_login'], 'rawPlan' => $x['plan']], $rows)]);
         }
+        // ---------- объявления для всех пользователей (баннер в панели) ----------
+        case 'announce.dismiss': {
+            $u = require_user();
+            $a = kv_get('announcement');
+            if ($a && (string)$a['id'] === in_str('id', 32)) settings_set((int)$u['id'], 'ann_seen', $a['id']);
+            json_out(['ok' => true]);
+        }
+        case 'admin.announce.get': {
+            require_admin();
+            json_out(['ok' => true, 'item' => kv_get('announcement')]);
+        }
+        case 'admin.announce.set': {
+            $admin = require_admin();
+            $text = in_str('text', 300);
+            if ($text === '') fail('Напиши текст объявления');
+            $hours = in_int('hours', 24, 1, 720);
+            $target = in_str('login', 64);
+            $uid = 0;
+            if ($target !== '') {
+                $x = db_one('SELECT id FROM users WHERE login = ?', [mb_strtolower($target)]);
+                if (!$x) fail('Нет пользователя с таким ником');
+                $uid = (int)$x['id'];
+            }
+            $a = ['id' => rand_token(6), 'text' => $text, 'until' => now() + $hours * 3600, 'userId' => $uid, 'by' => $admin['login'], 'at' => now()];
+            kv_set('announcement', $a, $hours * 3600);
+            logline('admin', $admin['login'] . ' announcement ' . $a['id'] . ($uid ? ' to user ' . $uid : ' to all') . ': ' . mb_substr($text, 0, 120));
+            json_out(['ok' => true, 'item' => $a]);
+        }
+        case 'admin.announce.clear': {
+            $admin = require_admin();
+            db_exec("DELETE FROM kv WHERE k = 'announcement'");
+            logline('admin', $admin['login'] . ' cleared announcement');
+            json_out(['ok' => true]);
+        }
+
         // ---------- поддержка: действия над каналом пользователя (все записываются в журнал admin) ----------
         case 'admin.support.health': {
             $admin = require_admin();
@@ -664,6 +700,15 @@ function api_dispatch(string $r): never {
         }
     }
     fail('Неизвестный запрос: ' . $r, 404);
+}
+
+// Объявление, которое пользователь ещё не закрыл (для всех или только для него)
+function announcement_for(array $u): ?array {
+    $a = kv_get('announcement');
+    if (!$a || (int)$a['until'] < now()) return null;
+    if ((int)$a['userId'] && (int)$a['userId'] !== (int)$u['id']) return null;
+    if ((string)settings_get((int)$u['id'], 'ann_seen', '') === (string)$a['id']) return null;
+    return ['id' => $a['id'], 'text' => $a['text']];
 }
 
 function timers_list(int $uid): array {
