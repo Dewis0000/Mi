@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script src="assets/theme.js?v=460ce522"></script>
-<script src="assets/api.js?v=07aeb2a0"></script>
+<script src="assets/api.js?v=fa9261c7"></script>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:var(--n-1)}
@@ -173,7 +173,7 @@ class Component extends DCLogic {
     return {
       msgs, empty: s.loaded && !msgs.length,
       text: s.text, setText: (e) => this.setState({ text: e.target.value }),
-      send: (e) => this.send(e), sending: s.sending ? 'true' : 'false',
+      send: (e) => this.send(e), sending: !!s.sending,
       sendLabel: s.sending ? 'Отправка…' : 'Отправить',
       hasErr: !!s.err, err: s.err,
       hasCode: !!s.code, code: s.code, codeUntilLabel: 'Действует до ' + until,

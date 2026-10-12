@@ -178,11 +178,11 @@
   function adminPanels() {
     styles();
     if (document.getElementById('stre-admin-panels')) return;
-    const host = document.querySelector('main') || document.body;
+    // вне #app: перерисовка страницы не трогает эти блоки
     const wrap = el('div', 'stre-grid');
     wrap.id = 'stre-admin-panels';
     wrap.append(announceCard(), enterCard(), inboxCard());
-    host.prepend(wrap);
+    (document.getElementById('app') || document.body).after(wrap);
   }
 
   function announceCard() {

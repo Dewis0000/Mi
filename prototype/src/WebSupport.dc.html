@@ -138,7 +138,7 @@ class Component extends DCLogic {
     return {
       msgs, empty: s.loaded && !msgs.length,
       text: s.text, setText: (e) => this.setState({ text: e.target.value }),
-      send: (e) => this.send(e), sending: s.sending ? 'true' : 'false',
+      send: (e) => this.send(e), sending: !!s.sending,
       sendLabel: s.sending ? 'Отправка…' : 'Отправить',
       hasErr: !!s.err, err: s.err,
       hasCode: !!s.code, code: s.code, codeUntilLabel: 'Действует до ' + until,
