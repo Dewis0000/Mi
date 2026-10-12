@@ -575,6 +575,41 @@ function api_dispatch(string $r): never {
                 : db_all('SELECT * FROM users ORDER BY id DESC LIMIT 100');
             json_out(['ok' => true, 'items' => array_map(fn($x) => user_public($x) + ['twitchId' => $x['twitch_id'], 'banned' => (bool)$x['banned'], 'lastLogin' => (int)$x['last_login'], 'rawPlan' => $x['plan']], $rows)]);
         }
+        // ---------- поддержка: действия над каналом пользователя (все записываются в журнал admin) ----------
+        case 'admin.support.health': {
+            $admin = require_admin();
+            $x = db_one('SELECT * FROM users WHERE id = ?', [in_int('id')]);
+            if (!$x) fail('Пользователь не найден', 404);
+            $subs = array_values(array_filter(eventsub_list(), fn($s) => ($s['condition']['broadcaster_user_id'] ?? '') === $x['twitch_id']));
+            $st = db_one('SELECT live, started_at, viewers, updated_at FROM streams WHERE user_id = ?', [$x['id']]);
+            $lastMsg = db_one('SELECT created_at FROM chat_messages WHERE user_id = ? ORDER BY id DESC LIMIT 1', [$x['id']]);
+            json_out(['ok' => true, 'botEnabled' => (bool)$x['bot_enabled'], 'botError' => $x['bot_error'], 'banned' => (bool)$x['banned'],
+                'subs' => array_map(fn($s) => ['type' => $s['type'], 'status' => $s['status']], $subs),
+                'live' => (bool)($st['live'] ?? false), 'streamUpdatedAt' => (int)($st['updated_at'] ?? 0),
+                'lastChatAt' => (int)($lastMsg['created_at'] ?? 0), 'botConnected' => (bool)bot_account()]);
+        }
+        case 'admin.support.restart': {
+            $admin = require_admin();
+            $x = db_one('SELECT * FROM users WHERE id = ?', [in_int('id')]);
+            if (!$x) fail('Пользователь не найден', 404);
+            if (!bot_account()) fail('Аккаунт бота не подключён к приложению: админ-панель → «Подключить аккаунт бота»');
+            eventsub_remove_channel($x);
+            $errors = eventsub_ensure_channel($x);
+            db_update('users', ['bot_enabled' => 1, 'bot_error' => $errors ? implode('; ', $errors) : null], 'id = ?', [$x['id']]);
+            logline('admin', $admin['login'] . ' restart bot for ' . $x['login'] . ($errors ? ' errors: ' . implode('; ', $errors) : ''));
+            json_out(['ok' => true, 'errors' => $errors]);
+        }
+        case 'admin.support.say': {
+            $admin = require_admin();
+            $x = db_one('SELECT * FROM users WHERE id = ?', [in_int('id')]);
+            if (!$x) fail('Пользователь не найден', 404);
+            $text = in_str('text', 480);
+            if ($text === '') fail('Пустое сообщение');
+            if (!tw_send($x['twitch_id'], $text)) fail('Бот не смог отправить сообщение. Проверь подключение бота к каналу.');
+            logline('admin', $admin['login'] . ' said in ' . $x['login'] . ': ' . mb_substr($text, 0, 120));
+            json_out(['ok' => true]);
+        }
+
         case 'admin.user': {
             $admin = require_admin();
             $id = in_int('id');
