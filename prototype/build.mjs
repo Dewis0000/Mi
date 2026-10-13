@@ -25,6 +25,7 @@ const PAGES = {
   WebSettings: 'settings.html',
   WebAdmin: 'admin.html',
   WebNotFound: '404.html',
+  WebLegal: 'legal.html',
   Main: 'design/index.html',
   Color: 'design/color.html',
   Glass: 'design/glass.html',
