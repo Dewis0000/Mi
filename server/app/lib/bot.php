@@ -379,20 +379,12 @@ function handle_builtin(array $ctx): bool {
         }
         return true;
     }
-    // счётчики виджета «Счётчик»: !смерть, !смерть -1, !смерть 0
-    $counterCmd = mb_strtolower((string)(widget_cfg($user, 'deaths')['content']['command'] ?? '!смерть'));
-    if ($word === $counterCmd) {
-        $val = (int)(db_one('SELECT value FROM counters WHERE user_id = ? AND name = ?', [$user['id'], 'deaths'])['value'] ?? 0);
-        if ($r['mod']) {
-            if ($arg === '0' || $arg === 'сброс') $val = 0;
-            elseif (preg_match('/^[+-]?\d+$/', $arg)) $val += (int)$arg;
-            else $val++;
-            db_exec('DELETE FROM counters WHERE user_id = ? AND name = ?', [$user['id'], 'deaths']);
-            db_insert('counters', ['user_id' => $user['id'], 'name' => 'deaths', 'value' => $val]);
+    // счётчики стрима (раздел «Счётчики»): !смерть, !смерть -1, !смерть 0 — менять может тот, кому разрешено
+    foreach (counters_defs($user) as $c) {
+        if ($word === mb_strtolower((string)$c['command'])) {
+            counter_chat($user, $c, $ctx, $arg);
+            return true;
         }
-        $label = (string)(widget_cfg($user, 'deaths')['content']['label'] ?? 'Счётчик');
-        tw_send($bid, $label . ': ' . $val);
-        return true;
     }
     return false;
 }

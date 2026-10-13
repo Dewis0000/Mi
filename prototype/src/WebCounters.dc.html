@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>StreOps — счётчики</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0A0A0A}
+a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
+.ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.tab{height:44px;padding:0;border:0;background:transparent;color:#8F8F8F;font:500 14px/20px 'Onest',sans-serif;display:flex;gap:6px;align-items:center;cursor:pointer}
+.tab:hover{color:#F2F2F2}
+.cmd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 20px;border-radius:8px;border:1px solid #2A2A2A;background:#111111}
+.cmd:hover{border-color:#3A3A3A}
+.sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid #6E6E6E;background:transparent;cursor:pointer;flex:none;padding:0}
+.sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:#8F8F8F;transition:transform 180ms cubic-bezier(.2,0,0,1)}
+.sw[aria-checked="true"]{background:#FFFFFF;border-color:#FFFFFF}
+.sw[aria-checked="true"] span{transform:translateX(16px);background:#0A0A0A}
+.ib{width:36px;height:36px;border-radius:6px;border:0;background:transparent;color:#B4B4B4;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.ib:hover{background:rgba(255,255,255,.06);color:#F2F2F2}
+.fl{display:flex;flex-direction:column;gap:8px}
+.fl > label,.lab{font-size:13px;line-height:18px;font-weight:500;color:#DCDCDC}
+.inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 15px/22px 'Onest',sans-serif;width:100%}
+.inp:hover{border-color:#8F8F8F}
+.hint{font-size:12px;line-height:16px;color:#8F8F8F;margin:0}
+.seg{height:36px;padding:0 14px;border:0;border-radius:4px;background:transparent;color:#B4B4B4;font:500 14px/20px 'Onest',sans-serif;cursor:pointer}
+.seg:hover{color:#F2F2F2}
+.tag{height:28px;padding:0 10px;border-radius:4px;border:1px solid #3A3A3A;background:transparent;color:#DCDCDC;font:400 12px/16px 'JetBrains Mono',monospace;cursor:pointer}
+.tag:hover{border-color:#8F8F8F;background:rgba(255,255,255,.04)}
+.rad{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:6px;font-size:14px;color:#DCDCDC;cursor:pointer;border:0;background:transparent;width:100%;text-align:left;font-family:'Onest',sans-serif}
+.rad:hover{background:rgba(255,255,255,.04)}
+.dot{width:18px;height:18px;border-radius:999px;border:1px solid #6E6E6E;box-sizing:border-box;flex:none;display:inline-flex;align-items:center;justify-content:center}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 4px 0 10px;border-radius:4px;background:#1F1F1F;border:1px solid #3A3A3A;font-size:13px}
+.chip button{width:20px;height:20px;border:0;border-radius:3px;background:transparent;color:#8F8F8F;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.chip button:hover{color:#F2F2F2;background:rgba(255,255,255,.08)}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
+
+<header style="position: sticky; top: 0; z-index: 200; background: rgba(10,10,10,0.72); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.08)">
+<div style="height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 24px">
+<a href="WebLanding.dc.html" style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</a>
+<a href="WebSettings.dc.html" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 8px 0 6px; border-radius: 6px; font-size: 14px; font-weight: 500"><span style="width: 32px; height: 32px; border-radius: 999px; background: linear-gradient(135deg, #B4B4B4, #3A3A3A); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #0A0A0A">КС</span>kira_stream<svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></a>
+</div>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; box-sizing: border-box; max-width: 1920px; margin: 0 auto">
+<nav aria-label="Разделы стрим-панели"></nav>
+<div style="flex: 999 1 640px; min-width: 0">
+<nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px"><li><a href="WebDashboard.dc.html" style="color: #8F8F8F">Стрим-панель</a></li><li aria-hidden="true" style="color: #525252">/</li><li><a href="#" style="color: #8F8F8F">Бот</a></li><li aria-hidden="true" style="color: #525252">/</li><li aria-current="page" style="color: #F2F2F2">Счётчики</li></ol></nav>
+<div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
+<div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Счётчики</h1><p style="margin: 6px 0 0; font-size: 15px; color: #B4B4B4">Смерти, победы, что угодно. Зрители видят значение по команде, а менять могут те, кому ты разрешил. Счётчик CS2 считает сам по игре.</p></div>
+<button type="button" onClick="{{ create }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 14px/20px 'Onest', sans-serif; display: inline-flex; align-items: center; gap: 8px; cursor: pointer"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Добавить счётчик</button>
+</div>
+<p class="mono" style="margin: 16px 0 0; font-size: 13px; color: #8F8F8F">{{ countLabel }}</p>
+<sc-if value="{{ notBot }}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 16px 0 0; padding: 12px 14px; border: 1px solid #2A2A2A; border-radius: 8px; font-size: 14px; line-height: 20px; color: #B4B4B4">Бот ещё не в канале. Команды счётчиков в чате не сработают, пока не подключишь бота: «Обзор» → «Подключить бота». Значения на виджете и здесь меняются без бота.</p></sc-if>
+
+<ul style="list-style: none; margin: 24px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{ shown }}" as="c" hint-placeholder-count="3">
+<li class="cnt" style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 16px 20px; border-radius: 8px; border: 1px solid #2A2A2A; background: #111111">
+<div style="min-width: 0">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><span style="font-size: 15px; font-weight: 500">{{ c.name }}</span><span class="mono" style="font-size: 12px; padding: 2px 8px; border: 1px solid #3A3A3A; border-radius: 4px; color: #B4B4B4">{{ c.command }}</span></div>
+<p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">{{ c.srcLabel }} · менять: {{ c.accLabel }}</p>
+<div style="margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap">
+<button type="button" class="tag" aria-label="{{ c.minusLabel }}" onClick="{{ c.minus }}" disabled="{{ c.busy }}">−{{ c.step }}</button>
+<button type="button" class="tag" aria-label="{{ c.plusLabel }}" onClick="{{ c.plus }}" disabled="{{ c.busy }}">+{{ c.step }}</button>
+<button type="button" class="tag" aria-label="Сбросить «{{ c.name }}» в ноль" onClick="{{ c.reset }}" disabled="{{ c.busy }}">в 0</button>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 12px"><span class="mono" aria-live="polite" style="font-size: 40px; line-height: 44px; font-weight: 600; font-variant-numeric: tabular-nums; min-width: 2ch; text-align: right">{{ c.value }}</span>
+<button type="button" class="ib" aria-label="{{ c.editLabel }}" onClick="{{ c.edit }}"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path></svg></button></div>
+</li>
+</sc-for>
+</ul>
+<sc-if value="{{ emptyList }}" hint-placeholder-val="{{ false }}"><p style="margin: 24px 0; text-align: center; font-size: 14px; color: #8F8F8F">Счётчиков пока нет. Добавь первый, например «Смерти» с командой !смерть.</p></sc-if>
+
+<sc-if value="{{ hasEditor }}" hint-placeholder-val="{{ true }}">
+<section aria-labelledby="ced-t" style="margin-top: 24px; border-radius: 12px; background: rgba(18,18,18,0.62); border: 1px solid rgba(255,255,255,0.10)">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid #2A2A2A"><h2 id="ced-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">{{ edTitle }}</h2><button type="button" class="ib" aria-label="Закрыть редактор" onClick="{{ closeEd }}"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button></div>
+<form style="padding: 24px; display: flex; flex-direction: column; gap: 20px" onSubmit="{{ save }}">
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div class="fl"><label for="cn">Название</label><input id="cn" class="inp" type="text" maxlength="40" value="{{ f.name }}" onChange="{{ setName }}" placeholder="Смерти"><span class="hint">Так называется счётчик на виджете и в ответе в чат</span></div>
+<div class="fl"><label for="cc">Команда в чате</label><input id="cc" class="inp mono" type="text" maxlength="30" value="{{ f.command }}" onChange="{{ setCommand }}" placeholder="!смерть"><span class="hint">Пишут: !смерть — прибавить на шаг, !смерть -1 — минус, !смерть 0 — сброс</span></div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div class="fl"><label for="cs">Шаг</label><input id="cs" class="inp mono" type="number" min="1" max="100" value="{{ f.step }}" onChange="{{ setStep }}"><span class="hint">На сколько прибавляет команда без числа: от 1 до 100</span></div>
+<div class="fl"><label for="csrc">Откуда считаем</label><select id="csrc" class="inp" value="{{ f.source }}" onChange="{{ setSource }}"><sc-for list="{{ srcOpts }}" as="o" hint-placeholder-count="4"><option value="{{ o.v }}">{{ o.label }}</option></sc-for></select></div>
+</div>
+<sc-if value="{{ isCs }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 10px 12px; border: 1px solid #2A2A2A; border-radius: 6px; font-size: 13px; line-height: 18px; color: #B4B4B4">Считаем по игре: каждая смерть, убийство или MVP в CS2 прибавляет счётчик сама. Нужен файл Game State Integration в папке cfg игры (Виджеты → CS2). Бот и команды для этого не нужны. Ручные команды тоже работают.</p></sc-if>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start">
+<div class="fl"><label for="ca">Кто может менять командой</label><select id="ca" class="inp" value="{{ f.access }}" onChange="{{ setAccess }}"><sc-for list="{{ accOpts }}" as="o" hint-placeholder-count="6"><option value="{{ o.v }}">{{ o.label }}</option></sc-for></select><span class="hint">Стример и модераторы могут менять всегда. Остальным — по выбранному условию</span></div>
+<sc-if value="{{ showAllow }}" hint-placeholder-val="{{ false }}"><div class="fl"><label for="cl">Ники, которые могут менять</label><textarea id="cl" rows="3" value="{{ f.allowList }}" onChange="{{ setAllowList }}" placeholder="moroz_tv, admin_name" style="box-sizing: border-box; width: 100%; padding: 10px 12px; border-radius: 6px; background: #171717; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px/20px 'Onest', sans-serif; resize: vertical"></textarea><span class="hint">Через запятую или пробел. Ники без @</span></div></sc-if>
+</div>
+<sc-if value="{{ warnAll }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 10px 12px; border: 1px solid #2A2A2A; border-radius: 6px; font-size: 13px; line-height: 18px; color: #B4B4B4">Тогда менять сможет любой в чате. Лучше выбрать «Модераторы и стример» или список ников.</p></sc-if>
+<sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 0; padding: 10px 12px; border: 2px solid #F2F2F2; border-radius: 6px; font-size: 13px; line-height: 18px">{{ err }}</p></sc-if>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding-top: 20px; border-top: 1px solid #2A2A2A">
+<sc-if value="{{ canDelete }}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{ remove }}" style="height: 40px; padding: 0 12px; border-radius: 6px; border: 0; background: transparent; color: #FF6369; font: 500 14px/20px 'Onest', sans-serif; cursor: pointer">Удалить счётчик</button></sc-if>
+<span style="display: flex; gap: 8px; margin-left: auto"><button type="button" onClick="{{ closeEd }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 1px solid #3A3A3A; background: transparent; color: #F2F2F2; font: 500 14px/20px 'Onest', sans-serif; cursor: pointer">Отменить</button><button type="submit" disabled="{{ saving }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 14px/20px 'Onest', sans-serif; cursor: pointer">{{ saveLabel }}</button></span>
+</div>
+</form>
+</section>
+</sc-if>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1200}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { items: [], loaded: false, f: null, err: '', saving: false, max: 10, bot: true, busy: {} };
+  }
+  componentDidMount() {
+    this.load();
+    StreAPI.me().then((m) => this.setState({ bot: !!(m.user && m.user.botEnabled) }));
+    this.timer = setInterval(() => this.load(true), 3000);
+  }
+  componentWillUnmount() { clearInterval(this.timer); }
+  // Тихое обновление значений раз в 3 с: во время редактирования не трогаем форму
+  async load(silent) {
+    try {
+      const r = await StreAPI.get('counters.list');
+      this.setState({ items: r.items, max: r.max, loaded: true });
+    } catch (e) { if (!silent) StreAPI.toast(e.message, 'error'); this.setState({ loaded: true }); }
+  }
+  edit(c) {
+    this.setState({ f: c ? Object.assign({}, c) : { id: '', name: '', command: '!', step: 1, access: 'mods', allowList: '', source: 'manual' }, err: '' });
+  }
+  setF(p) { this.setState({ f: Object.assign({}, this.state.f, p) }); }
+  busyOn(id, on) { const b = Object.assign({}, this.state.busy); if (on) b[id] = true; else delete b[id]; this.setState({ busy: b }); }
+  async adjust(c, op, value) {
+    if (this.state.busy[c.id]) return;
+    this.busyOn(c.id, true);
+    try {
+      const r = await StreAPI.post('counters.adjust', { id: c.id, op: op, value: value });
+      this.setState({ items: this.state.items.map((x) => (x.id === c.id ? Object.assign({}, x, { value: r.value }) : x)) });
+    } catch (e) { StreAPI.toast(e.message, 'error'); }
+    this.busyOn(c.id, false);
+  }
+  async saveCounter(body) {
+    if (this.saving) return; // форма иногда отправляется дважды: второй запрос не нужен
+    this.saving = true;
+    this.setState({ saving: true, err: '' });
+    try {
+      const r = await StreAPI.post('counters.save', body);
+      const items = body.id ? this.state.items.map((x) => (x.id === body.id ? r.item : x)) : this.state.items.concat([r.item]);
+      this.saving = false;
+      this.setState({ items: items, saving: false, f: null });
+      StreAPI.toast('Счётчик сохранён');
+    } catch (e) { this.saving = false; this.setState({ saving: false, err: e.message }); }
+  }
+  renderVals() {
+    const s = this.state;
+    const f = s.f;
+    const ACC = { mods: 'модераторы и стример', vip: 'випы и модераторы', subs: 'подписчики и выше', followers: 'фолловеры и выше', list: 'только из списка', all: 'все зрители' };
+    const SRC = { manual: 'вручную', cs_kills: 'убийства в CS2', cs_deaths: 'смерти в CS2', cs_mvp: 'MVP в CS2' };
+    const accList = [['mods', 'Модераторы и стример'], ['vip', 'Випы и модераторы'], ['subs', 'Подписчики и выше'], ['followers', 'Фолловеры и выше'], ['list', 'Только из списка ников'], ['all', 'Все зрители']];
+    const srcList = [['manual', 'Вручную, командой в чате'], ['cs_kills', 'Убийства в CS2'], ['cs_deaths', 'Смерти в CS2'], ['cs_mvp', 'MVP в CS2']];
+    const shown = s.items.map((c) => ({
+      name: c.name, command: c.command, value: StreAPI.fmtNum(c.value), step: c.step,
+      srcLabel: SRC[c.source] || c.source, accLabel: ACC[c.access] || c.access,
+      busy: !!s.busy[c.id],
+      minusLabel: 'Убавить на ' + c.step + ': ' + c.name, plusLabel: 'Прибавить на ' + c.step + ': ' + c.name,
+      editLabel: 'Настроить счётчик «' + c.name + '»',
+      minus: () => this.adjust(c, 'add', -c.step),
+      plus: () => this.adjust(c, 'add', c.step),
+      reset: () => { if (confirm('Сбросить «' + c.name + '» в ноль?')) this.adjust(c, 'set', 0); },
+      edit: () => this.edit(c),
+    }));
+    const isNew = !(f && f.id);
+    return {
+      countLabel: s.items.length + ' из ' + s.max,
+      shown, emptyList: s.loaded && !s.items.length, notBot: s.loaded && !s.bot,
+      create: () => (s.items.length >= s.max ? StreAPI.toast('Счётчиков не больше ' + s.max, 'error') : this.edit(null)),
+      hasEditor: !!f, edTitle: isNew ? 'Новый счётчик' : 'Настройки счётчика',
+      closeEd: () => this.setState({ f: null, err: '' }),
+      f: f || {},
+      srcOpts: srcList.map((o) => ({ v: o[0], label: o[1] })),
+      accOpts: accList.map((o) => ({ v: o[0], label: o[1] })),
+      isCs: !!(f && f.source && f.source !== 'manual'),
+      showAllow: !!(f && f.access === 'list'),
+      warnAll: !!(f && f.access === 'all'),
+      setName: (e) => this.setF({ name: e.target.value }),
+      setCommand: (e) => this.setF({ command: e.target.value.replace(/\s+/g, '') }),
+      setStep: (e) => this.setF({ step: Math.max(1, Math.min(100, Number(e.target.value) || 1)) }),
+      setSource: (e) => this.setF({ source: e.target.value }),
+      setAccess: (e) => this.setF({ access: e.target.value }),
+      setAllowList: (e) => this.setF({ allowList: e.target.value }),
+      hasErr: !!s.err, err: s.err,
+      saving: !!s.saving,
+      saveLabel: s.saving ? 'Сохраняем…' : 'Сохранить',
+      save: (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        if (!f.name || !f.name.trim()) return this.setState({ err: 'Назови счётчик' });
+        if (!f.command || f.command.replace('!', '').length < 1) return this.setState({ err: 'Напиши команду, например !смерть' });
+        this.saveCounter({ id: f.id, name: f.name, command: f.command, step: f.step, access: f.access, allowList: f.allowList, source: f.source });
+      },
+      canDelete: !!(f && f.id),
+      remove: async () => {
+        if (!confirm('Удалить счётчик «' + f.name + '» вместе со значением?')) return;
+        try {
+          await StreAPI.post('counters.delete', { id: f.id });
+          this.setState({ items: s.items.filter((x) => x.id !== f.id), f: null });
+          StreAPI.toast('Счётчик удалён');
+        } catch (e) { this.setState({ err: e.message }); }
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>
