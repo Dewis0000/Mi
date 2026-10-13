@@ -1,9 +1,6 @@
 <?php
-// ЮKassa: онлайн-пополнение баланса. Деньги зачисляются только после того, как сервер сам запросил статус платежа
-// у ЮKassa и получил «succeeded». Тело уведомления от ЮKassa только подсказывает, какой платёж проверить.
-
-const YK_MIN = 100;
-const YK_MAX = 50000;
+// ЮKassa: оплата тарифа. Тариф активируется только после того, как сервер сам запросил статус платежа
+// у ЮKassa и получил «succeeded» на нужную сумму. Тело уведомления от ЮKassa только подсказывает, какой платёж проверить.
 
 function yk_enabled(): bool {
     return (string)cfg('YOOKASSA_SHOP_ID') !== '' && (string)cfg('YOOKASSA_SECRET_KEY') !== '';
@@ -19,17 +16,19 @@ function yk_call(string $method, string $path, ?array $body = null, ?string $ide
     return http_request($method, 'https://api.yookassa.ru/v3' . $path, $headers, $body, 15);
 }
 
-// Создаём платёж в ЮKassa для встраиваемого виджета: платёжная форма открывается на нашем сайте, без редиректа.
-// Возвращаем ID локального платежа и confirmation_token, которым виджет запускает оплату.
-function yk_create(array $user, int $rub, string $returnUrl): array {
-    if (!yk_enabled()) fail('Онлайн-оплата пока не подключена. Напиши администратору StreOps — он зачислит баланс');
-    if ($rub < YK_MIN || $rub > YK_MAX) fail('Сумма пополнения — от ' . YK_MIN . ' до ' . YK_MAX . ' ₽');
-    $local = db_insert('payments', ['user_id' => (int)$user['id'], 'amount' => $rub, 'status' => 'creating', 'created_at' => now()]);
+// Создаём платёж на тариф. Цена берётся из PLANS на сервере, а не из запроса.
+// Возвращаем ID локального платежа и confirmation_token для встраиваемого виджета.
+function yk_create(array $user, string $plan, string $returnUrl): array {
+    if (!yk_enabled()) fail('Онлайн-оплата пока не подключена. Напиши администратору StreOps');
+    if (!isset(PLANS[$plan]) || PLANS[$plan]['price'] <= 0) fail('Нет такого тарифа для оплаты');
+    $price = (int)PLANS[$plan]['price'];
+    $name = (string)PLANS[$plan]['name'];
+    $local = db_insert('payments', ['user_id' => (int)$user['id'], 'plan' => $plan, 'amount' => $price, 'status' => 'creating', 'created_at' => now()]);
     $r = yk_call('POST', '/payments', [
-        'amount' => ['value' => number_format($rub, 2, '.', ''), 'currency' => 'RUB'],
+        'amount' => ['value' => number_format($price, 2, '.', ''), 'currency' => 'RUB'],
         'capture' => true,
         'confirmation' => ['type' => 'embedded'],
-        'description' => mb_substr('Пополнение баланса StreOps #' . $local, 0, 128),
+        'description' => mb_substr('Тариф «' . $name . '» StreOps на 30 дней, заказ #' . $local, 0, 128),
         'metadata' => ['local_id' => (string)$local],
     ], 'streops-pay-' . $local); // повторный запрос с тем же ключом не создаст второй платёж
     $ykId = (string)($r['json']['id'] ?? '');
@@ -43,19 +42,25 @@ function yk_create(array $user, int $rub, string $returnUrl): array {
     return ['id' => $local, 'token' => $token];
 }
 
-// Проверяем платёж у ЮKassa. Зачисляем ровно один раз: UPDATE с условием credited = 0 защищает от двойного зачисления.
+// Активация тарифа на 30 дней. Если тариф тот же и ещё действует, срок продлевается от его конца.
+function yk_activate(int $uid, string $plan, int $price): void {
+    $u = db_one('SELECT * FROM users WHERE id = ?', [$uid]);
+    $base = plan_of($u) === $plan && (int)$u['plan_until'] > now() ? (int)$u['plan_until'] : now();
+    db_update('users', ['plan' => $plan, 'plan_until' => $base + 30 * 86400], 'id = ?', [$uid]);
+    add_transaction($uid, $price, 'plan', 'Оплата тарифа «' . PLANS[$plan]['name'] . '» через ЮKassa на 30 дней');
+}
+
+// Проверяем платёж у ЮKassa. Активируем ровно один раз: UPDATE с условием credited = 0 защищает от двойной активации.
 function yk_settle(array $p): string {
     if ((string)$p['yk_id'] === '') return (string)$p['status'];
     $r = yk_call('GET', '/payments/' . rawurlencode((string)$p['yk_id']));
     if ($r['code'] !== 200) return 'pending';
     $st = (string)($r['json']['status'] ?? '');
     $amount = (int)round((float)($r['json']['amount']['value'] ?? 0));
-    if ($st === 'succeeded' && !empty($r['json']['paid']) && $amount === (int)$p['amount']) {
+    $plan = (string)($p['plan'] ?? '');
+    if ($st === 'succeeded' && !empty($r['json']['paid']) && isset(PLANS[$plan]) && $amount === (int)PLANS[$plan]['price']) {
         $n = db_exec("UPDATE payments SET status = 'succeeded', credited = 1 WHERE id = ? AND credited = 0", [$p['id']]);
-        if ($n) {
-            db_exec('UPDATE users SET balance = balance + ? WHERE id = ?', [$amount, $p['user_id']]);
-            add_transaction((int)$p['user_id'], $amount, 'topup', 'Пополнение через ЮKassa');
-        }
+        if ($n) yk_activate((int)$p['user_id'], $plan, $amount);
         return 'succeeded';
     }
     if ($st === 'canceled') {

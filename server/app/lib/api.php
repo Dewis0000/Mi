@@ -502,15 +502,14 @@ function api_dispatch(string $r): never {
 
         // ---------- аккаунт ----------
         case 'plans': { // тарифы для страниц сайта — один источник с серверными лимитами
-            json_out(['ok' => true, 'items' => array_map(fn($k, $p) => ['key' => $k] + $p, array_keys(PLANS), PLANS), 'pay' => ['enabled' => yk_enabled(), 'min' => YK_MIN, 'max' => YK_MAX]]);
+            json_out(['ok' => true, 'items' => array_map(fn($k, $p) => ['key' => $k] + $p, array_keys(PLANS), PLANS), 'pay' => ['enabled' => yk_enabled()]]);
         }
-        case 'pay.create': { // пополнение баланса через ЮKassa: возвращаем ссылку на страницу оплаты
+        case 'pay.create': { // оплата тарифа через ЮKassa: виджет на сайте
             $u = require_user();
-            $rub = in_int('amount', 0);
-            $pay = yk_create($u, $rub, base_url() . '/settings.html?pay=return#billing');
+            $pay = yk_create($u, in_str('plan', 16), base_url() . '/settings.html?pay=return#billing');
             json_out(['ok' => true, 'token' => $pay['token'], 'returnUrl' => base_url() . '/settings.html?pay=return#billing']);
         }
-        case 'pay.check': { // проверка незавершённых платежей: зачисление, если оплата уже прошла
+        case 'pay.check': { // проверка незавершённых платежей: активация тарифа, если оплата уже прошла
             $u = require_user();
             $changed = 0;
             foreach (db_all("SELECT * FROM payments WHERE user_id = ? AND credited = 0 AND status = 'pending' ORDER BY id DESC LIMIT 5", [$u['id']]) as $p) {
@@ -522,17 +521,6 @@ function api_dispatch(string $r): never {
             $u = require_user();
             $rows = db_all('SELECT * FROM transactions WHERE user_id = ? ORDER BY id DESC LIMIT 50', [$u['id']]);
             json_out(['ok' => true, 'items' => array_map(fn($t) => ['id' => (int)$t['id'], 'amount' => (int)$t['amount'], 'kind' => $t['kind'], 'comment' => $t['comment'], 'at' => (int)$t['created_at']], $rows)]);
-        }
-        case 'account.buy': {
-            $u = require_user();
-            $plan = in_str('plan', 16);
-            if (!isset(PLANS[$plan]) || $plan === 'free') fail('Нет такого тарифа');
-            $price = PLANS[$plan]['price'];
-            if ((int)$u['balance'] < $price) fail('Не хватает ' . ($price - (int)$u['balance']) . ' ₽ на балансе');
-            $base = plan_of($u) === $plan && (int)$u['plan_until'] > now() ? (int)$u['plan_until'] : now();
-            db_update('users', ['balance' => (int)$u['balance'] - $price, 'plan' => $plan, 'plan_until' => $base + 30 * 86400], 'id = ?', [$u['id']]);
-            add_transaction((int)$u['id'], -$price, 'plan', 'Оплата тарифа «' . PLANS[$plan]['name'] . '» на 30 дней');
-            json_out(['ok' => true]);
         }
         case 'account.theme': {
             $u = require_user();
