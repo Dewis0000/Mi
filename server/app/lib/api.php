@@ -652,6 +652,46 @@ function api_dispatch(string $r): never {
             json_out(['ok' => true, 'items' => support_thread($id)]);
         }
 
+        // ---------- нарезки: интересные моменты стрима по пикам чата и событиям ----------
+        case 'clips.highlights': {
+            $u = db_one('SELECT * FROM users WHERE widget_token = ?', [in_str('t', 64)]);
+            if (!$u || (int)$u['banned']) fail('Ключ не подошёл. Возьми ключ в настройках StreOps.', 403);
+            $from = in_int('from');
+            if (!$from) {
+                $st = db_one('SELECT started_at FROM streams WHERE user_id = ? ORDER BY started_at DESC LIMIT 1', [$u['id']]);
+                $from = $st ? (int)$st['started_at'] : now() - 6 * 3600;
+            }
+            $to = in_int('to') ?: now();
+            $count = in_int('count', 5, 1, 10);
+            $bucket = 30;
+            $buckets = [];
+            foreach (db_all('SELECT created_at, text, chatter_login FROM chat_messages WHERE user_id = ? AND created_at BETWEEN ? AND ? AND deleted = 0', [$u['id'], $from, $to]) as $m) {
+                $i = intdiv((int)$m['created_at'] - $from, $bucket);
+                $buckets[$i] ??= ['score' => 0, 'chat' => 0, 'events' => [], 'best' => ''];
+                $buckets[$i]['score'] += 1;
+                $buckets[$i]['chat'] += 1;
+                if (strlen($m['text']) > strlen($buckets[$i]['best']) && !str_starts_with($m['text'], '!')) $buckets[$i]['best'] = $m['text'];
+            }
+            $weights = ['donation' => 10, 'sub' => 6, 'resub' => 6, 'gift' => 6, 'raid' => 8, 'follow' => 1];
+            foreach (db_all("SELECT created_at, type, login, name FROM events WHERE user_id = ? AND created_at BETWEEN ? AND ? AND type IN ('donation','sub','resub','gift','raid','follow')", [$u['id'], $from, $to]) as $e) {
+                $i = intdiv((int)$e['created_at'] - $from, $bucket);
+                $buckets[$i] ??= ['score' => 0, 'chat' => 0, 'events' => [], 'best' => ''];
+                $buckets[$i]['score'] += $weights[$e['type']] ?? 1;
+                $buckets[$i]['events'][] = $e['type'];
+            }
+            uasort($buckets, fn($a, $b) => $b['score'] <=> $a['score']);
+            $picked = [];
+            foreach ($buckets as $i => $b) {
+                if (count($picked) >= $count) break;
+                $at = $from + $i * $bucket;
+                foreach ($picked as $p) if (abs($p['at'] - $at) < 120) continue 2;
+                $picked[] = ['at' => $at, 'start' => max($from, $at - 30), 'end' => min($to, $at + 60), 'score' => $b['score'],
+                    'chat' => $b['chat'], 'events' => array_values(array_unique($b['events'])), 'title' => mb_substr($b['best'], 0, 80)];
+            }
+            usort($picked, fn($a, $b) => $a['at'] <=> $b['at']);
+            json_out(['ok' => true, 'from' => $from, 'to' => $to, 'items' => $picked, 'channel' => $u['display_name'] ?: $u['login']]);
+        }
+
         // ---------- объявления для всех пользователей (баннер в панели) ----------
         case 'announce.dismiss': {
             $u = require_user();
