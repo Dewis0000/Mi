@@ -19,27 +19,28 @@ function yk_call(string $method, string $path, ?array $body = null, ?string $ide
     return http_request($method, 'https://api.yookassa.ru/v3' . $path, $headers, $body, 15);
 }
 
-// Создаём платёж в ЮKassa и возвращаем ссылку на страницу оплаты.
-function yk_create(array $user, int $rub, string $returnUrl): string {
+// Создаём платёж в ЮKassa для встраиваемого виджета: платёжная форма открывается на нашем сайте, без редиректа.
+// Возвращаем ID локального платежа и confirmation_token, которым виджет запускает оплату.
+function yk_create(array $user, int $rub, string $returnUrl): array {
     if (!yk_enabled()) fail('Онлайн-оплата пока не подключена. Напиши администратору StreOps — он зачислит баланс');
     if ($rub < YK_MIN || $rub > YK_MAX) fail('Сумма пополнения — от ' . YK_MIN . ' до ' . YK_MAX . ' ₽');
     $local = db_insert('payments', ['user_id' => (int)$user['id'], 'amount' => $rub, 'status' => 'creating', 'created_at' => now()]);
     $r = yk_call('POST', '/payments', [
         'amount' => ['value' => number_format($rub, 2, '.', ''), 'currency' => 'RUB'],
         'capture' => true,
-        'confirmation' => ['type' => 'redirect', 'return_url' => $returnUrl],
+        'confirmation' => ['type' => 'embedded'],
         'description' => mb_substr('Пополнение баланса StreOps #' . $local, 0, 128),
         'metadata' => ['local_id' => (string)$local],
     ], 'streops-pay-' . $local); // повторный запрос с тем же ключом не создаст второй платёж
     $ykId = (string)($r['json']['id'] ?? '');
-    $url = (string)($r['json']['confirmation']['confirmation_url'] ?? '');
-    if ($r['code'] !== 200 || $ykId === '' || $url === '') {
+    $token = (string)($r['json']['confirmation']['confirmation_token'] ?? '');
+    if ($r['code'] !== 200 || $ykId === '' || $token === '') {
         db_exec("UPDATE payments SET status = 'error' WHERE id = ?", [$local]);
         logline('yookassa', 'create failed: ' . $r['code'] . ' ' . substr((string)($r['raw'] ?? ''), 0, 300));
         fail('ЮKassa не создала платёж (код ' . $r['code'] . '). Попробуй позже');
     }
     db_exec("UPDATE payments SET yk_id = ?, status = 'pending' WHERE id = ?", [$ykId, $local]);
-    return $url;
+    return ['id' => $local, 'token' => $token];
 }
 
 // Проверяем платёж у ЮKassa. Зачисляем ровно один раз: UPDATE с условием credited = 0 защищает от двойного зачисления.

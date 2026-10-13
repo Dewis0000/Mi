@@ -507,8 +507,8 @@ function api_dispatch(string $r): never {
         case 'pay.create': { // пополнение баланса через ЮKassa: возвращаем ссылку на страницу оплаты
             $u = require_user();
             $rub = in_int('amount', 0);
-            $url = yk_create($u, $rub, base_url() . '/settings.html?pay=return#billing');
-            json_out(['ok' => true, 'url' => $url]);
+            $pay = yk_create($u, $rub, base_url() . '/settings.html?pay=return#billing');
+            json_out(['ok' => true, 'token' => $pay['token'], 'returnUrl' => base_url() . '/settings.html?pay=return#billing']);
         }
         case 'pay.check': { // проверка незавершённых платежей: зачисление, если оплата уже прошла
             $u = require_user();

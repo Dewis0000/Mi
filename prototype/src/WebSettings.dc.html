@@ -165,6 +165,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <label style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 500; color: #DCDCDC">Сумма, ₽<input class="mono" type="number" min="100" max="50000" step="50" value="{{ payAmount }}" onChange="{{ setPayAmount }}" style="box-sizing: border-box; width: 180px; height: 40px; padding: 0 12px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 15px/22px 'JetBrains Mono', monospace"></label>
 <button type="submit" disabled="{{ payBusy }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 14px/20px 'Onest', sans-serif; cursor: pointer">{{ payLabel }}</button>
 </form></sc-if>
+<div id="pay-widget" data-dc-keep style="margin-top: 16px"></div>
 <sc-if value="{{ hasPayErr }}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 12px 0 0; font-size: 13px; line-height: 18px; color: #FF6369">{{ payErr }}</p></sc-if>
 </div>
 <h3 style="margin: 28px 0 0; font-size: 15px; font-weight: 600">Тарифы</h3>
@@ -359,13 +360,38 @@ class Component extends DCLogic {
       else StreAPI.toast('Платёж ещё обрабатывается. Баланс обновится, когда ЮKassa подтвердит оплату');
     } catch (e) { StreAPI.toast(e.message, 'error'); }
   }
+  // Виджет ЮKassa: платёжная форма открывается на сайте, без перехода на другой ресурс
+  loadPayWidget() {
+    if (window.YooMoneyCheckoutWidget) return Promise.resolve();
+    return new Promise((ok, no) => {
+      const s = document.createElement('script');
+      s.src = 'https://yookassa.ru/checkout-widget/v1/checkout-widget.js';
+      s.onload = () => ok();
+      s.onerror = () => no(new Error('Не загрузилась платёжная форма. Проверь интернет или отключи блокировщик рекламы'));
+      document.head.appendChild(s);
+    });
+  }
   async payTopUp() {
     const amount = Math.round(Number(this.state.payAmount) || 0);
     if (amount < 100 || amount > 50000) return this.setState({ payErr: 'Сумма — от 100 до 50 000 ₽' });
     this.setState({ payBusy: true, payErr: '' });
     try {
       const r = await StreAPI.post('pay.create', { amount: amount });
-      location.href = r.url;
+      await this.loadPayWidget();
+      const host = document.getElementById('pay-widget');
+      if (!host) throw new Error('Не нашёл место для платёжной формы. Обнови страницу');
+      host.innerHTML = '';
+      this.setState({ payBusy: false });
+      const w = new window.YooMoneyCheckoutWidget({
+        confirmation_token: r.token,
+        return_url: r.returnUrl,
+        error_callback: () => this.setState({ payErr: 'Оплата не прошла. Попробуй ещё раз или выбери другой способ' }),
+      });
+      w.on('success', async () => { // виджет сообщает об успехе: сервер сам проверит платёж и зачислит
+        try { const c = await StreAPI.post('pay.check', {}); if (c.credited) { StreAPI.toast('Баланс пополнен'); this.reloadMe(); this.loadTx(); } } catch (e) { StreAPI.toast(e.message, 'error'); }
+        host.innerHTML = '';
+      });
+      w.render('pay-widget');
     } catch (e) { this.setState({ payBusy: false, payErr: e.message }); }
   }
   async loadTx() {
