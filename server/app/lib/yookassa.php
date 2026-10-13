@@ -16,19 +16,16 @@ function yk_call(string $method, string $path, ?array $body = null, ?string $ide
     return http_request($method, 'https://api.yookassa.ru/v3' . $path, $headers, $body, 15);
 }
 
-// Создаём платёж на тариф. Цена берётся из PLANS на сервере, а не из запроса.
-// Возвращаем ID локального платежа и confirmation_token для встраиваемого виджета.
-function yk_create(array $user, string $plan, string $returnUrl): array {
+// Создаём платёж. Цена берётся на сервере, а не из запроса. Возвращаем ID локального платежа и confirmation_token.
+// Для тарифа $plan — оплата подписки. Для тестового платежа без тарифа $plan пустой: он ничего не меняет на сайте.
+function yk_make(int $uid, string $plan, int $price, string $desc): array {
     if (!yk_enabled()) fail('Онлайн-оплата пока не подключена. Напиши администратору StreOps');
-    if (!isset(PLANS[$plan]) || PLANS[$plan]['price'] <= 0) fail('Нет такого тарифа для оплаты');
-    $price = (int)PLANS[$plan]['price'];
-    $name = (string)PLANS[$plan]['name'];
-    $local = db_insert('payments', ['user_id' => (int)$user['id'], 'plan' => $plan, 'amount' => $price, 'status' => 'creating', 'created_at' => now()]);
+    $local = db_insert('payments', ['user_id' => $uid, 'plan' => $plan, 'amount' => $price, 'status' => 'creating', 'created_at' => now()]);
     $r = yk_call('POST', '/payments', [
         'amount' => ['value' => number_format($price, 2, '.', ''), 'currency' => 'RUB'],
         'capture' => true,
         'confirmation' => ['type' => 'embedded'],
-        'description' => mb_substr('Тариф «' . $name . '» StreOps на 30 дней, заказ #' . $local, 0, 128),
+        'description' => mb_substr($desc . ', заказ #' . $local, 0, 128),
         'metadata' => ['local_id' => (string)$local],
     ], 'streops-pay-' . $local); // повторный запрос с тем же ключом не создаст второй платёж
     $ykId = (string)($r['json']['id'] ?? '');
@@ -40,6 +37,17 @@ function yk_create(array $user, string $plan, string $returnUrl): array {
     }
     db_exec("UPDATE payments SET yk_id = ?, status = 'pending' WHERE id = ?", [$ykId, $local]);
     return ['id' => $local, 'token' => $token];
+}
+
+// Оплата тарифа: цена из PLANS.
+function yk_create(array $user, string $plan): array {
+    if (!isset(PLANS[$plan]) || PLANS[$plan]['price'] <= 0) fail('Нет такого тарифа для оплаты');
+    return yk_make((int)$user['id'], $plan, (int)PLANS[$plan]['price'], 'Тариф «' . PLANS[$plan]['name'] . '» StreOps на 30 дней');
+}
+
+// Тестовый платёж для проверки магазина ЮKassa: фиксированная сумма, без входа в аккаунт, тариф не меняется.
+function yk_create_demo(): array {
+    return yk_make(0, '', 100, 'Тестовый платёж StreOps (проверка приёма оплаты)');
 }
 
 // Активация тарифа на 30 дней. Если тариф тот же и ещё действует, срок продлевается от его конца.

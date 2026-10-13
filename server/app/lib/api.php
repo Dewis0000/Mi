@@ -506,8 +506,12 @@ function api_dispatch(string $r): never {
         }
         case 'pay.create': { // оплата тарифа через ЮKassa: виджет на сайте
             $u = require_user();
-            $pay = yk_create($u, in_str('plan', 16), base_url() . '/settings.html?pay=return#billing');
+            $pay = yk_create($u, in_str('plan', 16));
             json_out(['ok' => true, 'token' => $pay['token'], 'returnUrl' => base_url() . '/settings.html?pay=return#billing']);
+        }
+        case 'pay.demo': { // тестовая страница оплаты для проверки магазина ЮKassa: вход не нужен
+            $pay = yk_create_demo();
+            json_out(['ok' => true, 'token' => $pay['token'], 'returnUrl' => base_url() . '/test-pay.html?pay=return']);
         }
         case 'pay.check': { // проверка незавершённых платежей: активация тарифа, если оплата уже прошла
             $u = require_user();
