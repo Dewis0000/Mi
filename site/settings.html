@@ -192,17 +192,16 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 <div style="padding: 20px; border-radius: 8px; border: 2px solid var(--n-12)"><p style="margin: 0; font-size: 13px; color: var(--n-9)">Текущий тариф</p><p style="margin: 8px 0 0; font-size: 24px; line-height: 30px; font-weight: 600">{{ planName }}</p><p style="margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--n-10)">{{ planUntil }}</p><p class="hint" style="margin-top: 12px; font-size: 13px; line-height: 18px">{{ planLimits }}</p></div>
 <div style="padding: 20px; border-radius: 8px; border: 1px solid var(--n-5); background: var(--s-3)"><p style="margin: 0; font-size: 13px; color: var(--n-9)">Баланс</p><p class="mono" style="margin: 8px 0 0; font-size: 32px; line-height: 36px; font-weight: 500">{{ balance }}</p><p style="margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--n-10)">{{ balanceNote }}</p><p class="hint" style="margin-top: 12px; font-size: 13px; line-height: 18px">Пополнить можно онлайн (блок ниже) или через администратора: напиши ему свой ник и сумму.</p></div>
 </div>
-<template data-if="payOn">
 <div style="margin-top: 16px; padding: 20px; border-radius: 8px; border: 1px solid var(--n-5); background: var(--s-3)">
 <p style="margin: 0; font-size: 15px; line-height: 22px; font-weight: 600">Пополнить баланс</p>
-<p class="hint" style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">Оплата картой или через СБП, платёж проводит ЮKassa. От 100 до 50 000 ₽. Деньги сразу на баланс, тариф потом покупается с него.</p>
-<form style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end" onSubmit="{{ payTopUp }}">
+<template data-if="payOn"><p class="hint" style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">Оплата картой или через СБП, платёж проводит ЮKassa. От 100 до 50 000 ₽. Деньги сразу на баланс, тариф потом покупается с него.</p></template>
+<template data-if="payOff"><p class="hint" style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">Онлайн-оплата сейчас подключается. Пока пополни баланс через администратора StreOps: напиши ему свой ник и сумму.</p></template>
+<template data-if="payOn"><form style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end" onSubmit="{{ payTopUp }}">
 <label style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 500; color: var(--n-11)">Сумма, ₽<input class="mono" type="number" min="100" max="50000" step="50" value="{{ payAmount }}" onChange="{{ setPayAmount }}" style="box-sizing: border-box; width: 180px; height: 40px; padding: 0 12px; border-radius: 6px; background: var(--n-1); border: 1px solid var(--n-8); color: var(--n-12); font: 400 15px/22px 'JetBrains Mono', monospace"></label>
 <button type="submit" disabled="{{ payBusy }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: var(--n-13); color: var(--n-1); font: 500 14px/20px var(--font-sans), sans-serif; cursor: pointer">{{ payLabel }}</button>
-</form>
+</form></template>
 <template data-if="hasPayErr"><p role="alert" style="margin: 12px 0 0; font-size: 13px; line-height: 18px; color: var(--accent-text)">{{ payErr }}</p></template>
 </div>
-</template>
 <h3 style="margin: 28px 0 0; font-size: 15px; font-weight: 600">Тарифы</h3>
 <p class="hint" style="margin-top: 4px; font-size: 13px; line-height: 18px">Оплата списывается с баланса, тариф действует 30 дней. Когда срок закончится, аккаунт вернётся на бесплатный тариф — команды и настройки сохранятся.</p>
 <ul class="plans">
@@ -754,7 +753,7 @@ class Component extends DCLogic {
       hideDaMsg: () => this.setState({ daMsg: null }),
 
       planName: me ? me.planName : L, planUntil, planLimits,
-      payOn: !!(s.payInfo && s.payInfo.enabled),
+      payOn: !!(s.payInfo && s.payInfo.enabled), payOff: !(s.payInfo && s.payInfo.enabled),
       payAmount: s.payAmount, setPayAmount: (e) => this.setState({ payAmount: e.target.value, payErr: '' }),
       payBusy: !!s.payBusy, payLabel: s.payBusy ? 'Переходим к оплате…' : 'Оплатить через ЮKassa',
       hasPayErr: !!s.payErr, payErr: s.payErr, payTopUp: () => this.payTopUp(),
