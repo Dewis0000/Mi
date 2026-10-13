@@ -18,9 +18,9 @@ function yk_call(string $method, string $path, ?array $body = null, ?string $ide
 
 // Создаём платёж. Цена берётся на сервере, а не из запроса. Возвращаем ID локального платежа и confirmation_token.
 // Для тарифа $plan — оплата подписки. Для тестового платежа без тарифа $plan пустой: он ничего не меняет на сайте.
-function yk_make(int $uid, string $plan, int $price, string $desc): array {
+function yk_make(int $uid, string $plan, int $price, string $desc, int $promoId = 0): array {
     if (!yk_enabled()) fail('Онлайн-оплата пока не подключена. Напиши администратору StreOps');
-    $local = db_insert('payments', ['user_id' => $uid, 'plan' => $plan, 'amount' => $price, 'status' => 'creating', 'created_at' => now()]);
+    $local = db_insert('payments', ['user_id' => $uid, 'plan' => $plan, 'promo_id' => $promoId, 'amount' => $price, 'status' => 'creating', 'created_at' => now()]);
     $r = yk_call('POST', '/payments', [
         'amount' => ['value' => number_format($price, 2, '.', ''), 'currency' => 'RUB'],
         'capture' => true,
@@ -39,23 +39,18 @@ function yk_make(int $uid, string $plan, int $price, string $desc): array {
     return ['id' => $local, 'token' => $token];
 }
 
-// Оплата тарифа: цена из PLANS.
-function yk_create(array $user, string $plan): array {
+// Оплата тарифа: цена из PLANS, со скидкой промокода, если он передан (промокод уже проверен).
+function yk_create(array $user, string $plan, ?array $promo = null): array {
     if (!isset(PLANS[$plan]) || PLANS[$plan]['price'] <= 0) fail('Нет такого тарифа для оплаты');
-    return yk_make((int)$user['id'], $plan, (int)PLANS[$plan]['price'], 'Тариф «' . PLANS[$plan]['name'] . '» StreOps на 30 дней');
+    $price = $promo ? promo_price($promo) : (int)PLANS[$plan]['price'];
+    $days = $promo ? (int)$promo['days'] : 30;
+    $desc = 'Тариф «' . PLANS[$plan]['name'] . '» StreOps на ' . $days . ' дн.' . ($promo ? ', промокод ' . $promo['code'] : '');
+    return yk_make((int)$user['id'], $plan, $price, $desc, $promo ? (int)$promo['id'] : 0);
 }
 
 // Тестовый платёж для проверки магазина ЮKassa: фиксированная сумма, без входа в аккаунт, тариф не меняется.
 function yk_create_demo(): array {
     return yk_make(0, '', 10, 'Тестовый платёж StreOps (проверка приёма оплаты)');
-}
-
-// Активация тарифа на 30 дней. Если тариф тот же и ещё действует, срок продлевается от его конца.
-function yk_activate(int $uid, string $plan, int $price): void {
-    $u = db_one('SELECT * FROM users WHERE id = ?', [$uid]);
-    $base = plan_of($u) === $plan && (int)$u['plan_until'] > now() ? (int)$u['plan_until'] : now();
-    db_update('users', ['plan' => $plan, 'plan_until' => $base + 30 * 86400], 'id = ?', [$uid]);
-    add_transaction($uid, $price, 'plan', 'Оплата тарифа «' . PLANS[$plan]['name'] . '» через ЮKassa на 30 дней');
 }
 
 // Проверяем платёж у ЮKassa. Активируем ровно один раз: UPDATE с условием credited = 0 защищает от двойной активации.
@@ -66,9 +61,15 @@ function yk_settle(array $p): string {
     $st = (string)($r['json']['status'] ?? '');
     $amount = (int)round((float)($r['json']['amount']['value'] ?? 0));
     $plan = (string)($p['plan'] ?? '');
-    if ($st === 'succeeded' && !empty($r['json']['paid']) && isset(PLANS[$plan]) && $amount === (int)PLANS[$plan]['price']) {
+    // сумма должна совпадать с той, что мы сами записали при создании платежа (с учётом промокода)
+    if ($st === 'succeeded' && !empty($r['json']['paid']) && isset(PLANS[$plan]) && $amount > 0 && $amount === (int)$p['amount']) {
         $n = db_exec("UPDATE payments SET status = 'succeeded', credited = 1 WHERE id = ? AND credited = 0", [$p['id']]);
-        if ($n) yk_activate((int)$p['user_id'], $plan, $amount);
+        if ($n) {
+            $promo = (int)($p['promo_id'] ?? 0) > 0 ? db_one('SELECT * FROM promo_codes WHERE id = ?', [$p['promo_id']]) : null;
+            $days = $promo ? (int)$promo['days'] : 30;
+            plan_activate((int)$p['user_id'], $plan, $days, 'Оплата тарифа «' . PLANS[$plan]['name'] . '» через ЮKassa на ' . $days . ' дн.' . ($promo ? ', промокод ' . $promo['code'] : ''), 'plan', $amount);
+            if ($promo) promo_mark_used($promo, (int)$p['user_id']);
+        }
         return 'succeeded';
     }
     if ($st === 'canceled') {

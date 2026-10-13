@@ -506,8 +506,51 @@ function api_dispatch(string $r): never {
         }
         case 'pay.create': { // оплата тарифа через ЮKassa: виджет на сайте
             $u = require_user();
-            $pay = yk_create($u, in_str('plan', 16));
+            $plan = in_str('plan', 16);
+            $promo = null;
+            $code = in_str('code', 64);
+            if ($code !== '') {
+                $promo = promo_check($u, $code);
+                if ($promo['plan'] !== $plan) fail('Промокод действует на тариф «' . PLANS[$promo['plan']]['name'] . '»');
+                if ((int)$promo['percent'] >= 100) fail('Этот промокод включает тариф без оплаты: нажми «Применить» рядом с полем промокода');
+            }
+            $pay = yk_create($u, $plan, $promo);
             json_out(['ok' => true, 'token' => $pay['token'], 'returnUrl' => base_url() . '/settings.html?pay=return#billing']);
+        }
+        case 'promo.apply': { // промокод: бесплатный тариф включается сразу, скидка запоминается до оплаты
+            $u = require_user();
+            $p = promo_check($u, in_str('code', 64));
+            if ((int)$p['percent'] >= 100) {
+                plan_activate((int)$u['id'], $p['plan'], (int)$p['days'], 'Промокод ' . $p['code'] . ': тариф «' . PLANS[$p['plan']]['name'] . '» на ' . (int)$p['days'] . ' дн.', 'grant', 0);
+                promo_mark_used($p, (int)$u['id']);
+                json_out(['ok' => true, 'free' => true, 'plan' => $p['plan'], 'days' => (int)$p['days']]);
+            }
+            json_out(['ok' => true, 'free' => false, 'code' => $p['code'], 'plan' => $p['plan'], 'percent' => (int)$p['percent'], 'price' => promo_price($p), 'days' => (int)$p['days']]);
+        }
+        case 'promo.list': { // админ: все промокоды и сколько раз использованы
+            require_admin();
+            $rows = db_all('SELECT * FROM promo_codes ORDER BY id DESC');
+            json_out(['ok' => true, 'items' => array_map(fn($r) => ['id' => (int)$r['id'], 'code' => $r['code'], 'plan' => $r['plan'], 'percent' => (int)$r['percent'], 'days' => (int)$r['days'], 'maxUses' => (int)$r['max_uses'], 'used' => (int)$r['used'], 'active' => (bool)$r['active']], $rows)]);
+        }
+        case 'promo.save': { // админ: создать промокод
+            require_admin();
+            $code = promo_norm(in_str('code', 64));
+            if (!preg_match('/^[A-ZА-ЯЁ0-9_-]{3,32}$/u', $code)) fail('Код от 3 до 32 знаков: буквы, цифры, «-» или «_»');
+            $plan = in_str('plan', 16);
+            if (!isset(PLANS[$plan]) || PLANS[$plan]['price'] <= 0) fail('Выбери платный тариф');
+            $percent = in_int('percent', 100, 1, 100);
+            $days = in_int('days', 30, 1, 365);
+            $maxUses = in_int('maxUses', 0, 0, 1000000);
+            if (db_one('SELECT id FROM promo_codes WHERE code = ?', [$code])) fail('Такой код уже есть');
+            db_insert('promo_codes', ['code' => $code, 'plan' => $plan, 'percent' => $percent, 'days' => $days, 'max_uses' => $maxUses, 'used' => 0, 'active' => 1, 'created_at' => now()]);
+            json_out(['ok' => true]);
+        }
+        case 'promo.toggle': { // админ: выключить или включить код
+            require_admin();
+            $p = db_one('SELECT * FROM promo_codes WHERE id = ?', [in_int('id')]);
+            if (!$p) fail('Код не найден', 404);
+            db_update('promo_codes', ['active' => (int)$p['active'] ? 0 : 1], 'id = ?', [$p['id']]);
+            json_out(['ok' => true]);
         }
         case 'pay.demo': { // тестовая страница оплаты для проверки магазина ЮKassa: вход не нужен
             $pay = yk_create_demo();

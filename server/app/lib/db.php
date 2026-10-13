@@ -50,7 +50,7 @@ function db_update(string $table, array $row, string $where, array $args): int {
     return db_exec('UPDATE ' . $table . ' SET ' . $set . ' WHERE ' . $where, array_merge(array_values($row), $args));
 }
 
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 
 function db_migrate(PDO $pdo, string $driver): void {
     $sqlite = $driver === 'sqlite';
@@ -97,7 +97,9 @@ function db_migrate(PDO $pdo, string $driver): void {
           peak INT NOT NULL DEFAULT 0, title $text, game {$vc(128)}, thumbnail $text, updated_at INT NOT NULL DEFAULT 0)",
         "counters (user_id INT NOT NULL, name {$vc(64)} NOT NULL, value INT NOT NULL DEFAULT 0, PRIMARY KEY (user_id, name))",
         "transactions (id $id, user_id INT NOT NULL, amount INT NOT NULL, kind {$vc(32)}, comment $text, admin_login {$vc(64)}, created_at INT NOT NULL DEFAULT 0)",
-        "payments (id $id, user_id INT NOT NULL, yk_id {$vc(64)} NOT NULL DEFAULT '', plan {$vc(16)} NOT NULL DEFAULT '', amount INT NOT NULL DEFAULT 0, status {$vc(16)} NOT NULL DEFAULT 'pending', credited INT NOT NULL DEFAULT 0, created_at INT NOT NULL DEFAULT 0)",
+        "promo_codes (id $id, code {$vc(64)} NOT NULL UNIQUE, plan {$vc(16)} NOT NULL, percent INT NOT NULL DEFAULT 100, days INT NOT NULL DEFAULT 30, max_uses INT NOT NULL DEFAULT 0, used INT NOT NULL DEFAULT 0, expires_at INT NOT NULL DEFAULT 0, active INT NOT NULL DEFAULT 1, created_at INT NOT NULL DEFAULT 0)",
+        "promo_uses (code_id INT NOT NULL, user_id INT NOT NULL, created_at INT NOT NULL DEFAULT 0, PRIMARY KEY (code_id, user_id))",
+        "payments (id $id, user_id INT NOT NULL, yk_id {$vc(64)} NOT NULL DEFAULT '', plan {$vc(16)} NOT NULL DEFAULT '', promo_id INT NOT NULL DEFAULT 0, amount INT NOT NULL DEFAULT 0, status {$vc(16)} NOT NULL DEFAULT 'pending', credited INT NOT NULL DEFAULT 0, created_at INT NOT NULL DEFAULT 0)",
         "eventsub_seen (msg_id {$vc(80)} PRIMARY KEY, created_at INT NOT NULL DEFAULT 0)",
         "follow_cache (user_id INT NOT NULL, chatter_id {$vc(32)} NOT NULL, since INT NOT NULL DEFAULT 0, checked_at INT NOT NULL DEFAULT 0, PRIMARY KEY (user_id, chatter_id))",
         "gsi (user_id INT NOT NULL, game {$vc(16)} NOT NULL, data $text, updated_at INT NOT NULL DEFAULT 0, PRIMARY KEY (user_id, game))",
@@ -117,6 +119,7 @@ function db_migrate(PDO $pdo, string $driver): void {
         try { $pdo->exec('CREATE INDEX ' . ($sqlite ? 'IF NOT EXISTS ' : '') . $i); } catch (Throwable $e) { /* индекс уже есть */ }
     }
     try { $pdo->exec("ALTER TABLE payments ADD COLUMN plan {$vc(16)} NOT NULL DEFAULT ''"); } catch (Throwable $e) { /* колонка уже есть */ }
+    try { $pdo->exec('ALTER TABLE payments ADD COLUMN promo_id INT NOT NULL DEFAULT 0'); } catch (Throwable $e) { /* колонка уже есть */ }
     $pdo->prepare('DELETE FROM kv WHERE k = ?')->execute(['db_version']);
     $pdo->prepare('INSERT INTO kv (k, v, expires) VALUES (?, ?, 0)')->execute(['db_version', json_encode(DB_VERSION)]);
 }

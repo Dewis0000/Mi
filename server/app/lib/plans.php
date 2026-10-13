@@ -25,3 +25,11 @@ function add_transaction(int $userId, int $amount, string $kind, string $comment
         'admin_login' => $admin, 'created_at' => now(),
     ]);
 }
+
+// Включает тариф на $days дней. Если тариф тот же и ещё действует, срок продлевается от его конца.
+function plan_activate(int $uid, string $plan, int $days, string $comment, string $kind, int $amount): void {
+    $u = db_one('SELECT * FROM users WHERE id = ?', [$uid]);
+    $base = plan_of($u) === $plan && (int)$u['plan_until'] > now() ? (int)$u['plan_until'] : now();
+    db_update('users', ['plan' => $plan, 'plan_until' => $base + $days * 86400], 'id = ?', [$uid]);
+    add_transaction($uid, $amount, $kind, $comment);
+}

@@ -158,6 +158,15 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 </div>
 <h3 style="margin: 28px 0 0; font-size: 15px; font-weight: 600">Тарифы</h3>
 <p class="hint" style="margin-top: 4px; font-size: 13px; line-height: 18px">Оплата картой или через СБП, платёж проводит ЮKassa на этой странице. Тариф включается сразу и действует 30 дней.ф действует 30 дней. Когда срок закончится, аккаунт вернётся на бесплатный тариф — команды и настройки сохранятся.</p>
+<div style="margin-top: 16px; padding: 16px 20px; border-radius: 8px; border: 1px solid #2A2A2A; background: #111111">
+<p style="margin: 0; font-size: 14px; font-weight: 500; color: #DCDCDC">Промокод</p>
+<sc-if value="{{ promoHas }}" hint-placeholder-val="{{ false }}"><p style="margin: 8px 0 0; font-size: 14px; color: #F2F2F2">{{ promoText }} <button type="button" onClick="{{ promoClear }}" style="margin-left: 8px; height: 28px; padding: 0 10px; border-radius: 4px; border: 1px solid #3A3A3A; background: transparent; color: #B4B4B4; font: 500 13px/18px Onest, system-ui, sans-serif; cursor: pointer">Убрать</button></p></sc-if>
+<form style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap" onSubmit="{{ promoSubmit }}">
+<input aria-label="Промокод" value="{{ promoIn }}" onChange="{{ setPromoIn }}" maxlength="64" placeholder="Например, WELCOME" style="box-sizing: border-box; width: 220px; height: 40px; padding: 0 12px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 15px/22px 'JetBrains Mono', monospace">
+<button type="submit" disabled="{{ promoBusy }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 14px/20px Onest, system-ui, sans-serif; cursor: pointer">Применить</button>
+</form>
+<p class="hint" style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">Скидка действует при оплате тарифа, на который выдан код. Бесплатный код включает тариф сразу.</p>
+</div>
 <ul class="plans">
 <sc-for list="{{ plans }}" as="p" hint-placeholder-count="4">
 <li class="plan" style="{{ p.ring }}">
@@ -171,6 +180,20 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 </li>
 </sc-for>
 </ul>
+<sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top: 16px; padding: 16px 20px; border-radius: 8px; border: 1px dashed #3A3A3A">
+<p style="margin: 0; font-size: 14px; font-weight: 500; color: #DCDCDC">Промокоды · только администратор</p>
+<form style="margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; align-items: end" onSubmit="{{ pcSubmit }}">
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #B4B4B4">Код<input value="{{ pcCode }}" onChange="{{ pcSetCode }}" maxlength="32" placeholder="WELCOME" style="box-sizing: border-box; height: 36px; padding: 0 10px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px 'JetBrains Mono', monospace"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #B4B4B4">Тариф<select value="{{ pcPlan }}" onChange="{{ pcSetPlan }}" style="height: 36px; padding: 0 8px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px Onest, system-ui, sans-serif"><sc-for list="{{ pcPlanOpts }}" as="o" hint-placeholder-count="3"><option value="{{ o.v }}">{{ o.label }}</option></sc-for></select></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #B4B4B4">Скидка, %<input type="number" min="1" max="100" value="{{ pcPercent }}" onChange="{{ pcSetPercent }}" style="box-sizing: border-box; height: 36px; padding: 0 10px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px 'JetBrains Mono', monospace"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #B4B4B4">Дней<input type="number" min="1" max="365" value="{{ pcDays }}" onChange="{{ pcSetDays }}" style="box-sizing: border-box; height: 36px; padding: 0 10px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px 'JetBrains Mono', monospace"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #B4B4B4">Лимит, раз (0 — без лимита)<input type="number" min="0" value="{{ pcMax }}" onChange="{{ pcSetMax }}" style="box-sizing: border-box; height: 36px; padding: 0 10px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px 'JetBrains Mono', monospace"></label>
+<button type="submit" disabled="{{ pcBusy }}" style="height: 36px; padding: 0 14px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 14px/20px Onest, system-ui, sans-serif; cursor: pointer">Создать код</button>
+</form>
+<sc-if value="{{ pcHas }}" hint-placeholder-val="{{ false }}"><ul style="list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px"><sc-for list="{{ pcList }}" as="c" hint-placeholder-count="2"><li style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px"><span><span class="mono" style="color: #F2F2F2">{{ c.code }}</span> <span style="color: #8F8F8F">{{ c.desc }}</span></span><span style="display: flex; gap: 10px; align-items: center"><span class="mono" style="font-size: 13px; color: #B4B4B4">{{ c.stat }}</span><button type="button" onClick="{{ c.toggle }}" style="height: 28px; padding: 0 10px; border-radius: 4px; border: 1px solid #3A3A3A; background: transparent; color: #B4B4B4; font: 500 13px/18px Onest, system-ui, sans-serif; cursor: pointer">{{ c.toggleLabel }}</button></span></li></sc-for></ul></sc-if>
+</div>
+</sc-if>
 <h3 style="margin: 28px 0 0; font-size: 15px; font-weight: 600">История операций</h3>
 <ul style="list-style: none; margin: 8px 0 0; padding: 0" aria-busy="{{ txBusy }}">
 <sc-for list="{{ tx }}" as="t" hint-placeholder-count="3"><li class="tx"><span style="min-width: 0"><span style="display: block; overflow-wrap: anywhere">{{ t.title }}</span><span class="mono" style="font-size: 12px; line-height: 16px; color: #8F8F8F">{{ t.meta }}</span></span><span class="mono" style="text-align: right; white-space: nowrap; {{ t.color }}">{{ t.amount }}</span></li></sc-for>
@@ -306,6 +329,7 @@ class Component extends DCLogic {
       busy: '', botMsg: null, botFail: '', daMsg: null, showToken: false,
       acctTheme: undefined, ask: null, askErr: '', askBusy: false,
       payBusy: false, payInfo: null,
+      promoIn: '', promo: null, promoBusy: false, pcCode: '', pcPlan: 'advanced', pcPercent: 50, pcDays: 30, pcMax: 0, pcList: [], pcBusy: false,
       confirm: false, typed: '', delErr: '', deleting: false, sec: 'profile',
     };
   }
@@ -354,6 +378,7 @@ class Component extends DCLogic {
       const m = await StreAPI.me();
       if (!m || !m.user) return; // api.js отправит на вход через Twitch
       this.setState({ me: m.user, bot: m.bot || null });
+      if (m.user.isAdmin) this.loadPromos();
       if (location.hash && !this.scrolled) {
         this.scrolled = true;
         const el = document.getElementById(location.hash.slice(1));
@@ -391,18 +416,55 @@ class Component extends DCLogic {
       document.head.appendChild(s);
     });
   }
+  // Промокоды: проверка и применение. Бесплатный код включает тариф сразу, скидка запоминается до оплаты
+  async promoSubmit(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const code = this.state.promoIn.trim();
+    if (!code) return StreAPI.toast('Введи промокод', 'error');
+    this.setState({ promoBusy: true });
+    try {
+      const r = await StreAPI.post('promo.apply', { code: code });
+      if (r.free) {
+        StreAPI.toast('Тариф «' + STRE_PLANS.find((x) => x.key === r.plan).name + '» включён на ' + r.days + ' дн.');
+        this.setState({ promoIn: '', promo: null });
+        await this.reloadMe(); this.loadTx();
+      } else {
+        this.setState({ promo: r, promoIn: '' });
+        StreAPI.toast('Скидка ' + r.percent + '% на «' + STRE_PLANS.find((x) => x.key === r.plan).name + '» применена');
+      }
+    } catch (err) { StreAPI.toast(err.message, 'error'); }
+    this.setState({ promoBusy: false });
+  }
+  promoClear() { this.setState({ promo: null }); }
+  async loadPromos() {
+    try { const r = await StreAPI.get('promo.list'); this.setState({ pcList: r.items }); } catch (e) { /* список не обновится */ }
+  }
+  async createPromo() {
+    const s = this.state;
+    this.setState({ pcBusy: true });
+    try {
+      await StreAPI.post('promo.save', { code: s.pcCode, plan: s.pcPlan, percent: s.pcPercent, days: s.pcDays, maxUses: s.pcMax });
+      StreAPI.toast('Код «' + s.pcCode.trim().toUpperCase() + '» создан');
+      this.setState({ pcCode: '' });
+      this.loadPromos();
+    } catch (err) { StreAPI.toast(err.message, 'error'); }
+    this.setState({ pcBusy: false });
+  }
+  async togglePromo(id) {
+    try { await StreAPI.post('promo.toggle', { id: id }); this.loadPromos(); } catch (err) { StreAPI.toast(err.message, 'error'); }
+  }
   // Оплата тарифа: виджет ЮKassa открывается поверх всего экрана
-  async startPay(p) {
+  async startPay(p, code) {
     this.setState({ payBusy: true });
     try {
-      const r = await StreAPI.post('pay.create', { plan: p.key });
+      const r = await StreAPI.post('pay.create', { plan: p.key, code: code || '' });
       await loadYooWidget();
       this.setState({ payBusy: false });
       openYooPay(r.token, r.returnUrl, {
         ok: async () => { // виджет сообщил об оплате: сервер сам проверит платёж и включит тариф
           try {
             const c = await StreAPI.post('pay.check', {});
-            if (c.credited) { StreAPI.toast('Тариф «' + p.name + '» включён'); await this.reloadMe(); this.loadTx(); }
+            if (c.credited) { StreAPI.toast('Тариф «' + p.name + '» включён'); this.setState({ promo: null }); await this.reloadMe(); this.loadTx(); }
             else StreAPI.toast('Платёж ещё обрабатывается. Тариф включится, как только ЮKassa подтвердит оплату');
           } catch (e) { StreAPI.toast(e.message, 'error'); }
         },
@@ -511,7 +573,10 @@ class Component extends DCLogic {
     const same = me.plan === p.key;
     const base = same && me.planUntil > now ? me.planUntil : now;
     const until = StreAPI.fmtDate(base + 30 * 86400);
-    let text = 'Оплата ' + streRub(p.price) + ' картой или через СБП, ЮKassa проведёт платёж. ';
+    const pr = this.state.promo && this.state.promo.plan === p.key ? this.state.promo : null;
+    const price = pr ? Math.round(p.price * (100 - pr.percent) / 100) : p.price;
+    let text = 'Оплата ' + streRub(price) + ' картой или через СБП, ЮKassa проведёт платёж. ';
+    if (pr) text += 'Скидка ' + pr.percent + '% по промокоду ' + pr.code + '. ';
     if (same) text += 'Тариф продлится до ' + until + '.';
     else {
       text += 'Тариф «' + p.name + '» включится сразу после оплаты и будет действовать до ' + until + '.';
@@ -519,8 +584,8 @@ class Component extends DCLogic {
     }
     this.openAsk({
       title: (same ? 'Продлить' : 'Оплатить') + ' «' + p.name + '»?',
-      text, yes: 'Перейти к оплате · ' + streRub(p.price), cls: 'bp',
-      run: () => this.startPay(p),
+      text, yes: 'Перейти к оплате · ' + streRub(price), cls: 'bp',
+      run: () => this.startPay(p, pr ? pr.code : ''),
     });
   }
 
@@ -640,6 +705,8 @@ class Component extends DCLogic {
       const isCur = !!me && me.plan === p.key;
       const unlimitedCur = isCur && p.price > 0 && me.planUntil === 0;
       const canBuy = !!me && p.price > 0 && !unlimitedCur && payOn;
+      const pr = s.promo && s.promo.plan === p.key ? s.promo : null;
+      const shown = pr ? Math.round(p.price * (100 - pr.percent) / 100) : p.price;
       let note = '';
       if (!me) note = '';
       else if (p.price === 0) note = isCur ? 'Действует всегда, без оплаты' : 'Включится сам, когда закончится платный тариф';
@@ -649,7 +716,7 @@ class Component extends DCLogic {
       else note = 'Хватает на балансе';
       return {
         name: p.name, current: isCur,
-        price: p.price ? StreAPI.fmtNum(p.price) + ' ₽' : '0 ₽',
+        price: p.price ? StreAPI.fmtNum(shown) + ' ₽' : '0 ₽',
         per: p.price ? 'за 30 дней' : 'навсегда',
         ring: isCur ? 'border: 2px solid #F2F2F2; padding: 15px' : '',
         lines: [
@@ -659,7 +726,7 @@ class Component extends DCLogic {
         ],
         canBuy, dis: s.payBusy || !!s.ask,
         btnCls: isCur ? 'bs' : 'bp',
-        btn: (isCur ? 'Продлить · ' : 'Оплатить · ') + streRub(p.price),
+        btn: (isCur ? 'Продлить · ' : 'Оплатить · ') + streRub(shown),
         descId: 'plan-' + p.key + '-n',
         note,
         buy: () => this.askBuy(p),
@@ -743,6 +810,25 @@ class Component extends DCLogic {
 
       planName: me ? me.planName : L, planUntil, planLimits,
       payOn, payBusy: !!s.payBusy,
+      promoHas: !!s.promo, promoText: s.promo ? 'Скидка ' + s.promo.percent + '% по коду ' + s.promo.code + ' на «' + (STRE_PLANS.find((x) => x.key === s.promo.plan) || {}).name + '»' : '',
+      promoIn: s.promoIn, setPromoIn: (e) => this.setState({ promoIn: e.target.value }), promoSubmit: (e) => this.promoSubmit(e), promoBusy: !!s.promoBusy,
+      promoClear: () => this.promoClear(),
+      isAdmin: !!(me && me.isAdmin),
+      pcCode: s.pcCode, pcSetCode: (e) => this.setState({ pcCode: e.target.value }),
+      pcPlan: s.pcPlan, pcSetPlan: (e) => this.setState({ pcPlan: e.target.value }),
+      pcPercent: s.pcPercent, pcSetPercent: (e) => this.setState({ pcPercent: Math.max(1, Math.min(100, Number(e.target.value) || 1)) }),
+      pcDays: s.pcDays, pcSetDays: (e) => this.setState({ pcDays: Math.max(1, Math.min(365, Number(e.target.value) || 1)) }),
+      pcMax: s.pcMax, pcSetMax: (e) => this.setState({ pcMax: Math.max(0, Number(e.target.value) || 0) }),
+      pcSubmit: (e) => { if (e && e.preventDefault) e.preventDefault(); this.createPromo(); }, pcBusy: !!s.pcBusy,
+      pcPlanOpts: STRE_PLANS.filter((x) => x.price > 0).map((x) => ({ v: x.key, label: x.name + ' · ' + streRub(x.price) })),
+      pcHas: s.pcList.length > 0,
+      pcList: s.pcList.map((c) => ({
+        id: c.id, code: c.code,
+        desc: (c.percent >= 100 ? 'бесплатно, ' + c.days + ' дн.' : 'скидка ' + c.percent + '%, ' + c.days + ' дн.') + ' · ' + ((STRE_PLANS.find((x) => x.key === c.plan) || {}).name || c.plan),
+        stat: 'использовано ' + c.used + (c.maxUses ? ' из ' + c.maxUses : ''),
+        toggleLabel: c.active ? 'Выключить' : 'Включить',
+        toggle: () => this.togglePromo(c.id),
+      })),
       plans,
       tx, txEmpty, txEmptyText, txBusy: s.txLoaded ? 'false' : 'true',
 
