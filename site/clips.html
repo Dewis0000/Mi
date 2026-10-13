@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StreOps — нарезки</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="assets/theme.js?v=460ce522"></script>
+<script src="assets/api.js?v=4a439ce0"></script>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:var(--n-1)}
+a{color:var(--n-12);text-decoration:none}a:hover{color: var(--accent-on)}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--n-9);margin:0}
+.ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.tab{height:44px;padding:0;border:0;background:transparent;color:var(--n-9);font:500 14px/20px var(--font-sans),sans-serif;display:flex;gap:6px;align-items:center;cursor:pointer}
+.tab:hover{color:var(--n-12)}
+.cmd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 20px;border-radius:8px;border:1px solid var(--n-5);background:var(--s-2)}
+.cmd:hover{border-color:var(--n-6)}
+.sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid var(--n-8);background:transparent;cursor:pointer;flex:none;padding:0}
+.sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:var(--n-9);transition:transform 180ms cubic-bezier(.2,0,0,1)}
+.sw[aria-checked="true"]{background:var(--n-13);border-color:var(--n-13)}
+.sw[aria-checked="true"] span{transform:translateX(16px);background:var(--n-1)}
+.ib{width:36px;height:36px;border-radius:6px;border:0;background:transparent;color:var(--n-10);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.ib:hover{background:rgb(var(--n-13-rgb) / .06);color:var(--n-12)}
+.fl{display:flex;flex-direction:column;gap:8px}
+.fl > label,.lab{font-size:13px;line-height:18px;font-weight:500;color:var(--n-11)}
+.inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:var(--s-3);border:1px solid var(--n-8);color:var(--n-12);font:400 15px/22px var(--font-sans),sans-serif;width:100%}
+.inp:hover{border-color:var(--n-9)}
+.hint{font-size:12px;line-height:16px;color:var(--n-9);margin:0}
+.seg{height:36px;padding:0 14px;border:0;border-radius:4px;background:transparent;color:var(--n-10);font:500 14px/20px var(--font-sans),sans-serif;cursor:pointer}
+.seg:hover{color:var(--n-12)}
+.tag{height:28px;padding:0 10px;border-radius:4px;border:1px solid var(--n-6);background:transparent;color:var(--n-11);font:400 12px/16px 'JetBrains Mono',monospace;cursor:pointer}
+.tag:hover{border-color:var(--n-9);background:rgb(var(--n-13-rgb) / .04)}
+.rad{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:6px;font-size:14px;color:var(--n-11);cursor:pointer;border:0;background:transparent;width:100%;text-align:left;font-family:var(--font-sans),sans-serif}
+.rad:hover{background:rgb(var(--n-13-rgb) / .04)}
+.dot{width:18px;height:18px;border-radius:999px;border:1px solid var(--n-8);box-sizing:border-box;flex:none;display:inline-flex;align-items:center;justify-content:center}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 4px 0 10px;border-radius:4px;background:var(--n-4);border:1px solid var(--n-6);font-size:13px}
+.chip button{width:20px;height:20px;border:0;border-radius:3px;background:transparent;color:var(--n-9);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.chip button:hover{color:var(--n-12);background:rgb(var(--n-13-rgb) / .08)}
+</style>
+<style>
+.sb{flex:1 1 200px;max-width:248px;min-width:200px;align-self:flex-start;position:sticky;top:88px;box-sizing:border-box;padding:12px;border-radius:8px;background:rgb(var(--n-13-rgb) / .03);border:1px solid rgb(var(--n-13-rgb) / .06);display:flex;flex-direction:column;gap:2px;font-family:var(--font-sans),system-ui,sans-serif}
+.sb-h{margin:0;padding:16px 12px 8px;font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--n-9)}
+.sb-h:first-child{padding-top:8px}
+.sb-i{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;color:var(--n-10);text-decoration:none}
+a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
+.sb-i[aria-current="page"]{background:rgb(var(--n-13-rgb) / .10);color:var(--n-12);box-shadow:inset 2px 0 0 var(--n-12)}
+.sb-ic{flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.sb-n{margin-left:auto;font:400 12px/1 'JetBrains Mono',monospace;color:var(--n-9)}
+.sb-off{color:var(--n-7)}
+.sb-tag{margin-left:auto;font-size:11px;padding:1px 6px;border:1px dashed var(--n-6);border-radius:4px;color:var(--n-8)}
+.sb-sep{height:1px;background:var(--n-5);margin:10px 0}
+@media (max-width: 900px){.sb{position:static;max-width:none;flex-basis:100%;flex-direction:row;flex-wrap:wrap}.sb-h,.sb-sep{display:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="dc">
+
+<div style="min-height: 100vh; background: var(--page-bg); color: var(--n-12); font-family: var(--font-sans), system-ui, sans-serif">
+
+<header style="position: sticky; top: 0; z-index: 200; background: rgb(var(--n-1-rgb) / 0.72); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgb(var(--n-13-rgb) / 0.08)">
+<div style="height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 24px">
+<a href="index.html" style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2" data-stroke="12"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2" data-fill="12"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2" data-fill="12"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F" data-fill="9"></rect></svg>StreOps</a>
+<a href="settings.html" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 8px 0 6px; border-radius: 6px; font-size: 14px; font-weight: 500" aria-label="Профиль" data-dc-keep data-stre-user><span style="width: 32px; height: 32px; border-radius: 999px; background: linear-gradient(135deg, var(--n-10), var(--n-6)); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--n-1)" data-av></span><span data-name>Профиль</span><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></a>
+</div>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; box-sizing: border-box; max-width: 1920px; margin: 0 auto">
+<nav aria-label="Разделы стрим-панели" class="sb" data-dc-keep>
+<p class="sb-h">Эфир</p>
+<a href="panel.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Обзор</a>
+<a href="moderation.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Модерация</a>
+<p class="sb-h">Бот</p>
+<a href="commands.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l6-6-6-6M12 19h8"/></svg>Команды</a>
+<a href="timers.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6M12 2v3"/></svg>Таймеры</a>
+<a href="music.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Музыка</a>
+<a href="widgets.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Виджеты</a>
+<p class="sb-h">Интерактив</p>
+<a href="giveaways.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1s6 1 6 1zM12 8c2-4 6-4 6-1s-6 1-6 1z"/></svg>Розыгрыши</a>
+<a href="clips.html" class="sb-i" aria-current="page"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3l12 9-12 9z"/><path d="M3 3v18"/></svg>Нарезки</a>
+<span class="sb-i sb-off" aria-disabled="true"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 13l-7.5 7.5a2.1 2.1 0 0 1-3-3L11 10M16 16l6-6M8 8l6-6M9 7l8 8M21 11l-8-8"/></svg>Аукционы<span class="sb-tag">скоро</span></span>
+<div class="sb-sep"></div>
+<a href="settings.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>Настройки</a>
+<a href="support.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Поддержка</a>
+</nav>
+<div style="flex: 999 1 640px; min-width: 0">
+<nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px"><li><a href="panel.html" style="color: var(--n-9)">Стрим-панель</a></li><li aria-hidden="true" style="color: var(--n-7)">/</li><li><a href="#" style="color: var(--n-9)">Чат-бот</a></li><li aria-hidden="true" style="color: var(--n-7)">/</li><li aria-current="page" style="color: var(--n-12)">Нарезки</li></ol></nav>
+<div style="margin-top: 16px">
+<h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Нарезки</h1>
+<p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--n-10)">Находим лучшие моменты стрима, режем их и оформляем плашкой канала и субтитрами. Всё делается в браузере: твоя запись никуда не загружается, а готовые ролики сохраняются в «Загрузки».</p>
+</div>
+<div style="margin-top: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; align-items: start">
+
+<section aria-labelledby="cl-src" style="display: flex; flex-direction: column; gap: 14px; padding: 20px 22px; border-radius: 12px; background: rgb(var(--n-2-rgb) / 0.72); border: 1px solid rgb(var(--n-13-rgb) / 0.10); box-shadow: inset 0 1px 0 rgb(var(--n-13-rgb) / 0.06)">
+<h2 id="cl-src" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">1. Запись стрима</h2>
+<label><span style="display: block; margin: 0 0 6px; font-size: 11px; line-height: 14px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--n-9)">Файл записи (MP4, MKV, MOV)</span><input type="file" accept="video/*" onChange="{{ pickFile }}" style="font: 400 14px/20px var(--font-sans), sans-serif; color: var(--n-10)"></label>
+<template data-if="hasFile"><p class="mono" style="margin: 0; font-size: 13px; color: var(--n-9); overflow-wrap: anywhere">{{ fileName }}</p></template>
+<label><span style="display: block; margin: 0 0 6px; font-size: 11px; line-height: 14px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--n-9)">Запись началась (дата и время)</span><input type="datetime-local" value="{{ recStart }}" onChange="{{ setRecStart }}" style="box-sizing: border-box; height: 38px; padding: 0 12px; border-radius: 6px; background: var(--s-3); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px/20px var(--font-sans), sans-serif; width: 100%"></label>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">
+<label><span style="display: block; margin: 0 0 6px; font-size: 11px; line-height: 14px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--n-9)">Формат</span><select onChange="{{ setOrient }}" style="box-sizing: border-box; height: 38px; padding: 0 12px; border-radius: 6px; background: var(--s-3); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px/20px var(--font-sans), sans-serif; width: 100%"><option value="v" selected="{{ isV }}">Вертикальный 9:16 (Shorts, Reels)</option><option value="h" selected="{{ isH }}">Горизонтальный 16:9</option></select></label>
+<label><span style="display: block; margin: 0 0 6px; font-size: 11px; line-height: 14px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--n-9)">Плашка канала</span><input type="text" maxlength="60" value="{{ plate }}" onChange="{{ setPlate }}" style="box-sizing: border-box; height: 38px; padding: 0 12px; border-radius: 6px; background: var(--s-3); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px/20px var(--font-sans), sans-serif; width: 100%"></label>
+</div>
+<div><button type="button" onClick="{{ findMoments }}" disabled="{{ busy }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: var(--n-13); color: var(--n-1); font: 500 14px/20px var(--font-sans), sans-serif; cursor: pointer">{{ findLabel }}</button></div>
+</section>
+
+<section aria-labelledby="cl-list" style="display: flex; flex-direction: column; gap: 12px; padding: 20px 22px; border-radius: 12px; background: rgb(var(--n-2-rgb) / 0.72); border: 1px solid rgb(var(--n-13-rgb) / 0.10); box-shadow: inset 0 1px 0 rgb(var(--n-13-rgb) / 0.06)">
+<h2 id="cl-list" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">2. Моменты</h2>
+<template data-if="hasItems"><p style="margin: 0; font-size: 13px; color: var(--n-9)">Отметь нужные. Подпись можно поменять: она выйдет на ролике.</p></template>
+<template data-if="noItems"><p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--n-9)">Моментов пока нет. Выбери запись и нажми «Найти моменты». Сайт использует чат, донаты, подписки и рейды за этот стрим.</p></template>
+<template data-for="items" data-as="c"><div style="display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--n-5); background: var(--s-2)">
+<label style="display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--n-12)"><input type="checkbox" checked="{{ c.on }}" onChange="{{ c.toggle }}" style="width: 18px; height: 18px"><span class="mono" style="color: var(--n-10)">{{ c.time }}</span><span style="color: var(--n-9)">{{ c.why }}</span></label>
+<input type="text" maxlength="90" value="{{ c.caption }}" onChange="{{ c.setCaption }}" aria-label="Подпись момента {{ c.time }}" style="box-sizing: border-box; height: 38px; padding: 0 12px; border-radius: 6px; background: var(--s-3); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px/20px var(--font-sans), sans-serif; width: 100%">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap"><span style="font-size: 12px; color: var(--n-9)">{{ c.len }} · {{ c.status }}</span><button type="button" onClick="{{ c.cut }}" disabled="{{ busy }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 1px solid var(--n-6); background: transparent; color: var(--n-12); font: 500 14px/20px var(--font-sans), sans-serif; cursor: pointer; height: 34px; padding: 0 12px; font-size: 13px">Нарезать и сохранить</button></div>
+</div></template>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><button type="button" onClick="{{ cutAll }}" disabled="{{ busyOrNone }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: var(--n-13); color: var(--n-1); font: 500 14px/20px var(--font-sans), sans-serif; cursor: pointer">{{ cutAllLabel }}</button><span style="font-size: 13px; color: var(--n-9)">{{ progress }}</span></div>
+<template data-if="hasErr"><p role="alert" style="margin: 0; padding: 10px 12px; border: 2px solid var(--n-12); border-radius: 6px; font-size: 13px; line-height: 18px">{{ err }}</p></template>
+<p style="margin: 0; font-size: 12px; line-height: 18px; color: var(--n-8)">Длинные записи (больше 2 часов) браузер может тянуть медленно. Лучше нарезать по моментам, как сейчас.</p>
+</section>
+</div>
+</div>
+</div>
+</div>
+</template>
+<script src="assets/dc-lite.js?v=5f8ce08a"></script>
+<script>
+const FF_BASE = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm';
+let ffmpegPromise = null;
+
+// ffmpeg.wasm грузим с CDN при первом запуске; запись остаётся на компьютере
+function loadFFmpeg() {
+  if (!ffmpegPromise) {
+    ffmpegPromise = (async () => {
+      const { FFmpeg } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js');
+      const { toBlobURL } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js');
+      const ff = new FFmpeg();
+            // рабочий скрипт грузим как blob, а его относительные импорты переписываем на полные адреса CDN
+      const wbase = 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm';
+      const wsrc = await (await fetch(wbase + '/worker.js')).text();
+      const wfix = wsrc.replace(/from\s*"\.\/([^"]+)"/g, 'from "' + wbase + '/$1"').replace(/from\s*'\.\/([^']+)'/g, "from '" + wbase + "/$1'");
+      await ff.load({
+        classWorkerURL: URL.createObjectURL(new Blob([wfix], { type: 'text/javascript' })),
+        coreURL: await toBlobURL(FF_BASE + '/ffmpeg-core.js', 'text/javascript'),
+        wasmURL: await toBlobURL(FF_BASE + '/ffmpeg-core.wasm', 'application/wasm'),
+      });
+      return ff;
+    })().catch((e) => { ffmpegPromise = null; throw e; });
+  }
+  return ffmpegPromise;
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.file = null;
+    this.state = {
+      token: '', recFrom: 0, recStart: '', fileName: '', orient: 'v', plate: '', items: [], loaded: false,
+      busy: false, progress: '', err: '', findBusy: false,
+    };
+  }
+  componentDidMount() {
+    StreAPI.me().then((m) => {
+      const u = m.user;
+      if (!u) return;
+      this.setState({ token: u.widgetToken, plate: u.name + ' · twitch.tv/' + u.login });
+    });
+  }
+  toLocal(ts) {
+    const d = new Date(ts * 1000);
+    const p = (n) => String(n).padStart(2, '0');
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + 'T' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+  async findMoments() {
+    const s = this.state;
+    if (!s.token) { this.setState({ err: 'Нет ключа: открой страницу заново.' }); return; }
+    const from = s.recFrom || 0;
+    this.setState({ findBusy: true, err: '' });
+    try {
+      const q = new URLSearchParams({ r: 'clips.highlights', t: s.token, count: '6' });
+      if (from) q.set('from', String(from));
+      const res = await fetch('/api/index.php?' + q.toString(), { cache: 'no-store' });
+      const j = await res.json();
+      if (!j.ok) throw new Error(j.error || 'Не получилось найти моменты');
+      const items = j.items.map((it, i) => ({
+        i, start: it.start, end: it.end, from: j.from,
+        time: this.fmtOffset(it.start - j.from),
+        why: (it.events.length ? it.events.join(', ') + ' · ' : '') + 'чат: ' + it.chat,
+        caption: it.title || 'Лучший момент стрима',
+        on: true,
+      }));
+      this.setState({ items, recFrom: j.from, recStart: this.toLocal(j.from), loaded: true, findBusy: false });
+      if (!items.length) this.setState({ err: 'За этот стрим пока нет данных: включи бота заранее, и моменты появятся.' });
+    } catch (e) { this.setState({ findBusy: false, err: e.message }); }
+  }
+  fmtOffset(sec) {
+    sec = Math.max(0, Math.round(sec));
+    const p = (n) => String(n).padStart(2, '0');
+    return p(Math.floor(sec / 3600)) + ':' + p(Math.floor(sec % 3600 / 60)) + ':' + p(sec % 60);
+  }
+  pickFile(e) {
+    const f = e.target.files && e.target.files[0];
+    this.file = f || null;
+    this.setState({ fileName: f ? f.name + ' · ' + (f.size / 1048576).toFixed(0) + ' МБ' : '' });
+  }
+  // Плашка и подпись рисуются на картинке и накладываются на видео в ffmpeg
+  overlayPng(caption, W, H) {
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const g = c.getContext('2d');
+    const s = this.state;
+    const pad = Math.round(W * 0.03);
+    g.font = '600 ' + Math.round(W * 0.034) + 'px system-ui, -apple-system, Segoe UI, sans-serif';
+    const plateText = s.plate || '';
+    const pw = Math.min(W - 2 * pad, g.measureText(plateText).width + pad * 2);
+    const ph = Math.round(W * 0.06);
+    g.fillStyle = 'rgba(12, 10, 10, 0.82)';
+    g.beginPath(); g.roundRect(pad, pad, pw, ph, ph / 2); g.fill();
+    g.fillStyle = '#FFFFFE';
+    g.textBaseline = 'middle';
+    g.fillText(plateText, pad + pad, pad + ph / 2);
+    // подпись внизу: перенос по словам
+    g.font = '700 ' + Math.round(W * 0.046) + 'px system-ui, -apple-system, Segoe UI, sans-serif';
+    const maxW = W - pad * 4;
+    const words = caption.split(' ');
+    const lines = []; let line = '';
+    words.forEach((w) => { const t = line ? line + ' ' + w : w; if (g.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t; });
+    if (line) lines.push(line);
+    const lh = Math.round(W * 0.06);
+    const top = H - pad * 2 - lh * lines.length - Math.round(H * 0.04);
+    g.fillStyle = 'rgba(12, 10, 10, 0.7)';
+    g.beginPath(); g.roundRect(pad, top - pad / 2, W - pad * 2, lh * lines.length + pad, pad); g.fill();
+    g.fillStyle = '#FFFFFE';
+    lines.forEach((t, i) => { g.fillText(t, W / 2 - g.measureText(t).width / 2, top + lh * i + lh / 2); });
+    return g.getImageData(0, 0, W, H).data; // сырые пиксели RGBA: без декодирования PNG
+  }
+  async cutOne(item, ff, index, total) {
+    const s = this.state;
+    const vertical = s.orient === 'v';
+    const W = vertical ? 720 : 1280, H = vertical ? 1280 : 720;
+    const dur = item.end - item.start;
+    const off = item.start - s.recFrom; // смещение от текущей даты начала записи
+    const { fetchFile } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js');
+    const ext = (this.file.name.split('.').pop() || 'mp4').toLowerCase().replace(/[^a-z0-9]/g, '') || 'mp4';
+    await ff.writeFile('src.' + ext, await fetchFile(this.file));
+    const rgba = this.overlayPng(item.caption || '', W, H);
+    await ff.writeFile('ov.raw', rgba);
+    const vf = vertical ? 'scale=-2:' + H + ',crop=' + W + ':' + H : 'scale=' + W + ':-2,crop=' + W + ':' + H;
+    const pRe = ((index + 1) + '/' + total);
+    this.setState({ progress: 'Режем ' + pRe + '…' });
+    ff.on && ff.on('progress', () => {});
+    await ff.exec(['-ss', String(off), '-i', 'src.' + ext, '-t', String(dur), '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', W + 'x' + H, '-i', 'ov.raw',
+      '-filter_complex', '[0:v]' + vf + '[b];[b][1:v]overlay=0:0[v]', '-map', '[v]', '-map', '0:a?',
+      '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '23', '-pix_fmt', 'yuv420p',
+      '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', 'out.mp4']);
+    const data = await ff.readFile('out.mp4');
+    if (!data || data.length < 2000) throw new Error('в этом месте записи нет кадров. Проверь дату и время начала записи: момент должен попадать внутрь файла');
+    await ff.deleteFile('out.mp4');
+    const url = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+    const a = document.createElement('a');
+    const name = (s.plate.split(' · ')[0] || 'stream').replace(/[^\wА-Яа-яЁё-]+/g, '_') + '_' + item.time.replace(/:/g, '-') + '.mp4';
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  }
+  async cutSelected(list) {
+    if (!this.file) { this.setState({ err: 'Сначала выбери файл записи.' }); return; }
+    const todo = list.filter((x) => x.on);
+    if (!todo.length) { this.setState({ err: 'Отметь хотя бы один момент.' }); return; }
+    this.setState({ busy: true, err: '', progress: 'Загружаем редактор…' });
+    try {
+      const ff = await loadFFmpeg();
+      for (let k = 0; k < todo.length; k++) {
+        await this.cutOne(todo[k], ff, k, todo.length);
+      }
+      this.setState({ busy: false, progress: 'Готово: ролики скачаны в «Загрузки».' });
+    } catch (e) {
+      this.setState({ busy: false, progress: '', err: 'Нарезка не удалась: ' + (e.message || e) + '. Проверь, что файл — видео и что браузер поддерживает нарезку (Chrome, Edge, Firefox).' });
+    }
+  }
+  renderVals() {
+    const s = this.state;
+    const cut = (item) => this.cutSelected([item]);
+    const items = s.items.map((it, idx) => ({
+      on: !!it.on,
+      time: this.fmtOffset(it.start - s.recFrom), why: it.why, caption: it.caption,
+      len: Math.round(it.end - it.start) + ' с',
+      status: '',
+      toggle: () => this.setState({ items: s.items.map((x, j) => (j === idx ? Object.assign({}, x, { on: !x.on }) : x)) }),
+      setCaption: (e) => this.setState({ items: s.items.map((x, j) => (j === idx ? Object.assign({}, x, { caption: e.target.value }) : x)) }),
+      cut: () => cut(it),
+    }));
+    const n = s.items.filter((x) => x.on).length;
+    return {
+      hasFile: !!this.file, fileName: s.fileName,
+      pickFile: (e) => this.pickFile(e),
+      recStart: s.recStart,
+      setRecStart: (e) => { const v = e.target.value; const ts = v ? Math.floor(new Date(v).getTime() / 1000) : 0; this.setState({ recFrom: ts, recStart: v }); },
+      isV: s.orient === 'v', isH: s.orient === 'h',
+      setOrient: (e) => this.setState({ orient: e.target.value === 'h' ? 'h' : 'v' }),
+      plate: s.plate, setPlate: (e) => this.setState({ plate: e.target.value }),
+      findMoments: () => this.findMoments(),
+      busy: !!(s.busy || s.findBusy),
+      findLabel: s.findBusy ? 'Ищем…' : 'Найти моменты',
+      hasItems: items.length > 0, noItems: s.loaded && !items.length,
+      items,
+      busyOrNone: !!(s.busy || !n),
+      cutAll: () => this.cutSelected(s.items),
+      cutAllLabel: n ? 'Нарезать выбранные (' + n + ')' : 'Нет выбранных',
+      progress: s.progress,
+      hasErr: !!s.err, err: s.err,
+    };
+  }
+}
+DCMount(Component);
+</script>
+</body>
+</html>

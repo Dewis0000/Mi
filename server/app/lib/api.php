@@ -685,7 +685,7 @@ function api_dispatch(string $r): never {
                 if (count($picked) >= $count) break;
                 $at = $from + $i * $bucket;
                 foreach ($picked as $p) if (abs($p['at'] - $at) < 120) continue 2;
-                $picked[] = ['at' => $at, 'start' => max($from, $at - 30), 'end' => min($to, $at + 60), 'score' => $b['score'],
+                $picked[] = ['at' => $at, 'start' => max($from, $at - 20), 'end' => min($to, $at + 40), 'score' => $b['score'],
                     'chat' => $b['chat'], 'events' => array_values(array_unique($b['events'])), 'title' => mb_substr($b['best'], 0, 80)];
             }
             usort($picked, fn($a, $b) => $a['at'] <=> $b['at']);
