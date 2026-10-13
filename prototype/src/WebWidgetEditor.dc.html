@@ -231,7 +231,7 @@ class Component extends DCLogic {
     this.saving = false;
     this.state = { loaded: false, loadErr: '', all: { on: {}, cfg: {} }, token: '', limit: 0, me: {}, info: '', id, tab: tabOk ? q.get('tab') : 'look',
       stage: 0, k: 0.45, animKey: 0, guides: true, show: false, copied: false, cfgCopied: false, gsiCopied: false, applied: false,
-      save: 'idle', saveErr: '', savedAt: 0, onBusy: false, onErr: '', live: null, liveFor: '', counters: [] };
+      save: 'idle', saveErr: '', savedAt: 0, onBusy: false, onErr: '', live: null, liveFor: '' };
   }
   componentDidMount() {
     const el = document.getElementById('wstage');
@@ -260,7 +260,6 @@ class Component extends DCLogic {
     try {
       const p = await StreAPI.get('widget.data', { t: this.state.token, w: id, after: 0 });
       if (this.state.id === id) this.setState({ live: p, liveFor: id });
-      if (id === 'deaths') { const cl = await StreAPI.get('counters.list'); this.setState({ counters: cl.items }); }
     } catch (e) { /* подсказка просто не обновится */ }
   }
   clone(x) { return JSON.parse(JSON.stringify(x)); }
@@ -385,9 +384,7 @@ class Component extends DCLogic {
         const val = c.content[key];
         const h = { hint: hint || '', hasHint: !!hint };
         if (type === 'toggle') return Object.assign({ isToggle: true, label, state: val ? 'true' : 'false', on: () => this.patchContent(key, !val) }, h);
-        // список счётчиков для виджета «Счётчик» берём с сервера: их создают в разделе «Счётчики»
-        const list = key === 'counter' && s.counters.length ? s.counters.map((x) => [x.id, x.name]) : opts;
-        if (type === 'select') return Object.assign({ isSelect: true, label, val: val || def, options: list.map((o) => ({ v: o[0], l: o[1] })), on: (e) => this.patchContent(key, e.target.value) }, h);
+        if (type === 'select') return Object.assign({ isSelect: true, label, val, options: opts.map((o) => ({ v: o[0], l: o[1] })), on: (e) => this.patchContent(key, e.target.value) }, h);
         if (type === 'number') return Object.assign({ isNumber: true, label, val, on: (e) => this.patchContent(key, Math.max(0, Number(e.target.value) || 0)) }, h);
         return Object.assign({ isText: true, label, val, on: (e) => this.patchContent(key, key === 'command' || key === 'nick' ? e.target.value.replace(/\s+/g, '') : e.target.value) }, h);
       });
@@ -415,7 +412,7 @@ class Component extends DCLogic {
             this.edit([id], (all) => { const x = W.cfg(id, all); x.since = Math.floor(Date.now() / 1000); x.content = Object.assign({}, x.content, { current: 0 }); all.cfg[id] = x; }, true);
           } });
       }
-      if (id === 'deaths') boxes.push({ role: 'status', hasTitle: true, title: 'Сейчас на экране: ' + (live ? fmt(ld.value) : '…'), text: 'Значение меняют команды из раздела «Счётчики» (сейчас у выбранного счётчика: ' + ((s.counters.find((x) => x.id === (c.content.counter || 'deaths')) || {}).command || '!смерть') + '). Зрители видят значение в чате, а менять может тот, кому разрешено. Работает, когда бот в канале.' });
+      if (id === 'deaths') boxes.push({ role: 'status', hasTitle: true, title: 'Сейчас на экране: ' + (live ? fmt(ld.value) : '…'), text: 'Пишут в чат: ' + (c.content.command || '!смерть') + ' — плюс шаг, ' + (c.content.command || '!смерть') + ' -1 — минус, ' + (c.content.command || '!смерть') + ' 0 — сброс. Менять может стример, модераторы и те, кому разрешено. Работает, когда бот в канале.' });
       if (id === 'faceit' || id === 'fmatch') {
         const f = ld.faceit;
         const nick = c.content.nick;

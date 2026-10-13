@@ -1,29 +1,29 @@
 <?php
-// Счётчики стрима: смерти, победы, что угодно. Каждый счётчик — своя команда в чате, свои права и (по желанию)
-// автоматический подсчёт из CS2 через Game State Integration. Значения лежат в таблице counters (name = id счётчика).
+// Счётчик виджета «Счётчик»: смерти, матчи, победы, что угодно. Настройки лежат в самом виджете (widgets.cfg.deaths.content),
+// значение — в таблице counters (name = 'deaths'). Команда в чате меняет значение, CS2 может считать сам через Game State Integration.
 
 const COUNTER_SOURCES = [
     'manual' => 'Вручную, командой в чате',
-    'cs_kills' => 'Убийства в CS2 (сумма по всем матчам)',
-    'cs_deaths' => 'Смерти в CS2 (сумма по всем матчам)',
-    'cs_mvp' => 'MVP-раунды в CS2 (сумма по всем матчам)',
+    'cs_deaths' => 'Смерти в CS2',
+    'cs_kills' => 'Убийства в CS2',
+    'cs_mvp' => 'MVP-раунды в CS2',
+    'cs_matches' => 'Сыгранные матчи в CS2',
 ];
 const COUNTER_ACCESS = ['mods', 'vip', 'subs', 'followers', 'list', 'all'];
-const COUNTER_MAX = 10;
 
-// Список счётчиков. Пока настроек нет, есть один счётчик «Смерти» — как раньше, с командой из виджета.
+// Настройки счётчика из виджета. До первой настройки — «Смерти» с командой !смерть.
 function counters_defs(array $user): array {
-    $list = settings_get((int)$user['id'], 'counters', null);
-    if (is_array($list)) return array_values($list);
-    $w = widget_cfg($user, 'deaths')['content'] ?? [];
+    $c = widget_cfg($user, 'deaths')['content'] ?? [];
+    $source = array_key_exists($c['source'] ?? '', COUNTER_SOURCES) ? $c['source'] : 'manual';
+    $access = in_array($c['access'] ?? '', COUNTER_ACCESS, true) ? $c['access'] : 'mods';
     return [[
         'id' => 'deaths',
-        'name' => (string)($w['label'] ?? 'Смерти'),
-        'command' => mb_strtolower((string)($w['command'] ?? '!смерть')),
-        'step' => 1,
-        'access' => 'mods',
-        'allowList' => '',
-        'source' => 'manual',
+        'name' => (string)($c['label'] ?? 'Смертей'),
+        'command' => mb_strtolower((string)($c['command'] ?? '!смерть')),
+        'step' => max(1, min(100, (int)($c['step'] ?? 1))),
+        'access' => $access,
+        'allowList' => (string)($c['allowList'] ?? ''),
+        'source' => $source,
     ]];
 }
 
@@ -41,47 +41,31 @@ function counter_store(int $uid, string $id, int $val): void {
     db_insert('counters', ['user_id' => $uid, 'name' => $id, 'value' => $val]);
 }
 
-// Проверка и приведение полей из панели. $id — пусто для нового счётчика.
-function counter_clean(array $in, string $id, array $list): array {
-    $name = trim(mb_substr((string)($in['name'] ?? ''), 0, 40));
-    if ($name === '') fail('Назови счётчик, например «Смерти»');
-    $cmd = '!' . ltrim(mb_strtolower(preg_replace('/\s+/u', '', (string)($in['command'] ?? ''))), '!');
-    if (mb_strlen($cmd) < 2 || mb_strlen($cmd) > 31) fail('Команда от 1 до 30 символов, например !смерть');
-    foreach ($list as $o) {
-        if ($o['command'] === $cmd && $o['id'] !== $id) fail('Команда ' . $cmd . ' уже занята другим счётчиком');
-    }
-    $access = in_array($in['access'] ?? '', COUNTER_ACCESS, true) ? $in['access'] : 'mods';
-    $source = array_key_exists($in['source'] ?? '', COUNTER_SOURCES) ? $in['source'] : 'manual';
-    return [
-        'id' => $id !== '' ? $id : 'c' . bin2hex(random_bytes(4)),
-        'name' => $name,
-        'command' => $cmd,
-        'step' => max(1, min(100, (int)($in['step'] ?? 1))),
-        'access' => $access,
-        'allowList' => mb_substr(trim((string)($in['allowList'] ?? '')), 0, 1000),
-        'source' => $source,
-    ];
-}
-
-// Строка для панели и API: настройки счётчика плюс текущее значение.
-function counter_public(int $uid, array $c): array {
-    return $c + ['value' => counter_value($uid, (string)$c['id'])];
-}
-
-// Игровой подсчёт CS2. Сохраняем последнее значение статистики, а разницу прибавляем к счётчику.
-// Если значение стало меньше прежнего — начался новый матч, и в счётчик идёт всё текущее значение.
-function counters_gsi_sync(array $user, array $stats): void {
+// Игровой подсчёт CS2 по GSI. Запоминаем последнее значение источника и прибавляем разницу.
+// Статистика стала меньше — новый матч: прибавляем всё текущее значение.
+// Матчи: номер раунда сбрасывается в 0 с каждым новым матчем, значит счёт +1 при уменьшении раунда.
+function counters_gsi_sync(array $user, array $in): void {
     $uid = (int)$user['id'];
+    $stats = is_array($in['player']['match_stats'] ?? null) ? $in['player']['match_stats'] : [];
+    $round = $in['map']['round'] ?? null;
     $keys = ['cs_kills' => 'kills', 'cs_deaths' => 'deaths', 'cs_mvp' => 'mvps'];
     foreach (counters_defs($user) as $c) {
-        if (!isset($keys[$c['source']]) || !isset($stats[$keys[$c['source']]])) continue;
-        $now = (int)$stats[$keys[$c['source']]];
+        $src = $c['source'];
         $ck = 'cgsi:' . $uid . ':' . $c['id'];
         $prev = kv_get($ck);
-        kv_set($ck, $now, 0);
-        if ($prev === null) continue; // первый запрос — только запоминаем точку отсчёта
+        $prev = is_array($prev) && ($prev['s'] ?? null) === $src ? $prev['v'] : null; // источник сменили — точка отсчёта заново
+        if ($src === 'cs_matches') {
+            if (!is_int($round)) continue;
+            kv_set($ck, ['s' => $src, 'v' => $round]);
+            if ($prev !== null && $round < (int)$prev) counter_store($uid, 'deaths', counter_value($uid, 'deaths') + 1);
+            continue;
+        }
+        if (!isset($keys[$src]) || !isset($stats[$keys[$src]])) continue;
+        $now = (int)$stats[$keys[$src]];
+        kv_set($ck, ['s' => $src, 'v' => $now]);
+        if ($prev === null) continue; // первый раз — только запоминаем точку отсчёта
         $delta = $now >= (int)$prev ? $now - (int)$prev : $now;
-        if ($delta > 0) counter_store($uid, (string)$c['id'], counter_value($uid, (string)$c['id']) + $delta);
+        if ($delta > 0) counter_store($uid, 'deaths', counter_value($uid, 'deaths') + $delta);
     }
 }
 

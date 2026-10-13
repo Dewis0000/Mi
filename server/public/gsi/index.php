@@ -11,8 +11,6 @@ $keep = $game === 'cs'
     : ['map' => $in['map'] ?? null, 'player' => $in['player'] ?? null, 'hero' => ['name' => $in['hero']['name'] ?? null, 'level' => $in['hero']['level'] ?? null]];
 db_exec('DELETE FROM gsi WHERE user_id = ? AND game = ?', [$u['id'], $game]);
 db_insert('gsi', ['user_id' => $u['id'], 'game' => $game, 'data' => json_encode($keep, JSON_UNESCAPED_UNICODE), 'updated_at' => now()]);
-if ($game === 'cs' && is_array($in['player']['match_stats'] ?? null)) { // счётчики CS2: убийства, смерти, MVP
-    counters_gsi_sync($u, $in['player']['match_stats']);
-}
+if ($game === 'cs') counters_gsi_sync($u, $in); // счётчик виджета: смерти, убийства, MVP, матчи
 http_response_code(200);
 echo 'ok';

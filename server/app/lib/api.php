@@ -466,50 +466,6 @@ function api_dispatch(string $r): never {
             json_out(['ok' => true]);
         }
 
-        // ---------- счётчики ----------
-        case 'counters.list': {
-            $u = require_user();
-            $items = array_map(fn($c) => counter_public((int)$u['id'], $c), counters_defs($u));
-            json_out(['ok' => true, 'items' => $items, 'sources' => COUNTER_SOURCES, 'accessOpts' => COUNTER_ACCESS, 'max' => COUNTER_MAX]);
-        }
-        case 'counters.save': {
-            $u = require_user();
-            $uid = (int)$u['id'];
-            $list = counters_defs($u);
-            $id = in_str('id', 32);
-            $idx = null;
-            foreach ($list as $i => $o) if ($o['id'] === $id) $idx = $i;
-            if ($id !== '' && $idx === null) fail('Счётчик не найден', 404);
-            if ($idx === null && count($list) >= COUNTER_MAX) fail('Можно завести до ' . COUNTER_MAX . ' счётчиков');
-            $prevSource = $idx !== null ? $list[$idx]['source'] : 'manual';
-            $c = counter_clean(api_input(), $id, $list);
-            if ($idx === null) $list[] = $c; else $list[$idx] = $c;
-            settings_set($uid, 'counters', array_values($list));
-            if ($c['source'] !== $prevSource) kv_set('cgsi:' . $uid . ':' . $c['id'], null); // сменили источник — CS2 считаем заново с текущего момента
-            json_out(['ok' => true, 'item' => counter_public($uid, $c)]);
-        }
-        case 'counters.adjust': { // панель стримера: +N, −N, установить значение
-            $u = require_user();
-            $uid = (int)$u['id'];
-            $id = in_str('id', 32);
-            $found = null;
-            foreach (counters_defs($u) as $o) if ($o['id'] === $id) $found = $o;
-            if (!$found) fail('Счётчик не найден', 404);
-            $op = in_str('op', 8, 'add');
-            $val = $op === 'set' ? in_int('value', 0, -1000000, 1000000) : counter_value($uid, $id) + in_int('value', 0, -1000000, 1000000);
-            counter_store($uid, $id, max(-1000000, min(1000000, $val)));
-            json_out(['ok' => true, 'value' => counter_value($uid, $id)]);
-        }
-        case 'counters.delete': {
-            $u = require_user();
-            $uid = (int)$u['id'];
-            $id = in_str('id', 32);
-            $list = array_values(array_filter(counters_defs($u), fn($o) => $o['id'] !== $id));
-            settings_set($uid, 'counters', $list);
-            db_exec('DELETE FROM counters WHERE user_id = ? AND name = ?', [$uid, $id]);
-            json_out(['ok' => true]);
-        }
-
         // ---------- виджеты ----------
         case 'widgets.get': {
             $u = require_user();
@@ -960,9 +916,8 @@ function widget_payload(array $u, string $w, int $after): array {
         case 'uptime':
             $data['stream'] = stream_row($uid);
             break;
-        case 'deaths': // виджет «Счётчик»: выбранный в редакторе счётчик; до первого изменения — стартовое значение из виджета
-            $cid = (string)($cfg['content']['counter'] ?? 'deaths');
-            $data['value'] = counter_row_value($uid, $cid) ?? (int)($cfg['content']['value'] ?? 0);
+        case 'deaths': // виджет «Счётчик»: до первого изменения — стартовое значение из виджета
+            $data['value'] = counter_row_value($uid, 'deaths') ?? (int)($cfg['content']['value'] ?? 0);
             break;
         case 'cs':
         case 'dota':
