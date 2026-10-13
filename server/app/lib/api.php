@@ -502,7 +502,21 @@ function api_dispatch(string $r): never {
 
         // ---------- аккаунт ----------
         case 'plans': { // тарифы для страниц сайта — один источник с серверными лимитами
-            json_out(['ok' => true, 'items' => array_map(fn($k, $p) => ['key' => $k] + $p, array_keys(PLANS), PLANS)]);
+            json_out(['ok' => true, 'items' => array_map(fn($k, $p) => ['key' => $k] + $p, array_keys(PLANS), PLANS), 'pay' => ['enabled' => yk_enabled(), 'min' => YK_MIN, 'max' => YK_MAX]]);
+        }
+        case 'pay.create': { // пополнение баланса через ЮKassa: возвращаем ссылку на страницу оплаты
+            $u = require_user();
+            $rub = in_int('amount', 0);
+            $url = yk_create($u, $rub, base_url() . '/settings.html?pay=return#billing');
+            json_out(['ok' => true, 'url' => $url]);
+        }
+        case 'pay.check': { // проверка незавершённых платежей: зачисление, если оплата уже прошла
+            $u = require_user();
+            $changed = 0;
+            foreach (db_all("SELECT * FROM payments WHERE user_id = ? AND credited = 0 AND status = 'pending' ORDER BY id DESC LIMIT 5", [$u['id']]) as $p) {
+                if (yk_settle($p) === 'succeeded') $changed++;
+            }
+            json_out(['ok' => true, 'credited' => $changed]);
         }
         case 'account.transactions': {
             $u = require_user();

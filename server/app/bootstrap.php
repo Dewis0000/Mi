@@ -31,6 +31,7 @@ require APP_DIR . '/lib/youtube.php';
 require APP_DIR . '/lib/donationalerts.php';
 require APP_DIR . '/lib/bot.php';
 require APP_DIR . '/lib/counters.php';
+require APP_DIR . '/lib/yookassa.php';
 require APP_DIR . '/lib/jobs.php';
 
 function base_url(): string {

@@ -46,6 +46,11 @@ else $okl('бот ' . $b['login'] . ' подключён к приложению
 
 if (cfg('YOUTUBE_API_KEY')) { yt_video('dQw4w9WgXcQ') ? $okl('YouTube API: ключ работает') : $badl('YouTube API: ключ не работает', 'console.cloud.google.com → включи YouTube Data API v3 для проекта ключа, сними ограничения по сайтам/IP'); }
 else $warn('YOUTUBE_API_KEY не задан — заказ музыки работать не будет');
+if (yk_enabled()) {
+    $r = yk_call('GET', '/payments?limit=1');
+    $r['code'] === 200 ? $okl('ЮKassa: ID магазина и секретный ключ верные') : $badl('ЮKassa: магазин не принял ключи (код ' . $r['code'] . ')', 'в личном кабинете ЮKassa → Интеграция → Ключи API проверь ID магазина и секретный ключ (боевой, не тестовый)');
+    $okl('ЮKassa: уведомления о платежах — ' . $url . '/pay/yookassa.php (в ЮKassa: Интеграция → HTTP-уведомления, события payment.succeeded и payment.canceled)');
+} else $warn('ЮKassa не настроена — пополнение баланса онлайн недоступно (пополнение через администратора работает)');
 cfg('DA_CLIENT_ID') && cfg('DA_CLIENT_SECRET') ? $okl('DonationAlerts: приложение задано (redirect URI в DA: ' . $url . '/auth/da.php)') : $warn('DonationAlerts не настроен — донаты в виджетах и заказ трека донатом не работают');
 cfg('FACEIT_API_KEY') ? $okl('FACEIT: ключ задан') : $warn('FACEIT_API_KEY не задан — виджеты FACEIT будут пустыми (необязательно)');
 
