@@ -23,7 +23,7 @@ html,body{margin:0;background:transparent;overflow:hidden;font-family:'Onest',sy
 <script>
 (function () {
   var token = new URLSearchParams(location.search).get('t') || '';
-  var last = null, queue = [], busy = false;
+  var last = null, queue = [], busy = false, guard = null;
   var note = document.getElementById('note');
   function say(item) {
     document.getElementById('who').textContent = item.name ? item.name + ' говорит' : '';
@@ -35,9 +35,10 @@ html,body{margin:0;background:transparent;overflow:hidden;font-family:'Onest',sy
     var ru = speechSynthesis.getVoices().filter(function (v) { return /^ru/i.test(v.lang); })[0];
     if (ru) u.voice = ru;
     u.onend = finish; u.onerror = finish;
+    guard = setTimeout(finish, Math.max(4000, item.text.length * 90)); // если браузер не сообщил об окончании — идём дальше
     speechSynthesis.speak(u);
   }
-  function finish() { note.classList.remove('on'); busy = false; next(); }
+  function finish() { clearTimeout(guard); guard = null; note.classList.remove('on'); busy = false; next(); }
   function next() {
     if (busy || !queue.length) return;
     busy = true;

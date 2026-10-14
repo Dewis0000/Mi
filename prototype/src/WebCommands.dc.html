@@ -61,6 +61,20 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 </div>
 
 <div style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<section aria-labelledby="tts-t" style="flex: 1 1 100%; border-radius: 12px; background: rgba(18,18,18,0.62); border: 1px solid rgba(255,255,255,0.10); padding: 20px 24px; box-sizing: border-box">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap">
+<div style="min-width: 0"><h2 id="tts-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Озвучка !tts</h2><p class="hint" style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">Зритель пишет «!tts текст» в чат, и бот читает текст вслух на стриме через OBS.</p></div>
+<button type="button" role="switch" class="sw" aria-checked="{{ ttsOn }}" aria-label="Озвучка !tts включена" onClick="{{ ttsToggle }}"><span></span></button>
+</div>
+<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px">
+<div class="fl"><label for="tta">Кто может озвучивать</label><select id="tta" class="inp" value="{{ ttsAccess }}" onChange="{{ ttsSetAccess }}"><sc-for list="{{ ttsAccOpts }}" as="o" hint-placeholder-count="6"><option value="{{ o.v }}">{{ o.label }}</option></sc-for></select></div>
+<div class="fl"><label for="ttc">Пауза между сообщениями, сек</label><input id="ttc" class="inp mono" type="number" min="0" max="600" value="{{ ttsCooldown }}" onChange="{{ ttsSetCooldown }}"><span class="hint">Модераторы без паузы</span></div>
+<div class="fl"><label for="ttl">Максимум символов</label><input id="ttl" class="inp mono" type="number" min="20" max="300" value="{{ ttsMaxLen }}" onChange="{{ ttsSetMaxLen }}"></div>
+</div>
+<sc-if value="{{ ttsListShow }}" hint-placeholder-val="{{ false }}"><div class="fl" style="margin-top: 14px"><label for="tta2">Ники, которые могут озвучивать</label><textarea id="tta2" rows="2" value="{{ ttsAllow }}" onChange="{{ ttsSetAllow }}" placeholder="moroz_tv, admin_name" style="box-sizing: border-box; width: 100%; padding: 10px 12px; border-radius: 6px; background: #171717; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px/20px Onest, system-ui, sans-serif; resize: vertical"></textarea><span class="hint">Через запятую. Ники без @</span></div></sc-if>
+<div style="margin-top: 16px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap"><button type="button" onClick="{{ ttsSave }}" disabled="{{ ttsBusy }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 14px/20px Onest, system-ui, sans-serif; cursor: pointer">Сохранить</button><span class="hint">{{ ttsSaved }}</span></div>
+<div style="margin-top: 16px; padding: 12px 14px; border-radius: 8px; border: 1px dashed #3A3A3A"><p class="hint" style="margin: 0; font-size: 13px; line-height: 18px; color: #8F8F8F">Ссылка для OBS: «Источник» → «Браузер», звук через OBS. Голос берётся из браузера, поэтому в OBS нужен русский голос системы.</p><p class="mono" style="margin: 8px 0 0; font-size: 12px; color: #B4B4B4; overflow-wrap: anywhere">{{ ttsUrl }}</p><button type="button" onClick="{{ ttsCopy }}" style="margin-top: 8px; height: 32px; padding: 0 12px; border-radius: 6px; border: 1px solid #3A3A3A; background: transparent; color: #F2F2F2; font: 500 13px/18px Onest, system-ui, sans-serif; cursor: pointer">{{ ttsCopyLabel }}</button></div>
+</section>
 <section style="flex: 999 1 520px; min-width: 0" aria-label="Список команд">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; border-bottom: 1px solid #2A2A2A">
 <div role="tablist" aria-label="Фильтр команд" style="display: flex; gap: 24px">
@@ -144,9 +158,31 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { items: [], loaded: false, tab: 0, q: '', f: null, saving: false, err: '', limit: 0, bot: 'StreOps' };
+    this.state = { items: [], loaded: false, tab: 0, q: '', f: null, saving: false, err: '', limit: 0, bot: 'StreOps', tts: null, ttsToken: '', ttsBusy: false, ttsSaved: '', ttsCopied: false };
   }
-  componentDidMount() { this.load(); }
+  componentDidMount() { this.load(); this.loadTts(); }
+  async loadTts() {
+    try {
+      const r = await StreAPI.get('tts.get');
+      this.setState({ tts: r.cfg, ttsToken: r.token });
+    } catch (e) { StreAPI.toast(e.message, 'error'); }
+  }
+  setTts(p) { this.setState({ tts: Object.assign({}, this.state.tts, p), ttsSaved: '' }); }
+  async saveTts() {
+    this.setState({ ttsBusy: true });
+    try {
+      await StreAPI.post('tts.save', this.state.tts);
+      this.setState({ ttsSaved: 'Сохранено' });
+      StreAPI.toast('Озвучка сохранена');
+    } catch (e) { StreAPI.toast(e.message, 'error'); }
+    this.setState({ ttsBusy: false });
+  }
+  copyTtsUrl() {
+    const url = location.origin + '/w/tts.php?t=' + encodeURIComponent(this.state.ttsToken);
+    const done = () => { this.setState({ ttsCopied: true }); setTimeout(() => this.setState({ ttsCopied: false }), 2000); };
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => StreAPI.toast('Скопируй ссылку вручную: ' + url, 'error'));
+    else StreAPI.toast('Скопируй ссылку вручную: ' + url, 'error');
+  }
   async load() {
     try {
       const r = await StreAPI.get('commands.list');
@@ -172,7 +208,17 @@ class Component extends DCLogic {
     const q = s.q.trim().toLowerCase();
     const all = s.items.filter((c) => !q || (c.prefix + c.name + ' ' + c.response + ' ' + c.description).toLowerCase().indexOf(q) >= 0).map((c) => {
       const active = s.f && s.f.id === c.id;
-      return {
+      const t = s.tts || { on: false, access: 'mods', allowList: '', cooldown: 5, maxLen: 200 };
+    const ttsAccOpts = [['mods', 'Модераторы и стример'], ['vip', 'Випы и модераторы'], ['subs', 'Подписчики и выше'], ['followers', 'Фолловеры и выше'], ['list', 'Только из списка ников'], ['all', 'Все зрители']].map((o) => ({ v: o[0], label: o[1] }));
+    return {
+      ttsOn: t.on ? 'true' : 'false', ttsToggle: () => this.setTts({ on: !t.on }),
+      ttsAccess: t.access, ttsSetAccess: (e) => this.setTts({ access: e.target.value }), ttsAccOpts,
+      ttsCooldown: t.cooldown, ttsSetCooldown: (e) => this.setTts({ cooldown: Math.max(0, Math.min(600, Number(e.target.value) || 0)) }),
+      ttsMaxLen: t.maxLen, ttsSetMaxLen: (e) => this.setTts({ maxLen: Math.max(20, Math.min(300, Number(e.target.value) || 200)) }),
+      ttsListShow: t.access === 'list', ttsAllow: t.allowList, ttsSetAllow: (e) => this.setTts({ allowList: e.target.value }),
+      ttsSave: () => this.saveTts(), ttsBusy: !!s.ttsBusy, ttsSaved: s.ttsSaved,
+      ttsUrl: s.ttsToken ? location.origin + '/w/tts.php?t=' + encodeURIComponent(s.ttsToken) : 'Загрузка…',
+      ttsCopy: () => this.copyTtsUrl(), ttsCopyLabel: s.ttsCopied ? 'Скопировано' : 'Скопировать ссылку',
         name: c.prefix + c.name, desc: c.description || c.response, access: ACC[c.access] || 'Все',
         cd: c.cooldownGlobal + ' с · вызовов ' + StreAPI.fmtNum(c.uses), isOn: c.enabled,
         on: c.enabled ? 'true' : 'false', stateLabel: c.enabled ? 'Включена' : 'Выключена',
