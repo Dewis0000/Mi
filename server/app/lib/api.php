@@ -577,6 +577,13 @@ function api_dispatch(string $r): never {
             $rows = db_all('SELECT * FROM transactions WHERE user_id = ? ORDER BY id DESC LIMIT 50', [$u['id']]);
             json_out(['ok' => true, 'items' => array_map(fn($t) => ['id' => (int)$t['id'], 'amount' => (int)$t['amount'], 'kind' => $t['kind'], 'comment' => $t['comment'], 'at' => (int)$t['created_at']], $rows)]);
         }
+        case 'account.email': { // email для чеков ЮKassa (54-ФЗ) и связи по оплате
+            $u = require_user();
+            $email = mb_strtolower(trim(in_str('email', 190)));
+            if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) fail('Проверь адрес email');
+            db_update('users', ['email' => $email], 'id = ?', [$u['id']]);
+            json_out(['ok' => true]);
+        }
         case 'account.theme': {
             $u = require_user();
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {

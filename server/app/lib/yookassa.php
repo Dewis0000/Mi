@@ -6,6 +6,29 @@ function yk_enabled(): bool {
     return (string)cfg('YOOKASSA_SHOP_ID') !== '' && (string)cfg('YOOKASSA_SECRET_KEY') !== '';
 }
 
+// Ключи тестового магазина начинаются с test_. Для приёма денег нужны боевые ключи.
+function yk_is_test(): bool {
+    return str_starts_with((string)cfg('YOOKASSA_SECRET_KEY'), 'test_');
+}
+
+// Чек для 54-ФЗ: нужен, если в магазине включена фискализация (YOOKASSA_RECEIPT=1).
+// Ставка НДС — YOOKASSA_VAT_CODE, по умолчанию 1 (без НДС).
+function yk_receipt(string $email, string $desc, int $price): ?array {
+    if ((string)cfg('YOOKASSA_RECEIPT') !== '1') return null;
+    if ($email === '') fail('Для оплаты нужен email в профиле: без него ЮKassa не сможет выдать чек');
+    return [
+        'customer' => ['email' => $email],
+        'items' => [[
+            'description' => mb_substr($desc, 0, 128),
+            'quantity' => '1.00',
+            'amount' => ['value' => number_format($price, 2, '.', ''), 'currency' => 'RUB'],
+            'vat_code' => (string)(cfg('YOOKASSA_VAT_CODE') ?? '1'),
+            'payment_mode' => 'full_payment',
+            'payment_subject' => 'service',
+        ]],
+    ];
+}
+
 // Запрос к API ЮKassa: HTTP Basic (ID магазина и секретный ключ), для создания платежа — ключ идемпотентности.
 function yk_call(string $method, string $path, ?array $body = null, ?string $idem = null): array {
     $headers = [
@@ -18,16 +41,18 @@ function yk_call(string $method, string $path, ?array $body = null, ?string $ide
 
 // Создаём платёж. Цена берётся на сервере, а не из запроса. Возвращаем ID локального платежа и confirmation_token.
 // Для тарифа $plan — оплата подписки. Для тестового платежа без тарифа $plan пустой: он ничего не меняет на сайте.
-function yk_make(int $uid, string $plan, int $price, string $desc, int $promoId = 0): array {
+function yk_make(int $uid, string $plan, int $price, string $desc, int $promoId = 0, string $email = ''): array {
     if (!yk_enabled()) fail('Онлайн-оплата пока не подключена. Напиши администратору StreOps');
     $local = db_insert('payments', ['user_id' => $uid, 'plan' => $plan, 'promo_id' => $promoId, 'amount' => $price, 'status' => 'creating', 'created_at' => now()]);
-    $r = yk_call('POST', '/payments', [
+    $body = [
         'amount' => ['value' => number_format($price, 2, '.', ''), 'currency' => 'RUB'],
         'capture' => true,
         'confirmation' => ['type' => 'embedded'],
         'description' => mb_substr($desc . ', заказ #' . $local, 0, 128),
         'metadata' => ['local_id' => (string)$local],
-    ], 'streops-pay-' . $local); // повторный запрос с тем же ключом не создаст второй платёж
+    ];
+    if ($receipt = yk_receipt($email, $desc, $price)) $body['receipt'] = $receipt;
+    $r = yk_call('POST', '/payments', $body, 'streops-pay-' . $local); // повторный запрос с тем же ключом не создаст второй платёж
     $ykId = (string)($r['json']['id'] ?? '');
     $token = (string)($r['json']['confirmation']['confirmation_token'] ?? '');
     if ($r['code'] !== 200 || $ykId === '' || $token === '') {
@@ -45,11 +70,12 @@ function yk_create(array $user, string $plan, ?array $promo = null): array {
     $price = $promo ? promo_price($promo) : (int)PLANS[$plan]['price'];
     $days = $promo ? (int)$promo['days'] : 30;
     $desc = 'Тариф «' . PLANS[$plan]['name'] . '» StreOps на ' . $days . ' дн.' . ($promo ? ', промокод ' . $promo['code'] : '');
-    return yk_make((int)$user['id'], $plan, $price, $desc, $promo ? (int)$promo['id'] : 0);
+    return yk_make((int)$user['id'], $plan, $price, $desc, $promo ? (int)$promo['id'] : 0, (string)($user['email'] ?? ''));
 }
 
 // Тестовый платёж для проверки магазина ЮKassa: фиксированная сумма, без входа в аккаунт, тариф не меняется.
 function yk_create_demo(): array {
+    if ((string)cfg('YOOKASSA_DEMO') !== '1') fail('Тестовая оплата выключена');
     return yk_make(0, '', 10, 'Тестовый платёж StreOps (проверка приёма оплаты)');
 }
 

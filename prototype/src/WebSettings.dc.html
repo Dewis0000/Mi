@@ -114,6 +114,14 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <p class="hint" style="font-size: 13px; line-height: 18px">Вход в StreOps — только через Twitch, пароль не нужен.</p>
 <a href="/auth/logout.php" class="bs"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg>Выйти</a>
 </div>
+<div style="margin-top: 24px; padding: 20px; border-radius: 8px; border: 1px solid #2A2A2A; background: #111111">
+<p style="margin: 0; font-size: 14px; font-weight: 500; color: #DCDCDC">Email для чеков</p>
+<p class="hint" style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">Нужен для чека об оплате тарифа. На него же придут ответы по оплате. Никому не передаётся.</p>
+<form style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap" onSubmit="{{ emailSubmit }}">
+<input type="email" aria-label="Email" value="{{ emailIn }}" onChange="{{ setEmailIn }}" maxlength="190" placeholder="you@example.com" style="box-sizing: border-box; width: 280px; height: 40px; padding: 0 12px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 15px/22px 'JetBrains Mono', monospace">
+<button type="submit" disabled="{{ emailBusy }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 14px/20px Onest, system-ui, sans-serif; cursor: pointer">Сохранить</button>
+</form>
+</div>
 </section>
 
 <!-- Бот -->
@@ -315,7 +323,7 @@ class Component extends DCLogic {
       busy: '', botMsg: null, botFail: '', daMsg: null, showToken: false,
       acctTheme: undefined, ask: null, askErr: '', askBusy: false,
       payBusy: false, payInfo: null,
-      promoIn: '', promo: null, promoBusy: false,
+      promoIn: '', promo: null, promoBusy: false, emailIn: null, emailBusy: false,
       confirm: false, typed: '', delErr: '', deleting: false, sec: 'profile',
     };
   }
@@ -421,6 +429,18 @@ class Component extends DCLogic {
     this.setState({ promoBusy: false });
   }
   promoClear() { this.setState({ promo: null }); }
+  async saveEmail(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const email = this.state.emailIn === null ? (this.state.me.email || '') : this.state.emailIn;
+    this.setState({ emailBusy: true });
+    try {
+      await StreAPI.post('account.email', { email: email.trim() });
+      StreAPI.toast('Email сохранён');
+      this.setState({ emailIn: null });
+      await this.reloadMe();
+    } catch (err) { StreAPI.toast(err.message, 'error'); }
+    this.setState({ emailBusy: false });
+  }
   // Оплата тарифа: виджет ЮKassa открывается поверх всего экрана
   async startPay(p, code) {
     this.setState({ payBusy: true });
@@ -778,6 +798,7 @@ class Component extends DCLogic {
 
       planName: me ? me.planName : L, planUntil, planLimits,
       payOn, payBusy: !!s.payBusy,
+      emailIn: s.emailIn === null ? (me && me.email ? me.email : '') : s.emailIn, setEmailIn: (e) => this.setState({ emailIn: e.target.value }), emailSubmit: (e) => this.saveEmail(e), emailBusy: !!s.emailBusy,
       promoHas: !!s.promo, promoText: s.promo ? 'Скидка ' + s.promo.percent + '% по коду ' + s.promo.code + ' на «' + (STRE_PLANS.find((x) => x.key === s.promo.plan) || {}).name + '»' : '',
       promoIn: s.promoIn, setPromoIn: (e) => this.setState({ promoIn: e.target.value }), promoSubmit: (e) => this.promoSubmit(e), promoBusy: !!s.promoBusy,
       promoClear: () => this.promoClear(),

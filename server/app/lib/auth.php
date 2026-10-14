@@ -65,7 +65,7 @@ function user_public(array $u): array {
         'id' => (int)$u['id'], 'login' => $u['login'], 'name' => $u['display_name'] ?: $u['login'], 'avatar' => $u['avatar'],
         'plan' => $lim['key'], 'planName' => $lim['name'], 'planUntil' => (int)$u['plan_until'], 
         'limits' => $lim, 'botEnabled' => (bool)$u['bot_enabled'], 'botError' => $u['bot_error'], 'isAdmin' => is_admin($u),
-        'widgetToken' => $u['widget_token'], 'daConnected' => (bool)$u['da_access'], 'daName' => $u['da_name'],
+        'widgetToken' => $u['widget_token'], 'daConnected' => (bool)$u['da_access'], 'daName' => $u['da_name'], 'email' => (string)($u['email'] ?? ''),
         'createdAt' => (int)$u['created_at'],
     ];
 }

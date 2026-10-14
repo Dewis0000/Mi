@@ -50,7 +50,11 @@ if (yk_enabled()) {
     $r = yk_call('GET', '/payments?limit=1');
     $r['code'] === 200 ? $okl('ЮKassa: ID магазина и секретный ключ верные') : $badl('ЮKassa: магазин не принял ключи (код ' . $r['code'] . ')', 'в личном кабинете ЮKassa → Интеграция → Ключи API проверь ID магазина и секретный ключ (боевой, не тестовый)');
     $okl('ЮKassa: уведомления о платежах — ' . $url . '/pay/yookassa.php (в ЮKassa: Интеграция → HTTP-уведомления, события payment.succeeded и payment.canceled)');
-} else $warn('ЮKassa не настроена — пополнение баланса онлайн недоступно (пополнение через администратора работает)');
+    if (yk_is_test()) $warn('ЮKassa: ключ тестовый (test_). Для приёма денег поставь боевой ключ магазина из личного кабинета');
+    else $okl('ЮKassa: боевой ключ магазина');
+    cfg('YOOKASSA_RECEIPT') === '1' ? $okl('ЮKassa: чеки 54-ФЗ включены (нужен email в профиле)') : $warn('ЮKassa: чеки 54-ФЗ выключены. Если в магазине включена фискализация, поставь YOOKASSA_RECEIPT=1');
+    cfg('YOOKASSA_DEMO') === '1' ? $warn('ЮKassa: тестовая страница оплаты включена (YOOKASSA_DEMO=1). После проверки магазина поставь 0') : $okl('ЮKassa: тестовая страница оплаты выключена');
+} else $warn('ЮKassa не настроена — онлайн-оплата тарифов недоступна, пока не подключён магазин');
 cfg('DA_CLIENT_ID') && cfg('DA_CLIENT_SECRET') ? $okl('DonationAlerts: приложение задано (redirect URI в DA: ' . $url . '/auth/da.php)') : $warn('DonationAlerts не настроен — донаты в виджетах и заказ трека донатом не работают');
 cfg('FACEIT_API_KEY') ? $okl('FACEIT: ключ задан') : $warn('FACEIT_API_KEY не задан — виджеты FACEIT будут пустыми (необязательно)');
 
