@@ -237,28 +237,87 @@ function api_dispatch(string $r): never {
         }
         case 'music.action': {
             $u = require_user();
-            $uid = (int)$u['id'];
             $act = in_str('action', 16);
             $id = in_int('id');
-            $song = $id ? db_one('SELECT * FROM songs WHERE id = ? AND user_id = ?', [$id, $uid]) : null;
-            switch ($act) {
-                case 'next': music_next($u); break;
-                case 'remove': if ($song) db_update('songs', ['status' => 'skipped', 'played_at' => now()], 'id = ?', [$id]); break;
-                case 'up':
-                    if ($song) {
-                        $prev = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'queued' AND (pos < ? OR (pos = ? AND id < ?)) ORDER BY pos DESC, id DESC LIMIT 1", [$uid, $song['pos'], $song['pos'], $id]);
-                        if ($prev) { db_update('songs', ['pos' => $prev['pos']], 'id = ?', [$id]); db_update('songs', ['pos' => $song['pos'] == $prev['pos'] ? $prev['pos'] + 1 : $song['pos']], 'id = ?', [$prev['id']]); }
-                    }
-                    break;
-                case 'approve':
-                    if ($song) { $pos = (int)(db_one("SELECT MAX(pos) m FROM songs WHERE user_id = ? AND status = 'queued'", [$uid])['m'] ?? 0) + 1; db_update('songs', ['status' => 'queued', 'pos' => $pos], 'id = ?', [$id]); }
-                    break;
-                case 'reject':
-                    if ($song) { db_update('songs', ['status' => 'rejected', 'played_at' => now()], 'id = ?', [$id]); refund_redemption($u, $song); }
-                    break;
-                case 'clear': db_exec("UPDATE songs SET status = 'skipped' WHERE user_id = ? AND status = 'queued'", [$uid]); break;
-                default: fail('Неизвестное действие');
+            music_act($u, $act, $id);
+            json_out(['ok' => true]);
+        }
+        case 'mods.get': { // «Мои модераторы»: помощники StreOps со статистикой и модераторы Twitch
+            $u = require_user();
+            $managers = array_map(fn($l) => ['login' => $l] + mgr_stats((int)$u['id'], $l), mgr_list((int)$u['id']));
+            $twitch = [];
+            $twitchErr = '';
+            $tok = tw_user_token($u);
+            $r = $tok ? helix('GET', 'moderation/moderators', ['broadcaster_id' => $u['twitch_id'], 'first' => 100], null, $tok) : ['code' => 0];
+            if (($r['code'] ?? 0) === 200) {
+                $twitch = array_map(fn($m) => ['login' => (string)$m['user_login'], 'name' => (string)$m['user_name']], $r['json']['data'] ?? []);
+            } else {
+                $twitchErr = 'Не удалось получить модераторов из Twitch. Переподключи Twitch в «Подключения».';
             }
+            json_out(['ok' => true, 'managers' => $managers, 'twitch' => $twitch, 'twitchErr' => $twitchErr, 'max' => MGR_MAX]);
+        }
+        case 'mods.add': {
+            $u = require_user();
+            $l = mb_strtolower(trim(in_str('login', 40), " @\t"));
+            if (!mgr_login_ok($l)) fail('Ник Twitch: латиница, цифры и «_», от 3 до 25 знаков');
+            if ($l === mb_strtolower((string)$u['login'])) fail('Себя добавлять не нужно: у тебя и так полный доступ');
+            $list = mgr_list((int)$u['id']);
+            if (in_array($l, $list, true)) fail('Этот помощник уже добавлен');
+            if (count($list) >= MGR_MAX) fail('Помощников не больше ' . MGR_MAX);
+            $list[] = $l;
+            mgr_save((int)$u['id'], $list);
+            json_out(['ok' => true]);
+        }
+        case 'mods.remove': {
+            $u = require_user();
+            $l = mb_strtolower(in_str('login', 40));
+            mgr_save((int)$u['id'], array_values(array_filter(mgr_list((int)$u['id']), fn($x) => $x !== $l)));
+            json_out(['ok' => true]);
+        }
+        case 'manage.channels': { // каналы, где пользователь помощник
+            $u = require_user();
+            json_out(['ok' => true, 'items' => mgr_channels(mb_strtolower((string)$u['login']))]);
+        }
+        case 'manage.state': { // очередь музыки и заказы канала — для помощника
+            $u = require_user();
+            $ch = mgr_channel($u, in_str('channel', 40));
+            $queue = array_map('song_row', db_all("SELECT * FROM songs WHERE user_id = ? AND status = 'queued' ORDER BY pos, id LIMIT 30", [$ch['id']]));
+            $playing = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'playing' ORDER BY id DESC LIMIT 1", [$ch['id']]);
+            $pending = array_map('song_row', db_all("SELECT * FROM songs WHERE user_id = ? AND status = 'pending' ORDER BY id LIMIT 20", [$ch['id']]));
+            json_out(['ok' => true, 'channel' => $ch['login'], 'orders' => !empty(music_config((int)$ch['id'])['cmd']['on']), 'playing' => $playing ? song_row($playing) : null, 'queue' => $queue, 'pending' => $pending]);
+        }
+        case 'manage.do': { // помощник: пропустить, убрать, одобрить, отклонить, переставить, очистить, включить заказы
+            $u = require_user();
+            $ch = mgr_channel($u, in_str('channel', 40));
+            $act = in_str('action', 16);
+            $who = mb_strtolower((string)$u['login']);
+            if ($act === 'orders') {
+                $c = settings_get((int)$ch['id'], 'music', []);
+                $c = is_array($c) ? $c : [];
+                $c['cmd'] = array_replace(music_config((int)$ch['id'])['cmd'], ['on' => in_bool('on')]);
+                settings_set((int)$ch['id'], 'music', $c);
+                mgr_log($ch, $who, 'orders', in_bool('on') ? 'заказы включены' : 'заказы выключены');
+            } else {
+                music_act($ch, $act, in_int('id'));
+                mgr_log($ch, $who, $act, 'трек #' . in_int('id'));
+            }
+            json_out(['ok' => true]);
+        }
+        case 'tts.get': {
+            $u = require_user();
+            json_out(['ok' => true, 'cfg' => tts_config((int)$u['id']), 'token' => $u['widget_token'], 'max' => ['cooldown' => 600, 'maxLen' => 300]]);
+        }
+        case 'tts.save': {
+            $u = require_user();
+            $in = api_input();
+            $acc = in_array($in['access'] ?? '', COUNTER_ACCESS, true) ? $in['access'] : 'mods';
+            settings_set((int)$u['id'], 'tts', [
+                'on' => !empty($in['on']),
+                'access' => $acc,
+                'allowList' => mb_substr(trim((string)($in['allowList'] ?? '')), 0, 1000),
+                'cooldown' => max(0, min(600, (int)($in['cooldown'] ?? 5))),
+                'maxLen' => max(20, min(300, (int)($in['maxLen'] ?? 200))),
+            ]);
             json_out(['ok' => true]);
         }
         case 'music.add': {
@@ -995,6 +1054,11 @@ function widget_payload(array $u, string $w, int $after): array {
             $g = db_one('SELECT data, updated_at FROM gsi WHERE user_id = ? AND game = ?', [$uid, $w]);
             $data['gsi'] = $g ? json_decode((string)$g['data'], true) : null;
             $data['updatedAt'] = $g ? (int)$g['updated_at'] : 0;
+            break;
+        case 'tts': // озвучка: новые сообщения с !tts, по курсору; первый запрос только узнаёт курсор
+            $rows = $after === 0 ? [] : db_all("SELECT * FROM events WHERE user_id = ? AND type = 'tts' AND id > ? ORDER BY id LIMIT 5", [$uid, $after]);
+            $data['items'] = array_map(fn($e) => ['id' => (int)$e['id'], 'text' => $e['data'], 'name' => $e['name']], $rows);
+            $data['cursor'] = (int)(db_one("SELECT MAX(id) m FROM events WHERE user_id = ? AND type = 'tts'", [$uid])['m'] ?? 0);
             break;
         case 'giveaway': // оверлей розыгрыша /w/giveaway.php: активный розыгрыш или только что завершённый
             $g = db_one("SELECT * FROM giveaways WHERE user_id = ? AND (status IN ('collecting','closed','drawing') OR (status = 'done' AND drawn_at > ?)) ORDER BY id DESC LIMIT 1", [$uid, now() - 90]);

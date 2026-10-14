@@ -379,6 +379,21 @@ function handle_builtin(array $ctx): bool {
         }
         return true;
     }
+    // озвучка: !tts текст — текст уходит на OBS-страницу /w/tts.php и читается вслух
+    $tts = tts_config((int)$user['id']);
+    if ($tts['on'] && $word === '!tts') {
+        if (!access_ok($user, (string)$tts['access'], $r, $ctx['chatterId'], $ctx['login'], (string)$tts['allowList'])) return true;
+        $text = trim($arg);
+        if ($text === '') { tw_send($bid, '@' . $ctx['name'] . ', напиши текст после !tts', $ctx['msgId']); return true; }
+        $ck = 'tts:' . $user['id'] . ':' . $ctx['chatterId'];
+        if (!$r['mod']) {
+            $last = db_one('SELECT last FROM cooldowns WHERE k = ?', [$ck]);
+            if ($last && (int)$last['last'] > now() - (int)$tts['cooldown']) return true;
+            set_cooldown($ck);
+        }
+        db_insert('events', ['user_id' => $user['id'], 'type' => 'tts', 'login' => $ctx['login'], 'name' => $ctx['name'], 'data' => mb_substr($text, 0, (int)$tts['maxLen']), 'created_at' => now()]);
+        return true;
+    }
     // счётчики стрима (раздел «Счётчики»): !смерть, !смерть -1, !смерть 0 — менять может тот, кому разрешено
     foreach (counters_defs($user) as $c) {
         if ($word === mb_strtolower((string)$c['command'])) {
@@ -595,4 +610,28 @@ function bot_handle_notification(array $user, array $ev): void {
 function widget_cfg(array $user, string $id): array {
     $all = settings_get((int)$user['id'], 'widgets', ['on' => [], 'cfg' => []]);
     return $all['cfg'][$id] ?? [];
+}
+
+// Действия над очередью музыки: владелец канала или помощник с правом управлять музыкой.
+function music_act(array $u, string $act, int $id): void {
+    $uid = (int)$u['id'];
+    $song = $id ? db_one('SELECT * FROM songs WHERE id = ? AND user_id = ?', [$id, $uid]) : null;
+    switch ($act) {
+        case 'next': music_next($u); break;
+        case 'remove': if ($song) db_update('songs', ['status' => 'skipped', 'played_at' => now()], 'id = ?', [$id]); break;
+        case 'up':
+            if ($song) {
+                $prev = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'queued' AND (pos < ? OR (pos = ? AND id < ?)) ORDER BY pos DESC, id DESC LIMIT 1", [$uid, $song['pos'], $song['pos'], $id]);
+                if ($prev) { db_update('songs', ['pos' => $prev['pos']], 'id = ?', [$id]); db_update('songs', ['pos' => $song['pos'] == $prev['pos'] ? $prev['pos'] + 1 : $song['pos']], 'id = ?', [$prev['id']]); }
+            }
+            break;
+        case 'approve':
+            if ($song) { $pos = (int)(db_one("SELECT MAX(pos) m FROM songs WHERE user_id = ? AND status = 'queued'", [$uid])['m'] ?? 0) + 1; db_update('songs', ['status' => 'queued', 'pos' => $pos], 'id = ?', [$id]); }
+            break;
+        case 'reject':
+            if ($song) { db_update('songs', ['status' => 'rejected', 'played_at' => now()], 'id = ?', [$id]); refund_redemption($u, $song); }
+            break;
+        case 'clear': db_exec("UPDATE songs SET status = 'skipped' WHERE user_id = ? AND status = 'queued'", [$uid]); break;
+        default: fail('Неизвестное действие');
+    }
 }
