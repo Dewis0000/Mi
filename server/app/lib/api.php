@@ -766,16 +766,23 @@ function api_dispatch(string $r): never {
             if ($text === '') fail('Напиши текст объявления');
             $hours = in_int('hours', 24, 1, 720);
             $target = in_str('login', 64);
+            $mode = in_str('mode', 10, 'top') === 'center' ? 'center' : 'top';
             $uid = 0;
             if ($target !== '') {
                 $x = db_one('SELECT id FROM users WHERE login = ?', [mb_strtolower($target)]);
                 if (!$x) fail('Нет пользователя с таким ником');
                 $uid = (int)$x['id'];
             }
-            $a = ['id' => rand_token(6), 'text' => $text, 'until' => now() + $hours * 3600, 'userId' => $uid, 'by' => $admin['login'], 'at' => now()];
+            $a = ['id' => rand_token(6), 'text' => $text, 'mode' => $mode, 'until' => now() + $hours * 3600, 'userId' => $uid, 'by' => $admin['login'], 'at' => now()];
             kv_set('announcement', $a, $hours * 3600);
             logline('admin', $admin['login'] . ' announcement ' . $a['id'] . ($uid ? ' to user ' . $uid : ' to all') . ': ' . mb_substr($text, 0, 120));
             json_out(['ok' => true, 'item' => $a]);
+        }
+        case 'notify.poll': { // раз в несколько секунд: новое объявление и последний ответ поддержки
+            $u = require_user();
+            $admins = array_values(array_filter(support_thread((int)$u['id']), fn($m) => ($m['from'] ?? '') === 'admin'));
+            $last = $admins ? end($admins) : null;
+            json_out(['ok' => true, 'announcement' => announcement_for($u), 'support' => ['last' => $last ? ['text' => $last['text'], 'at' => (int)$last['at']] : null]]);
         }
         case 'admin.announce.clear': {
             $admin = require_admin();
@@ -893,7 +900,7 @@ function announcement_for(array $u): ?array {
     if (!$a || (int)$a['until'] < now()) return null;
     if ((int)$a['userId'] && (int)$a['userId'] !== (int)$u['id']) return null;
     if ((string)settings_get((int)$u['id'], 'ann_seen', '') === (string)$a['id']) return null;
-    return ['id' => $a['id'], 'text' => $a['text']];
+    return ['id' => $a['id'], 'text' => $a['text'], 'mode' => ($a['mode'] ?? 'top') === 'center' ? 'center' : 'top'];
 }
 
 function timers_list(int $uid): array {

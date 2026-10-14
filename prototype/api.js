@@ -97,6 +97,7 @@
     }
     applyStream(me.stream);
     if (me.announcement) showBanner(me.announcement);
+    if (isPanel() && !window.__streNotify) { window.__streNotify = true; notifyTick(); setInterval(notifyTick, 5000); }
     if (me.support && u) supportBanner(u.login);
     if (u && u.isAdmin && /admin\.html$/.test(location.pathname)) adminPanels();
   }
@@ -142,9 +143,39 @@
 
   function when(ts) { return new Date(ts * 1000).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }); }
 
+  let shownAnn = null; // id объявления, которое уже показано в этой вкладке
   function showBanner(a) {
     styles();
-    if (!a || document.getElementById('stre-ann')) return;
+    if (!a || a.id === shownAnn) return;
+    shownAnn = a.id;
+    document.getElementById('stre-ann') && document.getElementById('stre-ann').remove();
+    document.getElementById('stre-ann-center') && document.getElementById('stre-ann-center').remove();
+    const close = () => StreAPI.post('announce.dismiss', { id: a.id }).catch(() => {});
+    if (a.mode === 'center') { // окно по центру экрана: закрывается только кнопкой или Escape
+      const ov = el('div');
+      ov.id = 'stre-ann-center';
+      ov.setAttribute('role', 'dialog');
+      ov.setAttribute('aria-modal', 'true');
+      ov.setAttribute('aria-label', 'Объявление от StreOps');
+      ov.style.cssText = 'position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box';
+      const dlg = el('div');
+      dlg.style.cssText = 'width:100%;max-width:440px;padding:24px;border-radius:12px;background:#111111;border:1px solid #2A2A2A;color:#F2F2F2;font-family:Onest,system-ui,sans-serif;box-shadow:0 24px 64px rgba(0,0,0,.6)';
+      const h = el('p', null, 'Сообщение от StreOps');
+      h.style.cssText = 'margin:0;font-size:13px;color:#8F8F8F';
+      const t = el('p', null, a.text);
+      t.style.cssText = 'margin:10px 0 0;font-size:17px;line-height:24px;white-space:pre-wrap;word-break:break-word';
+      const ok = el('button', 'stre-btn-p', 'Понятно'); ok.type = 'button';
+      ok.style.cssText = 'margin-top:20px;height:40px;padding:0 18px';
+      const done = () => { ov.remove(); document.removeEventListener('keydown', onKey); close(); };
+      const onKey = (e) => { if (e.key === 'Escape') done(); };
+      ok.onclick = done;
+      document.addEventListener('keydown', onKey);
+      dlg.append(h, t, ok);
+      ov.appendChild(dlg);
+      document.body.appendChild(ov);
+      ok.focus();
+      return;
+    }
     const box = el('div', 'stre-banner');
     box.id = 'stre-ann';
     box.setAttribute('role', 'region');
@@ -154,9 +185,49 @@
     const ok = el('button', 'stre-btn-p', 'Понятно');
     ok.type = 'button';
     ok.style.height = '32px';
-    ok.onclick = () => { box.remove(); StreAPI.post('announce.dismiss', { id: a.id }).catch(() => {}); };
+    ok.onclick = () => { box.remove(); close(); };
     box.append(txt, ok);
     document.body.appendChild(box);
+  }
+
+  // Ответ поддержки: уведомление в углу, пока его не закроют
+  function supportNote(text) {
+    styles();
+    document.getElementById('stre-sup-note') && document.getElementById('stre-sup-note').remove();
+    const box = el('div');
+    box.id = 'stre-sup-note';
+    box.setAttribute('role', 'status');
+    box.style.cssText = 'position:fixed;right:16px;bottom:16px;z-index:10000;width:min(360px,calc(100vw - 32px));padding:16px;border-radius:12px;background:#111111;border:1px solid #3A3A3A;color:#F2F2F2;font-family:Onest,system-ui,sans-serif;box-shadow:0 16px 40px rgba(0,0,0,.5)';
+    const h = el('p', null, 'Поддержка ответила');
+    h.style.cssText = 'margin:0;font-size:13px;font-weight:600';
+    const t = el('p', null, text);
+    t.style.cssText = 'margin:8px 0 0;font-size:14px;line-height:20px;white-space:pre-wrap;word-break:break-word;color:#DCDCDC;max-height:120px;overflow:hidden';
+    const row = el('div');
+    row.style.cssText = 'display:flex;gap:8px;margin-top:12px;justify-content:flex-end';
+    const open = el('a', 'stre-btn-p', 'Открыть переписку');
+    open.href = 'support.html';
+    const x = el('button', 'stre-btn', 'Закрыть'); x.type = 'button';
+    x.onclick = () => box.remove();
+    row.append(x, open);
+    box.append(h, t, row);
+    document.body.appendChild(box);
+  }
+
+  // Опрос новых объявлений и ответов поддержки: без перезагрузки страницы
+  let supKey = null;
+  function notifyTick() {
+    if (document.hidden) return;
+    StreAPI.get('notify.poll').then((r) => {
+      if (r.announcement) showBanner(r.announcement);
+      const last = r.support && r.support.last;
+      if (!last) return;
+      const key = last.at + '|' + last.text;
+      if (supKey === null) { supKey = key; return; } // первый опрос — старые ответы не всплывают
+      if (key !== supKey) {
+        supKey = key;
+        if (!/support\.html$/.test(location.pathname)) supportNote(last.text);
+      }
+    }).catch(() => {});
   }
 
   function supportBanner(login) {
@@ -257,12 +328,17 @@
     lab1.appendChild(ta);
     const row = el('div');
     row.style.cssText = 'display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin:12px 0';
+    const mLab = el('label', 'stre-lbl', 'Как показать');
+    const mode = el('select', 'stre-in');
+    mode.style.width = '220px';
+    [['top', 'Полосой сверху'], ['center', 'Окном по центру экрана']].forEach(([v, t]) => { const o = el('option', null, t); o.value = v; mode.appendChild(o); });
+    mLab.appendChild(mode);
     const hLab = el('label', 'stre-lbl', 'Часов показывать');
     const hours = el('input', 'stre-in'); hours.type = 'number'; hours.min = '1'; hours.max = '720'; hours.value = '24'; hours.style.width = '110px';
     const nLab = el('label', 'stre-lbl', 'Ник (необязательно)');
     const login = el('input', 'stre-in'); login.type = 'text'; login.placeholder = 'всем'; login.style.width = '200px';
     hLab.appendChild(hours); nLab.appendChild(login);
-    row.append(hLab, nLab);
+    row.append(mLab, hLab, nLab);
     const btns = el('div');
     btns.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap';
     const pub = el('button', 'stre-btn-p', 'Опубликовать'); pub.type = 'button';
@@ -275,7 +351,7 @@
     pub.onclick = () => {
       const text = ta.value.trim();
       if (!text) { toast('Напиши текст объявления', 'error'); return; }
-      StreAPI.post('admin.announce.set', { text, hours: Number(hours.value) || 24, login: login.value.trim() })
+      StreAPI.post('admin.announce.set', { text, mode: mode.value, hours: Number(hours.value) || 24, login: login.value.trim() })
         .then(() => { toast('Объявление опубликовано'); ta.value = ''; showNow(); })
         .catch((e) => toast(e.message, 'error'));
     };
