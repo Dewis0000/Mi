@@ -28,6 +28,7 @@ const PAGES = {
   WebAdmin: 'admin.html',
   WebNotFound: '404.html',
   WebLegal: 'legal.html',
+  WebHelp: 'help.html',
   WebTestPay: 'test-pay.html',
   Main: 'design/index.html',
   Color: 'design/color.html',

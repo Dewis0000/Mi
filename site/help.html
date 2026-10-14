@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StreOps — как пользоваться StreOps</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="assets/theme.js?v=460ce522"></script>
+<script src="assets/api.js?v=c464f264"></script>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:var(--n-0)}
+a{color:var(--n-12);text-decoration:none}a:hover{color: var(--accent-on)}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="dc">
+
+<div style="position: relative; min-height: 100vh; display: flex; flex-direction: column; background: var(--page-bg); color: var(--n-12); font-family: var(--font-sans), system-ui, sans-serif; overflow: hidden">
+<svg aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.06; pointer-events: none"><filter id="g4"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#g4)"></rect></svg>
+<div style="min-height: 100vh; background: var(--n-0); color: var(--n-12); font-family: var(--font-sans), system-ui, sans-serif">
+<header style="height: 64px; display: flex; align-items: center; padding: 0 24px; border-bottom: 1px solid var(--n-4)">
+<a href="index.html" style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2" data-stroke="12"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2" data-fill="12"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2" data-fill="12"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F" data-fill="9"></rect></svg>StreOps</a>
+</header>
+<main style="max-width: 760px; margin: 0 auto; padding: 48px 24px 96px; font-size: 16px; line-height: 26px; color: var(--n-11)">
+<h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600; color: var(--n-12)">Как пользоваться StreOps</h1>
+<p style="margin: 12px 0 0; color: var(--n-9)">Коротко о каждом разделе стрим-панели: что он делает и как им пользоваться. Чтобы открыть панель, войди через Twitch.</p>
+<nav aria-label="Разделы" style="margin-top: 24px; display: flex; gap: 14px; flex-wrap: wrap; font-size: 14px"><a href="#overview" style="color: var(--n-10)">Обзор</a><a href="#mod" style="color: var(--n-10)">Модерация</a><a href="#moderators" style="color: var(--n-10)">Мои модераторы</a><a href="#commands" style="color: var(--n-10)">Команды</a><a href="#timers" style="color: var(--n-10)">Таймеры</a><a href="#music" style="color: var(--n-10)">Музыка</a><a href="#manage" style="color: var(--n-10)">Управлять каналом</a><a href="#widgets" style="color: var(--n-10)">Виджеты</a><a href="#giveaways" style="color: var(--n-10)">Розыгрыши</a><a href="#clips" style="color: var(--n-10)">Нарезки</a><a href="#settings" style="color: var(--n-10)">Настройки</a><a href="#support" style="color: var(--n-10)">Поддержка</a></nav>
+
+<section id="overview" style="margin-top: 40px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--n-12)">Обзор</h2>
+<p style="margin: 12px 0 0">Главная страница стрим-панели. Видно, идёт ли эфир, сколько зрителей, последние события (подписки, донаты, фолловы) и подключён ли бот. Отсюда же можно подключить бота к каналу: открой «Обзор» и нажми «Подключить бота».</p>
+</section>
+
+<section id="mod" style="margin-top: 40px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--n-12)">Модерация</h2>
+<p style="margin: 12px 0 0">Автоматическая защита чата: ссылки, капс, повторы, запрещённые слова и токсичность. Для каждого правила можно выбрать действие: удалить сообщение, предупредить, выдать мут или бан. Ступени наказания настраиваются: например, предупреждение, потом мут, потом бан. В журнале видно все действия бота и модераторов, любое можно отменить.</p>
+</section>
+
+<section id="moderators" style="margin-top: 40px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--n-12)">Мои модераторы</h2>
+<p style="margin: 12px 0 0">Список помощников, которые помогают управлять каналом. Помощник входит в StreOps под своим аккаунтом Twitch и может управлять музыкой: включать заказы, пропускать, одобрять и убирать треки. Добавляется по нику Twitch, можно сделать помощником любого модератора из чата. Для каждого видно, сколько действий он сделал и когда.</p>
+</section>
+
+<section id="commands" style="margin-top: 40px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--n-12)">Команды</h2>
+<p style="margin: 12px 0 0">Свои команды для чата: например, !дс отвечает ссылкой на Discord. В ответе можно использовать переменные: {user}, {uptime}, {viewers}. Для каждой команды задают, кто может её вызвать (все, фолловеры, подписчики, модераторы или список ников), и кулдаун, чтобы её не спамили. Здесь же настраивается озвучка !tts: зрители пишут «!tts текст», а текст читается вслух на стриме через OBS.</p>
+</section>
+
+<section id="timers" style="margin-top: 40px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--n-12)">Таймеры</h2>
+<p style="margin: 12px 0 0">Сообщения, которые бот пишет сам через заданный интервал, например раз в 15 минут ссылку на Discord. Можно включать их только во время эфира. Переменные такие же, как в командах.</p>
+</section>
+
+<section id="music" style="margin-top: 40px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--n-12)">Музыка</h2>
+<p style="margin: 12px 0 0">Заказ треков зрителями: по команде или награде канала, по ссылке или названию. Треки играют через плеер YouTube, который добавляется в OBS как «Браузер» с галочкой «Управлять звуком через OBS». Очередь видно и управляется отсюда: можно пропустить трек, одобрить заказ или убрать его. Заказ музыки доступен на тарифе «Про» и выше.</p>
+</section>
+
+<section id="manage" style="margin-top: 40px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--n-12)">Управлять каналом</h2>
+<p style="margin: 12px 0 0">Раздел для помощников. Здесь видны каналы, где тебя добавили помощником. Можно включить или выключить заказы музыки, пропустить трек, одобрить или отклонить заказ, переставить трек и очистить очередь. Настройки канала, баны и команды помощник не меняет.</p>
+</section>
+
+<section id="widgets" style="margin-top: 40px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--n-12)">Виджеты</h2>
+<p style="margin: 12px 0 0">Элементы для OBS: алерты, цели, чат, таймер эфира, счётчик, плеер и другие. Включаются переключателем, настраиваются в редакторе: цвет, размер, анимация, текст. Для каждого виджета есть своя ссылка для OBS: «Источник» → «Браузер», размер 1920 на 1080. Счётчик может считать смерти, сыгранные матчи или статистику CS2 через файл Game State Integration. Ссылки не публикуй: по ним любой может увидеть виджеты.</p>
+</section>
+
+<section id="giveaways" style="margin-top: 40px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--n-12)">Розыгрыши</h2>
+<p style="margin: 12px 0 0">Розыгрыш с ключевым словом: зрители пишут слово в чат, и бот собирает участников. Потом выбирают победителей случайно и честно, с проверкой. Есть рулетка и показ победителя на экране. Ссылка для OBS показывает сбор и результат.</p>
+</section>
+
+<section id="clips" style="margin-top: 40px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--n-12)">Нарезки</h2>
+<p style="margin: 12px 0 0">Поиск самых ярких моментов стрима: всплески чата, донаты, подписки, рейды. Выбираешь моменты, добавляешь плашку с названием и текстом, и нарезка скачивается в браузере. Видео не загружается на сервер. Дату начала стрима можно взять кнопкой «Последний стрим» или ввести вручную.</p>
+</section>
+
+<section id="settings" style="margin-top: 40px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--n-12)">Настройки</h2>
+<p style="margin: 12px 0 0">Профиль и email для чеков; подключения Twitch, DonationAlerts и других сервисов; тариф и оплата, промокод; ссылки для OBS; оформление страниц панели. Удаление аккаунта здесь же, оно необратимо.</p>
+</section>
+
+<section id="support" style="margin-top: 40px">
+<h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; color: var(--n-12)">Поддержка</h2>
+<p style="margin: 12px 0 0">Переписка с командой StreOps. Вопросы по работе сервиса, оплате, ошибкам. Ответ приходит в панель сразу, с уведомлением. Вход нужен, потому что переписка привязана к твоему аккаунту.</p>
+</section>
+</main>
+</div>
+</template>
+<script src="assets/dc-lite.js?v=5f8ce08a"></script>
+<script>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+DCMount(Component);
+</script>
+</body>
+</html>
