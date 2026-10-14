@@ -179,7 +179,8 @@
     styles();
     const ann = document.getElementById('stre-ann-host');
     const sup = document.getElementById('stre-support-host');
-    if (!ann || !sup) { // страница ещё не отрисовала вкладки — попробуем чуть позже
+    const promo = document.getElementById('stre-promo-host');
+    if (!ann || !sup || !promo) { // страница ещё не отрисовала вкладки — попробуем чуть позже
       if ((tries || 0) < 40) setTimeout(() => adminPanels((tries || 0) + 1), 150);
       return;
     }
@@ -187,6 +188,61 @@
     ann.dataset.filled = '1';
     ann.appendChild(announceCard());
     sup.append(enterCard(), inboxCard());
+    promo.appendChild(promoCard());
+  }
+
+  // Промокоды: создать, включить или выключить, удалить
+  function promoCard() {
+    const card = el('section', 'stre-card stre-wide');
+    card.setAttribute('aria-labelledby', 'stre-promo-h');
+    const h = el('h2', 'stre-h', 'Промокоды');
+    h.id = 'stre-promo-h';
+    card.append(h, el('p', 'stre-p', 'Скидка на тариф или бесплатный период. Код привязан к одному тарифу, каждый пользователь применяет его один раз. Бесплатный код (скидка 100%) включает тариф сразу.'));
+    const form = el('form');
+    form.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end;margin-top:12px';
+    const code = el('input', 'stre-in'); code.maxLength = 32; code.placeholder = 'WELCOME'; code.setAttribute('aria-label', 'Код');
+    const plan = el('select', 'stre-in');
+    [['advanced', 'Продвинутая · 299 ₽'], ['pro', 'Про · 499 ₽'], ['max', 'Максимум · 967 ₽']].forEach(([v, t]) => { const o = el('option', null, t); o.value = v; plan.appendChild(o); });
+    const percent = el('input', 'stre-in'); percent.type = 'number'; percent.min = '1'; percent.max = '100'; percent.value = '50'; percent.setAttribute('aria-label', 'Скидка, процентов');
+    const days = el('input', 'stre-in'); days.type = 'number'; days.min = '1'; days.max = '365'; days.value = '30'; days.setAttribute('aria-label', 'Дней');
+    const max = el('input', 'stre-in'); max.type = 'number'; max.min = '0'; max.value = '0'; max.setAttribute('aria-label', 'Лимит использований, 0 — без лимита');
+    const lbl = (text, input) => { const l = el('label', 'stre-lbl', text); l.style.cssText = 'display:flex;flex-direction:column;gap:6px'; l.appendChild(input); return l; };
+    const submit = el('button', 'stre-btn-p', 'Создать код'); submit.type = 'submit';
+    form.append(lbl('Код', code), lbl('Тариф', plan), lbl('Скидка, %', percent), lbl('Дней', days), lbl('Лимит, раз (0 — без лимита)', max), submit);
+    const list = el('div');
+    list.style.cssText = 'display:flex;flex-direction:column;gap:8px;margin-top:16px';
+    const names = { advanced: 'Продвинутая', pro: 'Про', max: 'Максимум' };
+    const load = () => StreAPI.get('promo.list').then((r) => {
+      list.textContent = '';
+      if (!r.items.length) { list.appendChild(el('p', 'stre-p', 'Промокодов пока нет.')); return; }
+      r.items.forEach((c) => {
+        const row = el('div', 'stre-row');
+        const info = el('span');
+        info.style.cssText = 'flex:1;min-width:0;display:block';
+        const title = el('span', null, c.code);
+        title.style.cssText = 'font-family:"JetBrains Mono",monospace';
+        const sub = el('span', 'stre-p', (c.percent >= 100 ? 'бесплатно, ' : 'скидка ' + c.percent + '%, ') + c.days + ' дн. · ' + (names[c.plan] || c.plan) + ' · использовано ' + c.used + (c.maxUses ? ' из ' + c.maxUses : '') + (c.active ? '' : ' · выключен'));
+        sub.style.cssText = 'display:block;margin-top:2px;color:#8F8F8F';
+        info.append(title, sub);
+        const tgl = el('button', 'stre-btn', c.active ? 'Выключить' : 'Включить'); tgl.type = 'button';
+        tgl.onclick = () => StreAPI.post('promo.toggle', { id: c.id }).then(load).catch((e) => toast(e.message, 'error'));
+        const del = el('button', 'stre-btn', 'Удалить'); del.type = 'button';
+        del.style.color = '#FF6369';
+        del.onclick = () => { if (confirm('Удалить код «' + c.code + '»? История его использования тоже удалится.')) StreAPI.post('promo.delete', { id: c.id }).then(() => { toast('Код удалён'); load(); }).catch((e) => toast(e.message, 'error')); };
+        row.append(info, tgl, del);
+        list.appendChild(row);
+      });
+    }).catch((e) => toast(e.message, 'error'));
+    form.onsubmit = (e) => {
+      e.preventDefault();
+      const body = { code: code.value, plan: plan.value, percent: Number(percent.value), days: Number(days.value), maxUses: Number(max.value) };
+      submit.disabled = true;
+      StreAPI.post('promo.save', body).then(() => { toast('Код «' + code.value.trim().toUpperCase() + '» создан'); code.value = ''; load(); })
+        .catch((err) => toast(err.message, 'error')).then(() => { submit.disabled = false; });
+    };
+    card.append(form, list);
+    load();
+    return card;
   }
 
   function announceCard() {
@@ -268,26 +324,42 @@
     const ta = el('textarea', 'stre-ta'); ta.rows = 2; ta.maxLength = 1000; ta.placeholder = 'Ответ пользователю'; ta.setAttribute('aria-label', 'Ответ пользователю');
     const send = el('button', 'stre-btn-p', 'Ответить'); send.type = 'button';
     replyBox.append(ta, send);
+    // Быстрые ответы: нажал — текст попал в поле, можно поправить и отправить
+    const TEMPLATES = ['Заявка закрыта, спасибо за обращение.', 'Заявка принята, ответим здесь же.', 'Нужна дополнительная информация: опиши, что произошло и на какой странице.', 'Проблема решена. Если появится снова, напиши сюда.', 'Тариф и промокоды проверь в разделе «Тариф» в настройках.'];
+    const tplRow = el('div');
+    tplRow.style.cssText = 'margin-top:12px;display:none;flex-wrap:wrap;gap:6px;align-items:center';
+    tplRow.appendChild(el('span', 'stre-p', 'Быстрый ответ:'));
+    TEMPLATES.forEach((t) => {
+      const b = el('button', 'stre-btn', t.length > 34 ? t.slice(0, 32) + '…' : t); b.type = 'button'; b.title = t;
+      b.onclick = () => { ta.value = ta.value ? ta.value + ' ' + t : t; ta.focus(); };
+      tplRow.appendChild(b);
+    });
     let current = 0;
+    let currentLogin = '';
     const renderThread = (items) => {
       thread.textContent = '';
       items.forEach((m) => {
-        const bub = el('div', 'stre-msg ' + (m.from === 'admin' ? 'stre-msg-a' : 'stre-msg-u'), m.text);
-        const meta = el('div', null, (m.from === 'admin' ? 'Ты' : 'Пользователь') + ' · ' + when(m.at));
-        meta.style.cssText = 'font-size:11px;opacity:.7;margin-bottom:2px';
+        const mine = m.from === 'admin';
+        const bub = el('div', null, m.text);
+        bub.style.cssText = 'max-width:80%;padding:10px 12px;border-radius:8px;font-size:14px;line-height:20px;white-space:pre-wrap;word-break:break-word;' + (mine ? 'background:#F2F2F2;color:#0A0A0A;' : 'background:#1F1F1F;border:1px solid #2A2A2A;color:#F2F2F2;');
+        const meta = el('div', null, (mine ? 'Ты (поддержка)' : currentLogin + ' (пользователь)') + ' · ' + when(m.at));
+        meta.style.cssText = 'font-size:11px;color:#8F8F8F;margin-bottom:4px';
         const wrapM = el('div');
-        wrapM.style.cssText = 'display:flex;flex-direction:column;max-width:100%;align-items:' + (m.from === 'admin' ? 'flex-end' : 'flex-start');
+        wrapM.style.cssText = 'display:flex;flex-direction:column;max-width:100%;align-items:' + (mine ? 'flex-end' : 'flex-start');
         wrapM.append(meta, bub);
         thread.appendChild(wrapM);
       });
+      if (!items.length) thread.appendChild(el('p', 'stre-p', 'Сообщений пока нет.'));
       thread.scrollTop = thread.scrollHeight;
     };
     const openThread = (id, login) => {
       current = id;
+      currentLogin = login;
       thread.style.display = 'flex';
+      tplRow.style.display = 'flex';
       replyBox.style.display = 'flex';
       card.querySelector('#stre-thread-h') && card.querySelector('#stre-thread-h').remove();
-      const th = el('h3', 'stre-lbl', 'Переписка с ' + login);
+      const th = el('h3', 'stre-lbl', 'Переписка с ' + login + '. Слева — пользователь, справа — ты');
       th.id = 'stre-thread-h';
       card.insertBefore(th, thread);
       StreAPI.get('admin.support.thread', { id }).then((r) => renderThread(r.items)).catch((e) => toast(e.message, 'error'));
@@ -318,7 +390,7 @@
         .catch((e) => toast(e.message, 'error')).then(() => { send.disabled = false; });
     };
     refresh.onclick = () => { loadInbox(); if (current) openThread(current, (card.querySelector('#stre-thread-h') || { textContent: '' }).textContent.replace('Переписка с ', '')); };
-    card.append(head, list, thread, replyBox);
+    card.append(head, list, thread, tplRow, replyBox);
     loadInbox();
     return card;
   }

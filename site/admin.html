@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script src="assets/theme.js?v=460ce522"></script>
-<script src="assets/api.js?v=4a439ce0"></script>
+<script src="assets/api.js?v=c6ae12b3"></script>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:var(--n-1)}
@@ -363,6 +363,9 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 <section role="tabpanel" id="p-support" aria-labelledby="t-support" hidden="{{ hideSupport }}" style="margin-top: 24px">
 <div data-dc-keep id="stre-support-host" style="display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr))"></div>
 </section>
+<section role="tabpanel" id="p-promo" aria-labelledby="t-promo" hidden="{{ hidePromo }}" style="margin-top: 24px">
+<div data-dc-keep id="stre-promo-host" style="display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr))"></div>
+</section>
 </template>
 </main>
 </div>
@@ -459,7 +462,7 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 // Тарифы — как в server/app/lib/plans.php (цена за 30 дней)
 const ADM_PLANS = [['free', 'Бесплатный', 0], ['advanced', 'Продвинутая', 299], ['pro', 'Про', 499], ['max', 'Максимум', 967]];
 const ADM_DAYS = [[7, '7 дней'], [30, '30 дней'], [90, '90 дней'], [365, 'Год'], [0, 'Бессрочно'], ['custom', 'Своё']];
-const ADM_TABS = [['sum', 'Сводка'], ['bot', 'Бот и EventSub'], ['users', 'Пользователи'], ['tx', 'Операции'], ['ann', 'Объявления'], ['support', 'Поддержка']];
+const ADM_TABS = [['sum', 'Сводка'], ['bot', 'Бот и EventSub'], ['users', 'Пользователи'], ['tx', 'Операции'], ['ann', 'Объявления'], ['support', 'Поддержка'], ['promo', 'Промокоды']];
 const ADM_KIND = { topup: 'Начисление', charge: 'Списание', plan: 'Оплата тарифа', grant: 'Выдача тарифа', ban: 'Блокировка' };
 const ADM_SUB_TYPE = {
   'channel.chat.message': 'Сообщения чата', 'channel.chat.notification': 'Подписки, рейды, гифты', 'stream.online': 'Начало эфира', 'stream.offline': 'Конец эфира',
@@ -834,7 +837,7 @@ class Component extends DCLogic {
         n: t[0] === 'users' ? (st ? StreAPI.fmtNum(st.users) : '') : t[0] === 'bot' ? (nBad ? '! ' + nBad : '') : '',
         pick: () => this.pickTab(t[0]), key: (e) => this.tabKey(e, i),
       })),
-      hideSum: s.tab !== 'sum', hideBot: s.tab !== 'bot', hideUsers: s.tab !== 'users', hideTx: s.tab !== 'tx', hideAnn: s.tab !== 'ann', hideSupport: s.tab !== 'support',
+      hideSum: s.tab !== 'sum', hideBot: s.tab !== 'bot', hideUsers: s.tab !== 'users', hideTx: s.tab !== 'tx', hideAnn: s.tab !== 'ann', hideSupport: s.tab !== 'support', hidePromo: s.tab !== 'promo',
 
       statsErrOn: !!s.statsErr, statsErr: s.statsErr, statsBusy: !st, kpis,
       cronDot: cronBad ? 'background: var(--accent); box-shadow: 0 0 0 4px rgb(var(--accent-rgb) / .25)' : st ? 'background: var(--n-12)' : 'background: var(--n-7)',

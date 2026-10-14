@@ -545,6 +545,14 @@ function api_dispatch(string $r): never {
             db_insert('promo_codes', ['code' => $code, 'plan' => $plan, 'percent' => $percent, 'days' => $days, 'max_uses' => $maxUses, 'used' => 0, 'active' => 1, 'created_at' => now()]);
             json_out(['ok' => true]);
         }
+        case 'promo.delete': { // админ: удалить код вместе с историей его использования
+            require_admin();
+            $p = db_one('SELECT * FROM promo_codes WHERE id = ?', [in_int('id')]);
+            if (!$p) fail('Код не найден', 404);
+            db_exec('DELETE FROM promo_uses WHERE code_id = ?', [$p['id']]);
+            db_exec('DELETE FROM promo_codes WHERE id = ?', [$p['id']]);
+            json_out(['ok' => true]);
+        }
         case 'promo.toggle': { // админ: выключить или включить код
             require_admin();
             $p = db_one('SELECT * FROM promo_codes WHERE id = ?', [in_int('id')]);

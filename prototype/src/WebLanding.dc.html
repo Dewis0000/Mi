@@ -199,9 +199,10 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 
 <footer style="border-top: 1px solid #2A2A2A">
 <div class="wrap foot" style="padding-top: 48px; padding-bottom: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px">
-<div><span style="display: flex; align-items: center; gap: 10px; font-weight: 600"><svg width="20" height="20" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</span><p class="mono" style="margin: 12px 0 0; font-size: 12px; color: #6E6E6E">streops.ru · © 2026</p></div>
+<div><span style="display: flex; align-items: center; gap: 10px; font-weight: 600"><svg width="20" height="20" viewBox="0 0 28 28" aria-hidden="true"><rect x="0.5" y="0.5" width="27" height="27" rx="5.5" fill="none" stroke="#F2F2F2"></rect><rect x="6" y="8" width="16" height="2" fill="#F2F2F2"></rect><rect x="6" y="13" width="10" height="2" fill="#F2F2F2"></rect><rect x="6" y="18" width="13" height="2" fill="#8F8F8F"></rect></svg>StreOps</span><p class="mono" style="margin: 12px 0 0; font-size: 12px; color: #6E6E6E">streops.ru · © 2026</p><p style="margin: 8px 0 0; font-size: 12px; line-height: 18px; color: #6E6E6E">ИП, ИНН 143410969160. Связь только по email.</p></div>
 <nav aria-label="Продукт" style="display: flex; flex-direction: column"><a href="#features">Возможности</a><a href="#pricing">Тарифы</a><a href="{{ panelHref }}">Стрим-панель</a></nav>
-<nav aria-label="Помощь" style="display: flex; flex-direction: column"><a href="#faq">Вопросы</a><a href="https://www.twitch.tv/zaka_00" target="_blank" rel="noopener">Поддержка в Twitch</a></nav>
+<nav aria-label="Поддержка" style="display: flex; flex-direction: column; gap: 4px"><a href="#faq">Вопросы</a><a href="mailto:Streops_official@gmail.com">Написать на Streops_official@gmail.com</a><a href="{{ supportHref }}">Чат поддержки в панели</a></nav>
+<nav aria-label="Документы" style="display: flex; flex-direction: column; gap: 4px"><a href="legal.html#requisites">Реквизиты</a><a href="legal.html#prices">Тарифы и цены</a><a href="legal.html#offer">Публичная оферта</a><a href="legal.html#privacy">Политика конфиденциальности</a></nav>
 </div>
 </footer>
 </div>
@@ -246,6 +247,7 @@ class Component extends DCLogic {
       prev: () => this.setState({ slide: Math.max(0, slide - 1) }),
       next: () => this.setState({ slide: Math.min(max, slide + 1) }),
       panelHref: user ? 'WebDashboard.dc.html' : login,
+      supportHref: user ? 'WebSupport.dc.html' : login,
       plansHref: user ? 'WebSettings.dc.html' : '/auth/login.php?next=' + encodeURIComponent('/settings.html'),
       startLabel: user ? 'Открыть панель' : 'Войти через Twitch',
       heroLabel: user ? 'Открыть панель' : 'Подключить канал',

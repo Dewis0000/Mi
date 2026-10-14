@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script src="assets/theme.js?v=460ce522"></script>
-<script src="assets/api.js?v=4a439ce0"></script>
+<script src="assets/api.js?v=c6ae12b3"></script>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:var(--n-1)}
@@ -215,20 +215,6 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 </li>
 </template>
 </ul>
-<template data-if="isAdmin">
-<div style="margin-top: 16px; padding: 16px 20px; border-radius: 8px; border: 1px dashed var(--n-6)">
-<p style="margin: 0; font-size: 14px; font-weight: 500; color: var(--n-11)">Промокоды · только администратор</p>
-<form style="margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; align-items: end" onSubmit="{{ pcSubmit }}">
-<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--n-10)">Код<input value="{{ pcCode }}" onChange="{{ pcSetCode }}" maxlength="32" placeholder="WELCOME" style="box-sizing: border-box; height: 36px; padding: 0 10px; border-radius: 6px; background: var(--n-1); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px 'JetBrains Mono', monospace"></label>
-<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--n-10)">Тариф<select value="{{ pcPlan }}" onChange="{{ pcSetPlan }}" style="height: 36px; padding: 0 8px; border-radius: 6px; background: var(--n-1); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px var(--font-sans), system-ui, sans-serif"><template data-for="pcPlanOpts" data-as="o"><option value="{{ o.v }}">{{ o.label }}</option></template></select></label>
-<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--n-10)">Скидка, %<input type="number" min="1" max="100" value="{{ pcPercent }}" onChange="{{ pcSetPercent }}" style="box-sizing: border-box; height: 36px; padding: 0 10px; border-radius: 6px; background: var(--n-1); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px 'JetBrains Mono', monospace"></label>
-<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--n-10)">Дней<input type="number" min="1" max="365" value="{{ pcDays }}" onChange="{{ pcSetDays }}" style="box-sizing: border-box; height: 36px; padding: 0 10px; border-radius: 6px; background: var(--n-1); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px 'JetBrains Mono', monospace"></label>
-<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--n-10)">Лимит, раз (0 — без лимита)<input type="number" min="0" value="{{ pcMax }}" onChange="{{ pcSetMax }}" style="box-sizing: border-box; height: 36px; padding: 0 10px; border-radius: 6px; background: var(--n-1); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px 'JetBrains Mono', monospace"></label>
-<button type="submit" disabled="{{ pcBusy }}" style="height: 36px; padding: 0 14px; border-radius: 6px; border: 0; background: var(--n-13); color: var(--n-1); font: 500 14px/20px var(--font-sans), system-ui, sans-serif; cursor: pointer">Создать код</button>
-</form>
-<template data-if="pcHas"><ul style="list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px"><template data-for="pcList" data-as="c"><li style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px"><span><span class="mono" style="color: var(--n-12)">{{ c.code }}</span> <span style="color: var(--n-9)">{{ c.desc }}</span></span><span style="display: flex; gap: 10px; align-items: center"><span class="mono" style="font-size: 13px; color: var(--n-10)">{{ c.stat }}</span><button type="button" onClick="{{ c.toggle }}" style="height: 28px; padding: 0 10px; border-radius: 4px; border: 1px solid var(--n-6); background: transparent; color: var(--n-10); font: 500 13px/18px var(--font-sans), system-ui, sans-serif; cursor: pointer">{{ c.toggleLabel }}</button></span></li></template></ul></template>
-</div>
-</template>
 <h3 style="margin: 28px 0 0; font-size: 15px; font-weight: 600">История операций</h3>
 <ul style="list-style: none; margin: 8px 0 0; padding: 0" aria-busy="{{ txBusy }}">
 <template data-for="tx" data-as="t"><li class="tx"><span style="min-width: 0"><span style="display: block; overflow-wrap: anywhere">{{ t.title }}</span><span class="mono" style="font-size: 12px; line-height: 16px; color: var(--n-9)">{{ t.meta }}</span></span><span class="mono" style="text-align: right; white-space: nowrap; {{ t.color }}">{{ t.amount }}</span></li></template>
@@ -365,7 +351,7 @@ class Component extends DCLogic {
       busy: '', botMsg: null, botFail: '', daMsg: null, showToken: false,
       acctTheme: undefined, ask: null, askErr: '', askBusy: false,
       payBusy: false, payInfo: null,
-      promoIn: '', promo: null, promoBusy: false, pcCode: '', pcPlan: 'advanced', pcPercent: 50, pcDays: 30, pcMax: 0, pcList: [], pcBusy: false,
+      promoIn: '', promo: null, promoBusy: false,
       confirm: false, typed: '', delErr: '', deleting: false, sec: 'profile',
     };
   }
@@ -414,7 +400,6 @@ class Component extends DCLogic {
       const m = await StreAPI.me();
       if (!m || !m.user) return; // api.js отправит на вход через Twitch
       this.setState({ me: m.user, bot: m.bot || null });
-      if (m.user.isAdmin) this.loadPromos();
       if (location.hash && !this.scrolled) {
         this.scrolled = true;
         const el = document.getElementById(location.hash.slice(1));
@@ -472,23 +457,6 @@ class Component extends DCLogic {
     this.setState({ promoBusy: false });
   }
   promoClear() { this.setState({ promo: null }); }
-  async loadPromos() {
-    try { const r = await StreAPI.get('promo.list'); this.setState({ pcList: r.items }); } catch (e) { /* список не обновится */ }
-  }
-  async createPromo() {
-    const s = this.state;
-    this.setState({ pcBusy: true });
-    try {
-      await StreAPI.post('promo.save', { code: s.pcCode, plan: s.pcPlan, percent: s.pcPercent, days: s.pcDays, maxUses: s.pcMax });
-      StreAPI.toast('Код «' + s.pcCode.trim().toUpperCase() + '» создан');
-      this.setState({ pcCode: '' });
-      this.loadPromos();
-    } catch (err) { StreAPI.toast(err.message, 'error'); }
-    this.setState({ pcBusy: false });
-  }
-  async togglePromo(id) {
-    try { await StreAPI.post('promo.toggle', { id: id }); this.loadPromos(); } catch (err) { StreAPI.toast(err.message, 'error'); }
-  }
   // Оплата тарифа: виджет ЮKassa открывается поверх всего экрана
   async startPay(p, code) {
     this.setState({ payBusy: true });
@@ -849,22 +817,6 @@ class Component extends DCLogic {
       promoHas: !!s.promo, promoText: s.promo ? 'Скидка ' + s.promo.percent + '% по коду ' + s.promo.code + ' на «' + (STRE_PLANS.find((x) => x.key === s.promo.plan) || {}).name + '»' : '',
       promoIn: s.promoIn, setPromoIn: (e) => this.setState({ promoIn: e.target.value }), promoSubmit: (e) => this.promoSubmit(e), promoBusy: !!s.promoBusy,
       promoClear: () => this.promoClear(),
-      isAdmin: !!(me && me.isAdmin),
-      pcCode: s.pcCode, pcSetCode: (e) => this.setState({ pcCode: e.target.value }),
-      pcPlan: s.pcPlan, pcSetPlan: (e) => this.setState({ pcPlan: e.target.value }),
-      pcPercent: s.pcPercent, pcSetPercent: (e) => this.setState({ pcPercent: Math.max(1, Math.min(100, Number(e.target.value) || 1)) }),
-      pcDays: s.pcDays, pcSetDays: (e) => this.setState({ pcDays: Math.max(1, Math.min(365, Number(e.target.value) || 1)) }),
-      pcMax: s.pcMax, pcSetMax: (e) => this.setState({ pcMax: Math.max(0, Number(e.target.value) || 0) }),
-      pcSubmit: (e) => { if (e && e.preventDefault) e.preventDefault(); this.createPromo(); }, pcBusy: !!s.pcBusy,
-      pcPlanOpts: STRE_PLANS.filter((x) => x.price > 0).map((x) => ({ v: x.key, label: x.name + ' · ' + streRub(x.price) })),
-      pcHas: s.pcList.length > 0,
-      pcList: s.pcList.map((c) => ({
-        id: c.id, code: c.code,
-        desc: (c.percent >= 100 ? 'бесплатно, ' + c.days + ' дн.' : 'скидка ' + c.percent + '%, ' + c.days + ' дн.') + ' · ' + ((STRE_PLANS.find((x) => x.key === c.plan) || {}).name || c.plan),
-        stat: 'использовано ' + c.used + (c.maxUses ? ' из ' + c.maxUses : ''),
-        toggleLabel: c.active ? 'Выключить' : 'Включить',
-        toggle: () => this.togglePromo(c.id),
-      })),
       plans,
       tx, txEmpty, txEmptyText, txBusy: s.txLoaded ? 'false' : 'true',
 
