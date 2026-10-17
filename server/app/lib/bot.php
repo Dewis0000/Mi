@@ -140,7 +140,8 @@ function bot_handle_message(array $user, array $ev): void {
 
     db_insert('chat_messages', [
         'user_id' => $user['id'], 'msg_id' => $msgId, 'chatter_id' => $chatterId, 'chatter_login' => $login, 'chatter_name' => $name,
-        'text' => mb_substr($text, 0, 500), 'badges' => json_encode(array_column($badges, 'set_id')), 'color' => $ev['color'] ?? '', 'created_at' => now(),
+        'text' => mb_substr($text, 0, 500), 'badges' => json_encode(array_map(fn($b) => ($b['set_id'] ?? '') . '/' . ($b['id'] ?? ''), $badges)),
+        'frags' => json_encode(chat_frags($ev['message']['fragments'] ?? []), JSON_UNESCAPED_UNICODE), 'color' => $ev['color'] ?? '', 'created_at' => now(),
     ]);
     if ($b && $chatterId === (string)$b['id']) return; // свои сообщения не обрабатываем
 

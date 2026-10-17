@@ -35,7 +35,7 @@ function stream_row(int $uid): array {
 
 function msg_row(array $m): array {
     return ['id' => (int)$m['id'], 'msgId' => $m['msg_id'], 'chatterId' => $m['chatter_id'], 'login' => $m['chatter_login'], 'name' => $m['chatter_name'],
-        'text' => $m['text'], 'badges' => json_decode((string)$m['badges'], true) ?: [], 'color' => $m['color'], 'deleted' => (bool)$m['deleted'], 'at' => (int)$m['created_at']];
+        'text' => $m['text'], 'badges' => json_decode((string)$m['badges'], true) ?: [], 'frags' => json_decode((string)($m['frags'] ?? ''), true) ?: null, 'color' => $m['color'], 'deleted' => (bool)$m['deleted'], 'at' => (int)$m['created_at']];
 }
 
 function event_row(array $e): array {
@@ -1024,6 +1024,7 @@ function widget_payload(array $u, string $w, int $after): array {
         case 'chat':
             $rows = db_all('SELECT * FROM chat_messages WHERE user_id = ? AND deleted = 0 AND id > ? ORDER BY id DESC LIMIT 30', [$uid, $after]);
             $data['items'] = array_map('msg_row', array_reverse($rows));
+            $data['badgeMap'] = badge_map((string)$u['twitch_id']);
             $data['deleted'] = array_column(db_all('SELECT msg_id FROM chat_messages WHERE user_id = ? AND deleted = 1 AND created_at > ?', [$uid, now() - 600]), 'msg_id');
             break;
         case 'events':

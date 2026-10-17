@@ -212,6 +212,7 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 <template data-if="guidesOn"><div aria-hidden="true" style="position: absolute; left: 96px; top: 54px; right: 96px; bottom: 54px; border: 2px dashed rgb(255 255 255 / .18); border-radius: 8px"></div><div aria-hidden="true" style="position: absolute; left: 50%; top: 0; bottom: 0; border-left: 2px dashed rgb(255 255 255 / .10)"></div><div aria-hidden="true" style="position: absolute; top: 50%; left: 0; right: 0; border-top: 2px dashed rgb(255 255 255 / .10)"></div></template>
 
 <div style="{{ wrapStyle }}">
+<div role="slider" aria-label="Размер виджета: потяни красный квадрат" aria-valuemin="160" aria-valuemax="1920" aria-valuenow="{{ c.width }}" onPointerDown="{{ resizeDown }}" title="Потяни, чтобы изменить размер" style="position: absolute; right: -10px; bottom: -10px; width: 20px; height: 20px; box-sizing: border-box; border: 2px solid var(--n-12); border-radius: 4px; background: var(--accent); cursor: nwse-resize; touch-action: none; z-index: 5"></div>
 <div class="wbox" style="{{ boxStyle }}">
 
 <template data-if="k_alerts"><div style="display: flex; gap: .9em; align-items: center; justify-content: {{ pv.justify }}"><template data-if="c.image"><span style="flex: none; width: 3.4em; height: 3.4em; border-radius: calc(var(--w-rad) * .6); background: radial-gradient(circle at 35% 30%, var(--w-acc), var(--w-acc-soft))"></span></template><div><div class="wov">{{ pv.typeLabel }}</div><div style="font-size: 1.8em; font-weight: 700; line-height: 1.15; color: var(--w-acc)">{{ pv.alertName }}</div><div class="w2">{{ pv.msg }}</div></div></div></template>
@@ -303,6 +304,23 @@ class Component extends DCLogic {
   }
   clone(x) { return JSON.parse(JSON.stringify(x)); }
   // Правка настроек виджета: сразу в превью, на сервер — через 600 мс тишины
+  // Красный квадрат на превью: тянем вправо-вниз, меняется ширина виджета (в пикселях сцены 1920×1080)
+  startResize(e) {
+    if (e.button !== undefined && e.button !== 0) return;
+    e.preventDefault(); e.stopPropagation();
+    const W = window.StreWidgets;
+    const id = this.state.id;
+    const k = this.state.k || 1;
+    const x0 = e.clientX;
+    const w0 = W.cfg(id, this.state.all).width || 360;
+    const move = (ev) => {
+      const w = Math.round(Math.max(160, Math.min(1920, w0 + (ev.clientX - x0) / k)));
+      this.edit([id], (all) => { const c = W.cfg(id, all); c.width = w; all.cfg[id] = c; }, true);
+    };
+    const up = () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  }
   edit(ids, fn, now) {
     const all = this.clone(this.state.all);
     fn(all);
@@ -668,7 +686,7 @@ class Component extends DCLogic {
       stageBg: stagesDef[s.stage][1], isGame: s.stage === 0,
       guides: s.guides ? 'true' : 'false', guidesOn: s.guides, toggleGuides: () => this.setState({ guides: !s.guides }),
       replay: () => this.setState({ animKey: 1 - s.animKey }),
-      k: s.k.toFixed(4), wrapStyle, boxStyle, c: ct, pv,
+      k: s.k.toFixed(4), wrapStyle, boxStyle, c: ct, pv, resizeDown: (e) => this.startResize(e),
     });
   }
 }

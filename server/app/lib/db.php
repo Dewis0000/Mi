@@ -50,7 +50,7 @@ function db_update(string $table, array $row, string $where, array $args): int {
     return db_exec('UPDATE ' . $table . ' SET ' . $set . ' WHERE ' . $where, array_merge(array_values($row), $args));
 }
 
-const DB_VERSION = 4;
+const DB_VERSION = 5;
 
 function db_migrate(PDO $pdo, string $driver): void {
     $sqlite = $driver === 'sqlite';
@@ -76,7 +76,7 @@ function db_migrate(PDO $pdo, string $driver): void {
           use_count INT NOT NULL DEFAULT 0, last_used INT NOT NULL DEFAULT 0, description $text, created_at INT NOT NULL DEFAULT 0)",
         "cooldowns (k {$vc(190)} PRIMARY KEY, last INT NOT NULL DEFAULT 0)",
         "chat_messages (id $id, user_id INT NOT NULL, msg_id {$vc(64)}, chatter_id {$vc(32)}, chatter_login {$vc(64)}, chatter_name {$vc(64)},
-          text $text, badges $text, color {$vc(16)}, deleted INT NOT NULL DEFAULT 0, created_at INT NOT NULL DEFAULT 0)",
+          text $text, badges $text, frags $text, color {$vc(16)}, deleted INT NOT NULL DEFAULT 0, created_at INT NOT NULL DEFAULT 0)",
         "mod_actions (id $id, user_id INT NOT NULL, chatter_id {$vc(32)}, chatter_login {$vc(64)}, action {$vc(16)}, reason $text, duration INT NOT NULL DEFAULT 0,
           by_login {$vc(64)}, message $text, strikes {$vc(16)}, undone INT NOT NULL DEFAULT 0, created_at INT NOT NULL DEFAULT 0)",
         "strikes (user_id INT NOT NULL, chatter_id {$vc(32)} NOT NULL, cnt INT NOT NULL DEFAULT 0, last_at INT NOT NULL DEFAULT 0, PRIMARY KEY (user_id, chatter_id))",
@@ -120,6 +120,7 @@ function db_migrate(PDO $pdo, string $driver): void {
     }
     try { $pdo->exec("ALTER TABLE payments ADD COLUMN plan {$vc(16)} NOT NULL DEFAULT ''"); } catch (Throwable $e) { /* колонка уже есть */ }
     try { $pdo->exec('ALTER TABLE payments ADD COLUMN promo_id INT NOT NULL DEFAULT 0'); } catch (Throwable $e) { /* колонка уже есть */ }
+    try { $pdo->exec("ALTER TABLE chat_messages ADD COLUMN frags {$text}"); } catch (Throwable $e) { /* колонка уже есть */ }
     $pdo->prepare('DELETE FROM kv WHERE k = ?')->execute(['db_version']);
     $pdo->prepare('INSERT INTO kv (k, v, expires) VALUES (?, ?, 0)')->execute(['db_version', json_encode(DB_VERSION)]);
 }

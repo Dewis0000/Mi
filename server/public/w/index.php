@@ -10,7 +10,9 @@ $w = preg_replace('/[^a-z0-9]/', '', (string)($_GET['w'] ?? ''));
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
 <style>
-html,body{margin:0;background:transparent;overflow:hidden;width:1920px;height:1080px}
+html,body{margin:0;background:transparent;overflow:hidden;width:100vw;height:100vh}
+/* сцена 1920×1080 вписывается в любой размер источника OBS: не нужно выставлять разрешение */
+#w{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform:translate(-50%,-50%) scale(var(--s,1));transform-origin:50% 50%}
 .wbox{box-sizing:border-box;padding:var(--w-pad);background:var(--w-bg);backdrop-filter:blur(var(--w-blur));-webkit-backdrop-filter:blur(var(--w-blur));border:var(--w-bd);border-radius:var(--w-rad);box-shadow:var(--w-shadow);color:var(--w-fg);font-family:var(--w-font);font-size:var(--w-size);font-weight:var(--w-weight);text-align:var(--w-align);letter-spacing:var(--w-ls);text-shadow:var(--w-tshadow);text-transform:var(--w-upper);line-height:1.35;overflow:hidden}
 .w2{color:var(--w-fg2)}.wacc{color:var(--w-acc)}
 .wov{font-size:.7em;letter-spacing:.08em;text-transform:uppercase;color:var(--w-fg2);font-weight:600}
@@ -29,6 +31,7 @@ html,body{margin:0;background:transparent;overflow:hidden;width:1920px;height:10
 </head>
 <body>
 <div id="w"></div>
+<script>(function(){function fit(){var s=Math.min(innerWidth/1920,innerHeight/1080);document.documentElement.style.setProperty("--s",s)}addEventListener("resize",fit);fit();})();</script>
 <script src="/assets/widgets-lib.js?v=<?= @filemtime(__DIR__ . "/../assets/widgets-lib.js") ?: 1 ?>"></script>
 <script src="/assets/widget-render.js?v=<?= @filemtime(__DIR__ . "/../assets/widget-render.js") ?: 1 ?>"></script>
 </body>

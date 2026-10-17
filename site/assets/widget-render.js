@@ -76,12 +76,24 @@
           !(ct.hideBots && (/bot$/i.test(m.login) || W.BOTS.indexOf(String(m.login).toLowerCase()) >= 0)) &&
           (!life || nowMs - m.at * 1000 < life)).slice(-max);
         if (!rows.length) return place(c, '', false);
+        const bmap = d.badgeMap || {};
+        // значки: картинка Twitch, если есть; иначе короткая метка по роли
+        const badgesOf = (list) => (list || []).map((b) => {
+          const [set, ver] = String(b).split('/');
+          const url = bmap[set] && bmap[set][ver];
+          if (url) return '<img alt="" src="' + esc(url) + '" style="width:1.15em;height:1.15em;vertical-align:-.2em;margin-right:.25em">';
+          const label = set === 'broadcaster' ? '★' : set === 'moderator' ? 'M' : set === 'vip' ? 'VIP' : (set === 'subscriber' || set === 'founder') ? 'S' : '';
+          return label ? '<span class="w2" style="display:inline-block;padding:0 .3em;margin-right:.3em;border:1px solid var(--w-fg2);border-radius:.25em;font-size:.7em;vertical-align:.15em">' + label + '</span>' : '';
+        }).join('');
+        // текст: эмодзи Twitch картинками, остальное экранируем
+        const bodyOf = (m) => (m.frags && m.frags.length)
+          ? m.frags.map((f) => f.e ? '<img alt="' + esc(f.x) + '" src="https://static-cdn.jtvnw.net/emoticons/v2/' + encodeURIComponent(f.e) + '/default/dark/2.0" style="height:1.4em;vertical-align:-.35em">' : esc(f.x)).join('')
+          : esc(m.text);
         return place(c, '<div style="display:flex;flex-direction:column;gap:.35em">' + rows.map((m) => {
           const b = m.badges || [];
-          const badge = ct.badges ? (b.indexOf('broadcaster') >= 0 ? '★' : b.indexOf('moderator') >= 0 ? 'M' : b.indexOf('vip') >= 0 ? 'VIP' : (b.indexOf('subscriber') >= 0 || b.indexOf('founder') >= 0 ? 'S' : '')) : '';
           const nick = ct.nick === 'accent' ? 'var(--w-acc)' : ct.nick === 'platform' ? (/^#[0-9a-f]{6}$/i.test(m.color || '') ? m.color : 'var(--w-acc)') : 'var(--w-fg)';
-          return '<div>' + (badge ? '<span class="w2" style="display:inline-block;padding:0 .3em;margin-right:.35em;border:1px solid var(--w-fg2);border-radius:.25em;font-size:.7em;vertical-align:.15em">' + badge + '</span>' : '') +
-            '<b style="color:' + nick + '">' + esc(m.name || m.login) + '</b> ' + esc(m.text) + '</div>';
+          return '<div style="overflow-wrap:anywhere">' + (ct.badges ? badgesOf(b) : '') +
+            '<b style="color:' + nick + '">' + esc(m.name || m.login) + '</b> ' + bodyOf(m) + '</div>';
         }).join('') + '</div>', true);
       }
       case 'events': {
