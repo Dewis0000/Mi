@@ -86,9 +86,14 @@
           return label ? '<span class="w2" style="display:inline-block;padding:0 .3em;margin-right:.3em;border:1px solid var(--w-fg2);border-radius:.25em;font-size:.7em;vertical-align:.15em">' + label + '</span>' : '';
         }).join('');
         // текст: эмодзи Twitch картинками, остальное экранируем
+        // 7TV: слово, которое совпало с названием эмодзи, заменяем картинкой
+        const stv = d.sevenTv || {};
+        const words = (str) => String(str == null ? '' : str).split(/(\s+)/).map((w) => stv[w]
+          ? '<img alt="' + esc(w) + '" src="https://cdn.7tv.app/emote/' + encodeURIComponent(stv[w]) + '/2x.webp" style="height:1.5em;vertical-align:-.35em">'
+          : esc(w)).join('');
         const bodyOf = (m) => (m.frags && m.frags.length)
-          ? m.frags.map((f) => f.e ? '<img alt="' + esc(f.x) + '" src="https://static-cdn.jtvnw.net/emoticons/v2/' + encodeURIComponent(f.e) + '/default/dark/2.0" style="height:1.4em;vertical-align:-.35em">' : esc(f.x)).join('')
-          : esc(m.text);
+          ? m.frags.map((f) => f.e ? '<img alt="' + esc(f.x) + '" src="https://static-cdn.jtvnw.net/emoticons/v2/' + encodeURIComponent(f.e) + '/default/dark/2.0" style="height:1.4em;vertical-align:-.35em">' : words(f.x)).join('')
+          : words(m.text);
         return place(c, '<div style="display:flex;flex-direction:column;gap:.35em">' + rows.map((m) => {
           const b = m.badges || [];
           const nick = ct.nick === 'accent' ? 'var(--w-acc)' : ct.nick === 'platform' ? (/^#[0-9a-f]{6}$/i.test(m.color || '') ? m.color : 'var(--w-acc)') : 'var(--w-fg)';

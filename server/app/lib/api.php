@@ -1025,6 +1025,7 @@ function widget_payload(array $u, string $w, int $after): array {
             $rows = db_all('SELECT * FROM chat_messages WHERE user_id = ? AND deleted = 0 AND id > ? ORDER BY id DESC LIMIT 30', [$uid, $after]);
             $data['items'] = array_map('msg_row', array_reverse($rows));
             $data['badgeMap'] = badge_map((string)$u['twitch_id']);
+            $data['sevenTv'] = seventv_map((string)$u['twitch_id']);
             $data['deleted'] = array_column(db_all('SELECT msg_id FROM chat_messages WHERE user_id = ? AND deleted = 1 AND created_at > ?', [$uid, now() - 600]), 'msg_id');
             break;
         case 'events':
