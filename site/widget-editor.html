@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script src="assets/theme.js?v=460ce522"></script>
 <script src="assets/api.js?v=c464f264"></script>
-<script src="assets/widgets-lib.js?v=db8c9980"></script>
+<script src="assets/widgets-lib.js?v=eac3c2aa"></script>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:var(--n-1)}
@@ -212,7 +212,7 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 <template data-if="guidesOn"><div aria-hidden="true" style="position: absolute; left: 96px; top: 54px; right: 96px; bottom: 54px; border: 2px dashed rgb(255 255 255 / .18); border-radius: 8px"></div><div aria-hidden="true" style="position: absolute; left: 50%; top: 0; bottom: 0; border-left: 2px dashed rgb(255 255 255 / .10)"></div><div aria-hidden="true" style="position: absolute; top: 50%; left: 0; right: 0; border-top: 2px dashed rgb(255 255 255 / .10)"></div></template>
 
 <div style="{{ wrapStyle }}">
-<div role="slider" aria-label="Размер виджета: потяни красный квадрат" aria-valuemin="160" aria-valuemax="1920" aria-valuenow="{{ c.width }}" onPointerDown="{{ resizeDown }}" title="Потяни, чтобы изменить размер" style="position: absolute; right: -10px; bottom: -10px; width: 20px; height: 20px; box-sizing: border-box; border: 2px solid var(--n-12); border-radius: 4px; background: var(--accent); cursor: nwse-resize; touch-action: none; z-index: 5"></div>
+<div role="slider" aria-label="Размер виджета: потяни красный квадрат — меняются ширина и высота" aria-valuemin="160" aria-valuemax="1920" aria-valuenow="{{ c.width }}" onPointerDown="{{ resizeDown }}" title="Потяни, чтобы изменить размер" style="position: absolute; right: -10px; bottom: -10px; width: 20px; height: 20px; box-sizing: border-box; border: 2px solid var(--n-12); border-radius: 4px; background: var(--accent); cursor: nwse-resize; touch-action: none; z-index: 5"></div>
 <div class="wbox" style="{{ boxStyle }}">
 
 <template data-if="k_alerts"><div style="display: flex; gap: .9em; align-items: center; justify-content: {{ pv.justify }}"><template data-if="c.image"><span style="flex: none; width: 3.4em; height: 3.4em; border-radius: calc(var(--w-rad) * .6); background: radial-gradient(circle at 35% 30%, var(--w-acc), var(--w-acc-soft))"></span></template><div><div class="wov">{{ pv.typeLabel }}</div><div style="font-size: 1.8em; font-weight: 700; line-height: 1.15; color: var(--w-acc)">{{ pv.alertName }}</div><div class="w2">{{ pv.msg }}</div></div></div></template>
@@ -304,7 +304,7 @@ class Component extends DCLogic {
   }
   clone(x) { return JSON.parse(JSON.stringify(x)); }
   // Правка настроек виджета: сразу в превью, на сервер — через 600 мс тишины
-  // Красный квадрат на превью: тянем вправо-вниз, меняется ширина виджета (в пикселях сцены 1920×1080)
+  // Красный квадрат на превью: тянем вправо-вниз — меняются ширина и высота виджета (в пикселях сцены 1920×1080)
   startResize(e) {
     if (e.button !== undefined && e.button !== 0) return;
     e.preventDefault(); e.stopPropagation();
@@ -312,10 +312,15 @@ class Component extends DCLogic {
     const id = this.state.id;
     const k = this.state.k || 1;
     const x0 = e.clientX;
-    const w0 = W.cfg(id, this.state.all).width || 360;
+    const cur = W.cfg(id, this.state.all);
+    const w0 = cur.width || 360;
+    const y0 = e.clientY;
+    const boxEl = document.querySelector('.wbox');
+    const h0 = cur.height > 0 ? cur.height : (boxEl ? boxEl.getBoundingClientRect().height / k : 120);
     const move = (ev) => {
       const w = Math.round(Math.max(160, Math.min(1920, w0 + (ev.clientX - x0) / k)));
-      this.edit([id], (all) => { const c = W.cfg(id, all); c.width = w; all.cfg[id] = c; }, true);
+      const h = Math.round(Math.max(40, Math.min(1080, h0 + (ev.clientY - y0) / k)));
+      this.edit([id], (all) => { const c = W.cfg(id, all); c.width = w; c.height = h; all.cfg[id] = c; }, true);
     };
     const up = () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
     window.addEventListener('pointermove', move);
@@ -413,7 +418,7 @@ class Component extends DCLogic {
         head('Фон'), color('Цвет фона', 'bg'), range('Непрозрачность фона', 'bgA', 0, 100, 1, '%'), range('Эффект стекла (размытие)', 'blur', 0, 40, 1, ' px'),
         head('Рамка и форма'), range('Толщина рамки', 'bw', 0, 6, 1, ' px'), color('Цвет рамки', 'bc'), range('Непрозрачность рамки', 'bcA', 0, 100, 1, '%'), range('Скругление', 'radius', 0, 40, 1, ' px'),
         head('Глубина'), range('Тень', 'shadow', 0, 100, 1, '%'), range('Свечение', 'glow', 0, 60, 1, ' px'), color('Цвет свечения', 'glowC'),
-        head('Размер'), range('Ширина', 'width', 160, 1920, 10, ' px'), range('Масштаб', 'scale', 40, 250, 5, '%'), range('Внутренний отступ', 'pad', 0, 48, 1, ' px'),
+        head('Размер'), range('Высота (0 — по содержимому)', 'height', 0, 1080, 10, ' px'), range('Ширина', 'width', 160, 1920, 10, ' px'), range('Масштаб', 'scale', 40, 250, 5, '%'), range('Внутренний отступ', 'pad', 0, 48, 1, ' px'),
       ];
     } else if (tab === 'text') {
       controls = [
@@ -519,7 +524,7 @@ class Component extends DCLogic {
     const origin = (v === 't' ? 'top' : v === 'b' ? 'bottom' : 'center') + ' ' + (h === 'l' ? 'left' : h === 'r' ? 'right' : 'center');
     const wrapStyle = 'position: absolute; ' + pos.join('; ') + '; transform: ' + tr + 'scale(' + c.scale / 100 + '); transform-origin: ' + origin;
     const anim = c.anim === 'none' ? 'none' : 'wa-' + c.anim + '-' + s.animKey + ' ' + c.dur + 'ms cubic-bezier(.16,1,.3,1) both';
-    const boxStyle = W.vars(c) + '; width: ' + c.width + 'px; animation: ' + anim;
+    const boxStyle = W.vars(c) + '; width: ' + c.width + 'px; ' + (c.height > 0 ? 'height: ' + c.height + 'px; ' : '') + 'animation: ' + anim;
 
     // --- превью: пример данных (цели и счётчик — настоящие, если сервер их отдал) ---
     const ct = c.content;

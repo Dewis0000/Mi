@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script src="assets/theme.js?v=460ce522"></script>
 <script src="assets/api.js?v=c464f264"></script>
-<script src="assets/widgets-lib.js?v=db8c9980"></script>
+<script src="assets/widgets-lib.js?v=eac3c2aa"></script>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:var(--n-1)}
@@ -116,13 +116,6 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 
 <template data-if="emptyShown"><p style="margin: 0; padding: 32px 16px; text-align: center; border: 1px dashed var(--n-6); border-radius: 8px; font-size: 14px; color: var(--n-10)">Включённых виджетов в этой категории нет. Сними фильтр «Только включённые», чтобы увидеть все.</p></template>
 
-<section aria-labelledby="plan-t" style="margin-top: 20px">
-<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap"><h2 id="plan-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">План экрана</h2><span style="font-size: 13px; color: var(--n-9)">Включённые виджеты стоят на своих местах. Нажми иконку, чтобы настроить</span></div>
-<div role="group" aria-label="План экрана" style="position: relative; margin-top: 12px; width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; border: 1px solid var(--n-6); background: repeating-conic-gradient(var(--n-4) 0 25%, var(--s-3) 0 50%) 0 0 / 16px 16px; overflow: hidden">
-<template data-for="planTiles" data-as="t"><button type="button" aria-label="{{ t.label }}" onClick="{{ t.open }}" style="position: absolute; left: {{ t.left }}; top: {{ t.top }}; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 6px; width: 92px; padding: 8px 6px; border-radius: 10px; border: 1px solid var(--n-8); background: rgb(var(--n-2-rgb) / 0.9); color: var(--n-12); font: 500 12px/16px var(--font-sans), system-ui, sans-serif; cursor: pointer"><span aria-hidden="true" style="width: 34px; height: 34px; border-radius: 8px; background: var(--n-12); color: var(--n-1); display: inline-flex; align-items: center; justify-content: center; font-weight: 700">{{ t.mark }}</span>{{ t.name }}</button></template>
-</div>
-<template data-if="planEmpty"><p style="margin: 10px 0 0; font-size: 13px; color: var(--n-9)">Пока ничего не включено. Включи виджет переключателем ниже, и он появится здесь.</p></template>
-</section>
 <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 16px">
 <template data-for="shown" data-as="w">
 <li class="wc" style="{{ w.cardStyle }}">
@@ -301,15 +294,6 @@ class Component extends DCLogic {
     const limit = s.limit;
     const full = s.loaded && active >= limit;
     const u = s.me.user || {};
-    // План экрана: включённые виджеты на своих местах (позиция из настроек, привязка — якорь виджета)
-    const planTiles = W.LIST.filter((w) => s.data.on[w[0]]).map((w) => {
-      const c = W.cfg(w[0], s.data);
-      const a = String(c.anchor || 'tl');
-      const x = Number(c.x) || 0, y = Number(c.y) || 0;
-      const left = a.indexOf('l') >= 0 ? x / 19.2 : a.indexOf('r') >= 0 ? 100 - x / 19.2 : 50 + x / 19.2;
-      const top = a.indexOf('t') >= 0 ? y / 10.8 : a.indexOf('b') >= 0 ? 100 - y / 10.8 : 50 + y / 10.8;
-      return { label: w[1], name: w[1], mark: String(w[1]).charAt(0).toUpperCase(), left: Math.max(0, Math.min(100, left)).toFixed(2) + '%', top: Math.max(0, Math.min(100, top)).toFixed(2) + '%', open: () => { location.href = 'widget-editor.html?w=' + encodeURIComponent(w[0]); } };
-    });
     const all = W.LIST.map((w) => {
       const id = w[0];
       const isOn = !!on[id];
@@ -339,7 +323,6 @@ class Component extends DCLogic {
     let shown = s.cat === 'Все' ? all : all.filter((w) => w.cat === s.cat);
     if (s.onlyOn) shown = shown.filter((w) => w.isOn);
     return {
-      planTiles, planEmpty: planTiles.length === 0,
       active: s.loaded ? active : '—', limit: limit || 0,
       planLabel: u.planName ? 'Включено на тарифе «' + u.planName + '»' : 'Включено',
       countLabel: s.loaded ? active + ' из ' + limit : '— из —',

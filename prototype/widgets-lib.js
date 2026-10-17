@@ -36,7 +36,7 @@
     bg: '#0A0A0A', bgA: 72, blur: 14,
     bw: 1, bc: '#FFFFFF', bcA: 16, radius: 10,
     shadow: 30, glow: 0, glowC: '#D92D20',
-    pad: 16, width: 380, scale: 100,
+    pad: 16, width: 380, height: 0, scale: 100,
     font: 'Onest', fg: '#F2F2F2', fg2: '#B4B4B4', acc: '#F2F2F2',
     size: 16, weight: 500, align: 'left', tshadow: false, upper: false, ls: 0,
     anim: 'up', dur: 450, hold: 8, sound: true, vol: 60, hideIdle: false,

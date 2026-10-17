@@ -38,7 +38,7 @@
     const anim = c.anim === 'none' ? 'none' : 'wa-' + c.anim + '-' + animKey + ' ' + c.dur + 'ms cubic-bezier(.16,1,.3,1) both';
     W.useFont(c.font);
     const wrap = 'position:fixed;' + pos.join(';') + ';transform:' + tr + 'scale(' + c.scale / 100 + ');transform-origin:' + origin;
-    const box = W.vars(c) + ';width:' + c.width + 'px;animation:' + anim;
+    const box = W.vars(c) + ';width:' + c.width + 'px;' + (c.height > 0 ? 'height:' + c.height + 'px;' : '') + 'animation:' + anim;
     const key = wrap + '|' + box;
     const inner = root.querySelector('.wbox');
     if (inner && root.dataset.key === key) { if (inner.innerHTML !== html) inner.innerHTML = html; return; }
