@@ -36,6 +36,7 @@ require APP_DIR . '/lib/chat_assets.php';
 require APP_DIR . '/lib/promo.php';
 require APP_DIR . '/lib/yookassa.php';
 require APP_DIR . '/lib/jobs.php';
+require APP_DIR . '/lib/site.php';
 
 function base_url(): string {
     return rtrim(cfg('APP_URL', 'https://streops.ru'), '/');

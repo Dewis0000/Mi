@@ -39,12 +39,9 @@ const PAGES = {
   Custom: 'design/customization.html',
   Code: 'design/code.html',
   Nav: 'design/navigation.html',
-  PreviewPlan: 'preview/plan.html',
-  PreviewShell: 'preview/shell.html',
-  PreviewCommunity: 'preview/community.html',
-  PreviewViewer: 'preview/viewer.html',
-  PreviewSubmit: 'preview/submit.html',
-  PreviewProfile: 'preview/profile.html',
+  WebChoose: 'choose.html',
+  WebViewer: 'viewer.html',
+  WebSite: 'site.html',
 };
 
 // ---- Перевод цветов артбордов на переменные темы (см. theme.js) ----

@@ -50,7 +50,7 @@ function db_update(string $table, array $row, string $where, array $args): int {
     return db_exec('UPDATE ' . $table . ' SET ' . $set . ' WHERE ' . $where, array_merge(array_values($row), $args));
 }
 
-const DB_VERSION = 5;
+const DB_VERSION = 6;
 
 function db_migrate(PDO $pdo, string $driver): void {
     $sqlite = $driver === 'sqlite';
@@ -103,6 +103,9 @@ function db_migrate(PDO $pdo, string $driver): void {
         "eventsub_seen (msg_id {$vc(80)} PRIMARY KEY, created_at INT NOT NULL DEFAULT 0)",
         "follow_cache (user_id INT NOT NULL, chatter_id {$vc(32)} NOT NULL, since INT NOT NULL DEFAULT 0, checked_at INT NOT NULL DEFAULT 0, PRIMARY KEY (user_id, chatter_id))",
         "gsi (user_id INT NOT NULL, game {$vc(16)} NOT NULL, data $text, updated_at INT NOT NULL DEFAULT 0, PRIMARY KEY (user_id, game))",
+        "site_videos (id $id, streamer_id INT NOT NULL, user_id INT NOT NULL, url $text NOT NULL, title {$vc(200)} NOT NULL DEFAULT '', section {$vc(16)} NOT NULL DEFAULT 'offstream', status {$vc(16)} NOT NULL DEFAULT 'pending', created_at INT NOT NULL DEFAULT 0, reviewed_at INT NOT NULL DEFAULT 0)",
+        "site_chat (id $id, streamer_id INT NOT NULL, user_id INT NOT NULL, login {$vc(64)} NOT NULL, name {$vc(64)} NOT NULL DEFAULT '', text {$vc(300)} NOT NULL, created_at INT NOT NULL DEFAULT 0)",
+        "site_badges (streamer_id INT NOT NULL, user_id INT NOT NULL, label {$vc(40)} NOT NULL, icon {$vc(4)} NOT NULL DEFAULT '', PRIMARY KEY (streamer_id, user_id))",
     ];
     foreach ($tables as $t) $pdo->exec('CREATE TABLE IF NOT EXISTS ' . $t . $tail);
 
@@ -114,6 +117,8 @@ function db_migrate(PDO $pdo, string $driver): void {
         'idx_events_user ON events (user_id, id)',
         'idx_don_user ON donations (user_id, id)',
         'idx_gw_user ON giveaways (user_id, id)',
+        'idx_site_vid ON site_videos (streamer_id, status, id)',
+        'idx_site_chat ON site_chat (streamer_id, id)',
     ];
     foreach ($idx as $i) {
         try { $pdo->exec('CREATE INDEX ' . ($sqlite ? 'IF NOT EXISTS ' : '') . $i); } catch (Throwable $e) { /* индекс уже есть */ }

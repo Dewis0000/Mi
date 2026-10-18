@@ -228,7 +228,7 @@ class Component extends DCLogic {
     const max = Math.max(0, streams.length - 3);
     const slide = Math.min(this.state.slide, max);
     const user = this.state.user;
-    const login = '/auth/login.php?next=' + encodeURIComponent('/panel.html');
+    const login = '/auth/login.php?next=' + encodeURIComponent('/choose.html');
     const faqData = [
       ['Какие платформы поддерживаются?', 'Пока только Twitch: вход через аккаунт Twitch, бот работает в твоём чате. Другие платформы — в планах.'],
       ['Нужно ли что-то устанавливать?', 'Нет. Бот работает на наших серверах, а виджеты подключаются в OBS как источник «Браузер» по ссылке из панели.'],
