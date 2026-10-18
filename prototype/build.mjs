@@ -42,6 +42,7 @@ const PAGES = {
   WebChoose: 'choose.html',
   WebViewer: 'viewer.html',
   WebSite: 'site.html',
+  WebSiteSettings: 'site-settings.html',
 };
 
 // ---- Перевод цветов артбордов на переменные темы (см. theme.js) ----
@@ -102,6 +103,7 @@ const SIDEBAR = [
   ['WebMusic', 'Музыка', 'music'],
   ['WebManage', 'Управлять каналом', 'music'],
   ['WebWidgets', 'Виджеты', 'widgets'],
+  ['WebSiteSettings', 'Мой сайт', 'widgets'],
   ['Интерактив'],
   ['WebGiveaways', 'Розыгрыши', 'gift'],
   ['WebClips', 'Нарезки', 'clip'],

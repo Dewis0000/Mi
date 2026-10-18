@@ -698,7 +698,7 @@ function api_dispatch(string $r): never {
             $q = in_str('q', 64);
             $rows = $q !== '' ? db_all('SELECT * FROM users WHERE login LIKE ? OR display_name LIKE ? ORDER BY id DESC LIMIT 100', ['%' . $q . '%', '%' . $q . '%'])
                 : db_all('SELECT * FROM users ORDER BY id DESC LIMIT 100');
-            json_out(['ok' => true, 'items' => array_map(fn($x) => user_public($x) + ['twitchId' => $x['twitch_id'], 'banned' => (bool)$x['banned'], 'lastLogin' => (int)$x['last_login'], 'rawPlan' => $x['plan']], $rows)]);
+            json_out(['ok' => true, 'items' => array_map(fn($x) => user_public($x) + ['twitchId' => $x['twitch_id'], 'banned' => (bool)$x['banned'], 'siteBlocked' => (bool)kv_get('site_block:' . (int)$x['id']), 'lastLogin' => (int)$x['last_login'], 'rawPlan' => $x['plan']], $rows)]);
         }
         // ---------- поддержка по согласию: пользователь создаёт код, админ входит по нему ----------
         case 'account.supportCode': {
@@ -919,6 +919,10 @@ function api_dispatch(string $r): never {
                 $patch['banned'] = in_bool('banned') ? 1 : 0;
                 if ($patch['banned'] && (int)$x['bot_enabled']) { eventsub_remove_channel($x); $patch['bot_enabled'] = 0; }
                 add_transaction($id, 0, 'ban', ($patch['banned'] ? 'Заблокирован' : 'Разблокирован') . ($comment ? ' · ' . $comment : ''), $admin['login']);
+            }
+            if (isset($in['siteBlocked'])) { // блокировка сайта стримера (сайт перестаёт открываться, стример видит причину)
+                kv_set('site_block:' . $id, in_bool('siteBlocked') ? 1 : 0);
+                add_transaction($id, 0, 'site', (in_bool('siteBlocked') ? 'Сайт заблокирован' : 'Сайт разблокирован') . ($comment ? ' · ' . $comment : ''), $admin['login']);
             }
             if ($patch) db_update('users', $patch, 'id = ?', [$id]);
             json_out(['ok' => true]);
