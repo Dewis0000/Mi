@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StreOps — сайт стримера</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="assets/theme.js?v=460ce522"></script>
+<script src="assets/api.js?v=c464f264"></script>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:var(--n-1)}
+a{color:var(--n-12);text-decoration:none}
+.tab{height:44px;padding:0 4px;border:0;background:transparent;color:var(--n-9);font:500 14px/20px var(--font-sans),sans-serif;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.tab[aria-current="page"]{color:var(--n-12);border-bottom-color:var(--n-12)}
+.card{border-radius:12px;border:1px solid rgb(var(--n-13-rgb) / .10);background:rgb(var(--n-2-rgb) / .62);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:var(--n-1);border:1px solid var(--n-8);color:var(--n-12);font:400 14px/20px var(--font-sans),sans-serif;width:100%}
+.btn{height:36px;padding:0 14px;border-radius:6px;border:0;background:var(--n-13);color:var(--n-1);font:500 14px/20px var(--font-sans),sans-serif;cursor:pointer}
+.btn-g{height:32px;padding:0 12px;border-radius:6px;border:1px solid var(--n-6);background:transparent;color:var(--n-12);font:500 13px/18px var(--font-sans),sans-serif;cursor:pointer}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;border-radius:8px;border:1px solid var(--n-5)}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;margin-right:6px;border-radius:4px;border:1px solid var(--n-6);font:600 10px/16px 'JetBrains Mono',monospace;color:var(--n-10);vertical-align:1px}
+.mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="dc">
+
+<div style="min-height: 100vh; background: var(--page-bg); color: var(--n-12); font-family: var(--font-sans), system-ui, sans-serif">
+<div style="position: relative; height: 180px; background: radial-gradient(70% 120% at 20% 0%, var(--n-5) 0%, var(--s-2) 55%, var(--n-1) 100%); border-bottom: 1px solid rgb(var(--n-13-rgb) / .08)">
+<a href="choose.html" style="position: absolute; left: 24px; top: 20px; font-size: 14px; color: var(--n-10)">← StreOps</a>
+<a href="{{ accountHref }}" style="position: absolute; right: 24px; top: 20px; height: 32px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 999px; background: rgb(var(--n-1-rgb) / .6); border: 1px solid rgb(var(--n-13-rgb) / .12); font-size: 13px; color: var(--n-12)">{{ accountLabel }}</a>
+</div>
+
+<div style="max-width: 1180px; margin: 0 auto; padding: 0 24px; box-sizing: border-box">
+<template data-if="closed"><p style="margin: 64px 0 0; font-size: 16px; color: var(--n-10)">{{ closedText }}</p></template>
+<template data-if="open">
+<div style="display: flex; gap: 20px; align-items: flex-end; margin-top: -44px; flex-wrap: wrap">
+<span style="width: 88px; height: 88px; flex: none; border-radius: 999px; border: 4px solid var(--n-1); background: linear-gradient(135deg, var(--n-10), var(--n-6)); display: inline-flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 600; color: var(--n-1)">{{ initials }}</span>
+<div style="min-width: 0; flex: 1 1 240px; padding-bottom: 6px">
+<h1 style="margin: 0; font-size: 28px; line-height: 34px; font-weight: 600; letter-spacing: -0.01em">{{ name }}</h1>
+<p style="margin: 4px 0 0; font-size: 14px; color: var(--n-10)">{{ subtitle }}</p>
+<template data-if="hasStatus"><p style="margin: 6px 0 0; font-size: 14px; color: var(--n-12)">{{ statusText }}</p></template>
+</div>
+</div>
+
+<nav aria-label="Разделы сайта" style="margin-top: 24px; display: flex; gap: 22px; border-bottom: 1px solid var(--n-4); overflow-x: auto">
+<button type="button" class="tab" aria-current="{{ tabHome }}" onClick="{{ goHome }}">Главная</button>
+<button type="button" class="tab" aria-current="{{ tabStream }}" onClick="{{ goStream }}">Стрим</button>
+<button type="button" class="tab" aria-current="{{ tabOff }}" onClick="{{ goOff }}">Не стрим</button>
+<template data-if="showWatchedTab"><button type="button" class="tab" aria-current="{{ tabWatched }}" onClick="{{ goWatched }}">Просмотренное</button></template>
+<button type="button" class="tab" aria-current="{{ tabSuggest }}" onClick="{{ goSuggest }}">Предложить видео</button>
+<template data-if="chatOn"><button type="button" class="tab" aria-current="{{ tabChat }}" onClick="{{ goChat }}">Чат</button></template>
+</nav>
+
+<p role="status" style="margin: 16px 0 0; font-size: 14px; color: var(--n-11)">{{ notice }}</p>
+
+<template data-if="showHome">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; margin-top: 24px; align-items: start">
+<section style="min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div class="card" style="position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #000">
+<template data-if="live"><iframe title="Эфир" src="{{ playerSrc }}" allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0"></iframe></template>
+<template data-if="offline"><div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--n-9)">Сейчас не в эфире</div></template>
+</div>
+<template data-if="showFeed">
+<div class="card" style="padding: 18px 20px">
+<p style="margin: 0; font-size: 13px; color: var(--n-9)">Лента</p>
+<template data-if="noVideos"><p style="margin: 12px 0 0; font-size: 14px; color: var(--n-10)">Пока пусто. Подписчики могут предложить видео во вкладке «Предложить видео».</p></template>
+<ul style="list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px"><template data-for="feed" data-as="v"><li><a href="{{ v.url }}" target="_blank" rel="noopener" style="min-width: 0"><span style="display: block; font-size: 15px; font-weight: 500; overflow-wrap: anywhere">{{ v.title }}</span><span style="display: block; margin-top: 4px; font-size: 13px; color: var(--n-9)">{{ v.sectionLabel }} · предложил {{ v.by }}</span></a></li></template></ul>
+</div>
+</template>
+</section>
+<template data-if="chatOn">
+<aside class="card" aria-label="Чат сайта" style="display: flex; flex-direction: column; min-height: 460px; overflow: hidden">
+<div style="padding: 14px 18px; border-bottom: 1px solid var(--n-4); display: flex; justify-content: space-between; align-items: center"><p style="margin: 0; font-size: 14px; font-weight: 600">Чат сайта</p><span class="mono" style="font-size: 12px; color: var(--n-9)">{{ chatCount }}</span></div>
+<ul style="list-style: none; margin: 0; padding: 14px 18px; flex: 1; display: flex; flex-direction: column; gap: 10px; font-size: 14px; line-height: 20px"><template data-for="chatShort" data-as="c"><li><template data-if="c.hasBadge"><span class="badge" title="{{ c.badgeLabel }}">{{ c.badgeIcon }}</span></template><a href="{{ c.profileHref }}" style="font-weight: 600; color: {{ c.colorValue }}">{{ c.name }}</a><span style="color: var(--n-12)">{{ c.verifiedMark }}</span> <span style="color: var(--n-11)">{{ c.text }}</span> <template data-if="c.canDelete"><button type="button" onClick="{{ c.remove }}" style="border: 0; background: transparent; color: var(--n-9); font: 500 12px/16px var(--font-sans),sans-serif; cursor: pointer">удалить</button></template></li></template></ul>
+<form onSubmit="{{ sendChat }}" style="padding: 12px 14px; border-top: 1px solid var(--n-4); display: flex; gap: 8px">
+<input aria-label="Сообщение в чат" value="{{ chatText }}" onInput="{{ setChatText }}" placeholder="{{ chatPlaceholder }}" disabled="{{ chatDisabled }}" class="inp" style="flex: 1; min-width: 0">
+<button type="submit" class="btn" disabled="{{ chatDisabled }}">Отправить</button>
+</form>
+</aside>
+</template>
+</div>
+</template>
+
+<template data-if="showList">
+<section class="card" style="margin-top: 24px; padding: 20px">
+<p style="margin: 0; font-size: 16px; font-weight: 600">{{ listTitle }}</p>
+<ul style="list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px"><template data-for="listItems" data-as="v"><li class="row"><a href="{{ v.url }}" target="_blank" rel="noopener" style="min-width: 0"><span style="display: block; font-size: 15px; font-weight: 500; overflow-wrap: anywhere">{{ v.title }}</span><span style="display: block; margin-top: 4px; font-size: 13px; color: var(--n-9)">предложил {{ v.by }}</span></a></li></template></ul>
+<template data-if="listEmpty"><p style="margin: 12px 0 0; font-size: 14px; color: var(--n-9)">В этом разделе пока ничего нет.</p></template>
+</section>
+</template>
+
+<template data-if="showWatchedList">
+<section class="card" style="margin-top: 24px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<p style="margin: 0; font-size: 16px; font-weight: 600">Просмотренное стримером</p>
+<p style="margin: 0; font-size: 13px; color: var(--n-9)">Стример отметил эти видео как просмотренные и поделился заметкой.</p>
+<ul style="list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px"><template data-for="watchedItems" data-as="w"><li class="row" style="flex-direction: column; align-items: stretch"><a href="{{ w.url }}" target="_blank" rel="noopener" style="min-width: 0; font-size: 15px; font-weight: 500; overflow-wrap: anywhere">{{ w.title }}</a><template data-if="w.hasNote"><p style="margin: 0; font-size: 14px; color: var(--n-10)">{{ w.note }}</p></template></li></template></ul>
+<template data-if="watchedEmpty"><p style="margin: 0; font-size: 14px; color: var(--n-9)">Пока пусто.</p></template>
+</section>
+</template>
+
+<template data-if="showSuggest">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; margin-top: 24px; align-items: start">
+<section class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<div><h2 style="margin: 0; font-size: 22px; font-weight: 600">Предложить видео</h2><p style="margin: 6px 0 0; font-size: 14px; color: var(--n-10)">Вставь ссылку на YouTube или Twitch. Стример посмотрит и одобрит.</p></div>
+<template data-if="loggedOut"><a href="/auth/login.php?next={{ nextEnc }}" class="btn" style="display: inline-flex; align-items: center; width: fit-content">Войти через Twitch</a></template>
+<template data-if="canSuggest">
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--n-11)">Ссылка<input value="{{ sugUrl }}" onInput="{{ setSugUrl }}" placeholder="https://youtube.com/watch?v=…" class="inp mono"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--n-11)">Название (необязательно)<input value="{{ sugTitle }}" onInput="{{ setSugTitle }}" maxlength="200" class="inp"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--n-11)">Раздел<select value="{{ sugSection }}" onChange="{{ setSugSection }}" class="inp"><option value="offstream">Не стрим</option><option value="stream">Стрим</option></select></label>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap"><span style="font-size: 12px; color: var(--n-9)">Одно предложение в сутки</span><button type="button" class="btn" onClick="{{ submitSug }}" disabled="{{ sugBusy }}">Отправить на одобрение</button></div>
+</template>
+</section>
+<template data-if="canModerate">
+<section class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px"><p style="margin: 0; font-size: 16px; font-weight: 600">Очередь одобрения</p><span style="font-size: 13px; color: var(--n-9)">{{ queueCount }}</span></div>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px"><template data-for="queue" data-as="q"><li class="row" style="flex-direction: column; align-items: stretch"><div><a href="{{ q.url }}" target="_blank" rel="noopener" style="font-size: 15px; font-weight: 500; overflow-wrap: anywhere">{{ q.title }}</a><p style="margin: 4px 0 0; font-size: 13px; color: var(--n-9)">от {{ q.by }} · {{ q.sectionLabel }}</p></div><div style="display: flex; gap: 8px"><button type="button" class="btn" onClick="{{ q.approve }}">Одобрить</button><button type="button" class="btn-g" onClick="{{ q.reject }}">Отклонить</button></div></li></template></ul>
+<template data-if="queueEmpty"><p style="margin: 0; font-size: 14px; color: var(--n-9)">Очередь пуста.</p></template>
+</section>
+</template>
+</div>
+</template>
+
+<template data-if="showChatFull">
+<section class="card" style="margin-top: 24px; display: flex; flex-direction: column; min-height: 520px; overflow: hidden">
+<div style="padding: 14px 18px; border-bottom: 1px solid var(--n-4); display: flex; justify-content: space-between; align-items: center"><p style="margin: 0; font-size: 14px; font-weight: 600">Чат сайта</p><span class="mono" style="font-size: 12px; color: var(--n-9)">{{ chatCount }}</span></div>
+<ul style="list-style: none; margin: 0; padding: 14px 18px; flex: 1; display: flex; flex-direction: column; gap: 10px; font-size: 14px; line-height: 20px"><template data-for="chatAll" data-as="c"><li><template data-if="c.hasBadge"><span class="badge" title="{{ c.badgeLabel }}">{{ c.badgeIcon }}</span></template><a href="{{ c.profileHref }}" style="font-weight: 600; color: {{ c.colorValue }}">{{ c.name }}</a><span style="color: var(--n-12)">{{ c.verifiedMark }}</span> <span style="color: var(--n-11)">{{ c.text }}</span> <template data-if="c.canDelete"><button type="button" onClick="{{ c.remove }}" style="border: 0; background: transparent; color: var(--n-9); font: 500 12px/16px var(--font-sans),sans-serif; cursor: pointer">удалить</button></template></li></template></ul>
+<form onSubmit="{{ sendChat }}" style="padding: 12px 14px; border-top: 1px solid var(--n-4); display: flex; gap: 8px">
+<input aria-label="Сообщение в чат" value="{{ chatText }}" onInput="{{ setChatText }}" placeholder="{{ chatPlaceholder }}" disabled="{{ chatDisabled }}" class="inp" style="flex: 1; min-width: 0">
+<button type="submit" class="btn" disabled="{{ chatDisabled }}">Отправить</button>
+</form>
+</section>
+</template>
+
+<template data-if="showProfile">
+<section class="card" style="margin-top: 24px; padding: 20px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap">
+<span style="width: 56px; height: 56px; flex: none; border-radius: 999px; background: linear-gradient(135deg, var(--n-10), var(--n-6)); display: inline-flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; color: var(--n-1)">{{ profInitials }}</span>
+<div style="min-width: 0; flex: 1 1 200px"><p style="margin: 0; font-size: 18px; font-weight: 600; color: {{ profColor }}">{{ profName }}<span style="color: var(--n-12)">{{ profVerified }}</span></p><p style="margin: 4px 0 0; font-size: 13px; color: var(--n-9)">{{ profStats }}</p></div>
+<template data-if="profHasBadge"><span class="row" style="padding: 6px 12px; border-radius: 999px"><span class="badge">{{ profBadgeIcon }}</span> {{ profBadgeLabel }}</span></template>
+<a href="{{ profCloseHref }}" class="btn-g" style="display: inline-flex; align-items: center">Закрыть профиль</a>
+</section>
+</template>
+</div>
+</template>
+</div>
+</template>
+<script src="assets/dc-lite.js?v=5f8ce08a"></script>
+<script>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { data: null, loaded: false, error: '', tab: 'home', chatText: '', sugUrl: '', sugTitle: '', sugSection: 'offstream', sugBusy: false, notice: '', sending: false };
+}
+get params() { return new URLSearchParams(location.search); }
+get streamer() { return this.params.get('c') || ''; }
+componentDidMount() {
+this.setState({ tab: this.params.get('tab') || 'home' });
+this.load(false);
+this.timer = setInterval(() => this.load(true), 5000);
+}
+componentWillUnmount() { clearInterval(this.timer); }
+async load(quiet) {
+if (!this.streamer) { this.setState({ loaded: true, error: 'Не указан сайт стримера' }); return; }
+try {
+const data = await StreAPI.get('site.get', { c: this.streamer, u: this.params.get('u') || '' });
+this.setState({ data, loaded: true, error: '' });
+} catch (e) {
+if (!quiet) StreAPI.toast(e.message, 'error');
+this.setState({ loaded: true, error: e.message });
+}
+}
+go(tab) {
+const p = this.params;
+p.set('tab', tab);
+p.delete('u');
+history.replaceState(null, '', 'site.html?' + p.toString());
+this.setState({ tab, notice: '' });
+}
+async sendChat(e) {
+if (e && e.preventDefault) e.preventDefault();
+const t = this.state.chatText.trim();
+if (!t || this.state.sending) return;
+this.setState({ sending: true });
+try {
+await StreAPI.post('site.chat.send', { c: this.streamer, text: t });
+this.setState({ chatText: '', sending: false });
+this.load(true);
+} catch (err) { this.setState({ sending: false, notice: err.message }); }
+}
+async submitSug() {
+if (this.state.sugBusy) return;
+this.setState({ sugBusy: true, notice: '' });
+try {
+const r = await StreAPI.post('site.submit', { c: this.streamer, url: this.state.sugUrl.trim(), title: this.state.sugTitle.trim(), section: this.state.sugSection });
+this.setState({ sugUrl: '', sugTitle: '', sugBusy: false, notice: r.message });
+} catch (err) { this.setState({ sugBusy: false, notice: err.message }); }
+}
+async act(route, body) {
+try {
+await StreAPI.post(route, Object.assign({ c: this.streamer }, body));
+this.load(true);
+} catch (err) { StreAPI.toast(err.message, 'error'); }
+}
+renderVals() {
+const s = this.state;
+const d = s.data;
+const tab = s.tab;
+const isOwner = !!(d && d.isOwner);
+const canMod = !!(d && d.canModerate);
+const loggedIn = !!(d && d.me);
+const st = d ? d.streamer : null;
+const site = d ? d.site : { chatOn: true, showFeed: true, showWatched: false, status: '', title: '' };
+const name = site.title || (st ? st.name : (s.error || 'Загружаем…'));
+const showWatchedTab = !!(d && (site.showWatched || isOwner));
+const chatOn = !!(d && (site.chatOn || isOwner));
+const fmt = (v) => ({ id: v.id, url: v.url, title: v.title, by: v.by, sectionLabel: v.section === 'stream' ? 'Стрим' : 'Не стрим' });
+const feed = d ? d.videos.map(fmt) : [];
+const chatMap = (c) => ({
+name: c.name || c.login,
+text: c.text,
+colorValue: c.color || 'var(--n-12)',
+hasBadge: !!c.badge,
+badgeIcon: c.badge ? c.badge.icon : '',
+badgeLabel: c.badge ? c.badge.label : '',
+verifiedMark: c.verified ? ' ✓' : '',
+canDelete: canMod,
+remove: () => this.act('site.chat.delete', { id: c.id }),
+profileHref: 'site.html?c=' + encodeURIComponent(this.streamer) + '&u=' + encodeURIComponent(c.login) + '&tab=' + tab,
+});
+const chatAll = d ? d.chat.map(chatMap) : [];
+const chatShort = chatAll.slice(-8);
+const queue = d && d.queue ? d.queue.map((q) => ({
+title: q.title, url: q.url, by: q.by,
+sectionLabel: q.section === 'stream' ? 'Стрим' : 'Не стрим',
+approve: () => this.act('site.review', { id: q.id, action: 'approve' }),
+reject: () => this.act('site.review', { id: q.id, action: 'reject' }),
+})) : [];
+const sec = tab === 'stream' ? 'stream' : 'offstream';
+const listItems = d ? d.videos.filter((v) => v.section === sec).map(fmt) : [];
+const watchedItems = d ? d.watched.map((w) => ({ url: w.url, title: w.title, note: w.note, hasNote: !!w.note })) : [];
+const prof = d && d.profile ? d.profile : null;
+const liveSrc = st && st.live ? 'https://player.twitch.tv/?channel=' + encodeURIComponent(st.login) + '&parent=' + encodeURIComponent(location.hostname) + '&muted=true' : '';
+return {
+closed: s.loaded && !d,
+closedText: s.error || 'Этот сайт сейчас закрыт.',
+open: !!d,
+accountLabel: loggedIn ? d.me.login + ' · выйти' : 'Войти через Twitch',
+accountHref: loggedIn ? '/auth/logout.php' : '/auth/login.php?next=' + encodeURIComponent(location.pathname + location.search),
+nextEnc: encodeURIComponent(location.pathname + location.search),
+initials: (name || '').slice(0, 2).toUpperCase(),
+name,
+subtitle: st ? (st.live ? 'В эфире · ' + st.game + ' · ' + st.viewers + ' зрителей' : 'Не в эфире') : '',
+hasStatus: !!site.status,
+statusText: site.status || '',
+notice: s.notice,
+tabHome: tab === 'home' ? 'page' : '',
+tabStream: tab === 'stream' ? 'page' : '',
+tabOff: tab === 'offstream' ? 'page' : '',
+tabWatched: tab === 'watched' ? 'page' : '',
+tabSuggest: tab === 'suggest' ? 'page' : '',
+tabChat: tab === 'chat' ? 'page' : '',
+goHome: () => this.go('home'),
+goStream: () => this.go('stream'),
+goOff: () => this.go('offstream'),
+goWatched: () => this.go('watched'),
+goSuggest: () => this.go('suggest'),
+goChat: () => this.go('chat'),
+showWatchedTab,
+chatOn,
+showHome: !!d && tab === 'home',
+showFeed: !!site.showFeed,
+live: !!(st && st.live),
+offline: !!(st && !st.live),
+playerSrc: liveSrc,
+feed,
+noVideos: !!d && !feed.length,
+chatAll,
+chatShort,
+chatCount: d ? d.chat.length + ' сообщений' : '',
+chatText: s.chatText,
+setChatText: (e) => this.setState({ chatText: e.target.value }),
+sendChat: (e) => this.sendChat(e),
+chatPlaceholder: loggedIn ? 'Написать в чат сайта' : 'Войди через Twitch, чтобы писать',
+chatDisabled: !loggedIn,
+showList: !!d && (tab === 'stream' || tab === 'offstream'),
+listTitle: tab === 'stream' ? 'Стрим' : 'Не стрим',
+listItems,
+listEmpty: !!d && !listItems.length,
+showWatchedList: !!d && tab === 'watched',
+watchedItems,
+watchedEmpty: !!d && !watchedItems.length,
+showSuggest: !!d && tab === 'suggest',
+loggedOut: !!d && !loggedIn,
+canSuggest: loggedIn && !isOwner,
+sugUrl: s.sugUrl,
+setSugUrl: (e) => this.setState({ sugUrl: e.target.value }),
+sugTitle: s.sugTitle,
+setSugTitle: (e) => this.setState({ sugTitle: e.target.value }),
+sugSection: s.sugSection,
+setSugSection: (e) => this.setState({ sugSection: e.target.value }),
+submitSug: () => this.submitSug(),
+sugBusy: s.sugBusy,
+canModerate: canMod,
+queue,
+queueCount: queue.length + ' ждут',
+queueEmpty: !!d && canMod && !queue.length,
+showChatFull: !!d && tab === 'chat' && chatOn,
+showProfile: !!prof,
+profInitials: prof ? prof.name.slice(0, 2).toUpperCase() : '',
+profName: prof ? prof.name : '',
+profColor: prof && prof.color ? prof.color : 'var(--n-12)',
+profVerified: prof && prof.verified ? ' ✓' : '',
+profStats: prof ? 'Предложил видео: ' + prof.suggested + ' · сообщений в чате: ' + prof.messages : '',
+profHasBadge: !!(prof && prof.badge),
+profBadgeIcon: prof && prof.badge ? prof.badge.icon : '',
+profBadgeLabel: prof && prof.badge ? prof.badge.label : '',
+profCloseHref: 'site.html?c=' + encodeURIComponent(this.streamer) + '&tab=' + tab,
+};
+}
+}
+DCMount(Component);
+</script>
+</body>
+</html>

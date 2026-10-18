@@ -140,6 +140,7 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 <a href="music.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Музыка</a>
 <a href="manage.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Управлять каналом</a>
 <a href="widgets.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Виджеты</a>
+<a href="site-settings.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Мой сайт</a>
 <p class="sb-h">Интерактив</p>
 <a href="giveaways.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1s6 1 6 1zM12 8c2-4 6-4 6-1s-6 1-6 1z"/></svg>Розыгрыши</a>
 <a href="clips.html" class="sb-i"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3l12 9-12 9z"/><path d="M3 3v18"/></svg>Нарезки</a>
@@ -434,6 +435,13 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 <template data-if="canBan"><div style="display: flex; justify-content: flex-end"><button type="submit" class="{{ banBtnCls }}" disabled="{{ banOff }}">{{ banBtn }}</button></div></template>
 </form>
 
+<form class="dsec" onSubmit="{{ toggleSite }}" aria-labelledby="st-t">
+<h3 id="st-t" class="h3">Сайт стримера</h3>
+<p class="txt">{{ siteText }}</p>
+<template data-if="siteErrOn"><p role="alert" class="err">{{ siteErr }}</p></template>
+<template data-if="siteCanAct"><div style="display: flex; justify-content: flex-end"><button type="submit" class="{{ siteBtnCls }}" disabled="{{ siteOff }}">{{ siteBtn }}</button></div></template>
+</form>
+
 <div class="dsec">
 <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap"><h3 class="h3">Последние операции</h3><button type="button" class="lnk" style="font-size: 13px" onClick="{{ goTxOfUser }}">Все операции</button></div>
 <template data-if="suHasTx">
@@ -683,6 +691,13 @@ class Component extends DCLogic {
     const ok = await this.userAction('money', { balanceDelta: sign * n, comment: f.comment.trim() }, (sign > 0 ? 'Начислено ' : 'Списано ') + admMoney(n) + (sign > 0 ? ' пользователю ' : ' у ') + u.login);
     if (ok) this.setState({ mf: { amount: '', comment: '' } });
   }
+  async toggleSite(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const u = this.state.sel;
+    const on = !u.siteBlocked;
+    if (on && !(await this.ask({ title: 'Заблокировать сайт ' + u.login + '?', text: 'Сайт перестанет открываться для всех посетителей, пока ты его не разблокируешь.' }))) return;
+    await this.userAction('site', { siteBlocked: on }, u.login + (on ? ': сайт заблокирован' : ': сайт разблокирован'));
+  }
   async toggleBan(e) {
     if (e && e.preventDefault) e.preventDefault();
     const u = this.state.sel;
@@ -892,6 +907,13 @@ class Component extends DCLogic {
       banErrOn: !!s.errs.ban, banErr: s.errs.ban || '', banOff: !!busy.ban,
       banBtn: busy.ban ? 'Сохраняем…' : u && u.banned ? 'Разблокировать' : 'Заблокировать', banBtnCls: u && u.banned ? 'bs' : 'bdx',
       toggleBan: (e) => this.toggleBan(e),
+      toggleSite: (e) => this.toggleSite(e),
+      siteCanAct: !!u,
+      siteText: !u ? '' : u.siteBlocked
+        ? 'Сайт заблокирован: посетители его не видят, стример видит причину. Снимается этой кнопкой.'
+        : 'Блокировка закрывает сайт стримера для всех посетителей. Владелец сайта и его данные сохраняются.',
+      siteErrOn: !!s.errs.site, siteErr: s.errs.site || '', siteOff: !!busy.site,
+      siteBtn: busy.site ? 'Сохраняем…' : u && u.siteBlocked ? 'Разблокировать сайт' : 'Заблокировать сайт', siteBtnCls: u && u.siteBlocked ? 'bs' : 'bdx',
       suTx, suHasTx: suTx.length > 0, suNoTx: !!u && !suTx.length,
       goTxOfUser: () => { const login = u.login; this.closeUser(); this.setState({ txQ: login, txFilter: 'all' }); this.pickTab('tx', true); },
 
