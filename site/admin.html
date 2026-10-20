@@ -236,6 +236,20 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- ===================== СВОДКА ===================== -->
 <section role="tabpanel" id="p-sum" aria-labelledby="t-sum" hidden="{{ hideSum }}" style="margin-top: 24px; display: flex; flex-direction: column; gap: 24px">
 <template data-if="statsErrOn"><p role="alert" class="err">Не удалось загрузить сводку: {{ statsErr }}</p></template>
+<section class="card" style="padding: 24px" aria-labelledby="on-t">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap">
+<div style="min-width: 0; max-width: 620px"><h2 id="on-t" class="h3">Сейчас онлайн</h2><p class="hint" style="margin-top: 6px; font-size: 13px; line-height: 18px">{{ onlineNote }}</p></div>
+<p class="mono" style="margin: 0; font-size: 40px; line-height: 44px; font-weight: 500; letter-spacing: -0.02em">{{ onlineCount }}</p>
+</div>
+<template data-if="onlineErrOn"><p role="alert" class="err" style="margin-top: 12px">Не удалось получить онлайн: {{ onlineErr }}</p></template>
+<template data-if="onlineHasRows">
+<div style="margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px">
+<template data-for="onlineRows" data-as="o"><button type="button" class="bs sm" onClick="{{ o.open }}" title="Открыть карточку {{ o.login }}"><span>{{ o.name }}</span><span class="muted" style="font-size: 12px">{{ o.plan }}, {{ o.ago }}</span></button></template>
+</div>
+<p class="hint" style="margin-top: 8px">{{ onlineMore }}</p>
+</template>
+<template data-if="onlineEmpty"><p class="hint" style="margin-top: 12px">Сейчас никого нет.</p></template>
+</section>
 <div aria-busy="{{ statsBusy }}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 22px; align-items: start">
 <div><p style="margin: 0 0 10px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--n-9)">Пользователи</p><div class="kpi"><template data-for="kpiUsers" data-as="k">
 <div class="card" style="padding: 20px"><p style="margin: 0; font-size: 13px; color: var(--n-9)">{{ k.label }}</p><p class="mono" style="margin: 10px 0 0; font-size: 32px; line-height: 36px; font-weight: 500; letter-spacing: -0.02em">{{ k.val }}</p><p style="margin: 8px 0 0; font-size: 12px; line-height: 16px; color: var(--n-9)">{{ k.sub }}</p></div>
@@ -376,6 +390,137 @@ document.addEventListener('DOMContentLoaded', function () {
 <template data-if="usersEmpty"><p style="margin: 16px 0 0; padding: 24px; border: 1px dashed var(--n-6); border-radius: 8px; font-size: 14px; line-height: 20px; color: var(--n-9); text-align: center">{{ usersEmptyText }}</p></template>
 </section>
 
+<!-- ===================== ЧЁРНЫЙ СПИСОК ===================== -->
+<section role="tabpanel" id="p-bl" aria-labelledby="t-bl" hidden="{{ hideBl }}" style="margin-top: 24px; display: flex; flex-direction: column; gap: 24px">
+<section class="card" style="padding: 24px" aria-labelledby="bl-how-t">
+<h2 id="bl-how-t" class="h3">Что делает список</h2>
+<ul class="txt" style="margin: 12px 0 0; padding-left: 20px; font-size: 14px; line-height: 22px; display: flex; flex-direction: column; gap: 6px">
+<li>Сообщения зрителя в чатах каналов, где работает бот, удаляются, а сам он банится в этом канале. Удалять и банить бот может только там, где он модератор.</li>
+<li>Если бан сняли вручную, сообщения снова удаляются, а бан ставится снова — не чаще раза в сутки.</li>
+<li>Награды за баллы, которые он активирует, не выполняются, баллы возвращаются.</li>
+<li>На сайтах стримеров он не может предлагать видео и писать в чат.</li>
+<li>Если ник найден в Twitch при добавлении, запись привязывается к ID, и смена ника не помогает.</li>
+<li>Донаты DonationAlerts список пока не блокирует.</li>
+</ul>
+</section>
+
+<form class="card" style="padding: 24px" onSubmit="{{ blSubmit }}" aria-labelledby="bl-add-t">
+<h2 id="bl-add-t" class="h3">Добавить зрителя</h2>
+<p class="hint" style="margin-top: 4px; font-size: 13px; line-height: 18px">Ник Twitch — тот же, что у зрителя на Twitch.</p>
+<div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap">
+<div class="fl" style="flex: 1; min-width: 200px"><label for="bl-login">Ник Twitch</label><input id="bl-login" class="inp mono" autocomplete="off" maxlength="40" placeholder="например, griefer_123" value="{{ blF.login }}" onChange="{{ setBlLogin }}"></div>
+<div class="fl" style="flex: 2; min-width: 240px"><label for="bl-reason">Причина</label><input id="bl-reason" class="inp" maxlength="300" placeholder="например, спам ссылками в чужих чатах" value="{{ blF.reason }}" onChange="{{ setBlReason }}"></div>
+</div>
+<label style="display: flex; align-items: flex-start; gap: 10px; margin-top: 16px; font-size: 14px; line-height: 20px"><input type="checkbox" checked="{{ blF.banNow }}" onChange="{{ setBlBanNow }}" style="margin-top: 3px"><span>Сразу забанить во всех каналах, где работает бот<span class="hint" style="display: block; margin-top: 2px; font-size: 13px">Сейчас таких каналов: {{ blChannelsText }}.</span></span></label>
+<template data-if="blFormErrOn"><p role="alert" class="err" style="margin-top: 12px">{{ blFormErr }}</p></template>
+<div style="margin-top: 16px; display: flex; justify-content: flex-end"><button type="submit" class="btn" disabled="{{ blOff }}">{{ blSubmitLabel }}</button></div>
+</form>
+
+<section class="card" style="padding: 24px" aria-labelledby="bl-list-t">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+<h2 id="bl-list-t" class="h3">В списке: <span class="mono">{{ blCount }}</span></h2>
+<label style="position: relative; display: block; width: 260px; max-width: 100%"><span class="sr">Поиск в чёрном списке</span><input type="search" class="inp" placeholder="Ник или причина" value="{{ blQ }}" onChange="{{ setBlQ }}" autocomplete="off"></label>
+</div>
+<p class="hint" style="margin-top: 8px; font-size: 13px; line-height: 18px">Общий список для всех каналов StreOps, последние 500 записей.</p>
+<template data-if="blErrOn"><p role="alert" class="err" style="margin-top: 12px">Не удалось загрузить список: {{ blErr }}</p></template>
+<template data-if="blLoading"><p role="status" style="margin: 20px 0 0; font-size: 14px; color: var(--n-9)">Загрузка…</p></template>
+<template data-if="blHasRows">
+<div class="tw" style="margin-top: 16px">
+<table class="tbl">
+<thead><tr><th scope="col">Ник</th><th scope="col">Причина</th><th scope="col">Добавил</th><th scope="col">Когда</th><th scope="col"><span class="sr">Действия</span></th></tr></thead>
+<tbody>
+<template data-for="blRows" data-as="b">
+<tr><td class="first"><span class="mono">{{ b.login }}</span><template data-if="b.noId"><span class="hint" style="display: block; font-size: 12px; line-height: 16px">ID Twitch не найден: сработает по нику</span></template></td><td data-l="Причина" class="wrap" style="font-size: 13px; color: var(--n-10); max-width: 340px">{{ b.reason }}</td><td data-l="Добавил" class="mono muted" style="font-size: 12px">{{ b.by }}</td><td data-l="Когда" class="mono muted" style="font-size: 13px; white-space: nowrap">{{ b.at }}</td><td class="nolab" style="text-align: right"><div style="display: inline-flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end"><button type="button" class="bs sm" onClick="{{ b.remove }}" disabled="{{ b.off }}">Убрать из списка</button><template data-if="b.hasId"><button type="button" class="bs sm" onClick="{{ b.removeUnban }}" disabled="{{ b.off }}">Убрать и разбанить</button></template></div></td></tr>
+</template>
+</tbody>
+</table>
+</div>
+</template>
+<template data-if="blEmpty"><p style="margin: 16px 0 0; padding: 24px; border: 1px dashed var(--n-6); border-radius: 8px; font-size: 14px; line-height: 20px; color: var(--n-9); text-align: center">{{ blEmptyText }}</p></template>
+</section>
+</section>
+
+<!-- ===================== МУЗЫКА КАНАЛОВ ===================== -->
+<section role="tabpanel" id="p-mus" aria-labelledby="t-mus" hidden="{{ hideMus }}" style="margin-top: 24px; display: flex; flex-direction: column; gap: 24px">
+<form class="card" style="padding: 24px" onSubmit="{{ musOpenSubmit }}" aria-labelledby="mu-t">
+<h2 id="mu-t" class="h3">Открыть очередь канала</h2>
+<p class="hint" style="margin-top: 4px; font-size: 13px; line-height: 18px">Введи ник стримера на Twitch. Откроются его очередь и заказы: управлять ими можно, даже если ты не модератор канала.</p>
+<div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end">
+<div class="fl" style="flex: 1; min-width: 220px"><label for="mu-in">Ник стримера</label><input id="mu-in" class="inp mono" autocomplete="off" placeholder="например, zaka_00" value="{{ musInput }}" onChange="{{ setMusInput }}"></div>
+<button type="submit" class="btn">Открыть</button>
+</div>
+<template data-if="musErrOn"><p role="alert" class="err" style="margin-top: 12px">{{ musErr }}</p></template>
+</form>
+<template data-if="musNone"><p style="margin: 0; padding: 24px; border: 1px dashed var(--n-6); border-radius: 8px; font-size: 14px; line-height: 20px; color: var(--n-9); text-align: center">Введи ник стримера и нажми «Открыть». Здесь появятся его очередь, заказы и кнопки управления.</p></template>
+
+<template data-if="musLoaded">
+<section class="card" style="padding: 24px" aria-labelledby="mc-t">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap">
+<div style="min-width: 0"><h2 id="mc-t" class="h3">{{ musChName }} <span class="mono muted" style="font-size: 14px; font-weight: 400">{{ musChLogin }}</span></h2><p class="hint" style="margin-top: 4px">Тариф канала: <span style="color: var(--n-11)">{{ musChPlan }}</span></p></div>
+<div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap"><span class="{{ musOrdersCls }}">{{ musOrdersText }}</span><button type="button" class="{{ musOrdersBtnCls }}" onClick="{{ musToggleOrders }}" disabled="{{ musOff }}">{{ musOrdersBtn }}</button></div>
+</div>
+<p class="hint" style="margin-top: 12px; font-size: 13px; line-height: 18px">{{ musOrdersHint }}</p>
+<template data-if="musNoMusic"><p style="margin: 12px 0 0; padding: 12px 16px; border: 1px dashed var(--n-6); border-radius: 8px; font-size: 13px; line-height: 19px; color: var(--n-11)">{{ musNoMusicText }}</p></template>
+
+<h3 class="h3" style="margin-top: 24px">Сейчас играет</h3>
+<template data-if="musHasNow"><div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap"><div style="min-width: 0"><p style="margin: 0; font-weight: 500; overflow-wrap: anywhere">{{ musNowTitle }}</p><p class="hint" style="margin-top: 2px">Добавил: {{ musNowWho }}</p></div><button type="button" class="bs sm" onClick="{{ musSkip }}" disabled="{{ musOff }}">Пропустить</button></div></template>
+<template data-if="musNoNow"><p class="hint" style="margin-top: 12px">Сейчас ничего не играет.</p></template>
+
+<form onSubmit="{{ musAddSubmit }}" style="margin-top: 28px" aria-labelledby="ma-t">
+<h3 id="ma-t" class="h3">Добавить трек в очередь</h3>
+<p class="hint" style="margin-top: 4px; font-size: 13px; line-height: 18px">Ссылка на YouTube или название. Трек встанет в конец очереди. Заказы работают на тарифах «Про» и «Максимум».</p>
+<div style="margin-top: 12px; display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end">
+<div class="fl" style="flex: 1; min-width: 240px"><label for="ma-in">Ссылка или название</label><input id="ma-in" class="inp" autocomplete="off" placeholder="https://youtu.be/…" value="{{ musAddQ }}" onChange="{{ setMusAddQ }}"></div>
+<button type="submit" class="btn" disabled="{{ musOff }}">Добавить</button>
+</div>
+<template data-if="musAddErrOn"><p role="alert" class="err" style="margin-top: 12px">{{ musAddErr }}</p></template>
+</form>
+
+<div style="margin-top: 28px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+<h3 class="h3">В очереди: <span class="mono">{{ musQueueCount }}</span></h3>
+<button type="button" class="bdx" onClick="{{ musClear }}" disabled="{{ musOff }}">Очистить очередь</button>
+</div>
+<p class="hint" style="margin-top: 4px; font-size: 13px; line-height: 18px">Порядок как у стримера. «В начало» — трек сыграет следующим. «Сыграть сейчас» — текущий трек считается сыгранным.</p>
+<template data-if="musQueueHas">
+<div class="tw" style="margin-top: 12px">
+<table class="tbl">
+<thead><tr><th scope="col">№</th><th scope="col">Трек</th><th scope="col">Кто добавил</th><th scope="col"><span class="sr">Действия</span></th></tr></thead>
+<tbody>
+<template data-for="musQueue" data-as="q"><tr><td class="first mono muted">{{ q.n }}</td><td data-l="Трек" class="wrap" style="max-width: 360px">{{ q.title }}</td><td data-l="Кто добавил" class="mono muted" style="font-size: 13px">{{ q.who }}</td><td class="nolab" style="text-align: right"><div style="display: inline-flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end"><button type="button" class="bs sm" onClick="{{ q.top }}" disabled="{{ musOff }}">В начало</button><button type="button" class="bs sm" onClick="{{ q.play }}" disabled="{{ musOff }}">Сыграть сейчас</button><button type="button" class="bs sm" onClick="{{ q.remove }}" disabled="{{ musOff }}">Убрать</button></div></td></tr></template>
+</tbody>
+</table>
+</div>
+</template>
+<template data-if="musQueueEmpty"><p style="margin: 12px 0 0; padding: 24px; border: 1px dashed var(--n-6); border-radius: 8px; font-size: 14px; line-height: 20px; color: var(--n-9); text-align: center">Очередь пуста. Зрители добавляют треки командой или наградой за баллы.</p></template>
+
+<template data-if="musPendingHas">
+<h3 class="h3" style="margin-top: 28px">Ждут решения: <span class="mono">{{ musPendingCount }}</span></h3>
+<p class="hint" style="margin-top: 4px; font-size: 13px; line-height: 18px">Заказы, которые стример проверяет сам. Одобренный трек встанет в конец очереди. Отклонённый вернёт баллы, если заказ был за награду.</p>
+<div class="tw" style="margin-top: 12px">
+<table class="tbl">
+<thead><tr><th scope="col">Трек</th><th scope="col">Кто добавил</th><th scope="col"><span class="sr">Действия</span></th></tr></thead>
+<tbody>
+<template data-for="musPending" data-as="p"><tr><td class="first wrap" style="max-width: 360px">{{ p.title }}</td><td data-l="Кто добавил" class="mono muted" style="font-size: 13px">{{ p.who }}</td><td class="nolab" style="text-align: right"><div style="display: inline-flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end"><button type="button" class="bs sm" onClick="{{ p.approve }}" disabled="{{ musOff }}">Одобрить</button><button type="button" class="bs sm" onClick="{{ p.reject }}" disabled="{{ musOff }}">Отклонить</button></div></td></tr></template>
+</tbody>
+</table>
+</div>
+</template>
+
+<template data-if="musHasHistory">
+<h3 class="h3" style="margin-top: 28px">Последние 15 треков</h3>
+<div class="tw" style="margin-top: 12px">
+<table class="tbl">
+<thead><tr><th scope="col">Трек</th><th scope="col">Кто добавил</th><th scope="col">Итог</th><th scope="col">Когда</th></tr></thead>
+<tbody>
+<template data-for="musHistory" data-as="h"><tr><td class="first wrap" style="max-width: 360px">{{ h.title }}</td><td data-l="Кто добавил" class="mono muted" style="font-size: 13px">{{ h.who }}</td><td data-l="Итог"><span class="pill">{{ h.status }}</span></td><td data-l="Когда" class="mono muted" style="font-size: 13px; white-space: nowrap">{{ h.at }}</td></tr></template>
+</tbody>
+</table>
+</div>
+</template>
+</section>
+</template>
+</section>
+
 <!-- ===================== ОПЕРАЦИИ ===================== -->
 <section role="tabpanel" id="p-tx" aria-labelledby="t-tx" hidden="{{ hideTx }}" style="margin-top: 24px">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
@@ -432,6 +577,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div><p class="ov">Бот</p><p style="margin: 6px 0 0"><span class="{{ su.botCls }}">{{ su.bot }}</span></p></div>
 <div><p class="ov">Доступ</p><p style="margin: 6px 0 0"><span class="{{ su.accCls }}">{{ su.access }}</span></p></div>
 </div>
+<div style="padding: 12px 24px; border-top: 1px solid var(--n-5); display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="bs sm" onClick="{{ musOfUser }}">Музыка канала</button><button type="button" class="bs sm" onClick="{{ blOfUser }}">{{ blUserLabel }}</button></div>
 <template data-if="su.hasBotErr"><div style="padding: 12px 24px; border-top: 1px solid var(--n-5)"><p class="hint">Ошибка бота</p><p class="mono" style="margin: 4px 0 0; font-size: 12px; line-height: 18px; color: var(--n-11); word-break: break-word">{{ su.botErr }}</p></div></template>
 
 <form class="dsec" onSubmit="{{ grantPlan }}" aria-labelledby="pl-t">
@@ -513,11 +659,15 @@ document.addEventListener('DOMContentLoaded', function () {
 // Тарифы — как в server/app/lib/plans.php (цена за 30 дней)
 const ADM_PLANS = [['free', 'Бесплатный', 0], ['advanced', 'Продвинутая', 299], ['pro', 'Про', 499], ['max', 'Максимум', 967]];
 const ADM_DAYS = [[7, '7 дней'], [30, '30 дней'], [90, '90 дней'], [365, 'Год'], [0, 'Бессрочно'], ['custom', 'Своё']];
-const ADM_TABS = [['sum', 'Главная'], ['bot', 'Бот и подписки'], ['users', 'Пользователи'], ['tx', 'Операции'], ['ann', 'Объявления'], ['support', 'Поддержка'], ['promo', 'Промокоды']];
+// Музыка (заказы) есть с тарифа «Про», как в server/app/lib/plans.php
+const ADM_MUSIC_PLANS = ['pro', 'max'];
+const ADM_TABS = [['sum', 'Главная'], ['bot', 'Бот и подписки'], ['users', 'Пользователи'], ['bl', 'Чёрный список'], ['mus', 'Музыка каналов'], ['tx', 'Операции'], ['ann', 'Объявления'], ['support', 'Поддержка'], ['promo', 'Промокоды']];
 const ADM_TAB_HINT = {
-  sum: 'Что происходит в сервисе прямо сейчас: сколько пользователей, каналов в эфире и денег на балансах.',
+  sum: 'Что происходит в сервисе прямо сейчас: кто онлайн, сколько пользователей, каналов в эфире и денег на балансах.',
   bot: 'Подключён ли аккаунт бота и работают ли подписки Twitch, по которым бот читает чаты.',
   users: 'Найди человека по нику или имени. В карточке можно выдать тариф, начислить баланс или заблокировать аккаунт или сайт.',
+  bl: 'Зрители, которым закрыт доступ во всех каналах StreOps. Добавь ник — и бот будет удалять его сообщения и банить его там, где он модератор.',
+  mus: 'Очередь музыки любого канала: пропустить трек, поменять порядок, одобрить заказ или добавить свой. Все действия попадают в журнал канала.',
   tx: 'Все оплаты, выданные тарифы, начисления и блокировки. Фильтр — по типу операции.',
   ann: 'Объявление, которое видят все, кто открывает панель. Можно показать на время и скрыть.',
   support: 'Обращения пользователей. Войти в аккаунт пользователя можно только по его коду из раздела «Поддержка».',
@@ -560,8 +710,12 @@ class Component extends DCLogic {
       tx: null, txErr: '', txFilter: 'all', txQ: '',
       sel: null, pf: { plan: 'pro', days: 30, custom: '', comment: '' }, mf: { amount: '', comment: '' }, bf: { comment: '' },
       errs: {}, busy: {}, ask: null,
+      online: null, onlineErr: '',
+      bl: null, blErr: '', blQ: '', blF: { login: '', reason: '', banNow: true },
+      mus: null, musErr: '', musInput: '', musLogin: '', musAddQ: '',
     };
     this.useq = 0;
+    this.museq = 0;
   }
 
   async componentDidMount() {
@@ -590,7 +744,7 @@ class Component extends DCLogic {
   }
   async refreshAll() {
     this.setState({ refreshing: true });
-    await Promise.all([this.loadStats(), this.loadSubs(), this.loadUsers(), this.loadTx()]);
+    await Promise.all([this.loadStats(), this.loadSubs(), this.loadUsers(), this.loadTx(), this.loadOnline(), this.loadBlacklist()]);
     this.setState({ refreshing: false });
   }
   async loadStats(quiet) {
@@ -629,6 +783,8 @@ class Component extends DCLogic {
     const m = Math.floor(Date.now() / 60000);
     if (m !== this.state.nowMin) this.setState({ nowMin: m });
     this.loadStats(true);
+    this.loadOnline(true);
+    if (this.state.tab === 'mus' && this.state.musLogin) this.loadMusic(this.state.musLogin, true);
   }
 
   // ---------- вкладки ----------
@@ -636,6 +792,7 @@ class Component extends DCLogic {
     this.setState({ tab: key });
     history.replaceState(null, '', location.pathname + location.search + '#' + key);
     if (key === 'bot' && !this.state.subs) this.loadSubs();
+    if (key === 'bl' && !this.state.bl) this.loadBlacklist();
     if (focus) setTimeout(() => { const el = document.getElementById('t-' + key); if (el) el.focus(); }, 0);
   }
   tabKey(e, i) {
@@ -774,6 +931,119 @@ class Component extends DCLogic {
     finally { this.setBusy(act, false); }
   }
 
+  // ---------- онлайн и чёрный список ----------
+  async loadOnline(quiet) {
+    try { const r = await StreAPI.get('admin.online'); this.setState({ online: { count: r.count, items: r.items }, onlineErr: '' }); }
+    catch (e) { if (!this.denied(e) && !quiet) this.setState({ onlineErr: e.message }); }
+  }
+  async loadBlacklist() {
+    try { const r = await StreAPI.get('admin.blacklist.get'); this.setState({ bl: { items: r.items, channels: r.channels }, blErr: '' }); }
+    catch (e) { if (!this.denied(e)) this.setState({ blErr: e.message }); }
+  }
+  async addBlacklist(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const f = this.state.blF;
+    const login = f.login.trim().replace(/^@/, '').toLowerCase();
+    const reason = f.reason.trim();
+    if (!/^[a-z0-9_]{3,25}$/.test(login)) { this.setErr('bl', 'Введи ник Twitch: от 3 до 25 знаков, латиница, цифры и «_».'); this.focusLater('bl-login'); return; }
+    if (!reason) { this.setErr('bl', 'Напиши причину. Её увидит администратор в списке и журнале.'); this.focusLater('bl-reason'); return; }
+    this.setErr('bl', '');
+    const chN = this.state.bl ? this.state.bl.channels : 0;
+    if (f.banNow && !(await this.ask({
+      title: 'Забанить ' + login + ' во всех каналах?',
+      text: chN ? 'Бан получат ' + chN + ' ' + admPlural(chN, ['канал', 'канала', 'каналов']) + ', где работает бот. Бот банит только там, где он модератор. Бан бессрочный: снять его можно кнопкой «Убрать и разбанить».'
+        : 'Сейчас бот не работает ни на одном канале, поэтому бана не будет. Зритель всё равно попадёт в список.',
+      ok: 'Добавить и забанить',
+    }))) return;
+    this.setBusy('bl', true);
+    try {
+      const r = await StreAPI.post('admin.blacklist.add', { login, reason, banNow: f.banNow });
+      let msg = login + ' в чёрном списке';
+      if (!r.twitchFound) msg += '. Такого ника нет в Twitch: проверь написание';
+      else if (f.banNow) msg += '. Бан: ' + r.banned + ' из ' + r.channels + (r.banned < r.channels ? ' (в остальных боту не выдали модерацию)' : '');
+      StreAPI.toast(msg);
+      this.setState({ blF: { login: '', reason: '', banNow: f.banNow } });
+      await this.loadBlacklist();
+    } catch (err) { if (!this.denied(err)) this.setErr('bl', err.message); }
+    finally { this.setBusy('bl', false); }
+  }
+  async removeBlacklist(it, unbanNow) {
+    if (unbanNow && !(await this.ask({ title: 'Разбанить ' + it.login + ' во всех каналах?', text: 'Бан снимется там, где бот модератор, и ник уберётся из списка. Писать в чатах он сможет сразу.', ok: 'Убрать и разбанить', okCls: 'btn' }))) return;
+    this.setBusy('bl' + it.id, true);
+    try {
+      const r = await StreAPI.post('admin.blacklist.remove', { id: it.id, unbanNow });
+      StreAPI.toast(it.login + ' убран из списка' + (unbanNow ? '. Разбан: ' + r.unbanned + ' из ' + r.channels : ''));
+      await this.loadBlacklist();
+    } catch (e) { if (!this.denied(e)) StreAPI.toast(e.message, 'error'); }
+    finally { this.setBusy('bl' + it.id, false); }
+  }
+
+  // ---------- музыка канала ----------
+  async loadMusic(login, quiet) {
+    const seq = ++this.museq;
+    try {
+      const r = await StreAPI.get('admin.music.get', { channel: login });
+      if (seq !== this.museq) return;
+      delete r.ok;
+      this.setState({ mus: r, musLogin: r.channel.login, musErr: '' });
+    } catch (e) {
+      if (this.denied(e) || quiet || seq !== this.museq) return;
+      this.setState({ mus: null, musLogin: '', musErr: e.message });
+    }
+  }
+  musOpen(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const login = this.state.musInput.trim().replace(/^@/, '').toLowerCase();
+    if (!login) { this.setState({ musErr: 'Введи ник стримера, например zaka_00.' }); this.focusLater('mu-in'); return; }
+    this.setState({ musErr: '' });
+    this.loadMusic(login);
+  }
+  async musDo(action, id, okText) {
+    const m = this.state.mus;
+    if (!m) return;
+    this.setBusy('mus', true);
+    try {
+      await StreAPI.post('admin.music.do', { channel: m.channel.login, action, id });
+      StreAPI.toast(okText);
+      await this.loadMusic(m.channel.login, true);
+    } catch (e) { if (!this.denied(e)) StreAPI.toast(e.message, 'error'); }
+    finally { this.setBusy('mus', false); }
+  }
+  async musAdd(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const m = this.state.mus;
+    if (!m) return;
+    const q = this.state.musAddQ.trim();
+    if (!q) { this.setErr('musAdd', 'Вставь ссылку на YouTube или название трека.'); this.focusLater('ma-in'); return; }
+    this.setErr('musAdd', '');
+    this.setBusy('mus', true);
+    try {
+      const r = await StreAPI.post('admin.music.add', { channel: m.channel.login, query: q });
+      StreAPI.toast(r.message || 'Трек добавлен');
+      this.setState({ musAddQ: '' });
+      await this.loadMusic(m.channel.login, true);
+    } catch (err) { if (!this.denied(err)) this.setErr('musAdd', err.message); }
+    finally { this.setBusy('mus', false); }
+  }
+  async musOrders(on) {
+    const m = this.state.mus;
+    if (!m) return;
+    if (!on && !(await this.ask({ title: 'Закрыть приём заказов в канале ' + m.channel.login + '?', text: 'Зрители не смогут заказывать треки, пока приём закрыт. Очередь и уже добавленные треки не пропадут.', ok: 'Закрыть приём' }))) return;
+    this.setBusy('mus', true);
+    try {
+      await StreAPI.post('admin.music.orders', { channel: m.channel.login, on });
+      StreAPI.toast(on ? 'Приём заказов открыт' : 'Приём заказов закрыт');
+      await this.loadMusic(m.channel.login, true);
+    } catch (e) { if (!this.denied(e)) StreAPI.toast(e.message, 'error'); }
+    finally { this.setBusy('mus', false); }
+  }
+  async musClear() {
+    const m = this.state.mus;
+    if (!m) return;
+    if (!(await this.ask({ title: 'Очистить очередь канала ' + m.channel.login + '?', text: 'Все треки из очереди перестанут играть. Баллы автоматически не вернутся.', ok: 'Очистить очередь' }))) return;
+    this.musDo('clear', 0, 'Очередь очищена');
+  }
+
   renderVals() {
     const s = this.state;
     const st = s.stats;
@@ -894,6 +1164,45 @@ class Component extends DCLogic {
     const suTx = u ? tx.filter((t) => t.login === u.login).slice(0, 5).map(txLook) : [];
     const ask = s.ask;
 
+    // ---- онлайн ----
+    const on = s.online;
+    const onRows = on ? on.items.slice(0, 10).map((x) => ({
+      name: x.name, login: x.login, plan: (ADM_PLANS.find((p) => p[0] === x.plan) || ADM_PLANS[0])[1],
+      ago: admAgo(Math.max(0, now - x.lastSeen)), open: () => this.openByLogin(x.login),
+    })) : [];
+    const onMore = on && on.count > onRows.length ? 'Ещё ' + StreAPI.fmtNum(on.count - onRows.length) + ' — список показывает последних 10' : '';
+
+    // ---- чёрный список ----
+    const blItems = s.bl ? s.bl.items : [];
+    const blChN = s.bl ? s.bl.channels : 0;
+    const blq = s.blQ.trim().toLowerCase();
+    const blRows = blItems.filter((x) => !blq || x.login.indexOf(blq) >= 0 || String(x.reason).toLowerCase().indexOf(blq) >= 0).map((x) => ({
+      login: x.login, reason: x.reason, by: x.by || '—', at: admWhen(x.at), hasId: !!x.twitchId, noId: !x.twitchId, off: !!busy['bl' + x.id],
+      remove: () => this.removeBlacklist(x, false), removeUnban: () => this.removeBlacklist(x, true),
+    }));
+    const inBl = !!u && blItems.some((x) => x.login === u.login);
+
+    // ---- музыка канала ----
+    const mus = s.mus;
+    const musPlan = mus ? (ADM_PLANS.find((p) => p[0] === mus.channel.plan) || ADM_PLANS[0])[1] : '';
+    const musNoMusic = !!mus && ADM_MUSIC_PLANS.indexOf(mus.channel.plan) < 0;
+    const titleOf = (x) => x.title || x.url || 'Без названия';
+    const musNow = mus ? mus.playing : null;
+    const musQueue = mus ? mus.queue.map((x, i) => ({
+      n: i + 1, title: titleOf(x), who: x.requester || '—',
+      top: () => this.musDo('top', x.id, 'Трек поставлен в начало очереди'),
+      play: () => this.musDo('playnow', x.id, 'Трек запущен'),
+      remove: () => this.musDo('remove', x.id, 'Трек убран из очереди'),
+    })) : [];
+    const musPending = mus ? mus.pending.map((x) => ({
+      title: titleOf(x), who: x.requester || '—',
+      approve: () => this.musDo('approve', x.id, 'Заказ одобрен, трек в очереди'),
+      reject: () => this.musDo('reject', x.id, 'Заказ отклонён'),
+    })) : [];
+    const SONG_STATUS = { played: 'сыграл', skipped: 'пропущен', rejected: 'отклонён' };
+    const musHistory = mus ? mus.history.map((x) => ({ title: titleOf(x), who: x.requester || '—', status: SONG_STATUS[x.status] || x.status, at: admWhen(x.playedAt || x.at) })) : [];
+    const orders = !!mus && mus.orders;
+
     return {
       subtitle: s.phase === 'denied' ? 'Управление сервисом StreOps.' : 'Весь сервис StreOps: пользователи, деньги, бот и фоновые задачи. Раздел видишь только ты.',
       loading: s.phase === 'loading', denied: s.phase === 'denied', ready,
@@ -901,10 +1210,10 @@ class Component extends DCLogic {
       cronBad, cronAgo, botMissing: !!st && !botReady, botLogin, goBot: () => this.pickTab('bot', true),
       tabs: ADM_TABS.map((t, i) => ({
         id: 't-' + t[0], panel: 'p-' + t[0], label: t[1], sel: s.tab === t[0] ? 'true' : 'false', ti: s.tab === t[0] ? '0' : '-1',
-        n: t[0] === 'users' ? (st ? StreAPI.fmtNum(st.users) : '') : t[0] === 'bot' ? (nBad ? '! ' + nBad : '') : '',
+        n: t[0] === 'users' ? (st ? StreAPI.fmtNum(st.users) : '') : t[0] === 'bot' ? (nBad ? '! ' + nBad : '') : t[0] === 'bl' && s.bl ? StreAPI.fmtNum(s.bl.items.length) : '',
         pick: () => this.pickTab(t[0]), key: (e) => this.tabKey(e, i),
       })),
-      hideSum: s.tab !== 'sum', hideBot: s.tab !== 'bot', hideUsers: s.tab !== 'users', hideTx: s.tab !== 'tx', hideAnn: s.tab !== 'ann', hideSupport: s.tab !== 'support', hidePromo: s.tab !== 'promo',
+      hideSum: s.tab !== 'sum', hideBot: s.tab !== 'bot', hideUsers: s.tab !== 'users', hideBl: s.tab !== 'bl', hideMus: s.tab !== 'mus', hideTx: s.tab !== 'tx', hideAnn: s.tab !== 'ann', hideSupport: s.tab !== 'support', hidePromo: s.tab !== 'promo',
 
       statsErrOn: !!s.statsErr, statsErr: s.statsErr, statsBusy: !st, kpis, kpiUsers: kpis.slice(0, 2), kpiChannels: kpis.slice(2, 4), kpiMoney: kpis.slice(4), tabHint: ADM_TAB_HINT[s.tab] || '',
       cronDot: cronBad ? 'background: var(--accent); box-shadow: 0 0 0 4px rgb(var(--accent-rgb) / .25)' : st ? 'background: var(--n-12)' : 'background: var(--n-7)',
@@ -966,6 +1275,47 @@ class Component extends DCLogic {
       siteBtn: busy.site ? 'Сохраняем…' : u && u.siteBlocked ? 'Разблокировать сайт' : 'Заблокировать сайт', siteBtnCls: u && u.siteBlocked ? 'bs' : 'bdx',
       suTx, suHasTx: suTx.length > 0, suNoTx: !!u && !suTx.length,
       goTxOfUser: () => { const login = u.login; this.closeUser(); this.setState({ txQ: login, txFilter: 'all' }); this.pickTab('tx', true); },
+
+      onlineCount: on ? StreAPI.fmtNum(on.count) : '—', onlineNote: 'Вошли в StreOps и были активны за последние 5 минут. Гости сайтов без входа не видны. Обновляется раз в 30 секунд.',
+      onlineErrOn: !!s.onlineErr, onlineErr: s.onlineErr, onlineHasRows: onRows.length > 0, onlineRows: onRows, onlineMore: onMore, onlineEmpty: !!on && !onRows.length,
+
+      blCount: s.bl ? StreAPI.fmtNum(blItems.length) : '—', blChannelsText: blChN ? blChN + ' ' + admPlural(blChN, ['канал', 'канала', 'каналов']) : 'нет',
+      blErrOn: !!s.blErr, blErr: s.blErr, blLoading: !s.bl && !s.blErr, blHasRows: blRows.length > 0, blRows, blEmpty: !!s.bl && !blRows.length,
+      blEmptyText: blItems.length ? 'Никого не нашли по запросу «' + s.blQ.trim() + '».' : 'Список пуст. Сюда попадают зрители, которых нужно заблокировать во всех каналах StreOps.',
+      blQ: s.blQ, setBlQ: (e) => this.setState({ blQ: e.target.value }),
+      blF: s.blF, setBlLogin: (e) => this.setState({ blF: Object.assign({}, this.state.blF, { login: e.target.value }) }),
+      setBlReason: (e) => this.setState({ blF: Object.assign({}, this.state.blF, { reason: e.target.value }) }),
+      setBlBanNow: (e) => this.setState({ blF: Object.assign({}, this.state.blF, { banNow: e.target.checked }) }),
+      blSubmit: (e) => this.addBlacklist(e), blOff: !!busy.bl, blSubmitLabel: busy.bl ? 'Добавляем…' : 'Добавить в список',
+      blFormErrOn: !!s.errs.bl, blFormErr: s.errs.bl || '',
+      musOfUser: () => { if (!u) return; this.opener = null; this.closeUser(); this.setState({ musInput: u.login }); this.pickTab('mus', true); this.loadMusic(u.login); },
+      blOfUser: () => {
+        if (!u) return;
+        this.opener = null; this.closeUser();
+        if (inBl) { this.setState({ blQ: u.login }); this.pickTab('bl', true); return; }
+        this.setState({ blF: { login: u.login, reason: '', banNow: true } });
+        this.pickTab('bl'); this.focusLater('bl-reason');
+      },
+      blUserLabel: inBl ? 'Уже в чёрном списке' : 'В чёрный список',
+
+      musInput: s.musInput, setMusInput: (e) => this.setState({ musInput: e.target.value }), musOpenSubmit: (e) => this.musOpen(e),
+      musErrOn: !!s.musErr, musErr: s.musErr, musNone: !mus && !s.musErr, musLoaded: !!mus,
+      musChName: mus ? mus.channel.name : '', musChLogin: mus ? mus.channel.login : '', musChPlan: musPlan,
+      musNoMusic, musNoMusicText: 'На тарифе «' + musPlan + '» заказы музыки не работают. Очередью управлять можно в любом случае.',
+      musOrdersText: orders ? 'Заказы открыты' : 'Заказы закрыты', musOrdersCls: orders ? 'pill on' : 'pill',
+      musOrdersBtn: orders ? 'Закрыть приём' : 'Открыть приём', musOrdersBtnCls: orders ? 'bdx' : 'btn',
+      musOrdersHint: orders ? 'Зрители могут заказывать треки командой или наградой за баллы. Закрой приём, если заказы сейчас не нужны.'
+        : 'Заказы не принимаются, зрители получат отказ. Очередь и её правка работают как обычно.',
+      musToggleOrders: () => this.musOrders(!orders),
+      musOff: !!busy.mus,
+      musHasNow: !!musNow, musNoNow: !musNow, musNowTitle: musNow ? titleOf(musNow) : '', musNowWho: musNow ? musNow.requester || '—' : '',
+      musSkip: () => this.musDo('next', 0, 'Трек пропущен'),
+      musAddQ: s.musAddQ, setMusAddQ: (e) => this.setState({ musAddQ: e.target.value }), musAddSubmit: (e) => this.musAdd(e),
+      musAddErrOn: !!s.errs.musAdd, musAddErr: s.errs.musAdd || '',
+      musQueue, musQueueCount: mus ? StreAPI.fmtNum(musQueue.length) : '0', musQueueHas: musQueue.length > 0, musQueueEmpty: !!mus && !musQueue.length,
+      musClear: () => this.musClear(),
+      musPending, musPendingHas: musPending.length > 0, musPendingCount: StreAPI.fmtNum(musPending.length),
+      musHistory, musHasHistory: musHistory.length > 0,
 
       hasAsk: !!ask, ask: ask || {}, askNo: () => this.answer(false), askYes: () => this.answer(true),
     };

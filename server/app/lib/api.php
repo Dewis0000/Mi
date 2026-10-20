@@ -973,6 +973,50 @@ function api_dispatch(string $r): never {
             $rows = db_all('SELECT t.*, u.login FROM transactions t LEFT JOIN users u ON u.id = t.user_id ORDER BY t.id DESC LIMIT 100');
             json_out(['ok' => true, 'items' => array_map(fn($t) => ['id' => (int)$t['id'], 'login' => $t['login'], 'amount' => (int)$t['amount'], 'kind' => $t['kind'], 'comment' => $t['comment'], 'admin' => $t['admin_login'], 'at' => (int)$t['created_at']], $rows)]);
         }
+        case 'admin.online': { // кто сейчас в панели или на сайтах (активность за последние 5 минут)
+            require_admin();
+            json_out(['ok' => true] + online_now());
+        }
+        case 'admin.blacklist.get': {
+            require_admin();
+            json_out(['ok' => true, 'items' => bl_list(), 'channels' => count(bl_channels())]);
+        }
+        case 'admin.blacklist.add': {
+            $admin = require_admin();
+            json_out(bl_add($admin, in_str('login', 40), in_str('reason', 300), in_bool('banNow')));
+        }
+        case 'admin.blacklist.remove': {
+            $admin = require_admin();
+            json_out(bl_remove($admin, in_int('id'), in_bool('unbanNow')));
+        }
+        case 'admin.music.get': { // музыка любого канала — без роли помощника
+            require_admin();
+            json_out(['ok' => true] + admin_music_state(admin_channel(in_str('channel', 40))));
+        }
+        case 'admin.music.do': {
+            $admin = require_admin();
+            admin_music_do($admin, admin_channel(in_str('channel', 40)), in_str('action', 16), in_int('id'));
+            json_out(['ok' => true]);
+        }
+        case 'admin.music.add': {
+            $admin = require_admin();
+            $ch = admin_channel(in_str('channel', 40));
+            if (!plan_limits($ch)['music']) fail('У этого канала тариф без музыки: заказы доступны на «Про» и выше');
+            $res = song_request($ch, in_str('query', 300), 'админ ' . $admin['login'], 'manual');
+            mgr_log($ch, 'админ ' . $admin['login'], 'add', $res['ok'] ? 'трек добавлен' : 'не добавлен: ' . $res['message']);
+            if (!$res['ok']) fail($res['message']);
+            json_out(['ok' => true, 'message' => $res['message']]);
+        }
+        case 'admin.music.orders': {
+            $admin = require_admin();
+            $ch = admin_channel(in_str('channel', 40));
+            $c = settings_get((int)$ch['id'], 'music', []);
+            $c = is_array($c) ? $c : [];
+            $c['open'] = in_bool('on');
+            settings_set((int)$ch['id'], 'music', $c);
+            mgr_log($ch, 'админ ' . $admin['login'], 'orders', $c['open'] ? 'приём заказов включён' : 'приём заказов выключен');
+            json_out(['ok' => true]);
+        }
         case 'admin.eventsub': {
             require_admin();
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {

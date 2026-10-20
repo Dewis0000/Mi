@@ -146,6 +146,9 @@ function bot_handle_message(array $user, array $ev): void {
     ]);
     if ($b && $chatterId === (string)$b['id']) return; // свои сообщения не обрабатываем
 
+    // чёрный список StreOps: сообщение удаляем, человека банем в этом канале, дальше не обрабатываем
+    if (bl_enforce($user, $chatterId, $login, $msgId)) return;
+
     $ctx = ['user' => $user, 'chatterId' => $chatterId, 'login' => $login, 'name' => $name, 'text' => $text, 'msgId' => $msgId, 'roles' => $roles, 'fragments' => $ev['message']['fragments'] ?? []];
 
     if (moderate($ctx)) return;
@@ -605,6 +608,11 @@ function bot_on_redemption(array $user, array $ev): void {
     $music = music_config((int)$user['id']);
     $rewardId = $ev['reward']['id'] ?? '';
     if (empty($music['points']['on']) || $rewardId !== ($music['points']['rewardId'] ?? null)) return;
+    if (bl_find((string)($ev['user_login'] ?? ''), (string)($ev['user_id'] ?? ''))) { // заблокированный зритель не получает музыку за баллы
+        refund_redemption($user, ['redemption_id' => $ev['id'], 'reward_id' => $rewardId]);
+        tw_send($user['twitch_id'], '@' . $ev['user_name'] . ' заказ недоступен: ты в чёрном списке StreOps');
+        return;
+    }
     $res = song_request($user, (string)($ev['user_input'] ?? ''), (string)$ev['user_name'], 'points', (string)$ev['id'], $rewardId);
     tw_send($user['twitch_id'], '@' . $ev['user_name'] . ' ' . $res['message']);
     if (!$res['ok']) refund_redemption($user, ['redemption_id' => $ev['id'], 'reward_id' => $rewardId]);

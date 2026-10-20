@@ -37,6 +37,11 @@ function require_user(): array {
     $u = current_user();
     if (!$u) fail('Нужно войти через Twitch', 401);
     if ((int)$u['banned'] && !is_admin($u)) fail('Аккаунт заблокирован администрацией', 403);
+    // время последней активности — для счётчика «сейчас онлайн» в админке; пишем не чаще раза в минуту
+    if (now() - (int)($u['last_seen'] ?? 0) > 60) {
+        db_exec('UPDATE users SET last_seen = ? WHERE id = ?', [now(), $u['id']]);
+        $u['last_seen'] = now();
+    }
     return $u;
 }
 

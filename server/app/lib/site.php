@@ -144,6 +144,7 @@ function site_dispatch(string $r): bool {
             $u = current_user() ?? fail('Войди через Twitch', 401);
             $streamer = site_streamer(in_str('c', 40)) ?? fail('Такого сайта нет', 404);
             if (!site_active($streamer)) fail('Сайт выключен', 404);
+            if (bl_find($u['login'], (string)$u['twitch_id'])) fail('Ты в чёрном списке StreOps: предлагать видео нельзя');
             if ((int)$streamer['id'] === (int)$u['id']) fail('Свои видео добавляй в «Мой сайт»');
             $url = in_str('url', 400);
             $section = in_str('section', 16, 'offstream');
@@ -170,6 +171,7 @@ function site_dispatch(string $r): bool {
             $streamer = site_streamer(in_str('c', 40)) ?? fail('Такого сайта нет', 404);
             if (!site_active($streamer)) fail('Сайт выключен', 404);
             if (!site_settings((int)$streamer['id'])['chatOn']) fail('Чат на сайте выключен');
+            if (bl_find($u['login'], (string)$u['twitch_id'])) fail('Ты в чёрном списке StreOps: писать в чат нельзя');
             $text = in_str('text', 300);
             if ($text === '') fail('Пустое сообщение');
             $rateKey = 'sitechat:' . (int)$u['id'];

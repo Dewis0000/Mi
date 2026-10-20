@@ -50,7 +50,7 @@ function db_update(string $table, array $row, string $where, array $args): int {
     return db_exec('UPDATE ' . $table . ' SET ' . $set . ' WHERE ' . $where, array_merge(array_values($row), $args));
 }
 
-const DB_VERSION = 9;
+const DB_VERSION = 10;
 
 function db_migrate(PDO $pdo, string $driver): void {
     $sqlite = $driver === 'sqlite';
@@ -107,6 +107,7 @@ function db_migrate(PDO $pdo, string $driver): void {
         "site_chat (id $id, streamer_id INT NOT NULL, user_id INT NOT NULL, login {$vc(64)} NOT NULL, name {$vc(64)} NOT NULL DEFAULT '', text {$vc(300)} NOT NULL, created_at INT NOT NULL DEFAULT 0)",
         "site_badges (streamer_id INT NOT NULL, user_id INT NOT NULL, label {$vc(40)} NOT NULL, icon {$vc(4)} NOT NULL DEFAULT '', PRIMARY KEY (streamer_id, user_id))",
         "stream_samples (user_id INT NOT NULL, ts INT NOT NULL, viewers INT NOT NULL DEFAULT 0)",
+        "blacklist (id $id, login {$vc(64)} NOT NULL UNIQUE, twitch_id {$vc(32)} NOT NULL DEFAULT '', reason $text, by_login {$vc(64)} NOT NULL DEFAULT '', created_at INT NOT NULL DEFAULT 0)",
         "site_members (streamer_id INT NOT NULL, user_id INT NOT NULL, is_mod INT NOT NULL DEFAULT 0, color {$vc(16)} NOT NULL DEFAULT '', verified INT NOT NULL DEFAULT 0, PRIMARY KEY (streamer_id, user_id))",
         "site_watch (id $id, streamer_id INT NOT NULL, url $text NOT NULL, title {$vc(200)} NOT NULL DEFAULT '', note {$vc(300)} NOT NULL DEFAULT '', public INT NOT NULL DEFAULT 0, created_at INT NOT NULL DEFAULT 0)",
     ];
@@ -122,6 +123,7 @@ function db_migrate(PDO $pdo, string $driver): void {
         'idx_gw_user ON giveaways (user_id, id)',
         'idx_site_vid ON site_videos (streamer_id, status, id)',
         'idx_samples ON stream_samples (user_id, ts)',
+        'idx_blacklist_tid ON blacklist (twitch_id)',
         'idx_site_chat ON site_chat (streamer_id, id)',
     ];
     foreach ($idx as $i) {
@@ -130,6 +132,7 @@ function db_migrate(PDO $pdo, string $driver): void {
     try { $pdo->exec("ALTER TABLE payments ADD COLUMN plan {$vc(16)} NOT NULL DEFAULT ''"); } catch (Throwable $e) { /* колонка уже есть */ }
     try { $pdo->exec('ALTER TABLE payments ADD COLUMN promo_id INT NOT NULL DEFAULT 0'); } catch (Throwable $e) { /* колонка уже есть */ }
     try { $pdo->exec("ALTER TABLE chat_messages ADD COLUMN frags {$text}"); } catch (Throwable $e) { /* колонка уже есть */ }
+    try { $pdo->exec('ALTER TABLE users ADD COLUMN last_seen INT NOT NULL DEFAULT 0'); } catch (Throwable $e) { /* колонка уже есть */ }
     // v9: новые стартовые ответы. Меняем только тексты, которые создавались по умолчанию и не правились вручную
     $pdo->prepare('UPDATE commands SET response = ? WHERE name = ? AND response = ?')->execute(['Аптайм: {uptime}', 'аптайм', 'Стрим идёт {uptime}']);
     $pdo->prepare('UPDATE commands SET response = ? WHERE name = ? AND response = ?')->execute(['Команды канала: {commands}', 'команды', 'Команды канала: !аптайм, !трек, !очередь']);
