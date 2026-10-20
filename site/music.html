@@ -233,7 +233,7 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 <span role="cell" style="min-width: 0"><span class="ell" style="font-weight: 500" title="{{ q.title }}">{{ q.title }}</span><span class="ell sub-l"><a href="{{ q.url }}" target="_blank" rel="noopener">{{ q.short }}</a><span class="mob"> · {{ q.requester }}</span></span></span>
 <span role="cell" class="hide" style="min-width: 0"><span class="ell" style="color: var(--n-11)">{{ q.requester }}</span><span class="how">{{ q.how }}</span></span>
 <span role="cell" class="mono" style="font-size: 13px">{{ q.len }}</span>
-<span role="cell" style="display: flex; justify-content: flex-end"><button type="button" class="ib" aria-label="{{ q.upLabel }}" title="Поднять выше" onClick="{{ q.up }}" disabled="{{ q.upOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></button><button type="button" class="ib d" aria-label="{{ q.delLabel }}" title="Убрать из очереди" onClick="{{ q.del }}" disabled="{{ q.busy }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button></span>
+<span role="cell" style="display: flex; justify-content: flex-end"><button type="button" class="ib" aria-label="{{ q.upLabel }}" title="Поднять выше" onClick="{{ q.up }}" disabled="{{ q.upOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></button><button type="button" class="ib" aria-label="{{ q.downLabel }}" title="Опустить ниже" onClick="{{ q.down }}" disabled="{{ q.downOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></button><button type="button" class="ib" aria-label="{{ q.topLabel }}" title="В начало очереди" onClick="{{ q.top }}" disabled="{{ q.upOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></button><button type="button" class="ib" aria-label="{{ q.playLabel }}" title="Сыграть сейчас (текущий трек закончится)" onClick="{{ q.playNow }}" disabled="{{ q.busy }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"></path></svg></button><button type="button" class="ib d" aria-label="{{ q.delLabel }}" title="Убрать из очереди" onClick="{{ q.del }}" disabled="{{ q.busy }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button></span>
 </div>
 </template>
 <template data-if="qLoading"><p style="margin: 0; padding: 48px 16px; text-align: center; border-top: 1px solid var(--n-4); font-size: 14px; color: var(--n-9)">Загрузка очереди…</p></template>
@@ -796,6 +796,9 @@ class Component extends DCLogic {
         upLabel: 'Поднять «' + x.title + '» выше', delLabel: 'Убрать «' + x.title + '» из очереди',
         upOff: i === 0 || busy('up:' + x.id), busy: busy('remove:' + x.id),
         up: () => this.act('up', x),
+        downLabel: 'Опустить «' + x.title + '» ниже', topLabel: 'Поставить «' + x.title + '» в начало', playLabel: 'Сыграть «' + x.title + '» сейчас',
+        downOff: i === s.queue.length - 1 || busy('down:' + x.id), playNow: () => this.act('playnow', x),
+        down: () => this.act('down', x), top: () => this.act('top', x),
         del: () => {
           if ((x.method === 'points' || x.method === 'donate') && !confirm('«' + x.title + '» заказан ' + (x.method === 'points' ? 'за баллы канала' : 'донатом') + '. Убрать из очереди? Баллы и деньги при этом не возвращаются.')) return;
           this.act('remove', x);

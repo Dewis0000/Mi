@@ -119,11 +119,20 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 <p style="margin: 10px 0 0; font-size: 15px; line-height: 22px; color: var(--n-12)">{{ playingText }}</p>
 </section>
 
+<section aria-labelledby="pa-t" style="margin-top: 16px; border-radius: 12px; background: rgb(var(--n-2-rgb) / 0.62); border: 1px solid rgb(var(--n-13-rgb) / 0.10); padding: 20px 24px">
+<h2 id="pa-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Добавить трек</h2>
+<p style="margin: 6px 0 0; font-size: 14px; color: var(--n-9)">Ссылка на YouTube или название трека. Трек встанет в конец очереди.</p>
+<form onSubmit="{{ addTrack }}" style="margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap">
+<input aria-label="Трек" value="{{ addQuery }}" onInput="{{ setAddQuery }}" placeholder="Ссылка или название" style="flex: 1 1 260px; min-width: 0; height: 40px; box-sizing: border-box; padding: 0 12px; border-radius: 6px; background: var(--n-1); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px/20px var(--font-sans), system-ui, sans-serif">
+<button type="submit" disabled="{{ addBusy }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: var(--n-13); color: var(--n-1); font: 500 14px/20px var(--font-sans), system-ui, sans-serif; cursor: pointer">Добавить в очередь</button>
+</form>
+</section>
+
 <section aria-labelledby="pq-t" style="margin-top: 16px; border-radius: 12px; background: rgb(var(--n-2-rgb) / 0.62); border: 1px solid rgb(var(--n-13-rgb) / 0.10); padding: 20px 24px">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap"><h2 id="pq-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Очередь</h2><button type="button" onClick="{{ clearQ }}" disabled="{{ noQueue }}" style="height: 36px; padding: 0 12px; border-radius: 6px; border: 1px solid var(--n-6); background: transparent; color: var(--accent-text); font: 500 14px/20px var(--font-sans), system-ui, sans-serif; cursor: pointer">Очистить</button></div>
 <template data-if="noQueue"><p style="margin: 14px 0 0; font-size: 14px; color: var(--n-9)">Очередь пуста.</p></template>
 <ul style="list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
-<template data-for="queueRows" data-as="q"><li style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--n-5)"><span style="min-width: 0; font-size: 14px"><span style="color: var(--n-12)">{{ q.title }}</span> <span style="color: var(--n-9)">{{ q.by }}</span></span><span style="display: flex; gap: 6px"><button type="button" class="tag" onClick="{{ q.up }}">Вверх</button><button type="button" class="tag" onClick="{{ q.remove }}">Убрать</button></span></li></template>
+<template data-for="queueRows" data-as="q"><li style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--n-5)"><span style="min-width: 0; font-size: 14px"><span style="color: var(--n-12)">{{ q.title }}</span> <span style="color: var(--n-9)">{{ q.by }}</span></span><span style="display: flex; gap: 6px; flex-wrap: wrap"><button type="button" class="tag" onClick="{{ q.top }}">В начало</button><button type="button" class="tag" onClick="{{ q.up }}">Вверх</button><button type="button" class="tag" onClick="{{ q.down }}">Вниз</button><button type="button" class="tag" onClick="{{ q.playNow }}">Сыграть сейчас</button><button type="button" class="tag" onClick="{{ q.remove }}">Убрать</button></span></li></template>
 </ul>
 </section>
 
@@ -177,6 +186,19 @@ class Component extends DCLogic {
     } catch (e) { StreAPI.toast(e.message, 'error'); }
     this.setState({ busy: false });
   }
+  async addTrack(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const query = (this.state.addQuery || '').trim();
+    if (!query || this.state.addBusy) return;
+    this.setState({ addBusy: true });
+    try {
+      const r = await StreAPI.post('manage.add', { channel: this.state.sel, query: query });
+      StreAPI.toast(r.message || 'Добавлено');
+      this.setState({ addQuery: '' });
+      await this.loadState(true);
+    } catch (err) { StreAPI.toast(err.message, 'error'); }
+    this.setState({ addBusy: false });
+  }
   async toggleOrders() {
     const on = !(this.state.st && this.state.st.orders);
     try {
@@ -190,7 +212,7 @@ class Component extends DCLogic {
     const st = s.st;
     const q = (x) => x.title || 'Трек';
     const by = (x) => x.requester ? 'заказал ' + x.requester : '';
-    const queueRows = st ? st.queue.map((x) => ({ title: q(x), by: by(x), up: () => this.act('up', x.id), remove: () => this.act('remove', x.id) })) : [];
+    const queueRows = st ? st.queue.map((x) => ({ title: q(x), by: by(x), up: () => this.act('up', x.id), down: () => this.act('down', x.id), top: () => this.act('top', x.id), playNow: () => this.act('playnow', x.id), remove: () => this.act('remove', x.id) })) : [];
     const pendRows = st ? st.pending.map((x) => ({ title: q(x), by: by(x), approve: () => this.act('approve', x.id), reject: () => this.act('reject', x.id) })) : [];
     const chTabs = s.channels.map((c) => ({ label: c.name, sel: s.sel === c.login ? 'true' : 'false', pick: () => { this.setState({ sel: c.login, st: null }); this.loadState(true); } }));
     return {
@@ -203,6 +225,8 @@ class Component extends DCLogic {
       playingText: st && st.playing ? 'Играет: ' + q(st.playing) + (st.playing.requester ? ' (заказал ' + st.playing.requester + ')' : '') : 'Сейчас ничего не играет',
       noPlaying: !st || !st.playing,
       skip: () => this.act('next'),
+      addQuery: this.state.addQuery || '', setAddQuery: (e) => this.setState({ addQuery: e.target.value }),
+      addBusy: !!this.state.addBusy, addTrack: (e) => this.addTrack(e),
       noQueue: !st || st.queue.length === 0,
       clearQ: () => { if (confirm('Очистить очередь? Треки пропустятся.')) this.act('clear'); },
       queueRows,
