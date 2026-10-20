@@ -463,8 +463,15 @@ function stream_fresh(array $user): ?array {
 
 // Список включённых команд канала для ответа «!команды»
 function commands_line(int $uid): string {
-    $rows = db_all('SELECT prefix, name FROM commands WHERE user_id = ? AND enabled = 1 ORDER BY name', [$uid]);
-    return $rows ? implode(', ', array_map(fn($c) => $c['prefix'] . $c['name'], $rows)) : 'пока нет команд';
+    // только команды, которые может вызвать любой зритель; длина ограничена, чтобы сообщение не обрезалось в Twitch
+    $rows = db_all("SELECT prefix, name FROM commands WHERE user_id = ? AND enabled = 1 AND access = 'all' ORDER BY name", [$uid]);
+    $out = []; $len = 0;
+    foreach ($rows as $i => $c) {
+        $t = $c['prefix'] . $c['name'];
+        if ($len + mb_strlen($t) + 2 > 360) return implode(', ', $out) . ' и ещё ' . (count($rows) - $i);
+        $out[] = $t; $len += mb_strlen($t) + 2;
+    }
+    return $out ? implode(', ', $out) : 'пока нет команд';
 }
 
 function render_vars(string $tpl, array $user, array $ctx, int $count, string $args = ''): string {

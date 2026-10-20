@@ -39,6 +39,12 @@ function promo_claim(array $p, int $uid): bool {
     return true;
 }
 
+// Возвращаем занятое использование, если тариф не включился
+function promo_release(array $p, int $uid): void {
+    db_exec('DELETE FROM promo_uses WHERE code_id = ? AND user_id = ?', [(int)$p['id'], $uid]);
+    db_exec('UPDATE promo_codes SET used = used - 1 WHERE id = ? AND used > 0', [(int)$p['id']]);
+}
+
 // Отмечаем использование. Повторно засчитать тот же код тому же пользователю нельзя: PRIMARY KEY не даст.
 function promo_mark_used(array $p, int $uid): void {
     try {

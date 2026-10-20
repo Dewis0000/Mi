@@ -93,7 +93,7 @@ function api_dispatch(string $r): never {
             db_update('users', ['bot_enabled' => 1, 'bot_error' => $errors ? implode('; ', $errors) : null], 'id = ?', [$u['id']]);
             if (!$errors) tw_send($u['twitch_id'], 'StreOps подключён к каналу. Напиши !команды, чтобы увидеть список.');
             // первый раз: напоминание о подписке, чтобы бот сразу что-то делал в эфире (можно выключить в «Бот» → «Таймеры»)
-            if (!$errors && !timers_list((int)$u['id'])) settings_set((int)$u['id'], 'timers', [['id' => rand_token(4), 'text' => 'Не забывайте про подписку, это помогает стриму ❤', 'every' => 20, 'liveOnly' => true, 'on' => true, 'last' => now()]]);
+            if (!$errors && settings_get((int)$u['id'], 'timers', null) === null) settings_set((int)$u['id'], 'timers', [['id' => rand_token(4), 'text' => 'Не забывайте про подписку, это помогает стриму ❤', 'every' => 20, 'liveOnly' => true, 'on' => true, 'last' => now()]]);
             json_out(['ok' => true, 'moderator' => $mod, 'errors' => $errors]);
         }
         case 'bot.disable': {
@@ -618,7 +618,12 @@ function api_dispatch(string $r): never {
             if ((int)$p['percent'] >= 100) {
                 // сначала занимаем использование, потом включаем тариф: два одновременных запроса не продлят тариф дважды
                 if (!promo_claim($p, (int)$u['id'])) fail('Ты уже использовал этот промокод или он закончился');
-                plan_activate((int)$u['id'], $p['plan'], (int)$p['days'], 'Промокод ' . $p['code'] . ': тариф «' . PLANS[$p['plan']]['name'] . '» на ' . (int)$p['days'] . ' дн.', 'grant', 0);
+                try {
+                    plan_activate((int)$u['id'], $p['plan'], (int)$p['days'], 'Промокод ' . $p['code'] . ': тариф «' . PLANS[$p['plan']]['name'] . '» на ' . (int)$p['days'] . ' дн.', 'grant', 0);
+                } catch (Throwable $e) {
+                    promo_release($p, (int)$u['id']); // тариф не включился: возвращаем использование, чтобы код не сгорел
+                    throw $e;
+                }
                 json_out(['ok' => true, 'free' => true, 'plan' => $p['plan'], 'days' => (int)$p['days']]);
             }
             json_out(['ok' => true, 'free' => false, 'code' => $p['code'], 'plan' => $p['plan'], 'percent' => (int)$p['percent'], 'price' => promo_price($p), 'days' => (int)$p['days']]);

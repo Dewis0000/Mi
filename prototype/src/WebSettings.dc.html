@@ -394,8 +394,8 @@ class Component extends DCLogic {
     history.replaceState(null, '', location.pathname + location.hash);
     try {
       const r = await StreAPI.post('pay.check', {});
-      if (r.credited) { StreAPI.toast('Баланс пополнен'); this.reloadMe(); this.loadTx(); }
-      else StreAPI.toast('Платёж ещё обрабатывается. Баланс обновится, когда ЮKassa подтвердит оплату');
+      if (r.credited) { StreAPI.toast('Тариф оплачен и включён'); this.reloadMe(); this.loadTx(); }
+      else StreAPI.toast('Платёж ещё обрабатывается. Тариф включится, когда ЮKassa подтвердит оплату');
     } catch (e) { StreAPI.toast(e.message, 'error'); }
   }
   // Виджет ЮKassa: платёжная форма открывается на сайте, без перехода на другой ресурс
@@ -701,7 +701,7 @@ class Component extends DCLogic {
       else if (unlimitedCur) note = 'Выдан бессрочно — продлевать не нужно';
       else if (!payOn) note = 'Онлайн-оплата временно недоступна. Напиши в поддержку, тариф выдадим вручную';
       else if (isCur) note = 'Продлим с ' + StreAPI.fmtDate(me.planUntil > now ? me.planUntil : now);
-      else note = 'Хватает на балансе';
+      else note = 'Оплата картой или через СБП';
       return {
         name: p.name, current: isCur,
         price: p.price ? StreAPI.fmtNum(shown) + ' ₽' : '0 ₽',
@@ -773,7 +773,7 @@ class Component extends DCLogic {
 
       botSub: 'Бот ' + bot + ' отвечает на команды, ставит музыку, проводит розыгрыши и модерирует чат твоего канала Twitch.',
       botTitle, botText, botDot, botBusy: botBusy || !me,
-      botCanEnable: !!me && !!(me.bot && me.bot.ready) && (s.busy === 'botOn' || (!me.botEnabled && s.busy !== 'botOff')),
+      botCanEnable: !!me && !!(s.bot && s.bot.ready) && (s.busy === 'botOn' || (!me.botEnabled && s.busy !== 'botOff')),
       botCanDisable: !!me && (s.busy === 'botOff' || (!!me.botEnabled && s.busy !== 'botOn')),
       botShowRetry: !!me && !!me.botEnabled && errs.length > 0 && !botBusy,
       enableLabel: s.busy === 'botOn' ? 'Подключаем…' : 'Подключить бота',
