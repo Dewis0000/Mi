@@ -228,6 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </template>
 </div>
 
+<p style="margin: 12px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">{{ tabHint }}</p>
 <div role="tablist" aria-label="Разделы админ-панели" style="margin-top: 20px; display: flex; flex-wrap: wrap; column-gap: 24px; border-bottom: 1px solid var(--n-5)">
 <template data-for="tabs" data-as="t"><button type="button" role="tab" class="tab" id="{{ t.id }}" aria-controls="{{ t.panel }}" aria-selected="{{ t.sel }}" tabindex="{{ t.ti }}" onClick="{{ t.pick }}" onKeyDown="{{ t.key }}">{{ t.label }}<span class="mono" style="font-size: 12px; color: var(--n-9)">{{ t.n }}</span></button></template>
 </div>
@@ -235,10 +236,12 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- ===================== СВОДКА ===================== -->
 <section role="tabpanel" id="p-sum" aria-labelledby="t-sum" hidden="{{ hideSum }}" style="margin-top: 24px; display: flex; flex-direction: column; gap: 24px">
 <template data-if="statsErrOn"><p role="alert" class="err">Не удалось загрузить сводку: {{ statsErr }}</p></template>
-<div class="kpi" aria-busy="{{ statsBusy }}">
-<template data-for="kpis" data-as="k">
+<div aria-busy="{{ statsBusy }}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 22px; align-items: start">
+<div><p style="margin: 0 0 10px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--n-9)">Пользователи</p><div class="kpi"><template data-for="kpiUsers" data-as="k">
 <div class="card" style="padding: 20px"><p style="margin: 0; font-size: 13px; color: var(--n-9)">{{ k.label }}</p><p class="mono" style="margin: 10px 0 0; font-size: 32px; line-height: 36px; font-weight: 500; letter-spacing: -0.02em">{{ k.val }}</p><p style="margin: 8px 0 0; font-size: 12px; line-height: 16px; color: var(--n-9)">{{ k.sub }}</p></div>
-</template>
+</template></div></div>
+<div><p style="margin: 0 0 10px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--n-9)">Каналы и эфир</p><div class="kpi"><template data-for="kpiChannels" data-as="k"><div class="card" style="padding: 20px"><p style="margin: 0; font-size: 13px; color: var(--n-9)">{{ k.label }}</p><p class="mono" style="margin: 10px 0 0; font-size: 32px; line-height: 36px; font-weight: 500; letter-spacing: -0.02em">{{ k.val }}</p><p style="margin: 8px 0 0; font-size: 12px; line-height: 16px; color: var(--n-9)">{{ k.sub }}</p></div></template></div></div>
+<div><p style="margin: 0 0 10px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--n-9)">Деньги</p><div class="kpi"><template data-for="kpiMoney" data-as="k"><div class="card" style="padding: 20px"><p style="margin: 0; font-size: 13px; color: var(--n-9)">{{ k.label }}</p><p class="mono" style="margin: 10px 0 0; font-size: 32px; line-height: 36px; font-weight: 500; letter-spacing: -0.02em">{{ k.val }}</p><p style="margin: 8px 0 0; font-size: 12px; line-height: 16px; color: var(--n-9)">{{ k.sub }}</p></div></template></div></div>
 </div>
 
 <div class="grid3">
@@ -466,7 +469,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </form>
 
 <form class="dsec" onSubmit="{{ toggleBan }}" aria-labelledby="bn-t">
-<h3 id="bn-t" class="h3">Доступ к сервису</h3>
+<h3 id="bn-t" class="h3">Блокировка аккаунта</h3>
 <p class="txt">{{ banText }}</p>
 <template data-if="canBan"><div class="fl"><label for="bn-c">{{ banCommentLabel }} <span class="muted" style="font-weight: 400">— необязательно</span></label><input id="bn-c" class="inp" value="{{ bf.comment }}" onChange="{{ setBanComment }}" maxlength="200" placeholder="{{ banPlaceholder }}"></div></template>
 <template data-if="banErrOn"><p role="alert" class="err">{{ banErr }}</p></template>
@@ -474,7 +477,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </form>
 
 <form class="dsec" onSubmit="{{ toggleSite }}" aria-labelledby="st-t">
-<h3 id="st-t" class="h3">Сайт стримера</h3>
+<h3 id="st-t" class="h3">Блокировка сайта стримера</h3>
 <p class="txt">{{ siteText }}</p>
 <template data-if="siteErrOn"><p role="alert" class="err">{{ siteErr }}</p></template>
 <template data-if="siteCanAct"><div style="display: flex; justify-content: flex-end"><button type="submit" class="{{ siteBtnCls }}" disabled="{{ siteOff }}">{{ siteBtn }}</button></div></template>
@@ -510,7 +513,16 @@ document.addEventListener('DOMContentLoaded', function () {
 // Тарифы — как в server/app/lib/plans.php (цена за 30 дней)
 const ADM_PLANS = [['free', 'Бесплатный', 0], ['advanced', 'Продвинутая', 299], ['pro', 'Про', 499], ['max', 'Максимум', 967]];
 const ADM_DAYS = [[7, '7 дней'], [30, '30 дней'], [90, '90 дней'], [365, 'Год'], [0, 'Бессрочно'], ['custom', 'Своё']];
-const ADM_TABS = [['sum', 'Сводка'], ['bot', 'Бот и EventSub'], ['users', 'Пользователи'], ['tx', 'Операции'], ['ann', 'Объявления'], ['support', 'Поддержка'], ['promo', 'Промокоды']];
+const ADM_TABS = [['sum', 'Главная'], ['bot', 'Бот и подписки'], ['users', 'Пользователи'], ['tx', 'Операции'], ['ann', 'Объявления'], ['support', 'Поддержка'], ['promo', 'Промокоды']];
+const ADM_TAB_HINT = {
+  sum: 'Что происходит в сервисе прямо сейчас: сколько пользователей, каналов в эфире и денег на балансах.',
+  bot: 'Подключён ли аккаунт бота и работают ли подписки Twitch, по которым бот читает чаты.',
+  users: 'Найди человека по нику или имени. В карточке можно выдать тариф, начислить баланс или заблокировать аккаунт или сайт.',
+  tx: 'Все оплаты, выданные тарифы, начисления и блокировки. Фильтр — по типу операции.',
+  ann: 'Объявление, которое видят все, кто открывает панель. Можно показать на время и скрыть.',
+  support: 'Обращения пользователей. Войти в аккаунт пользователя можно только по его коду из раздела «Поддержка».',
+  promo: 'Коды на скидку или бесплатный тариф. Один пользователь использует код один раз.',
+};
 const ADM_KIND = { topup: 'Начисление', charge: 'Списание', plan: 'Оплата тарифа', grant: 'Выдача тарифа', ban: 'Блокировка' };
 const ADM_SUB_TYPE = {
   'channel.chat.message': 'Сообщения чата', 'channel.chat.notification': 'Подписки, рейды, гифты', 'stream.online': 'Начало эфира', 'stream.offline': 'Конец эфира',
@@ -775,9 +787,9 @@ class Component extends DCLogic {
       { label: 'Пользователей', val: v(st && st.users), sub: 'всего в базе' },
       { label: 'С платным тарифом', val: v(st && st.paid), sub: 'тариф с датой окончания, срок не вышел' },
       { label: 'Каналов с ботом', val: v(st && st.botChannels), sub: 'бот включён стримером' },
-      { label: 'Сейчас в эфире', val: v(st && st.live), sub: 'по данным cron' },
-      { label: 'Сумма балансов', val: st ? admMoney(st.balances) : '—', sub: 'деньги на счетах пользователей' },
-      { label: 'Доход за 30 дней', val: st ? admMoney(st.income30) : '—', sub: 'оплата тарифов' },
+      { label: 'Сейчас в эфире', val: v(st && st.live), sub: 'каналов, обновляется раз в минуту' },
+      { label: 'Деньги на балансах', val: st ? admMoney(st.balances) : '—', sub: 'начисляет администратор вручную' },
+      { label: 'Оплаты за 30 дней', val: st ? admMoney(st.income30) : '—', sub: 'тарифы, которые купили пользователи' },
     ];
     const cronLast = st ? st.cronLast : 0;
     const cronAge = cronLast ? Math.max(0, now - cronLast) : 0;
@@ -894,7 +906,7 @@ class Component extends DCLogic {
       })),
       hideSum: s.tab !== 'sum', hideBot: s.tab !== 'bot', hideUsers: s.tab !== 'users', hideTx: s.tab !== 'tx', hideAnn: s.tab !== 'ann', hideSupport: s.tab !== 'support', hidePromo: s.tab !== 'promo',
 
-      statsErrOn: !!s.statsErr, statsErr: s.statsErr, statsBusy: !st, kpis,
+      statsErrOn: !!s.statsErr, statsErr: s.statsErr, statsBusy: !st, kpis, kpiUsers: kpis.slice(0, 2), kpiChannels: kpis.slice(2, 4), kpiMoney: kpis.slice(4), tabHint: ADM_TAB_HINT[s.tab] || '',
       cronDot: cronBad ? 'background: var(--accent); box-shadow: 0 0 0 4px rgb(var(--accent-rgb) / .25)' : st ? 'background: var(--n-12)' : 'background: var(--n-7)',
       cronState: !st ? 'Проверяем…' : cronBad ? 'Не работает' : 'Работает',
       botDot: botReady ? 'background: var(--n-12)' : 'background: var(--n-8)',

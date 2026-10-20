@@ -152,6 +152,7 @@ code.c{font:400 13px/18px 'JetBrains Mono',monospace;padding:2px 6px;border-radi
 </sc-if>
 </div>
 
+<p style="margin: 12px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">{{ tabHint }}</p>
 <div role="tablist" aria-label="Разделы админ-панели" style="margin-top: 20px; display: flex; flex-wrap: wrap; column-gap: 24px; border-bottom: 1px solid #2A2A2A">
 <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4"><button type="button" role="tab" class="tab" id="{{ t.id }}" aria-controls="{{ t.panel }}" aria-selected="{{ t.sel }}" tabindex="{{ t.ti }}" onClick="{{ t.pick }}" onKeyDown="{{ t.key }}">{{ t.label }}<span class="mono" style="font-size: 12px; color: #8F8F8F">{{ t.n }}</span></button></sc-for>
 </div>
@@ -159,10 +160,12 @@ code.c{font:400 13px/18px 'JetBrains Mono',monospace;padding:2px 6px;border-radi
 <!-- ===================== СВОДКА ===================== -->
 <section role="tabpanel" id="p-sum" aria-labelledby="t-sum" hidden="{{ hideSum }}" style="margin-top: 24px; display: flex; flex-direction: column; gap: 24px">
 <sc-if value="{{ statsErrOn }}" hint-placeholder-val="{{ false }}"><p role="alert" class="err">Не удалось загрузить сводку: {{ statsErr }}</p></sc-if>
-<div class="kpi" aria-busy="{{ statsBusy }}">
-<sc-for list="{{ kpis }}" as="k" hint-placeholder-count="6">
+<div aria-busy="{{ statsBusy }}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 22px; align-items: start">
+<div><p style="margin: 0 0 10px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #8F8F8F">Пользователи</p><div class="kpi"><sc-for list="{{ kpiUsers }}" as="k" hint-placeholder-count="2">
 <div class="card" style="padding: 20px"><p style="margin: 0; font-size: 13px; color: #8F8F8F">{{ k.label }}</p><p class="mono" style="margin: 10px 0 0; font-size: 32px; line-height: 36px; font-weight: 500; letter-spacing: -0.02em">{{ k.val }}</p><p style="margin: 8px 0 0; font-size: 12px; line-height: 16px; color: #8F8F8F">{{ k.sub }}</p></div>
-</sc-for>
+</sc-for></div></div>
+<div><p style="margin: 0 0 10px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #8F8F8F">Каналы и эфир</p><div class="kpi"><sc-for list="{{ kpiChannels }}" as="k" hint-placeholder-count="2"><div class="card" style="padding: 20px"><p style="margin: 0; font-size: 13px; color: #8F8F8F">{{ k.label }}</p><p class="mono" style="margin: 10px 0 0; font-size: 32px; line-height: 36px; font-weight: 500; letter-spacing: -0.02em">{{ k.val }}</p><p style="margin: 8px 0 0; font-size: 12px; line-height: 16px; color: #8F8F8F">{{ k.sub }}</p></div></sc-for></div></div>
+<div><p style="margin: 0 0 10px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #8F8F8F">Деньги</p><div class="kpi"><sc-for list="{{ kpiMoney }}" as="k" hint-placeholder-count="2"><div class="card" style="padding: 20px"><p style="margin: 0; font-size: 13px; color: #8F8F8F">{{ k.label }}</p><p class="mono" style="margin: 10px 0 0; font-size: 32px; line-height: 36px; font-weight: 500; letter-spacing: -0.02em">{{ k.val }}</p><p style="margin: 8px 0 0; font-size: 12px; line-height: 16px; color: #8F8F8F">{{ k.sub }}</p></div></sc-for></div></div>
 </div>
 
 <div class="grid3">
@@ -390,7 +393,7 @@ code.c{font:400 13px/18px 'JetBrains Mono',monospace;padding:2px 6px;border-radi
 </form>
 
 <form class="dsec" onSubmit="{{ toggleBan }}" aria-labelledby="bn-t">
-<h3 id="bn-t" class="h3">Доступ к сервису</h3>
+<h3 id="bn-t" class="h3">Блокировка аккаунта</h3>
 <p class="txt">{{ banText }}</p>
 <sc-if value="{{ canBan }}" hint-placeholder-val="{{ true }}"><div class="fl"><label for="bn-c">{{ banCommentLabel }} <span class="muted" style="font-weight: 400">— необязательно</span></label><input id="bn-c" class="inp" value="{{ bf.comment }}" onChange="{{ setBanComment }}" maxlength="200" placeholder="{{ banPlaceholder }}"></div></sc-if>
 <sc-if value="{{ banErrOn }}" hint-placeholder-val="{{ false }}"><p role="alert" class="err">{{ banErr }}</p></sc-if>
@@ -398,7 +401,7 @@ code.c{font:400 13px/18px 'JetBrains Mono',monospace;padding:2px 6px;border-radi
 </form>
 
 <form class="dsec" onSubmit="{{ toggleSite }}" aria-labelledby="st-t">
-<h3 id="st-t" class="h3">Сайт стримера</h3>
+<h3 id="st-t" class="h3">Блокировка сайта стримера</h3>
 <p class="txt">{{ siteText }}</p>
 <sc-if value="{{ siteErrOn }}" hint-placeholder-val="{{ false }}"><p role="alert" class="err">{{ siteErr }}</p></sc-if>
 <sc-if value="{{ siteCanAct }}" hint-placeholder-val="{{ true }}"><div style="display: flex; justify-content: flex-end"><button type="submit" class="{{ siteBtnCls }}" disabled="{{ siteOff }}">{{ siteBtn }}</button></div></sc-if>
@@ -433,7 +436,16 @@ code.c{font:400 13px/18px 'JetBrains Mono',monospace;padding:2px 6px;border-radi
 // Тарифы — как в server/app/lib/plans.php (цена за 30 дней)
 const ADM_PLANS = [['free', 'Бесплатный', 0], ['advanced', 'Продвинутая', 299], ['pro', 'Про', 499], ['max', 'Максимум', 967]];
 const ADM_DAYS = [[7, '7 дней'], [30, '30 дней'], [90, '90 дней'], [365, 'Год'], [0, 'Бессрочно'], ['custom', 'Своё']];
-const ADM_TABS = [['sum', 'Сводка'], ['bot', 'Бот и EventSub'], ['users', 'Пользователи'], ['tx', 'Операции'], ['ann', 'Объявления'], ['support', 'Поддержка'], ['promo', 'Промокоды']];
+const ADM_TABS = [['sum', 'Главная'], ['bot', 'Бот и подписки'], ['users', 'Пользователи'], ['tx', 'Операции'], ['ann', 'Объявления'], ['support', 'Поддержка'], ['promo', 'Промокоды']];
+const ADM_TAB_HINT = {
+  sum: 'Что происходит в сервисе прямо сейчас: сколько пользователей, каналов в эфире и денег на балансах.',
+  bot: 'Подключён ли аккаунт бота и работают ли подписки Twitch, по которым бот читает чаты.',
+  users: 'Найди человека по нику или имени. В карточке можно выдать тариф, начислить баланс или заблокировать аккаунт или сайт.',
+  tx: 'Все оплаты, выданные тарифы, начисления и блокировки. Фильтр — по типу операции.',
+  ann: 'Объявление, которое видят все, кто открывает панель. Можно показать на время и скрыть.',
+  support: 'Обращения пользователей. Войти в аккаунт пользователя можно только по его коду из раздела «Поддержка».',
+  promo: 'Коды на скидку или бесплатный тариф. Один пользователь использует код один раз.',
+};
 const ADM_KIND = { topup: 'Начисление', charge: 'Списание', plan: 'Оплата тарифа', grant: 'Выдача тарифа', ban: 'Блокировка' };
 const ADM_SUB_TYPE = {
   'channel.chat.message': 'Сообщения чата', 'channel.chat.notification': 'Подписки, рейды, гифты', 'stream.online': 'Начало эфира', 'stream.offline': 'Конец эфира',
@@ -698,9 +710,9 @@ class Component extends DCLogic {
       { label: 'Пользователей', val: v(st && st.users), sub: 'всего в базе' },
       { label: 'С платным тарифом', val: v(st && st.paid), sub: 'тариф с датой окончания, срок не вышел' },
       { label: 'Каналов с ботом', val: v(st && st.botChannels), sub: 'бот включён стримером' },
-      { label: 'Сейчас в эфире', val: v(st && st.live), sub: 'по данным cron' },
-      { label: 'Сумма балансов', val: st ? admMoney(st.balances) : '—', sub: 'деньги на счетах пользователей' },
-      { label: 'Доход за 30 дней', val: st ? admMoney(st.income30) : '—', sub: 'оплата тарифов' },
+      { label: 'Сейчас в эфире', val: v(st && st.live), sub: 'каналов, обновляется раз в минуту' },
+      { label: 'Деньги на балансах', val: st ? admMoney(st.balances) : '—', sub: 'начисляет администратор вручную' },
+      { label: 'Оплаты за 30 дней', val: st ? admMoney(st.income30) : '—', sub: 'тарифы, которые купили пользователи' },
     ];
     const cronLast = st ? st.cronLast : 0;
     const cronAge = cronLast ? Math.max(0, now - cronLast) : 0;
@@ -817,7 +829,7 @@ class Component extends DCLogic {
       })),
       hideSum: s.tab !== 'sum', hideBot: s.tab !== 'bot', hideUsers: s.tab !== 'users', hideTx: s.tab !== 'tx', hideAnn: s.tab !== 'ann', hideSupport: s.tab !== 'support', hidePromo: s.tab !== 'promo',
 
-      statsErrOn: !!s.statsErr, statsErr: s.statsErr, statsBusy: !st, kpis,
+      statsErrOn: !!s.statsErr, statsErr: s.statsErr, statsBusy: !st, kpis, kpiUsers: kpis.slice(0, 2), kpiChannels: kpis.slice(2, 4), kpiMoney: kpis.slice(4), tabHint: ADM_TAB_HINT[s.tab] || '',
       cronDot: cronBad ? 'background: #D92D20; box-shadow: 0 0 0 4px rgba(217,45,32,.25)' : st ? 'background: #F2F2F2' : 'background: #525252',
       cronState: !st ? 'Проверяем…' : cronBad ? 'Не работает' : 'Работает',
       botDot: botReady ? 'background: #F2F2F2' : 'background: #6E6E6E',
