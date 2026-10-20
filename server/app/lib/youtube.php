@@ -39,3 +39,14 @@ function yt_search(string $q): ?array {
     $id = $r['json']['items'][0]['id']['videoId'] ?? null;
     return $id ? yt_video($id) : null;
 }
+
+// Несколько кандидатов из поиска (для автовоспроизведения: пропускаем треки, которые уже недавно играли)
+function yt_search_ids(string $q, int $n = 5): array {
+    $key = cfg('YOUTUBE_API_KEY');
+    if (!$key) return [];
+    $r = http_request('GET', 'https://www.googleapis.com/youtube/v3/search?' . http_build_query([
+        'part' => 'snippet', 'q' => $q, 'type' => 'video', 'maxResults' => $n, 'videoEmbeddable' => 'true', 'regionCode' => 'RU', 'key' => $key,
+    ]));
+    return array_values(array_filter(array_map(fn($i) => $i['id']['videoId'] ?? null, $r['json']['items'] ?? [])));
+}
+

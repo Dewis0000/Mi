@@ -115,6 +115,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
 <div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Музыка и заказы</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; max-width: 680px">Зрители заказывают треки командой в чате, за баллы канала или донатом. Бот проверяет заказ и ставит его в очередь, а играет музыка в этой вкладке или в OBS.</p></div>
 <div hidden="{{ hideOpen }}" style="display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 16px; border-radius: 8px; border: 1px solid #3A3A3A"><span style="font-size: 14px" id="open-l">Приём заказов</span><span style="font-size: 13px; color: #8F8F8F; min-width: 64px">{{ openLabel }}</span><button type="button" role="switch" class="sw" aria-checked="{{ openOn }}" aria-labelledby="open-l" onClick="{{ toggleOpen }}" disabled="{{ noCfg }}"><span></span></button></div>
+<div hidden="{{ hideOpen }}" style="display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 16px; border-radius: 8px; border: 1px solid #3A3A3A"><span style="font-size: 14px" id="auto-l">Автовоспроизведение</span><span style="font-size: 13px; color: #8F8F8F; min-width: 64px">{{ autoLabel }}</span><button type="button" role="switch" class="sw" aria-checked="{{ autoOn }}" aria-labelledby="auto-l" onClick="{{ toggleAuto }}" disabled="{{ noCfg }}"><span></span></button></div>
 </div>
 
 <div style="display: flex; flex-direction: column; gap: 12px">
@@ -671,6 +672,7 @@ class Component extends DCLogic {
       noCfg: !ready,
       openOn: !!(c && c.open), openLabel: !c ? '…' : c.open ? 'Открыт' : 'Закрыт',
       toggleOpen: () => { if (c) this.saveCfg({ open: !c.open }); },
+      autoOn: !!(c && c.auto), autoLabel: !c ? '…' : c.auto ? 'Вкл: после очереди играют похожие' : 'Выкл: после очереди тишина', toggleAuto: () => { if (c) this.saveCfg({ auto: !c.auto }); },
 
       hasErr: !!s.err, err: /[.!?]$/.test(s.err) ? s.err : s.err + '.',
       noYoutube: ready && s.allowed && !s.youtube,
