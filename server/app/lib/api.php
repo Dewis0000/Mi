@@ -304,6 +304,16 @@ function api_dispatch(string $r): never {
             }
             json_out(['ok' => true]);
         }
+        case 'manage.add': { // помощник добавляет трек в очередь канала (как стример в «Музыка и заказы»)
+            $u = require_user();
+            $ch = mgr_channel($u, in_str('channel', 40));
+            if (!plan_limits($ch)['music']) fail('Музыка доступна на тарифе «Про» и выше у канала');
+            $who = mb_strtolower((string)$u['login']);
+            $res = song_request($ch, in_str('query', 300), $u['display_name'] ?: $u['login'], 'manual');
+            mgr_log($ch, $who, 'add', $res['ok'] ? 'трек добавлен: ' . in_str('query', 120) : 'трек не добавлен: ' . $res['message']);
+            if (!$res['ok']) fail($res['message']);
+            json_out(['ok' => true, 'message' => $res['message']]);
+        }
         case 'tts.get': {
             $u = require_user();
             json_out(['ok' => true, 'cfg' => tts_config((int)$u['id']), 'token' => $u['widget_token'], 'max' => ['cooldown' => 600, 'maxLen' => 300]]);
