@@ -119,11 +119,18 @@ function api_dispatch(string $r): never {
                 $buckets[$i]['m']++;
                 if (str_starts_with((string)$row['text'], '!')) $buckets[$i]['c']++;
             }
-            $events = array_map('event_row', db_all('SELECT * FROM events WHERE user_id = ? ORDER BY id DESC LIMIT 8', [$uid]));
+            $events = array_map('event_row', db_all('SELECT * FROM events WHERE user_id = ? ORDER BY id DESC LIMIT 30', [$uid]));
+            $topChatters = array_map(fn($r) => ['login' => $r['chatter_login'], 'name' => $r['chatter_name'] ?: $r['chatter_login'], 'count' => (int)$r['c']],
+                db_all('SELECT chatter_login, chatter_name, COUNT(*) AS c FROM chat_messages WHERE user_id = ? AND created_at >= ? GROUP BY chatter_login, chatter_name ORDER BY c DESC LIMIT 5', [$uid, now() - 86400]));
+            $hourly = array_fill(0, 24, 0);
+            foreach (db_all('SELECT created_at FROM chat_messages WHERE user_id = ? AND created_at >= ?', [$uid, now() - 86400]) as $row) {
+                $hourly[min(23, intdiv((int)$row['created_at'] - (now() - 86400), 3600))]++;
+            }
             $actions = array_map('action_row', db_all('SELECT * FROM mod_actions WHERE user_id = ? ORDER BY id DESC LIMIT 5', [$uid]));
             $top = array_map('cmd_row', db_all('SELECT * FROM commands WHERE user_id = ? ORDER BY use_count DESC LIMIT 4', [$uid]));
             json_out(['ok' => true, 'stream' => stream_row($uid), 'metrics' => ['messages' => $msgs, 'chatters' => $chatters, 'follows' => $follows, 'deleted' => $deleted],
-                'chart' => ['from' => $from, 'buckets' => $buckets], 'events' => $events, 'actions' => $actions, 'topCommands' => $top]);
+                'chart' => ['from' => $from, 'buckets' => $buckets], 'events' => $events, 'actions' => $actions, 'topCommands' => $top,
+                'topChatters' => $topChatters, 'hourly' => ['from' => now() - 86400, 'counts' => $hourly]]);
         }
         case 'chat.recent': {
             $u = require_user();

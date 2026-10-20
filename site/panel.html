@@ -150,6 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <p class="mono" role="status" style="margin: 0; font-size: 12px; color: var(--n-9)">{{ head.sync }}</p>
 </div>
 
+
 <div style="display: contents"><template data-if="banner.show">
 <section aria-labelledby="bot-t" style="{{ banner.box }}">
 <span class="evi" style="width: 40px; height: 40px; {{ banner.iconStyle }}"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8V4H8"></path><rect x="4" y="8" width="16" height="12" rx="2"></rect><path d="M2 14h2M20 14h2M15 13v2M9 13v2"></path></svg></span>
@@ -163,10 +164,36 @@ document.addEventListener('DOMContentLoaded', function () {
 </section>
 </template></div>
 
+
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px" aria-label="Метрики" role="group">
 <template data-for="metrics" data-as="k"><div class="card met" title="{{ k.title }}"><p style="margin: 0; font-size: 13px; color: var(--n-9)">{{ k.label }}</p><p class="mono met-v">{{ k.value }}</p><p class="met-c">{{ k.caption }}</p></div></template>
 </div>
 
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 24px; align-items: stretch">
+<section class="card" style="padding: 24px; min-width: 0" aria-labelledby="tc-t">
+<h2 id="tc-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Самые активные</h2>
+<p style="margin: 6px 0 0; font-size: 13px; color: var(--n-9)">Кто чаще всего писал в чат за сутки</p>
+<template data-if="tcEmpty"><p class="empty">Пока никто не писал в чат.</p></template>
+<ul style="list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px"><template data-for="topChatters" data-as="t"><li><div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px"><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ t.name }}</span><span class="mono" style="color: var(--n-9)">{{ t.count }}</span></div><div style="height: 6px; margin-top: 6px; border-radius: 999px; background: var(--n-4); overflow: hidden"><div style="height: 100%; width: {{ t.pct }}; background: var(--n-12)"></div></div></li></template></ul>
+</section>
+<section class="card" style="padding: 24px; min-width: 0" aria-labelledby="hr-t">
+<h2 id="hr-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Сообщения по часам</h2>
+<p style="margin: 6px 0 0; font-size: 13px; color: var(--n-9)">За последние 24 часа, по часам</p>
+<div role="img" aria-label="{{ hourlyLabel }}" style="margin-top: 20px; display: flex; align-items: flex-end; gap: 4px; height: 150px"><template data-for="hours" data-as="h"><div title="{{ h.title }}" style="flex: 1; min-width: 0; height: {{ h.height }}; background: var(--n-12); border-radius: 2px 2px 0 0"></div></template></div>
+<div class="mono" aria-hidden="true" style="margin-top: 8px; display: flex; justify-content: space-between; font-size: 11px; color: var(--n-9)"><span>{{ hourFirst }}</span><span>сейчас</span></div>
+</section>
+<section class="card" style="padding: 24px; min-width: 0" aria-labelledby="qc-t">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 id="qc-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Популярные команды</h2><a href="commands.html" style="font-size: 13px; color: var(--n-10)">Все команды</a></div>
+<p style="margin: 6px 0 0; font-size: 13px; color: var(--n-9)">Чаще всего вызывают в чате за всё время</p>
+<template data-if="cmdLoading"><p class="empty">Загрузка…</p></template>
+<template data-if="cmdEmpty"><p class="empty">Команд пока нет. Создай первую в разделе <a href="commands.html" style="text-decoration: underline">«Команды»</a> — например, ссылку на Discord.</p></template>
+<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<template data-for="cmds" data-as="c"><a href="commands.html" class="qc" aria-label="{{ c.aria }}"><span class="mono" style="font-size: 15px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: {{ c.color }}">{{ c.name }}</span><span style="font-size: 12px; color: var(--n-9)">{{ c.uses }}</span></a></template>
+</div>
+</section>
+
+</div>
 <section class="card" style="padding: 24px" aria-labelledby="chart-t">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap">
 <div><h2 id="chart-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Активность чата</h2><div style="margin-top: 8px; display: flex; gap: 20px; font-size: 13px; color: var(--n-10)"><span style="display: inline-flex; align-items: center; gap: 8px"><svg width="20" height="4" aria-hidden="true"><path d="M0 2h20" stroke="#F2F2F2" data-stroke="12" stroke-width="2"></path></svg>Сообщения</span><span style="display: inline-flex; align-items: center; gap: 8px"><svg width="20" height="4" aria-hidden="true"><path d="M0 2h20" stroke="#B4B4B4" data-stroke="10" stroke-width="1.5" stroke-dasharray="4 3"></path></svg>Команды</span></div></div>
@@ -203,9 +230,10 @@ document.addEventListener('DOMContentLoaded', function () {
 </section>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 24px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 24px; align-items: start">
 <section id="events" class="card" style="padding: 24px; min-width: 0" aria-labelledby="ev-t">
-<h2 id="ev-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">События</h2>
-<p style="margin: 6px 0 0; font-size: 13px; color: var(--n-9)">Фолловы, подписки, рейды и донаты — последние 8</p>
+<h2 id="ev-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">История событий</h2>
+<p style="margin: 6px 0 0; font-size: 13px; color: var(--n-9)">Фолловы, подписки, рейды и донаты — последние 30</p>
 <template data-if="evLoading"><p class="empty">Загрузка…</p></template>
 <template data-if="evEmpty"><p class="empty">{{ evEmptyText }}</p></template>
 <ul style="list-style: none; margin: 16px 0 0; padding: 0">
@@ -227,15 +255,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </ul>
 </section>
 
-<section class="card" style="padding: 24px; min-width: 0" aria-labelledby="qc-t">
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 id="qc-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Популярные команды</h2><a href="commands.html" style="font-size: 13px; color: var(--n-10)">Все команды</a></div>
-<p style="margin: 6px 0 0; font-size: 13px; color: var(--n-9)">Чаще всего вызывают в чате за всё время</p>
-<template data-if="cmdLoading"><p class="empty">Загрузка…</p></template>
-<template data-if="cmdEmpty"><p class="empty">Команд пока нет. Создай первую в разделе <a href="commands.html" style="text-decoration: underline">«Команды»</a> — например, ссылку на Discord.</p></template>
-<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
-<template data-for="cmds" data-as="c"><a href="commands.html" class="qc" aria-label="{{ c.aria }}"><span class="mono" style="font-size: 15px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: {{ c.color }}">{{ c.name }}</span><span style="font-size: 12px; color: var(--n-9)">{{ c.uses }}</span></a></template>
-</div>
-</section>
 </div>
 </main>
 
@@ -376,7 +395,7 @@ class Component extends DCLogic {
     this.dashBusy = true;
     try {
       const r = await StreAPI.get('dashboard');
-      const sig = JSON.stringify([r.stream, r.metrics, r.chart.buckets, Math.floor(r.chart.from / 60), r.events, r.actions, r.topCommands]);
+      const sig = JSON.stringify([r.stream, r.metrics, r.chart.buckets, Math.floor(r.chart.from / 60), r.events, r.actions, r.topCommands, r.topChatters, r.hourly]);
       if (sig !== this.dashSig || this.state.dashErr) {
         this.dashSig = sig;
         this.setState({ dash: r, dashErr: '' });
@@ -752,8 +771,20 @@ class Component extends DCLogic {
     const rate = lastB == null ? '—' : String(Math.round(lastB) / 10).replace('.', ',');
     const cantSend = s.sending || !s.text.trim();
 
+    const tops = d && d.topChatters ? d.topChatters : [];
+    const maxTop = tops.length ? tops[0].count : 1;
+    const topChatters = tops.map((t) => ({ name: t.name, count: StreAPI.fmtNum(t.count), pct: Math.max(4, Math.round(t.count / maxTop * 100)) + '%' }));
+    const hc = d && d.hourly ? d.hourly.counts : new Array(24).fill(0);
+    const hFrom = d && d.hourly ? d.hourly.from : 0;
+    const maxH = Math.max(1, ...hc);
+    const hTime = (i) => new Date((hFrom + i * 3600) * 1000).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+    const hours = hc.map((n, i) => ({ title: hTime(i) + ' · ' + n + ' ' + plural(n, 'сообщение', 'сообщения', 'сообщений'), height: n ? Math.max(4, Math.round(n / maxH * 100)) + '%' : '2px' }));
+    const hourlyTotal = hc.reduce((a, b) => a + b, 0);
     return {
       head,
+      topChatters, tcEmpty: !!d && !topChatters.length,
+      hours, hourFirst: d && d.hourly ? hTime(0) : '',
+      hourlyLabel: 'Сообщений за сутки: ' + StreAPI.fmtNum(hourlyTotal),
       banner: this.bannerView(),
       enableBot: () => this.enableBot(),
       botBusy: s.botBusy,

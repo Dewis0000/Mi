@@ -72,6 +72,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 <p class="mono" role="status" style="margin: 0; font-size: 12px; color: #8F8F8F">{{ head.sync }}</p>
 </div>
 
+
 <div style="display: contents"><sc-if value="{{ banner.show }}" hint-placeholder-val="{{ false }}">
 <section aria-labelledby="bot-t" style="{{ banner.box }}">
 <span class="evi" style="width: 40px; height: 40px; {{ banner.iconStyle }}"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8V4H8"></path><rect x="4" y="8" width="16" height="12" rx="2"></rect><path d="M2 14h2M20 14h2M15 13v2M9 13v2"></path></svg></span>
@@ -85,10 +86,36 @@ button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 </section>
 </sc-if></div>
 
+
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px" aria-label="Метрики" role="group">
 <sc-for list="{{ metrics }}" as="k" hint-placeholder-count="4"><div class="card met" title="{{ k.title }}"><p style="margin: 0; font-size: 13px; color: #8F8F8F">{{ k.label }}</p><p class="mono met-v">{{ k.value }}</p><p class="met-c">{{ k.caption }}</p></div></sc-for>
 </div>
 
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 24px; align-items: stretch">
+<section class="card" style="padding: 24px; min-width: 0" aria-labelledby="tc-t">
+<h2 id="tc-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Самые активные</h2>
+<p style="margin: 6px 0 0; font-size: 13px; color: #8F8F8F">Кто чаще всего писал в чат за сутки</p>
+<sc-if value="{{ tcEmpty }}" hint-placeholder-val="{{ false }}"><p class="empty">Пока никто не писал в чат.</p></sc-if>
+<ul style="list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px"><sc-for list="{{ topChatters }}" as="t" hint-placeholder-count="5"><li><div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px"><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ t.name }}</span><span class="mono" style="color: #8F8F8F">{{ t.count }}</span></div><div style="height: 6px; margin-top: 6px; border-radius: 999px; background: #1F1F1F; overflow: hidden"><div style="height: 100%; width: {{ t.pct }}; background: #F2F2F2"></div></div></li></sc-for></ul>
+</section>
+<section class="card" style="padding: 24px; min-width: 0" aria-labelledby="hr-t">
+<h2 id="hr-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Сообщения по часам</h2>
+<p style="margin: 6px 0 0; font-size: 13px; color: #8F8F8F">За последние 24 часа, по часам</p>
+<div role="img" aria-label="{{ hourlyLabel }}" style="margin-top: 20px; display: flex; align-items: flex-end; gap: 4px; height: 150px"><sc-for list="{{ hours }}" as="h" hint-placeholder-count="24"><div title="{{ h.title }}" style="flex: 1; min-width: 0; height: {{ h.height }}; background: #F2F2F2; border-radius: 2px 2px 0 0"></div></sc-for></div>
+<div class="mono" aria-hidden="true" style="margin-top: 8px; display: flex; justify-content: space-between; font-size: 11px; color: #8F8F8F"><span>{{ hourFirst }}</span><span>сейчас</span></div>
+</section>
+<section class="card" style="padding: 24px; min-width: 0" aria-labelledby="qc-t">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 id="qc-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Популярные команды</h2><a href="WebCommands.dc.html" style="font-size: 13px; color: #B4B4B4">Все команды</a></div>
+<p style="margin: 6px 0 0; font-size: 13px; color: #8F8F8F">Чаще всего вызывают в чате за всё время</p>
+<sc-if value="{{ cmdLoading }}" hint-placeholder-val="{{ false }}"><p class="empty">Загрузка…</p></sc-if>
+<sc-if value="{{ cmdEmpty }}" hint-placeholder-val="{{ false }}"><p class="empty">Команд пока нет. Создай первую в разделе <a href="WebCommands.dc.html" style="text-decoration: underline">«Команды»</a> — например, ссылку на Discord.</p></sc-if>
+<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{ cmds }}" as="c" hint-placeholder-count="4"><a href="WebCommands.dc.html" class="qc" aria-label="{{ c.aria }}"><span class="mono" style="font-size: 15px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: {{ c.color }}">{{ c.name }}</span><span style="font-size: 12px; color: #8F8F8F">{{ c.uses }}</span></a></sc-for>
+</div>
+</section>
+
+</div>
 <section class="card" style="padding: 24px" aria-labelledby="chart-t">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap">
 <div><h2 id="chart-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Активность чата</h2><div style="margin-top: 8px; display: flex; gap: 20px; font-size: 13px; color: #B4B4B4"><span style="display: inline-flex; align-items: center; gap: 8px"><svg width="20" height="4" aria-hidden="true"><path d="M0 2h20" stroke="#F2F2F2" stroke-width="2"></path></svg>Сообщения</span><span style="display: inline-flex; align-items: center; gap: 8px"><svg width="20" height="4" aria-hidden="true"><path d="M0 2h20" stroke="#B4B4B4" stroke-width="1.5" stroke-dasharray="4 3"></path></svg>Команды</span></div></div>
@@ -125,9 +152,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 </section>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 24px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 24px; align-items: start">
 <section id="events" class="card" style="padding: 24px; min-width: 0" aria-labelledby="ev-t">
-<h2 id="ev-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">События</h2>
-<p style="margin: 6px 0 0; font-size: 13px; color: #8F8F8F">Фолловы, подписки, рейды и донаты — последние 8</p>
+<h2 id="ev-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">История событий</h2>
+<p style="margin: 6px 0 0; font-size: 13px; color: #8F8F8F">Фолловы, подписки, рейды и донаты — последние 30</p>
 <sc-if value="{{ evLoading }}" hint-placeholder-val="{{ false }}"><p class="empty">Загрузка…</p></sc-if>
 <sc-if value="{{ evEmpty }}" hint-placeholder-val="{{ false }}"><p class="empty">{{ evEmptyText }}</p></sc-if>
 <ul style="list-style: none; margin: 16px 0 0; padding: 0">
@@ -149,15 +177,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 </ul>
 </section>
 
-<section class="card" style="padding: 24px; min-width: 0" aria-labelledby="qc-t">
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 id="qc-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Популярные команды</h2><a href="WebCommands.dc.html" style="font-size: 13px; color: #B4B4B4">Все команды</a></div>
-<p style="margin: 6px 0 0; font-size: 13px; color: #8F8F8F">Чаще всего вызывают в чате за всё время</p>
-<sc-if value="{{ cmdLoading }}" hint-placeholder-val="{{ false }}"><p class="empty">Загрузка…</p></sc-if>
-<sc-if value="{{ cmdEmpty }}" hint-placeholder-val="{{ false }}"><p class="empty">Команд пока нет. Создай первую в разделе <a href="WebCommands.dc.html" style="text-decoration: underline">«Команды»</a> — например, ссылку на Discord.</p></sc-if>
-<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
-<sc-for list="{{ cmds }}" as="c" hint-placeholder-count="4"><a href="WebCommands.dc.html" class="qc" aria-label="{{ c.aria }}"><span class="mono" style="font-size: 15px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: {{ c.color }}">{{ c.name }}</span><span style="font-size: 12px; color: #8F8F8F">{{ c.uses }}</span></a></sc-for>
-</div>
-</section>
 </div>
 </main>
 
@@ -297,7 +316,7 @@ class Component extends DCLogic {
     this.dashBusy = true;
     try {
       const r = await StreAPI.get('dashboard');
-      const sig = JSON.stringify([r.stream, r.metrics, r.chart.buckets, Math.floor(r.chart.from / 60), r.events, r.actions, r.topCommands]);
+      const sig = JSON.stringify([r.stream, r.metrics, r.chart.buckets, Math.floor(r.chart.from / 60), r.events, r.actions, r.topCommands, r.topChatters, r.hourly]);
       if (sig !== this.dashSig || this.state.dashErr) {
         this.dashSig = sig;
         this.setState({ dash: r, dashErr: '' });
@@ -673,8 +692,20 @@ class Component extends DCLogic {
     const rate = lastB == null ? '—' : String(Math.round(lastB) / 10).replace('.', ',');
     const cantSend = s.sending || !s.text.trim();
 
+    const tops = d && d.topChatters ? d.topChatters : [];
+    const maxTop = tops.length ? tops[0].count : 1;
+    const topChatters = tops.map((t) => ({ name: t.name, count: StreAPI.fmtNum(t.count), pct: Math.max(4, Math.round(t.count / maxTop * 100)) + '%' }));
+    const hc = d && d.hourly ? d.hourly.counts : new Array(24).fill(0);
+    const hFrom = d && d.hourly ? d.hourly.from : 0;
+    const maxH = Math.max(1, ...hc);
+    const hTime = (i) => new Date((hFrom + i * 3600) * 1000).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+    const hours = hc.map((n, i) => ({ title: hTime(i) + ' · ' + n + ' ' + plural(n, 'сообщение', 'сообщения', 'сообщений'), height: n ? Math.max(4, Math.round(n / maxH * 100)) + '%' : '2px' }));
+    const hourlyTotal = hc.reduce((a, b) => a + b, 0);
     return {
       head,
+      topChatters, tcEmpty: !!d && !topChatters.length,
+      hours, hourFirst: d && d.hourly ? hTime(0) : '',
+      hourlyLabel: 'Сообщений за сутки: ' + StreAPI.fmtNum(hourlyTotal),
       banner: this.bannerView(),
       enableBot: () => this.enableBot(),
       botBusy: s.botBusy,
