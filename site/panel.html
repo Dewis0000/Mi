@@ -144,11 +144,12 @@ document.addEventListener('DOMContentLoaded', function () {
 <a href="support.html" class="sb-i" data-kw="помощь вопрос обращение"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Поддержка</a>
 </nav>
 
-<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
 <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
 <div style="min-width: 0"><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Обзор эфира</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--n-10); display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 999px; flex: none; background: {{ head.dot }}"></span><span style="color: var(--n-12); font-weight: 500">{{ head.state }}</span><span>{{ head.info }}</span></p></div>
 <p class="mono" role="status" style="margin: 0; font-size: 12px; color: var(--n-9)">{{ head.sync }}</p>
 </div>
+
 
 
 <div style="display: contents"><template data-if="banner.show">
@@ -165,41 +166,21 @@ document.addEventListener('DOMContentLoaded', function () {
 </template></div>
 
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px" aria-label="Метрики" role="group">
-<template data-for="metrics" data-as="k"><div class="card met" title="{{ k.title }}"><p style="margin: 0; font-size: 13px; color: var(--n-9)">{{ k.label }}</p><p class="mono met-v">{{ k.value }}</p><p class="met-c">{{ k.caption }}</p></div></template>
-</div>
 
-
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 24px; align-items: stretch">
-<section class="card" style="padding: 24px; min-width: 0" aria-labelledby="tc-t">
-<h2 id="tc-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Самые активные</h2>
-<p style="margin: 6px 0 0; font-size: 13px; color: var(--n-9)">Кто чаще всего писал в чат за сутки</p>
-<template data-if="tcEmpty"><p class="empty">Пока никто не писал в чат.</p></template>
-<ul style="list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px"><template data-for="topChatters" data-as="t"><li><div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px"><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ t.name }}</span><span class="mono" style="color: var(--n-9)">{{ t.count }}</span></div><div style="height: 6px; margin-top: 6px; border-radius: 999px; background: var(--n-4); overflow: hidden"><div style="height: 100%; width: {{ t.pct }}; background: var(--n-12)"></div></div></li></template></ul>
-</section>
-<section class="card" style="padding: 24px; min-width: 0" aria-labelledby="hr-t">
-<h2 id="hr-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Сообщения по часам</h2>
-<p style="margin: 6px 0 0; font-size: 13px; color: var(--n-9)">За последние 24 часа, по часам</p>
-<div role="img" aria-label="{{ hourlyLabel }}" style="margin-top: 20px; display: flex; align-items: flex-end; gap: 4px; height: 150px"><template data-for="hours" data-as="h"><div title="{{ h.title }}" style="flex: 1; min-width: 0; height: {{ h.height }}; background: var(--n-12); border-radius: 2px 2px 0 0"></div></template></div>
-<div class="mono" aria-hidden="true" style="margin-top: 8px; display: flex; justify-content: space-between; font-size: 11px; color: var(--n-9)"><span>{{ hourFirst }}</span><span>сейчас</span></div>
-</section>
-<section class="card" style="padding: 24px; min-width: 0" aria-labelledby="qc-t">
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 id="qc-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Популярные команды</h2><a href="commands.html" style="font-size: 13px; color: var(--n-10)">Все команды</a></div>
-<p style="margin: 6px 0 0; font-size: 13px; color: var(--n-9)">Чаще всего вызывают в чате за всё время</p>
-<template data-if="cmdLoading"><p class="empty">Загрузка…</p></template>
-<template data-if="cmdEmpty"><p class="empty">Команд пока нет. Создай первую в разделе <a href="commands.html" style="text-decoration: underline">«Команды»</a> — например, ссылку на Discord.</p></template>
-<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
-<template data-for="cmds" data-as="c"><a href="commands.html" class="qc" aria-label="{{ c.aria }}"><span class="mono" style="font-size: 15px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: {{ c.color }}">{{ c.name }}</span><span style="font-size: 12px; color: var(--n-9)">{{ c.uses }}</span></a></template>
+<div role="group" aria-label="Ключевые показатели" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px">
+<template data-for="kpis" data-as="k"><div class="card" style="padding: 16px 18px; min-width: 0"><p style="margin: 0; font-size: 13px; line-height: 18px; color: var(--n-10)">{{ k.label }}</p><p class="mono" style="margin: 8px 0 0; font-size: 26px; line-height: 30px; font-weight: 500; letter-spacing: -0.01em">{{ k.value }}</p><p style="margin: 6px 0 0; font-size: 12px; line-height: 16px; color: var(--n-9)">{{ k.sub }}</p><template data-if="k.hasHint"><p style="margin: 4px 0 0; font-size: 12px; line-height: 16px; color: var(--n-11)">{{ k.hint }}</p></template></div></template>
 </div>
-</section>
-
-</div>
-<section class="card" style="padding: 24px" aria-labelledby="chart-t">
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap">
-<div><h2 id="chart-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Активность чата</h2><div style="margin-top: 8px; display: flex; gap: 20px; font-size: 13px; color: var(--n-10)"><span style="display: inline-flex; align-items: center; gap: 8px"><svg width="20" height="4" aria-hidden="true"><path d="M0 2h20" stroke="#F2F2F2" data-stroke="12" stroke-width="2"></path></svg>Сообщения</span><span style="display: inline-flex; align-items: center; gap: 8px"><svg width="20" height="4" aria-hidden="true"><path d="M0 2h20" stroke="#B4B4B4" data-stroke="10" stroke-width="1.5" stroke-dasharray="4 3"></path></svg>Команды</span></div></div>
-<p class="mono" style="margin: 0; font-size: 12px; color: var(--n-9)">последние 3 часа · по 10 минут</p>
-</div>
-<div style="position: relative; margin-top: 24px; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 8px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 16px; align-items: stretch"><section class="card" style="padding: 22px 24px; min-width: 0; display: flex; flex-direction: column; gap: 14px" aria-labelledby="vw-t">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap"><div style="min-width: 0"><h2 id="vw-t" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">Зрители</h2><p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">за последние 3 часа · по минутам</p></div><span class="mono" style="font-size: 12px; color: var(--n-9)">макс. {{ vMax }}</span></div>
+<div style="position: relative; height: 160px"><template data-if="vEmpty"><p style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; margin: 0; text-align: center; font-size: 13px; line-height: 18px; color: var(--n-9); padding: 0 16px">{{ vNote }}</p></template>
+<svg width="100%" height="160" viewBox="0 0 600 160" preserveAspectRatio="none" aria-label="График зрителей" role="img" style="display: block"><path d="M0 0H600M0 80H600M0 160H600" stroke="#1F1F1F" data-stroke="4" stroke-width="1" vector-effect="non-scaling-stroke" fill="none"></path><path d="{{ vArea }}" fill="rgba(255,255,255,0.05)"></path><path d="{{ vPath }}" fill="none" stroke="#F2F2F2" data-stroke="12" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"></path></svg></div>
+</section><section class="card" style="padding: 22px 24px; min-width: 0; display: flex; flex-direction: column; gap: 14px" aria-labelledby="tc-t">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap"><div style="min-width: 0"><h2 id="tc-t" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">Самые активные</h2><p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">кто писал больше всех за сутки</p></div></div>
+<template data-if="tcEmpty"><p style="margin: 0; font-size: 14px; color: var(--n-9); padding: 12px; border: 1px dashed var(--n-5); border-radius: 8px">Пока никто не писал в чат.</p></template>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px"><template data-for="topChatters" data-as="t"><li><div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px"><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ t.name }}</span><span class="mono" style="color: var(--n-9)">{{ t.count }}</span></div><div style="height: 6px; margin-top: 6px; border-radius: 999px; background: var(--n-4); overflow: hidden"><div style="height: 100%; width: {{ t.pct }}; background: var(--n-12)"></div></div></li></template></ul>
+</section></div>
+<section class="card" style="padding: 22px 24px; min-width: 0; display: flex; flex-direction: column; gap: 14px" aria-labelledby="chart-t">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap"><div style="min-width: 0"><h2 id="chart-t" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">Активность чата</h2><p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">сообщения и команды по 10 минут, последние 3 часа</p></div></div>
 <div class="mono" aria-hidden="true" style="display: flex; flex-direction: column; justify-content: space-between; height: 220px; font-size: 11px; color: var(--n-9); text-align: right"><template data-for="chart.ticks" data-as="t"><span>{{ t.v }}</span></template></div>
 <div style="position: relative; height: 220px">
 <svg width="100%" height="220" viewBox="0 0 800 220" preserveAspectRatio="none" aria-hidden="true" style="display: block; overflow: visible">
@@ -224,40 +205,42 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 </template>
 </div>
-</div>
 <div class="mono" aria-hidden="true" style="margin-top: 8px; margin-left: 48px; display: flex; justify-content: space-between; font-size: 11px; color: var(--n-9)"><template data-for="chart.xs" data-as="x"><span class="{{ x.cls }}">{{ x.t }}</span></template></div>
 <div class="sr"><table><caption>Сообщения и команды в чате по 10 минут за последние 3 часа</caption><thead><tr><th scope="col">Время</th><th scope="col">Сообщений</th><th scope="col">Команд</th></tr></thead><tbody><template data-for="chart.rows" data-as="r"><tr><td>{{ r.t }}</td><td>{{ r.m }}</td><td>{{ r.c }}</td></tr></template></tbody></table></div>
-</section>
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 24px">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 24px; align-items: start">
-<section id="events" class="card" style="padding: 24px; min-width: 0" aria-labelledby="ev-t">
-<h2 id="ev-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">История событий</h2>
-<p style="margin: 6px 0 0; font-size: 13px; color: var(--n-9)">Фолловы, подписки, рейды и донаты — последние 30</p>
-<template data-if="evLoading"><p class="empty">Загрузка…</p></template>
-<template data-if="evEmpty"><p class="empty">{{ evEmptyText }}</p></template>
-<ul style="list-style: none; margin: 16px 0 0; padding: 0">
-<template data-for="events" data-as="e">
+</section>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 16px; align-items: stretch"><section class="card" style="padding: 22px 24px; min-width: 0; display: flex; flex-direction: column; gap: 14px" aria-labelledby="hr-t">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap"><div style="min-width: 0"><h2 id="hr-t" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">По часам</h2><p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">сообщения за последние 24 часа</p></div></div>
+<div role="img" aria-label="{{ hourlyLabel }}" style="display: flex; align-items: flex-end; gap: 4px; height: 130px"><template data-for="hours" data-as="h"><div title="{{ h.title }}" style="flex: 1; min-width: 0; height: {{ h.height }}; background: var(--n-12); border-radius: 2px 2px 0 0"></div></template></div>
+<div class="mono" aria-hidden="true" style="display: flex; justify-content: space-between; font-size: 11px; color: var(--n-9)"><span>{{ hourFirst }}</span><span>сейчас</span></div>
+</section><section class="card" style="padding: 22px 24px; min-width: 0; display: flex; flex-direction: column; gap: 14px" aria-labelledby="et-t">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap"><div style="min-width: 0"><h2 id="et-t" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">События за сутки</h2><p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">фолловы, подписки, донаты, рейды</p></div></div>
+<template data-if="evTypesEmpty"><p style="margin: 0; font-size: 14px; color: var(--n-9); padding: 12px; border: 1px dashed var(--n-5); border-radius: 8px">Событий за сутки пока нет.</p></template>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px"><template data-for="evTypes" data-as="e"><li style="display: flex; flex-direction: column; gap: 6px"><div style="display: flex; justify-content: space-between; font-size: 14px"><span>{{ e.label }}</span><span class="mono" style="color: var(--n-9)">{{ e.count }}</span></div><div style="height: 6px; border-radius: 999px; background: var(--n-4); overflow: hidden"><div style="height: 100%; width: {{ e.pct }}; background: var(--n-10)"></div></div></li></template></ul>
+</section><section class="card" style="padding: 22px 24px; min-width: 0; display: flex; flex-direction: column; gap: 14px" aria-labelledby="mt-t">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap"><div style="min-width: 0"><h2 id="mt-t" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">Модерация за сутки</h2><p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">что удалили и наказали</p></div></div>
+<template data-if="modTypesEmpty"><p style="margin: 0; font-size: 14px; color: var(--n-9); padding: 12px; border: 1px dashed var(--n-5); border-radius: 8px">За сутки ничего не удаляли и не наказывали.</p></template>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px"><template data-for="modTypes" data-as="e"><li style="display: flex; flex-direction: column; gap: 6px"><div style="display: flex; justify-content: space-between; font-size: 14px"><span>{{ e.label }}</span><span class="mono" style="color: var(--n-9)">{{ e.count }}</span></div><div style="height: 6px; border-radius: 999px; background: var(--n-4); overflow: hidden"><div style="height: 100%; width: {{ e.pct }}; background: var(--n-9)"></div></div></li></template></ul>
+</section></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1.4fr 1fr)); gap: 16px; align-items: start"><section class="card" style="padding: 22px 24px; min-width: 0; display: flex; flex-direction: column; gap: 14px" aria-labelledby="ev-t">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap"><div style="min-width: 0"><h2 id="ev-t" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">История событий</h2><p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">последние 30: фолловы, подписки, рейды, донаты</p></div></div>
+<template data-if="evEmpty"><p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--n-9); padding: 14px; border: 1px dashed var(--n-5); border-radius: 8px">Событий пока нет. Здесь появятся фолловы, подписки, подарки, рейды и донаты, как только бот подключён к каналу.</p></template>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column"><template data-for="events" data-as="e">
 <li class="ev"><span class="evi"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ e.d }}"></path></svg></span><span style="font-size: 14px; line-height: 20px; min-width: 0; overflow-wrap: anywhere"><b style="font-weight: 600">{{ e.name }}</b> — {{ e.title }}<template data-if="e.hasSub"><br><span style="font-size: 13px; color: var(--n-9)">{{ e.sub }}</span></template></span><span class="mono" style="font-size: 12px; color: var(--n-9)">{{ e.time }}</span></li>
-</template>
-</ul>
-</section>
-
-<section class="card" style="padding: 24px; min-width: 0" aria-labelledby="md-t">
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px"><h2 id="md-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Модерация</h2><a href="moderation.html" style="font-size: 13px; color: var(--n-10)">Весь журнал</a></div>
-<p style="margin: 6px 0 0; font-size: 13px; color: var(--n-9)">Последние действия бота и модераторов</p>
-<template data-if="acLoading"><p class="empty">Загрузка…</p></template>
-<template data-if="acEmpty"><p class="empty">Нарушений пока не было. Автомодерация следит за чатом, пока бот подключён, — фильтры настраиваются в разделе <a href="moderation.html" style="text-decoration: underline">«Модерация»</a>.</p></template>
-<ul style="list-style: none; margin: 16px 0 0; padding: 0">
-<template data-for="actions" data-as="a">
+</template></ul>
+</section><section class="card" style="padding: 22px 24px; min-width: 0; display: flex; flex-direction: column; gap: 14px" aria-labelledby="ac-t">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap"><div style="min-width: 0"><h2 id="ac-t" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">Последние действия</h2><p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">бота и модераторов</p></div></div>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column"><template data-for="actions" data-as="a">
 <li class="ev"><span class="evi" style="{{ a.ring }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ a.d }}"></path></svg></span><span style="font-size: 14px; line-height: 20px; min-width: 0; overflow-wrap: anywhere"><b style="font-weight: 600">{{ a.name }}</b> — {{ a.title }}<br><span style="font-size: 13px; color: var(--n-9)">{{ a.sub }}</span></span><span class="mono" style="font-size: 12px; color: var(--n-9)">{{ a.time }}</span></li>
-</template>
-</ul>
+</template></ul>
+</section></div>
+<section class="card" style="padding: 22px 24px; min-width: 0; display: flex; flex-direction: column; gap: 14px" aria-labelledby="qc-t">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap"><div style="min-width: 0"><h2 id="qc-t" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">Команды</h2><p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">что чаще всего вызывают в чате</p></div></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px"><template data-if="cmdEmpty"><p style="margin: 0; font-size: 14px; color: var(--n-9)">Команд пока нет. <a href="commands.html" style="text-decoration: underline">Создать первую</a>.</p></template>
+<template data-for="cmds" data-as="c"><a href="commands.html" class="qc" aria-label="{{ c.aria }}"><span class="mono" style="font-size: 15px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: {{ c.color }}">{{ c.name }}</span><span style="font-size: 12px; color: var(--n-9)">{{ c.uses }}</span></a></template></div>
 </section>
-
-</div>
+<p style="margin: 0; font-size: 13px; color: var(--n-10)">Музыка за сутки: {{ musicLine }}</p>
 </main>
-
 <aside id="chat" class="chat" aria-labelledby="chat-t" style="flex: 1 1 320px; max-width: 420px; min-width: 0; align-self: flex-start; position: relative; display: flex; flex-direction: column; border-radius: 8px; background: rgb(var(--n-2-rgb) / 0.62); border: 1px solid rgb(var(--n-13-rgb) / 0.10); box-shadow: inset 0 1px 0 rgb(var(--n-13-rgb) / 0.08); overflow: hidden">
 <div style="display: flex; justify-content: space-between; align-items: center; height: 56px; padding: 0 16px; border-bottom: 1px solid var(--n-5); flex: none"><h2 id="chat-t" style="margin: 0; font-size: 15px; font-weight: 600">Чат</h2><span style="font-size: 12px; color: var(--n-9)" title="В среднем за последние 10 минут"><span class="mono">{{ rate }}</span> сообщ./мин</span></div>
 <div style="display: contents"><template data-if="chatHint.show"><p style="flex: none; margin: 0; padding: 10px 16px; border-bottom: 1px solid var(--n-5); font-size: 12px; line-height: 17px; color: var(--n-9)">{{ chatHint.text }}</p></template></div>
@@ -291,8 +274,6 @@ document.addEventListener('DOMContentLoaded', function () {
 <template data-if="hasSendErr"><p role="alert" style="margin: 8px 0 0; padding: 8px 10px; border: 2px solid var(--n-12); border-radius: 6px; font-size: 12px; line-height: 17px">{{ sendErr }}</p></template>
 </div>
 </aside>
-</div>
-</div>
 </template>
 <script src="assets/dc-lite.js?v=5f8ce08a"></script>
 <script>
@@ -780,8 +761,51 @@ class Component extends DCLogic {
     const hTime = (i) => new Date((hFrom + i * 3600) * 1000).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
     const hours = hc.map((n, i) => ({ title: hTime(i) + ' · ' + n + ' ' + plural(n, 'сообщение', 'сообщения', 'сообщений'), height: n ? Math.max(4, Math.round(n / maxH * 100)) + '%' : '2px' }));
     const hourlyTotal = hc.reduce((a, b) => a + b, 0);
+    const TYPE_RU = { follow: 'Фолловы', subscribe: 'Подписки', gift: 'Подарки', raid: 'Рейды', donation: 'Донаты', redemption: 'Награды баллами', tts: 'Озвучка', cheer: 'Биты', video: 'Видео', embedded: 'Встройки' };
+    const MOD_RU = { delete: 'Удалено', warn: 'Предупреждения', timeout: 'Таймауты', ban: 'Баны', unban: 'Разбаны' };
+    const pctOf = (v, max) => Math.max(4, Math.round(v / Math.max(1, max) * 100)) + '%';
+    const etRaw = d && d.eventsByType ? d.eventsByType : [];
+    const etMax = Math.max(1, ...etRaw.map((x) => x.c));
+    const evTypes = etRaw.map((x) => ({ label: TYPE_RU[x.type] || x.type, count: StreAPI.fmtNum(x.c), pct: pctOf(x.c, etMax) }));
+    const subsCount = etRaw.filter((x) => x.type === 'subscribe' || x.type === 'gift').reduce((a, x) => a + x.c, 0);
+    const mrRaw = d && d.modByType ? d.modByType : [];
+    const mrMax = Math.max(1, ...mrRaw.map((x) => x.c));
+    const modTypes = mrRaw.map((x) => ({ label: MOD_RU[x.action] || x.action, count: StreAPI.fmtNum(x.c), pct: pctOf(x.c, mrMax) }));
+    const delta = (cur, prev) => {
+      if (cur == null || prev == null) return '';
+      if (!prev && !cur) return 'как вчера';
+      if (!prev) return 'новое за сутки';
+      const r = Math.round((cur - prev) / prev * 100);
+      return (r > 0 ? '▲ +' : r < 0 ? '▼ ' : '● ') + r + '% к прошлым суткам';
+    };
+    const ser = d && d.viewers ? d.viewers : [];
+    const W = 600, H = 160, nowTs = Math.floor(Date.now() / 1000), t0 = nowTs - 3 * 3600;
+    const vmax = Math.max(1, ...ser.map((x) => x.v));
+    const pts = ser.map((x) => [((x.ts - t0) / (3 * 3600)) * W, H - (x.v / vmax) * (H - 8) - 4]);
+    const vPath = pts.length > 1 ? 'M' + pts.map((p) => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L') : '';
+    const vArea = pts.length > 1 ? vPath + ' L' + pts[pts.length - 1][0].toFixed(1) + ' ' + H + ' L' + pts[0][0].toFixed(1) + ' ' + H + ' Z' : '';
+    const mt2 = d ? d.metrics : null;
+    const pv = d && d.prev ? d.prev : null;
+    const mus = d && d.music ? d.music : { played: 0, requests: 0, queue: 0 };
+    const durSec = st && st.live ? Math.max(0, nowTs - st.startedAt) : 0;
+    const dur = durSec ? Math.floor(durSec / 3600) + ' ч ' + String(Math.floor(durSec % 3600 / 60)).padStart(2, '0') + ' мин' : '';
+    const kpis = [
+      { label: 'Зрители сейчас', value: st && st.live ? StreAPI.fmtNum(st.viewers) : '—', sub: st && st.live ? 'пик за эфир: ' + StreAPI.fmtNum(st.peak) : 'стрим не идёт', hint: '' },
+      { label: 'Сообщений в чате', value: mt2 ? StreAPI.fmtNum(mt2.messages) : '—', sub: 'за 24 часа', hint: pv && mt2 ? delta(mt2.messages, pv.messages) : '' },
+      { label: 'Писали в чат', value: mt2 ? StreAPI.fmtNum(mt2.chatters) : '—', sub: 'уникальных зрителей', hint: '' },
+      { label: 'Новых фолловеров', value: mt2 ? StreAPI.fmtNum(mt2.follows) : '—', sub: 'за 24 часа', hint: pv && mt2 ? delta(mt2.follows, pv.follows) : '' },
+      { label: 'Подписки и подарки', value: d ? StreAPI.fmtNum(subsCount) : '—', sub: 'за 24 часа', hint: '' },
+      { label: 'Удалено и наказано', value: mt2 ? StreAPI.fmtNum(mt2.deleted) : '—', sub: 'за 24 часа', hint: '' },
+    ];
+    const musicLine = d ? 'сыграно ' + mus.played + ', заказов ' + mus.requests + ' · в очереди ' + mus.queue : '';
+    const vNote = !d ? 'Загрузка…' : ser.length < 2 ? (st && st.live ? 'Собираем историю зрителей, график появится через пару минут.' : 'Стрим не идёт. График зрителей появится, когда начнётся эфир.') : '';
     return {
       head,
+      kpis, musicLine, dur, liveNow: !!(st && st.live), streamTitle: st && st.live ? (st.title || 'Без названия') : '', streamGame: st && st.live ? (st.game || 'Без категории') : '',
+      vPath, vArea, vNote, vEmpty: !!vNote, vMax: StreAPI.fmtNum(vmax), vW: W, vH: H,
+      evTypes, evTypesEmpty: !!d && !evTypes.length,
+      modTypes, modTypesEmpty: !!d && !modTypes.length,
+      subsCount: StreAPI.fmtNum(subsCount),
       topChatters, tcEmpty: !!d && !topChatters.length,
       hours, hourFirst: d && d.hourly ? hTime(0) : '',
       hourlyLabel: 'Сообщений за сутки: ' + StreAPI.fmtNum(hourlyTotal),

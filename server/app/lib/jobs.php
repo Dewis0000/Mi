@@ -32,6 +32,8 @@ function job_streams(): void {
                 db_exec('DELETE FROM streams WHERE user_id = ?', [$u['id']]);
                 db_insert('streams', ['user_id' => $u['id'], 'live' => 1, 'started_at' => $started, 'viewers' => (int)$s['viewer_count'], 'peak' => $peak,
                     'title' => $s['title'], 'game' => $s['game_name'], 'thumbnail' => $s['thumbnail_url'], 'updated_at' => now()]);
+                db_insert('stream_samples', ['user_id' => $u['id'], 'ts' => now(), 'viewers' => (int)$s['viewer_count']]);
+                db_exec('DELETE FROM stream_samples WHERE ts < ?', [now() - 3 * 86400]);
             } elseif ($row && (int)$row['live']) {
                 db_exec('UPDATE streams SET live = 0, updated_at = ? WHERE user_id = ?', [now(), $u['id']]);
             }

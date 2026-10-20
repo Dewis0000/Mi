@@ -121,7 +121,7 @@ function api_dispatch(string $r): never {
             }
             $events = array_map('event_row', db_all('SELECT * FROM events WHERE user_id = ? ORDER BY id DESC LIMIT 30', [$uid]));
             $topChatters = array_map(fn($r) => ['login' => $r['chatter_login'], 'name' => $r['chatter_name'] ?: $r['chatter_login'], 'count' => (int)$r['c']],
-                db_all('SELECT chatter_login, chatter_name, COUNT(*) AS c FROM chat_messages WHERE user_id = ? AND created_at >= ? GROUP BY chatter_login, chatter_name ORDER BY c DESC LIMIT 5', [$uid, now() - 86400]));
+                db_all('SELECT chatter_login, chatter_name, COUNT(*) AS c FROM chat_messages WHERE user_id = ? AND created_at >= ? GROUP BY chatter_login, chatter_name ORDER BY c DESC LIMIT 10', [$uid, now() - 86400]));
             $hourly = array_fill(0, 24, 0);
             foreach (db_all('SELECT created_at FROM chat_messages WHERE user_id = ? AND created_at >= ?', [$uid, now() - 86400]) as $row) {
                 $hourly[min(23, intdiv((int)$row['created_at'] - (now() - 86400), 3600))]++;
@@ -130,7 +130,15 @@ function api_dispatch(string $r): never {
             $top = array_map('cmd_row', db_all('SELECT * FROM commands WHERE user_id = ? ORDER BY use_count DESC LIMIT 4', [$uid]));
             json_out(['ok' => true, 'stream' => stream_row($uid), 'metrics' => ['messages' => $msgs, 'chatters' => $chatters, 'follows' => $follows, 'deleted' => $deleted],
                 'chart' => ['from' => $from, 'buckets' => $buckets], 'events' => $events, 'actions' => $actions, 'topCommands' => $top,
-                'topChatters' => $topChatters, 'hourly' => ['from' => now() - 86400, 'counts' => $hourly]]);
+                'topChatters' => $topChatters, 'hourly' => ['from' => now() - 86400, 'counts' => $hourly],
+                'viewers' => array_map(fn($r) => ['ts' => (int)$r['ts'], 'v' => (int)$r['viewers']], db_all('SELECT ts, viewers FROM stream_samples WHERE user_id = ? AND ts >= ? ORDER BY ts', [$uid, now() - 3 * 3600])),
+                'eventsByType' => db_all('SELECT type, COUNT(*) AS c FROM events WHERE user_id = ? AND created_at >= ? GROUP BY type ORDER BY c DESC', [$uid, now() - 86400]),
+                'modByType' => db_all('SELECT action, COUNT(*) AS c FROM mod_actions WHERE user_id = ? AND created_at >= ? GROUP BY action ORDER BY c DESC', [$uid, now() - 86400]),
+                'prev' => ['messages' => (int)db_one('SELECT COUNT(*) c FROM chat_messages WHERE user_id = ? AND created_at >= ? AND created_at < ?', [$uid, now() - 172800, now() - 86400])['c'],
+                    'follows' => (int)db_one("SELECT COUNT(*) c FROM events WHERE user_id = ? AND type = 'follow' AND created_at >= ? AND created_at < ?", [$uid, now() - 172800, now() - 86400])['c']],
+                'music' => ['played' => (int)db_one("SELECT COUNT(*) c FROM songs WHERE user_id = ? AND status = 'played' AND played_at >= ?", [$uid, now() - 86400])['c'],
+                    'requests' => (int)db_one("SELECT COUNT(*) c FROM songs WHERE user_id = ? AND created_at >= ?", [$uid, now() - 86400])['c'],
+                    'queue' => (int)db_one("SELECT COUNT(*) c FROM songs WHERE user_id = ? AND status = 'queued'", [$uid])['c']]]);
         }
         case 'chat.recent': {
             $u = require_user();
