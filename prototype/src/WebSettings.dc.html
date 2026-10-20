@@ -143,7 +143,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <ul class="hl">
 <li><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span>{{ modHint }}</span></li>
 <sc-if value="{{ modFailed }}" hint-placeholder-val="{{ false }}"><li style="color: #F2F2F2"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="color: #F2F2F2"><path d="M10.3 3.9L2.4 17.5a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4M12 17h.01"></path></svg><span>{{ modFailText }}</span></li></sc-if>
-<sc-if value="{{ botNotReady }}" hint-placeholder-val="{{ false }}"><li><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg><span>Аккаунт бота ещё не подключил администратор StreOps. Включить бота можно уже сейчас — чтение чата и ответы на команды заработают, как только его подключат.</span></li></sc-if>
+<sc-if value="{{ botNotReady }}" hint-placeholder-val="{{ false }}"><li><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg><span>Аккаунт бота ещё не подключил администратор StreOps. Команды и ответы бота заработают, как только администратор его подключит.</span></li></sc-if>
 </ul>
 </section>
 
@@ -560,8 +560,8 @@ class Component extends DCLogic {
     const now = Date.now() / 1000;
     const same = me.plan === p.key;
     const base = same && me.planUntil > now ? me.planUntil : now;
-    const until = StreAPI.fmtDate(base + 30 * 86400);
     const pr = this.state.promo && this.state.promo.plan === p.key ? this.state.promo : null;
+    const until = StreAPI.fmtDate(base + (pr && pr.days ? pr.days : 30) * 86400);
     const price = pr ? Math.round(p.price * (100 - pr.percent) / 100) : p.price;
     let text = 'Оплата ' + streRub(price) + ' картой или через СБП, ЮKassa проведёт платёж. ';
     if (pr) text += 'Скидка ' + pr.percent + '% по промокоду ' + pr.code + '. ';
@@ -699,7 +699,7 @@ class Component extends DCLogic {
       if (!me) note = '';
       else if (p.price === 0) note = isCur ? 'Действует всегда, без оплаты' : 'Включится сам, когда закончится платный тариф';
       else if (unlimitedCur) note = 'Выдан бессрочно — продлевать не нужно';
-      else if (!payOn) note = 'Онлайн-оплата сейчас подключается. Пока можно выдать тариф через администратора';
+      else if (!payOn) note = 'Онлайн-оплата временно недоступна. Напиши в поддержку, тариф выдадим вручную';
       else if (isCur) note = 'Продлим с ' + StreAPI.fmtDate(me.planUntil > now ? me.planUntil : now);
       else note = 'Хватает на балансе';
       return {
@@ -773,7 +773,7 @@ class Component extends DCLogic {
 
       botSub: 'Бот ' + bot + ' отвечает на команды, ставит музыку, проводит розыгрыши и модерирует чат твоего канала Twitch.',
       botTitle, botText, botDot, botBusy: botBusy || !me,
-      botCanEnable: !!me && (s.busy === 'botOn' || (!me.botEnabled && s.busy !== 'botOff')),
+      botCanEnable: !!me && !!(me.bot && me.bot.ready) && (s.busy === 'botOn' || (!me.botEnabled && s.busy !== 'botOff')),
       botCanDisable: !!me && (s.busy === 'botOff' || (!!me.botEnabled && s.busy !== 'botOn')),
       botShowRetry: !!me && !!me.botEnabled && errs.length > 0 && !botBusy,
       enableLabel: s.busy === 'botOn' ? 'Подключаем…' : 'Подключить бота',

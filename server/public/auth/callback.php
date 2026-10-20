@@ -39,8 +39,8 @@ if ($user) {
     $uid = db_insert('users', $row + ['twitch_id' => $tu['id'], 'plan' => 'free', 'widget_token' => rand_token(12), 'created_at' => now()]);
     // стартовые команды
     foreach ([
-        ['аптайм', 'Стрим идёт {uptime}', 'Сколько идёт стрим', 10],
-        ['команды', 'Команды канала: !аптайм, !трек, !очередь', 'Список команд', 30],
+        ['аптайм', 'Аптайм: {uptime}', 'Сколько идёт стрим', 10],
+        ['команды', 'Команды канала: {commands}', 'Список команд', 30],
         ['время', 'Сейчас {time}', 'Текущее время', 10],
     ] as [$n, $resp, $desc, $cd]) {
         db_insert('commands', ['user_id' => $uid, 'name' => $n, 'prefix' => '!', 'response' => $resp, 'description' => $desc, 'cooldown_global' => $cd, 'enabled' => 1, 'access' => 'all', 'created_at' => now()]);

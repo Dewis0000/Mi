@@ -700,7 +700,7 @@ class Component extends DCLogic {
       { label: 'Каналов с ботом', val: v(st && st.botChannels), sub: 'бот включён стримером' },
       { label: 'Сейчас в эфире', val: v(st && st.live), sub: 'по данным cron' },
       { label: 'Сумма балансов', val: st ? admMoney(st.balances) : '—', sub: 'деньги на счетах пользователей' },
-      { label: 'Доход за 30 дней', val: st ? admMoney(st.income30) : '—', sub: 'оплата тарифов с баланса' },
+      { label: 'Доход за 30 дней', val: st ? admMoney(st.income30) : '—', sub: 'оплата тарифов' },
     ];
     const cronLast = st ? st.cronLast : 0;
     const cronAge = cronLast ? Math.max(0, now - cronLast) : 0;

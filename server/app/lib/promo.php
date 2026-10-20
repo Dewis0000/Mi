@@ -24,6 +24,21 @@ function promo_price(array $p): int {
     return (int)round(PLANS[$p['plan']]['price'] * (100 - (int)$p['percent']) / 100);
 }
 
+// Атомарно занимаем использование кода: вставка в promo_uses не пройдёт дважды (PRIMARY KEY),
+// а UPDATE проверяет лимит прямо в запросе. Возвращает false, если код уже занят этим пользователем или закончился.
+function promo_claim(array $p, int $uid): bool {
+    try {
+        db_insert('promo_uses', ['code_id' => (int)$p['id'], 'user_id' => $uid, 'created_at' => now()]);
+    } catch (Throwable $e) {
+        return false;
+    }
+    if (db_exec('UPDATE promo_codes SET used = used + 1 WHERE id = ? AND (max_uses = 0 OR used < max_uses)', [(int)$p['id']]) < 1) {
+        db_exec('DELETE FROM promo_uses WHERE code_id = ? AND user_id = ?', [(int)$p['id'], $uid]);
+        return false;
+    }
+    return true;
+}
+
 // Отмечаем использование. Повторно засчитать тот же код тому же пользователю нельзя: PRIMARY KEY не даст.
 function promo_mark_used(array $p, int $uid): void {
     try {

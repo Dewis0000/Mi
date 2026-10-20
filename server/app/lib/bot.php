@@ -347,7 +347,7 @@ function handle_builtin(array $ctx): bool {
     // заказ музыки
     $music = music_config((int)$user['id']);
     if (!empty($music['cmd']['on']) && $word === '!' . mb_strtolower((string)$music['cmd']['name'])) {
-        if (!plan_limits($user)['music']) { tw_send($bid, '@' . $ctx['name'] . ', заказ музыки доступен на тарифе «Про»', $ctx['msgId']); return true; }
+        if (!plan_limits($user)['music']) return true; // на бесплатном тарифе молчим: публичный чат не засоряем, пояснение — в панели
         if (!access_ok($user, (string)$music['cmd']['access'], $r, $ctx['chatterId'], $ctx['login'])) return true;
         $ck = 'music:' . $user['id'] . ':' . $ctx['chatterId'];
         $last = db_one('SELECT last FROM cooldowns WHERE k = ?', [$ck]);
@@ -461,6 +461,12 @@ function stream_fresh(array $user): ?array {
     return db_one('SELECT * FROM streams WHERE user_id = ?', [$user['id']]);
 }
 
+// Список включённых команд канала для ответа «!команды»
+function commands_line(int $uid): string {
+    $rows = db_all('SELECT prefix, name FROM commands WHERE user_id = ? AND enabled = 1 ORDER BY name', [$uid]);
+    return $rows ? implode(', ', array_map(fn($c) => $c['prefix'] . $c['name'], $rows)) : 'пока нет команд';
+}
+
 function render_vars(string $tpl, array $user, array $ctx, int $count, string $args = ''): string {
     $st = stream_fresh($user);
     $live = $st && (int)$st['live'];
@@ -471,6 +477,7 @@ function render_vars(string $tpl, array $user, array $ctx, int $count, string $a
         '{viewers}' => $live ? (string)$st['viewers'] : '0',
         '{time}' => date('H:i') . ' МСК', '{channel}' => $user['display_name'] ?: $user['login'],
         '{game}' => $st['game'] ?? '', '{title}' => $st['title'] ?? '',
+        '{commands}' => str_contains($tpl, '{commands}') ? commands_line((int)$user['id']) : '',
     ]);
 }
 

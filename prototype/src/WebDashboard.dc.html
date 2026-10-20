@@ -68,7 +68,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 
 <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
 <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
-<div style="min-width: 0"><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Обзор эфира</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 999px; flex: none; background: {{ head.dot }}"></span><span style="color: #F2F2F2; font-weight: 500">{{ head.state }}</span><span>{{ head.info }}</span></p></div>
+<div style="min-width: 0"><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Старт</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 999px; flex: none; background: {{ head.dot }}"></span><span style="color: #F2F2F2; font-weight: 500">{{ head.state }}</span><span>{{ head.info }}</span></p></div>
 <p class="mono" role="status" style="margin: 0; font-size: 12px; color: #8F8F8F">{{ head.sync }}</p>
 </div>
 
@@ -83,12 +83,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 <sc-if value="{{ banner.hasNote }}" hint-placeholder-val="{{ false }}"><p style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">{{ banner.note }}</p></sc-if>
 <sc-if value="{{ banner.hasErrs }}" hint-placeholder-val="{{ false }}"><div role="alert" style="margin-top: 12px; padding: 10px 12px; border: 2px solid #F2F2F2; border-radius: 6px; font-size: 13px; line-height: 18px"><p style="margin: 0; font-weight: 600">{{ banner.errTitle }}</p><ul style="margin: 4px 0 0; padding-left: 18px"><sc-for list="{{ banner.errs }}" as="e" hint-placeholder-count="1"><li style="overflow-wrap: anywhere">{{ e.text }}</li></sc-for></ul></div></sc-if>
 </div>
-<sc-if value="{{ banner.hasBtn }}" hint-placeholder-val="{{ true }}"><button type="button" class="{{ banner.btnClass }}" onClick="{{ enableBot }}" disabled="{{ botBusy }}">{{ banner.btn }}</button></sc-if>
+<sc-if value="{{ banner.hasBtn }}" hint-placeholder-val="{{ true }}"><button type="button" class="{{ banner.btnClass }}" onClick="{{ enableBot }}" disabled="{{ banner.btnOff }}">{{ banner.btn }}</button></sc-if>
 </section>
 </sc-if></div>
 
 
 
+<sc-if value="{{ showSteps }}" hint-placeholder-val="{{ false }}"><section class="card" style="padding: 22px 24px; min-width: 0" aria-labelledby="st-t"><h2 id="st-t" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">Первые шаги</h2><p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">Сделано: {{ stepsDone }} из 4. Каждый шаг можно пропустить и вернуться позже.</p><ol style="list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px"><sc-for list="{{ steps }}" as="x" hint-placeholder-count="4"><li style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid #2A2A2A; border-radius: 8px"><span aria-hidden="true" style="width: 24px; height: 24px; flex: none; border-radius: 999px; border: 1px solid #3A3A3A; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; {{ x.dotStyle }}">{{ x.mark }}</span><div style="min-width: 0; flex: 1"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">{{ x.title }}</p><p style="margin: 2px 0 0; font-size: 12px; line-height: 16px; color: #8F8F8F">{{ x.hint }}</p></div><sc-if value="{{ x.hasAction }}" hint-placeholder-val="{{ false }}"><button type="button" class="btn-s" onClick="{{ x.act }}" disabled="{{ x.actOff }}">{{ x.actLabel }}</button></sc-if></li></sc-for></ol></section></sc-if>
 <div role="group" aria-label="Ключевые показатели" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px">
 <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="6"><div class="card" style="padding: 16px 18px; min-width: 0"><p style="margin: 0; font-size: 13px; line-height: 18px; color: #B4B4B4">{{ k.label }}</p><p class="mono" style="margin: 8px 0 0; font-size: 26px; line-height: 30px; font-weight: 500; letter-spacing: -0.01em">{{ k.value }}</p><p style="margin: 6px 0 0; font-size: 12px; line-height: 16px; color: #8F8F8F">{{ k.sub }}</p><sc-if value="{{ k.hasHint }}" hint-placeholder-val="{{ false }}"><p style="margin: 4px 0 0; font-size: 12px; line-height: 16px; color: #DCDCDC">{{ k.hint }}</p></sc-if></div></sc-for>
 </div>
@@ -262,7 +263,7 @@ class Component extends DCLogic {
       me: null, dash: null, dashErr: '',
       chat: [], chatLoaded: false, chatErr: '', newCount: 0, sel: null, busy: {}, notes: {},
       text: '', sending: false, sendErr: '',
-      hover: -1, botBusy: false, botErrors: [],
+      hover: -1, botBusy: false, botErrors: [], testBusy: false,
     };
     this.lastId = 0;
     this.dashSig = '';
@@ -422,6 +423,15 @@ class Component extends DCLogic {
   }
 
   // ---------- бот ----------
+  async testAlert() {
+    if (this.state.testBusy) return;
+    this.setState({ testBusy: true });
+    try {
+      await StreAPI.post('widget.test', { kind: 'follow' });
+      StreAPI.toast('Тестовый алерт отправлен. Он появится в виджете «Алерты», если тот включён в OBS');
+    } catch (e) { StreAPI.toast(e.message, 'error'); }
+    this.setState({ testBusy: false });
+  }
   async enableBot() {
     if (this.state.botBusy) return;
     this.setState({ botBusy: true, botErrors: [] });
@@ -448,14 +458,14 @@ class Component extends DCLogic {
     s.botErrors.concat(String(u.botError || '').split('; ')).forEach((t) => { t = String(t || '').trim(); if (t && errs.indexOf(t) < 0) errs.push(t); });
     const loud = 'display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; padding: 20px 24px; border-radius: 8px; background: #171717; border: 1px solid #6E6E6E; box-shadow: inset 2px 0 0 #F2F2F2';
     const calm = 'display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; padding: 16px 20px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px dashed #3A3A3A';
-    const base = { show: true, errs: errs.map((t) => ({ text: t })), hasErrs: errs.length > 0, errTitle: 'Что ответил сервер:', hasBtn: true };
+    const base = { show: true, errs: errs.map((t) => ({ text: t })), hasErrs: errs.length > 0, errTitle: 'Что ответил сервер:', hasBtn: true, btnOff: s.botBusy };
     if (!u.botEnabled) {
       return Object.assign(base, {
         box: loud, iconStyle: 'border: 2px solid #F2F2F2', btnClass: 'btn',
         title: 'Бот не подключён к каналу',
         text: 'Пока бота нет в канале, StreOps не видит чат: не работают команды, автомодерация, лента событий и статистика на этой странице. При подключении бот станет модератором канала и подпишется на события Twitch.',
-        hasNote: !ready, note: 'Администратор сервиса ещё не подключил аккаунт бота, поэтому чтение чата заработает только после этого. Подключить канал можно уже сейчас.',
-        btn: s.botBusy ? 'Подключаем…' : 'Подключить бота',
+        hasNote: !ready, note: 'Администратор StreOps ещё не подключил аккаунт бота. Пока его нет, бот не станет модератором канала и не будет отвечать на команды. Кнопка включится, когда администратор подключит бота.',
+        btn: !ready ? 'Ждём администратора' : (s.botBusy ? 'Подключаем…' : 'Подключить бота'), btnOff: s.botBusy || !ready,
       });
     }
     if (!ready) {
@@ -720,8 +730,23 @@ class Component extends DCLogic {
     ];
     const musicLine = d ? 'сыграно ' + mus.played + ', заказов ' + mus.requests + ' · в очереди ' + mus.queue : '';
     const vNote = !d ? 'Загрузка…' : ser.length < 2 ? (st && st.live ? 'Собираем историю зрителей, график появится через пару минут.' : 'Стрим не идёт. График зрителей появится, когда начнётся эфир.') : '';
+    const meU = me && me.user ? me.user : null;
+    const stepBotOn = !!(meU && meU.botEnabled);
+    const stepBotReady = !!(me && me.bot && me.bot.ready);
+    const cmdN = d && d.topCommands ? d.topCommands.length : 0;
+    const DONE = 'background: #5CD65C; border-color: #5CD65C; color: #0A0A0A';
+    const stepList = [
+      { title: 'Аккаунт Twitch', hint: 'Вход выполнен', done: true, mark: '✓', hasAction: false, actLabel: '', act: () => {}, actOff: false },
+      { title: 'Тест алерта в OBS', hint: 'Проиграть тестовый алерт: он появится в виджете «Алерты», если тот добавлен в OBS', done: false, mark: '2', hasAction: true, actLabel: s.testBusy ? 'Отправляем…' : 'Проиграть', act: () => this.testAlert(), actOff: !!s.testBusy },
+      { title: 'Бот в канале', hint: stepBotOn ? 'Бот отвечает на команды в чате' : stepBotReady ? 'Бот станет модератором канала и начнёт отвечать на команды' : 'Ждём, пока администратор подключит аккаунт бота', done: stepBotOn, mark: stepBotOn ? '✓' : '3', hasAction: !stepBotOn && stepBotReady, actLabel: s.botBusy ? 'Подключаем…' : 'Подключить', act: () => this.enableBot(), actOff: !!s.botBusy },
+      { title: 'Первая команда', hint: cmdN ? 'Команд создано: ' + cmdN : 'Команды отвечают зрителям, например !аптайм', done: cmdN > 0, mark: cmdN ? '✓' : '4', hasAction: cmdN === 0, actLabel: 'Создать', act: () => { location.href = 'WebCommands.dc.html'; }, actOff: false },
+    ].map((x) => Object.assign(x, { dotStyle: x.done ? DONE : '' }));
+    const steps = stepList.map((x) => ({ title: x.title, hint: x.hint, mark: x.mark, dotStyle: x.dotStyle, hasAction: x.hasAction, actLabel: x.actLabel, act: x.act, actOff: x.actOff }));
+    const stepsDone = stepList.filter((x) => x.done).length;
+    const showSteps = !!me && !(stepBotOn && cmdN > 0);
     return {
       head,
+      steps, stepsDone, showSteps, testBusy: !!s.testBusy,
       kpis, musicLine, dur, liveNow: !!(st && st.live), streamTitle: st && st.live ? (st.title || 'Без названия') : '', streamGame: st && st.live ? (st.game || 'Без категории') : '',
       vPath, vArea, vNote, vEmpty: !!vNote, vMax: StreAPI.fmtNum(vmax), vW: W, vH: H,
       evTypes, evTypesEmpty: !!d && !evTypes.length,

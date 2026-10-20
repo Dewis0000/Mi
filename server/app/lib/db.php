@@ -50,7 +50,7 @@ function db_update(string $table, array $row, string $where, array $args): int {
     return db_exec('UPDATE ' . $table . ' SET ' . $set . ' WHERE ' . $where, array_merge(array_values($row), $args));
 }
 
-const DB_VERSION = 8;
+const DB_VERSION = 9;
 
 function db_migrate(PDO $pdo, string $driver): void {
     $sqlite = $driver === 'sqlite';
@@ -130,6 +130,9 @@ function db_migrate(PDO $pdo, string $driver): void {
     try { $pdo->exec("ALTER TABLE payments ADD COLUMN plan {$vc(16)} NOT NULL DEFAULT ''"); } catch (Throwable $e) { /* колонка уже есть */ }
     try { $pdo->exec('ALTER TABLE payments ADD COLUMN promo_id INT NOT NULL DEFAULT 0'); } catch (Throwable $e) { /* колонка уже есть */ }
     try { $pdo->exec("ALTER TABLE chat_messages ADD COLUMN frags {$text}"); } catch (Throwable $e) { /* колонка уже есть */ }
+    // v9: новые стартовые ответы. Меняем только тексты, которые создавались по умолчанию и не правились вручную
+    $pdo->prepare('UPDATE commands SET response = ? WHERE name = ? AND response = ?')->execute(['Аптайм: {uptime}', 'аптайм', 'Стрим идёт {uptime}']);
+    $pdo->prepare('UPDATE commands SET response = ? WHERE name = ? AND response = ?')->execute(['Команды канала: {commands}', 'команды', 'Команды канала: !аптайм, !трек, !очередь']);
     $pdo->prepare('DELETE FROM kv WHERE k = ?')->execute(['db_version']);
     $pdo->prepare('INSERT INTO kv (k, v, expires) VALUES (?, ?, 0)')->execute(['db_version', json_encode(DB_VERSION)]);
 }

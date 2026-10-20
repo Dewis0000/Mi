@@ -91,7 +91,9 @@ function api_dispatch(string $r): never {
             $mod = tw_add_bot_moderator($u);
             $errors = eventsub_ensure_channel($u);
             db_update('users', ['bot_enabled' => 1, 'bot_error' => $errors ? implode('; ', $errors) : null], 'id = ?', [$u['id']]);
-            if (!$errors) tw_send($u['twitch_id'], 'StreOps подключён к каналу. Команды: !аптайм, !команды');
+            if (!$errors) tw_send($u['twitch_id'], 'StreOps подключён к каналу. Напиши !команды, чтобы увидеть список.');
+            // первый раз: напоминание о подписке, чтобы бот сразу что-то делал в эфире (можно выключить в «Бот» → «Таймеры»)
+            if (!$errors && !timers_list((int)$u['id'])) settings_set((int)$u['id'], 'timers', [['id' => rand_token(4), 'text' => 'Не забывайте про подписку, это помогает стриму ❤', 'every' => 20, 'liveOnly' => true, 'on' => true, 'last' => now()]]);
             json_out(['ok' => true, 'moderator' => $mod, 'errors' => $errors]);
         }
         case 'bot.disable': {
@@ -108,7 +110,7 @@ function api_dispatch(string $r): never {
             $since = since_for($uid);
             $msgs = (int)db_one('SELECT COUNT(*) c FROM chat_messages WHERE user_id = ? AND created_at >= ?', [$uid, $since])['c'];
             $chatters = (int)db_one('SELECT COUNT(DISTINCT chatter_id) c FROM chat_messages WHERE user_id = ? AND created_at >= ?', [$uid, $since])['c'];
-            $follows = (int)db_one("SELECT COUNT(*) c FROM events WHERE user_id = ? AND type = 'follow' AND created_at >= ?", [$uid, $since])['c'];
+            $follows = (int)db_one("SELECT COUNT(*) c FROM events WHERE user_id = ? AND type = 'follow' AND created_at >= ? AND COALESCE(data, '') NOT LIKE '%\"test\":true%'", [$uid, $since])['c'];
             $deleted = (int)db_one("SELECT COUNT(*) c FROM mod_actions WHERE user_id = ? AND created_at >= ? AND action IN ('delete','warn','timeout','ban')", [$uid, $since])['c'];
             // активность по 10 минут за последние 3 часа
             $from = now() - 3 * 3600;
@@ -119,7 +121,7 @@ function api_dispatch(string $r): never {
                 $buckets[$i]['m']++;
                 if (str_starts_with((string)$row['text'], '!')) $buckets[$i]['c']++;
             }
-            $events = array_map('event_row', db_all('SELECT * FROM events WHERE user_id = ? ORDER BY id DESC LIMIT 30', [$uid]));
+            $events = array_map('event_row', db_all("SELECT * FROM events WHERE user_id = ? AND COALESCE(data, '') NOT LIKE '%\"test\":true%' ORDER BY id DESC LIMIT 30", [$uid]));
             $topChatters = array_map(fn($r) => ['login' => $r['chatter_login'], 'name' => $r['chatter_name'] ?: $r['chatter_login'], 'count' => (int)$r['c']],
                 db_all('SELECT chatter_login, chatter_name, COUNT(*) AS c FROM chat_messages WHERE user_id = ? AND created_at >= ? GROUP BY chatter_login, chatter_name ORDER BY c DESC LIMIT 10', [$uid, now() - 86400]));
             $hourly = array_fill(0, 24, 0);
@@ -132,10 +134,10 @@ function api_dispatch(string $r): never {
                 'chart' => ['from' => $from, 'buckets' => $buckets], 'events' => $events, 'actions' => $actions, 'topCommands' => $top,
                 'topChatters' => $topChatters, 'hourly' => ['from' => now() - 86400, 'counts' => $hourly],
                 'viewers' => array_map(fn($r) => ['ts' => (int)$r['ts'], 'v' => (int)$r['viewers']], db_all('SELECT ts, viewers FROM stream_samples WHERE user_id = ? AND ts >= ? ORDER BY ts', [$uid, now() - 3 * 3600])),
-                'eventsByType' => db_all('SELECT type, COUNT(*) AS c FROM events WHERE user_id = ? AND created_at >= ? GROUP BY type ORDER BY c DESC', [$uid, now() - 86400]),
+                'eventsByType' => db_all("SELECT type, COUNT(*) AS c FROM events WHERE user_id = ? AND created_at >= ? AND COALESCE(data, '') NOT LIKE '%\"test\":true%' GROUP BY type ORDER BY c DESC", [$uid, now() - 86400]),
                 'modByType' => db_all('SELECT action, COUNT(*) AS c FROM mod_actions WHERE user_id = ? AND created_at >= ? GROUP BY action ORDER BY c DESC', [$uid, now() - 86400]),
                 'prev' => ['messages' => (int)db_one('SELECT COUNT(*) c FROM chat_messages WHERE user_id = ? AND created_at >= ? AND created_at < ?', [$uid, now() - 172800, now() - 86400])['c'],
-                    'follows' => (int)db_one("SELECT COUNT(*) c FROM events WHERE user_id = ? AND type = 'follow' AND created_at >= ? AND created_at < ?", [$uid, now() - 172800, now() - 86400])['c']],
+                    'follows' => (int)db_one("SELECT COUNT(*) c FROM events WHERE user_id = ? AND type = 'follow' AND created_at >= ? AND created_at < ? AND COALESCE(data, '') NOT LIKE '%\"test\":true%'", [$uid, now() - 172800, now() - 86400])['c']],
                 'music' => ['played' => (int)db_one("SELECT COUNT(*) c FROM songs WHERE user_id = ? AND status = 'played' AND played_at >= ?", [$uid, now() - 86400])['c'],
                     'requests' => (int)db_one("SELECT COUNT(*) c FROM songs WHERE user_id = ? AND created_at >= ?", [$uid, now() - 86400])['c'],
                     'queue' => (int)db_one("SELECT COUNT(*) c FROM songs WHERE user_id = ? AND status = 'queued'", [$uid])['c']]]);
@@ -232,7 +234,7 @@ function api_dispatch(string $r): never {
                 $every = max(5, min(240, (int)($t['every'] ?? 15)));
                 $id = (string)($t['id'] ?? '');
                 $last = $old[$id]['last'] ?? now(); // новый таймер первый раз сработает через интервал
-                $items[] = ['id' => $id !== '' ? $id : rand_token(4), 'text' => $text, 'every' => $every, 'liveOnly' => !empty($t['liveOnly']), 'on' => !empty($t['on']), 'last' => (int)$last];
+                $items[] = ['id' => $id !== '' ? $id : rand_token(4), 'text' => $text, 'every' => $every, 'liveOnly' => !isset($t['liveOnly']) || !empty($t['liveOnly']), 'on' => !empty($t['on']), 'last' => (int)$last];
             }
             settings_set((int)$u['id'], 'timers', $items);
             json_out(['ok' => true, 'items' => timers_list((int)$u['id'])]);
@@ -569,6 +571,14 @@ function api_dispatch(string $r): never {
             settings_set((int)$u['id'], 'widgets', ['on' => $on, 'cfg' => (array)($data['cfg'] ?? [])]);
             json_out(['ok' => true]);
         }
+        case 'widget.test': { // тестовый алерт для первого шага: виджет «Алерты» его покажет, статистика и цели — нет
+            $u = require_user();
+            $kind = in_str('kind', 16, 'follow');
+            if (!in_array($kind, ['follow', 'sub', 'donation', 'raid'], true)) fail('Неизвестный тип алерта');
+            db_insert('events', ['user_id' => $u['id'], 'type' => $kind, 'login' => 'test_viewer', 'name' => 'Тестовый зритель',
+                'data' => json_encode(['test' => true, 'amount' => $kind === 'donation' ? 100 : 0, 'viewers' => $kind === 'raid' ? 42 : 0, 'message' => 'Это тестовый алерт'], JSON_UNESCAPED_UNICODE), 'created_at' => now()]);
+            json_out(['ok' => true]);
+        }
         case 'player.next': { // плеер музыки (панель или OBS /w/player.php): трек доиграл, либо очередь ждёт запуска
             $u = db_one('SELECT * FROM users WHERE widget_token = ?', [in_str('t', 64)]);
             if (!$u || (int)$u['banned']) fail('Плеер не найден', 404);
@@ -606,8 +616,9 @@ function api_dispatch(string $r): never {
             $u = require_user();
             $p = promo_check($u, in_str('code', 64));
             if ((int)$p['percent'] >= 100) {
+                // сначала занимаем использование, потом включаем тариф: два одновременных запроса не продлят тариф дважды
+                if (!promo_claim($p, (int)$u['id'])) fail('Ты уже использовал этот промокод или он закончился');
                 plan_activate((int)$u['id'], $p['plan'], (int)$p['days'], 'Промокод ' . $p['code'] . ': тариф «' . PLANS[$p['plan']]['name'] . '» на ' . (int)$p['days'] . ' дн.', 'grant', 0);
-                promo_mark_used($p, (int)$u['id']);
                 json_out(['ok' => true, 'free' => true, 'plan' => $p['plan'], 'days' => (int)$p['days']]);
             }
             json_out(['ok' => true, 'free' => false, 'code' => $p['code'], 'plan' => $p['plan'], 'percent' => (int)$p['percent'], 'price' => promo_price($p), 'days' => (int)$p['days']]);
@@ -822,7 +833,7 @@ function api_dispatch(string $r): never {
                 if (strlen($m['text']) > strlen($buckets[$i]['best']) && !str_starts_with($m['text'], '!')) $buckets[$i]['best'] = $m['text'];
             }
             $weights = ['donation' => 10, 'sub' => 6, 'resub' => 6, 'gift' => 6, 'raid' => 8, 'follow' => 1];
-            foreach (db_all("SELECT created_at, type, login, name FROM events WHERE user_id = ? AND created_at BETWEEN ? AND ? AND type IN ('donation','sub','resub','gift','raid','follow')", [$u['id'], $from, $to]) as $e) {
+            foreach (db_all("SELECT created_at, type, login, name FROM events WHERE user_id = ? AND created_at BETWEEN ? AND ? AND type IN ('donation','sub','resub','gift','raid','follow') AND COALESCE(data, '') NOT LIKE '%\"test\":true%'", [$u['id'], $from, $to]) as $e) {
                 $i = intdiv((int)$e['created_at'] - $from, $bucket);
                 $buckets[$i] ??= ['score' => 0, 'chat' => 0, 'events' => [], 'best' => ''];
                 $buckets[$i]['score'] += $weights[$e['type']] ?? 1;
@@ -1048,7 +1059,7 @@ function widget_payload(array $u, string $w, int $after): array {
             break;
         case 'subgoal':
             $base = (int)($cfg['content']['current'] ?? 0);
-            $n = (int)db_one("SELECT COUNT(*) c FROM events WHERE user_id = ? AND type IN ('sub','resub','gift') AND created_at >= ?", [$uid, (int)($cfg['since'] ?? 0)])['c'];
+            $n = (int)db_one("SELECT COUNT(*) c FROM events WHERE user_id = ? AND type IN ('sub','resub','gift') AND created_at >= ? AND COALESCE(data, '') NOT LIKE '%\"test\":true%'", [$uid, (int)($cfg['since'] ?? 0)])['c'];
             $data['current'] = $base + $n;
             break;
         case 'chat':

@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <nav aria-label="Разделы стрим-панели" class="sb" data-dc-keep>
 <label class="sb-search"><svg class="sb-ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input type="search" data-sb-search placeholder="Поиск" aria-label="Найти раздел" autocomplete="off"><kbd>Ctrl K</kbd></label><p class="sb-empty" data-sb-empty hidden>Такого раздела нет</p>
 <p class="sb-h">Сегодня</p>
-<a href="panel.html" class="sb-i" aria-current="page" data-kw="главная статистика эфир статус"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Обзор</a>
+<a href="panel.html" class="sb-i" aria-current="page" data-kw="главная статистика эфир статус"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Старт</a>
 <p class="sb-h">Чат</p>
 <a href="moderation.html" class="sb-i" data-kw="фильтр чат удалить бан таймаут проверка"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Модерация</a>
 <a href="mods.html" class="sb-i" data-kw="мод модераторы помощник права журнал"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Помощники</a>
@@ -138,7 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
 <p class="sb-h">Интерактив</p>
 <a href="giveaways.html" class="sb-i" data-kw="розыгрыш приз участники победитель"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1s6 1 6 1zM12 8c2-4 6-4 6-1s-6 1-6 1z"/></svg>Розыгрыши</a>
 <a href="clips.html" class="sb-i" data-kw="нарезка клип момент видео"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3l12 9-12 9z"/><path d="M3 3v18"/></svg>Нарезки</a>
-<span class="sb-i sb-off" aria-disabled="true"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 13l-7.5 7.5a2.1 2.1 0 0 1-3-3L11 10M16 16l6-6M8 8l6-6M9 7l8 8M21 11l-8-8"/></svg>Аукционы<span class="sb-tag">скоро</span></span>
 <div class="sb-sep"></div>
 <a href="settings.html" class="sb-i" data-kw="тариф оплата аккаунт email промокод"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>Настройки</a>
 <a href="support.html" class="sb-i" data-kw="помощь вопрос обращение"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Поддержка</a>
@@ -146,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
 <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
-<div style="min-width: 0"><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Обзор эфира</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--n-10); display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 999px; flex: none; background: {{ head.dot }}"></span><span style="color: var(--n-12); font-weight: 500">{{ head.state }}</span><span>{{ head.info }}</span></p></div>
+<div style="min-width: 0"><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Старт</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--n-10); display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 999px; flex: none; background: {{ head.dot }}"></span><span style="color: var(--n-12); font-weight: 500">{{ head.state }}</span><span>{{ head.info }}</span></p></div>
 <p class="mono" role="status" style="margin: 0; font-size: 12px; color: var(--n-9)">{{ head.sync }}</p>
 </div>
 
@@ -161,12 +160,13 @@ document.addEventListener('DOMContentLoaded', function () {
 <template data-if="banner.hasNote"><p style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">{{ banner.note }}</p></template>
 <template data-if="banner.hasErrs"><div role="alert" style="margin-top: 12px; padding: 10px 12px; border: 2px solid var(--n-12); border-radius: 6px; font-size: 13px; line-height: 18px"><p style="margin: 0; font-weight: 600">{{ banner.errTitle }}</p><ul style="margin: 4px 0 0; padding-left: 18px"><template data-for="banner.errs" data-as="e"><li style="overflow-wrap: anywhere">{{ e.text }}</li></template></ul></div></template>
 </div>
-<template data-if="banner.hasBtn"><button type="button" class="{{ banner.btnClass }}" onClick="{{ enableBot }}" disabled="{{ botBusy }}">{{ banner.btn }}</button></template>
+<template data-if="banner.hasBtn"><button type="button" class="{{ banner.btnClass }}" onClick="{{ enableBot }}" disabled="{{ banner.btnOff }}">{{ banner.btn }}</button></template>
 </section>
 </template></div>
 
 
 
+<template data-if="showSteps"><section class="card" style="padding: 22px 24px; min-width: 0" aria-labelledby="st-t"><h2 id="st-t" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">Первые шаги</h2><p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">Сделано: {{ stepsDone }} из 4. Каждый шаг можно пропустить и вернуться позже.</p><ol style="list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px"><template data-for="steps" data-as="x"><li style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--n-5); border-radius: 8px"><span aria-hidden="true" style="width: 24px; height: 24px; flex: none; border-radius: 999px; border: 1px solid var(--n-6); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; {{ x.dotStyle }}">{{ x.mark }}</span><div style="min-width: 0; flex: 1"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">{{ x.title }}</p><p style="margin: 2px 0 0; font-size: 12px; line-height: 16px; color: var(--n-9)">{{ x.hint }}</p></div><template data-if="x.hasAction"><button type="button" class="btn-s" onClick="{{ x.act }}" disabled="{{ x.actOff }}">{{ x.actLabel }}</button></template></li></template></ol></section></template>
 <div role="group" aria-label="Ключевые показатели" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px">
 <template data-for="kpis" data-as="k"><div class="card" style="padding: 16px 18px; min-width: 0"><p style="margin: 0; font-size: 13px; line-height: 18px; color: var(--n-10)">{{ k.label }}</p><p class="mono" style="margin: 8px 0 0; font-size: 26px; line-height: 30px; font-weight: 500; letter-spacing: -0.01em">{{ k.value }}</p><p style="margin: 6px 0 0; font-size: 12px; line-height: 16px; color: var(--n-9)">{{ k.sub }}</p><template data-if="k.hasHint"><p style="margin: 4px 0 0; font-size: 12px; line-height: 16px; color: var(--n-11)">{{ k.hint }}</p></template></div></template>
 </div>
@@ -341,7 +341,7 @@ class Component extends DCLogic {
       me: null, dash: null, dashErr: '',
       chat: [], chatLoaded: false, chatErr: '', newCount: 0, sel: null, busy: {}, notes: {},
       text: '', sending: false, sendErr: '',
-      hover: -1, botBusy: false, botErrors: [],
+      hover: -1, botBusy: false, botErrors: [], testBusy: false,
     };
     this.lastId = 0;
     this.dashSig = '';
@@ -501,6 +501,15 @@ class Component extends DCLogic {
   }
 
   // ---------- бот ----------
+  async testAlert() {
+    if (this.state.testBusy) return;
+    this.setState({ testBusy: true });
+    try {
+      await StreAPI.post('widget.test', { kind: 'follow' });
+      StreAPI.toast('Тестовый алерт отправлен. Он появится в виджете «Алерты», если тот включён в OBS');
+    } catch (e) { StreAPI.toast(e.message, 'error'); }
+    this.setState({ testBusy: false });
+  }
   async enableBot() {
     if (this.state.botBusy) return;
     this.setState({ botBusy: true, botErrors: [] });
@@ -527,14 +536,14 @@ class Component extends DCLogic {
     s.botErrors.concat(String(u.botError || '').split('; ')).forEach((t) => { t = String(t || '').trim(); if (t && errs.indexOf(t) < 0) errs.push(t); });
     const loud = 'display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; padding: 20px 24px; border-radius: 8px; background: var(--s-3); border: 1px solid var(--n-8); box-shadow: inset 2px 0 0 var(--n-12)';
     const calm = 'display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; padding: 16px 20px; border-radius: 8px; background: rgb(var(--n-13-rgb) / 0.03); border: 1px dashed var(--n-6)';
-    const base = { show: true, errs: errs.map((t) => ({ text: t })), hasErrs: errs.length > 0, errTitle: 'Что ответил сервер:', hasBtn: true };
+    const base = { show: true, errs: errs.map((t) => ({ text: t })), hasErrs: errs.length > 0, errTitle: 'Что ответил сервер:', hasBtn: true, btnOff: s.botBusy };
     if (!u.botEnabled) {
       return Object.assign(base, {
         box: loud, iconStyle: 'border: 2px solid var(--n-12)', btnClass: 'btn',
         title: 'Бот не подключён к каналу',
         text: 'Пока бота нет в канале, StreOps не видит чат: не работают команды, автомодерация, лента событий и статистика на этой странице. При подключении бот станет модератором канала и подпишется на события Twitch.',
-        hasNote: !ready, note: 'Администратор сервиса ещё не подключил аккаунт бота, поэтому чтение чата заработает только после этого. Подключить канал можно уже сейчас.',
-        btn: s.botBusy ? 'Подключаем…' : 'Подключить бота',
+        hasNote: !ready, note: 'Администратор StreOps ещё не подключил аккаунт бота. Пока его нет, бот не станет модератором канала и не будет отвечать на команды. Кнопка включится, когда администратор подключит бота.',
+        btn: !ready ? 'Ждём администратора' : (s.botBusy ? 'Подключаем…' : 'Подключить бота'), btnOff: s.botBusy || !ready,
       });
     }
     if (!ready) {
@@ -799,8 +808,23 @@ class Component extends DCLogic {
     ];
     const musicLine = d ? 'сыграно ' + mus.played + ', заказов ' + mus.requests + ' · в очереди ' + mus.queue : '';
     const vNote = !d ? 'Загрузка…' : ser.length < 2 ? (st && st.live ? 'Собираем историю зрителей, график появится через пару минут.' : 'Стрим не идёт. График зрителей появится, когда начнётся эфир.') : '';
+    const meU = me && me.user ? me.user : null;
+    const stepBotOn = !!(meU && meU.botEnabled);
+    const stepBotReady = !!(me && me.bot && me.bot.ready);
+    const cmdN = d && d.topCommands ? d.topCommands.length : 0;
+    const DONE = 'background: #5CD65C; border-color: #5CD65C; color: var(--n-1)';
+    const stepList = [
+      { title: 'Аккаунт Twitch', hint: 'Вход выполнен', done: true, mark: '✓', hasAction: false, actLabel: '', act: () => {}, actOff: false },
+      { title: 'Тест алерта в OBS', hint: 'Проиграть тестовый алерт: он появится в виджете «Алерты», если тот добавлен в OBS', done: false, mark: '2', hasAction: true, actLabel: s.testBusy ? 'Отправляем…' : 'Проиграть', act: () => this.testAlert(), actOff: !!s.testBusy },
+      { title: 'Бот в канале', hint: stepBotOn ? 'Бот отвечает на команды в чате' : stepBotReady ? 'Бот станет модератором канала и начнёт отвечать на команды' : 'Ждём, пока администратор подключит аккаунт бота', done: stepBotOn, mark: stepBotOn ? '✓' : '3', hasAction: !stepBotOn && stepBotReady, actLabel: s.botBusy ? 'Подключаем…' : 'Подключить', act: () => this.enableBot(), actOff: !!s.botBusy },
+      { title: 'Первая команда', hint: cmdN ? 'Команд создано: ' + cmdN : 'Команды отвечают зрителям, например !аптайм', done: cmdN > 0, mark: cmdN ? '✓' : '4', hasAction: cmdN === 0, actLabel: 'Создать', act: () => { location.href = 'commands.html'; }, actOff: false },
+    ].map((x) => Object.assign(x, { dotStyle: x.done ? DONE : '' }));
+    const steps = stepList.map((x) => ({ title: x.title, hint: x.hint, mark: x.mark, dotStyle: x.dotStyle, hasAction: x.hasAction, actLabel: x.actLabel, act: x.act, actOff: x.actOff }));
+    const stepsDone = stepList.filter((x) => x.done).length;
+    const showSteps = !!me && !(stepBotOn && cmdN > 0);
     return {
       head,
+      steps, stepsDone, showSteps, testBusy: !!s.testBusy,
       kpis, musicLine, dur, liveNow: !!(st && st.live), streamTitle: st && st.live ? (st.title || 'Без названия') : '', streamGame: st && st.live ? (st.game || 'Без категории') : '',
       vPath, vArea, vNote, vEmpty: !!vNote, vMax: StreAPI.fmtNum(vmax), vW: W, vH: H,
       evTypes, evTypesEmpty: !!d && !evTypes.length,

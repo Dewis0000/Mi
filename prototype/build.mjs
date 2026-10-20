@@ -94,7 +94,7 @@ const ICON = {
 };
 const SIDEBAR = [
   ['Сегодня'],
-  ['WebDashboard', 'Обзор', 'overview'],
+  ['WebDashboard', 'Старт', 'overview'],
   ['Чат'],
   ['WebModeration', 'Модерация', 'mod'],
   ['WebModerators', 'Помощники', 'mod'],
@@ -109,7 +109,6 @@ const SIDEBAR = [
   ['Интерактив'],
   ['WebGiveaways', 'Розыгрыши', 'gift'],
   ['WebClips', 'Нарезки', 'clip'],
-  [null, 'Аукционы', 'auction', 'скоро'],
   ['-'],
   ['WebSettings', 'Настройки', 'settings'],
   ['WebSupport', 'Поддержка', 'support'],
