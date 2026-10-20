@@ -93,16 +93,18 @@ const ICON = {
   settings: '<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
 };
 const SIDEBAR = [
-  ['Эфир'],
+  ['Сегодня'],
   ['WebDashboard', 'Обзор', 'overview'],
+  ['Чат'],
   ['WebModeration', 'Модерация', 'mod'],
-  ['WebModerators', 'Мои модераторы', 'mod'],
-  ['Бот'],
+  ['WebModerators', 'Помощники', 'mod'],
   ['WebCommands', 'Команды', 'cmd'],
   ['WebTimers', 'Таймеры', 'timer'],
-  ['WebMusic', 'Музыка', 'music'],
+  ['Музыка'],
+  ['WebMusic', 'Очередь и заказы', 'music'],
   ['WebManage', 'Управлять каналом', 'music'],
-  ['WebWidgets', 'Виджеты', 'widgets'],
+  ['Эфир и сайт'],
+  ['WebWidgets', 'Виджеты для OBS', 'widgets'],
   ['WebSiteSettings', 'Мой сайт', 'widgets'],
   ['Интерактив'],
   ['WebGiveaways', 'Розыгрыши', 'gift'],
@@ -112,6 +114,22 @@ const SIDEBAR = [
   ['WebSettings', 'Настройки', 'settings'],
   ['WebSupport', 'Поддержка', 'support'],
 ];
+// Слова, по которым находится раздел в поиске (кроме названия)
+const SIDEBAR_KW = {
+  WebDashboard: 'главная статистика эфир статус',
+  WebModeration: 'фильтр чат удалить бан таймаут проверка',
+  WebModerators: 'мод модераторы помощник права журнал',
+  WebCommands: 'команда ответ чат кулдаун',
+  WebTimers: 'таймер сообщение напоминание',
+  WebMusic: 'музыка трек плеер заказ очередь песня',
+  WebManage: 'помощник канал трек музыка добавить',
+  WebWidgets: 'виджет obs браузер ссылка чат розыгрыш',
+  WebSiteSettings: 'сайт подписчики видео значок галочка модератор',
+  WebGiveaways: 'розыгрыш приз участники победитель',
+  WebClips: 'нарезка клип момент видео',
+  WebSettings: 'тариф оплата аккаунт email промокод',
+  WebSupport: 'помощь вопрос обращение',
+};
 const CURRENT_ALIAS = { WebWidgetEditor: 'WebWidgets' }; // пункт «Админ-панель» добавляет assets/api.js только администратору
 function sidebar(page) {
   const cur = CURRENT_ALIAS[page] || page;
@@ -122,15 +140,47 @@ function sidebar(page) {
     if (!target) return `<span class="sb-i sb-off" aria-disabled="true">${svg(icon)}${label}<span class="sb-tag">${badge}</span></span>`;
     const current = target === cur ? ' aria-current="page"' : '';
     const count = badge ? `<span class="sb-n">${badge}</span>` : '';
-    return `<a href="${target}.dc.html" class="sb-i"${current}>${svg(icon)}${label}${count}</a>`;
+    const kw = SIDEBAR_KW[target] ? ` data-kw="${SIDEBAR_KW[target]}"` : '';
+    return `<a href="${target}.dc.html" class="sb-i"${current}${kw}>${svg(icon)}${label}${count}</a>`;
   }).join('\n');
-  return `<nav aria-label="Разделы стрим-панели" class="sb" data-dc-keep>\n${items}\n</nav>`;
+  const search = `<label class="sb-search"><svg class="sb-ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input type="search" data-sb-search placeholder="Поиск" aria-label="Найти раздел" autocomplete="off"><kbd>Ctrl K</kbd></label><p class="sb-empty" data-sb-empty hidden>Такого раздела нет</p>`;
+  return `<nav aria-label="Разделы стрим-панели" class="sb" data-dc-keep>\n${search}\n${items}\n</nav>`;
 }
+// Поиск по разделам: фильтрует пункты меню, Ctrl+K ставит курсор в поле, Enter открывает первый найденный раздел
+const SIDEBAR_JS = `<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var nav = document.querySelector('nav.sb'), box = nav && nav.querySelector('[data-sb-search]');
+  if (!box) return;
+  var empty = nav.querySelector('[data-sb-empty]');
+  function apply() {
+    var q = box.value.trim().toLowerCase(), any = false, group = null, groupHit = false;
+    var rows = Array.prototype.slice.call(nav.children).filter(function (el) { return el.matches('a.sb-i, span.sb-i, p.sb-h, div.sb-sep'); });
+    rows.forEach(function (el) {
+      if (el.matches('p.sb-h')) { if (group) group.classList.toggle('sb-hide', !groupHit && !!q); group = el; groupHit = false; el.classList.remove('sb-hide'); return; }
+      if (el.matches('div.sb-sep')) { el.classList.toggle('sb-hide', !!q); return; }
+      var hit = !q || (el.textContent + ' ' + (el.getAttribute('data-kw') || '')).toLowerCase().indexOf(q) !== -1;
+      el.classList.toggle('sb-hide', !hit);
+      if (hit) { groupHit = true; any = true; }
+    });
+    if (group) group.classList.toggle('sb-hide', !!q && !groupHit);
+    if (empty) empty.hidden = any || !q;
+  }
+  box.addEventListener('input', apply);
+  box.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { var first = nav.querySelector('a.sb-i:not(.sb-hide)'); if (first) location.href = first.getAttribute('href'); }
+    if (e.key === 'Escape') { box.value = ''; apply(); box.blur(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); box.focus(); box.select(); }
+  });
+});
+</script>`;
+
 const SIDEBAR_CSS = `<style>
 .sb{flex:1 1 200px;max-width:248px;min-width:200px;align-self:flex-start;position:sticky;top:88px;box-sizing:border-box;padding:12px;border-radius:8px;background:rgb(var(--n-13-rgb) / .03);border:1px solid rgb(var(--n-13-rgb) / .06);display:flex;flex-direction:column;gap:2px;font-family:var(--font-sans),system-ui,sans-serif}
 .sb-h{margin:0;padding:16px 12px 8px;font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--n-9)}
 .sb-h:first-child{padding-top:8px}
-.sb-i{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;color:var(--n-10);text-decoration:none}
+.sb-i{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;color:var(--n-10);text-decoration:none;white-space:nowrap;overflow:hidden}
 a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 .sb-i[aria-current="page"]{background:rgb(var(--n-13-rgb) / .10);color:var(--n-12);box-shadow:inset 2px 0 0 var(--n-12)}
 .sb-ic{flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
@@ -138,6 +188,14 @@ a.sb-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
 .sb-off{color:var(--n-7)}
 .sb-tag{margin-left:auto;font-size:11px;padding:1px 6px;border:1px dashed var(--n-6);border-radius:4px;color:var(--n-8)}
 .sb-sep{height:1px;background:var(--n-5);margin:10px 0}
+.sb-search{display:flex;align-items:center;gap:8px;height:38px;padding:0 10px;margin:0 0 8px;border:1px solid var(--n-6);border-radius:8px;background:rgb(var(--n-13-rgb) / .03);color:var(--n-9)}
+.sb-search:focus-within{border-color:var(--n-12)}
+.sb-search input{flex:1;min-width:0;min-width:0;border:0;outline:0;background:transparent;color:var(--n-12);font:400 14px/20px 'Onest',sans-serif;padding:0}
+.sb-search input::placeholder{color:var(--n-9)}
+.sb-search input::-webkit-search-cancel-button{display:none}
+.sb-search kbd{font:400 10px/1 'JetBrains Mono',monospace;margin-left:auto;color:var(--n-9);border:1px solid var(--n-6);border-radius:4px;padding:2px 5px;white-space:nowrap}
+.sb-empty{margin:8px 12px;font-size:13px;color:var(--n-9)}
+.sb-hide{display:none!important}
 @media (max-width: 900px){.sb{position:static;max-width:none;flex-basis:100%;flex-direction:row;flex-wrap:wrap}.sb-h,.sb-sep{display:none}}
 </style>`;
 
@@ -218,7 +276,7 @@ function convert(file, outPath) {
   }
   const libTag = /^Web(Widgets|WidgetEditor)$/.test(pageName) ? `<script src="${asset(outPath, 'widgets-lib.js')}"></script>\n` : '';
   const themeTag = themed ? `<script src="${asset(outPath, 'theme.js')}"></script>\n<script src="${asset(outPath, 'api.js')}"></script>\n` : '';
-  if (hasSidebar) head += '\n' + SIDEBAR_CSS;
+  if (hasSidebar) head += '\n' + SIDEBAR_CSS + '\n' + SIDEBAR_JS;
 
   const runtime = asset(outPath, 'dc-lite.js');
   const html = `<!doctype html>
