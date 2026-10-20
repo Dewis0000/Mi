@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>StreOps — виджеты</title>
+<title>StreOps — виджеты для OBS</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script src="assets/theme.js?v=460ce522"></script>
 <script src="assets/api.js?v=c464f264"></script>
-<script src="assets/widgets-lib.js?v=e810475e"></script>
+<script src="assets/widgets-lib.js?v=840111b5"></script>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:var(--n-1)}
@@ -19,6 +19,7 @@ a{color:var(--n-12);text-decoration:none}a:hover{color: var(--accent-on)}
 .ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .nav-i{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;color:var(--n-10)}
 .nav-i:hover{background:rgb(var(--n-13-rgb) / .04);color:var(--n-12)}
+.card{background:rgb(var(--n-2-rgb) / .62);border:1px solid rgb(var(--n-13-rgb) / .10);border-radius:12px;box-sizing:border-box;min-width:0}
 .chipf{height:36px;padding:0 14px;border-radius:6px;border:1px solid var(--n-6);background:transparent;color:var(--n-10);font:500 13px/18px var(--font-sans),sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
 .chipf:hover{border-color:var(--n-9);color:var(--n-12)}
 .sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid var(--n-8);background:transparent;cursor:pointer;flex:none;padding:0}
@@ -27,23 +28,29 @@ a{color:var(--n-12);text-decoration:none}a:hover{color: var(--accent-on)}
 .sw[aria-checked="true"] span{transform:translateX(16px);background:var(--n-1)}
 .sw:disabled{border-color:var(--n-5);cursor:not-allowed}
 .sw:disabled span{background:var(--n-6)}
-.wc{display:flex;flex-direction:column;border-radius:8px;border:1px solid var(--n-5);background:var(--s-2);overflow:hidden}
-.wc:hover{border-color:var(--n-6)}
+.wc{display:flex;flex-direction:column;overflow:hidden;transition:border-color 150ms}
+.wc:hover{border-color:rgb(var(--n-13-rgb) / .22)}
 .pv{position:relative;height:136px;background:radial-gradient(220px 120px at 70% 20%,rgb(var(--n-13-rgb) / .08),transparent 70%),linear-gradient(160deg,var(--n-4),var(--n-1));display:flex;align-items:center;justify-content:center;padding:14px;box-sizing:border-box;border-bottom:1px solid var(--n-5);overflow:hidden}
 .ob{background:var(--w-bg);backdrop-filter:blur(var(--w-blur));border:var(--w-bd);border-radius:var(--w-rad);box-shadow:var(--w-shadow);padding:8px 10px;color:var(--w-fg);font-family:var(--w-font);text-shadow:var(--w-tshadow);text-transform:var(--w-upper)}
 .pv .mono{font-family:inherit}
 .em{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:3px;background:linear-gradient(135deg,var(--n-10),var(--n-7));vertical-align:-5px;color:var(--n-1)}
 .ib{width:36px;height:36px;border-radius:6px;border:0;background:transparent;color:var(--n-10);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
 .ib:hover{background:rgb(var(--n-13-rgb) / .06);color:var(--n-12)}
-.tierb{font-size:11px;line-height:14px;padding:2px 6px;border:1px solid var(--n-6);border-radius:4px;color:var(--n-10)}
-.bsm{height:32px;padding:0 10px;border-radius:6px;border:1px solid var(--n-6);background:transparent;color:var(--n-12);font:500 12px/16px var(--font-sans),sans-serif;cursor:pointer;white-space:nowrap}
+.tierb{font-size:11px;line-height:14px;padding:2px 6px;border:1px solid var(--n-6);border-radius:4px;color:var(--n-10);white-space:nowrap}
+.bp{height:40px;padding:0 16px;border-radius:6px;border:0;background:var(--n-13);color:var(--n-1);font:500 14px/20px var(--font-sans),sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;flex:none;white-space:nowrap;text-decoration:none}
+.bp:hover{background:var(--n-11)}
+.bp:disabled{opacity:.5;cursor:not-allowed;background:var(--n-13)}
+.bs{height:36px;padding:0 14px;border-radius:6px;border:1px solid var(--n-6);background:transparent;color:var(--n-12);font:500 13px/18px var(--font-sans),sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;flex:none;white-space:nowrap}
+.bs:hover{border-color:var(--n-9);background:rgb(var(--n-13-rgb) / .04)}
+.bsm{height:32px;padding:0 10px;border-radius:6px;border:1px solid var(--n-6);background:transparent;color:var(--n-12);font:500 12px/16px var(--font-sans),sans-serif;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;text-decoration:none}
 .bsm:hover{border-color:var(--n-9);background:rgb(var(--n-13-rgb) / .04)}
 .bsm:disabled{color:var(--n-8);cursor:not-allowed}
 .need{margin:0;padding:6px 8px;border:1px dashed var(--n-8);border-radius:6px;font-size:12px;line-height:16px;color:var(--n-11)}
 .need a{text-decoration:underline;white-space:nowrap}
 .note{display:flex;align-items:center;gap:12px;padding:10px 12px 10px 14px;border-radius:8px;font-size:14px;line-height:20px;color:var(--n-12)}
+.hint{margin:0;font-size:13px;line-height:18px;color:var(--n-9)}
 .sw[aria-busy="true"]{opacity:.6}
-.sw:focus-visible,.chipf:focus-visible,.bsm:focus-visible,.ib:focus-visible,a:focus-visible{outline:2px solid var(--n-12);outline-offset:2px}
+.bp:focus-visible,.bs:focus-visible,.sw:focus-visible,.chipf:focus-visible,.bsm:focus-visible,.ib:focus-visible,a:focus-visible{outline:2px solid var(--n-12);outline-offset:2px}
 </style>
 <style>
 .sb{flex:1 1 200px;max-width:248px;min-width:200px;align-self:flex-start;position:sticky;top:88px;box-sizing:border-box;padding:12px;border-radius:8px;background:rgb(var(--n-13-rgb) / .03);border:1px solid rgb(var(--n-13-rgb) / .06);display:flex;flex-direction:column;gap:2px;font-family:var(--font-sans),system-ui,sans-serif}
@@ -135,29 +142,77 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <main style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
 <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
-<div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Виджеты</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--n-10); max-width: 640px">Включи нужные и добавь в OBS как источник «Браузер». У каждого виджета своя ссылка, а настройки применяются на лету, без перезагрузки сцены.</p></div>
-<div style="min-width: 260px; flex: 0 1 320px; padding: 14px 16px; border-radius: 8px; border: 1px solid var(--n-6); box-sizing: border-box">
+<div style="max-width: 640px"><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Виджеты для OBS</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--n-10)">Виджет — это картинка поверх эфира: алерт о подписке, полоска цели, чат. Включи нужные здесь и добавь каждый в OBS по его ссылке.</p></div>
+<section class="card" aria-label="Тариф и лимит виджетов" style="min-width: 260px; flex: 0 1 340px; padding: 14px 16px">
 <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 13px"><span style="color: var(--n-10)">{{ planLabel }}</span><span class="mono">{{ countLabel }}</span></div>
 <div role="progressbar" aria-label="Включено виджетов" aria-valuenow="{{ active }}" aria-valuemin="0" aria-valuemax="{{ limit }}" style="margin-top: 10px; height: 4px; border-radius: 2px; background: var(--n-5)"><div style="height: 100%; border-radius: 2px; background: var(--n-12); width: {{ pct }}; transition: width 200ms"></div></div>
-<template data-if="full"><p style="margin: 8px 0 0; font-size: 12px; line-height: 16px; color: var(--n-11)">Лимит исчерпан. Выключи один из виджетов<template data-if="canUpgrade"> или <a href="settings.html#billing" style="text-decoration: underline">перейди на тариф выше</a></template>.</p></template>
-</div>
+<p style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: var(--n-11)">{{ planNote }}</p>
+<template data-if="hasMore"><p style="margin: 6px 0 0; font-size: 12px; line-height: 16px; color: var(--n-9)">{{ moreTiers }}</p></template>
+<template data-if="canUpgrade"><p style="margin: 8px 0 0; font-size: 13px"><a href="settings.html#billing" style="text-decoration: underline">Посмотреть тарифы</a></p></template>
+</section>
 </div>
 
-<template data-if="hasErr"><div role="alert" class="note" style="border: 2px solid var(--n-12)"><span style="flex: 1">{{ err }}</span><template data-if="loadFailed"><button type="button" class="bsm" onClick="{{ retry }}">Повторить</button></template><button type="button" class="ib" style="width: 28px; height: 28px" aria-label="Закрыть сообщение" onClick="{{ closeErr }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></div></template>
+<template data-if="hasErr"><div role="alert" class="note" style="border: 2px solid var(--n-12)"><span style="flex: 1">{{ err }}</span><button type="button" class="ib" style="width: 28px; height: 28px" aria-label="Закрыть сообщение" onClick="{{ closeErr }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></div></template>
 <template data-if="hasInfo"><div role="status" class="note" style="border: 1px dashed var(--n-9)"><span style="flex: 1">{{ info }}</span><button type="button" class="ib" style="width: 28px; height: 28px" aria-label="Закрыть сообщение" onClick="{{ closeInfo }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></div></template>
 
+<section class="card" aria-labelledby="ob-t" style="padding: 20px 22px; display: flex; flex-direction: column; gap: 14px">
+<div>
+<h2 id="ob-t" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">Как подключить в OBS</h2>
+<p class="hint" style="margin-top: 4px">OBS — программа, с которой ты ведёшь эфир. Виджет добавляется в неё как источник «Браузер». Три шага:</p>
+</div>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<li style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 14px; border: 1px solid var(--n-5); border-radius: 8px">
+<span aria-hidden="true" style="width: 24px; height: 24px; flex: none; border-radius: 999px; border: 1px solid var(--n-6); display: inline-flex; align-items: center; justify-content: center; font-size: 12px">1</span>
+<div style="min-width: 200px; flex: 1 1 240px"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Скопируй ссылку виджета</p><p style="margin: 2px 0 0; font-size: 12px; line-height: 16px; color: var(--n-9)">{{ firstHint }}</p></div>
+<button type="button" class="bp" onClick="{{ copyFirst }}" disabled="{{ firstOff }}" aria-label="Скопировать ссылку для OBS первого включённого виджета">{{ firstLabel }}</button>
+</li>
+<li style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 14px; border: 1px solid var(--n-5); border-radius: 8px">
+<span aria-hidden="true" style="width: 24px; height: 24px; flex: none; border-radius: 999px; border: 1px solid var(--n-6); display: inline-flex; align-items: center; justify-content: center; font-size: 12px">2</span>
+<div style="min-width: 200px; flex: 1 1 240px"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Добавь источник в OBS</p><p style="margin: 2px 0 0; font-size: 12px; line-height: 16px; color: var(--n-9)">В OBS нажми «Источники» → «+» → «Браузер». Назови его, например «Алерты».</p></div>
+</li>
+<li style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 14px; border: 1px solid var(--n-5); border-radius: 8px">
+<span aria-hidden="true" style="width: 24px; height: 24px; flex: none; border-radius: 999px; border: 1px solid var(--n-6); display: inline-flex; align-items: center; justify-content: center; font-size: 12px">3</span>
+<div style="min-width: 200px; flex: 1 1 240px"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Вставь ссылку и задай размер</p><p style="margin: 2px 0 0; font-size: 12px; line-height: 16px; color: var(--n-9)">Ссылку вставь в поле «URL», ширина 1920, высота 1080. Настройки, которые меняешь здесь, OBS обычно подхватывает за несколько секунд, перезагружать сцену не нужно.</p></div>
+</li>
+</ol>
+<p class="hint" style="font-size: 12px; line-height: 18px">Ссылка открывает твои виджеты. Не показывай её в эфире: по ней любой сможет вставить их к себе. Если ссылка утекла, сбрось её в <a href="settings.html#obs" style="text-decoration: underline">«Настройках»</a>: старые ссылки в OBS перестанут работать.</p>
+</section>
+
+<template data-if="showGrid">
+<div class="note" role="note" style="border: 1px dashed var(--n-9); align-items: flex-start; padding: 12px 14px"><span style="flex: 1; font-size: 13px; line-height: 18px; color: var(--n-11)"><b style="font-weight: 600; color: var(--n-12)">Рекомендуем начать с этих двух:</b> «Алерты» покажут фолловы, подписки и донаты, «Чат» — сообщения зрителей на экране. Они включены по умолчанию.</span></div>
+</template>
+
+<template data-if="showGrid">
+<div style="display: flex; flex-direction: column; gap: 12px">
 <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center">
 <div role="group" aria-label="Категории" style="display: flex; gap: 8px; flex-wrap: wrap">
 <template data-for="cats" data-as="c"><button type="button" class="chipf" aria-pressed="{{ c.sel }}" onClick="{{ c.pick }}" style="{{ c.style }}">{{ c.label }}<span class="mono" style="font-size: 11px; opacity: .7">{{ c.n }}</span></button></template>
 </div>
 <label style="display: inline-flex; align-items: center; gap: 10px; font-size: 13px; color: var(--n-10); cursor: pointer"><button type="button" role="switch" class="sw" aria-checked="{{ onlyOn }}" onClick="{{ toggleOnly }}" aria-label="Только включённые"><span></span></button>Только включённые</label>
 </div>
+<template data-if="hasCatHint"><div class="card" style="padding: 14px 16px; display: flex; flex-direction: column; gap: 8px"><p class="hint" style="color: var(--n-10)">{{ catHint }}</p><template data-if="hasCatNeed"><p class="need">{{ catNeed }} <a href="{{ catNeedHref }}">{{ catNeedLink }}</a></p></template></div></template>
+</div>
+</template>
 
-<template data-if="emptyShown"><p style="margin: 0; padding: 32px 16px; text-align: center; border: 1px dashed var(--n-6); border-radius: 8px; font-size: 14px; color: var(--n-10)">Включённых виджетов в этой категории нет. Сними фильтр «Только включённые», чтобы увидеть все.</p></template>
+<template data-if="loading"><p role="status" style="margin: 0; padding: 32px 16px; text-align: center; border: 1px dashed var(--n-6); border-radius: 12px; font-size: 14px; color: var(--n-10)">Загружаем виджеты…</p></template>
+
+<template data-if="loadFailed"><section role="alert" class="card" style="padding: 22px 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px">
+<h2 style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">Не удалось загрузить виджеты</h2>
+<p class="hint" style="color: var(--n-10)">Проверь интернет и нажми «Повторить». Настройки при этом не меняются.</p>
+<p class="hint" style="font-size: 12px">{{ loadErrText }}</p>
+<button type="button" class="bp" onClick="{{ retry }}">Повторить</button>
+</section></template>
+
+<template data-if="showGrid">
+<template data-if="emptyShown"><section class="card" style="padding: 28px 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+<p style="margin: 0; font-size: 15px; line-height: 22px; font-weight: 500">{{ emptyTitle }}</p>
+<p class="hint" style="max-width: 440px">{{ emptyText }}</p>
+<button type="button" class="bs" onClick="{{ showAll }}">Показать все виджеты</button>
+</section></template>
 
 <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 16px">
 <template data-for="shown" data-as="w">
-<li class="wc" style="{{ w.cardStyle }}">
+<li class="card wc" style="{{ w.cardStyle }}">
 <div class="pv" aria-hidden="true" style="{{ w.vars }}">
 <template data-if="w.p.isAlert"><div class="ob" style="text-align: center; width: 100%"><p class="ov" style="color: var(--w-fg2)">{{ w.p.head }}</p><p style="margin: 4px 0 0; font-size: 20px; font-weight: 600; letter-spacing: -0.02em; color: var(--w-acc)">{{ w.p.big }}</p><p style="margin: 2px 0 0; font-size: 12px; color: var(--w-fg2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ w.p.sub }}</p></div></template>
 <template data-if="w.p.isBar"><div class="ob" style="width: 100%"><div style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px"><span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ w.p.head }}</span><span class="mono">{{ w.p.right }}</span></div><div style="margin-top: 8px; height: 10px; border-radius: 2px; background: var(--w-acc-soft); overflow: hidden"><div style="width: {{ w.p.pct }}%; height: 100%; background: var(--w-acc)"></div></div><p class="mono" style="margin: 6px 0 0; font-size: 11px; color: var(--w-fg2)">{{ w.p.sub }}</p></div></template>
@@ -170,19 +225,19 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; flex: 1">
 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
-<span style="min-width: 0"><span style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><span style="font-size: 15px; font-weight: 500">{{ w.name }}</span><template data-if="w.soon"><span class="tierb">Скоро</span></template></span><span style="display: block; margin-top: 2px; font-size: 13px; line-height: 18px; color: var(--n-9)">{{ w.desc }}</span></span>
+<span style="min-width: 0"><span style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><span style="font-size: 15px; font-weight: 500">{{ w.name }}</span><template data-if="w.rec"><span class="tierb">Рекомендуем</span></template><template data-if="w.soon"><span class="tierb">Скоро</span></template></span><span style="display: block; margin-top: 2px; font-size: 13px; line-height: 18px; color: var(--n-9)">{{ w.desc }}</span></span>
 <button type="button" role="switch" class="sw" aria-checked="{{ w.on }}" aria-label="{{ w.swLabel }}" aria-busy="{{ w.busy }}" onClick="{{ w.toggle }}" disabled="{{ w.swOff }}"><span></span></button>
 </div>
 <template data-if="w.hasNeed"><p class="need">{{ w.need }} <a href="{{ w.needHref }}">{{ w.needLink }}</a></p></template>
-<div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 8px">
+<div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap">
 <span style="font-size: 12px; line-height: 16px; {{ w.statusStyle }}">{{ w.status }}</span>
-<template data-if="w.canUse"><span style="display: inline-flex; align-items: center; gap: 4px"><button type="button" class="bsm" onClick="{{ w.copy }}" aria-label="{{ w.copyAria }}" disabled="{{ w.noToken }}">{{ w.copyLabel }}</button><a href="{{ w.href }}" class="ib" aria-label="{{ w.cfgLabel }}" title="Настроить"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path></svg></a></span></template>
+<template data-if="w.canUse"><span style="display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap"><button type="button" class="bsm" onClick="{{ w.copy }}" aria-label="{{ w.copyAria }}" disabled="{{ w.noToken }}">{{ w.copyLabel }}</button><a href="{{ w.href }}" class="bsm" aria-label="{{ w.cfgLabel }}">Настроить</a></span></template>
 </div>
 </div>
 </li>
 </template>
 </ul>
-<p style="margin: 0; font-size: 13px; line-height: 20px; color: var(--n-9)">Ссылка для OBS: «Источники» → «+» → «Браузер», размер 1920 × 1080. Не показывай ссылки в эфире — по ним любой может вставить твой виджет к себе.</p>
+</template>
 </main>
 </div>
 </div>
@@ -192,20 +247,21 @@ document.addEventListener('DOMContentLoaded', function () {
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { loaded: false, loadFailed: false, data: { on: {}, cfg: {} }, token: '', limit: 0, me: {}, live: {}, busy: {}, copied: '', err: '', info: '', cat: 'Все', onlyOn: false };
+    this.state = { loaded: false, loadFailed: false, loadErr: '', data: { on: {}, cfg: {} }, token: '', limit: 0, me: {}, plans: [], live: {}, busy: {}, copied: '', err: '', info: '', cat: 'Все', onlyOn: false };
   }
   componentDidMount() { this.load(); }
   async load() {
     const W = window.StreWidgets;
-    this.setState({ err: '', loadFailed: false });
+    this.setState({ loadFailed: false, loadErr: '', err: '' });
     try {
-      const [r, me] = await Promise.all([W.load(), StreAPI.me()]);
+      // тарифы нужны только для подсказки «что даёт следующий тариф»: если не пришли, страница работает и без них
+      const [r, me, plans] = await Promise.all([W.load(), StreAPI.me(), StreAPI.get('plans').catch(() => null)]);
       let info = '';
-      if (r.migrated === 'local') info = 'Перенесли настройки виджетов из этого браузера на сервер — теперь их видит OBS.' + (r.dropped.length ? ' Выключены из-за лимита тарифа: ' + r.dropped.map((id) => W.meta(id)[1]).join(', ') + '.' : '');
-      this.setState({ loaded: true, data: r.data, token: r.token, limit: r.limit, me: me || {}, info });
+      if (r.migrated === 'local') info = 'Настройки виджетов перенесли из этого браузера на сервер, теперь их видит OBS.' + (r.dropped.length ? ' Не влезли в лимит тарифа и выключены: ' + r.dropped.map((id) => '«' + W.meta(id)[1] + '»').join(', ') + '. Чтобы включить их, выключи другой виджет.' : '');
+      this.setState({ loaded: true, data: r.data, token: r.token, limit: r.limit, me: me || {}, plans: (plans && plans.items) || [], info });
       W.LIST.forEach((w) => this.fetchLive(w[0]));
     } catch (e) {
-      this.setState({ loadFailed: true, err: 'Не удалось загрузить виджеты: ' + e.message });
+      this.setState({ loadFailed: true, loadErr: (e && e.message) || 'нет связи с сервером' });
     }
   }
   // Живые данные для превью карточки — только для виджетов, где это дёшево (без внешних API)
@@ -311,64 +367,105 @@ class Component extends DCLogic {
     }
     return {};
   }
+  // Подсказка под карточкой: что мешает виджету работать. Возвращает [текст, ссылка, адрес] или null
   need(id, c) {
     const s = this.state;
     const u = s.me.user || {};
     const L = s.live[id];
     const edit = (tab) => 'widget-editor.html?w=' + id + '&tab=' + tab;
     if (!s.loaded) return null;
-    if (['chat', 'alerts', 'events', 'subgoal', 'deaths'].indexOf(id) >= 0 && !u.botEnabled) return ['Бот не в канале — чат и события не приходят.', 'Подключить', 'panel.html'];
-    if ((id === 'goal' || id === 'topdon') && !u.daConnected) return ['Донаты приходят из DonationAlerts — он не подключён.', 'Подключить', 'settings.html#platforms'];
-    if ((id === 'alerts' || id === 'events') && !u.daConnected) return ['Донаты появятся после подключения DonationAlerts.', 'Подключить', 'settings.html#platforms'];
-    if ((id === 'faceit' || id === 'fmatch') && !c.content.nick) return ['Без ника FACEIT виджет пустой.', 'Указать ник', edit('content')];
-    if ((id === 'cs' || id === 'dota') && !(L && L.data && L.data.updatedAt)) return ['Нужен файл конфигурации в папке игры.', 'Как подключить', edit('game')];
-    if ((id === 'np' || id === 'queue') && u.limits && !u.limits.music) return ['Заказ музыки — на тарифе «Про» и выше.', 'Тарифы', 'settings.html#billing'];
+    if (['chat', 'alerts', 'events', 'subgoal', 'deaths'].indexOf(id) >= 0 && !u.botEnabled) return ['Бот не в канале, поэтому чат и события не приходят.', 'Подключить', 'panel.html'];
+    if ((id === 'goal' || id === 'topdon') && !u.daConnected) return ['Донаты берутся из DonationAlerts, а он не подключён.', 'Подключить', 'settings.html#platforms'];
+    if ((id === 'alerts' || id === 'events') && !u.daConnected) return ['Донаты из DonationAlerts не придут, пока он не подключён.', 'Подключить', 'settings.html#platforms'];
+    if ((id === 'faceit' || id === 'fmatch') && !c.content.nick) return ['Нужен ник с faceit.com, иначе виджет пустой.', 'Указать ник', edit('content')];
+    if ((id === 'cs' || id === 'dota') && !(L && L.data && L.data.updatedAt)) return ['Игра пока не передаёт данные. Положи файл настроек в папку игры.', 'Как подключить', edit('game')];
+    if ((id === 'np' || id === 'queue') && u.limits && !u.limits.music) return ['Заказ музыки доступен с тарифа «Про».', 'Тарифы', 'settings.html#billing'];
     return null;
   }
   renderVals() {
     const W = window.StreWidgets;
     const s = this.state;
     const on = s.data.on;
+    const loaded = s.loaded;
     const active = W.countOn(s.data);
     const limit = s.limit;
-    const full = s.loaded && active >= limit;
+    // лимит тарифа исчерпан: новые виджеты не включаются, пока не выключишь другой
+    const full = loaded && active >= limit;
     const u = s.me.user || {};
+    const REC = ['alerts', 'chat'];
+    const firstId = W.LIST.map((w) => w[0]).filter((id) => !!on[id])[0] || '';
+    const firstName = firstId ? W.meta(firstId)[1] : '';
     const all = W.LIST.map((w) => {
       const id = w[0];
       const isOn = !!on[id];
       const soon = w[5] === 'soon';
       const c = W.cfg(id, s.data);
       const busy = !!s.busy[id];
-      const n = this.need(id, c);
+      const limBlock = full && !isOn && !soon;
+      let n = this.need(id, c);
+      if (!n && limBlock) n = ['Чтобы включить этот виджет, сначала выключи другой.', 'Тарифы', 'settings.html#billing'];
       let status = isOn ? '● Включён' : 'Выключен';
-      if (!s.loaded) status = 'Загрузка…';
+      if (!loaded) status = 'Загружаем…';
       else if (busy) status = 'Сохраняем…';
       else if (soon) status = 'Скоро';
+      else if (limBlock) status = 'Выключено тарифом: ' + active + ' из ' + limit;
       return {
-        id, name: w[1], cat: w[2], desc: w[3], isOn, soon, canUse: !soon,
+        id, name: w[1], cat: w[2], desc: w[3], isOn, soon, rec: REC.indexOf(id) >= 0, canUse: !soon,
         p: this.preview(id, c), vars: W.vars(c),
         on: isOn ? 'true' : 'false', busy: busy ? 'true' : 'false',
-        swOff: !s.loaded || (soon && !isOn),
+        swOff: !loaded || (soon && !isOn) || limBlock,
         status, statusStyle: isOn && !busy ? 'color: var(--n-12)' : 'color: var(--n-9)',
         hasNeed: !!n, need: n ? n[0] : '', needLink: n ? n[1] : '', needHref: n ? n[2] : '',
         cardStyle: isOn ? 'border-color: var(--n-8)' : '',
         href: 'widget-editor.html?w=' + id,
         swLabel: 'Виджет «' + w[1] + '»', cfgLabel: 'Настроить «' + w[1] + '»',
-        noToken: !s.token, copyLabel: s.copied === id ? 'Скопировано' : 'Ссылка для OBS', copyAria: 'Скопировать ссылку для OBS: ' + w[1],
+        noToken: !s.token, copyLabel: s.copied === id ? 'Скопировано' : 'Скопировать ссылку', copyAria: 'Скопировать ссылку для OBS: ' + w[1],
         copy: () => this.copy(id),
         toggle: () => this.toggle(id),
       };
     });
     let shown = s.cat === 'Все' ? all : all.filter((w) => w.cat === s.cat);
     if (s.onlyOn) shown = shown.filter((w) => w.isOn);
+
+    // Что даёт следующий тариф: тарифы с большим лимитом виджетов
+    const tiers = (s.plans || []).filter((p) => Number(p.widgets) > limit);
+    const moreTiers = !loaded ? '' : tiers.length
+      ? 'Больше виджетов дают тарифы: ' + tiers.map((p) => '«' + p.name + '» — до ' + p.widgets).join(', ') + '.'
+      : (u.plan !== 'max' ? 'Тарифы с большим лимитом — в «Настройках».' : '');
+    let planNote = '';
+    if (loaded) planNote = full
+      ? 'Лимит тарифа исчерпан. Чтобы включить ещё один виджет, выключи один из включённых.'
+      : 'Можно включить ещё ' + (limit - active) + ' ' + W.plural(limit - active, ['виджет', 'виджета', 'виджетов']) + '.';
+
+    // Первый шаг: ссылка первого включённого виджета
+    let firstHint;
+    if (s.loadFailed) firstHint = 'Виджеты не загрузились. Нажми «Повторить» ниже.';
+    else if (!loaded) firstHint = 'Загружаем…';
+    else if (!firstId) firstHint = 'Сначала включи хотя бы один виджет ниже, например «Алерты».';
+    else firstHint = 'Скопируем ссылку виджета «' + firstName + '». Она понадобится на шаге 3.';
+
+    // Подсказка категории «Цели»
+    const daOff = s.cat === 'Цели' && loaded && !u.daConnected;
+    const catHint = s.cat === 'Цели'
+      ? 'Цель — полоса прогресса, которую видят зрители. Полоса доната растёт от донатов из DonationAlerts, полоса подписчиков — от подписок, продлений и подарков.'
+      : '';
+
     return {
-      active: s.loaded ? active : '—', limit: limit || 0,
+      active: loaded ? active : '—', limit: limit || 0,
       planLabel: u.planName ? 'Включено на тарифе «' + u.planName + '»' : 'Включено',
-      countLabel: s.loaded ? active + ' из ' + limit : '— из —',
-      full, canUpgrade: u.plan !== 'max',
+      countLabel: loaded ? active + ' из ' + limit : '— из —',
+      full, planNote, hasMore: !!moreTiers, moreTiers, canUpgrade: u.plan !== 'max',
       pct: (limit ? Math.min(100, Math.round(active / limit * 100)) : 0) + '%',
-      hasErr: !!s.err, err: s.err, loadFailed: s.loadFailed, retry: () => this.load(), closeErr: () => this.setState({ err: '' }),
+      hasErr: !!s.err, err: s.err, closeErr: () => this.setState({ err: '' }),
       hasInfo: !!s.info, info: s.info, closeInfo: () => this.setState({ info: '' }),
+      loading: !loaded && !s.loadFailed,
+      loadFailed: s.loadFailed, loadErrText: s.loadErr ? 'Подробности: ' + s.loadErr : '', retry: () => this.load(),
+      showGrid: loaded,
+      firstHint, firstOff: !loaded || !firstId || !s.token,
+      firstLabel: firstId && s.copied === firstId ? 'Скопировано' : 'Скопировать ссылку',
+      copyFirst: () => { if (firstId) this.copy(firstId); },
+      hasCatHint: !!catHint, catHint,
+      hasCatNeed: daOff, catNeed: 'DonationAlerts не подключён, поэтому полоса доната не растёт.', catNeedLink: 'Подключить', catNeedHref: 'settings.html#platforms',
       onlyOn: s.onlyOn ? 'true' : 'false',
       toggleOnly: () => this.setState({ onlyOn: !s.onlyOn }),
       cats: W.CATS.map((c) => ({
@@ -377,7 +474,11 @@ class Component extends DCLogic {
         style: s.cat === c ? 'background: var(--n-12); color: var(--n-1); border-color: var(--n-12)' : '',
         pick: () => this.setState({ cat: c }),
       })),
-      shown, emptyShown: s.loaded && !shown.length,
+      shown,
+      emptyShown: loaded && !shown.length,
+      emptyTitle: s.cat === 'Все' ? 'Ни один виджет не включён' : 'В категории «' + s.cat + '» ничего не включено',
+      emptyText: 'Включи нужный переключателем на его карточке, или покажи все виджеты категории.',
+      showAll: () => this.setState({ onlyOn: false }),
     };
   }
 }

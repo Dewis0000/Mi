@@ -18,7 +18,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 .ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.card{background:#111111;border:1px solid #2A2A2A;border-radius:8px}
+.card{background:rgba(18,18,18,.62);border:1px solid rgba(255,255,255,.10);border-radius:12px}
 .tab{height:44px;padding:0;border:0;background:transparent;color:#8F8F8F;font:500 14px/20px 'Onest',sans-serif;display:flex;gap:6px;align-items:center;cursor:pointer}
 .tab:hover{color:#F2F2F2}
 .sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid #6E6E6E;background:transparent;cursor:pointer;flex:none;padding:0}
@@ -51,9 +51,9 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 .sub-l a{color:#8F8F8F;text-decoration:underline;text-decoration-color:#3A3A3A;text-underline-offset:3px}
 .sub-l a:hover{color:#F2F2F2}
 .mob{display:none}
-.meth{padding:18px;border-radius:8px;border:1px solid #2A2A2A;background:#111111;display:flex;flex-direction:column;gap:12px}
-.mh{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.mt{display:inline-flex;gap:10px;align-items:center;font-weight:500}
+.meth{padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,.10);background:rgba(18,18,18,.62);display:flex;flex-direction:column;gap:12px}
+.mh{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.mt{display:inline-flex;gap:10px;align-items:center;font-size:16px;line-height:22px;font-weight:600}
 .mp{margin:0;font-size:13px;line-height:18px;color:#B4B4B4}
 .kv{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px;line-height:18px;padding-top:12px;border-top:1px solid #1F1F1F}
 .kv > label,.kv > span:first-child{color:#B4B4B4}
@@ -63,7 +63,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 .inp:hover{border-color:#8F8F8F}
 .inp.sm{height:36px;font-size:14px;width:120px;text-align:right}
 .unit{display:inline-flex;align-items:center;gap:8px;color:#8F8F8F;font-size:13px}
-.hint{font-size:12px;line-height:16px;color:#8F8F8F;margin:0}
+.hint{font-size:13px;line-height:18px;color:#8F8F8F;margin:0}
 .chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 4px 0 10px;border-radius:4px;background:#1F1F1F;border:1px solid #3A3A3A;font-size:13px}
 .chip button{width:20px;height:20px;border:0;border-radius:3px;background:transparent;color:#8F8F8F;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
 .chip button:hover{color:#F2F2F2;background:rgba(255,255,255,.08)}
@@ -85,6 +85,21 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 .cmdl dd{margin:0;color:#B4B4B4}
 .ok-l{margin:0;font-size:13px;line-height:18px;color:#DCDCDC}
 .savebar{position:sticky;bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 14px;border-radius:8px;background:rgba(10,10,10,.86);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid #6E6E6E;box-shadow:0 12px 32px -8px rgba(0,0,0,.6)}
+.sech{margin:0;font-size:20px;line-height:26px;font-weight:600}
+.tagp{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;border:1px solid #3A3A3A;font-size:12px;line-height:16px;color:#DCDCDC;white-space:nowrap}
+.swrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 8px 8px 16px;border-radius:12px;border:1px solid #3A3A3A;background:rgba(18,18,18,.62)}
+.swtxt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.swst{font-size:13px;line-height:18px;color:#8F8F8F}
+.advbtn{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;padding:16px 18px;border-radius:12px;border:1px solid rgba(255,255,255,.10);background:rgba(18,18,18,.62);color:#F2F2F2;font:400 14px/20px 'Onest',sans-serif;text-align:left;cursor:pointer;box-sizing:border-box}
+.advbtn:hover{border-color:#6E6E6E}
+.planc{display:flex;gap:24px;align-items:center;flex-wrap:wrap;padding:24px;border-radius:12px;background:rgba(18,18,18,.62);border:1px solid rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.planic{width:72px;height:72px;flex:none;border-radius:12px;background:#1F1F1F;display:flex;align-items:center;justify-content:center;color:#8F8F8F}
+.planl{margin:12px 0 0;padding:0 0 0 18px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:20px;color:#DCDCDC}
+.steps{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:14px}
+.step{display:flex;gap:12px;align-items:flex-start}
+.stepn{flex:none;width:28px;height:28px;border-radius:999px;border:1px solid #3A3A3A;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#F2F2F2}
+.stept{margin:0;font-size:15px;line-height:22px;font-weight:500}
+.stepd{margin:2px 0 0;font-size:13px;line-height:18px;color:#B4B4B4}
 #obs{scroll-margin-top:88px}
 @media (max-width: 760px){
 .row{grid-template-columns:22px minmax(0,1fr) 40px 76px;gap:8px;padding:10px 4px}.row .hide{display:none}.mob{display:inline}
@@ -112,38 +127,56 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <nav aria-label="Разделы стрим-панели"></nav>
 
 <main style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 24px; padding-bottom: 48px">
-<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
-<div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Музыка и заказы</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; max-width: 680px">Зрители заказывают треки командой в чате, за баллы канала или донатом. Бот проверяет заказ и ставит его в очередь, а играет музыка в этой вкладке или в OBS.</p></div>
-<div hidden="{{ hideOpen }}" style="display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 16px; border-radius: 8px; border: 1px solid #3A3A3A"><span style="font-size: 14px" id="open-l">Приём заказов</span><span style="font-size: 13px; color: #8F8F8F; min-width: 64px">{{ openLabel }}</span><button type="button" role="switch" class="sw" aria-checked="{{ openOn }}" aria-labelledby="open-l" onClick="{{ toggleOpen }}" disabled="{{ noCfg }}"><span></span></button></div>
-<div hidden="{{ hideOpen }}" style="display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 16px; border-radius: 8px; border: 1px solid #3A3A3A"><span style="font-size: 14px" id="auto-l">Автовоспроизведение</span><span style="font-size: 13px; color: #8F8F8F; min-width: 64px">{{ autoLabel }}</span><button type="button" role="switch" class="sw" aria-checked="{{ autoOn }}" aria-labelledby="auto-l" onClick="{{ toggleAuto }}" disabled="{{ noCfg }}"><span></span></button></div>
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="max-width: 680px"><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Музыка и заказы</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4">Зрители заказывают треки командой в чате, за баллы канала или донатом. Бот проверяет заказ и ставит трек в очередь. Играть музыка может в этой вкладке панели или в OBS.</p></div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div hidden="{{ hideOpen }}" class="swrow"><span class="swtxt"><span id="open-l" style="font-size: 14px; font-weight: 500">Приём заказов</span><span class="swst">{{ openLabel }}</span></span><sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><span class="tagp"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Доступно на тарифе «Про»</span></sc-if><button type="button" role="switch" class="sw" aria-checked="{{ openOn }}" aria-labelledby="open-l" onClick="{{ toggleOpen }}" disabled="{{ ctlOff }}"><span></span></button></div>
+<div hidden="{{ hideOpen }}" class="swrow"><span class="swtxt"><span id="auto-l" style="font-size: 14px; font-weight: 500">Автовоспроизведение</span><span class="swst">{{ autoLabel }}</span></span><sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><span class="tagp"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Доступно на тарифе «Про»</span></sc-if><button type="button" role="switch" class="sw" aria-checked="{{ autoOn }}" aria-labelledby="auto-l" onClick="{{ toggleAuto }}" disabled="{{ ctlOff }}"><span></span></button></div>
+</div>
 </div>
 
 <div style="display: flex; flex-direction: column; gap: 12px">
-<sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert">Не получилось загрузить музыку: {{ err }} Попробуем ещё раз через несколько секунд.</p></sc-if>
-<sc-if value="{{ noYoutube }}" hint-placeholder-val="{{ false }}"><div role="alert" class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg><span><b style="font-weight: 600">Не задан ключ YouTube API.</b> Пока его нет, бот не может найти и проверить ни один трек — все заказы будут отклоняться. {{ ytFix }}</span></div></sc-if>
-<sc-if value="{{ noBot }}" hint-placeholder-val="{{ false }}"><div class="note" style="align-items: center; flex-wrap: wrap"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8V4H8"></path><rect x="4" y="8" width="16" height="12" rx="2"></rect><path d="M2 14h2M20 14h2M15 13v2M9 13v2"></path></svg><span style="flex: 1 1 280px">Бот не подключён к чату — заказы командой и за баллы канала не придут. Плеер и ручное добавление работают и без него.</span><button type="button" class="btn2 sm" onClick="{{ enableBot }}" disabled="{{ botBusy }}">{{ botLabel }}</button></div></sc-if>
+<sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}"><div role="alert" class="alert" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap"><span style="flex: 1 1 260px; min-width: 0">Не получилось загрузить музыку. {{ err }} Панель сама попробует снова через несколько секунд.</span><button type="button" class="btn2 sm" onClick="{{ retry }}">Повторить</button></div></sc-if>
+<sc-if value="{{ noYoutube }}" hint-placeholder-val="{{ false }}"><div role="alert" class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg><span><b style="font-weight: 600">Поиск треков на YouTube не настроен.</b> Пока это не исправлено, бот не найдёт ни один трек, и все заказы будут отклоняться. {{ ytFix }}</span></div></sc-if>
+<sc-if value="{{ noBot }}" hint-placeholder-val="{{ false }}"><div class="note" style="align-items: center; flex-wrap: wrap"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8V4H8"></path><rect x="4" y="8" width="16" height="12" rx="2"></rect><path d="M2 14h2M20 14h2M15 13v2M9 13v2"></path></svg><span style="flex: 1 1 280px">Бот не подключён к чату. Заказы командой и за баллы канала не придут. Плеер и ручное добавление работают и без бота.</span><button type="button" class="btn2 sm" onClick="{{ enableBot }}" disabled="{{ botBusy }}">{{ botLabel }}</button></div></sc-if>
 <sc-if value="{{ hasBotErr }}" hint-placeholder-val="{{ false }}"><div role="alert" class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg><span>Бот подключён, но Twitch вернул ошибку: {{ botErr }}</span></div></sc-if>
 </div>
 
-<div>
 <sc-if value="{{ notAllowed }}" hint-placeholder-val="{{ false }}">
-<section aria-labelledby="plan-t" style="padding: 32px; border-radius: 12px; background: rgba(18,18,18,0.62); border: 1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); display: flex; gap: 24px; align-items: center; flex-wrap: wrap">
-<div aria-hidden="true" style="width: 96px; height: 96px; flex: none; border-radius: 8px; background: #1F1F1F; display: flex; align-items: center; justify-content: center; color: #8F8F8F"><svg class="ic" width="40" height="40" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></div>
+<section aria-labelledby="plan-t" class="planc">
+<div aria-hidden="true" class="planic"><svg class="ic" width="32" height="32" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></div>
 <div style="flex: 1 1 320px; min-width: 0">
-<h2 id="plan-t" style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 600">Музыка доступна на тарифе «Про» и выше</h2>
-<p style="margin: 8px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; max-width: 620px">Сейчас у тебя тариф «{{ planName }}». На «Про» зрители смогут заказывать треки командой в чате, за баллы канала и донатом, а играть они будут прямо в панели или в OBS.</p>
+<h2 id="plan-t" class="sech">Что даёт «Про»</h2>
+<p class="mp" style="margin-top: 6px; font-size: 14px; line-height: 20px">На тарифе «{{ planName }}» музыка не работает. На «Про» и выше доступно:</p>
+<ul class="planl">
+<li><b style="font-weight: 500; color: #F2F2F2">Заказы от зрителей.</b> Команда в чате, баллы канала или донат, и трек встаёт в очередь.</li>
+<li><b style="font-weight: 500; color: #F2F2F2">Очередь.</b> Треки можно поднять, опустить, поставить первым, сыграть сейчас или убрать.</li>
+<li><b style="font-weight: 500; color: #F2F2F2">Плеер.</b> Музыка играет в этой вкладке панели или в OBS.</li>
+<li><b style="font-weight: 500; color: #F2F2F2">Автовоспроизведение.</b> Когда очередь кончилась, играют похожие треки.</li>
+</ul>
+<p class="hint" style="margin-top: 12px">Ниже видна вся страница. Недоступное помечено плашкой «Доступно на тарифе «Про»».</p>
 </div>
-<a href="WebSettings.dc.html#billing" class="btn">Выбрать тариф</a>
+<a href="WebSettings.dc.html#billing" class="btn" style="flex: none">Посмотреть тарифы</a>
 </section>
 </sc-if>
-</div>
 
-<div hidden="{{ notAllowed }}" style="display: flex; flex-direction: column; gap: 24px">
+<sc-if value="{{ showHowTo }}" hint-placeholder-val="{{ true }}">
+<section aria-labelledby="how-t" class="card" style="padding: 20px">
+<h2 id="how-t" class="sech">Как заказать трек</h2>
+<p class="hint" style="margin-top: 4px">Три шага. Блок пропадёт, как только появится первый трек.</p>
+<ol class="steps">
+<li class="step"><span class="stepn" aria-hidden="true">1</span><div><p class="stept">Включи приём заказов</p><p class="stepd">Переключатель «Приём заказов» вверху страницы. Пока он выключен, заказы не принимаются.</p></div></li>
+<li class="step"><span class="stepn" aria-hidden="true">2</span><div><p class="stept">Зритель пишет команду в чат</p><p class="stepd">Например: <span class="mono" style="color: #DCDCDC">{{ cmdUsage }}</span>. Дальше ссылка на YouTube или название трека.</p><sc-if value="{{ cmdIsOff }}" hint-placeholder-val="{{ false }}"><p class="stepd" style="color: #DCDCDC">Сейчас команда выключена. Включи её в блоке «Заказ командой в чате».</p></sc-if></div></li>
+<li class="step"><span class="stepn" aria-hidden="true">3</span><div><p class="stept">Трек встаёт в очередь</p><p class="stepd">Дальше он играет в этой вкладке или в OBS. Если включена ручная проверка, сначала трек ждёт твоего одобрения.</p></div></li>
+</ol>
+</section>
+</sc-if>
+
 <div style="display: flex; flex-wrap: wrap; gap: 16px">
-<section aria-label="Сейчас играет" style="flex: 2 1 560px; min-width: 0; box-sizing: border-box; padding: 24px; border-radius: 12px; background: rgba(18,18,18,0.62); border: 1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); display: flex; gap: 24px; align-items: center; flex-wrap: wrap">
+<section aria-label="Сейчас играет" class="card" style="flex: 2 1 560px; min-width: 0; box-sizing: border-box; padding: 24px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap">
 <div class="cover" data-has="{{ coverHas }}" data-here="{{ here }}" data-blocked="{{ blocked }}" style="background-image: {{ coverBg }}"><div class="bars" aria-hidden="true"><span style="height: 40%"></span><span style="height: 75%"></span><span style="height: 55%"></span><span style="height: 90%"></span><span style="height: 35%"></span></div><div class="yt" data-dc-keep><div id="yt-player"></div></div></div>
 <div style="flex: 1 1 280px; min-width: 0">
-<p class="ov">{{ npLabel }}</p>
+<div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap"><p class="ov">{{ npLabel }}</p><sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><span class="tagp"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Доступно на тарифе «Про»</span></sc-if></div>
 <p style="margin: 8px 0 0; font-size: 24px; line-height: 30px; font-weight: 600; letter-spacing: -0.015em; overflow-wrap: anywhere">{{ npTitle }}</p>
 <p style="margin: 8px 0 0; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 13px; color: #8F8F8F"><sc-if value="{{ hasCur }}" hint-placeholder-val="{{ true }}"><a class="src" href="{{ cur.url }}" target="_blank" rel="noopener" title="Открыть на YouTube">YouTube ↗</a>заказал <b style="color: #DCDCDC; font-weight: 500">{{ cur.requester }}</b> · {{ cur.how }}</sc-if><sc-if value="{{ noCur }}" hint-placeholder-val="{{ false }}"><span>{{ npHint }}</span></sc-if></p>
 <div style="margin-top: 16px; min-height: 20px">
@@ -154,10 +187,10 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <sc-if value="{{ hasYtErr }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert" style="margin-top: 10px; font-size: 13px; line-height: 18px">{{ ytErr }}</p></sc-if>
 </div>
 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
-<sc-if value="{{ showStart }}" hint-placeholder-val="{{ true }}"><button type="button" class="btn" onClick="{{ startHere }}" disabled="{{ hereLoading }}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="#0A0A0A"></path></svg>{{ startLabel }}</button></sc-if>
+<sc-if value="{{ showStart }}" hint-placeholder-val="{{ true }}"><button type="button" class="btn2" onClick="{{ startHere }}" disabled="{{ startOff }}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="currentColor"></path></svg>{{ startLabel }}</button></sc-if>
 <sc-if value="{{ here }}" hint-placeholder-val="{{ false }}"><button type="button" class="pb" aria-label="{{ pauseLabel }}" title="{{ pauseLabel }}" onClick="{{ togglePause }}" disabled="{{ noPlaying }}"><sc-if value="{{ showPauseIcon }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1" fill="#0A0A0A"></rect><rect x="14" y="4" width="4" height="16" rx="1" fill="#0A0A0A"></rect></svg></sc-if><sc-if value="{{ showPlayIcon }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="#0A0A0A"></path></svg></sc-if></button><button type="button" class="ib" style="width: 44px; height: 44px; border: 1px solid #3A3A3A" aria-label="Выключить плеер в этой вкладке" title="Выключить плеер в этой вкладке" onClick="{{ stopHere }}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="2" fill="currentColor"></rect></svg></button></sc-if>
 <button type="button" class="ib" style="width: 44px; height: 44px; border: 1px solid #3A3A3A" aria-label="{{ nextLabel }}" title="{{ nextLabel }}" onClick="{{ next }}" disabled="{{ nextDisabled }}"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4l10 8-10 8z"></path><path d="M19 5v14"></path></svg></button>
-<label style="display: flex; align-items: center; gap: 8px; margin-left: 8px; color: #8F8F8F" title="Громкость сохраняется и для плеера в OBS"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7"></path></svg><span class="vh">Громкость</span><input type="range" min="0" max="100" step="1" value="{{ vol }}" onChange="{{ setVol }}" disabled="{{ noCfg }}" style="width: 96px; accent-color: #F2F2F2"><span class="mono" style="font-size: 12px; width: 28px; color: #DCDCDC">{{ vol }}</span></label>
+<label style="display: flex; align-items: center; gap: 8px; margin-left: 8px; color: #8F8F8F" title="Громкость сохраняется в аккаунте и для плеера в OBS"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7"></path></svg><span class="vh">Громкость</span><input type="range" min="0" max="100" step="1" value="{{ vol }}" onChange="{{ setVol }}" disabled="{{ volOff }}" style="width: 96px; accent-color: #F2F2F2"><span class="mono" style="font-size: 12px; width: 28px; color: #DCDCDC">{{ vol }}</span></label>
 </div>
 </section>
 <section class="card" aria-labelledby="st-t" style="flex: 1 1 280px; box-sizing: border-box; padding: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-content: start">
@@ -172,9 +205,9 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
 <section style="flex: 999 1 560px; min-width: 0" aria-label="Заказы">
 <form onSubmit="{{ addTrack }}" class="card" style="padding: 16px; display: flex; gap: 8px 12px; flex-wrap: wrap; align-items: flex-end">
-<div class="fl" style="flex: 1 1 280px; min-width: 0"><label for="addq">Добавить трек вручную</label><input id="addq" class="inp" value="{{ addQ }}" onChange="{{ setAddQ }}" placeholder="Ссылка или название: Кино — Группа крови" autocomplete="off" maxlength="300"></div>
-<button type="submit" class="btn" disabled="{{ adding }}">{{ addLabel }}</button>
-<p class="hint" style="flex-basis: 100%">Трек встанет в очередь от твоего имени и пройдёт те же проверки, что и заказы зрителей.</p>
+<div class="fl" style="flex: 1 1 280px; min-width: 0"><span style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap"><label for="addq" class="lab">Добавить трек вручную</label><sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><span class="tagp"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Доступно на тарифе «Про»</span></sc-if></span><input id="addq" class="inp" value="{{ addQ }}" onChange="{{ setAddQ }}" placeholder="Ссылка или название: Кино — Группа крови" autocomplete="off" maxlength="300" disabled="{{ addOff }}"></div>
+<button type="submit" class="{{ addCls }}" disabled="{{ addOff }}">{{ addLabel }}</button>
+<p class="hint" style="flex-basis: 100%">{{ addHint }}</p>
 <sc-if value="{{ hasAddMsg }}" hint-placeholder-val="{{ false }}"><p role="status" class="ok-l" style="flex-basis: 100%">{{ addMsg }}</p></sc-if>
 <sc-if value="{{ hasAddErr }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert" style="flex-basis: 100%; font-size: 13px; line-height: 18px; padding: 10px 12px">{{ addErr }}</p></sc-if>
 </form>
@@ -199,8 +232,9 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <span role="cell" style="display: flex; justify-content: flex-end"><button type="button" class="ib" aria-label="{{ q.upLabel }}" title="Поднять выше" onClick="{{ q.up }}" disabled="{{ q.upOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></button><button type="button" class="ib" aria-label="{{ q.downLabel }}" title="Опустить ниже" onClick="{{ q.down }}" disabled="{{ q.downOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></button><button type="button" class="ib" aria-label="{{ q.topLabel }}" title="В начало очереди" onClick="{{ q.top }}" disabled="{{ q.upOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></button><button type="button" class="ib" aria-label="{{ q.playLabel }}" title="Сыграть сейчас (текущий трек закончится)" onClick="{{ q.playNow }}" disabled="{{ q.busy }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"></path></svg></button><button type="button" class="ib d" aria-label="{{ q.delLabel }}" title="Убрать из очереди" onClick="{{ q.del }}" disabled="{{ q.busy }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button></span>
 </div>
 </sc-for>
-<sc-if value="{{ qLoading }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 48px 16px; text-align: center; border-top: 1px solid #1F1F1F; font-size: 14px; color: #8F8F8F">Загрузка очереди…</p></sc-if>
-<sc-if value="{{ qEmpty }}" hint-placeholder-val="{{ false }}"><div style="padding: 48px 16px; text-align: center; border-top: 1px solid #1F1F1F"><p style="margin: 0; font-size: 15px; font-weight: 500">Очередь пуста</p><p style="margin: 6px 0 0; font-size: 13px; color: #8F8F8F">{{ emptyHint }}</p></div></sc-if>
+<sc-if value="{{ qLoading }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 48px 16px; text-align: center; border-top: 1px solid #1F1F1F; font-size: 14px; color: #8F8F8F">Загружаем очередь…</p></sc-if>
+<sc-if value="{{ qFailed }}" hint-placeholder-val="{{ false }}"><div role="alert" style="padding: 40px 16px; text-align: center; border-top: 1px solid #1F1F1F"><p style="margin: 0; font-size: 15px; font-weight: 500">Очередь не загрузилась</p><p class="hint" style="margin-top: 6px">Это не значит, что она пуста. Проверь интернет и попробуй ещё раз.</p><button type="button" class="btn2 sm" style="margin-top: 16px" onClick="{{ retry }}">Повторить</button></div></sc-if>
+<sc-if value="{{ qEmpty }}" hint-placeholder-val="{{ false }}"><div style="padding: 48px 16px; text-align: center; border-top: 1px solid #1F1F1F"><p style="margin: 0; font-size: 15px; font-weight: 500">{{ emptyTitle }}</p><p class="hint" style="margin-top: 6px">{{ emptyHint }}</p><sc-if value="{{ emptyCanOpen }}" hint-placeholder-val="{{ false }}"><button type="button" class="btn2 sm" style="margin-top: 16px" onClick="{{ toggleOpen }}">Включить заказы</button></sc-if><sc-if value="{{ emptyCanAdd }}" hint-placeholder-val="{{ false }}"><button type="button" class="btn2 sm" style="margin-top: 16px" onClick="{{ focusAdd }}">Добавить трек</button></sc-if><sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><a href="WebSettings.dc.html#billing" class="btn2 sm" style="margin-top: 16px">Посмотреть тарифы</a></sc-if></div></sc-if>
 <sc-if value="{{ qHas }}" hint-placeholder-val="{{ true }}"><div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px; border-top: 1px solid #1F1F1F"><span style="font-size: 13px; color: #8F8F8F">{{ qSummary }}</span><button type="button" class="btn2 sm danger" onClick="{{ clear }}" disabled="{{ clearBusy }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"></path></svg>Очистить очередь</button></div></sc-if>
 </div>
 </sc-if>
@@ -209,9 +243,9 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 8px">
 <p style="margin: 0 0 4px; font-size: 13px; line-height: 18px; color: #8F8F8F">{{ pendingNote }}</p>
 <sc-for list="{{ pending }}" as="p" hint-placeholder-count="2">
-<div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; padding: 14px 16px; border-radius: 8px; border: 1px dashed #8F8F8F; background: repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 7px)">
+<div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; padding: 14px 16px; border-radius: 12px; border: 1px dashed #8F8F8F; background: repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 7px)">
 <span style="flex: 1 1 240px; min-width: 0"><span style="display: block; font-weight: 500; overflow-wrap: anywhere">{{ p.title }}</span><span class="sub-l" style="display: block"><span class="mono">{{ p.len }}</span> · <a href="{{ p.url }}" target="_blank" rel="noopener">{{ p.short }}</a> · {{ p.requester }}, {{ p.how }}</span><sc-if value="{{ p.hasNote }}" hint-placeholder-val="{{ false }}"><span style="display: block; margin-top: 4px; font-size: 12px; color: #DCDCDC">{{ p.note }}</span></sc-if></span>
-<span style="display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="btn2 sm" onClick="{{ p.reject }}" disabled="{{ p.busy }}">{{ p.rejectLabel }}</button><button type="button" class="btn sm" onClick="{{ p.approve }}" disabled="{{ p.busy }}">В очередь</button></span>
+<span style="display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="btn2 sm" onClick="{{ p.reject }}" disabled="{{ p.busy }}">{{ p.rejectLabel }}</button><button type="button" class="btn2 sm" onClick="{{ p.approve }}" disabled="{{ p.busy }}">В очередь</button></span>
 </div>
 </sc-for>
 <sc-if value="{{ noPending }}" hint-placeholder-val="{{ false }}"><p style="margin: 24px 0; text-align: center; font-size: 14px; color: #8F8F8F">Новых заказов на проверке нет</p></sc-if>
@@ -220,7 +254,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 
 <sc-if value="{{ tabHistory }}" hint-placeholder-val="{{ false }}">
 <div role="table" aria-label="История" style="margin-top: 8px">
-<div role="row" class="hrow" style="border-top: 0; font-size: 12px; color: #8F8F8F"><span role="columnheader">Заказ</span><span role="columnheader">Трек</span><span role="columnheader" class="hide">Кто заказал</span><span role="columnheader">Итог</span></div>
+<div role="row" class="hrow" style="border-top: 0; font-size: 12px; color: #8F8F8F"><span role="columnheader">Время</span><span role="columnheader">Трек</span><span role="columnheader" class="hide">Кто заказал</span><span role="columnheader">Итог</span></div>
 <sc-for list="{{ history }}" as="h" hint-placeholder-count="4">
 <div role="row" class="hrow"><span role="cell" class="mono" style="font-size: 12px; color: #8F8F8F">{{ h.time }}</span><span role="cell" style="min-width: 0"><a class="ell" href="{{ h.url }}" target="_blank" rel="noopener" title="{{ h.title }}">{{ h.title }}</a></span><span role="cell" class="hide ell" style="font-size: 13px; color: #B4B4B4">{{ h.requester }}</span><span role="cell" style="font-size: 13px; color: {{ h.color }}">{{ h.result }}</span></div>
 </sc-for>
@@ -230,7 +264,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 </div>
 
 <section class="card" aria-labelledby="bot-t" style="margin-top: 24px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
-<h2 id="bot-t" style="margin: 0; font-size: 17px; font-weight: 600">Что можно заказать</h2>
+<h2 id="bot-t" class="sech">Что можно заказать</h2>
 <ul style="margin: 0; padding: 0 0 0 18px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 20px; color: #DCDCDC">
 <li><b style="font-weight: 500">Ссылку на YouTube или YouTube Music</b> — трек встанет в очередь как есть.</li>
 <li><b style="font-weight: 500">Название трека</b> — бот возьмёт первое подходящее видео из поиска YouTube. {{ searchState }}</li>
@@ -251,53 +285,67 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 
 <aside style="flex: 1 1 340px; max-width: 440px; min-width: 0; display: flex; flex-direction: column; gap: 16px" aria-label="Плеер и настройки заказов">
 <section id="obs" class="meth" aria-labelledby="obs-t">
-<div class="mh"><h2 id="obs-t" class="mt" style="margin: 0; font-size: 16px"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="2"></rect><path d="M8 22h8M12 18v4"></path></svg>Плеер для OBS</h2></div>
-<p class="mp">Музыка играет прямо в OBS и попадает в эфир, даже если панель закрыта. В OBS добавь источник «Браузер», вставь ссылку и поставь галочку «Управлять звуком через OBS» — тогда громкость видна в микшере OBS.</p>
-<div class="fl"><label for="obs-link">Ссылка на плеер</label>
-<div style="display: flex; gap: 8px"><input id="obs-link" class="inp mono" readonly value="{{ obsUrl }}" onClick="{{ selectLink }}" style="font-size: 13px; min-width: 0; flex: 1"><button type="button" class="btn sm" onClick="{{ copyLink }}" disabled="{{ noToken }}" style="height: 40px">{{ copyLabel }}</button></div>
+<div class="mh"><h2 id="obs-t" class="sech" style="display: inline-flex; gap: 10px; align-items: center"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="14" rx="2"></rect><path d="M8 22h8M12 18v4"></path></svg>Плеер для OBS</h2><sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><span class="tagp"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Доступно на тарифе «Про»</span></sc-if></div>
+<p class="mp">Музыка играет прямо в OBS и попадает в эфир, даже если панель закрыта. В OBS добавь источник «Браузер», вставь ссылку ниже и включи «Управлять звуком через OBS», тогда громкость видна в микшере OBS.</p>
+<div class="fl"><label for="obs-link" class="lab">Ссылка на плеер</label>
+<div style="display: flex; gap: 8px"><input id="obs-link" class="inp mono" readonly value="{{ obsUrl }}" onClick="{{ selectLink }}" style="font-size: 13px; min-width: 0; flex: 1"><button type="button" class="btn2 sm" onClick="{{ copyLink }}" disabled="{{ copyOff }}" style="height: 40px; flex: none">{{ copyLabel }}</button></div>
 <p class="hint">Ссылка личная: по ней можно переключать треки. Не показывай её на стриме.</p>
 </div>
-<button type="button" role="checkbox" aria-checked="{{ obsChecked }}" onClick="{{ toggleObsUi }}" style="display: flex; gap: 12px; align-items: flex-start; padding: 0; border: 0; background: transparent; color: #DCDCDC; font: 400 14px/20px 'Onest', sans-serif; text-align: left; cursor: pointer"><span style="{{ obsBox }}"><sc-if value="{{ obsUi }}" hint-placeholder-val="{{ true }}"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width: 3"><path d="M20 6L9 17l-5-5"></path></svg></sc-if></span><span>Показывать плашку с названием трека<span style="display: block; font-size: 12px; line-height: 16px; color: #8F8F8F">В левом нижнем углу источника. Размер источника — 1920×1080. Если у тебя уже есть виджет «Сейчас играет», плашку можно выключить.</span></span></button>
-<p class="mp">Громкость плеера в OBS берётся из ползунка на этой странице.</p>
+<button type="button" role="checkbox" aria-checked="{{ obsChecked }}" onClick="{{ toggleObsUi }}" style="display: flex; gap: 12px; align-items: flex-start; padding: 0; border: 0; background: transparent; color: #DCDCDC; font: 400 14px/20px 'Onest', sans-serif; text-align: left; cursor: pointer"><span style="{{ obsBox }}"><sc-if value="{{ obsUi }}" hint-placeholder-val="{{ true }}"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width: 3"><path d="M20 6L9 17l-5-5"></path></svg></sc-if></span><span>Показывать плашку с названием трека<span style="display: block; font-size: 13px; line-height: 18px; color: #8F8F8F">В левом нижнем углу источника. Размер источника — 1920×1080. Если у тебя уже есть виджет «Сейчас играет», плашку можно выключить.</span></span></button>
+<p class="hint">Это настройка браузера: она хранится только в этом браузере, а не в аккаунте. После смены скопируй ссылку заново и вставь её в источник OBS.</p>
+<p class="mp">Громкость плеера в OBS берётся из ползунка «Громкость» в блоке «Сейчас играет». Ползунок сохраняется в аккаунте.</p>
 <div class="note" style="padding: 12px 14px; font-size: 13px; line-height: 18px"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg><span>Не включай плеер одновременно здесь и в OBS — трек зазвучит дважды. Выбери что-то одно.</span></div>
 </section>
 
-<h2 style="margin: 8px 0 0; font-size: 20px; line-height: 26px; font-weight: 600">Способы заказа</h2>
-
-<div class="meth">
-<div class="mh"><span class="mt" id="m-cmd"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l6-6-6-6M12 19h8"></path></svg>Команда в чате</span><button type="button" role="switch" class="sw" aria-checked="{{ cmdOn }}" aria-labelledby="m-cmd" onClick="{{ toggleCmd }}" disabled="{{ noCfg }}"><span></span></button></div>
-<div class="fl"><label for="cmd-name">Команда</label><div style="display: flex; align-items: center; height: 40px; box-sizing: border-box; border-radius: 6px; background: #171717; border: 1px solid #6E6E6E; overflow: hidden"><span class="mono" style="padding: 0 0 0 12px; color: #8F8F8F; font-size: 15px">!</span><input id="cmd-name" class="mono" value="{{ d.cmdName }}" onChange="{{ setCmdName }}" autocomplete="off" maxlength="30" placeholder="музыка" style="flex: 1; min-width: 0; height: 100%; padding: 0 12px 0 2px; border: 0; background: transparent; color: #F2F2F2; font-size: 15px"></div><p class="hint">Зритель пишет: <span class="mono" style="color: #DCDCDC">{{ cmdUsage }}</span></p></div>
-<div class="kv"><label for="cmd-acc">Кто может</label><select id="cmd-acc" class="inp" value="{{ d.cmdAccess }}" onChange="{{ setCmdAccess }}" style="width: auto; height: 36px; font-size: 14px"><option value="all">Все зрители</option><option value="followers">Фолловеры и выше</option><option value="subs">Подписчики и выше</option><option value="vip">VIP и модераторы</option><option value="mods">Только модераторы</option></select></div>
-<div class="kv"><label for="cmd-cd">Кулдаун на зрителя</label><span class="unit"><input id="cmd-cd" class="inp sm mono" type="number" inputmode="numeric" min="0" max="3600" value="{{ d.cmdCooldown }}" onChange="{{ setCmdCd }}">сек</span></div>
-<p class="hint">На модераторов и тебя кулдаун не действует.</p>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h2 class="sech">Способы заказа</h2>
+<p class="hint">Главный способ — команда в чате. Баллы канала и донат можно включить в расширенных настройках ниже.</p>
 </div>
 
 <div class="meth">
-<div class="mh"><span class="mt" id="m-pts"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v10M8.5 10h5a2 2 0 0 1 0 4h-5"></path></svg>Баллы канала</span><button type="button" role="switch" class="sw" aria-checked="{{ ptsOn }}" aria-labelledby="m-pts" onClick="{{ togglePts }}" disabled="{{ ptsBusy }}"><span></span></button></div>
-<p class="mp">Создадим на Twitch награду «Заказать трек»: зритель вводит ссылку или название в поле награды. Если трек не прошёл проверку или ты отклонил заказ, баллы вернутся. Баллы канала есть только у компаньонов и партнёров Twitch.</p>
-<div class="kv"><label for="pts-cost">Стоимость</label><span class="unit"><input id="pts-cost" class="inp sm mono" type="number" inputmode="numeric" min="1" value="{{ d.pointsCost }}" onChange="{{ setPtsCost }}">баллов</span></div>
+<div class="mh"><span class="mt" id="m-cmd"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l6-6-6-6M12 19h8"></path></svg>Заказ командой в чате</span><span style="display: flex; gap: 10px; align-items: center"><sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><span class="tagp"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Доступно на тарифе «Про»</span></sc-if><button type="button" role="switch" class="sw" aria-checked="{{ cmdOn }}" aria-labelledby="m-cmd" onClick="{{ toggleCmd }}" disabled="{{ ctlOff }}"><span></span></button></span></div>
+<p class="mp">Зритель пишет команду в чат, и трек встаёт в очередь.</p>
+<div class="fl"><label for="cmd-name" class="lab">Название команды</label><div style="display: flex; align-items: center; height: 40px; box-sizing: border-box; border-radius: 6px; background: #171717; border: 1px solid #6E6E6E; overflow: hidden"><span class="mono" style="padding: 0 0 0 12px; color: #8F8F8F; font-size: 15px">!</span><input id="cmd-name" class="mono" value="{{ d.cmdName }}" onChange="{{ setCmdName }}" disabled="{{ ctlOff }}" autocomplete="off" maxlength="30" placeholder="музыка" style="flex: 1; min-width: 0; height: 100%; padding: 0 12px 0 2px; border: 0; background: transparent; color: #F2F2F2; font-size: 15px"></div><p class="hint">Зритель напишет: <span class="mono" style="color: #DCDCDC">{{ cmdUsage }}</span></p></div>
+</div>
+
+<button type="button" class="advbtn" aria-expanded="{{ advExpanded }}" aria-controls="adv-body" onClick="{{ toggleAdv }}"><span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-size: 15px; line-height: 20px; font-weight: 500">Расширенные настройки</span><span class="hint">{{ advHint }}</span></span><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; transition: transform 180ms; {{ chevStyle }}"><path d="M6 9l6 6 6-6"></path></svg></button>
+
+<div id="adv-body" hidden="{{ advClosed }}" style="display: flex; flex-direction: column; gap: 16px">
+<div class="meth">
+<span class="mt">Кто может и как часто</span>
+<div class="kv" style="border-top: 0; padding-top: 0"><label for="cmd-acc">Кто может заказывать командой</label><select id="cmd-acc" class="inp" value="{{ d.cmdAccess }}" onChange="{{ setCmdAccess }}" disabled="{{ ctlOff }}" style="width: auto; height: 36px; font-size: 14px"><option value="all">Все зрители</option><option value="followers">Фолловеры и выше</option><option value="subs">Подписчики и выше</option><option value="vip">VIP и модераторы</option><option value="mods">Только модераторы</option></select></div>
+<div class="kv"><label for="cmd-cd">Пауза между заказами одного зрителя<span class="hint" style="display: block; margin-top: 2px">На модераторов и тебя не действует</span></label><span class="unit"><input id="cmd-cd" class="inp sm mono" type="number" inputmode="numeric" min="0" max="3600" value="{{ d.cmdCooldown }}" onChange="{{ setCmdCd }}" disabled="{{ ctlOff }}">сек</span></div>
+</div>
+
+<div class="meth">
+<div class="mh"><span class="mt" id="m-pts"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v10M8.5 10h5a2 2 0 0 1 0 4h-5"></path></svg>Заказ за баллы канала</span><span style="display: flex; gap: 10px; align-items: center"><sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><span class="tagp"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Доступно на тарифе «Про»</span></sc-if><button type="button" role="switch" class="sw" aria-checked="{{ ptsOn }}" aria-labelledby="m-pts" onClick="{{ togglePts }}" disabled="{{ ptsOff }}"><span></span></button></span></div>
+<p class="mp">Зрители тратят баллы канала на награду «Заказать трек» и вписывают в неё ссылку или название. Если заказ отклонён или не прошёл проверку, баллы вернутся. Баллы канала есть только у компаньонов и партнёров Twitch.</p>
+<div class="kv"><label for="pts-cost">Стоимость заказа</label><span class="unit"><input id="pts-cost" class="inp sm mono" type="number" inputmode="numeric" min="1" value="{{ d.pointsCost }}" onChange="{{ setPtsCost }}" disabled="{{ ctlOff }}">баллов</span></div>
 <sc-if value="{{ hasReward }}" hint-placeholder-val="{{ false }}"><p class="hint">Награда создана на Twitch, стоимость меняется там же при сохранении.</p></sc-if>
 <sc-if value="{{ hasPtsMsg }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert" style="font-size: 13px; line-height: 18px; padding: 10px 12px">{{ ptsMsg }}</p></sc-if>
 </div>
 
 <div class="meth">
-<div class="mh"><span class="mt" id="m-don"><span style="width: 18px; text-align: center; font-weight: 600" aria-hidden="true">₽</span>Донат с треком</span><button type="button" role="switch" class="sw" aria-checked="{{ donOn }}" aria-labelledby="m-don" onClick="{{ toggleDon }}" disabled="{{ donOff }}"><span></span></button></div>
-<p class="mp">Ссылка на YouTube в сообщении к донату — трек встанет первым в очереди, без ручной проверки и лимита на зрителя. Названия и ссылки других сервисов в донатах не распознаются.</p>
-<div class="kv"><label for="don-min">Минимальная сумма</label><span class="unit"><input id="don-min" class="inp sm mono" type="number" inputmode="numeric" min="1" value="{{ d.donateMin }}" onChange="{{ setDonMin }}">₽</span></div>
+<div class="mh"><span class="mt" id="m-don"><span style="width: 18px; text-align: center; font-weight: 600" aria-hidden="true">₽</span>Заказ за донат</span><span style="display: flex; gap: 10px; align-items: center"><sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><span class="tagp"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Доступно на тарифе «Про»</span></sc-if><button type="button" role="switch" class="sw" aria-checked="{{ donOn }}" aria-labelledby="m-don" onClick="{{ toggleDon }}" disabled="{{ donOff }}"><span></span></button></span></div>
+<p class="mp">Ссылка на YouTube в сообщении к донату ставит трек первым в очереди, без ручной проверки и лимита на зрителя. Названия и ссылки других сервисов в донатах не распознаются.</p>
+<div class="kv"><label for="don-min">Минимальная сумма</label><span class="unit"><input id="don-min" class="inp sm mono" type="number" inputmode="numeric" min="1" value="{{ d.donateMin }}" onChange="{{ setDonMin }}" disabled="{{ ctlOff }}">₽</span></div>
 <p class="hint">{{ daState }}<sc-if value="{{ noDa }}" hint-placeholder-val="{{ false }}"> <a href="WebSettings.dc.html#platforms" style="color: #DCDCDC; text-decoration: underline">Подключить в настройках</a></sc-if></p>
 </div>
 
 <div class="meth">
-<span style="font-weight: 500">Проверка заказов</span>
-<div class="kv" style="border-top: 0; padding-top: 0"><span id="m-search">Поиск по названию<span class="hint" style="display: block; margin-top: 2px">Нужен для названий и ссылок не с YouTube</span></span><button type="button" role="switch" class="sw" aria-checked="{{ searchOn }}" aria-labelledby="m-search" onClick="{{ toggleSearch }}" disabled="{{ noCfg }}"><span></span></button></div>
-<div class="kv"><span id="m-manual">Ручная проверка<span class="hint" style="display: block; margin-top: 2px">Трек попадёт в очередь после твоего одобрения</span></span><button type="button" role="switch" class="sw" aria-checked="{{ manualOn }}" aria-labelledby="m-manual" onClick="{{ toggleManual }}" disabled="{{ noCfg }}"><span></span></button></div>
-<div class="kv"><label for="max-len">Максимальная длина трека<span class="hint" style="display: block; margin-top: 2px">{{ maxLenHint }}</span></label><span class="unit"><input id="max-len" class="inp sm mono" type="number" inputmode="decimal" min="0" step="0.5" value="{{ d.maxLen }}" onChange="{{ setMaxLen }}">мин</span></div>
-<div class="kv"><label for="per-user">Треков от зрителя в очереди<span class="hint" style="display: block; margin-top: 2px">0 — без ограничения</span></label><input id="per-user" class="inp sm mono" type="number" inputmode="numeric" min="0" value="{{ d.perUser }}" onChange="{{ setPerUser }}"></div>
-<div class="kv"><label for="min-views">Минимум просмотров на YouTube<span class="hint" style="display: block; margin-top: 2px">0 — не проверять</span></label><input id="min-views" class="inp sm mono" type="number" inputmode="numeric" min="0" value="{{ d.minViews }}" onChange="{{ setMinViews }}"></div>
-<div class="kv" style="flex-direction: column; align-items: stretch"><span id="stop-l">Стоп-слова в названии</span>
+<span class="mt">Проверка заказов</span>
+<div class="kv" style="border-top: 0; padding-top: 0"><span id="m-search">Искать по названию<span class="hint" style="display: block; margin-top: 2px">Нужно для заказов не с YouTube. Выключено: принимаются только ссылки на YouTube</span></span><button type="button" role="switch" class="sw" aria-checked="{{ searchOn }}" aria-labelledby="m-search" onClick="{{ toggleSearch }}" disabled="{{ ctlOff }}"><span></span></button></div>
+<div class="kv"><span id="m-manual">Проверять заказы вручную<span class="hint" style="display: block; margin-top: 2px">Трек попадёт в очередь только после твоего одобрения</span></span><button type="button" role="switch" class="sw" aria-checked="{{ manualOn }}" aria-labelledby="m-manual" onClick="{{ toggleManual }}" disabled="{{ ctlOff }}"><span></span></button></div>
+<div class="kv"><label for="max-len">Максимальная длина трека<span class="hint" style="display: block; margin-top: 2px">{{ maxLenHint }}</span></label><span class="unit"><input id="max-len" class="inp sm mono" type="number" inputmode="decimal" min="0" step="0.5" value="{{ d.maxLen }}" onChange="{{ setMaxLen }}" disabled="{{ ctlOff }}">мин</span></div>
+<div class="kv"><label for="per-user">Треков от зрителя в очереди<span class="hint" style="display: block; margin-top: 2px">0 — без ограничения</span></label><input id="per-user" class="inp sm mono" type="number" inputmode="numeric" min="0" value="{{ d.perUser }}" onChange="{{ setPerUser }}" disabled="{{ ctlOff }}"></div>
+<div class="kv"><label for="min-views">Минимум просмотров на YouTube<span class="hint" style="display: block; margin-top: 2px">0 — не проверять</span></label><input id="min-views" class="inp sm mono" type="number" inputmode="numeric" min="0" value="{{ d.minViews }}" onChange="{{ setMinViews }}" disabled="{{ ctlOff }}"></div>
+</div>
+
+<div class="meth">
+<span id="stop-l" class="mt">Стоп-слова в названии</span>
+<p class="hint" style="margin-top: -6px">Треки с этими словами в названии не принимаются. Регистр не важен, * — любые символы. Сохраняется сразу.</p>
 <div style="display: flex; flex-wrap: wrap; gap: 6px" role="list" aria-labelledby="stop-l"><sc-for list="{{ stops }}" as="w" hint-placeholder-count="3"><span class="chip" role="listitem">{{ w.word }}<button type="button" aria-label="{{ w.label }}" onClick="{{ w.del }}"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button></span></sc-for><sc-if value="{{ noStops }}" hint-placeholder-val="{{ false }}"><span class="hint">Стоп-слов нет</span></sc-if></div>
-<form onSubmit="{{ addStop }}" style="display: flex; gap: 8px"><label for="stop-in" class="vh">Новое стоп-слово</label><input id="stop-in" class="inp" value="{{ stopQ }}" onChange="{{ setStopQ }}" placeholder="Например: bass boosted" maxlength="60" autocomplete="off" style="height: 36px; font-size: 14px"><button type="submit" class="btn2 sm" disabled="{{ noCfg }}">Добавить</button></form>
-<p class="hint">Регистр не важен, * — любые символы. Сохраняется сразу.</p>
+<form onSubmit="{{ addStop }}" style="display: flex; gap: 8px"><label for="stop-in" class="vh">Новое стоп-слово</label><input id="stop-in" class="inp" value="{{ stopQ }}" onChange="{{ setStopQ }}" placeholder="Например: bass boosted" maxlength="60" autocomplete="off" disabled="{{ ctlOff }}" style="height: 36px; font-size: 14px"><button type="submit" class="btn2 sm" disabled="{{ ctlOff }}">Добавить</button></form>
 </div>
 </div>
 
@@ -307,7 +355,6 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 </div>
 </sc-if>
 </aside>
-</div>
 </div>
 </main>
 </div>
@@ -324,7 +371,7 @@ class Component extends DCLogic {
       draft: null, saving: false, formErr: '', ptsMsg: '', vol: 70,
       addQ: '', adding: false, addMsg: '', addErr: '', stopQ: '',
       here: false, hereLoading: false, paused: false, blocked: false, pos: 0, len: 0, ytErr: '',
-      copied: false, obsUi: true,
+      copied: false, obsUi: true, advOpen: false,
     };
     try { this.state.obsUi = localStorage.getItem('stre.music.obsUi') !== '0'; } catch (e) { /* без хранилища */ }
     this.gen = 0; this.lastJson = ''; this.inflight = false; this.again = false;
@@ -644,6 +691,8 @@ class Component extends DCLogic {
     const cur = s.current;
     const qTotal = s.queue.reduce((a, x) => a + (Number(x.duration) || 0), 0);
     const nQ = s.queue.length;
+    const locked = ready && !s.allowed; // тариф ниже «Про»: страница видна, заказы и плеер выключены
+    const hasTracks = !!cur || nQ > 0 || s.history.length > 0 || s.stats.ordered > 0;
     const plural = (n, a, b, cc) => { const m10 = n % 10, m100 = n % 100; return m10 === 1 && m100 !== 11 ? a : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? b : cc; };
     const cmdName = c ? '!' + c.cmd.name : '!музыка';
     const showPending = !!(c && c.manual) || s.pending.length > 0;
@@ -656,7 +705,8 @@ class Component extends DCLogic {
     // плеер
     const playingHere = s.here && !!this.playingId;
     let hereStatus = 'Нажми «Играть здесь», чтобы музыка звучала в этой вкладке, или запусти плеер в OBS.';
-    if (s.hereLoading) hereStatus = 'Загружаем плеер YouTube…';
+    if (locked) hereStatus = 'Плеер открывается на тарифе «Про» и выше.';
+    else if (s.hereLoading) hereStatus = 'Загружаем плеер YouTube…';
     else if (s.here && s.blocked) hereStatus = 'Браузер не дал включить звук без клика. Нажми ▶ или прямо на видео слева.';
     else if (s.here && !this.playingId) hereStatus = 'Плеер включён и ждёт трек: как только в очереди что-то появится, он заиграет здесь.';
     else if (s.here && s.paused) hereStatus = 'Пауза в этой вкладке.';
@@ -668,13 +718,13 @@ class Component extends DCLogic {
     const obsUrl = me.widgetToken ? location.origin + '/w/player.php?t=' + me.widgetToken + (s.obsUi ? '' : '&ui=0') : 'Загрузка…';
 
     return {
-      hideOpen: !ready || !s.allowed,
+      locked, ctlOff: !ready || locked, hideOpen: !ready,
       noCfg: !ready,
-      openOn: !!(c && c.open), openLabel: !c ? '…' : c.open ? 'Открыт' : 'Закрыт',
-      toggleOpen: () => { if (c) this.saveCfg({ open: !c.open }); },
-      autoOn: !!(c && c.auto), autoLabel: !c ? '…' : c.auto ? 'Вкл: после очереди играют похожие' : 'Выкл: после очереди тишина', toggleAuto: () => { if (c) this.saveCfg({ auto: !c.auto }); },
+      openOn: c && c.open ? 'true' : 'false', openLabel: !c ? '…' : c.open ? 'Зрители могут заказывать' : 'Заказы не принимаются',
+      toggleOpen: () => { if (c && !locked) this.saveCfg({ open: !c.open }); },
+      autoOn: c && c.auto ? 'true' : 'false', autoLabel: !c ? '…' : c.auto ? 'Вкл: после очереди играют похожие треки' : 'Выкл: когда очередь кончится, тишина', toggleAuto: () => { if (c && !locked) this.saveCfg({ auto: !c.auto }); },
 
-      hasErr: !!s.err, err: /[.!?]$/.test(s.err) ? s.err : s.err + '.',
+      hasErr: !!s.err, err: /[.!?]$/.test(s.err) ? s.err : s.err + '.', retry: () => this.refresh(),
       noYoutube: ready && s.allowed && !s.youtube,
       ytFix: me.isAdmin ? 'Добавь YOUTUBE_API_KEY в файл .env на сервере.' : 'Ключ добавляет администратор сервиса — напиши в поддержку StreOps.',
       noBot: ready && s.allowed && !!s.me && !me.botEnabled,
@@ -692,21 +742,22 @@ class Component extends DCLogic {
 
       notAllowed: ready && !s.allowed,
       planName: me.planName || 'Бесплатный',
+      showHowTo: ready && s.allowed && !hasTracks, cmdIsOff: !!(c && !c.cmd.on),
 
       // сейчас играет
       coverHas: !!cur, here: s.here, blocked: s.here && s.blocked,
       coverBg: cur ? "url('https://i.ytimg.com/vi/" + cur.videoId + "/mqdefault.jpg')" : 'none',
-      npLabel: !ready ? 'Загрузка…' : 'Сейчас играет',
-      npTitle: !ready ? '…' : cur ? cur.title : 'Сейчас ничего не играет',
+      npLabel: ready ? 'Сейчас играет' : s.err ? 'Нет данных' : 'Загружаем…',
+      npTitle: ready ? (cur ? cur.title : 'Сейчас ничего не играет') : s.err ? '—' : '…',
       hasCur: !!cur, noCur: !cur,
       cur: cur ? { url: cur.url, requester: cur.requester || 'зритель', how: (HOW[cur.method] || cur.method).replace(/^[›◎₽] /, '') } : {},
-      npHint: !ready ? '' : nQ ? 'В очереди ' + nQ + ' ' + plural(nQ, 'трек', 'трека', 'треков') + ' — запусти плеер здесь или в OBS, или нажми «Следующий трек».' : 'Очередь пуста — добавь трек вручную или дождись заказов зрителей.',
+      npHint: !ready ? '' : locked ? 'Здесь появится трек, который играет сейчас.' : nQ ? 'В очереди ' + nQ + ' ' + plural(nQ, 'трек', 'трека', 'треков') + ' — запусти плеер здесь или в OBS, или нажми «Следующий трек».' : 'Очередь пуста — добавь трек вручную или дождись заказов зрителей.',
       showProg: playingHere, showLen: !playingHere && !!cur,
       posText: fmt(s.pos), lenText: fmt(s.len), progPct: pct, progText: fmt(s.pos) + ' из ' + fmt(s.len),
       lenLine: cur ? 'Длительность ' + fmt(cur.duration) + ' · прогресс виден, когда трек играет в этой вкладке' : '',
       hereStatus,
       hasYtErr: !!s.ytErr, ytErr: s.ytErr,
-      showStart: !s.here, hereLoading: s.hereLoading || !ready,
+      showStart: !s.here, hereLoading: s.hereLoading || !ready, startOff: s.hereLoading || !ready || locked,
       startLabel: s.hereLoading ? 'Загружаем…' : 'Играть здесь',
       startHere: () => this.startHere(),
       stopHere: () => this.stopHere(),
@@ -718,9 +769,9 @@ class Component extends DCLogic {
         if (s.paused || s.blocked) { this.player.playVideo(); this.setState({ paused: false }); } else { this.player.pauseVideo(); this.setState({ paused: true }); }
       },
       nextLabel: cur ? 'Следующий трек' : 'Запустить очередь',
-      nextDisabled: !ready || busy('next:0') || (!cur && !nQ),
+      nextDisabled: !ready || locked || busy('next:0') || (!cur && !nQ),
       next: () => this.act('next', null),
-      vol: s.vol,
+      vol: s.vol, volOff: !ready || locked,
       setVol: (e) => {
         const v = Math.max(0, Math.min(100, Number(e.target.value) || 0));
         this.setState({ vol: v });
@@ -735,7 +786,10 @@ class Component extends DCLogic {
 
       // добавление
       addQ: s.addQ, setAddQ: (e) => this.setState({ addQ: e.target.value, addErr: '' }),
-      addTrack: () => this.addTrack(), adding: s.adding || !ready, addLabel: s.adding ? 'Ищем трек…' : 'Добавить',
+      addTrack: () => this.addTrack(), adding: s.adding || !ready,
+      addOff: s.adding || !ready || locked, addCls: locked ? 'btn2' : 'btn',
+      addHint: locked ? 'Добавлять треки вручную можно на тарифе «Про» и выше.' : 'Трек встанет в очередь от твоего имени и пройдёт те же проверки, что и заказы зрителей.',
+      addLabel: s.adding ? 'Ищем трек…' : 'Добавить',
       hasAddMsg: !!s.addMsg, addMsg: s.addMsg, hasAddErr: !!s.addErr, addErr: s.addErr,
 
       // вкладки
@@ -767,8 +821,10 @@ class Component extends DCLogic {
           this.act('remove', x);
         },
       })),
-      qLoading: !ready, qEmpty: ready && !nQ, qHas: ready && nQ > 0,
-      emptyHint: c && c.open ? (c.cmd.on ? 'Напомни зрителям: ' + cmdName + ' и ссылка или название трека.' : 'Добавь трек вручную или включи заказ командой.') : 'Приём заказов закрыт — включи его вверху страницы.',
+      qLoading: !ready && !s.err, qFailed: !ready && !!s.err, qEmpty: ready && !nQ, qHas: ready && nQ > 0,
+      emptyTitle: 'Пока пусто.', emptyCanOpen: !!c && !locked && !c.open, emptyCanAdd: !!c && !locked && !!c.open,
+      focusAdd: () => { const el = document.getElementById('addq'); if (el) el.focus(); },
+      emptyHint: locked ? 'Очередь заполняется заказами и добавленными треками. Это доступно на тарифе «Про».' : !c ? '' : c.open ? (c.cmd.on ? 'Напомни зрителям команду ' + cmdName + ' — или добавь трек вручную.' : 'Добавь трек вручную или включи заказ командой.') : 'Добавь трек вручную или включи заказы.',
       qSummary: nQ + ' ' + plural(nQ, 'трек', 'трека', 'треков') + ' · ' + fmt(qTotal),
       clearBusy: busy('clear:0'),
       clear: () => { if (confirm('Очистить очередь? Уберём ' + nQ + ' ' + plural(nQ, 'трек', 'трека', 'треков') + ', вернуть их будет нельзя. Баллы за эти заказы не возвращаются.')) this.act('clear', null, 'Очередь очищена'); },
@@ -799,7 +855,7 @@ class Component extends DCLogic {
       cmdState: c && !c.cmd.on ? 'Заказать трек — сейчас выключено' : 'Заказать трек',
 
       // плеер для OBS
-      obsUrl, noToken: !me.widgetToken,
+      obsUrl, noToken: !me.widgetToken, copyOff: !me.widgetToken || locked,
       copyLabel: s.copied ? 'Скопировано' : 'Скопировать',
       selectLink: (e) => { try { e.target.select(); } catch (err) { /* нечего выделять */ } },
       copyLink: async () => {
@@ -818,28 +874,31 @@ class Component extends DCLogic {
       // способы заказа
       d,
       cmdOn: c && c.cmd.on ? 'true' : 'false',
-      toggleCmd: () => { if (c) this.saveCfg({ cmd: { on: !c.cmd.on } }); },
+      toggleCmd: () => { if (c && !locked) this.saveCfg({ cmd: { on: !c.cmd.on } }); },
+      advExpanded: s.advOpen ? 'true' : 'false', advClosed: !s.advOpen, chevStyle: s.advOpen ? 'transform: rotate(180deg)' : 'transform: rotate(0deg)',
+      advHint: 'Кто может заказывать, кулдаун, баллы канала, донат, проверка заказов и стоп-слова. Обычно это не нужно менять.',
+      toggleAdv: () => this.setState({ advOpen: !this.state.advOpen }),
       setCmdName: (e) => this.setD({ cmdName: e.target.value.replace(/\s+/g, '').replace(/^!+/, '') }),
       setCmdAccess: (e) => this.setD({ cmdAccess: e.target.value }),
       setCmdCd: (e) => this.setD({ cmdCooldown: e.target.value }),
 
-      ptsOn: c && c.points.on ? 'true' : 'false', ptsBusy: !ready,
-      togglePts: () => { if (c) this.saveCfg({ points: { on: !c.points.on } }); },
+      ptsOn: c && c.points.on ? 'true' : 'false', ptsBusy: !ready, ptsOff: !ready || locked,
+      togglePts: () => { if (c && !locked) this.saveCfg({ points: { on: !c.points.on } }); },
       setPtsCost: (e) => this.setD({ pointsCost: e.target.value }),
       hasReward: !!(c && c.points.on && c.points.rewardId),
       hasPtsMsg: !!s.ptsMsg, ptsMsg: s.ptsMsg,
 
       donOn: c && c.donate.on ? 'true' : 'false',
-      donOff: !ready || (!me.daConnected && !(c && c.donate.on)),
-      toggleDon: () => { if (c) this.saveCfg({ donate: { on: !c.donate.on } }); },
+      donOff: !ready || locked || (!me.daConnected && !(c && c.donate.on)),
+      toggleDon: () => { if (c && !locked) this.saveCfg({ donate: { on: !c.donate.on } }); },
       setDonMin: (e) => this.setD({ donateMin: e.target.value }),
       noDa: !!s.me && !me.daConnected,
       daState: !s.me ? '' : me.daConnected ? 'DonationAlerts подключён' + (me.daName ? ': ' + me.daName : '') + '.' : 'Нужен подключённый DonationAlerts.',
 
       searchOn: c && c.search ? 'true' : 'false',
-      toggleSearch: () => { if (c) this.saveCfg({ search: !c.search }); },
+      toggleSearch: () => { if (c && !locked) this.saveCfg({ search: !c.search }); },
       manualOn: c && c.manual ? 'true' : 'false',
-      toggleManual: () => { if (c) this.saveCfg({ manual: !c.manual }); },
+      toggleManual: () => { if (c && !locked) this.saveCfg({ manual: !c.manual }); },
       setMaxLen: (e) => this.setD({ maxLen: e.target.value }),
       maxLenHint: (() => { const n = Number(String(d.maxLen || '').replace(',', '.')); return !d.maxLen || !isFinite(n) ? 'В минутах, 0 — без ограничения' : n <= 0 ? 'Без ограничения' : 'До ' + fmt(n * 60) + ', 0 — без ограничения'; })(),
       setPerUser: (e) => this.setD({ perUser: e.target.value }),

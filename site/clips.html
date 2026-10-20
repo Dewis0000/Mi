@@ -13,34 +13,27 @@
 <style>
 body{margin:0;background:var(--n-1)}
 a{color:var(--n-12);text-decoration:none}a:hover{color: var(--accent-on)}
+[hidden]{display:none!important}
 .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
-.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--n-9);margin:0}
 .ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.tab{height:44px;padding:0;border:0;background:transparent;color:var(--n-9);font:500 14px/20px var(--font-sans),sans-serif;display:flex;gap:6px;align-items:center;cursor:pointer}
-.tab:hover{color:var(--n-12)}
-.cmd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 20px;border-radius:8px;border:1px solid var(--n-5);background:var(--s-2)}
-.cmd:hover{border-color:var(--n-6)}
-.sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid var(--n-8);background:transparent;cursor:pointer;flex:none;padding:0}
-.sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:var(--n-9);transition:transform 180ms cubic-bezier(.2,0,0,1)}
-.sw[aria-checked="true"]{background:var(--n-13);border-color:var(--n-13)}
-.sw[aria-checked="true"] span{transform:translateX(16px);background:var(--n-1)}
-.ib{width:36px;height:36px;border-radius:6px;border:0;background:transparent;color:var(--n-10);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.ib:hover{background:rgb(var(--n-13-rgb) / .06);color:var(--n-12)}
-.fl{display:flex;flex-direction:column;gap:8px}
-.fl > label,.lab{font-size:13px;line-height:18px;font-weight:500;color:var(--n-11)}
-.inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:var(--s-3);border:1px solid var(--n-8);color:var(--n-12);font:400 15px/22px var(--font-sans),sans-serif;width:100%}
+.card{display:flex;flex-direction:column;gap:12px;min-width:0;padding:20px 22px;border-radius:12px;background:rgb(var(--n-2-rgb) / .62);border:1px solid rgb(var(--n-13-rgb) / .10);box-shadow:inset 0 1px 0 rgb(var(--n-13-rgb) / .06)}
+.h2{margin:0;font-size:18px;line-height:24px;font-weight:600}
+.hint{margin:0;font-size:13px;line-height:18px;color:var(--n-9)}
+.lab{font-size:13px;line-height:18px;font-weight:500;color:var(--n-11)}
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.inp{box-sizing:border-box;height:38px;padding:0 12px;border-radius:6px;background:var(--s-3);border:1px solid var(--n-8);color:var(--n-12);font:400 14px/20px var(--font-sans),sans-serif;width:100%;min-width:0}
 .inp:hover{border-color:var(--n-9)}
-.hint{font-size:12px;line-height:16px;color:var(--n-9);margin:0}
-.seg{height:36px;padding:0 14px;border:0;border-radius:4px;background:transparent;color:var(--n-10);font:500 14px/20px var(--font-sans),sans-serif;cursor:pointer}
-.seg:hover{color:var(--n-12)}
-.tag{height:28px;padding:0 10px;border-radius:4px;border:1px solid var(--n-6);background:transparent;color:var(--n-11);font:400 12px/16px 'JetBrains Mono',monospace;cursor:pointer}
-.tag:hover{border-color:var(--n-9);background:rgb(var(--n-13-rgb) / .04)}
-.rad{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:6px;font-size:14px;color:var(--n-11);cursor:pointer;border:0;background:transparent;width:100%;text-align:left;font-family:var(--font-sans),sans-serif}
-.rad:hover{background:rgb(var(--n-13-rgb) / .04)}
-.dot{width:18px;height:18px;border-radius:999px;border:1px solid var(--n-8);box-sizing:border-box;flex:none;display:inline-flex;align-items:center;justify-content:center}
-.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 4px 0 10px;border-radius:4px;background:var(--n-4);border:1px solid var(--n-6);font-size:13px}
-.chip button{width:20px;height:20px;border:0;border-radius:3px;background:transparent;color:var(--n-9);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.chip button:hover{color:var(--n-12);background:rgb(var(--n-13-rgb) / .08)}
+.btn{height:40px;padding:0 16px;border-radius:6px;border:0;background:var(--n-13);color:var(--n-1);font:500 14px/20px var(--font-sans),sans-serif;cursor:pointer;flex:none}
+.btn:disabled{opacity:.5;cursor:default}
+.btn-s{height:40px;padding:0 16px;border-radius:6px;border:1px solid var(--n-6);background:transparent;color:var(--n-12);font:500 14px/20px var(--font-sans),sans-serif;cursor:pointer;flex:none}
+.btn-s:hover{border-color:var(--n-9)}
+.btn-s:disabled{opacity:.5;cursor:default}
+.note{display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-radius:8px;border:1px solid var(--n-6);background:var(--s-3)}
+.empty{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:20px 16px;border-radius:8px;border:1px dashed var(--n-5)}
+.step{display:flex;gap:12px;align-items:flex-start;min-width:0}
+.stepn{width:26px;height:26px;border-radius:999px;border:1px solid var(--n-6);display:inline-flex;align-items:center;justify-content:center;font-size:13px;color:var(--n-11);flex:none}
+.clip{display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:10px;border:1px solid var(--n-5);background:var(--s-2);min-width:0}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--n-12);outline-offset:2px}
 </style>
 <style>
 .sb{flex:1 1 200px;max-width:248px;min-width:200px;align-self:flex-start;position:sticky;top:88px;box-sizing:border-box;padding:12px;border-radius:8px;background:rgb(var(--n-13-rgb) / .03);border:1px solid rgb(var(--n-13-rgb) / .06);display:flex;flex-direction:column;gap:2px;font-family:var(--font-sans),system-ui,sans-serif}
@@ -131,37 +124,93 @@ document.addEventListener('DOMContentLoaded', function () {
 </nav>
 <div style="flex: 999 1 640px; min-width: 0">
 <nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px"><li><a href="panel.html" style="color: var(--n-9)">Стрим-панель</a></li><li aria-hidden="true" style="color: var(--n-7)">/</li><li><span style="color: var(--n-9)">Чат-бот</span></li><li aria-hidden="true" style="color: var(--n-7)">/</li><li aria-current="page" style="color: var(--n-12)">Нарезки</li></ol></nav>
+
 <div style="margin-top: 16px">
 <h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Нарезки</h1>
-<p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--n-10)">Находим лучшие моменты стрима, режем их и оформляем плашкой канала и субтитрами. Всё делается в браузере: твоя запись никуда не загружается, а готовые ролики сохраняются в «Загрузки».</p>
+<p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--n-10)">Короткие ролики из твоих эфиров: самые оживлённые моменты с подписью и плашкой канала. Нарезка идёт в браузере, файл записи на сервер не загружается.</p>
 </div>
-<div style="margin-top: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; align-items: start">
 
-<section aria-labelledby="cl-src" style="display: flex; flex-direction: column; gap: 14px; padding: 20px 22px; border-radius: 12px; background: rgb(var(--n-2-rgb) / 0.72); border: 1px solid rgb(var(--n-13-rgb) / 0.10); box-shadow: inset 0 1px 0 rgb(var(--n-13-rgb) / 0.06)">
-<h2 id="cl-src" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">1. Запись стрима</h2>
-<label><span style="display: block; margin: 0 0 6px; font-size: 11px; line-height: 14px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--n-9)">Файл записи (MP4, MKV, MOV)</span><input type="file" accept="video/*" onChange="{{ pickFile }}" style="font: 400 14px/20px var(--font-sans), sans-serif; color: var(--n-10)"></label>
-<template data-if="hasFile"><p class="mono" style="margin: 0; font-size: 13px; color: var(--n-9); overflow-wrap: anywhere">{{ fileName }}</p></template>
-<div style="display: flex; flex-direction: column; gap: 6px"><span style="display: block; margin: 0 0 6px; font-size: 11px; line-height: 14px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--n-9)">Запись началась (ДД.ММ.ГГГГ ЧЧ:ММ)</span><div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><input type="text" inputmode="numeric" placeholder="25.10.2026 19:00" maxlength="16" value="{{ recText }}" onChange="{{ setRecText }}" onInput="{{ setRecText }}" aria-describedby="cl-date-hint" style="box-sizing: border-box; height: 38px; padding: 0 12px; border-radius: 6px; background: var(--s-3); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px/20px var(--font-sans), sans-serif; width: 100%; width: 180px; font-family: JetBrains Mono, monospace"><button type="button" onClick="{{ lastStream }}" disabled="{{ busyOrFind }}" style="height: 38px; padding: 0 12px; border-radius: 6px; border: 1px solid var(--n-6); background: transparent; color: var(--n-12); font: 500 13px/18px var(--font-sans), sans-serif; cursor: pointer">Последний стрим</button></div><span id="cl-date-hint" style="font-size: 12px; line-height: 16px; color: {{ dateColor }}">{{ dateHint }}</span></div>
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">
-<label><span style="display: block; margin: 0 0 6px; font-size: 11px; line-height: 14px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--n-9)">Формат</span><select onChange="{{ setOrient }}" style="box-sizing: border-box; height: 38px; padding: 0 12px; border-radius: 6px; background: var(--s-3); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px/20px var(--font-sans), sans-serif; width: 100%"><option value="v" selected="{{ isV }}">Вертикальный 9:16 (Shorts, Reels)</option><option value="h" selected="{{ isH }}">Горизонтальный 16:9</option></select></label>
-<label><span style="display: block; margin: 0 0 6px; font-size: 11px; line-height: 14px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--n-9)">Плашка канала</span><input type="text" maxlength="60" value="{{ plate }}" onChange="{{ setPlate }}" style="box-sizing: border-box; height: 38px; padding: 0 12px; border-radius: 6px; background: var(--s-3); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px/20px var(--font-sans), sans-serif; width: 100%"></label>
+<section class="card" aria-labelledby="cl-how" style="margin-top: 24px">
+<h2 id="cl-how" class="h2">Как это работает</h2>
+<p class="hint" style="font-size: 14px; line-height: 20px; color: var(--n-10)">Нарезка — короткий кусок эфира, около минуты. Его можно сохранить и выложить отдельным видео.</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px">
+<div class="step"><span class="stepn" aria-hidden="true">1</span><div style="display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Находим пики</p><p class="hint">Смотрим, где в чате было больше всего сообщений и были донаты, подписки или рейды. Самые оживлённые 30 секунд эфира — это пик.</p></div></div>
+<div class="step"><span class="stepn" aria-hidden="true">2</span><div style="display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Вырезаем окно</p><p class="hint">Вокруг пика берётся около минуты: 20 секунд до него и 40 секунд после начала.</p></div></div>
+<div class="step"><span class="stepn" aria-hidden="true">3</span><div style="display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Сохраняем ролик</p><p class="hint">Готовый файл MP4 скачивается в «Загрузки» твоего браузера. Исходная запись не меняется.</p></div></div>
 </div>
-<div><button type="button" onClick="{{ findMoments }}" disabled="{{ busy }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: var(--n-13); color: var(--n-1); font: 500 14px/20px var(--font-sans), sans-serif; cursor: pointer">{{ findLabel }}</button></div>
 </section>
 
-<section aria-labelledby="cl-list" style="display: flex; flex-direction: column; gap: 12px; padding: 20px 22px; border-radius: 12px; background: rgb(var(--n-2-rgb) / 0.72); border: 1px solid rgb(var(--n-13-rgb) / 0.10); box-shadow: inset 0 1px 0 rgb(var(--n-13-rgb) / 0.06)">
-<h2 id="cl-list" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">2. Моменты</h2>
-<template data-if="hasItems"><p style="margin: 0; font-size: 13px; color: var(--n-9)">Отметь нужные. Подпись можно поменять: она выйдет на ролике.</p></template>
-<template data-if="noItems"><p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--n-9)">Моментов пока нет. Выбери запись и нажми «Найти моменты». Сайт использует чат, донаты, подписки и рейды за этот стрим.</p></template>
-<template data-for="items" data-as="c"><div style="display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--n-5); background: var(--s-2)">
-<label style="display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--n-12)"><input type="checkbox" checked="{{ c.on }}" onChange="{{ c.toggle }}" style="width: 18px; height: 18px"><span class="mono" style="color: var(--n-10)">{{ c.time }}</span><span style="color: var(--n-9)">{{ c.why }}</span></label>
-<input type="text" maxlength="90" value="{{ c.caption }}" onChange="{{ c.setCaption }}" aria-label="Подпись момента {{ c.time }}" style="box-sizing: border-box; height: 38px; padding: 0 12px; border-radius: 6px; background: var(--s-3); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px/20px var(--font-sans), sans-serif; width: 100%">
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap"><span style="font-size: 12px; color: var(--n-9)">{{ c.len }} · {{ c.status }}</span><button type="button" onClick="{{ c.cut }}" disabled="{{ busy }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 1px solid var(--n-6); background: transparent; color: var(--n-12); font: 500 14px/20px var(--font-sans), sans-serif; cursor: pointer; height: 34px; padding: 0 12px; font-size: 13px">Нарезать и сохранить</button></div>
+<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; align-items: start">
+
+<section class="card" aria-labelledby="cl-src">
+<h2 id="cl-src" class="h2">1. Запись стрима</h2>
+<p class="hint">Выбери файл записи, который сохранил OBS, и укажи, когда он начался. От этого зависит, в каком месте файла вырезается ролик.</p>
+<template data-if="hasMeErr"><div role="alert" class="note"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Не вижу твой канал</p><p style="margin: 0; font-size: 13px; line-height: 18px; color: var(--n-10)">{{ meErr }}</p><div><button type="button" class="btn-s" onClick="{{ retryMe }}">Повторить</button></div></div></template>
+
+<div class="fld">
+<label class="lab" for="cl-file">Файл записи (MP4, MKV, MOV)</label>
+<input id="cl-file" type="file" accept="video/*" onChange="{{ pickFile }}" style="font: 400 14px/20px var(--font-sans), sans-serif; color: var(--n-10); max-width: 100%">
+<template data-if="hasFile"><p class="mono" style="margin: 0; font-size: 13px; line-height: 18px; color: var(--n-10); overflow-wrap: anywhere">{{ fileName }}</p></template>
+<template data-if="noFile"><p class="hint">Файл пока не выбран. Моменты можно искать и без него, а вот нарезать — нельзя.</p></template>
+<p class="hint">Файл остаётся на твоём компьютере. Выбрать его можно и позже, перед нарезкой.</p>
+</div>
+
+<div class="fld">
+<label class="lab" for="cl-date">Когда началась запись (ДД.ММ.ГГГГ ЧЧ:ММ)</label>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center">
+<input id="cl-date" class="inp mono" type="text" inputmode="numeric" placeholder="25.10.2026 19:00" maxlength="16" value="{{ recText }}" onChange="{{ setRecText }}" onInput="{{ setRecText }}" aria-describedby="cl-date-hint" style="width: 180px; flex: 0 0 180px; font-size: 13px">
+<button type="button" class="btn-s" onClick="{{ lastStream }}" disabled="{{ busy }}" style="height: 38px; padding: 0 12px; font-size: 13px">Взять время последнего эфира</button>
+</div>
+<span id="cl-date-hint" class="hint" style="color: {{ dateColor }}">{{ dateHint }}</span>
+<p class="hint">Если включил запись раньше начала эфира, укажи время, когда начал запись в OBS.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px">
+<div class="fld">
+<label class="lab" for="cl-fmt">Формат</label>
+<select id="cl-fmt" class="inp" onChange="{{ setOrient }}"><option value="v" selected="{{ isV }}">Вертикальный 9:16 (Shorts, Reels)</option><option value="h" selected="{{ isH }}">Горизонтальный 16:9</option></select>
+</div>
+<div class="fld">
+<label class="lab" for="cl-plate">Плашка канала</label>
+<input id="cl-plate" class="inp" type="text" maxlength="60" value="{{ plate }}" onChange="{{ setPlate }}" onInput="{{ setPlate }}">
+</div>
+</div>
+<p class="hint">Вертикальный формат — 720×1280, кадр обрезается по центру. Горизонтальный — 1280×720. Плашка — надпись в углу ролика: по умолчанию имя канала и ссылка на него.</p>
+</section>
+
+<section class="card" aria-labelledby="cl-list">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap">
+<h2 id="cl-list" class="h2">2. Моменты</h2>
+<template data-if="hasItems"><button type="button" class="btn-s" onClick="{{ findNow }}" disabled="{{ busy }}" style="height: 34px; padding: 0 12px; font-size: 13px">Найти заново</button></template>
+</div>
+<p class="hint">{{ listHint }}</p>
+
+<template data-if="showBotWarn"><div role="note" class="note"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Бот не подключён к каналу</p><p style="margin: 0; font-size: 13px; line-height: 18px; color: var(--n-10)">Моменты берутся из чата и событий, которые бот записывает во время эфира. Без подключённого бота их не будет. Подключить можно в <a href="panel.html" style="text-decoration: underline">Стрим-панели</a>, на вкладке «Обзор».</p></div></template>
+
+<template data-if="hasFindErr"><div role="alert" class="note"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Не получилось найти моменты</p><p style="margin: 0; font-size: 13px; line-height: 18px; color: var(--n-10)">{{ findErr }}</p><div><button type="button" class="{{ findRetryCls }}" onClick="{{ retryFind }}" disabled="{{ busy }}">Повторить</button></div></div></template>
+
+<template data-if="isLoading"><p role="status" style="margin: 0; font-size: 14px; line-height: 20px; color: var(--n-10)">Загружаем моменты…</p></template>
+
+<template data-if="isEmpty"><div class="empty"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Пока нет нарезок</p><p class="hint" style="line-height: 19px">Нажми «Найти моменты»: сайт сам подберёт самые оживлённые куски эфира. Дату можно не указывать, тогда возьмём последний эфир.</p><button type="button" class="btn" onClick="{{ findNow }}" disabled="{{ findDisabled }}">{{ findLabel }}</button></div></template>
+
+<template data-if="isNoData"><div class="empty"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">За этот эфир пока нет данных</p><p class="hint" style="line-height: 19px">Проверь, что дата верная и бот был подключён в этот день. Если бот был выключен, моментов не будет. Можно выбрать другой эфир или написать в <a href="support.html" style="text-decoration: underline">поддержку</a>.</p><button type="button" class="btn-s" onClick="{{ retryFind }}" disabled="{{ busy }}">Попробовать ещё раз</button></div></template>
+
+<template data-for="items" data-as="c"><div class="clip">
+<label style="display: flex; gap: 10px; align-items: flex-start; cursor: pointer; min-width: 0"><input type="checkbox" checked="{{ c.on }}" onChange="{{ c.toggle }}" aria-label="Взять момент {{ c.range }}" style="width: 18px; height: 18px; margin-top: 2px; flex: none"><span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span class="mono" style="font-size: 14px; line-height: 20px; color: var(--n-12)">{{ c.range }}</span><span style="font-size: 13px; line-height: 18px; color: var(--n-10)">{{ c.why }}</span><span style="font-size: 12px; line-height: 16px; color: var(--n-9); overflow-wrap: anywhere">{{ c.src }}</span></span></label>
+<label class="fld"><span class="lab" style="font-size: 12px; color: var(--n-10)">Подпись на ролике</span><input class="inp" type="text" maxlength="90" value="{{ c.caption }}" onChange="{{ c.setCaption }}" aria-label="Подпись момента {{ c.range }}"></label>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap"><span style="font-size: 12px; color: var(--n-9)">Длительность: {{ c.len }}</span><button type="button" class="btn-s" onClick="{{ c.cut }}" disabled="{{ c.cutOff }}" style="height: 34px; padding: 0 12px; font-size: 13px">Нарезать только этот</button></div>
 </div></template>
-<div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><button type="button" onClick="{{ cutAll }}" disabled="{{ busyOrNone }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: var(--n-13); color: var(--n-1); font: 500 14px/20px var(--font-sans), sans-serif; cursor: pointer">{{ cutAllLabel }}</button><span style="font-size: 13px; color: var(--n-9)">{{ progress }}</span></div>
-<template data-if="hasErr"><p role="alert" style="margin: 0; padding: 10px 12px; border: 2px solid var(--n-12); border-radius: 6px; font-size: 13px; line-height: 18px">{{ err }}</p></template>
-<p style="margin: 0; font-size: 12px; line-height: 18px; color: var(--n-8)">Длинные записи (больше 2 часов) браузер может тянуть медленно. Лучше нарезать по моментам, как сейчас.</p>
+
+<template data-if="hasItems"><div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center"><button type="button" class="btn" onClick="{{ cutAll }}" disabled="{{ cutOff }}">{{ cutLabel }}</button><span role="status" style="font-size: 13px; line-height: 18px; color: var(--n-10)">{{ progress }}</span></div>
+<p class="hint">Каждый ролик скачается отдельным файлом MP4 в «Загрузки». Чем длиннее запись, тем дольше нарезка.</p>
+</div></template>
+
+<template data-if="hasCutErr"><div role="alert" class="note"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Нарезка не удалась</p><p style="margin: 0; font-size: 13px; line-height: 18px; color: var(--n-10)">{{ cutErr }}</p><div><button type="button" class="btn-s" onClick="{{ retryCut }}" disabled="{{ busy }}">Повторить</button></div></div></template>
+
+<p class="hint">Подпись взята из заметного сообщения в чате: проверь её перед публикацией. Длинные записи (больше 2 часов) нарезаются дольше, поэтому режь по моментам, как сейчас.</p>
 </section>
+
 </div>
 </div>
 </div>
@@ -170,16 +219,27 @@ document.addEventListener('DOMContentLoaded', function () {
 <script src="assets/dc-lite.js?v=5f8ce08a"></script>
 <script>
 const FF_BASE = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm';
+const FF_UTIL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js';
 let ffmpegPromise = null;
+
+// подписи событий для понятных причин моментов (в API приходят технические названия)
+const EV_RU = { donation: 'донат', sub: 'подписка', resub: 'продление подписки', gift: 'подарочные подписки', raid: 'рейд', follow: 'новый фолловер' };
+
+function ruPlural(n, forms) {
+  const m10 = n % 10, m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return forms[0];
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return forms[1];
+  return forms[2];
+}
 
 // ffmpeg.wasm грузим с CDN при первом запуске; запись остаётся на компьютере
 function loadFFmpeg() {
   if (!ffmpegPromise) {
     ffmpegPromise = (async () => {
       const { FFmpeg } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js');
-      const { toBlobURL } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js');
+      const { toBlobURL } = await import(FF_UTIL);
       const ff = new FFmpeg();
-            // рабочий скрипт грузим как blob, а его относительные импорты переписываем на полные адреса CDN
+      // рабочий скрипт грузим как blob, а его относительные импорты переписываем на полные адреса CDN
       const wbase = 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm';
       const wsrc = await (await fetch(wbase + '/worker.js')).text();
       const wfix = wsrc.replace(/from\s*"\.\/([^"]+)"/g, 'from "' + wbase + '/$1"').replace(/from\s*'\.\/([^']+)'/g, "from '" + wbase + "/$1'");
@@ -198,18 +258,32 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.file = null;
+    this.srcName = 'src.mp4';
+    this.lastUseLast = false;
+    this.lastCut = [];
     this.state = {
-      token: '', recFrom: 0, recText: '', recValid: false, fileName: '', orient: 'v', plate: '', items: [], loaded: false,
-      busy: false, progress: '', err: '', findBusy: false,
+      token: '', meReady: false, meErr: '', botOn: true,
+      recFrom: 0, recText: '', recValid: false, fileName: '', orient: 'v', plate: '',
+      items: [], listState: 'idle', findErr: '',
+      cutBusy: false, progress: '', cutErr: '',
     };
   }
-  componentDidMount() {
-    StreAPI.me().then((m) => {
-      const u = m.user;
-      if (!u) return;
-      this.setState({ token: u.widgetToken, plate: u.name + ' · twitch.tv/' + u.login });
+  componentDidMount() { this.loadMe(false); }
+
+  // Ключ канала и статус бота берём из профиля. Если профиль не открылся, показываем ошибку с «Повторить».
+  loadMe(retry) {
+    this.setState({ meErr: '' });
+    const p = retry ? StreAPI.refreshMe() : StreAPI.me();
+    p.then((m) => {
+      const u = m && m.user;
+      if (!u) { this.setState({ meReady: false, meErr: 'Обнови страницу или войди через Twitch заново.' }); return; }
+      this.setState({
+        token: u.widgetToken || '', botOn: !!u.botEnabled, meReady: true, meErr: '',
+        plate: this.state.plate || (u.name + ' · twitch.tv/' + u.login),
+      });
     });
   }
+
   // ДД.ММ.ГГГГ ЧЧ:ММ → unix-секунды (локальное время), иначе null
   parseRec(text) {
     const m = /^(\d{1,2})\.(\d{1,2})\.(\d{4})\s+(\d{1,2}):(\d{2})$/.exec((text || '').trim());
@@ -229,48 +303,56 @@ class Component extends DCLogic {
     if (ts) this.setState({ recText: text, recValid: true, recFrom: ts });
     else this.setState({ recText: text, recValid: false });
   }
-  toLocal(ts) {
-    const d = new Date(ts * 1000);
-    const p = (n) => String(n).padStart(2, '0');
-    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + 'T' + p(d.getHours()) + ':' + p(d.getMinutes());
-  }
-  // «Последний стрим»: дата начала последнего эфира и сразу поиск моментов
-  async lastStream() {
-    this.setState({ recFrom: 0 });
-    await this.findMoments();
-  }
-  async findMoments() {
-    const s = this.state;
-    if (!s.token) { this.setState({ err: 'Нет ключа: открой страницу заново.' }); return; }
-    const from = s.recFrom || 0;
-    this.setState({ findBusy: true, err: '' });
-    try {
-      const q = new URLSearchParams({ r: 'clips.highlights', t: s.token, count: '6' });
-      if (from) q.set('from', String(from));
-      const res = await fetch('/api/index.php?' + q.toString(), { cache: 'no-store' });
-      const j = await res.json();
-      if (!j.ok) throw new Error(j.error || 'Не получилось найти моменты');
-      const items = j.items.map((it, i) => ({
-        i, start: it.start, end: it.end, from: j.from,
-        time: this.fmtOffset(it.start - j.from),
-        why: (it.events.length ? it.events.join(', ') + ' · ' : '') + 'чат: ' + it.chat,
-        caption: it.title || 'Лучший момент стрима',
-        on: true,
-      }));
-      this.setState({ items, recFrom: j.from, recText: this.formatRec(j.from), recValid: true, loaded: true, findBusy: false });
-      if (!items.length) this.setState({ err: 'За этот стрим пока нет данных: включи бота заранее, и моменты появятся.' });
-    } catch (e) { this.setState({ findBusy: false, err: e.message }); }
-  }
   fmtOffset(sec) {
     sec = Math.max(0, Math.round(sec));
     const p = (n) => String(n).padStart(2, '0');
     return p(Math.floor(sec / 3600)) + ':' + p(Math.floor(sec % 3600 / 60)) + ':' + p(sec % 60);
   }
+
+  // «Взять время последнего эфира»: сервер сам выбирает последний эфир и возвращает дату его начала
+  lastStream() { this.findMoments(true); }
+
+  // Понятный текст ошибки: технические сообщения заменяем
+  errText(e) {
+    const m = (e && e.message) || 'что-то пошло не так';
+    if (/Ключ не подошёл/.test(m)) return 'Ключ канала не подошёл. Обнови страницу: ключ загрузится заново.';
+    return m;
+  }
+
+  async findMoments(useLast) {
+    const s = this.state;
+    this.lastUseLast = !!useLast;
+    if (!useLast && s.recText.trim() && !s.recValid) {
+      this.setState({ listState: s.items.length ? 'ok' : 'error', findErr: 'Дата не распознана. Напиши так: 25.10.2026 19:00' });
+      return;
+    }
+    if (!s.token) { this.setState({ listState: s.items.length ? 'ok' : 'error', findErr: 'Не вижу ключ канала. Обнови страницу.' }); return; }
+    // пустая дата = последний эфир (from не передаём)
+    const from = useLast || !s.recText.trim() ? 0 : s.recFrom;
+    this.setState({ listState: 'loading', findErr: '' });
+    try {
+      const q = { t: s.token, count: '6' };
+      if (from) q.from = String(from);
+      const j = await StreAPI.get('clips.highlights', q);
+      const items = (j.items || []).map((it, i) => ({
+        i, start: it.start, end: it.end,
+        events: (it.events || []).map((ev) => EV_RU[ev] || ev),
+        chat: Number(it.chat) || 0,
+        caption: it.title || 'Лучший момент стрима',
+        on: true,
+      }));
+      this.setState({ items, recFrom: j.from, recText: this.formatRec(j.from), recValid: true, listState: items.length ? 'ok' : 'nodata', findErr: '' });
+    } catch (e) {
+      this.setState({ listState: this.state.items.length ? 'ok' : 'error', findErr: this.errText(e) });
+    }
+  }
+
   pickFile(e) {
     const f = e.target.files && e.target.files[0];
     this.file = f || null;
     this.setState({ fileName: f ? f.name + ' · ' + (f.size / 1048576).toFixed(0) + ' МБ' : '' });
   }
+
   // Плашка и подпись рисуются на картинке и накладываются на видео в ffmpeg
   overlayPng(caption, W, H) {
     const c = document.createElement('canvas');
@@ -302,22 +384,20 @@ class Component extends DCLogic {
     lines.forEach((t, i) => { g.fillText(t, W / 2 - g.measureText(t).width / 2, top + lh * i + lh / 2); });
     return g.getImageData(0, 0, W, H).data; // сырые пиксели RGBA: без декодирования PNG
   }
+
+  // Один ролик: отрезок [start, end] от начала записи, плашка и подпись, скачивание MP4
   async cutOne(item, ff, index, total) {
     const s = this.state;
     const vertical = s.orient === 'v';
     const W = vertical ? 720 : 1280, H = vertical ? 1280 : 720;
     const dur = item.end - item.start;
-    const off = item.start - s.recFrom; // смещение от текущей даты начала записи
-    const { fetchFile } = await import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js');
-    const ext = (this.file.name.split('.').pop() || 'mp4').toLowerCase().replace(/[^a-z0-9]/g, '') || 'mp4';
-    await ff.writeFile('src.' + ext, await fetchFile(this.file));
+    const off = item.start - s.recFrom; // смещение от начала файла записи
+    if (off < 0) throw new Error('момент раньше начала файла. Проверь дату и время начала записи');
     const rgba = this.overlayPng(item.caption || '', W, H);
     await ff.writeFile('ov.raw', rgba);
     const vf = vertical ? 'scale=-2:' + H + ',crop=' + W + ':' + H : 'scale=' + W + ':-2,crop=' + W + ':' + H;
-    const pRe = ((index + 1) + '/' + total);
-    this.setState({ progress: 'Режем ' + pRe + '…' });
-    ff.on && ff.on('progress', () => {});
-    await ff.exec(['-ss', String(off), '-i', 'src.' + ext, '-t', String(dur), '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', W + 'x' + H, '-i', 'ov.raw',
+    this.setState({ progress: 'Режем ' + (index + 1) + ' из ' + total + '…' });
+    await ff.exec(['-ss', String(off), '-i', this.srcName, '-t', String(dur), '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', W + 'x' + H, '-i', 'ov.raw',
       '-filter_complex', '[0:v]' + vf + '[b];[b][1:v]overlay=0:0[v]', '-map', '[v]', '-map', '0:a?',
       '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '23', '-pix_fmt', 'yuv420p',
       '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', 'out.mp4']);
@@ -326,60 +406,96 @@ class Component extends DCLogic {
     await ff.deleteFile('out.mp4');
     const url = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
     const a = document.createElement('a');
-    const name = (s.plate.split(' · ')[0] || 'stream').replace(/[^\wА-Яа-яЁё-]+/g, '_') + '_' + item.time.replace(/:/g, '-') + '.mp4';
+    const name = (s.plate.split(' · ')[0] || 'stream').replace(/[^\wА-Яа-яЁё-]+/g, '_') + '_' + this.fmtOffset(off).replace(/:/g, '-') + '.mp4';
     a.href = url; a.download = name;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 60000);
   }
-  async cutSelected(list) {
-    if (!this.file) { this.setState({ err: 'Сначала выбери файл записи.' }); return; }
-    const todo = list.filter((x) => x.on);
-    if (!todo.length) { this.setState({ err: 'Отметь хотя бы один момент.' }); return; }
-    this.setState({ busy: true, err: '', progress: 'Загружаем редактор…' });
+
+  // Нарезка списка моментов. На вход — уже отфильтрованный список (только выбранные или один момент).
+  async cutList(list) {
+    if (!this.file) { this.setState({ cutErr: 'Сначала выбери файл записи в шаге 1.' }); return; }
+    if (!list.length) { this.setState({ cutErr: 'Отметь хотя бы один момент.' }); return; }
+    this.lastCut = list;
+    this.setState({ cutBusy: true, cutErr: '', progress: 'Загружаем редактор видео…' });
+    let ff = null;
     try {
-      const ff = await loadFFmpeg();
-      for (let k = 0; k < todo.length; k++) {
-        await this.cutOne(todo[k], ff, k, todo.length);
+      ff = await loadFFmpeg();
+      const { fetchFile } = await import(FF_UTIL);
+      const ext = (this.file.name.split('.').pop() || 'mp4').toLowerCase().replace(/[^a-z0-9]/g, '') || 'mp4';
+      this.srcName = 'src.' + ext;
+      // файл записи кладём в память редактора один раз на весь список
+      await ff.writeFile(this.srcName, await fetchFile(this.file));
+      for (let k = 0; k < list.length; k++) {
+        await this.cutOne(list[k], ff, k, list.length);
       }
-      this.setState({ busy: false, progress: 'Готово: ролики скачаны в «Загрузки».' });
+      this.setState({ cutBusy: false, progress: 'Готово: ' + list.length + ' ' + ruPlural(list.length, ['ролик', 'ролика', 'роликов']) + ' сохранено в «Загрузки».' });
     } catch (e) {
-      this.setState({ busy: false, progress: '', err: 'Нарезка не удалась: ' + (e.message || e) + '. Проверь, что файл — видео и что браузер поддерживает нарезку (Chrome, Edge, Firefox).' });
+      this.setState({ cutBusy: false, progress: '', cutErr: 'Нарезка не удалась: ' + (e.message || e) + '. Проверь, что выбран видеофайл, и попробуй Chrome, Edge или Firefox.' });
+    } finally {
+      if (ff) { try { await ff.deleteFile(this.srcName); } catch (err) { /* файла уже нет */ } }
     }
   }
+
   renderVals() {
     const s = this.state;
-    const cut = (item) => this.cutSelected([item]);
-    const items = s.items.map((it, idx) => ({
-      on: !!it.on,
-      time: this.fmtOffset(it.start - s.recFrom), why: it.why, caption: it.caption,
-      len: Math.round(it.end - it.start) + ' с',
-      status: '',
-      toggle: () => this.setState({ items: s.items.map((x, j) => (j === idx ? Object.assign({}, x, { on: !x.on }) : x)) }),
-      setCaption: (e) => this.setState({ items: s.items.map((x, j) => (j === idx ? Object.assign({}, x, { caption: e.target.value }) : x)) }),
-      cut: () => cut(it),
-    }));
     const n = s.items.filter((x) => x.on).length;
+    const hasItems = s.items.length > 0;
+    const hasFile = !!this.file;
+    const busy = s.cutBusy || s.listState === 'loading';
+    const items = s.items.map((it, idx) => {
+      const parts = [];
+      if (it.events.length) parts.push(it.events.join(', '));
+      if (it.chat) parts.push(it.chat + ' ' + ruPlural(it.chat, ['сообщение', 'сообщения', 'сообщений']) + ' в чате');
+      const why = parts.length ? (parts.join(' · ')).replace(/^./, (c) => c.toUpperCase()) : 'Оживлённый момент';
+      return {
+        on: !!it.on,
+        toggle: () => this.setState({ items: this.state.items.map((x, j) => (j === idx ? Object.assign({}, x, { on: !x.on }) : x)) }),
+        range: this.fmtOffset(it.start - s.recFrom) + ' – ' + this.fmtOffset(it.end - s.recFrom),
+        len: Math.round(it.end - it.start) + ' с',
+        why,
+        src: 'Отрезок в записи эфира' + (hasFile ? ' · ' + this.file.name : ' · файл не выбран'),
+        caption: it.caption,
+        setCaption: (e) => this.setState({ items: this.state.items.map((x, j) => (j === idx ? Object.assign({}, x, { caption: e.target.value }) : x)) }),
+        cut: () => this.cutList([this.state.items[idx]]),
+        cutOff: busy || !hasFile,
+      };
+    });
+    const cutLabel = s.cutBusy ? 'Режем…' : !hasFile ? 'Сначала выбери файл записи' : n ? 'Нарезать выбранные (' + n + ')' : 'Выбери хотя бы один момент';
+    const typed = s.recText.trim() !== '';
     return {
-      hasFile: !!this.file, fileName: s.fileName,
+      hasFile, fileName: s.fileName, noFile: !hasFile,
       pickFile: (e) => this.pickFile(e),
       recText: s.recText, setRecText: (e) => this.setRecText(e),
+      dateColor: typed && !s.recValid ? 'var(--n-12)' : 'var(--n-9)',
+      dateHint: typed && !s.recValid ? 'Дата не распознана. Напиши так: 25.10.2026 19:00' : typed ? 'Дата распознана.' : 'Пусто: возьмём время последнего эфира. Или напиши дату сам, например 25.10.2026 19:00',
       lastStream: () => this.lastStream(),
-      busyOrFind: !!(s.busy || s.findBusy),
-      dateColor: s.recText && !s.recValid ? 'var(--n-12)' : 'var(--n-9)',
-      dateHint: s.recText && !s.recValid ? 'Дата не распознана: пиши так, например 25.10.2026 19:00' : 'Или нажми «Последний стрим»: дата подставится сама',
+      busy,
       isV: s.orient === 'v', isH: s.orient === 'h',
       setOrient: (e) => this.setState({ orient: e.target.value === 'h' ? 'h' : 'v' }),
       plate: s.plate, setPlate: (e) => this.setState({ plate: e.target.value }),
-      findMoments: () => this.findMoments(),
-      busy: !!(s.busy || s.findBusy),
-      findLabel: s.findBusy ? 'Ищем…' : 'Найти моменты',
-      hasItems: items.length > 0, noItems: s.loaded && !items.length,
+      hasMeErr: !!s.meErr, meErr: s.meErr, retryMe: () => this.loadMe(true),
+      showBotWarn: s.meReady && !s.botOn,
+      findNow: () => this.findMoments(false),
+      findDisabled: busy || !s.meReady,
+      findLabel: s.listState === 'loading' ? 'Загружаем…' : 'Найти моменты',
+      retryFind: () => this.findMoments(this.lastUseLast),
+      findRetryCls: hasItems ? 'btn-s' : 'btn',
+      hasFindErr: !!s.findErr, findErr: s.findErr,
+      isLoading: s.listState === 'loading' && !hasItems,
+      isEmpty: s.listState === 'idle' && !hasItems,
+      isNoData: s.listState === 'nodata',
+      hasItems,
+      listHint: hasItems
+        ? 'Отметь нужные. Подпись можно поменять: она выйдет на ролике.'
+        : 'Моменты идут по времени эфира. Список хранится, пока открыта эта страница: если обновишь её, моменты придётся найти заново.',
       items,
-      busyOrNone: !!(s.busy || !n),
-      cutAll: () => this.cutSelected(s.items),
-      cutAllLabel: n ? 'Нарезать выбранные (' + n + ')' : 'Нет выбранных',
+      cutAll: () => this.cutList(this.state.items.filter((x) => x.on)),
+      cutOff: busy || !hasFile || n === 0,
+      cutLabel,
       progress: s.progress,
-      hasErr: !!s.err, err: s.err,
+      hasCutErr: !!s.cutErr, cutErr: s.cutErr,
+      retryCut: () => this.cutList(this.lastCut),
     };
   }
 }

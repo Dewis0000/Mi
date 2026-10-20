@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>StreOps — мой сайт</title>
 <script src="./support.js"></script>
 </head>
@@ -13,35 +14,40 @@
 body{margin:0;background:#0A0A0A}
 a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
-.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
-.ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.nav-i{display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;color:#B4B4B4}
-.nav-i:hover{background:rgba(255,255,255,.04);color:#F2F2F2}
-.chipf{height:36px;padding:0 14px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#B4B4B4;font:500 13px/18px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
-.chipf:hover{border-color:#8F8F8F;color:#F2F2F2}
-.sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid #6E6E6E;background:transparent;cursor:pointer;flex:none;padding:0}
-.sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:#8F8F8F;transition:transform 180ms cubic-bezier(.2,0,0,1)}
+.card{display:flex;flex-direction:column;gap:14px;padding:20px 22px;box-sizing:border-box;border-radius:12px;border:1px solid rgba(255,255,255,.10);background:rgba(18,18,18,.62)}
+.ttl{margin:0;font-size:18px;line-height:24px;font-weight:600}
+.hint{margin:0;font-size:13px;line-height:18px;color:#8F8F8F}
+.lab{font-size:13px;line-height:18px;color:#DCDCDC}
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.row2{display:flex;gap:8px;flex-wrap:wrap}
+.inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:#0A0A0A;border:1px solid #6E6E6E;color:#F2F2F2;font:400 14px/20px 'Onest',sans-serif;width:100%;min-width:0}
+.inp:disabled{color:#6E6E6E;border-color:#2A2A2A}
+textarea.inp{height:auto;padding:10px 12px;resize:vertical}
+.bs{height:36px;padding:0 14px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 14px/20px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;text-decoration:none}
+.bs:hover{border-color:#8F8F8F;background:rgba(255,255,255,.04)}
+.bs:disabled{color:#525252;border-color:#2A2A2A;cursor:not-allowed}
+.bsm{height:30px;padding:0 10px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 13px/18px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;white-space:nowrap;text-decoration:none}
+.bsm:hover{border-color:#8F8F8F}
+.bd{border-color:#D92D20}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:20px;color:#F2F2F2;cursor:pointer}
+.chk input{margin:4px 0 0;width:16px;height:16px;flex:none;accent-color:#FFFFFF}
+.chk2{display:inline-flex;gap:6px;align-items:center;font-size:13px;color:#DCDCDC;cursor:pointer}
+.chk2 input{width:16px;height:16px;margin:0;accent-color:#FFFFFF}
+.item{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:8px;border:1px solid #2A2A2A;box-sizing:border-box;min-width:0}
+.pill{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:4px;border:1px solid #3A3A3A;font-size:12px;color:#8F8F8F;white-space:nowrap}
+.stp{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center;justify-content:space-between}
+.stp-main{display:flex;gap:12px;align-items:center;min-width:0;flex:1 1 240px}
+.stp-n{width:24px;height:24px;flex:none;border-radius:999px;border:1px solid #3A3A3A;display:inline-flex;align-items:center;justify-content:center;font:500 12px/1 'JetBrains Mono',monospace;color:#DCDCDC}
+.stp-t{display:block;font-size:14px;line-height:20px;font-weight:500}
+.empty{display:flex;flex-direction:column;gap:8px;align-items:flex-start;padding:14px;border:1px dashed #3A3A3A;border-radius:8px}
+.err{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:8px;border:1px solid #B4B4B4;font-size:14px;line-height:20px;color:#F2F2F2}
+.sw{position:relative;width:56px;height:32px;border-radius:999px;border:1px solid #6E6E6E;background:transparent;cursor:pointer;flex:none;padding:0}
+.sw span{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:999px;background:#8F8F8F;transition:transform 180ms cubic-bezier(.2,0,0,1)}
 .sw[aria-checked="true"]{background:#FFFFFF;border-color:#FFFFFF}
-.sw[aria-checked="true"] span{transform:translateX(16px);background:#0A0A0A}
+.sw[aria-checked="true"] span{transform:translateX(24px);background:#0A0A0A}
 .sw:disabled{border-color:#2A2A2A;cursor:not-allowed}
 .sw:disabled span{background:#3A3A3A}
-.wc{display:flex;flex-direction:column;border-radius:8px;border:1px solid #2A2A2A;background:#111111;overflow:hidden}
-.wc:hover{border-color:#3A3A3A}
-.pv{position:relative;height:136px;background:radial-gradient(220px 120px at 70% 20%,rgba(255,255,255,.08),transparent 70%),linear-gradient(160deg,#1F1F1F,#0A0A0A);display:flex;align-items:center;justify-content:center;padding:14px;box-sizing:border-box;border-bottom:1px solid #2A2A2A;overflow:hidden}
-.ob{background:var(--w-bg);backdrop-filter:blur(var(--w-blur));border:var(--w-bd);border-radius:var(--w-rad);box-shadow:var(--w-shadow);padding:8px 10px;color:var(--w-fg);font-family:var(--w-font);text-shadow:var(--w-tshadow);text-transform:var(--w-upper)}
-.pv .mono{font-family:inherit}
-.em{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:3px;background:linear-gradient(135deg,#B4B4B4,#525252);vertical-align:-5px;color:#0A0A0A}
-.ib{width:36px;height:36px;border-radius:6px;border:0;background:transparent;color:#B4B4B4;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.ib:hover{background:rgba(255,255,255,.06);color:#F2F2F2}
-.tierb{font-size:11px;line-height:14px;padding:2px 6px;border:1px solid #3A3A3A;border-radius:4px;color:#B4B4B4}
-.bsm{height:32px;padding:0 10px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 12px/16px 'Onest',sans-serif;cursor:pointer;white-space:nowrap}
-.bsm:hover{border-color:#8F8F8F;background:rgba(255,255,255,.04)}
-.bsm:disabled{color:#6E6E6E;cursor:not-allowed}
-.need{margin:0;padding:6px 8px;border:1px dashed #6E6E6E;border-radius:6px;font-size:12px;line-height:16px;color:#DCDCDC}
-.need a{text-decoration:underline;white-space:nowrap}
-.note{display:flex;align-items:center;gap:12px;padding:10px 12px 10px 14px;border-radius:8px;font-size:14px;line-height:20px;color:#F2F2F2}
-.sw[aria-busy="true"]{opacity:.6}
-.sw:focus-visible,.chipf:focus-visible,.bsm:focus-visible,.ib:focus-visible,a:focus-visible{outline:2px solid #F2F2F2;outline-offset:2px}
+.sw:focus-visible,.bs:focus-visible,.bsm:focus-visible,.inp:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #F2F2F2;outline-offset:2px}
 </style>
 </helmet>
 <div style="min-height: 100vh; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
@@ -54,152 +60,270 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 </header>
 
 <div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; box-sizing: border-box; max-width: 1920px; margin: 0 auto">
-<nav aria-label="Разделы стрим-панели" style="flex: 1 1 200px; max-width: 248px; min-width: 200px; align-self: flex-start; box-sizing: border-box; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 2px">
-<p class="ov" style="padding: 8px 12px">Эфир</p>
-<a href="WebDashboard.dc.html" class="nav-i">Обзор</a>
-<a href="WebModeration.dc.html" class="nav-i">Модерация</a>
-<p class="ov" style="padding: 16px 12px 8px">Бот</p>
-<a href="WebCommands.dc.html" class="nav-i">Команды</a>
-<a href="WebMusic.dc.html" class="nav-i">Музыка</a>
-<a href="WebWidgets.dc.html" aria-current="page" class="nav-i" style="background: rgba(255,255,255,0.10); color: #F2F2F2; box-shadow: inset 2px 0 0 #F2F2F2">Виджеты<span class="mono" style="margin-left: auto; font-size: 12px; color: #8F8F8F">{{ active }}</span></a>
-<div style="height: 1px; background: #2A2A2A; margin: 10px 0"></div>
-<a href="WebSettings.dc.html" class="nav-i">Настройки</a>
-</nav>
-<main style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+<nav aria-label="Разделы стрим-панели"></nav>
+<main style="flex: 999 1 640px; min-width: 0; max-width: 880px; display: flex; flex-direction: column; gap: 24px">
+
 <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
-<div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Мой сайт</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; max-width: 640px">Свой сайт для подписчиков: они предлагают видео, пишут в чат и получают значки. Ссылка: <a href="{{ siteUrl }}" target="_blank" rel="noopener" style="color: #F2F2F2; text-decoration: underline">{{ siteUrlLabel }}</a></p></div>
-<sc-if value="{{ blocked }}" hint-placeholder-val="{{ false }}"><div role="status" style="min-width: 260px; flex: 0 1 320px; padding: 14px 16px; border-radius: 8px; border: 1px solid #3A3A3A; box-sizing: border-box; font-size: 14px; color: #DCDCDC">Сайт заблокирован администрацией StreOps. Посетители его не видят. Напиши в поддержку, если это ошибка.</div></sc-if>
+<div style="min-width: 0; flex: 1 1 420px">
+<h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Мой сайт</h1>
+<p style="margin: 8px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; max-width: 640px">Мой сайт — твоя публичная страница. Подписчики заходят на неё по ссылке, предлагают видео, пишут в чат сайта и получают от тебя значки. Сайт виден людям, только когда он включён.</p>
+<div class="row2" style="align-items: center; margin-top: 14px">
+<a href="{{ siteUrl }}" target="_blank" rel="noopener" class="bs">Открыть сайт</a>
+<button type="button" class="bs" onClick="{{ copyLink }}" disabled="{{ noLink }}">{{ copyLabel }}</button>
+</div>
+<p class="hint" style="margin-top: 8px">Адрес: {{ siteUrlLabel }}. {{ siteHint }}</p>
+</div>
+<sc-if value="{{ blocked }}" hint-placeholder-val="{{ false }}"><div role="status" style="min-width: 260px; flex: 0 1 320px; padding: 14px 16px; border-radius: 8px; border: 1px solid #3A3A3A; box-sizing: border-box; font-size: 14px; line-height: 20px; color: #DCDCDC">Сайт заблокирован администрацией StreOps. Посетители его не видят. Напиши в поддержку, если это ошибка.</div></sc-if>
 </div>
 <p role="status" style="margin: 0; font-size: 14px; color: #B4B4B4; min-height: 20px">{{ info }}</p>
 
-<section style="padding: 20px 22px; border-radius: 12px; border: 1px solid rgba(255,255,255,.10); background: rgba(18,18,18,.62); display: flex; flex-direction: column; gap: 14px">
-<label style="display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer"><span><span style="display: block; font-size: 16px; font-weight: 600">Сайт включён</span><span style="display: block; margin-top: 2px; font-size: 13px; color: #8F8F8F">Выключи — сайт перестанет открываться для всех, данные сохранятся</span></span><input type="checkbox" aria-label="Сайт включён" checked="{{ enabled }}" disabled="{{ blocked }}" onChange="{{ toggleEnabled }}" style="width: 20px; height: 20px; accent-color: #FFFFFF"></label>
-<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #DCDCDC">Название на сайте<input value="{{ title }}" onChange="{{ saveTitle }}" maxlength="80" placeholder="{{ streamerName }}" style="height: 40px; box-sizing: border-box; padding: 0 12px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px/20px 'Onest',sans-serif"></label>
-<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #DCDCDC">Статус (виден на сайте)<input value="{{ status }}" onChange="{{ saveStatus }}" maxlength="120" placeholder="Например: играю в ранкед до 23:00" style="height: 40px; box-sizing: border-box; padding: 0 12px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px/20px 'Onest',sans-serif"></label>
-<div style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #1F1F1F; padding-top: 14px">
-<p style="margin: 0; font-size: 14px; font-weight: 600">Что показывать</p>
-<label style="display: flex; align-items: center; gap: 10px; font-size: 14px"><input type="checkbox" checked="{{ chatOn }}" onChange="{{ toggleChat }}" style="accent-color: #FFFFFF"> Чат сайта</label>
-<label style="display: flex; align-items: center; gap: 10px; font-size: 14px"><input type="checkbox" checked="{{ showFeed }}" onChange="{{ toggleFeed }}" style="accent-color: #FFFFFF"> Лента одобренных видео</label>
-<label style="display: flex; align-items: center; gap: 10px; font-size: 14px"><input type="checkbox" checked="{{ showWatched }}" onChange="{{ toggleWatched }}" style="accent-color: #FFFFFF"> Раздел «Просмотренное» (видно только публичные записи)</label>
-<label style="display: flex; align-items: center; gap: 10px; font-size: 14px"><input type="checkbox" checked="{{ showStatus }}" onChange="{{ toggleStatus }}" style="accent-color: #FFFFFF"> Показывать статус</label>
+<sc-if value="{{ staleErr }}" hint-placeholder-val="{{ false }}"><div role="alert" class="err"><span>Нет связи с сервером. Показаны последние данные.</span><button type="button" class="bs" onClick="{{ retry }}">Повторить</button></div></sc-if>
+
+<sc-if value="{{ loadingNow }}" hint-placeholder-val="{{ false }}"><section class="card" aria-live="polite"><p role="status" style="margin: 0; font-size: 14px; color: #B4B4B4">Загружаем…</p></section></sc-if>
+
+<sc-if value="{{ loadFail }}" hint-placeholder-val="{{ false }}"><div role="alert" class="err"><span style="min-width: 0"><b style="font-weight: 600">Не удалось загрузить сайт.</b><span class="hint" style="display: block; margin-top: 2px; overflow-wrap: anywhere">Причина: {{ loadErrText }}. Проверь интернет и попробуй ещё раз.</span></span><button type="button" class="bs" onClick="{{ retry }}">Повторить</button></div></sc-if>
+
+<sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}"><div style="display: flex; flex-direction: column; gap: 24px">
+
+<section class="card" aria-labelledby="t-on" style="flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<div style="min-width: 0; flex: 1 1 280px">
+<h2 id="t-on" class="ttl" style="font-size: 20px; line-height: 26px">Сайт включён</h2>
+<p class="hint" style="margin-top: 4px; font-size: 14px; line-height: 20px; color: #B4B4B4">{{ enabledHint }}</p>
 </div>
+<button type="button" role="switch" class="sw" aria-checked="{{ enabledAria }}" aria-label="Сайт включён" onClick="{{ toggleEnabled }}" disabled="{{ toggleOff }}"><span></span></button>
 </section>
 
-<section style="padding: 20px 22px; border-radius: 12px; border: 1px solid rgba(255,255,255,.10); background: rgba(18,18,18,.62); display: flex; flex-direction: column; gap: 14px">
-<div><p style="margin: 0; font-size: 16px; font-weight: 600">Модераторы, галочки и цвета ников</p><p style="margin: 4px 0 0; font-size: 13px; color: #8F8F8F">Модератор одобряет видео и удаляет сообщения в чате сайта. Галочка и цвет ника видны всем в чате. Зритель должен хотя бы раз войти на StreOps.</p></div>
-<div style="display: flex; gap: 8px; flex-wrap: wrap"><input value="{{ newLogin }}" onChange="{{ setNewLogin }}" placeholder="ник на Twitch" style="flex: 1 1 200px; height: 40px; box-sizing: border-box; padding: 0 12px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px/20px 'Onest',sans-serif"><button type="button" onClick="{{ addMember }}" style="height: 40px; padding: 0 14px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 14px/20px 'Onest',sans-serif; cursor: pointer">Добавить</button></div>
-<sc-if value="{{ noMembers }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 14px; color: #8F8F8F">Пока никого. Добавь ник — и выдай модерацию, галочку или цвет.</p></sc-if>
-<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px"><sc-for list="{{ members }}" as="m"><li style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 14px; border-radius: 8px; border: 1px solid #2A2A2A"><span style="font-size: 15px; font-weight: 500; color: {{ m.colorValue }}">{{ m.name }} <span style="font-size: 12px; color: #8F8F8F">{{ m.tags }}</span></span><div style="display: flex; flex-wrap: wrap; gap: 14px; align-items: center; font-size: 13px; color: #DCDCDC"><label style="display: flex; gap: 6px; align-items: center"><input type="checkbox" checked="{{ m.mod }}" onChange="{{ m.toggleMod }}" style="accent-color: #FFFFFF"> модератор</label><label style="display: flex; gap: 6px; align-items: center"><input type="checkbox" checked="{{ m.verified }}" onChange="{{ m.toggleVerified }}" style="accent-color: #FFFFFF"> галочка</label><input aria-label="Значок (подпись)" value="{{ m.badge }}" onChange="{{ m.setBadge }}" maxlength="40" placeholder="значок, например Мастер нарезок" style="height: 30px; width: 200px; box-sizing: border-box; padding: 0 8px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 13px/18px 'Onest',sans-serif"><select aria-label="Цвет ника" onChange="{{ m.setColor }}" style="height: 30px; padding: 0 6px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 13px/18px 'Onest',sans-serif"><sc-for list="{{ m.colorOptions }}" as="o"><option value="{{ o.value }}" selected="{{ o.selected }}">{{ o.label }}</option></sc-for></select><button type="button" onClick="{{ m.remove }}" style="height: 30px; padding: 0 10px; border-radius: 6px; border: 1px solid #3A3A3A; background: transparent; color: #F2F2F2; font: 500 13px/18px 'Onest',sans-serif; cursor: pointer">Убрать</button></div></li></sc-for></ul>
+<section class="card" id="how" aria-labelledby="t-how">
+<div>
+<h2 id="t-how" class="ttl">Как включить сайт</h2>
+<p class="hint" style="margin-top: 4px">Три шага, обычно хватает пары минут. Когда шаг выполнен, рядом появится «Готово».</p>
+</div>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px">
+<li class="stp"><span class="stp-main"><span class="stp-n">1</span><span><span class="stp-t">Включи сайт</span><span class="hint">Переключатель «Сайт включён» вверху страницы.</span></span></span><span class="pill" style="{{ s1Style }}">{{ s1Text }}</span></li>
+<li class="stp"><span class="stp-main"><span class="stp-n">2</span><span><span class="stp-t">Укажи название и статус</span><span class="hint">Так сайт выглядит для посетителей.</span></span></span><span class="row2" style="align-items: center"><span class="pill" style="{{ s2Style }}">{{ s2Text }}</span><a href="#name" class="bsm">К названию</a></span></li>
+<li class="stp"><span class="stp-main"><span class="stp-n">3</span><span><span class="stp-t">Добавь модераторов и выбери галочки</span><span class="hint">Модераторы одобряют видео и чистят чат сайта. Галочка — значок «проверено» у ника.</span></span></span><span class="row2" style="align-items: center"><span class="pill" style="{{ s3Style }}">{{ s3Text }}</span><a href="#mods" class="bsm">К модераторам</a></span></li>
+</ol>
 </section>
 
-<section style="padding: 20px 22px; border-radius: 12px; border: 1px solid rgba(255,255,255,.10); background: rgba(18,18,18,.62); display: flex; flex-direction: column; gap: 14px">
-<div><p style="margin: 0; font-size: 16px; font-weight: 600">Просмотренное</p><p style="margin: 4px 0 0; font-size: 13px; color: #8F8F8F">Здесь видно только тебе. Отметь «показать сайту» — и видео появится у всех на вкладке «Просмотренное» вместе с твоей заметкой.</p></div>
-<div style="display: flex; flex-direction: column; gap: 8px"><input value="{{ wUrl }}" onChange="{{ setWUrl }}" placeholder="ссылка YouTube или Twitch" style="height: 40px; box-sizing: border-box; padding: 0 12px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px/20px 'Onest',sans-serif"><input value="{{ wTitle }}" onChange="{{ setWTitle }}" placeholder="название" style="height: 40px; box-sizing: border-box; padding: 0 12px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px/20px 'Onest',sans-serif"><textarea rows="2" onChange="{{ setWNote }}" placeholder="заметка: почему стоит посмотреть" style="padding: 10px 12px; border-radius: 6px; background: #0A0A0A; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px/20px 'Onest',sans-serif; resize: vertical">{{ wNote }}</textarea><div><button type="button" onClick="{{ addWatch }}" style="height: 36px; padding: 0 14px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 14px/20px 'Onest',sans-serif; cursor: pointer">Добавить</button></div></div>
-<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px"><sc-for list="{{ watch }}" as="w"><li style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 14px; border-radius: 8px; border: 1px solid #2A2A2A"><div style="min-width: 0; flex: 1 1 240px"><p style="margin: 0; font-size: 15px; font-weight: 500; overflow-wrap: anywhere">{{ w.title }}</p><p style="margin: 4px 0 0; font-size: 13px; color: #8F8F8F; overflow-wrap: anywhere">{{ w.note }}</p></div><div style="display: flex; gap: 12px; align-items: center; font-size: 13px; color: #DCDCDC"><label style="display: flex; gap: 6px; align-items: center"><input type="checkbox" checked="{{ w.public }}" onChange="{{ w.togglePublic }}" style="accent-color: #FFFFFF"> показать сайту</label><button type="button" onClick="{{ w.remove }}" style="height: 30px; padding: 0 10px; border-radius: 6px; border: 1px solid #3A3A3A; background: transparent; color: #F2F2F2; font: 500 13px/18px 'Onest',sans-serif; cursor: pointer">Удалить</button></div></li></sc-for></ul>
-<sc-if value="{{ noWatch }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 14px; color: #8F8F8F">Пока пусто.</p></sc-if>
+<section class="card" id="name" aria-labelledby="t-name">
+<h2 id="t-name" class="ttl">Название и статус</h2>
+<label class="fld"><span class="lab">Название на сайте</span><input class="inp" value="{{ title }}" onChange="{{ saveTitle }}" maxlength="80" placeholder="{{ streamerName }}"><span class="hint">Видно посетителям на сайте. Сохранится, когда выйдешь из поля.</span></label>
+<label class="fld"><span class="lab">Статус</span><input class="inp" value="{{ status }}" onChange="{{ saveStatus }}" maxlength="120" placeholder="Например: играю в ранкед до 23:00"><span class="hint">Короткая фраза о том, чем ты занят. Видна, если включён показ статуса ниже.</span></label>
 </section>
 
-<section style="padding: 20px 22px; border-radius: 12px; border: 1px solid rgba(255,255,255,.10); background: rgba(18,18,18,.62); display: flex; flex-direction: column; gap: 14px">
-<p style="margin: 0; font-size: 16px; font-weight: 600">Очередь видео от подписчиков</p>
-<sc-if value="{{ noQueue }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 14px; color: #8F8F8F">Очередь пуста.</p></sc-if>
-<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px"><sc-for list="{{ queue }}" as="q"><li style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 14px; border-radius: 8px; border: 1px solid #2A2A2A"><div style="min-width: 0; flex: 1 1 240px"><a href="{{ q.url }}" target="_blank" rel="noopener" style="font-size: 15px; font-weight: 500; overflow-wrap: anywhere">{{ q.title }}</a><p style="margin: 4px 0 0; font-size: 13px; color: #8F8F8F">от {{ q.by }} · {{ q.sectionLabel }}</p></div><div style="display: flex; gap: 8px"><button type="button" onClick="{{ q.approve }}" style="height: 32px; padding: 0 12px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 13px/18px 'Onest',sans-serif; cursor: pointer">Одобрить</button><button type="button" onClick="{{ q.reject }}" style="height: 32px; padding: 0 12px; border-radius: 6px; border: 1px solid #3A3A3A; background: transparent; color: #F2F2F2; font: 500 13px/18px 'Onest',sans-serif; cursor: pointer">Отклонить</button></div></li></sc-for></ul>
+<section class="card" aria-labelledby="t-show">
+<h2 id="t-show" class="ttl">Что показывать на сайте</h2>
+<p class="hint">Изменения сохраняются сразу, как только переключишь галочку.</p>
+<label class="chk"><input type="checkbox" checked="{{ chatOn }}" onChange="{{ toggleChat }}"><span><span style="display: block">Чат сайта</span><span class="hint">Зрители пишут сообщения прямо на твоём сайте.</span></span></label>
+<label class="chk"><input type="checkbox" checked="{{ showFeed }}" onChange="{{ toggleFeed }}"><span><span style="display: block">Лента одобренных видео</span><span class="hint">Видео из очереди, которые ты одобрил.</span></span></label>
+<label class="chk"><input type="checkbox" checked="{{ showWatched }}" onChange="{{ toggleWatched }}"><span><span style="display: block">Раздел «Просмотренное»</span><span class="hint">Видно зрителям, когда есть публичные записи (см. ниже).</span></span></label>
+<label class="chk"><input type="checkbox" checked="{{ showStatus }}" onChange="{{ toggleStatus }}"><span><span style="display: block">Показывать статус</span><span class="hint">Фраза из поля «Статус» видна посетителям.</span></span></label>
 </section>
 
-<section style="padding: 20px 22px; border-radius: 12px; border: 1px solid rgba(255,255,255,.10); background: rgba(18,18,18,.62); display: flex; flex-direction: column; gap: 14px">
-<p style="margin: 0; font-size: 16px; font-weight: 600">Чат сайта</p>
-<sc-if value="{{ noChat }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 14px; color: #8F8F8F">Сообщений пока нет.</p></sc-if>
-<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px"><sc-for list="{{ chat }}" as="c"><li style="display: flex; gap: 10px; align-items: center; justify-content: space-between"><span style="min-width: 0; overflow-wrap: anywhere"><b style="color: {{ c.colorValue }}">{{ c.name }}</b>{{ c.tags }} <span style="color: #DCDCDC">{{ c.text }}</span></span><button type="button" onClick="{{ c.remove }}" style="flex: none; height: 28px; padding: 0 10px; border-radius: 6px; border: 1px solid #3A3A3A; background: transparent; color: #F2F2F2; font: 500 12px/16px 'Onest',sans-serif; cursor: pointer">Удалить</button></li></sc-for></ul>
+<section class="card" id="mods" aria-labelledby="t-mods">
+<div>
+<h2 id="t-mods" class="ttl">Модераторы и галочки</h2>
+<p class="hint" style="margin-top: 4px">Модератор одобряет видео в очереди и удаляет сообщения в чате сайта. Галочка — значок «проверено» рядом с ником. Зритель должен хотя бы раз войти на StreOps.</p>
+</div>
+<div class="row2" style="align-items: flex-end">
+<label class="fld" style="flex: 1 1 220px"><span class="lab">Добавить зрителя по нику</span><input id="newMember" class="inp" value="{{ newLogin }}" onChange="{{ setNewLogin }}" placeholder="ник на Twitch"></label>
+<button type="button" class="bs" onClick="{{ addMember }}">Добавить в список</button>
+</div>
+<p class="hint">Ник появится в списке. Дальше отметь, что ему выдать.</p>
+<sc-if value="{{ noMembers }}" hint-placeholder-val="{{ false }}"><div class="empty"><p style="margin: 0; font-size: 14px">Пока никого нет.</p><p class="hint">Добавь ник друга или модератора, а потом выбери, что ему дать: модерацию или галочку.</p><button type="button" class="bs" onClick="{{ focusMember }}">Ввести ник</button></div></sc-if>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px"><sc-for list="{{ members }}" as="m"><li class="item" style="flex-direction: column; align-items: stretch">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
+<span style="font-size: 15px; font-weight: 500; color: {{ m.colorValue }}; overflow-wrap: anywhere">{{ m.name }} <span class="hint">{{ m.tags }}</span></span>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; align-items: center">
+<label class="chk2"><input type="checkbox" checked="{{ m.mod }}" onChange="{{ m.toggleMod }}"> Модератор</label>
+<label class="chk2"><input type="checkbox" checked="{{ m.verified }}" onChange="{{ m.toggleVerified }}"> Галочка</label>
+<button type="button" class="bsm bd" onClick="{{ m.remove }}">Убрать из списка</button>
+</div>
+</div>
+<div><button type="button" class="bsm" aria-expanded="{{ m.advAria }}" onClick="{{ m.toggleAdv }}">{{ m.advLabel }}</button></div>
+<sc-if value="{{ m.adv }}" hint-placeholder-val="{{ false }}"><div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 12px; border-top: 1px solid #1F1F1F">
+<label class="fld" style="flex: 1 1 220px"><span class="lab">Подпись значка</span><input class="inp" value="{{ m.badge }}" onChange="{{ m.setBadge }}" maxlength="40" placeholder="например, Мастер нарезок"><span class="hint">Показывается рядом с ником на сайте. Пусто — значка нет.</span></label>
+<label class="fld" style="flex: 0 1 200px"><span class="lab">Цвет ника</span><select class="inp" onChange="{{ m.setColor }}"><sc-for list="{{ m.colorOptions }}" as="o"><option value="{{ o.value }}" selected="{{ o.selected }}">{{ o.label }}</option></sc-for></select><span class="hint">Виден всем в чате сайта.</span></label>
+</div></sc-if>
+</li></sc-for></ul>
 </section>
+
+<section class="card" id="watch" aria-labelledby="t-watch">
+<div>
+<h2 id="t-watch" class="ttl">Просмотренное</h2>
+<p class="hint" style="margin-top: 4px">Записи видны только тебе, пока не отметишь «показать сайту». Тогда видео появится у зрителей на вкладке «Просмотренное» вместе с твоей заметкой.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label class="fld"><span class="lab">Ссылка</span><input id="wurl" class="inp" value="{{ wUrl }}" onChange="{{ setWUrl }}" placeholder="ссылка YouTube или Twitch"></label>
+<label class="fld"><span class="lab">Название</span><input class="inp" value="{{ wTitle }}" onChange="{{ setWTitle }}" placeholder="как назвать видео"></label>
+<label class="fld"><span class="lab">Заметка</span><textarea class="inp" rows="2" onChange="{{ setWNote }}" placeholder="почему стоит посмотреть">{{ wNote }}</textarea></label>
+<div class="row2" style="align-items: center"><button type="button" class="bs" onClick="{{ addWatch }}">Добавить в список</button><span class="hint">Добавится как «Только тебе».</span></div>
+</div>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px"><sc-for list="{{ watch }}" as="w"><li class="item"><div style="min-width: 0; flex: 1 1 240px"><p style="margin: 0; font-size: 15px; font-weight: 500; overflow-wrap: anywhere">{{ w.title }} <span class="pill" style="{{ w.visStyle }}">{{ w.vis }}</span></p><p class="hint" style="margin-top: 4px; overflow-wrap: anywhere">{{ w.note }}</p></div><div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center"><label class="chk2"><input type="checkbox" checked="{{ w.public }}" onChange="{{ w.togglePublic }}"> показать сайту</label><button type="button" class="bsm bd" onClick="{{ w.remove }}">Удалить</button></div></li></sc-for></ul>
+<sc-if value="{{ noWatch }}" hint-placeholder-val="{{ false }}"><div class="empty"><p style="margin: 0; font-size: 14px">Пока пусто.</p><p class="hint">Добавь видео, которое стоит посмотреть: ссылку YouTube или Twitch и пару слов о нём.</p><button type="button" class="bs" onClick="{{ focusWatch }}">Добавить первое видео</button></div></sc-if>
+</section>
+
+<section class="card" id="queue" aria-labelledby="t-queue">
+<div>
+<h2 id="t-queue" class="ttl">Очередь видео от подписчиков</h2>
+<p class="hint" style="margin-top: 4px">Подписчики предлагают видео прямо на твоём сайте. Одобренное появится на сайте, отклонённое — нет.</p>
+</div>
+<sc-if value="{{ noQueue }}" hint-placeholder-val="{{ false }}"><div class="empty"><p style="margin: 0; font-size: 14px">Очередь пуста.</p><p class="hint">Предложения появятся, когда подписчики предложат видео на твоём сайте. Поделись ссылкой на сайт, чтобы они его нашли.</p><button type="button" class="bs" onClick="{{ copyLink }}" disabled="{{ noLink }}">{{ copyLabel }}</button></div></sc-if>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px"><sc-for list="{{ queue }}" as="q"><li class="item"><div style="min-width: 0; flex: 1 1 240px"><a href="{{ q.url }}" target="_blank" rel="noopener" style="font-size: 15px; font-weight: 500; overflow-wrap: anywhere">{{ q.title }}</a><p class="hint" style="margin-top: 4px">от {{ q.by }} · {{ q.sectionLabel }}</p></div><div class="row2"><button type="button" class="bsm" onClick="{{ q.approve }}">Одобрить</button><button type="button" class="bsm" onClick="{{ q.reject }}">Отклонить</button></div></li></sc-for></ul>
+</section>
+
+<section class="card" id="chat" aria-labelledby="t-chat">
+<div>
+<h2 id="t-chat" class="ttl">Чат сайта</h2>
+<p class="hint" style="margin-top: 4px">Сообщения зрителей в чате твоего сайта. Удалить можно любое. Сам чат видно, если он включён в списке «Что показывать».</p>
+</div>
+<sc-if value="{{ noChat }}" hint-placeholder-val="{{ false }}"><div class="empty"><p style="margin: 0; font-size: 14px">Сообщений пока нет.</p><p class="hint">Когда зрители начнут писать в чат сайта, сообщения появятся здесь.</p></div></sc-if>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px"><sc-for list="{{ chat }}" as="c"><li class="item" style="justify-content: flex-start; flex-wrap: nowrap; align-items: flex-start"><span style="min-width: 0; flex: 1 1 auto; font-size: 14px; line-height: 20px; overflow-wrap: anywhere"><b style="font-weight: 600; color: {{ c.colorValue }}">{{ c.name }}</b>{{ c.tags }} <span style="color: #DCDCDC">{{ c.text }}</span></span><button type="button" class="bsm bd" onClick="{{ c.remove }}" style="flex: none">Удалить</button></li></sc-for></ul>
+</section>
+
+</div></sc-if>
 </main>
+</div>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
 class Component extends DCLogic {
 constructor(props) {
 super(props);
-this.state = { d: null, loaded: false, info: '', newLogin: '', wUrl: '', wTitle: '', wNote: '', login: '' };
+this.state = { d: null, loaded: false, loadErr: '', info: '', newLogin: '', wUrl: '', wTitle: '', wNote: '', login: '', copied: false, openM: {} };
 }
 componentDidMount() {
 this.load(false);
 this.timer = setInterval(() => this.load(true), 8000);
 }
-componentWillUnmount() { clearInterval(this.timer); }
+componentWillUnmount() { clearInterval(this.timer); clearTimeout(this.copyT); }
 async load(quiet) {
 try {
 const d = await StreAPI.get('site.manage');
 const me = this.state.login ? null : await StreAPI.me();
-this.setState(Object.assign({ d, loaded: true }, me && me.user ? { login: me.user.login } : {}));
+this.setState(Object.assign({ d, loaded: true, loadErr: '' }, me && me.user ? { login: me.user.login } : {}));
 } catch (e) {
-if (!quiet) StreAPI.toast(e.message, 'error');
-this.setState({ loaded: true });
+const msg = (e && e.message) || 'нет связи с сервером';
+if (!quiet) StreAPI.toast(msg, 'error');
+this.setState({ loadErr: msg });
 }
 }
+retry() { this.setState({ loadErr: '' }); this.load(false); }
+// Возвращает true, если сервер принял запрос; при ошибке показывает уведомление и возвращает false.
 async call(route, body, ok) {
 try {
 await StreAPI.post(route, Object.assign({ c: this.state.login }, body));
 if (ok) this.setState({ info: ok });
 await this.load(true);
-} catch (e) { StreAPI.toast(e.message, 'error'); }
+return true;
+} catch (e) { StreAPI.toast(e.message, 'error'); return false; }
 }
 saveSettings(patch) { return this.call('site.settings.save', patch, 'Сохранено'); }
 memberAct(login, action, extra) { return this.call('site.members.save', Object.assign({ login, action }, extra || {}), null); }
+async copyLink() {
+const d = this.state.d;
+if (!d || !d.url) return;
+let url = d.url;
+try { url = new URL(d.url, location.href).href; } catch (e) { /* оставляем как есть */ }
+let ok = false;
+try { await navigator.clipboard.writeText(url); ok = true; } catch (e) {
+try { const t = document.createElement('textarea'); t.value = url; t.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(t); t.select(); ok = document.execCommand('copy'); t.remove(); } catch (e2) { ok = false; }
+}
+if (!ok) { StreAPI.toast('Не получилось скопировать. Выдели ссылку и скопируй вручную', 'error'); return; }
+this.setState({ copied: true });
+clearTimeout(this.copyT);
+this.copyT = setTimeout(() => this.setState({ copied: false }), 2000);
+}
+focusEl(id) { const el = document.getElementById(id); if (el) el.focus(); }
 renderVals() {
 const s = this.state, d = s.d;
 const set = (k) => (e) => this.saveSettings({ [k]: e.target.checked });
 const settings = d ? d.settings : {};
+const on = !!settings.enabled;
+const blocked = !!(d && d.blocked);
+const ready = !!d;
 const colorOpts = (cur) => (d ? d.colors : []).map((c) => ({ value: c, label: c, selected: c === cur }));
 const tags = (x) => [x.mod ? 'модератор' : '', x.verified ? 'галочка' : ''].filter(Boolean).join(' · ');
-const members = d ? d.members.map((m) => ({
+const openM = s.openM || {};
+const members = d ? d.members.map((m) => {
+const adv = !!openM[m.login];
+return {
 name: m.name, tags: tags(m), mod: !!m.mod, verified: !!m.verified, colorValue: m.color || '#F2F2F2',
 colorOptions: colorOpts(m.color),
 badge: m.badge || '',
-setBadge: (e) => this.call('site.badge', { login: m.login, label: e.target.value.trim() }, 'Значок сохранён'),
+adv: adv, advAria: adv ? 'true' : 'false',
+advLabel: adv ? 'Расширенные: цвет и значок ▴' : 'Расширенные: цвет и значок ▾',
+toggleAdv: () => this.setState({ openM: Object.assign({}, this.state.openM, { [m.login]: !(this.state.openM || {})[m.login] }) }),
+setBadge: (e) => this.call('site.badge', { login: m.login, label: e.target.value.trim() }, 'Подпись значка сохранена'),
 toggleMod: (e) => this.memberAct(m.login, 'mod', { value: e.target.checked }),
 toggleVerified: (e) => this.memberAct(m.login, 'verified', { value: e.target.checked }),
 setColor: (e) => this.memberAct(m.login, 'color', { color: e.target.value }),
-remove: () => this.memberAct(m.login, 'remove'),
-})) : [];
+remove: () => { if (confirm('Убрать ' + m.name + ' из списка?')) this.memberAct(m.login, 'remove'); },
+};
+}) : [];
 const watch = d ? d.watch.map((w) => ({
-id: w.id, title: w.title, note: w.note, public: !!w.public,
-togglePublic: (e) => this.call('site.watch.save', { id: w.id, url: w.url, title: w.title, note: w.note, public: e.target.checked }, null),
-remove: () => this.call('site.watch.delete', { id: w.id }, null),
+id: w.id, title: w.title || w.url, note: w.note || '', public: !!w.public,
+vis: w.public ? 'Видно зрителям' : 'Только тебе',
+visStyle: w.public ? 'border-color: #F2F2F2; color: #F2F2F2' : '',
+togglePublic: (e) => this.call('site.watch.save', { id: w.id, url: w.url, title: w.title, note: w.note, public: e.target.checked }, e.target.checked ? 'Видно зрителям на вкладке «Просмотренное»' : 'Скрыто: видно только тебе'),
+remove: () => { if (confirm('Удалить «' + (w.title || w.url) + '» из просмотренного? Отменить это нельзя.')) this.call('site.watch.delete', { id: w.id }, 'Запись удалена'); },
 })) : [];
 const queue = d ? d.queue.map((q) => ({
 url: q.url, title: q.title, by: q.by, sectionLabel: q.section === 'stream' ? 'Стрим' : 'Не стрим',
-approve: () => this.call('site.review', { id: q.id, action: 'approve' }, null),
-reject: () => this.call('site.review', { id: q.id, action: 'reject' }, null),
+approve: () => this.call('site.review', { id: q.id, action: 'approve' }, 'Видео одобрено'),
+reject: () => this.call('site.review', { id: q.id, action: 'reject' }, 'Видео отклонено'),
 })) : [];
 const chat = d ? d.chat.map((c) => ({
 name: c.name, text: c.text, colorValue: c.color || '#F2F2F2',
 tags: c.verified ? ' ✓' : '',
-remove: () => this.call('site.chat.delete', { id: c.id }, null),
+remove: () => this.call('site.chat.delete', { id: c.id }, 'Сообщение удалено'),
 })) : [];
 const siteUrl = d ? d.url : '#';
+const titleSet = !!String(settings.title || '').trim();
+const statusSet = !!String(settings.status || '').trim();
+const membersDone = members.some((m) => m.mod || m.verified);
+const pillStyle = (done) => done ? 'border-color: #F2F2F2; color: #F2F2F2' : '';
+const pillText = (done) => done ? 'Готово' : 'Сделать';
 return {
-siteUrl, siteUrlLabel: 'streops.ru/' + siteUrl,
-blocked: !!(d && d.blocked),
-info: s.info,
-enabled: !!settings.enabled,
-toggleEnabled: (e) => this.saveSettings({ enabled: e.target.checked }),
-title: settings.title || '',
-saveTitle: (e) => this.saveSettings({ title: e.target.value.trim() }),
+ready,
+loadingNow: !s.loaded && !s.loadErr,
+loadFail: !s.loaded && !!s.loadErr,
+loadErrText: s.loadErr,
+staleErr: s.loaded && !!s.loadErr,
+retry: () => this.retry(),
+siteUrl, siteUrlLabel: d ? 'streops.ru/' + siteUrl : 'Загружаем…',
+siteHint: on ? 'Скопированную ссылку можно отправить подписчикам.' : 'Сайт сейчас выключен: по ссылке его никто не увидит. Включи его ниже.',
+noLink: !(d && d.url),
+copied: s.copied,
+copyLabel: s.copied ? 'Ссылка скопирована' : 'Скопировать ссылку',
+copyLink: () => this.copyLink(),
+blocked, info: s.info,
+toggleOff: !ready || blocked,
+enabledAria: on ? 'true' : 'false',
+enabledHint: blocked ? 'Недоступно: сайт заблокирован администрацией StreOps.' : (on ? 'Выключи — сайт перестанет открываться для всех. Данные сохранятся.' : 'Сейчас выключен: сайт никто не видит. Включи — и он откроется по ссылке. Данные не теряются.'),
+toggleEnabled: () => this.call('site.settings.save', { enabled: !on }, on ? 'Сайт выключен. Данные сохранены' : 'Сайт включён. Теперь его можно открыть по ссылке'),
+s1Text: pillText(on), s1Style: pillStyle(on),
+s2Text: pillText(titleSet && statusSet), s2Style: pillStyle(titleSet && statusSet),
+s3Text: pillText(membersDone), s3Style: pillStyle(membersDone),
+title: settings.title || '', saveTitle: (e) => this.saveSettings({ title: e.target.value.trim() }),
 streamerName: s.login,
-status: settings.status || '',
-saveStatus: (e) => this.saveSettings({ status: e.target.value.trim() }),
+status: settings.status || '', saveStatus: (e) => this.saveSettings({ status: e.target.value.trim() }),
 chatOn: !!settings.chatOn, toggleChat: set('chatOn'),
 showFeed: !!settings.showFeed, toggleFeed: set('showFeed'),
 showWatched: !!settings.showWatched, toggleWatched: set('showWatched'),
 showStatus: !!settings.showStatus, toggleStatus: set('showStatus'),
 newLogin: s.newLogin, setNewLogin: (e) => this.setState({ newLogin: e.target.value.trim() }),
-addMember: () => s.newLogin ? this.memberAct(s.newLogin, 'mod', { value: false }).then(() => this.setState({ newLogin: '' })) : StreAPI.toast('Укажи ник', 'error'),
-members, noMembers: !!d && !members.length,
+addMember: () => s.newLogin ? this.memberAct(s.newLogin, 'mod', { value: false }).then((ok) => { if (ok) this.setState({ newLogin: '' }); }) : StreAPI.toast('Укажи ник', 'error'),
+focusMember: () => this.focusEl('newMember'),
+members, noMembers: ready && !members.length,
 wUrl: s.wUrl, setWUrl: (e) => this.setState({ wUrl: e.target.value.trim() }),
 wTitle: s.wTitle, setWTitle: (e) => this.setState({ wTitle: e.target.value }),
 wNote: s.wNote, setWNote: (e) => this.setState({ wNote: e.target.value }),
-addWatch: () => { if (!s.wUrl) return StreAPI.toast('Вставь ссылку', 'error'); this.call('site.watch.save', { url: s.wUrl, title: s.wTitle, note: s.wNote, public: false }, 'Добавлено, видно только тебе').then(() => this.setState({ wUrl: '', wTitle: '', wNote: '' })); },
-watch, noWatch: !!d && !watch.length,
-queue, noQueue: !!d && !queue.length,
-chat, noChat: !!d && !chat.length,
+addWatch: () => { if (!s.wUrl) return StreAPI.toast('Вставь ссылку', 'error'); this.call('site.watch.save', { url: s.wUrl, title: s.wTitle, note: s.wNote, public: false }, 'Добавлено. Видно только тебе').then((ok) => { if (ok) this.setState({ wUrl: '', wTitle: '', wNote: '' }); }); },
+focusWatch: () => this.focusEl('wurl'),
+watch, noWatch: ready && !watch.length,
+queue, noQueue: ready && !queue.length,
+chat, noChat: ready && !chat.length,
 };
 }
 }

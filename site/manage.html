@@ -14,33 +14,32 @@
 body{margin:0;background:var(--n-1)}
 a{color:var(--n-12);text-decoration:none}a:hover{color: var(--accent-on)}
 .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
-.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--n-9);margin:0}
 .ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.tab{height:44px;padding:0;border:0;background:transparent;color:var(--n-9);font:500 14px/20px var(--font-sans),sans-serif;display:flex;gap:6px;align-items:center;cursor:pointer}
-.tab:hover{color:var(--n-12)}
-.cmd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 20px;border-radius:8px;border:1px solid var(--n-5);background:var(--s-2)}
-.cmd:hover{border-color:var(--n-6)}
+.card{background:rgb(var(--n-2-rgb) / .62);border:1px solid rgb(var(--n-13-rgb) / .10);border-radius:12px;padding:20px 24px;min-width:0;box-sizing:border-box}
+.h2{margin:0;font-size:18px;line-height:24px;font-weight:600}
+.hint{margin:6px 0 0;font-size:13px;line-height:18px;color:var(--n-9)}
+.bp{height:40px;padding:0 16px;border-radius:6px;border:0;background:var(--n-13);color:var(--n-1);font:500 14px/20px var(--font-sans),system-ui,sans-serif;cursor:pointer}
+.bp:disabled{opacity:.4;cursor:default}
+.bs{height:40px;padding:0 16px;border-radius:6px;border:1px solid var(--n-6);background:transparent;color:var(--n-12);font:500 14px/20px var(--font-sans),system-ui,sans-serif;cursor:pointer}
+.bs:hover{border-color:var(--n-9)}
+.bs:disabled{opacity:.4;cursor:default}
+.bs[role="tab"][aria-selected="true"]{border-color:var(--n-12);background:rgb(var(--n-13-rgb) / .08)}
+.bsm{height:32px;padding:0 12px;border-radius:6px;border:1px solid var(--n-6);background:transparent;color:var(--n-11);font:500 13px/18px var(--font-sans),system-ui,sans-serif;cursor:pointer;white-space:nowrap}
+.bsm:hover{border-color:var(--n-9);color:var(--n-12)}
+.bsm:disabled{opacity:.4;cursor:default}
+.bd{height:40px;padding:0 16px;border-radius:6px;border:0;background:var(--accent);color: var(--accent-on);font:500 14px/20px var(--font-sans),system-ui,sans-serif;cursor:pointer}
+.bd:disabled{opacity:.4;cursor:default}
+.fl{display:flex;flex-direction:column;gap:8px}
+.lab{font-size:13px;line-height:18px;font-weight:500;color:var(--n-11)}
+.inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:var(--s-3);border:1px solid var(--n-8);color:var(--n-12);font:400 15px/22px var(--font-sans),sans-serif;width:100%}
+.inp:hover{border-color:var(--n-9)}
 .sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid var(--n-8);background:transparent;cursor:pointer;flex:none;padding:0}
 .sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:var(--n-9);transition:transform 180ms cubic-bezier(.2,0,0,1)}
 .sw[aria-checked="true"]{background:var(--n-13);border-color:var(--n-13)}
 .sw[aria-checked="true"] span{transform:translateX(16px);background:var(--n-1)}
-.ib{width:36px;height:36px;border-radius:6px;border:0;background:transparent;color:var(--n-10);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.ib:hover{background:rgb(var(--n-13-rgb) / .06);color:var(--n-12)}
-.fl{display:flex;flex-direction:column;gap:8px}
-.fl > label,.lab{font-size:13px;line-height:18px;font-weight:500;color:var(--n-11)}
-.inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:var(--s-3);border:1px solid var(--n-8);color:var(--n-12);font:400 15px/22px var(--font-sans),sans-serif;width:100%}
-.inp:hover{border-color:var(--n-9)}
-.hint{font-size:12px;line-height:16px;color:var(--n-9);margin:0}
-.seg{height:36px;padding:0 14px;border:0;border-radius:4px;background:transparent;color:var(--n-10);font:500 14px/20px var(--font-sans),sans-serif;cursor:pointer}
-.seg:hover{color:var(--n-12)}
-.tag{height:28px;padding:0 10px;border-radius:4px;border:1px solid var(--n-6);background:transparent;color:var(--n-11);font:400 12px/16px 'JetBrains Mono',monospace;cursor:pointer}
-.tag:hover{border-color:var(--n-9);background:rgb(var(--n-13-rgb) / .04)}
-.rad{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:6px;font-size:14px;color:var(--n-11);cursor:pointer;border:0;background:transparent;width:100%;text-align:left;font-family:var(--font-sans),sans-serif}
-.rad:hover{background:rgb(var(--n-13-rgb) / .04)}
-.dot{width:18px;height:18px;border-radius:999px;border:1px solid var(--n-8);box-sizing:border-box;flex:none;display:inline-flex;align-items:center;justify-content:center}
-.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 4px 0 10px;border-radius:4px;background:var(--n-4);border:1px solid var(--n-6);font-size:13px}
-.chip button{width:20px;height:20px;border:0;border-radius:3px;background:transparent;color:var(--n-9);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.chip button:hover{color:var(--n-12);background:rgb(var(--n-13-rgb) / .08)}
+.sw:disabled{opacity:.4;cursor:default}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:8px;border:1px solid var(--n-5)}
+.errbox{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;border:1px solid var(--n-6);border-radius:8px}
 </style>
 <style>
 .sb{flex:1 1 200px;max-width:248px;min-width:200px;align-self:flex-start;position:sticky;top:88px;box-sizing:border-box;padding:12px;border-radius:8px;background:rgb(var(--n-13-rgb) / .03);border:1px solid rgb(var(--n-13-rgb) / .06);display:flex;flex-direction:column;gap:2px;font-family:var(--font-sans),system-ui,sans-serif}
@@ -131,57 +130,82 @@ document.addEventListener('DOMContentLoaded', function () {
 </nav>
 <div style="flex: 999 1 640px; min-width: 0">
 <nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px"><li><a href="panel.html" style="color: var(--n-9)">Стрим-панель</a></li><li aria-hidden="true" style="color: var(--n-7)">/</li><li aria-current="page" style="color: var(--n-12)">Управлять каналом</li></ol></nav>
-<div style="margin-top: 16px"><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Управлять каналом</h1><p style="margin: 6px 0 0; font-size: 15px; color: var(--n-10)">Здесь видно каналы, где тебя добавили помощником. Можно пропускать треки, одобрять заказы и включать или выключать заказы музыки.</p></div>
+<div style="margin-top: 16px"><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Управлять каналом</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--n-10)">Раздел для помощников. Здесь ты ведёшь музыку на канале, где тебя добавили: пропускаешь треки, одобряешь заказы, включаешь и выключаешь заказы. Настройки канала здесь не меняются.</p></div>
 
-<template data-if="noChannels"><p style="margin: 32px 0 0; padding: 32px; border: 1px dashed var(--n-6); border-radius: 8px; font-size: 15px; line-height: 22px; color: var(--n-9); text-align: center">Ты пока не помощник ни в одном канале. Владелец канала добавит тебя в «Мои модераторы» по нику Twitch.</p></template>
+<template data-if="chLoading"><p role="status" class="card" style="margin: 24px 0 0; font-size: 14px; color: var(--n-9)">Загружаем каналы…</p></template>
+
+<template data-if="chErrShow"><div role="alert" class="card errbox" style="margin-top: 24px"><p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--n-11)">Не удалось загрузить каналы. {{ chErrText }}</p><button type="button" class="bs" onClick="{{ retryCh }}">Повторить</button></div></template>
+
+<template data-if="noChannels"><section class="card" aria-labelledby="nc-t" style="margin-top: 24px; padding: 32px 24px; border-style: dashed; border-color: var(--n-6); text-align: center">
+<h2 id="nc-t" class="h2">Ты пока не помощник ни на одном канале</h2>
+<p style="margin: 10px auto 0; max-width: 480px; font-size: 14px; line-height: 22px; color: var(--n-10)">Стример добавляет помощников в своей панели StreOps: раздел «Помощники», поле «Ник Twitch». Попроси его добавить твой ник. Когда он это сделает, канал появится здесь.</p>
+<button type="button" class="bp" onClick="{{ retryCh }}" style="margin-top: 18px">Проверить ещё раз</button>
+</section></template>
 
 <template data-if="hasChannels">
-<div role="tablist" aria-label="Каналы" style="margin-top: 24px; display: flex; gap: 8px; flex-wrap: wrap">
-<template data-for="chTabs" data-as="c"><button type="button" role="tab" aria-selected="{{ c.sel }}" onClick="{{ c.pick }}" class="tag" style="height: 36px; padding: 0 14px; font-size: 14px">{{ c.label }}</button></template>
-</div>
+<section class="card" aria-labelledby="ctx-t" style="margin-top: 24px">
+<h2 id="ctx-t" class="h2">Ты помощник на канале <span style="color: var(--accent-on)">{{ selName }}</span></h2>
+<p class="hint mono" style="margin-top: 4px">twitch.tv/{{ selLogin }}</p>
+
+<template data-if="hasMany"><div style="margin-top: 16px">
+<p class="hint" style="margin-top: 0">Каналов несколько. Нажми на нужный, чтобы переключиться:</p>
+<div role="tablist" aria-label="Каналы, где ты помощник" style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap">
+<template data-for="chTabs" data-as="c"><button type="button" role="tab" class="bs" aria-selected="{{ c.sel }}" onClick="{{ c.pick }}" style="height: 36px; padding: 0 14px">{{ c.label }}</button></template>
+</div></div></template>
+
+<template data-if="netShow"><div role="status" class="row" style="margin-top: 14px; padding: 10px 12px"><span style="font-size: 14px; color: var(--n-11)">{{ netText }}</span><button type="button" class="bsm" onClick="{{ reloadState }}">Повторить</button></div></template>
+</section>
+</template>
+
+<template data-if="stLoading"><p role="status" class="card" style="margin: 16px 0 0; font-size: 14px; color: var(--n-9)">Загружаем очередь…</p></template>
+
+<template data-if="stErrShow"><div role="alert" class="card errbox" style="margin-top: 16px"><p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--n-11)">{{ stErrText }}</p><button type="button" class="bs" onClick="{{ reloadState }}">Повторить</button></div></template>
 
 <template data-if="hasState">
-<section aria-labelledby="mc-t" style="margin-top: 20px; border-radius: 12px; background: rgb(var(--n-2-rgb) / 0.62); border: 1px solid rgb(var(--n-13-rgb) / 0.10); padding: 20px 24px">
+
+<section class="card" aria-labelledby="or-t" style="margin-top: 16px">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
-<h2 id="mc-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Заказы музыки</h2>
-<button type="button" role="switch" class="sw" aria-checked="{{ ordersOn }}" aria-label="Заказы музыки включены" onClick="{{ toggleOrders }}"><span></span></button>
+<h2 id="or-t" class="h2">Заказы музыки</h2>
+<div style="display: flex; align-items: center; gap: 10px"><span style="font-size: 14px; color: var(--n-11)">{{ ordersLabel }}</span><button type="button" role="switch" class="sw" aria-checked="{{ ordersOn }}" aria-label="Заказы музыки: {{ ordersLabel }}" onClick="{{ toggleOrders }}" disabled="{{ busyOff }}"><span></span></button></div>
 </div>
-<p class="hint" style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: var(--n-9)">{{ ordersNote }}</p>
+<p class="hint">{{ ordersNote }}</p>
 </section>
 
-<section aria-labelledby="np-t" style="margin-top: 16px; border-radius: 12px; background: rgb(var(--n-2-rgb) / 0.62); border: 1px solid rgb(var(--n-13-rgb) / 0.10); padding: 20px 24px">
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
-<h2 id="np-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Сейчас играет</h2>
-<button type="button" onClick="{{ skip }}" disabled="{{ noPlaying }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: var(--n-13); color: var(--n-1); font: 500 14px/20px var(--font-sans), system-ui, sans-serif; cursor: pointer">Пропустить</button>
-</div>
+<section class="card" aria-labelledby="np-t" style="margin-top: 16px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap"><h2 id="np-t" class="h2">Сейчас играет</h2><button type="button" class="bp" onClick="{{ skip }}" disabled="{{ skipOff }}">Пропустить трек</button></div>
 <p style="margin: 10px 0 0; font-size: 15px; line-height: 22px; color: var(--n-12)">{{ playingText }}</p>
+<p class="hint">{{ skipNote }}</p>
 </section>
 
-<section aria-labelledby="pa-t" style="margin-top: 16px; border-radius: 12px; background: rgb(var(--n-2-rgb) / 0.62); border: 1px solid rgb(var(--n-13-rgb) / 0.10); padding: 20px 24px">
-<h2 id="pa-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Добавить трек</h2>
-<p style="margin: 6px 0 0; font-size: 14px; color: var(--n-9)">Ссылка на YouTube или название трека. Трек встанет в конец очереди.</p>
-<form onSubmit="{{ addTrack }}" style="margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap">
-<input aria-label="Трек" value="{{ addQuery }}" onInput="{{ setAddQuery }}" placeholder="Ссылка или название" style="flex: 1 1 260px; min-width: 0; height: 40px; box-sizing: border-box; padding: 0 12px; border-radius: 6px; background: var(--n-1); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px/20px var(--font-sans), system-ui, sans-serif">
-<button type="submit" disabled="{{ addBusy }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: var(--n-13); color: var(--n-1); font: 500 14px/20px var(--font-sans), system-ui, sans-serif; cursor: pointer">Добавить в очередь</button>
+<section class="card" aria-labelledby="pa-t" style="margin-top: 16px">
+<h2 id="pa-t" class="h2">Добавить трек</h2>
+<p class="hint">Вставь ссылку на YouTube или напиши название. Трек встанет в конец очереди. Добавлять треки можно, если на канале есть музыка по тарифу «Про» и выше.</p>
+<form onSubmit="{{ addTrack }}" style="margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end">
+<div class="fl" style="flex: 1 1 260px; min-width: 0"><label for="tr-in" class="lab">Ссылка или название трека</label><input id="tr-in" class="inp" value="{{ addQuery }}" onInput="{{ setAddQuery }}" maxlength="300" placeholder="https://youtube.com/… или название"></div>
+<button type="submit" class="bs" disabled="{{ addOff }}">Добавить в очередь</button>
 </form>
 </section>
 
-<section aria-labelledby="pq-t" style="margin-top: 16px; border-radius: 12px; background: rgb(var(--n-2-rgb) / 0.62); border: 1px solid rgb(var(--n-13-rgb) / 0.10); padding: 20px 24px">
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap"><h2 id="pq-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Очередь</h2><button type="button" onClick="{{ clearQ }}" disabled="{{ noQueue }}" style="height: 36px; padding: 0 12px; border-radius: 6px; border: 1px solid var(--n-6); background: transparent; color: var(--accent-text); font: 500 14px/20px var(--font-sans), system-ui, sans-serif; cursor: pointer">Очистить</button></div>
-<template data-if="noQueue"><p style="margin: 14px 0 0; font-size: 14px; color: var(--n-9)">Очередь пуста.</p></template>
+<section class="card" aria-labelledby="pq-t" style="margin-top: 16px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap"><div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap"><h2 id="pq-t" class="h2">Очередь</h2><span class="mono" style="font-size: 13px; color: var(--n-9)">{{ queueCount }}</span></div><button type="button" class="bd" onClick="{{ clearQ }}" disabled="{{ noQueueOff }}">Очистить очередь</button></div>
+<p class="hint">Что делают кнопки под треком: «В начало» — трек станет первым. «Вверх» и «Вниз» — сдвинут на одно место. «Сыграть сейчас» — трек начнётся сразу, текущий перестанет играть. «Убрать» — трек уйдёт из очереди.</p>
+
+<template data-if="noQueue"><div style="margin-top: 14px; padding: 20px; border: 1px dashed var(--n-6); border-radius: 8px; text-align: center"><p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--n-11)">Очередь пуста. Добавь трек выше или дождись заказов от зрителей.</p><button type="button" class="bs" onClick="{{ goAdd }}" style="margin-top: 12px; height: 36px">Перейти к добавлению</button></div></template>
+
 <ul style="list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
-<template data-for="queueRows" data-as="q"><li style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--n-5)"><span style="min-width: 0; font-size: 14px"><span style="color: var(--n-12)">{{ q.title }}</span> <span style="color: var(--n-9)">{{ q.by }}</span></span><span style="display: flex; gap: 6px; flex-wrap: wrap"><button type="button" class="tag" onClick="{{ q.top }}">В начало</button><button type="button" class="tag" onClick="{{ q.up }}">Вверх</button><button type="button" class="tag" onClick="{{ q.down }}">Вниз</button><button type="button" class="tag" onClick="{{ q.playNow }}">Сыграть сейчас</button><button type="button" class="tag" onClick="{{ q.remove }}">Убрать</button></span></li></template>
+<template data-for="queueRows" data-as="q"><li class="row"><span style="min-width: 0; font-size: 14px; line-height: 20px"><span style="color: var(--n-12)">{{ q.title }}</span> <span style="color: var(--n-9)">{{ q.by }}</span></span><span style="display: flex; gap: 6px; flex-wrap: wrap"><button type="button" class="bsm" onClick="{{ q.top }}" disabled="{{ busyOff }}" aria-label="В начало: {{ q.title }}">В начало</button><button type="button" class="bsm" onClick="{{ q.up }}" disabled="{{ q.upOff }}" aria-label="Вверх: {{ q.title }}">Вверх</button><button type="button" class="bsm" onClick="{{ q.down }}" disabled="{{ q.downOff }}" aria-label="Вниз: {{ q.title }}">Вниз</button><button type="button" class="bsm" onClick="{{ q.playNow }}" disabled="{{ busyOff }}" aria-label="Сыграть сейчас: {{ q.title }}">Сыграть сейчас</button><button type="button" class="bsm" onClick="{{ q.remove }}" disabled="{{ busyOff }}" aria-label="Убрать из очереди: {{ q.title }}">Убрать</button></span></li></template>
 </ul>
 </section>
 
-<section aria-labelledby="pe-t" style="margin-top: 16px; border-radius: 12px; background: rgb(var(--n-2-rgb) / 0.62); border: 1px solid rgb(var(--n-13-rgb) / 0.10); padding: 20px 24px">
-<h2 id="pe-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Ждут одобрения</h2>
-<template data-if="noPending"><p style="margin: 14px 0 0; font-size: 14px; color: var(--n-9)">Новых заказов нет.</p></template>
+<section class="card" aria-labelledby="pe-t" style="margin-top: 16px">
+<h2 id="pe-t" class="h2">Ждут одобрения</h2>
+<p class="hint">Заказы зрителей, которые ждут решения. «Одобрить» — трек встанет в конец очереди. «Отклонить» — заказ отменяется. Если заказ был оплачен наградой Twitch, зрителю вернут награду.</p>
+<template data-if="noPending"><p style="margin: 14px 0 0; font-size: 14px; line-height: 20px; color: var(--n-9)">Новых заказов нет. Когда зритель закажет трек, который нужно одобрить, он появится здесь.</p></template>
 <ul style="list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
-<template data-for="pendRows" data-as="p"><li style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--n-5)"><span style="min-width: 0; font-size: 14px"><span style="color: var(--n-12)">{{ p.title }}</span> <span style="color: var(--n-9)">{{ p.by }}</span></span><span style="display: flex; gap: 6px"><button type="button" class="tag" onClick="{{ p.approve }}">Одобрить</button><button type="button" class="tag" onClick="{{ p.reject }}">Отклонить</button></span></li></template>
+<template data-for="pendRows" data-as="p"><li class="row"><span style="min-width: 0; font-size: 14px; line-height: 20px"><span style="color: var(--n-12)">{{ p.title }}</span> <span style="color: var(--n-9)">{{ p.by }}</span></span><span style="display: flex; gap: 6px; flex-wrap: wrap"><button type="button" class="bsm" onClick="{{ p.approve }}" disabled="{{ busyOff }}" aria-label="Одобрить: {{ p.title }}">Одобрить</button><button type="button" class="bsm" onClick="{{ p.reject }}" disabled="{{ busyOff }}" aria-label="Отклонить: {{ p.title }}">Отклонить</button></span></li></template>
 </ul>
 </section>
-</template>
+
 </template>
 </div>
 </div>
@@ -192,35 +216,53 @@ document.addEventListener('DOMContentLoaded', function () {
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { channels: [], loaded: false, sel: '', st: null, busy: false };
+    this.state = { channels: [], chLoaded: false, chErr: '', sel: '', st: null, stErr: '', netErr: false, stAt: 0, busy: false, addQuery: '', addBusy: false };
   }
   componentDidMount() {
     this.loadChannels();
-    this.timer = setInterval(() => { if (this.state.sel && !document.hidden) this.loadState(true); }, 4000);
+    this.timer = setInterval(() => { if (this.state.sel && !document.hidden) this.loadState(); }, 4000);
   }
   componentWillUnmount() { clearInterval(this.timer); }
   async loadChannels() {
+    this.setState({ chLoaded: false });
     try {
       const r = await StreAPI.get('manage.channels');
-      const sel = this.state.sel || (r.items[0] && r.items[0].login) || '';
-      this.setState({ channels: r.items, sel: sel, loaded: true });
-      if (sel) this.loadState(true);
-    } catch (e) { StreAPI.toast(e.message, 'error'); this.setState({ loaded: true }); }
+      const items = r.items || [];
+      const cur = this.state.sel;
+      const sel = items.some((c) => c.login === cur) ? cur : (items[0] ? items[0].login : '');
+      this.setState({ channels: items, chLoaded: true, chErr: '', sel: sel, st: sel === cur ? this.state.st : null, stErr: '', netErr: false });
+      if (sel) this.loadState();
+    } catch (e) {
+      this.setState({ chLoaded: true, chErr: e.message || 'Попробуй ещё раз' });
+    }
   }
-  async loadState(silent) {
+  // Фоновое обновление очереди. Если связь пропала, данные остаются на экране и показывается «Нет связи, данные на HH:MM»
+  async loadState() {
     const ch = this.state.sel;
     if (!ch) return;
     try {
       const r = await StreAPI.get('manage.state', { channel: ch });
-      if (this.state.sel === ch) this.setState({ st: r });
-    } catch (e) { if (!silent) StreAPI.toast(e.message, 'error'); }
+      if (this.state.sel === ch) this.setState({ st: r, stErr: '', netErr: false, stAt: Date.now() });
+    } catch (e) {
+      if (this.state.sel !== ch) return;
+      const conn = /^(Нет связи|Сервер ответил)/.test(e.message || '');
+      if (conn && this.state.st) this.setState({ netErr: true });
+      else this.setState({ stErr: e.message || 'Попробуй ещё раз', netErr: false });
+    }
+  }
+  pickChannel(login) {
+    if (login === this.state.sel) return;
+    this.setState({ sel: login, st: null, stErr: '', netErr: false });
+    this.loadState();
   }
   async act(action, id) {
     if (this.state.busy) return;
     this.setState({ busy: true });
     try {
       await StreAPI.post('manage.do', { channel: this.state.sel, action: action, id: id || 0 });
-      await this.loadState(true);
+      const done = { next: 'Трек пропущен', top: 'Трек поставлен в начало очереди', up: 'Трек сдвинут вверх', down: 'Трек сдвинут вниз', playnow: 'Трек запущен', remove: 'Трек убран из очереди', approve: 'Заказ одобрен, трек в очереди', reject: 'Заказ отклонён', clear: 'Очередь очищена' };
+      StreAPI.toast(done[action] || 'Готово');
+      await this.loadState();
     } catch (e) { StreAPI.toast(e.message, 'error'); }
     this.setState({ busy: false });
   }
@@ -231,44 +273,85 @@ class Component extends DCLogic {
     this.setState({ addBusy: true });
     try {
       const r = await StreAPI.post('manage.add', { channel: this.state.sel, query: query });
-      StreAPI.toast(r.message || 'Добавлено');
+      StreAPI.toast(r.message || 'Трек добавлен в очередь');
       this.setState({ addQuery: '' });
-      await this.loadState(true);
+      await this.loadState();
     } catch (err) { StreAPI.toast(err.message, 'error'); }
     this.setState({ addBusy: false });
   }
   async toggleOrders() {
+    if (this.state.busy) return;
     const on = !(this.state.st && this.state.st.orders);
+    this.setState({ busy: true });
     try {
       await StreAPI.post('manage.do', { channel: this.state.sel, action: 'orders', on: on });
       StreAPI.toast(on ? 'Заказы музыки включены' : 'Заказы музыки выключены');
-      await this.loadState(true);
+      await this.loadState();
     } catch (e) { StreAPI.toast(e.message, 'error'); }
+    this.setState({ busy: false });
   }
   renderVals() {
     const s = this.state;
     const st = s.st;
-    const q = (x) => x.title || 'Трек';
-    const by = (x) => x.requester ? 'заказал ' + x.requester : '';
-    const queueRows = st ? st.queue.map((x) => ({ title: q(x), by: by(x), up: () => this.act('up', x.id), down: () => this.act('down', x.id), top: () => this.act('top', x.id), playNow: () => this.act('playnow', x.id), remove: () => this.act('remove', x.id) })) : [];
-    const pendRows = st ? st.pending.map((x) => ({ title: q(x), by: by(x), approve: () => this.act('approve', x.id), reject: () => this.act('reject', x.id) })) : [];
-    const chTabs = s.channels.map((c) => ({ label: c.name, sel: s.sel === c.login ? 'true' : 'false', pick: () => { this.setState({ sel: c.login, st: null }); this.loadState(true); } }));
+    const busy = !!s.busy;
+    const title = (x) => x.title || 'Трек';
+    const by = (x) => (x.requester ? 'заказал ' + x.requester : '');
+    const queue = st ? st.queue : [];
+    const queueRows = queue.map((x, i) => ({
+      title: title(x), by: by(x),
+      upOff: busy || i === 0,
+      downOff: busy || i === queue.length - 1,
+      top: () => this.act('top', x.id),
+      up: () => this.act('up', x.id),
+      down: () => this.act('down', x.id),
+      playNow: () => this.act('playnow', x.id),
+      remove: () => this.act('remove', x.id),
+    }));
+    const pendRows = st ? st.pending.map((x) => ({ title: title(x), by: by(x), approve: () => this.act('approve', x.id), reject: () => this.act('reject', x.id) })) : [];
+    const cur = s.channels.find((c) => c.login === s.sel);
+    const chTabs = s.channels.map((c) => ({ label: c.name || c.login, sel: s.sel === c.login ? 'true' : 'false', pick: () => this.pickChannel(c.login) }));
+    const playing = st ? st.playing : null;
+    const noPlaying = !st || !playing;
+    const orders = !!(st && st.orders);
     return {
-      noChannels: s.loaded && s.channels.length === 0,
-      hasChannels: s.channels.length > 0, chTabs,
+      chLoading: !s.chLoaded,
+      chErrShow: s.chLoaded && !!s.chErr,
+      chErrText: s.chErr,
+      retryCh: () => this.loadChannels(),
+      noChannels: s.chLoaded && !s.chErr && s.channels.length === 0,
+      hasChannels: s.channels.length > 0,
+      hasMany: s.channels.length > 1,
+      selName: cur ? (cur.name || cur.login) : '',
+      selLogin: cur ? cur.login : '',
+      chTabs,
+      netShow: !!(st && s.netErr),
+      netText: 'Нет связи, данные на ' + StreAPI.fmtTime(s.stAt / 1000),
+      reloadState: () => this.loadState(),
+      stLoading: !!s.sel && !st && !s.stErr,
+      stErrShow: !!s.sel && !!s.stErr && (!st || !s.netErr),
+      stErrText: (st ? 'Не удалось обновить очередь. ' : 'Не удалось загрузить очередь. ') + s.stErr,
       hasState: !!st,
-      ordersOn: st && st.orders ? 'true' : 'false',
-      ordersNote: st && st.orders ? 'Зрители могут заказывать треки по команде и через награды.' : 'Заказы выключены: зрители не могут добавлять треки.',
+      busyOff: busy,
+      ordersOn: orders ? 'true' : 'false',
+      ordersLabel: orders ? 'Включены' : 'Выключены',
+      ordersNote: orders ? 'Зрители могут заказывать треки по команде в чате и через награды Twitch (заказ за баллы канала). Выключи, чтобы новые заказы перестали приниматься.' : 'Заказы выключены: зрители не могут добавлять треки. Включи, чтобы снова принимать заказы.',
       toggleOrders: () => this.toggleOrders(),
-      playingText: st && st.playing ? 'Играет: ' + q(st.playing) + (st.playing.requester ? ' (заказал ' + st.playing.requester + ')' : '') : 'Сейчас ничего не играет',
-      noPlaying: !st || !st.playing,
+      playingText: playing ? 'Играет: ' + title(playing) + (playing.requester ? ' · заказал ' + playing.requester : '') : 'Сейчас ничего не играет',
+      noPlaying,
+      skipOff: busy || noPlaying,
+      skipNote: noPlaying ? 'Сейчас ничего не играет, поэтому пропускать нечего.' : 'Пропустить — текущий трек сменится следующим из очереди.',
       skip: () => this.act('next'),
-      addQuery: this.state.addQuery || '', setAddQuery: (e) => this.setState({ addQuery: e.target.value }),
-      addBusy: !!this.state.addBusy, addTrack: (e) => this.addTrack(e),
-      noQueue: !st || st.queue.length === 0,
-      clearQ: () => { if (confirm('Очистить очередь? Треки пропустятся.')) this.act('clear'); },
+      addQuery: s.addQuery || '',
+      setAddQuery: (e) => this.setState({ addQuery: e.target.value }),
+      addOff: !!s.addBusy || busy,
+      addTrack: (e) => this.addTrack(e),
+      noQueue: queue.length === 0,
+      noQueueOff: busy || queue.length === 0,
+      queueCount: st ? (queue.length ? 'треков: ' + queue.length : 'пусто') : '',
+      clearQ: () => { if (confirm('Очистить очередь? Все треки из очереди уберутся, вернуть их нельзя. Трек, который играет сейчас, не тронется.')) this.act('clear'); },
+      goAdd: () => { const el = document.getElementById('tr-in'); if (el) el.focus(); },
       queueRows,
-      noPending: !st || st.pending.length === 0,
+      noPending: pendRows.length === 0,
       pendRows,
     };
   }

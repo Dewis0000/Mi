@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<title>StreOps — мои модераторы</title>
+<title>StreOps — помощники музыки</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -13,33 +13,23 @@
 body{margin:0;background:#0A0A0A}
 a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
-.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
 .ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.tab{height:44px;padding:0;border:0;background:transparent;color:#8F8F8F;font:500 14px/20px 'Onest',sans-serif;display:flex;gap:6px;align-items:center;cursor:pointer}
-.tab:hover{color:#F2F2F2}
-.cmd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 20px;border-radius:8px;border:1px solid #2A2A2A;background:#111111}
-.cmd:hover{border-color:#3A3A3A}
-.sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid #6E6E6E;background:transparent;cursor:pointer;flex:none;padding:0}
-.sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:#8F8F8F;transition:transform 180ms cubic-bezier(.2,0,0,1)}
-.sw[aria-checked="true"]{background:#FFFFFF;border-color:#FFFFFF}
-.sw[aria-checked="true"] span{transform:translateX(16px);background:#0A0A0A}
-.ib{width:36px;height:36px;border-radius:6px;border:0;background:transparent;color:#B4B4B4;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.ib:hover{background:rgba(255,255,255,.06);color:#F2F2F2}
+.card{background:rgba(18,18,18,.62);border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:20px 24px;min-width:0;box-sizing:border-box}
+.h2{margin:0;font-size:18px;line-height:24px;font-weight:600}
+.hint{margin:6px 0 0;font-size:13px;line-height:18px;color:#8F8F8F}
+.bp{height:40px;padding:0 16px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 14px/20px 'Onest',system-ui,sans-serif;cursor:pointer}
+.bp:disabled{opacity:.4;cursor:default}
+.bs{height:40px;padding:0 16px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 14px/20px 'Onest',system-ui,sans-serif;cursor:pointer}
+.bs:hover{border-color:#8F8F8F}
+.bs:disabled{opacity:.4;cursor:default}
 .fl{display:flex;flex-direction:column;gap:8px}
-.fl > label,.lab{font-size:13px;line-height:18px;font-weight:500;color:#DCDCDC}
+.lab{font-size:13px;line-height:18px;font-weight:500;color:#DCDCDC}
 .inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 15px/22px 'Onest',sans-serif;width:100%}
 .inp:hover{border-color:#8F8F8F}
-.hint{font-size:12px;line-height:16px;color:#8F8F8F;margin:0}
-.seg{height:36px;padding:0 14px;border:0;border-radius:4px;background:transparent;color:#B4B4B4;font:500 14px/20px 'Onest',sans-serif;cursor:pointer}
-.seg:hover{color:#F2F2F2}
-.tag{height:28px;padding:0 10px;border-radius:4px;border:1px solid #3A3A3A;background:transparent;color:#DCDCDC;font:400 12px/16px 'JetBrains Mono',monospace;cursor:pointer}
-.tag:hover{border-color:#8F8F8F;background:rgba(255,255,255,.04)}
-.rad{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:6px;font-size:14px;color:#DCDCDC;cursor:pointer;border:0;background:transparent;width:100%;text-align:left;font-family:'Onest',sans-serif}
-.rad:hover{background:rgba(255,255,255,.04)}
-.dot{width:18px;height:18px;border-radius:999px;border:1px solid #6E6E6E;box-sizing:border-box;flex:none;display:inline-flex;align-items:center;justify-content:center}
-.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 4px 0 10px;border-radius:4px;background:#1F1F1F;border:1px solid #3A3A3A;font-size:13px}
-.chip button{width:20px;height:20px;border:0;border-radius:3px;background:transparent;color:#8F8F8F;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.chip button:hover{color:#F2F2F2;background:rgba(255,255,255,.08)}
+.step{display:flex;gap:12px;align-items:flex-start}
+.step-n{width:24px;height:24px;flex:none;border-radius:999px;border:1px solid #3A3A3A;display:inline-flex;align-items:center;justify-content:center;font-size:12px;color:#DCDCDC}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;border-radius:8px;border:1px solid #2A2A2A;background:#111111}
+.errbox{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;border:1px solid #3A3A3A;border-radius:8px}
 </style>
 </helmet>
 <div style="min-height: 100vh; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
@@ -54,37 +44,71 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; box-sizing: border-box; max-width: 1920px; margin: 0 auto">
 <nav aria-label="Разделы стрим-панели"></nav>
 <div style="flex: 999 1 640px; min-width: 0">
-<nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px"><li><a href="WebDashboard.dc.html" style="color: #8F8F8F">Стрим-панель</a></li><li aria-hidden="true" style="color: #525252">/</li><li><a href="WebModeration.dc.html" style="color: #8F8F8F">Модерация</a></li><li aria-hidden="true" style="color: #525252">/</li><li aria-current="page" style="color: #F2F2F2">Мои модераторы</li></ol></nav>
-<div style="margin-top: 16px"><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Мои модераторы</h1><p style="margin: 6px 0 0; font-size: 15px; color: #B4B4B4">Помощники управляют музыкой вместе с тобой: включают заказы, пропускают, одобряют и убирают треки. Настройки канала, баны и команды они не меняют. Все их действия видны в журнале модерации.</p></div>
+<nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px"><li><a href="WebDashboard.dc.html" style="color: #8F8F8F">Стрим-панель</a></li><li aria-hidden="true" style="color: #525252">/</li><li aria-current="page" style="color: #F2F2F2">Помощники музыки</li></ol></nav>
+<div style="margin-top: 16px"><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Помощники музыки</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4">Помощник StreOps — это человек, которому ты доверяешь музыку на своём канале. Он ставит треки, пропускает их и решает, какие заказы зрителей принять. Чат он не модерирует. Все его действия видны в журнале модерации.</p></div>
 
-<section aria-labelledby="hl-t" style="margin-top: 32px">
-<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap"><h2 id="hl-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Помощники StreOps</h2><span class="mono" style="font-size: 13px; color: #8F8F8F">{{ countLabel }}</span></div>
+<section class="card" aria-labelledby="cap-t" style="margin-top: 24px">
+<h2 id="cap-t" class="h2">Что может помощник</h2>
+<div style="margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 16px">
+<div><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 600; color: #F2F2F2">Может</p><ul style="margin: 8px 0 0; padding-left: 18px; font-size: 14px; line-height: 22px; color: #DCDCDC"><li>включать и выключать заказы музыки;</li><li>пропускать текущий трек;</li><li>добавлять треки, менять их порядок и убирать из очереди;</li><li>одобрять и отклонять заказы зрителей;</li><li>очищать очередь.</li></ul></div>
+<div><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 600; color: #F2F2F2">Не может</p><ul style="margin: 8px 0 0; padding-left: 18px; font-size: 14px; line-height: 22px; color: #DCDCDC"><li>менять настройки канала;</li><li>банить и наказывать зрителей;</li><li>менять команды и таймеры;</li><li>управлять модераторами Twitch.</li></ul></div>
+</div>
+</section>
+
+<section class="card" aria-labelledby="dif-t" style="margin-top: 16px">
+<h2 id="dif-t" class="h2">Чем помощник отличается от модератора Twitch</h2>
+<p style="margin: 10px 0 0; font-size: 14px; line-height: 22px; color: #DCDCDC">Модераторы Twitch — это отдельный список в самом Twitch. Они работают в чате: удаляют сообщения, дают таймауты и баны. Помощник StreOps отвечает только за музыку.</p>
+<p style="margin: 10px 0 0; font-size: 14px; line-height: 22px; color: #DCDCDC">Список модераторов Twitch меняется в Twitch, а не здесь. <a href="https://dashboard.twitch.tv/" target="_blank" rel="noopener" style="color: #F2F2F2; text-decoration: underline; text-underline-offset: 3px">Открыть Twitch</a></p>
+</section>
+
+<section class="card" aria-labelledby="how-t" style="margin-top: 16px">
+<h2 id="how-t" class="h2">Как добавить помощника</h2>
+<ol style="list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px">
+<li class="step"><span class="step-n" aria-hidden="true">1</span><div style="min-width: 0"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Введи ник Twitch помощника</p><p class="hint">Ник — это имя из адреса twitch.tv/ник. Впиши его в поле ниже. Или сделай помощником одного из модераторов Twitch из списка внизу.</p></div></li>
+<li class="step"><span class="step-n" aria-hidden="true">2</span><div style="min-width: 0"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Нажми «Добавить помощника»</p><p class="hint">Помощник сразу появится в списке. На канал можно добавить до 20 помощников.</p></div></li>
+<li class="step"><span class="step-n" aria-hidden="true">3</span><div style="min-width: 0"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Попроси его войти в StreOps через Twitch</p><p class="hint">После входа у него появится раздел «Управлять каналом», а в нём — твой канал. Тогда он сможет управлять музыкой.</p></div></li>
+</ol>
+</section>
+
+<section class="card" aria-labelledby="hl-t" style="margin-top: 16px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap"><h2 id="hl-t" class="h2">Твои помощники</h2><span class="mono" style="font-size: 13px; color: #8F8F8F">{{ countLabel }}</span></div>
+<p class="hint">Помощник видит твой канал в разделе «Управлять каналом». Под ником написано, сколько раз он действовал с музыкой и когда в последний раз.</p>
+
+<sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}"><p role="status" style="margin: 16px 0 0; font-size: 14px; color: #8F8F8F">Загружаем помощников…</p></sc-if>
+<sc-if value="{{ loadErrShow }}" hint-placeholder-val="{{ false }}"><div role="alert" class="errbox" style="margin-top: 16px"><p style="margin: 0; font-size: 14px; line-height: 20px; color: #DCDCDC">{{ loadErrText }}</p><button type="button" class="bs" onClick="{{ reload }}" style="height: 36px">Повторить</button></div></sc-if>
+
+<sc-if value="{{ noMgr }}" hint-placeholder-val="{{ false }}"><div style="margin-top: 16px; padding: 24px; border: 1px dashed #3A3A3A; border-radius: 8px; text-align: center"><p style="margin: 0; font-size: 15px; line-height: 22px; font-weight: 500">Помощников пока нет</p><p class="hint" style="margin-top: 6px">Добавь первого: впиши ник Twitch в поле ниже и нажми «Добавить помощника».</p><button type="button" class="bs" onClick="{{ focusAdd }}" style="margin-top: 14px">Перейти к добавлению</button></div></sc-if>
+
 <sc-if value="{{ hasMgr }}" hint-placeholder-val="{{ false }}"><ul style="list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
 <sc-for list="{{ mgrs }}" as="m" hint-placeholder-count="3">
-<li class="row" style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 18px; border-radius: 8px; border: 1px solid #2A2A2A; background: #111111">
-<div style="min-width: 0"><span class="mono" style="font-size: 15px; color: #F2F2F2">{{ m.login }}</span><p style="margin: 4px 0 0; font-size: 13px; color: #8F8F8F">{{ m.stat }}</p></div>
-<button type="button" onClick="{{ m.remove }}" aria-label="Убрать помощника {{ m.login }}" style="height: 36px; padding: 0 14px; border-radius: 6px; border: 1px solid #3A3A3A; background: transparent; color: #FF6369; font: 500 14px/20px Onest, system-ui, sans-serif; cursor: pointer">Убрать</button>
+<li class="row">
+<div style="min-width: 0"><span class="mono" style="font-size: 15px; color: #F2F2F2">{{ m.login }}</span><p class="hint" style="margin-top: 4px">{{ m.stat }}</p></div>
+<button type="button" class="bs" onClick="{{ m.remove }}" aria-label="Убрать помощника {{ m.login }}" style="height: 36px">Убрать</button>
 </li>
 </sc-for></ul></sc-if>
-<sc-if value="{{ noMgr }}" hint-placeholder-val="{{ false }}"><p style="margin: 16px 0 0; padding: 24px; border: 1px dashed #3A3A3A; border-radius: 8px; font-size: 14px; line-height: 20px; color: #8F8F8F; text-align: center">Помощников пока нет. Добавь ник Twitch ниже или сделай помощником модератора из списка.</p></sc-if>
 
-<form onSubmit="{{ addSubmit }}" style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end">
-<div class="fl" style="flex: 1 1 240px; max-width: 320px"><label for="mg-in">Ник Twitch</label><input id="mg-in" class="inp mono" value="{{ addIn }}" onChange="{{ setAddIn }}" maxlength="40" placeholder="nick_name"></div>
-<button type="submit" disabled="{{ addBusy }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 14px/20px Onest, system-ui, sans-serif; cursor: pointer">Добавить помощника</button>
+<sc-if value="{{ limitHit }}" hint-placeholder-val="{{ false }}"><p class="hint" style="margin-top: 12px; color: #DCDCDC">{{ limitText }}</p></sc-if>
+
+<form onSubmit="{{ addSubmit }}" style="margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end">
+<div class="fl" style="flex: 1 1 240px; max-width: 320px"><label for="mg-in" class="lab">Ник Twitch</label><input id="mg-in" class="inp mono" value="{{ addIn }}" onInput="{{ setAddIn }}" maxlength="25" placeholder="nick_name" aria-describedby="mg-in-h"><p id="mg-in-h" class="hint" style="margin-top: 0">Латиница, цифры и «_», от 3 до 25 знаков. Без @.</p></div>
+<button type="submit" class="bp" disabled="{{ addBusy }}">Добавить помощника</button>
 </form>
 </section>
 
-<section aria-labelledby="tw-t" style="margin-top: 40px">
-<h2 id="tw-t" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Модераторы в Twitch</h2>
-<p class="hint" style="margin: 6px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">Модераторы из чата Twitch. Сделать помощником можно любого из них.</p>
-<sc-if value="{{ twErr }}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 16px 0 0; padding: 12px 14px; border: 1px solid #2A2A2A; border-radius: 8px; font-size: 14px; line-height: 20px; color: #B4B4B4">{{ twErrText }}</p></sc-if>
-<sc-if value="{{ hasTw }}" hint-placeholder-val="{{ false }}"><ul style="list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<section class="card" aria-labelledby="tw-t" style="margin-top: 16px">
+<h2 id="tw-t" class="h2">Модераторы Twitch</h2>
+<p class="hint">Это модераторы чата из Twitch. Сделать помощником можно любого из них. Модератором в Twitch он останется.</p>
+<sc-if value="{{ loadingTw }}" hint-placeholder-val="{{ false }}"><p role="status" style="margin: 14px 0 0; font-size: 14px; color: #8F8F8F">Загружаем модераторов Twitch…</p></sc-if>
+<sc-if value="{{ twErr }}" hint-placeholder-val="{{ false }}"><div role="alert" class="errbox" style="margin-top: 14px"><p style="margin: 0; font-size: 14px; line-height: 20px; color: #DCDCDC">{{ twErrText }}</p><button type="button" class="bs" onClick="{{ reload }}" style="height: 36px">Повторить</button></div></sc-if>
+<sc-if value="{{ twEmpty }}" hint-placeholder-val="{{ false }}"><p class="hint" style="margin-top: 14px">В чате Twitch пока нет модераторов. Добавить их можно в Twitch.</p></sc-if>
+<sc-if value="{{ hasTw }}" hint-placeholder-val="{{ false }}"><ul style="list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
 <sc-for list="{{ twList }}" as="t" hint-placeholder-count="3">
-<li style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 18px; border-radius: 8px; border: 1px solid #2A2A2A; background: #111111">
-<div><span class="mono" style="font-size: 15px">{{ t.login }}</span> <span style="font-size: 13px; color: #8F8F8F">{{ t.badge }}</span></div>
-<button type="button" onClick="{{ t.make }}" disabled="{{ t.dis }}" style="height: 36px; padding: 0 14px; border-radius: 6px; border: 1px solid #3A3A3A; background: transparent; color: #F2F2F2; font: 500 14px/20px Onest, system-ui, sans-serif; cursor: pointer">{{ t.label }}</button>
+<li class="row" style="padding: 12px 16px">
+<div style="min-width: 0"><span class="mono" style="font-size: 15px; color: #F2F2F2">{{ t.login }}</span><p class="hint" style="margin-top: 2px">{{ t.badge }}</p></div>
+<button type="button" class="bs" onClick="{{ t.make }}" disabled="{{ t.dis }}" style="height: 36px">{{ t.label }}</button>
 </li>
 </sc-for></ul></sc-if>
+<sc-if value="{{ limitHit }}" hint-placeholder-val="{{ false }}"><p class="hint" style="margin-top: 12px">{{ twLimitText }}</p></sc-if>
 </section>
 </div>
 </div>
@@ -94,14 +118,17 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { loaded: false, mgrs: [], twitch: [], twitchErr: '', max: 20, addIn: '', addBusy: false, busy: {} };
+    this.state = { loading: true, loadErr: '', mgrs: [], twitch: [], twitchErr: '', max: 20, addIn: '', addBusy: false };
   }
   componentDidMount() { this.load(); }
   async load() {
+    this.setState({ loading: true });
     try {
       const r = await StreAPI.get('mods.get');
-      this.setState({ mgrs: r.managers, twitch: r.twitch, twitchErr: r.twitchErr || '', max: r.max, loaded: true });
-    } catch (e) { StreAPI.toast(e.message, 'error'); this.setState({ loaded: true }); }
+      this.setState({ mgrs: r.managers || [], twitch: r.twitch || [], twitchErr: r.twitchErr || '', max: r.max || 20, loadErr: '', loading: false });
+    } catch (e) {
+      this.setState({ loadErr: e.message || 'Попробуй ещё раз', loading: false });
+    }
   }
   async add(login) {
     const l = String(login || '').trim().replace(/^@/, '');
@@ -109,43 +136,62 @@ class Component extends DCLogic {
     this.setState({ addBusy: true });
     try {
       await StreAPI.post('mods.add', { login: l });
-      StreAPI.toast('Помощник «' + l + '» добавлен');
+      StreAPI.toast('Помощник «' + l + '» добавлен. Он увидит канал, когда войдёт в StreOps.');
       this.setState({ addIn: '' });
       await this.load();
     } catch (e) { StreAPI.toast(e.message, 'error'); }
     this.setState({ addBusy: false });
   }
   async remove(login) {
-    if (!confirm('Убрать помощника «' + login + '»? Он потеряет доступ к управлению музыкой.')) return;
+    if (!confirm('Убрать помощника «' + login + '»? Он сразу потеряет доступ к музыке. Вернуть его можно, снова добавив ник.')) return;
     try { await StreAPI.post('mods.remove', { login: login }); StreAPI.toast('Помощник убран'); await this.load(); }
     catch (e) { StreAPI.toast(e.message, 'error'); }
   }
+  focusAdd() { const el = document.getElementById('mg-in'); if (el) el.focus(); }
   renderVals() {
     const s = this.state;
     const names = s.mgrs.map((m) => m.login);
     const fmtLast = (ts) => ts ? 'последнее действие: ' + new Date(ts * 1000).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'ещё не действовал';
+    const full = s.mgrs.length >= s.max;
     const mgrs = s.mgrs.map((m) => ({
       login: m.login,
-      stat: 'музыка: ' + m.music + ' действий · ' + fmtLast(m.last),
+      stat: 'действий с музыкой: ' + m.music + ' · ' + fmtLast(m.last),
       remove: () => this.remove(m.login),
     }));
     const twList = s.twitch.map((t) => {
       const isMgr = names.indexOf(t.login) >= 0;
       return {
         login: t.login,
-        badge: isMgr ? '· уже помощник' : '· модератор Twitch',
-        label: isMgr ? 'Помощник' : 'Сделать помощником',
-        dis: isMgr || s.mgrs.length >= s.max,
+        badge: 'модератор Twitch',
+        label: isMgr ? 'Уже помощник' : 'Сделать помощником',
+        dis: isMgr || full,
         make: () => this.add(t.login),
       };
     });
+    const hasMgr = s.mgrs.length > 0;
     return {
-      countLabel: s.mgrs.length + ' из ' + s.max,
-      hasMgr: s.mgrs.length > 0, noMgr: s.loaded && s.mgrs.length === 0, mgrs,
-      twErr: !!s.twitchErr, twErrText: s.twitchErr, hasTw: s.twitch.length > 0, twList,
-      addIn: s.addIn, setAddIn: (e) => this.setState({ addIn: e.target.value }),
+      countLabel: s.loading ? '' : 'Помощников: ' + s.mgrs.length + ' из ' + s.max,
+      loading: !!s.loading,
+      loadingTw: !!s.loading,
+      loadErrShow: !s.loading && !!s.loadErr,
+      loadErrText: 'Не удалось загрузить список помощников. ' + s.loadErr,
+      reload: () => this.load(),
+      noMgr: !s.loading && !s.loadErr && !hasMgr,
+      focusAdd: () => this.focusAdd(),
+      hasMgr,
+      mgrs,
+      limitHit: full,
+      limitText: 'Лимит достигнут: ' + s.mgrs.length + ' из ' + s.max + '. Чтобы добавить нового помощника, убери кого-нибудь из списка.',
+      twLimitText: 'Помощников ' + s.mgrs.length + ' из ' + s.max + ', поэтому сделать помощником нового модератора нельзя. Сначала убери кого-нибудь из списка помощников.',
+      addIn: s.addIn,
+      setAddIn: (e) => this.setState({ addIn: e.target.value }),
       addSubmit: (e) => { if (e && e.preventDefault) e.preventDefault(); this.add(s.addIn); },
       addBusy: !!s.addBusy,
+      twErr: !s.loading && !!s.twitchErr,
+      twErrText: s.twitchErr,
+      twEmpty: !s.loading && !s.loadErr && !s.twitchErr && s.twitch.length === 0,
+      hasTw: s.twitch.length > 0,
+      twList,
     };
   }
 }

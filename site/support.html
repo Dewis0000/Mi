@@ -13,34 +13,27 @@
 <style>
 body{margin:0;background:var(--n-1)}
 a{color:var(--n-12);text-decoration:none}a:hover{color: var(--accent-on)}
+[hidden]{display:none!important}
 .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
-.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--n-9);margin:0}
 .ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.tab{height:44px;padding:0;border:0;background:transparent;color:var(--n-9);font:500 14px/20px var(--font-sans),sans-serif;display:flex;gap:6px;align-items:center;cursor:pointer}
-.tab:hover{color:var(--n-12)}
-.cmd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 20px;border-radius:8px;border:1px solid var(--n-5);background:var(--s-2)}
-.cmd:hover{border-color:var(--n-6)}
-.sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid var(--n-8);background:transparent;cursor:pointer;flex:none;padding:0}
-.sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:var(--n-9);transition:transform 180ms cubic-bezier(.2,0,0,1)}
-.sw[aria-checked="true"]{background:var(--n-13);border-color:var(--n-13)}
-.sw[aria-checked="true"] span{transform:translateX(16px);background:var(--n-1)}
-.ib{width:36px;height:36px;border-radius:6px;border:0;background:transparent;color:var(--n-10);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.ib:hover{background:rgb(var(--n-13-rgb) / .06);color:var(--n-12)}
-.fl{display:flex;flex-direction:column;gap:8px}
-.fl > label,.lab{font-size:13px;line-height:18px;font-weight:500;color:var(--n-11)}
-.inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:var(--s-3);border:1px solid var(--n-8);color:var(--n-12);font:400 15px/22px var(--font-sans),sans-serif;width:100%}
+.card{display:flex;flex-direction:column;gap:12px;min-width:0;padding:20px 22px;border-radius:12px;background:rgb(var(--n-2-rgb) / .62);border:1px solid rgb(var(--n-13-rgb) / .10);box-shadow:inset 0 1px 0 rgb(var(--n-13-rgb) / .06)}
+.h2{margin:0;font-size:18px;line-height:24px;font-weight:600}
+.hint{margin:0;font-size:13px;line-height:18px;color:var(--n-9)}
+.lab{font-size:13px;line-height:18px;font-weight:500;color:var(--n-11)}
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.inp{box-sizing:border-box;height:38px;padding:0 12px;border-radius:6px;background:var(--s-3);border:1px solid var(--n-8);color:var(--n-12);font:400 14px/20px var(--font-sans),sans-serif;width:100%;min-width:0}
 .inp:hover{border-color:var(--n-9)}
-.hint{font-size:12px;line-height:16px;color:var(--n-9);margin:0}
-.seg{height:36px;padding:0 14px;border:0;border-radius:4px;background:transparent;color:var(--n-10);font:500 14px/20px var(--font-sans),sans-serif;cursor:pointer}
-.seg:hover{color:var(--n-12)}
-.tag{height:28px;padding:0 10px;border-radius:4px;border:1px solid var(--n-6);background:transparent;color:var(--n-11);font:400 12px/16px 'JetBrains Mono',monospace;cursor:pointer}
-.tag:hover{border-color:var(--n-9);background:rgb(var(--n-13-rgb) / .04)}
-.rad{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:6px;font-size:14px;color:var(--n-11);cursor:pointer;border:0;background:transparent;width:100%;text-align:left;font-family:var(--font-sans),sans-serif}
-.rad:hover{background:rgb(var(--n-13-rgb) / .04)}
-.dot{width:18px;height:18px;border-radius:999px;border:1px solid var(--n-8);box-sizing:border-box;flex:none;display:inline-flex;align-items:center;justify-content:center}
-.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 4px 0 10px;border-radius:4px;background:var(--n-4);border:1px solid var(--n-6);font-size:13px}
-.chip button{width:20px;height:20px;border:0;border-radius:3px;background:transparent;color:var(--n-9);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.chip button:hover{color:var(--n-12);background:rgb(var(--n-13-rgb) / .08)}
+.btn{height:40px;padding:0 16px;border-radius:6px;border:0;background:var(--n-13);color:var(--n-1);font:500 14px/20px var(--font-sans),sans-serif;cursor:pointer;flex:none}
+.btn:disabled{opacity:.5;cursor:default}
+.btn-s{height:40px;padding:0 16px;border-radius:6px;border:1px solid var(--n-6);background:transparent;color:var(--n-12);font:500 14px/20px var(--font-sans),sans-serif;cursor:pointer;flex:none}
+.btn-s:hover{border-color:var(--n-9)}
+.btn-s:disabled{opacity:.5;cursor:default}
+.note{display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-radius:8px;border:1px solid var(--n-6);background:var(--s-3)}
+.empty{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:20px 16px;border-radius:8px;border:1px dashed var(--n-5)}
+.faq{display:flex;flex-direction:column;min-width:0;border-top:1px solid var(--n-4)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;min-height:48px;padding:12px 0;border:0;background:transparent;color:var(--n-12);font:500 15px/22px var(--font-sans),sans-serif;text-align:left;cursor:pointer}
+.faq-q:hover{color: var(--accent-on)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--n-12);outline-offset:2px}
 </style>
 <style>
 .sb{flex:1 1 200px;max-width:248px;min-width:200px;align-self:flex-start;position:sticky;top:88px;box-sizing:border-box;padding:12px;border-radius:8px;background:rgb(var(--n-13-rgb) / .03);border:1px solid rgb(var(--n-13-rgb) / .06);display:flex;flex-direction:column;gap:2px;font-family:var(--font-sans),system-ui,sans-serif}
@@ -130,32 +123,75 @@ document.addEventListener('DOMContentLoaded', function () {
 <a href="support.html" class="sb-i" aria-current="page" data-kw="помощь вопрос обращение"><svg class="sb-ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Поддержка</a>
 </nav>
 <div style="flex: 999 1 640px; min-width: 0">
-<nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px"><li><a href="panel.html" style="color: var(--n-9)">Стрим-панель</a></li><li aria-hidden="true" style="color: var(--n-7)">/</li><li><span style="color: var(--n-9)">Чат-бот</span></li><li aria-hidden="true" style="color: var(--n-7)">/</li><li aria-current="page" style="color: var(--n-12)">Поддержка</li></ol></nav>
+<nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px"><li><a href="panel.html" style="color: var(--n-9)">Стрим-панель</a></li><li aria-hidden="true" style="color: var(--n-7)">/</li><li><a href="panel.html" style="color: var(--n-9)">Обзор</a></li><li aria-hidden="true" style="color: var(--n-7)">/</li><li aria-current="page" style="color: var(--n-12)">Поддержка</li></ol></nav>
+
 <div style="margin-top: 16px">
 <h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Поддержка</h1>
-<p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--n-10)">Напиши, что нужно: вопросы по настройке, ошибки, оплата. Ответ придёт сюда же, в этот чат.</p>
+<p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--n-10)">Сначала загляни в частые вопросы: часто ответ там уже есть. Если нет, напиши в чат ниже. Ответ придёт в этот же чат.</p>
 </div>
-<div style="margin-top: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; align-items: start">
 
-<section aria-labelledby="sc-chat" style="display: flex; flex-direction: column; gap: 12px; padding: 20px 22px; border-radius: 12px; background: rgb(var(--n-2-rgb) / 0.72); border: 1px solid rgb(var(--n-13-rgb) / 0.10); box-shadow: inset 0 1px 0 rgb(var(--n-13-rgb) / 0.06); min-height: 420px">
-<h2 id="sc-chat" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">Чат с поддержкой</h2>
-<div role="log" aria-live="polite" aria-label="Сообщения" style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-height: 240px; max-height: 480px; overflow-y: auto; padding-right: 4px">
-<template data-if="empty"><p style="margin: auto; padding: 24px; text-align: center; font-size: 14px; line-height: 20px; color: var(--n-9)">Сообщений пока нет. Опиши проблему — администратор ответит здесь.</p></template>
-<template data-for="msgs" data-as="m"><div style="max-width: 78%; padding: 10px 12px; border-radius: 10px; font-size: 14px; line-height: 20px; white-space: pre-wrap; overflow-wrap: anywhere; {{ m.style }}"><span style="display: block; margin-bottom: 2px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; opacity: .7">{{ m.who }} · {{ m.time }}</span>{{ m.text }}</div></template>
-</div>
-<form onSubmit="{{ send }}" style="display: flex; gap: 8px; align-items: flex-end">
-<label for="sc-in" class="vh" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Сообщение в поддержку</label>
-<textarea id="sc-in" rows="2" maxlength="1000" value="{{ text }}" onChange="{{ setText }}" placeholder="Напиши сообщение" style="flex: 1; box-sizing: border-box; padding: 10px 12px; border-radius: 6px; background: var(--s-3); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px/20px var(--font-sans), sans-serif; resize: vertical"></textarea>
-<button type="submit" disabled="{{ sending }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: var(--n-13); color: var(--n-1); font: 500 14px/20px var(--font-sans), sans-serif; cursor: pointer; flex: none">{{ sendLabel }}</button>
-</form>
-<template data-if="hasErr"><p role="alert" style="margin: 0; padding: 10px 12px; border: 2px solid var(--n-12); border-radius: 6px; font-size: 13px; line-height: 18px">{{ err }}</p></template>
+<section class="card" aria-labelledby="sp-faq" style="margin-top: 24px">
+<h2 id="sp-faq" class="h2">Частые вопросы</h2>
+<p class="hint">Нажми на вопрос, чтобы увидеть ответ.</p>
+<template data-for="faq" data-as="f"><div class="faq">
+<button type="button" class="faq-q" aria-expanded="{{ f.exp }}" aria-controls="{{ f.id }}" onClick="{{ f.toggle }}"><span>{{ f.q }}</span><span aria-hidden="true" class="mono" style="font-size: 18px; line-height: 20px; color: var(--n-9)">{{ f.mark }}</span></button>
+<div id="{{ f.id }}" hidden="{{ f.closed }}" style="padding: 0 0 16px; font-size: 14px; line-height: 22px; color: var(--n-10); white-space: pre-line">{{ f.a }}</div>
+</div></template>
 </section>
 
-<section aria-labelledby="sc-code" style="display: flex; flex-direction: column; gap: 12px; padding: 20px 22px; border-radius: 12px; background: rgb(var(--n-2-rgb) / 0.72); border: 1px solid rgb(var(--n-13-rgb) / 0.10); box-shadow: inset 0 1px 0 rgb(var(--n-13-rgb) / 0.06)">
-<h2 id="sc-code" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">Помощь с настройкой</h2>
-<p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--n-10)">Если хочешь, чтобы администратор сам настроил канал, создай код. Он действует один час и работает один раз. Все входы записываются, а доступ закрывается сам по истечении часа.</p>
-<template data-if="hasCode"><div style="padding: 14px 16px; border-radius: 8px; border: 1px dashed var(--n-6); display: flex; flex-direction: column; gap: 6px"><span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--n-9)">Код поддержки</span><span class="mono" style="font-size: 26px; line-height: 30px; letter-spacing: .14em; color: var(--n-12)">{{ code }}</span><span style="font-size: 13px; color: var(--n-10)">{{ codeUntilLabel }}. Передай его администратору StreOps.</span></div></template>
-<div><button type="button" onClick="{{ makeCode }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 1px solid var(--n-6); background: transparent; color: var(--n-12); font: 500 14px/20px var(--font-sans), sans-serif; cursor: pointer">{{ codeLabel }}</button></div>
+<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; align-items: start">
+
+<section class="card" aria-labelledby="sp-chat" style="min-height: 460px">
+<h2 id="sp-chat" class="h2">Написать в поддержку</h2>
+<p class="hint">Ответим здесь, в этом чате. Точный срок ответа пока не обещаем.</p>
+
+<template data-if="histLoading"><p role="status" style="margin: 0; font-size: 14px; line-height: 20px; color: var(--n-10)">Загружаем переписку…</p></template>
+
+<template data-if="hasHistErr"><div role="alert" class="note"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Не получилось загрузить переписку</p><p style="margin: 0; font-size: 13px; line-height: 18px; color: var(--n-10)">{{ histErr }}</p><div><button type="button" class="btn-s" onClick="{{ retryLoad }}">Повторить</button></div></div></template>
+
+<template data-if="histEmpty"><div class="empty"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Обращений пока нет</p><p class="hint" style="line-height: 19px">Опиши, что случилось: что делал, чего ждал и что увидел. Ответы поддержки появятся здесь.</p></div></template>
+
+<div role="log" aria-live="polite" aria-label="Сообщения" style="display: flex; flex-direction: column; gap: 8px; max-height: 420px; overflow-y: auto; padding-right: 4px">
+<template data-for="msgs" data-as="m"><div style="max-width: 78%; padding: 10px 12px; border-radius: 10px; font-size: 14px; line-height: 20px; white-space: pre-wrap; overflow-wrap: anywhere; {{ m.style }}"><span style="display: block; margin-bottom: 2px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; opacity: .7">{{ m.who }} · {{ m.time }}</span>{{ m.text }}</div></template>
+</div>
+
+<template data-if="hasPollErr"><div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap"><span class="hint">Не удалось обновить переписку. {{ pollErr }}</span><button type="button" class="btn-s" onClick="{{ retryLoad }}" style="height: 32px; padding: 0 10px; font-size: 13px">Повторить</button></div></template>
+
+<form onSubmit="{{ send }}" style="display: flex; flex-direction: column; gap: 10px">
+<div class="fld">
+<label class="lab" for="sp-topic">Тема (необязательно)</label>
+<select id="sp-topic" class="inp" value="{{ topic }}" onChange="{{ setTopic }}"><option value="">Выбери тему</option><option value="Настройка бота">Настройка бота</option><option value="Музыка и заказы">Музыка и заказы</option><option value="Оплата и тариф">Оплата и тариф</option><option value="Ошибка в панели">Ошибка в панели</option><option value="Другое">Другое</option></select>
+</div>
+<div class="fld">
+<label class="lab" for="sp-in">Сообщение</label>
+<textarea id="sp-in" rows="3" maxlength="900" value="{{ text }}" onChange="{{ setText }}" placeholder="Что случилось: что делал, чего ждал и что увидел" style="box-sizing: border-box; padding: 10px 12px; border-radius: 6px; background: var(--s-3); border: 1px solid var(--n-8); color: var(--n-12); font: 400 14px/20px var(--font-sans), sans-serif; resize: vertical; width: 100%"></textarea>
+<p class="hint">Не присылай пароли и ключи: токен канала и ключ OBS.</p>
+</div>
+<div><button type="submit" class="btn" disabled="{{ sendOff }}">{{ sendLabel }}</button></div>
+</form>
+
+<template data-if="hasSendErr"><div role="alert" class="note"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Сообщение не отправлено</p><p style="margin: 0; font-size: 13px; line-height: 18px; color: var(--n-10)">{{ sendErr }}. Текст сохранён, его можно отправить снова.</p><div><button type="button" class="btn-s" onClick="{{ retrySend }}" disabled="{{ sending }}">Повторить</button></div></div></template>
+</section>
+
+<section class="card" aria-labelledby="sp-code">
+<h2 id="sp-code" class="h2">Код для администратора</h2>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--n-10)">Нужен, если сам не можешь разобраться и доверяешь администратору StreOps. По коду администратор войдёт в твой аккаунт и поможет на месте.</p>
+<ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; line-height: 19px; color: var(--n-10)">
+<li><span style="color: var(--n-12)">Что он получит:</span> доступ как у тебя. Администратор увидит и сможет поменять настройки, команды, тариф и подключения.</li>
+<li><span style="color: var(--n-12)">Срок:</span> код действует 1 час и работает один раз. После входа доступ по таймеру не закрывается: завершить его может только администратор, когда закончит.</li>
+<li><span style="color: var(--n-12)">Контроль:</span> все входы администратора записываются.</li>
+<li><span style="color: var(--n-12)">Не работает?</span> Значит, код истёк или уже был использован. Создай новый.</li>
+</ul>
+
+<template data-if="hasCode"><div style="padding: 14px 16px; border-radius: 8px; border: 1px dashed var(--n-6); display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--n-9)">Код для администратора</span>
+<span class="mono" style="font-size: 26px; line-height: 30px; letter-spacing: .14em; color: var(--n-12)">{{ code }}</span>
+<span style="font-size: 13px; line-height: 18px; color: var(--n-10)">{{ codeUntilLabel }}. Передай его администратору StreOps и не публикуй в чате.</span>
+</div></template>
+
+<template data-if="hasCodeErr"><div role="alert" class="note"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Код не создан</p><p style="margin: 0; font-size: 13px; line-height: 18px; color: var(--n-10)">{{ codeErr }}</p><div><button type="button" class="btn-s" onClick="{{ makeCode }}" disabled="{{ making }}">Повторить</button></div></div></template>
+
+<div><button type="button" class="btn-s" onClick="{{ makeCode }}" disabled="{{ making }}">{{ codeLabel }}</button></div>
 </section>
 </div>
 </div>
@@ -164,41 +200,87 @@ document.addEventListener('DOMContentLoaded', function () {
 </template>
 <script src="assets/dc-lite.js?v=5f8ce08a"></script>
 <script>
+// Частые вопросы: ответы по текущему поведению сервиса
+const FAQ = [
+  {
+    q: 'Как подключить бота к каналу?',
+    a: 'Открой «Стрим-панель» → «Обзор» и нажми «Подключить бота». Бот станет модератором твоего канала и напишет в чат, что подключён.\nЕсли кнопка неактивна и подписана «Ждём администратора», бот ещё не настроен на сервисе. Напиши в поддержку ниже: там подскажут, что делать.',
+  },
+  {
+    q: 'Почему не играет музыка?',
+    a: 'Проверь по порядку:\n1. Музыка доступна с тарифа «Про». На «Бесплатном» и «Продвинутой» музыки нет, команда в чате молчит.\n2. Треки играют там, где открыт плеер: во вкладке «Музыка и заказы» в панели или в OBS по ссылке из блока «Плеер для OBS». Закрыл вкладку, и музыка остановилась.\n3. На странице включён «Приём заказов» и включена команда заказа.\n4. Если трек ждёт, включена ручная проверка: одобри его в очереди.\n5. Если пишет «Плеер YouTube не загрузился», проверь интернет и отключи блокировщик рекламы для этой страницы.',
+  },
+  {
+    q: 'Как работает тариф и оплата?',
+    a: 'Оплата проходит на странице ЮKassa: картой или через СБП, что доступно в форме. Тариф включается, как только оплата подтверждена, и действует 30 дней.\nАвтосписаний нет. Когда срок закончится, аккаунт вернётся на бесплатный тариф, а команды и настройки сохранятся.\nПредоплаты нет: каждый тариф оплачивается отдельно, когда он нужен.',
+  },
+  {
+    q: 'Как удалить аккаунт?',
+    a: 'Нажми свой ник в правом верхнем углу, найди блок «Опасная зона» и нажми «Удалить аккаунт». Подтверди, введя свой ник.\nУдалятся команды, настройки, история чата, розыгрыши, очередь музыки и сам аккаунт. Бот отключится от канала. Отменить удаление нельзя.\nЗаписи об оплатах останутся: это история платежей.',
+  },
+];
+
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { items: [], loaded: false, text: '', sending: false, err: '', code: '', codeUntil: 0, making: false };
+    this.state = {
+      faqOpen: -1,
+      items: [], loaded: false, histBusy: false, histErr: '', pollErr: '',
+      text: '', topic: '', sending: false, sendErr: '',
+      code: '', codeUntil: 0, making: false, codeErr: '',
+    };
   }
   componentDidMount() {
     this.load(false);
     this.timer = setInterval(() => this.load(true), 5000);
   }
   componentWillUnmount() { clearInterval(this.timer); }
+
+  // Переписка: первая загрузка и «Повторить» показывают состояние загрузки. Фоновое обновление тихое.
   async load(quiet) {
+    if (!quiet) this.setState({ histBusy: true });
     try {
       const r = await StreAPI.get('support.list');
-      if (JSON.stringify(r.items) !== JSON.stringify(this.state.items)) this.setState({ items: r.items, loaded: true });
-      else if (!this.state.loaded) this.setState({ loaded: true });
-    } catch (e) { if (!quiet) StreAPI.toast(e.message, 'error'); this.setState({ loaded: true }); }
+      const changed = JSON.stringify(r.items) !== JSON.stringify(this.state.items);
+      this.setState({ histBusy: false, loaded: true, histErr: '', pollErr: '', items: changed ? r.items : this.state.items });
+    } catch (e) {
+      // если переписка уже видна, ошибка фонового обновления не должна выглядеть как пустой список
+      if (this.state.loaded) this.setState({ histBusy: false, pollErr: e.message || 'Нет связи с сервером.' });
+      else this.setState({ histBusy: false, histErr: e.message || 'Нет связи с сервером.' });
+    }
   }
+
+  toggleFaq(i) {
+    this.setState({ faqOpen: this.state.faqOpen === i ? -1 : i });
+  }
+
   async send(e) {
     if (e && e.preventDefault) e.preventDefault();
-    const t = this.state.text.trim();
-    if (!t || this.state.sending) return;
-    this.setState({ sending: true, err: '' });
+    const raw = this.state.text.trim();
+    if (!raw || this.state.sending) return;
+    // тема уходит первой строкой текста: отдельного поля в API нет
+    const text = (this.state.topic ? 'Тема: ' + this.state.topic + '\n' : '') + raw;
+    this.setState({ sending: true, sendErr: '' });
     try {
-      const r = await StreAPI.post('support.send', { text: t });
-      this.setState({ items: r.items, text: '', sending: false });
-    } catch (err) { this.setState({ sending: false, err: err.message }); }
+      const r = await StreAPI.post('support.send', { text });
+      this.setState({ items: r.items, loaded: true, histErr: '', text: '', topic: '', sending: false });
+    } catch (err) {
+      // текст не очищаем: его можно отправить снова кнопкой «Повторить»
+      this.setState({ sending: false, sendErr: err.message || 'Нет связи с сервером.' });
+    }
   }
+
   async makeCode() {
-    this.setState({ making: true, err: '' });
+    this.setState({ making: true, codeErr: '' });
     try {
       const r = await StreAPI.post('account.supportCode');
       this.setState({ code: r.code, codeUntil: r.until, making: false });
       StreAPI.toast('Код создан. Передай его администратору.');
-    } catch (e) { this.setState({ making: false, err: e.message }); }
+    } catch (e) {
+      this.setState({ making: false, codeErr: e.message || 'Нет связи с сервером.' });
+    }
   }
+
   renderVals() {
     const s = this.state;
     const time = (ts) => new Date(ts * 1000).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
@@ -213,14 +295,31 @@ class Component extends DCLogic {
     });
     const until = s.codeUntil ? new Date(s.codeUntil * 1000).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }) : '';
     return {
-      msgs, empty: s.loaded && !msgs.length,
+      faq: FAQ.map((f, i) => {
+        const open = s.faqOpen === i;
+        return { id: 'sp-faq-' + i, q: f.q, a: f.a, exp: open ? 'true' : 'false', closed: !open, mark: open ? '−' : '+', toggle: () => this.toggleFaq(i) };
+      }),
+      histLoading: s.histBusy && !s.loaded,
+      hasHistErr: !s.loaded && !s.histBusy && !!s.histErr,
+      histErr: s.histErr,
+      retryLoad: () => this.load(false),
+      hasPollErr: s.loaded && !!s.pollErr,
+      pollErr: s.pollErr,
+      histEmpty: s.loaded && !msgs.length && !s.histErr,
+      msgs,
       text: s.text, setText: (e) => this.setState({ text: e.target.value }),
-      send: (e) => this.send(e), sending: !!s.sending,
-      sendLabel: s.sending ? 'Отправка…' : 'Отправить',
-      hasErr: !!s.err, err: s.err,
+      topic: s.topic, setTopic: (e) => this.setState({ topic: e.target.value }),
+      send: (e) => this.send(e),
+      retrySend: () => this.send(),
+      sending: !!s.sending,
+      sendOff: !!s.sending || !s.text.trim(),
+      sendLabel: s.sending ? 'Отправляем…' : 'Отправить',
+      hasSendErr: !!s.sendErr, sendErr: s.sendErr,
       hasCode: !!s.code, code: s.code, codeUntilLabel: 'Действует до ' + until,
       makeCode: () => this.makeCode(),
-      codeLabel: s.making ? 'Создаём…' : (s.code ? 'Создать новый код' : 'Создать код на 1 час'),
+      making: !!s.making,
+      codeLabel: s.making ? 'Создаём…' : (s.code ? 'Создать новый код' : 'Создать код для администратора'),
+      hasCodeErr: !!s.codeErr, codeErr: s.codeErr,
     };
   }
 }

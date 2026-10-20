@@ -16,13 +16,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
 .ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
 .ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.sec{padding:20px;border-radius:8px;border:1px solid #2A2A2A;background:#111111;display:flex;flex-direction:column;gap:14px}
-.sec h2{margin:0;font-size:17px;line-height:24px;font-weight:600}
+.card{padding:20px 22px;box-sizing:border-box;border-radius:12px;border:1px solid rgba(255,255,255,.10);background:rgba(18,18,18,.62);display:flex;flex-direction:column;gap:14px}
+.card h2,.ttl{margin:0;font-size:18px;line-height:24px;font-weight:600}
+.sub{margin:0;font-size:15px;line-height:22px;font-weight:600;color:#F2F2F2}
+.advbtn{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;padding:0;border:0;background:transparent;color:#F2F2F2;font-family:'Onest',sans-serif;text-align:left;cursor:pointer}
+.advbtn:focus-visible{outline:2px solid #F2F2F2;outline-offset:4px;border-radius:4px}
+.fairlist{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:13px;line-height:19px;color:#B4B4B4}
+.errb{margin:0;padding:12px 14px;border:1px solid #B4B4B4;border-radius:8px;font-size:14px;line-height:20px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;color:#F2F2F2}
+.linkb{background:none;border:0;padding:0;color:#B4B4B4;text-decoration:underline;font:inherit;cursor:pointer}
+.linkb:hover{color:#F2F2F2}
+.empty{display:flex;flex-direction:column;gap:8px;align-items:flex-start;padding:14px;border:1px dashed #3A3A3A;border-radius:8px}
 .lab{font-size:13px;line-height:18px;font-weight:500;color:#DCDCDC}
 .inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 15px/22px 'Onest',sans-serif;width:100%}
 .inp:disabled{border-color:#2A2A2A;color:#8F8F8F}
 .inp[aria-invalid="true"]{border:2px solid #F2F2F2}
-.hint{font-size:12px;line-height:16px;color:#8F8F8F;margin:0}
+.hint{font-size:13px;line-height:18px;color:#8F8F8F;margin:0}
 .seg{height:34px;padding:0 12px;border:0;border-radius:4px;background:transparent;color:#B4B4B4;font:500 13px/18px 'Onest',sans-serif;cursor:pointer;white-space:nowrap}
 .seg:hover{color:#F2F2F2}
 .seg:disabled{cursor:not-allowed}
@@ -41,9 +49,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 .bs{height:44px;padding:0 16px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 14px/20px 'Onest',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .bs:hover{background:rgba(255,255,255,.04);border-color:#6E6E6E}
 .bs:disabled{color:#525252;border-color:#2A2A2A;cursor:not-allowed}
-.bd{color:#FF6369}
+.bd{color:#F2F2F2;border-color:#D92D20}
 .sm{height:30px;padding:0 10px;border-radius:4px;font-size:12px}
-.card{flex:none;width:120px;height:148px;box-sizing:border-box;border-radius:8px;background:#171717;border:1px solid #3A3A3A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:10px;position:relative;overflow:hidden}
+.pcard{flex:none;width:120px;height:148px;box-sizing:border-box;border-radius:8px;background:#171717;border:1px solid #3A3A3A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:10px;position:relative;overflow:hidden}
 .av{border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-weight:600;color:#0A0A0A;flex:none}
 .pr{display:grid;grid-template-columns:28px minmax(0,1fr) 84px 64px;gap:10px;align-items:center;padding:8px 0;border-top:1px solid #1F1F1F;font-size:13px}
 .step{display:flex;align-items:center;gap:8px;font-size:13px;color:#8F8F8F}
@@ -73,7 +81,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 <main style="flex: 999 1 720px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
 <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
-<div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Розыгрыши</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; max-width: 640px">Зрители входят ключевым словом в чате или просто активностью. Победителя выбирает сервер по заранее объявленному seed, рулетка показывает результат, а итог можно проверить.</p></div>
+<div><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Розыгрыши</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; max-width: 640px">Розыгрыш — это случайный выбор победителя среди зрителей, которые хотят участвовать. Зрители входят, написав ключевое слово в чат (или любое сообщение — по выбору). Когда сбор закончится, ты выбираешь победителя, а бот объявляет его в чате.</p></div>
 <ol aria-label="Этапы розыгрыша" style="list-style: none; margin: 0; padding: 0; display: flex; gap: 16px; flex-wrap: wrap">
 <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4"><li class="step" style="{{ s.style }}" aria-current="{{ s.cur }}"><b style="{{ s.dot }}">{{ s.n }}</b>{{ s.label }}</li></sc-for>
 </ol>
@@ -83,6 +91,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 <sc-if value="{{ botOff }}" hint-placeholder-val="{{ false }}"><div role="alert" style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 16px; border: 1px dashed #B4B4B4; border-radius: 8px; font-size: 14px; line-height: 20px"><span>{{ botOffText }}</span><button type="button" class="bs" style="height: 36px" onClick="{{ enableBot }}" disabled="{{ botBusy }}">{{ botBtnLabel }}</button></div></sc-if>
 </div>
 
+<sc-if value="{{ staleErr }}" hint-placeholder-val="{{ false }}"><div role="alert" class="errb" style="margin-bottom: 16px">Нет связи с сервером. Показаны последние данные.<button type="button" class="bs" onClick="{{ retryPoll }}">Повторить</button></div></sc-if>
 <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
 
 <!-- ===== НАСТРОЙКА ===== -->
@@ -91,14 +100,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 <sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><p class="note"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; margin-top: 1px"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Пока идёт розыгрыш, условия менять нельзя: так честнее для участников. Здесь показаны условия текущего розыгрыша.</p></sc-if>
 </div>
 
-<section class="sec" aria-labelledby="pz">
-<h2 id="pz">Приз</h2>
-<div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="prize">Что разыгрываем</label><input id="prize" class="inp" maxlength="200" autocomplete="off" placeholder="Например, ключ игры в Steam" value="{{ f.prize }}" onChange="{{ setPrize }}" disabled="{{ locked }}" aria-invalid="{{ prizeInvalid }}"></div>
-<div style="display: flex; flex-direction: column; gap: 8px"><span class="lab" id="wn">Победителей</span><span role="radiogroup" aria-labelledby="wn" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px"><sc-for list="{{ winnersOpt }}" as="o" hint-placeholder-count="4"><button type="button" role="radio" class="seg mono" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ locked }}" style="{{ o.style }}">{{ o.label }}</button></sc-for></span><p class="hint">Победителей выбирают по одному: после первого появится кнопка «Следующий победитель».</p></div>
+<section class="card" aria-labelledby="pq">
+<h2 id="pq">Быстрый розыгрыш</h2>
+<p class="hint">Заполнит слово «!участвую», сбор 5 минут и одного победителя. Приз всё равно впиши ниже.</p>
+<div><button type="button" class="bs" onClick="{{ fillPreset }}" disabled="{{ locked }}">Заполнить форму</button></div>
 </section>
 
-<section class="sec" aria-labelledby="hw">
+<section class="card" aria-labelledby="pz">
+<h2 id="pz">Приз</h2>
+<div style="display: flex; flex-direction: column; gap: 8px"><label class="lab" for="prize">Что разыгрываем</label><input id="prize" class="inp" maxlength="200" autocomplete="off" placeholder="Например, ключ игры в Steam" value="{{ f.prize }}" onChange="{{ setPrize }}" disabled="{{ locked }}" aria-invalid="{{ prizeInvalid }}"><p class="hint">Коротко: что получит победитель. Бот напишет это в чат при старте.</p></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><span class="lab" id="wn">Победителей</span><span role="radiogroup" aria-labelledby="wn" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px"><sc-for list="{{ winnersOpt }}" as="o" hint-placeholder-count="4"><button type="button" role="radio" class="seg mono" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ locked }}" style="{{ o.style }}">{{ o.label }}</button></sc-for></span><p class="hint">Один победитель — самый простой вариант. Если выбрать несколько, их выбирают по очереди: после первого появится кнопка «Следующий победитель».</p></div>
+</section>
+
+<section class="card" aria-labelledby="hw">
 <h2 id="hw">Как участвовать</h2>
+<p class="hint">Зрители входят одним из двух способов. Бот в чате сам напишет, что делать.</p>
 <div role="radiogroup" aria-label="Способ участия" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
 <sc-for list="{{ entryOpt }}" as="o" hint-placeholder-count="2"><button type="button" role="radio" class="mode" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ locked }}" style="{{ o.style }}"><span style="font-size: 14px; font-weight: 500">{{ o.label }}</span><span class="hint">{{ o.note }}</span></button></sc-for>
 </div>
@@ -109,21 +125,28 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 <div style="display: flex; flex-direction: column; gap: 8px"><span class="lab" id="tmr">Сбор участников</span><span role="radiogroup" aria-labelledby="tmr" style="display: inline-flex; align-self: flex-start; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px"><sc-for list="{{ timerOpt }}" as="o" hint-placeholder-count="4"><button type="button" role="radio" class="seg" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ locked }}" style="{{ o.style }}">{{ o.label }}</button></sc-for></span><p class="hint">{{ timerHint }}</p></div>
 </section>
 
-<section class="sec" aria-labelledby="rl">
-<h2 id="rl">Правила и защита от накрутки</h2>
+<section class="card" aria-labelledby="adv">
+<button type="button" id="adv" class="advbtn" aria-expanded="{{ advAria }}" aria-controls="advBody" onClick="{{ toggleAdv }}"><span style="min-width: 0"><span class="ttl" style="display: block">Расширенные настройки</span><span class="hint">Правила против накрутки, подтверждение победителя, анимация и проверка честности. Обычно их не нужно трогать.</span></span><span aria-hidden="true" style="flex: none; font-size: 18px; color: #B4B4B4">{{ advChev }}</span></button>
+<sc-if value="{{ advOpen }}" hint-placeholder-val="{{ false }}"><div id="advBody" style="display: flex; flex-direction: column; gap: 16px">
+<h3 class="sub">Правила против накрутки</h3>
 <div>
 <sc-for list="{{ rules }}" as="r" hint-placeholder-count="5"><div class="row"><span><span style="display: block">{{ r.label }}</span><span class="hint">{{ r.note }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ r.on }}" aria-label="{{ r.label }}" onClick="{{ r.toggle }}" disabled="{{ locked }}"><span></span></button></div></sc-for>
 </div>
 <p class="hint">Правила проверяются в момент входа. Известные боты (Nightbot, StreamElements и другие) не участвуют никогда.</p>
-</section>
-
-<section class="sec" aria-labelledby="an">
-<h2 id="an">Как выбрать победителя</h2>
+<h3 class="sub" id="an">Как показать выбор</h3>
 <div role="radiogroup" aria-label="Анимация выбора" style="display: flex; gap: 8px; flex-wrap: wrap">
 <sc-for list="{{ modeOpt }}" as="o" hint-placeholder-count="3"><button type="button" role="radio" class="mode" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" disabled="{{ spinningNow }}" style="{{ o.style }}"><span style="font-size: 14px; font-weight: 500">{{ o.label }}</span><span class="hint">{{ o.note }}</span></button></sc-for>
 </div>
 <p class="hint">Анимация только показывает результат: победителя заранее выбирает сервер. В OBS-оверлее всегда лента-рулетка.</p>
 <div class="row"><span><span style="display: block">Победитель подтверждает участие</span><span class="hint">При объявлении бот попросит написать в чат за 60 секунд. Ответ отметится на сцене, без ответа — перевыбери</span></span><button type="button" role="switch" class="sw" aria-checked="{{ confirmOn }}" aria-label="Победитель подтверждает участие" onClick="{{ toggleConfirm }}" disabled="{{ locked }}"><span></span></button></div>
+<h3 class="sub" id="fair">Как проверить честность</h3>
+<p class="hint">Проверить можно самому, не доверяя боту на слово:</p>
+<ol class="fairlist">
+<li>Перед стартом бот пишет в чат хэш секретного числа (seed). Хэш — это «отпечаток»: по нему число не угадать, но и подменить его потом незаметно нельзя.</li>
+<li>После розыгрыша бот раскрывает сам seed. Кнопка «Проверить» в истории пересчитывает отпечаток прямо в браузере и сверяет его с тем, что бот объявил в начале.</li>
+<li>Победитель выбирается по seed и порядку входа. У каждого участника есть «билеты»: обычный — 2, подписчик с удачей — 4, VIP — 3. Чем больше билетов, тем выше шанс.</li>
+</ol>
+</div></sc-if>
 </section>
 </form>
 
@@ -142,9 +165,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 <div style="position: relative; {{ arenaH }}; display: flex; align-items: center; justify-content: center">
 
-<sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 14px; color: #8F8F8F">{{ loadingText }}</p></sc-if>
+<sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}"><div style="text-align: center; max-width: 420px; padding: 24px"><p style="margin: 0; font-size: 14px; line-height: 20px; color: #B4B4B4">{{ loadingText }}</p><sc-if value="{{ loadFail }}" hint-placeholder-val="{{ false }}"><button type="button" class="bs" onClick="{{ retryPoll }}" style="margin-top: 12px">Повторить</button></sc-if></div></sc-if>
 
-<sc-if value="{{ isSetup }}" hint-placeholder-val="{{ true }}"><div style="text-align: center; max-width: 420px; padding: 24px"><svg class="ic" width="40" height="40" viewBox="0 0 24 24" aria-hidden="true" style="color: #8F8F8F"><rect x="3" y="8" width="18" height="13" rx="1"></rect><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1s6 1 6 1zM12 8c2-4 6-4 6-1s-6 1-6 1z"></path></svg><p style="margin: 16px 0 0; font-size: 20px; font-weight: 600">Розыгрыш ещё не начат</p><p style="margin: 8px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">Проверь условия слева и запусти сбор. Бот сам напишет в чат, как участвовать.</p></div></sc-if>
+<sc-if value="{{ isSetup }}" hint-placeholder-val="{{ true }}"><div style="text-align: center; max-width: 420px; padding: 24px"><svg class="ic" width="40" height="40" viewBox="0 0 24 24" aria-hidden="true" style="color: #8F8F8F"><rect x="3" y="8" width="18" height="13" rx="1"></rect><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1s6 1 6 1zM12 8c2-4 6-4 6-1s-6 1-6 1z"></path></svg><p style="margin: 16px 0 0; font-size: 20px; font-weight: 600">Розыгрыш ещё не начат</p><p style="margin: 8px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">Проверь условия слева и нажми «Начать сбор участников». Бот сам напишет в чат, как участвовать.</p></div></sc-if>
 
 <sc-if value="{{ collectEmpty }}" hint-placeholder-val="{{ false }}"><div style="text-align: center; max-width: 420px; padding: 24px"><p style="margin: 0; font-size: 20px; font-weight: 600">Ждём участников</p><p style="margin: 8px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">{{ collectEmptyText }}</p></div></sc-if>
 
@@ -153,7 +176,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 <div aria-hidden="true" style="position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform: scale({{ scale }})">
 <div style="position: absolute; left: 0; top: -74px; display: flex; gap: 8px; will-change: transform; transform: translateX({{ stripX }}px); transition: {{ stripT }}">
 <sc-for list="{{ strip }}" as="c" hint-placeholder-count="12">
-<div class="card" style="{{ c.style }}">
+<div class="pcard" style="{{ c.style }}">
 <span style="position: absolute; left: 0; right: 0; top: 0; height: 3px; {{ c.bar }}"></span>
 <span class="av" style="width: 52px; height: 52px; font-size: 16px; background: {{ c.bg }}">{{ c.ini }}</span>
 <span style="font-size: 13px; font-weight: 500; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ c.nick }}</span>
@@ -205,7 +228,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 <sc-if value="{{ hasActErr }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert">{{ actErr }}</p></sc-if>
 </div>
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
-<span class="mono" style="font-size: 11px; color: #6E6E6E">{{ seedLine }} · <a href="#fair" style="color: #8F8F8F; text-decoration: underline">как проверить честность</a></span>
+<span class="mono" style="font-size: 11px; color: #6E6E6E">{{ seedLine }} · <button type="button" class="linkb" onClick="{{ showFair }}">как проверить честность</button></span>
 <div style="display: flex; gap: 8px; flex-wrap: wrap">
 <sc-if value="{{ isSetupBtn }}" hint-placeholder-val="{{ true }}"><button type="button" class="bp" onClick="{{ start }}" disabled="{{ cantStart }}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="#0A0A0A"></path></svg>{{ startLabel }}</button></sc-if>
 <sc-if value="{{ collecting }}" hint-placeholder-val="{{ false }}"><button type="button" class="bs bd" onClick="{{ cancel }}" disabled="{{ busyAny }}">{{ cancelLabel }}</button><button type="button" class="bp" onClick="{{ drawFirst }}" disabled="{{ cantDraw }}">{{ drawLabel }}</button></sc-if>
@@ -219,7 +242,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 
 <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
-<section class="sec" aria-labelledby="pt" style="flex: 1 1 340px; min-width: 0">
+<section class="card" aria-labelledby="pt" style="flex: 1 1 340px; min-width: 0">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><h2 id="pt">Участники</h2><span class="hint">{{ peopleHint }}</span></div>
 <div>
 <sc-if value="{{ peopleMsg }}" hint-placeholder-val="{{ true }}"><p style="margin: 0; padding: 24px 0; text-align: center; font-size: 14px; line-height: 20px; color: #8F8F8F">{{ peopleText }}</p></sc-if>
@@ -230,7 +253,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 </div>
 </section>
 
-<section class="sec" aria-labelledby="bm" style="flex: 1 1 300px; min-width: 0">
+<section class="card" aria-labelledby="bm" style="flex: 1 1 300px; min-width: 0">
 <h2 id="bm">Что напишет бот</h2>
 <div style="display: flex; flex-direction: column; gap: 10px; font-size: 13px; line-height: 19px">
 <sc-for list="{{ botMsgs }}" as="m" hint-placeholder-count="3"><div><p class="hint" style="margin-bottom: 4px">{{ m.when }}</p><p style="margin: 0; padding: 8px 10px; border-radius: 4px; background: rgba(255,255,255,0.04); overflow-wrap: anywhere"><b style="font-weight: 500; color: #8F8F8F">{{ botName }}</b> {{ m.text }}</p></div></sc-for>
@@ -239,19 +262,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 </section>
 </div>
 
-<section class="sec" aria-labelledby="hs">
+<section class="card" aria-labelledby="hs">
 <h2 id="hs">История розыгрышей</h2>
+<p class="hint">Прошлые розыгрыши, их победители и кнопка «Проверить» для каждого.</p>
 <div>
-<sc-if value="{{ histMsg }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 16px 0; text-align: center; font-size: 14px; color: #8F8F8F">{{ histText }}</p></sc-if>
+<sc-if value="{{ histLoad }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 16px 0; text-align: center; font-size: 14px; color: #B4B4B4">Загружаем…</p></sc-if>
+<sc-if value="{{ histFail }}" hint-placeholder-val="{{ false }}"><div role="alert" class="errb">Не удалось загрузить историю. Проверь связь и попробуй ещё раз.<button type="button" class="bs" onClick="{{ retryPoll }}">Повторить</button></div></sc-if>
+<sc-if value="{{ histEmpty }}" hint-placeholder-val="{{ false }}"><div class="empty"><p style="margin: 0; font-size: 14px">Розыгрышей ещё не было.</p><p class="hint">После каждого розыгрыша здесь появятся итоги: призы, победители и кнопка «Проверить», которая сверяет seed.</p><button type="button" class="bs" onClick="{{ fillPreset }}" disabled="{{ locked }}">Заполнить быстрый розыгрыш</button></div></sc-if>
 <sc-if value="{{ hasHist }}" hint-placeholder-val="{{ true }}"><div style="overflow-x: auto"><table style="width: 100%; min-width: 680px; border-collapse: collapse; font-size: 13px">
 <thead><tr style="text-align: left; color: #8F8F8F"><th style="font-weight: 500; padding: 8px 12px 8px 0">Дата</th><th style="font-weight: 500; padding: 8px 12px">Приз</th><th style="font-weight: 500; padding: 8px 12px">Участников</th><th style="font-weight: 500; padding: 8px 12px">Победители</th><th style="font-weight: 500; padding: 8px 12px">Статус</th><th style="font-weight: 500; padding: 8px 0 8px 12px">Честность</th></tr></thead>
 <tbody>
 <sc-for list="{{ history }}" as="h" hint-placeholder-count="4"><tr style="border-top: 1px solid #1F1F1F"><td class="mono" style="padding: 10px 12px 10px 0; color: #8F8F8F; white-space: nowrap">{{ h.d }}</td><td style="padding: 10px 12px">{{ h.p }}</td><td class="mono" style="padding: 10px 12px">{{ h.n }}</td><td style="padding: 10px 12px">{{ h.w }}</td><td style="padding: 10px 12px"><span style="display: inline-flex; height: 22px; align-items: center; padding: 0 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; {{ h.style }}">{{ h.s }}</span></td><td style="padding: 10px 0 10px 12px; white-space: nowrap"><span class="mono" style="font-size: 11px; color: #8F8F8F">{{ h.hash }}</span> <button type="button" class="bs sm" onClick="{{ h.check }}" aria-expanded="{{ h.openAttr }}">{{ h.checkLabel }}</button></td></tr><sc-if value="{{ h.open }}" hint-placeholder-val="{{ false }}"><tr><td colspan="6" style="padding: 0 0 12px"><div style="padding: 10px 12px; border-radius: 6px; background: rgba(255,255,255,0.04); font-size: 12px; line-height: 18px; display: flex; flex-direction: column; gap: 4px"><span>seed: <span class="mono" style="color: #F2F2F2; overflow-wrap: anywhere">{{ h.seed }}</span></span><span>sha256(seed): <span class="mono" style="overflow-wrap: anywhere">{{ h.calc }}</span></span><span>объявлено при старте: <span class="mono" style="overflow-wrap: anywhere">{{ h.seedHash }}</span></span><b style="font-weight: 500">{{ h.verdict }}</b></div></td></tr></sc-if></sc-for>
 </tbody></table></div></sc-if>
-</div>
-<div id="fair" style="padding: 12px 14px; border-radius: 6px; border: 1px dashed #3A3A3A; font-size: 13px; line-height: 19px; color: #B4B4B4">
-<p style="margin: 0 0 6px; color: #F2F2F2; font-weight: 500">Как проверить честность</p>
-<ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px"><li>При старте бот пишет в чат начало sha256-хэша секретного seed. Подменить seed потом незаметно нельзя.</li><li>После завершения бот публикует сам seed. Кнопка «Проверить» считает sha256(seed) прямо в браузере и сравнивает с хэшем, объявленным заранее.</li><li>Победитель раунда r (0 — первый выбор, каждый следующий выбор или перевыбор +1): первые 12 hex-символов sha256(«seed:r») → число, остаток от деления на сумму весов оставшихся участников в порядке входа, отсчёт по весам. Вес — 2, с «удачей» у подписчика 4, у VIP 3.</li></ol>
 </div>
 </section>
 </section>
@@ -264,7 +286,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    const DEF = { prize: '', keyword: '!участвую', winners: 1, duration: 120, entry: 'word', rules: { followers: false, noNew: true, noMods: true, luck: true, noRecent: true, confirm: true } };
+    const DEF = { prize: '', keyword: '!участвую', winners: 1, duration: 300, entry: 'word', rules: { followers: false, noNew: true, noMods: true, luck: true, noRecent: true, confirm: true } };
     const saved = this.lsGet('stre.gw.form', null);
     const form = Object.assign({}, DEF, saved || {}, { rules: Object.assign({}, DEF.rules, (saved && saved.rules) || {}) });
     const mode = this.lsGet('stre.gw.mode', 'roulette');
@@ -276,7 +298,7 @@ class Component extends DCLogic {
       ann: this.lsGet('stre.gw.ann', {}),
       fs: false, fsFallback: false, scale: 1,
       obsShow: false, obsCopied: false, obsBg: [0, 1, 2].indexOf(this.lsGet('stre.gw.obsBg', 0)) >= 0 ? this.lsGet('stre.gw.obsBg', 0) : 0,
-      open: {}, calc: {}, skew: 0, tick: 0,
+      open: {}, calc: {}, skew: 0, tick: 0, advOpen: false,
     };
     this.reqId = 0; this.appliedId = 0; this.lastJson = '';
   }
@@ -341,6 +363,9 @@ class Component extends DCLogic {
   calcScale() { return Math.max(1, Math.min(2.4, Math.min(window.innerWidth / 1000, (window.innerHeight - 170) / 430))); }
 
   // ---------- действия ----------
+  retryPoll() { this.setState({ loadErr: '' }); this.poll(); }
+  fillPreset() { if (this.state.cur) return; this.setF({ keyword: '!участвую', entry: 'word', duration: 300, winners: 1 }); StreAPI.toast('Заполнено: слово !участвую, сбор 5 минут, один победитель'); }
+  showFair() { this.setState({ advOpen: true }); setTimeout(() => { const el = document.getElementById('fair'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 60); }
   setF(p) { if (!this.state.cur) this.setState({ form: Object.assign({}, this.state.form, p), prizeInvalid: false, actErr: '' }); }
   async start() {
     const f = this.state.form;
@@ -508,10 +533,10 @@ class Component extends DCLogic {
     const f = c ? { prize: c.prize, keyword: c.keyword, winners: c.winnersCount, entry: (c.rules && c.rules.entry) || 'word', duration: c.endsAt ? c.endsAt - c.createdAt : 0, rules: c.rules || {} } : s.form;
     const opts = (list, v) => (list.indexOf(v) >= 0 ? list : list.concat([v]).sort((a, b) => (a || 1e9) - (b || 1e9)));
     const RU = [
-      ['followers', 'Только фолловеры', 'Подписчики, VIP и модераторы проходят без проверки'],
+      ['followers', 'Только фолловеры', 'Участвовать могут только фолловеры. Подписчики, VIP и модераторы проходят без проверки'],
       ['noNew', 'Без новых аккаунтов', 'Аккаунтам моложе 7 дней участие закрыто'],
       ['noMods', 'Без модераторов', 'Модераторы и ты сам не участвуете'],
-      ['luck', 'Удача подписчиков', 'Подписчикам шанс ×2, VIP ×1,5'],
+      ['luck', 'Удача подписчиков', 'Подписчики и VIP получают больше шансов: подписчикам ×2, VIP ×1,5'],
       ['noRecent', 'Без недавних победителей', 'Кто выигрывал у тебя за 7 дней, не участвует'],
     ];
     const EN = [['word', 'Слово в чат', 'Пишут ключевое слово'], ['active', 'Все, кто пишет', 'Любое сообщение во время сбора']];
@@ -556,7 +581,7 @@ class Component extends DCLogic {
       return { ini: this.ini(e.name), bg: this.shade(e.login), nick: e.name, role: won ? e.role + ' · победитель' : e.role, chance: this.pct(e.chance), bar: Math.round(e.chance / maxCh * 100) + '%', rowStyle: won ? 'background: rgba(255,255,255,0.06)' : '' };
     });
     let peopleText = '';
-    if (!s.loaded) peopleText = 'Загрузка…';
+    if (!s.loaded) peopleText = s.loadErr ? 'Не удалось загрузить участников. Попробуем снова сами.' : 'Загружаем…';
     else if (!c) peopleText = 'Список появится после старта сбора';
     else if (!entries.length) peopleText = f.entry === 'active' ? 'Пока никого. Участником станет каждый, кто напишет в чат.' : 'Пока никого. Бот уже написал в чат, что нужно отправить ' + f.keyword + '.';
 
@@ -621,12 +646,15 @@ class Component extends DCLogic {
       fsPressed: fsOn ? 'true' : 'false', fsLabel: fsOn ? 'Свернуть (Esc)' : 'На весь экран',
       fsIcon: fsOn ? 'M9 3v6H3M15 3v6h6M9 21v-6H3M15 21v-6h6' : 'M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6',
       toggleFs: () => this.toggleFs(),
-      phaseLabel: !s.loaded ? 'Загрузка' : ({ setup: 'Подготовка', collecting: ended ? 'Сбор окончен — пора выбирать' : 'Идёт сбор участников', spinning: 'Выбираем победителя', winner: c && c.winnersCount > 1 ? 'Победители: ' + winners.length + ' из ' + c.winnersCount : 'Победитель выбран' })[phase],
+      phaseLabel: !s.loaded ? (s.loadErr ? 'Нет связи' : 'Загружаем…') : ({ setup: 'Подготовка', collecting: ended ? 'Сбор окончен — пора выбирать' : 'Идёт сбор участников', spinning: 'Выбираем победителя', winner: c && c.winnersCount > 1 ? 'Победители: ' + winners.length + ' из ' + c.winnersCount : 'Победитель выбран' })[phase],
       stageTitle: c ? c.prize : (s.form.prize.trim() || 'Новый розыгрыш'),
       countNum: StreAPI.fmtNum(count), countWord: this.plural(count, ['участник', 'участника', 'участников']),
       showTimer, timerLabel: c && c.endsAt ? this.mmss(c.endsAt - now) : '', timerNote: ended ? 'сбор закрыт' : 'до конца сбора',
 
-      isLoading: !s.loaded, loadingText: s.loadErr ? 'Не удалось загрузить розыгрыш: ' + s.loadErr + ' Повторим через пару секунд.' : 'Загрузка…',
+      isLoading: !s.loaded, loadFail: !s.loaded && !!s.loadErr, staleErr: s.loaded && !!s.loadErr, retryPoll: () => this.retryPoll(),
+      loadingText: s.loadErr ? 'Не удалось загрузить розыгрыш: ' + s.loadErr : 'Загружаем…',
+      advOpen: !!s.advOpen, advAria: s.advOpen ? 'true' : 'false', advChev: s.advOpen ? '▴' : '▾',
+      toggleAdv: () => this.setState({ advOpen: !this.state.advOpen }), showFair: () => this.showFair(), fillPreset: () => this.fillPreset(),
       isSetup: s.loaded && phase === 'setup',
       collectEmpty: phase === 'collecting' && !entries.length,
       collectEmptyText: f.entry === 'active' ? 'Участником станет каждый, кто напишет в чат во время сбора.' : 'Зрители входят, когда пишут в чат ' + f.keyword + '. Список обновляется сам.',
@@ -666,7 +694,7 @@ class Component extends DCLogic {
       hasMore: count > entries.length, moreText: 'Показаны последние ' + entries.length + ' · и ещё ' + StreAPI.fmtNum(count - entries.length) + ' ' + this.plural(count - entries.length, ['участник', 'участника', 'участников']),
       botMsgs, botName: (s.me && s.me.bot && s.me.bot.login) || 'StreOps',
 
-      histMsg: !s.loaded || !s.history.length, histText: !s.loaded ? 'Загрузка…' : 'Розыгрышей ещё не было. Итоги с seed для проверки появятся здесь.',
+      histLoad: !s.loaded && !s.loadErr, histFail: !s.loaded && !!s.loadErr, histEmpty: s.loaded && !s.history.length,
       hasHist: s.history.length > 0, history,
     };
   }

@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <title>StreOps — модерация</title>
-<script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
@@ -38,6 +37,10 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 .bp:hover{background:#DCDCDC}
 .bs:disabled,.bp:disabled{opacity:.5;cursor:not-allowed}
 .danger{color:#FF6369}
+.lvl{display:flex;flex-direction:column;align-items:stretch;min-width:0;padding:12px 14px;border-radius:8px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:400 14px/20px 'Onest',sans-serif;text-align:left;cursor:pointer}
+.lvl:hover{background:rgba(255,255,255,.04);border-color:#6E6E6E}
+.lvl[aria-pressed="true"]{background:rgba(255,255,255,.06)}
+.lvl:disabled{opacity:.5;cursor:not-allowed}
 .flt{padding:18px 20px;border-radius:8px;border:1px solid #2A2A2A;background:#111111;display:flex;flex-direction:column;gap:14px;min-width:0}
 .k{font-size:13px;color:#8F8F8F;margin:0}
 .big{margin:8px 0 0;font-size:28px;line-height:32px;font-weight:500;letter-spacing:-.02em}
@@ -60,7 +63,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 .held{display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding:14px 16px;border-radius:8px;border:1px dashed #8F8F8F;background:repeating-linear-gradient(135deg,rgba(255,255,255,.03) 0 1px,transparent 1px 7px)}
 .tag{height:26px;padding:0 8px;border-radius:4px;border:1px solid #3A3A3A;background:transparent;color:#DCDCDC;font:400 12px/16px 'JetBrains Mono',monospace;cursor:pointer}
 .tag:hover{border-color:#8F8F8F;background:rgba(255,255,255,.04)}
-@media (max-width: 900px){.tr{grid-template-columns:52px minmax(0,1fr) auto}.tr .hide{display:none}.mob{display:block}.hb{grid-template-columns:120px minmax(0,1fr) 40px}}
+@media (max-width: 900px){.tr{grid-template-columns:52px minmax(0,1fr) auto}.tr .hide{display:none}.mob{display:block}}
 </style>
 </helmet>
 <div style="min-height: 100vh; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
@@ -82,33 +85,51 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 <nav aria-label="Разделы стрим-панели"></nav>
 
 <main style="flex: 999 1 680px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
-<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap">
 <div style="min-width: 0"><h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Модерация</h1><p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4; max-width: 640px">{{ subtitle }}</p></div>
-<div style="display: flex; gap: 8px; flex-wrap: wrap">
-<div style="display: flex; align-items: center; gap: 12px; padding: 6px 6px 6px 14px; border-radius: 8px; border: 1px solid #3A3A3A"><span id="auto-l" style="font-size: 14px">Автомодерация</span><button type="button" role="switch" class="sw" aria-checked="{{ autoOn }}" aria-labelledby="auto-l" onClick="{{ toggleAuto }}" disabled="{{ noCfg }}"><span></span></button></div>
-<button type="button" onClick="{{ toggleShield }}" aria-pressed="{{ shieldPressed }}" disabled="{{ shieldDisabled }}" title="{{ shieldTitle }}" style="{{ shieldStyle }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>{{ shieldLabel }}</button>
-</div>
-</div>
 
 <sc-if value="{{ botOff }}" hint-placeholder-val="{{ false }}">
-<div class="note"><span style="flex: 1 1 320px"><b style="font-weight: 600">Бот выключен.</b> Фильтры не проверяют чат, очередь и журнал не пополняются. Включи бота — он станет модератором канала и начнёт следить за сообщениями.</span><button type="button" class="bp" onClick="{{ enableBot }}" disabled="{{ botBusy }}">{{ botBtn }}</button></div>
+<div class="note"><span style="flex: 1 1 320px"><b style="font-weight: 600">Бот выключен.</b> Фильтры не проверяют чат, очередь и журнал не пополняются. Включи бота: он станет модератором канала и начнёт следить за сообщениями.</span><button type="button" class="bp" onClick="{{ enableBot }}" disabled="{{ botBusy }}">{{ botBtn }}</button></div>
 </sc-if>
 <sc-if value="{{ botWarn }}" hint-placeholder-val="{{ false }}">
 <div class="note"><span style="flex: 1 1 320px"><b style="font-weight: 600">Бот включён, но Twitch сообщил о проблеме:</b> {{ botError }}</span><button type="button" class="bs" onClick="{{ enableBot }}" disabled="{{ botBusy }}">{{ botRetryBtn }}</button></div>
 </sc-if>
 <sc-if value="{{ autoOff }}" hint-placeholder-val="{{ false }}">
-<div class="note"><span style="flex: 1 1 320px"><b style="font-weight: 600">Автомодерация выключена.</b> Бот не проверяет сообщения фильтрами. Режимы чата, очередь, журнал и ручные действия работают.</span><button type="button" class="bs" onClick="{{ toggleAuto }}">Включить</button></div>
+<div class="note"><span style="flex: 1 1 320px"><b style="font-weight: 600">Автомодерация выключена.</b> Бот не проверяет сообщения фильтрами. Очередь, журнал и ручные действия работают.</span><button type="button" class="bs" onClick="{{ toggleAuto }}">Включить</button></div>
 </sc-if>
 <sc-if value="{{ shieldOn }}" hint-placeholder-val="{{ false }}">
-<div role="status" style="display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border: 2px solid #F2F2F2; border-radius: 8px; background: repeating-linear-gradient(135deg, rgba(255,255,255,0.08) 0 2px, transparent 2px 6px)"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><div><p style="margin: 0; font-weight: 600">Режим щита включён</p><p style="margin: 2px 0 0; font-size: 13px; line-height: 18px; color: #DCDCDC">Twitch применяет ограничения щита, которые настроены в панели автора на Twitch: например, писать могут только проверенные аккаунты. Выключи, когда атака закончится.</p></div></div>
+<div role="status" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 14px 16px; border: 2px solid #F2F2F2; border-radius: 8px; background: repeating-linear-gradient(135deg, rgba(255,255,255,0.08) 0 2px, transparent 2px 6px)"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span style="flex: 1 1 320px; min-width: 0"><span style="display: block; font-weight: 600">Режим щита включён</span><span style="display: block; margin-top: 2px; font-size: 13px; line-height: 18px; color: #DCDCDC">Twitch применяет ограничения щита из панели автора на Twitch, например: писать могут только проверенные аккаунты. Выключи, когда атака закончится.</span></span><button type="button" class="bs" onClick="{{ toggleShield }}" disabled="{{ shieldBusy }}">Выключить щит</button></div>
 </sc-if>
 <sc-if value="{{ saveFailed }}" hint-placeholder-val="{{ false }}">
-<div role="alert" class="alert" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: space-between"><span style="flex: 1 1 320px"><b style="font-weight: 600">Настройки не сохранились:</b> {{ saveErr }}. Повторим автоматически, изменения на странице не потеряются.</span><span style="display: flex; gap: 6px; flex-wrap: wrap"><button type="button" class="bs" onClick="{{ revert }}">Вернуть сохранённое</button><button type="button" class="bp" onClick="{{ retrySave }}">Повторить сейчас</button></span></div>
+<div role="alert" class="alert" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: space-between"><span style="flex: 1 1 320px"><b style="font-weight: 600">Настройки не сохранились:</b> {{ saveErr }}. Повторим автоматически, изменения на странице не потеряются.</span><span style="display: flex; gap: 6px; flex-wrap: wrap"><button type="button" class="bs" onClick="{{ revert }}">Вернуть сохранённое</button><button type="button" class="bs" onClick="{{ retrySave }}">Повторить сейчас</button></span></div>
 </sc-if>
+
+<!-- ============ УРОВЕНЬ ЗАЩИТЫ (главный блок) ============ -->
+<section class="card" aria-labelledby="lvl-t" style="padding: 20px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap">
+<div style="min-width: 0; flex: 1 1 320px">
+<h2 id="lvl-t" style="margin: 0; font-size: 20px; font-weight: 600">Уровень защиты</h2>
+<p style="margin: 4px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">Насколько строго бот следит за чатом. Выбери готовый набор: фильтры и наказания поменяются сразу.</p>
+</div>
+<p style="margin: 0; font-size: 14px; color: #DCDCDC">Сейчас: <b style="font-weight: 600">{{ lvlCurrent }}</b></p>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 14px; border: 1px solid #3A3A3A; border-radius: 8px">
+<span style="min-width: 0"><span id="auto-l" style="display: block; font-size: 15px; font-weight: 500">Автомодерация</span><span style="display: block; margin-top: 2px; font-size: 13px; line-height: 18px; color: #8F8F8F">{{ autoHint }}</span></span>
+<button type="button" role="switch" class="sw" aria-checked="{{ autoOn }}" aria-labelledby="auto-l" onClick="{{ toggleAuto }}" disabled="{{ noCfg }}"><span></span></button>
+</div>
+<sc-if value="{{ cfgLoading }}" hint-placeholder-val="{{ false }}"><p class="empty">Загружаем настройки…</p></sc-if>
+<sc-if value="{{ cfgFailed }}" hint-placeholder-val="{{ false }}"><div role="alert" class="alert" style="display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap"><span style="flex: 1 1 260px">Не удалось загрузить настройки: {{ cfgErr }}. Уровень защиты появится, когда настройки загрузятся.</span><button type="button" class="bs" onClick="{{ reloadCfg }}">Повторить</button></div></sc-if>
+<sc-if value="{{ hasCfg }}" hint-placeholder-val="{{ true }}">
+<div role="group" aria-label="Готовые уровни защиты" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 10px">
+<sc-for list="{{ levels }}" as="lv" hint-placeholder-count="3"><button type="button" class="lvl" aria-pressed="{{ lv.sel }}" disabled="{{ lv.off }}" onClick="{{ lv.pick }}" style="{{ lv.style }}"><span style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><span style="font-size: 15px; font-weight: 600">{{ lv.label }}</span><span class="mono" style="font-size: 11px; color: #DCDCDC">{{ lv.tag }}</span></span><span style="display: block; margin-top: 6px; font-size: 13px; line-height: 18px; color: #B4B4B4">{{ lv.desc }}</span></button></sc-for>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 18px; color: #DCDCDC">Не проверяем: {{ exemptText }}. Меняются фильтры и лестница наказаний. Списки слов и ссылок, исключения и текст предупреждения остаются как есть.</p>
+<sc-if value="{{ levelCustom }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 13px; line-height: 18px; color: #8F8F8F">Фильтры и лестницу ты настроил вручную. Выбор уровня заменит эти настройки.</p></sc-if>
+</sc-if>
+</section>
 
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 4px 16px; flex-wrap: wrap; border-bottom: 1px solid #2A2A2A">
 <div role="tablist" aria-label="Разделы модерации" style="display: flex; gap: 28px; overflow-x: auto; max-width: 100%">
-<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4"><button role="tab" type="button" class="tab" id="{{ t.id }}" aria-controls="{{ t.panel }}" aria-selected="{{ t.sel }}" tabindex="{{ t.ti }}" onClick="{{ t.pick }}" onKeyDown="{{ t.key }}" style="{{ t.style }}">{{ t.label }}<sc-if value="{{ t.hasN }}" hint-placeholder-val="{{ false }}"><span class="mono" style="font-size: 12px; padding: 1px 6px; border: 1px solid #6E6E6E; border-radius: 4px; color: #F2F2F2">{{ t.n }}</span></sc-if></button></sc-for>
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3"><button role="tab" type="button" class="tab" id="{{ t.id }}" aria-controls="{{ t.panel }}" aria-selected="{{ t.sel }}" tabindex="{{ t.ti }}" onClick="{{ t.pick }}" onKeyDown="{{ t.key }}" style="{{ t.style }}">{{ t.label }}<sc-if value="{{ t.hasN }}" hint-placeholder-val="{{ false }}"><span class="mono" style="font-size: 12px; padding: 1px 6px; border: 1px solid #6E6E6E; border-radius: 4px; color: #F2F2F2">{{ t.n }}</span></sc-if></button></sc-for>
 </div>
 <span role="status" aria-live="polite" style="display: inline-flex; align-items: center; gap: 6px; min-height: 32px; font-size: 12px; color: {{ saveColor }}"><sc-if value="{{ saveOk }}" hint-placeholder-val="{{ true }}"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg></sc-if>{{ saveLabel }}</span>
 </div>
@@ -117,7 +138,17 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 <sc-if value="{{ tA }}" hint-placeholder-val="{{ true }}">
 <div role="tabpanel" id="panel-analytics" aria-labelledby="tab-analytics" style="display: flex; flex-direction: column; gap: 24px">
 <p style="margin: 0; font-size: 14px; color: #B4B4B4">{{ periodLabel }}</p>
-<sc-if value="{{ statsFailed }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert" style="margin: 0">Не удалось загрузить статистику: {{ statsErr }}. Пробуем снова каждые 10 секунд.</p></sc-if>
+
+<section class="card" aria-labelledby="rec-t" style="padding: 20px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap"><h2 id="rec-t" style="margin: 0; font-size: 17px; font-weight: 600">Последние действия</h2><button type="button" class="bs" style="height: 32px" onClick="{{ goJournal }}">Вся история</button></div>
+<p style="margin: 4px 0 6px; font-size: 13px; line-height: 18px; color: #8F8F8F">Последние 10 записей журнала: что бот или модератор сделал и почему.</p>
+<sc-if value="{{ recFailed }}" hint-placeholder-val="{{ false }}"><div role="alert" class="alert" style="margin: 8px 0; display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap"><span style="flex: 1 1 260px">Не удалось загрузить действия: {{ recErrText }}. Пробуем снова каждые 10 секунд.</span><button type="button" class="bs" onClick="{{ reloadRecent }}">Повторить</button></div></sc-if>
+<sc-for list="{{ recent }}" as="r" hint-placeholder-count="4"><div style="display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid #1F1F1F; font-size: 13px"><span class="mono" style="font-size: 12px; color: #8F8F8F">{{ r.time }}</span><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap"><b style="font-weight: 500">{{ r.nick }}</b> <span style="color: #8F8F8F">{{ r.reason }}</span></span><span class="badge" style="{{ r.badge }}">{{ r.action }}</span></div></sc-for>
+<sc-if value="{{ recLoading }}" hint-placeholder-val="{{ false }}"><p class="empty" style="margin-top: 8px">Загружаем…</p></sc-if>
+<sc-if value="{{ recEmpty }}" hint-placeholder-val="{{ false }}"><p class="empty" style="margin-top: 8px">{{ recEmptyText }}</p></sc-if>
+</section>
+
+<sc-if value="{{ statsFailed }}" hint-placeholder-val="{{ false }}"><div role="alert" class="alert" style="display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap"><span style="flex: 1 1 260px">Не удалось загрузить статистику: {{ statsErr }}. Пробуем снова каждые 10 секунд.</span><button type="button" class="bs" onClick="{{ retryStats }}">Повторить</button></div></sc-if>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px">
 <sc-for list="{{ statCards }}" as="c" hint-placeholder-count="5"><div class="card" style="padding: 18px"><p class="k">{{ c.k }}</p><p class="mono big">{{ c.v }}</p><p style="margin: 6px 0 0; font-size: 12px; line-height: 16px; color: #B4B4B4">{{ c.sub }}</p></div></sc-for>
@@ -129,7 +160,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 <p style="margin: 12px 0 0; display: flex; align-items: baseline; gap: 8px"><span class="mono" style="font-size: 44px; line-height: 48px; font-weight: 500">{{ toxV }}</span><span style="font-size: 14px; color: #8F8F8F">{{ toxLevel }}</span></p>
 <div aria-hidden="true" style="margin-top: 14px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3px; height: 10px"><sc-for list="{{ toxSegs }}" as="g" hint-placeholder-count="4"><span style="background: #1F1F1F; display: block; height: 100%"><span style="display: block; height: 100%; width: {{ g.w }}; background: #F2F2F2"></span></span></sc-for></div>
 <div class="mono" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 6px; font-size: 11px; color: #8F8F8F"><span>0–25</span><span>26–50</span><span>51–75</span><span>76–100</span></div>
-<p style="margin: 14px 0 0; font-size: 13px; line-height: 18px; color: #B4B4B4">Сколько сообщений из каждой тысячи бот наказал за оскорбления и угрозы. Считается по словарям фильтров «Оскорбления» и «Угрозы» — смысл фраз бот не понимает. 100 — каждое десятое сообщение.</p>
+<p style="margin: 14px 0 0; font-size: 13px; line-height: 18px; color: #B4B4B4">Сколько сообщений из каждой тысячи бот наказал за оскорбления и угрозы. Считается по словарям фильтров «Угрозы» и «Оскорбления»: смысл фраз бот не понимает. 100 — каждое десятое сообщение.</p>
 </section>
 
 <section class="card" aria-labelledby="act-t" style="flex: 3 1 480px; min-width: 0; padding: 20px">
@@ -145,13 +176,13 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 <div style="display: flex; flex-wrap: wrap; gap: 16px">
 <section class="card" aria-labelledby="cat-t" style="flex: 1 1 360px; min-width: 0; padding: 20px; box-sizing: border-box">
 <h2 id="cat-t" style="margin: 0; font-size: 17px; font-weight: 600">Причины нарушений</h2>
-<p style="margin: 4px 0 10px; font-size: 13px; color: #8F8F8F">Что ловил бот за период: по фильтрам</p>
+<p style="margin: 4px 0 10px; font-size: 13px; color: #8F8F8F">Какие фильтры сработали за период</p>
 <sc-for list="{{ reasons }}" as="c" hint-placeholder-count="6"><div class="hb"><span style="color: #DCDCDC; overflow: hidden; text-overflow: ellipsis; white-space: nowrap" title="{{ c.title }}">{{ c.name }}</span><span style="height: 8px; background: #1F1F1F"><span style="display: block; height: 100%; width: {{ c.w }}; background: #F2F2F2"></span></span><span class="mono" style="text-align: right">{{ c.n }}</span></div></sc-for>
 <sc-if value="{{ reasonsEmpty }}" hint-placeholder-val="{{ false }}"><p style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">{{ reasonsEmptyText }}</p></sc-if>
 </section>
 <section class="card" aria-labelledby="watch-t" style="flex: 1 1 360px; min-width: 0; padding: 20px; box-sizing: border-box">
 <h2 id="watch-t" style="margin: 0; font-size: 17px; font-weight: 600">Под наблюдением</h2>
-<p style="margin: 4px 0 10px; font-size: 13px; color: #8F8F8F">Зрители со страйками лестницы наказаний за 7 дней</p>
+<p style="margin: 4px 0 10px; font-size: 13px; line-height: 18px; color: #8F8F8F">Зрители, которых за 7 дней наказывали по лестнице. Цифра — на какой ступени они сейчас.</p>
 <sc-for list="{{ watch }}" as="w" hint-placeholder-count="3"><div style="display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid #1F1F1F"><span style="min-width: 0"><span style="display: block; font-size: 14px; font-weight: 500; overflow: hidden; text-overflow: ellipsis">{{ w.nick }}</span><span style="display: block; font-size: 12px; color: #8F8F8F">{{ w.note }}</span></span><span class="mono" title="Ступень лестницы" style="font-size: 12px; padding: 2px 8px; border: 1px dashed #8F8F8F; border-radius: 4px; white-space: nowrap">{{ w.strikes }}</span><span style="display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end"><button type="button" class="bs" style="height: 32px" onClick="{{ w.mute }}" disabled="{{ w.busy }}" aria-label="{{ w.muteAria }}">Мут 10 мин</button><button type="button" class="bs danger" style="height: 32px" onClick="{{ w.ban }}" disabled="{{ w.busy }}" aria-label="{{ w.banAria }}">Бан</button></span></div></sc-for>
 <sc-if value="{{ watchEmpty }}" hint-placeholder-val="{{ false }}"><p style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">{{ watchEmptyText }}</p></sc-if>
 </section>
@@ -175,15 +206,15 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 <!-- ============ ФИЛЬТРЫ И НАКАЗАНИЯ ============ -->
 <sc-if value="{{ tF }}" hint-placeholder-val="{{ false }}">
 <div role="tabpanel" id="panel-filters" aria-labelledby="tab-filters" style="display: flex; flex-direction: column; gap: 24px">
-<sc-if value="{{ cfgLoading }}" hint-placeholder-val="{{ false }}"><p class="empty">Загрузка настроек…</p></sc-if>
-<sc-if value="{{ cfgFailed }}" hint-placeholder-val="{{ false }}"><div role="alert" class="alert" style="display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap"><span>Не удалось загрузить настройки: {{ cfgErr }}</span><button type="button" class="bp" onClick="{{ reloadCfg }}">Повторить</button></div></sc-if>
+<sc-if value="{{ cfgLoading }}" hint-placeholder-val="{{ false }}"><p class="empty">Загружаем настройки…</p></sc-if>
+<sc-if value="{{ cfgFailed }}" hint-placeholder-val="{{ false }}"><p class="empty">Фильтры не загрузились. Повтори загрузку в блоке «Уровень защиты» выше.</p></sc-if>
 <sc-if value="{{ hasCfg }}" hint-placeholder-val="{{ true }}">
 
 <section class="card" aria-labelledby="lad-t" style="padding: 24px">
-<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap">
-<div style="flex: 1 1 320px; min-width: 0"><h2 id="lad-t" style="margin: 0; font-size: 20px; font-weight: 600">Лестница наказаний</h2><p style="margin: 4px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4; max-width: 600px">Для фильтров с наказанием «По лестнице». Каждое нарушение поднимает зрителя на ступень выше, последняя ступень повторяется. {{ ladderUsers }}</p></div>
-</div>
-<div role="group" aria-label="Готовые варианты лестницы" style="margin-top: 16px; display: flex; gap: 6px; flex-wrap: wrap"><sc-for list="{{ presets }}" as="p" hint-placeholder-count="5"><button type="button" class="bs" aria-pressed="{{ p.sel }}" onClick="{{ p.pick }}" style="{{ p.style }}">{{ p.label }}</button></sc-for></div>
+<h2 id="lad-t" style="margin: 0; font-size: 20px; font-weight: 600">Лестница наказаний</h2>
+<p style="margin: 4px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4; max-width: 640px">Порядок наказаний для одного зрителя. Первое нарушение — первая ступень, второе — вторая, и так далее. Если нарушений больше ступеней, действует последняя. Ступени работают для фильтров и слов с действием «По лестнице наказаний».</p>
+<p style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">{{ ladderUsers }}</p>
+<div role="group" aria-label="Готовые варианты лестницы" style="margin-top: 16px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center"><span style="font-size: 12px; color: #8F8F8F; margin-right: 4px">Варианты:</span><sc-for list="{{ presets }}" as="p" hint-placeholder-count="5"><button type="button" class="bs" aria-pressed="{{ p.sel }}" onClick="{{ p.pick }}" style="{{ p.style }}">{{ p.label }}</button></sc-for></div>
 <ol aria-label="Ступени" style="list-style: none; margin: 16px 0 0; padding: 0; display: flex; gap: 10px; flex-wrap: wrap; align-items: stretch">
 <sc-for list="{{ ladder }}" as="s" hint-placeholder-count="4">
 <li class="step" style="{{ s.style }}">
@@ -195,23 +226,23 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 </sc-for>
 <li style="flex: 0 0 auto; display: flex"><button type="button" onClick="{{ addStep }}" disabled="{{ ladderFull }}" title="{{ addStepTitle }}" style="min-width: 120px; min-height: 44px; border-radius: 8px; border: 1px dashed #6E6E6E; background: transparent; color: #B4B4B4; font: 500 13px/18px 'Onest', sans-serif; cursor: pointer">+ Ступень</button></li>
 </ol>
-<p style="margin: 14px 0 0; font-size: 14px; color: #DCDCDC">{{ ladderSummary }}</p>
+<p style="margin: 14px 0 0; font-size: 14px; line-height: 20px; color: #DCDCDC"><b style="font-weight: 600">Итог:</b> {{ ladderSummary }}</p>
 <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 16px; align-items: start">
-<label style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 500; color: #DCDCDC">Обнулять счётчик, если зритель не нарушал<select class="sel" value="{{ resetDays }}" onChange="{{ setReset }}"><sc-for list="{{ resetOpts }}" as="o" hint-placeholder-count="5"><option value="{{ o.v }}">{{ o.label }}</option></sc-for></select><span style="font-size: 12px; font-weight: 400; color: #8F8F8F">После этого он снова начнёт с первой ступени</span></label>
-<div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 500; color: #DCDCDC"><label for="wt">Текст предупреждения в чате</label><input id="wt" class="inp mono" maxlength="300" value="{{ warnText }}" onChange="{{ setWarn }}" onBlur="{{ blurWarn }}" aria-invalid="{{ warnBad }}" aria-describedby="wt-h" style="font-size: 12px"><span style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center"><span style="font-size: 12px; font-weight: 400; color: #8F8F8F">Вставить:</span><sc-for list="{{ warnTags }}" as="t" hint-placeholder-count="4"><button type="button" class="tag" title="{{ t.title }}" onClick="{{ t.pick }}">{{ t.tag }}</button></sc-for></span><sc-if value="{{ warnBad }}" hint-placeholder-val="{{ false }}"><span role="alert" class="err">Текст не может быть пустым — сохраняем прежний</span></sc-if><span id="wt-h" style="font-size: 12px; font-weight: 400; line-height: 16px; color: #8F8F8F">Пример: <span style="color: #DCDCDC">{{ warnPreview }}</span>. {n} и {max} — номер предупреждения и сколько их на лестнице.</span></div>
-<div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #DCDCDC"><span style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><span id="ann-l">Сообщать о муте в чат</span><button type="button" role="switch" class="sw" aria-checked="{{ announceOn }}" aria-labelledby="ann-l" onClick="{{ toggleAnnounce }}"><span></span></button></span><span style="font-size: 12px; line-height: 16px; color: #8F8F8F">Бот пишет: «@ник — мут на 10 мин: причина». Работает для любого мута от фильтров.</span></div>
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 500; color: #DCDCDC">Счётчик обнуляется, если зритель не нарушал<select class="sel" value="{{ resetDays }}" onChange="{{ setReset }}"><sc-for list="{{ resetOpts }}" as="o" hint-placeholder-count="5"><option value="{{ o.v }}">{{ o.label }}</option></sc-for></select><span style="font-size: 12px; font-weight: 400; color: #8F8F8F">После этого он снова начнёт с первой ступени</span></label>
+<div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 500; color: #DCDCDC"><label for="wt">Текст предупреждения в чате</label><input id="wt" class="inp mono" maxlength="300" value="{{ warnText }}" onChange="{{ setWarn }}" onBlur="{{ blurWarn }}" aria-invalid="{{ warnBad }}" aria-describedby="wt-h" style="font-size: 12px"><span style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center"><span style="font-size: 12px; font-weight: 400; color: #8F8F8F">Вставить:</span><sc-for list="{{ warnTags }}" as="t" hint-placeholder-count="4"><button type="button" class="tag" title="{{ t.title }}" onClick="{{ t.pick }}">{{ t.tag }}</button></sc-for></span><sc-if value="{{ warnBad }}" hint-placeholder-val="{{ false }}"><span role="alert" class="err">Текст не может быть пустым, сохраняем прежний</span></sc-if><span id="wt-h" style="font-size: 12px; font-weight: 400; line-height: 16px; color: #8F8F8F">Пример: <span style="color: #DCDCDC">{{ warnPreview }}</span>. {n} — номер предупреждения, {max} — сколько их на лестнице.</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #DCDCDC"><span style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><span id="ann-l">Сообщать о муте в чат</span><button type="button" role="switch" class="sw" aria-checked="{{ announceOn }}" aria-labelledby="ann-l" onClick="{{ toggleAnnounce }}"><span></span></button></span><span style="font-size: 12px; line-height: 16px; color: #8F8F8F">Бот напишет в чат: «@ник — мут на 10 мин: причина». Относится ко всем мутам от фильтров и лестницы.</span></div>
 </div>
 </section>
 
 <section aria-labelledby="flt-t">
-<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap"><div style="min-width: 0"><h2 id="flt-t" style="margin: 0; font-size: 20px; font-weight: 600">Фильтры</h2><p style="margin: 4px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">Включено <span class="mono">{{ fOn }}</span> из <span class="mono">{{ fTotal }}</span>. Бот проверяет фильтры сверху вниз и наказывает по первому сработавшему.</p></div><p style="margin: 0; font-size: 13px; color: #8F8F8F">Не действуют на {{ exemptText }} · <button type="button" onClick="{{ goLists }}" style="padding: 0; border: 0; background: none; color: #F2F2F2; font: inherit; text-decoration: underline; cursor: pointer">изменить</button></p></div>
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap"><div style="min-width: 0; flex: 1 1 360px"><h2 id="flt-t" style="margin: 0; font-size: 20px; font-weight: 600">Фильтры</h2><p style="margin: 4px 0 0; font-size: 14px; line-height: 20px; color: #B4B4B4">Фильтр — одно правило проверки сообщений. Бот проверяет их сверху вниз и наказывает по первому сработавшему. <span style="color: #DCDCDC">Словарь</span> — готовый список слов и фраз, который ведёт бот. Включено <span class="mono">{{ fOn }}</span> из <span class="mono">{{ fTotal }}</span>.</p></div><p style="margin: 0; font-size: 13px; color: #8F8F8F">Не проверяем: {{ exemptText }} · <button type="button" onClick="{{ goLists }}" style="padding: 0; border: 0; background: none; color: #F2F2F2; font: inherit; text-decoration: underline; cursor: pointer">изменить</button></p></div>
 <div style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr)); gap: 12px">
 <sc-for list="{{ filters }}" as="f" hint-placeholder-count="14">
 <div class="flt" style="{{ f.cardStyle }}">
-<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px"><span style="min-width: 0"><span style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 15px; font-weight: 500"><span id="{{ f.nameId }}">{{ f.name }}</span><sc-if value="{{ f.dict }}" hint-placeholder-val="{{ false }}"><span style="font-size: 11px; padding: 1px 6px; border: 1px solid #6E6E6E; border-radius: 4px; color: #DCDCDC; font-weight: 400">словарь</span></sc-if></span><span style="display: block; margin-top: 2px; font-size: 13px; line-height: 18px; color: #8F8F8F">{{ f.desc }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ f.on }}" aria-label="{{ f.swLabel }}" onClick="{{ f.toggle }}"><span></span></button></div>
-<sc-if value="{{ f.hasSens }}" hint-placeholder-val="{{ false }}"><div style="display: flex; flex-direction: column; gap: 6px"><span style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: #B4B4B4"><span>Чувствительность</span><span style="color: #F2F2F2">{{ f.sensLabel }}</span></span><input type="range" min="1" max="4" step="1" value="{{ f.sens }}" onChange="{{ f.setSens }}" aria-label="{{ f.sensAria }}" aria-valuetext="{{ f.sensLabel }}" disabled="{{ f.off }}" style="accent-color: #F2F2F2"><span style="font-size: 12px; line-height: 16px; color: #8F8F8F">{{ f.sensNote }}</span></div></sc-if>
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px"><span style="min-width: 0"><span style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 15px; font-weight: 500"><span id="{{ f.nameId }}">{{ f.name }}</span><sc-if value="{{ f.dict }}" hint-placeholder-val="{{ false }}"><span style="font-size: 11px; padding: 1px 6px; border: 1px solid #6E6E6E; border-radius: 4px; color: #DCDCDC; font-weight: 400">словарь</span></sc-if></span><span style="display: block; margin-top: 4px; font-size: 13px; line-height: 18px; color: #B4B4B4">{{ f.desc }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ f.on }}" aria-label="{{ f.swLabel }}" onClick="{{ f.toggle }}"><span></span></button></div>
+<sc-if value="{{ f.hasSens }}" hint-placeholder-val="{{ false }}"><div style="display: flex; flex-direction: column; gap: 6px"><span style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: #B4B4B4"><span>Чувствительность: чем выше, тем больше ловит</span><span style="color: #F2F2F2">{{ f.sensLabel }}</span></span><input type="range" min="1" max="4" step="1" value="{{ f.sens }}" onChange="{{ f.setSens }}" aria-label="{{ f.sensAria }}" aria-valuetext="{{ f.sensLabel }}" disabled="{{ f.off }}" style="accent-color: #F2F2F2"><span style="font-size: 12px; line-height: 16px; color: #8F8F8F">{{ f.sensNote }}</span></div></sc-if>
 <sc-if value="{{ f.hasParams }}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: 12px; flex-wrap: wrap"><sc-for list="{{ f.params }}" as="p" hint-placeholder-count="2"><label class="lbl" style="flex: 1 1 140px"><span>{{ p.label }}</span><input class="inp mono" type="number" inputmode="numeric" min="{{ p.min }}" max="{{ p.max }}" step="1" value="{{ p.value }}" onChange="{{ p.set }}" onBlur="{{ p.blur }}" aria-invalid="{{ p.bad }}" disabled="{{ f.off }}" style="width: 100%"><sc-if value="{{ p.bad }}" hint-placeholder-val="{{ false }}"><span role="alert" class="err">{{ p.err }}</span></sc-if></label></sc-for></div></sc-if>
-<div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span style="font-size: 12px; color: #8F8F8F; width: 100%">Наказание</span>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span style="font-size: 12px; color: #8F8F8F; width: 100%">Что делать при срабатывании</span>
 <select class="sel" aria-label="{{ f.actAria }}" value="{{ f.action }}" onChange="{{ f.setAction }}" disabled="{{ f.off }}" style="flex: 1 1 200px"><option value="ladder">По лестнице наказаний</option><option value="review">На проверку модератору</option><option value="delete">Удалить сообщение</option><option value="warn">Удалить и предупредить</option><option value="timeout">Мут на время</option><option value="ban">Бан сразу</option></select>
 <sc-if value="{{ f.isTimeout }}" hint-placeholder-val="{{ false }}"><select class="sel" aria-label="{{ f.durAria }}" value="{{ f.dur }}" onChange="{{ f.setDur }}" disabled="{{ f.off }}" style="flex: 0 0 120px"><sc-for list="{{ f.durOpts }}" as="o" hint-placeholder-count="7"><option value="{{ o.v }}">{{ o.label }}</option></sc-for></select></sc-if>
 </div>
@@ -220,16 +251,54 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 </sc-for>
 </div>
 </section>
-</sc-if>
 
-<section class="card" aria-labelledby="modes-t" style="padding: 24px">
-<h2 id="modes-t" style="margin: 0; font-size: 20px; font-weight: 600">Режимы чата Twitch</h2>
-<p style="margin: 4px 0 8px; font-size: 14px; line-height: 20px; color: #B4B4B4">Меняются сразу на канале от имени бота — то же делают команды /slow, /followers и другие. Состояние обновляется само раз в полминуты.</p>
-<sc-if value="{{ modesLoading }}" hint-placeholder-val="{{ false }}"><p style="margin: 8px 0; font-size: 13px; color: #8F8F8F">Загрузка…</p></sc-if>
-<sc-if value="{{ modesNA }}" hint-placeholder-val="{{ false }}"><div class="note" style="margin: 8px 0"><span style="flex: 1 1 320px">{{ modesNAText }}</span><button type="button" class="bs" onClick="{{ reloadModes }}">Проверить снова</button></div></sc-if>
-<sc-if value="{{ modesFailed }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert" style="margin: 8px 0">{{ modesErr }}</p></sc-if>
-<sc-for list="{{ modes }}" as="m" hint-placeholder-count="6"><div class="mode"><span style="min-width: 0"><span id="{{ m.id }}" style="display: block; font-size: 14px">{{ m.name }}</span><span style="display: block; font-size: 12px; color: #8F8F8F">{{ m.note }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ m.on }}" aria-labelledby="{{ m.id }}" onClick="{{ m.toggle }}" disabled="{{ m.disabled }}"><span></span></button></div></sc-for>
+<!-- ============ РАСШИРЕННЫЕ НАСТРОЙКИ (свёрнуты) ============ -->
+<section class="card" aria-labelledby="adv-t" style="padding: 0; min-width: 0">
+<h2 id="adv-t" style="margin: 0"><button type="button" id="adv-b" aria-expanded="{{ advOpenS }}" aria-controls="adv-p" onClick="{{ toggleAdv }}" style="width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 20px; border: 0; border-radius: 8px; background: transparent; color: #F2F2F2; font: inherit; text-align: left; cursor: pointer"><span style="min-width: 0"><span style="display: block; font-size: 17px; font-weight: 600">Расширенные настройки</span><span style="display: block; margin-top: 2px; font-size: 13px; line-height: 18px; color: #8F8F8F">Списки слов и ссылок, исключения, режимы чата Twitch. Обычно не нужны: стандартные настройки уже работают.</span></span><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex: none; transition: transform 180ms; transform: {{ advRot }}"><path d="M6 9l6 6 6-6"></path></svg></button></h2>
+<sc-if value="{{ advOpen }}" hint-placeholder-val="{{ false }}">
+<div id="adv-p" role="region" aria-labelledby="adv-b" style="padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #2A2A2A">
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 16px; align-items: start">
+<section class="card" aria-labelledby="bw-t" style="padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0">
+<div class="row"><h3 id="bw-t" style="margin: 0; font-size: 17px; font-weight: 600">Запрещённые слова <span class="mono" style="font-size: 14px; color: #8F8F8F">{{ wordsN }}</span></h3><span style="display: inline-flex; align-items: center; gap: 8px; color: #B4B4B4">{{ wf.stateLabel }}<button type="button" role="switch" class="sw" aria-checked="{{ wf.on }}" aria-label="Фильтр «Запрещённые слова»" onClick="{{ wf.toggle }}"><span></span></button></span></div>
+<p style="margin: 0; font-size: 13px; line-height: 18px; color: #8F8F8F">Слова и фразы без учёта регистра. Бот ловит обход: латиницу вместо кириллицы, «0» вместо «о», пробелы и точки между буквами. Звёздочка <span class="mono">*</span> означает любые символы: <span class="mono">к*зел</span>.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{ words }}" as="w" hint-placeholder-count="3"><span class="chip mono"><span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ w.text }}</span><button type="button" aria-label="{{ w.label }}" onClick="{{ w.del }}">✕</button></span></sc-for><sc-if value="{{ wordsEmpty }}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #8F8F8F">Список пуст. Добавь слова, которые не хочешь видеть в чате.</span></sc-if></div>
+<form onSubmit="{{ addWord }}" style="display: flex; gap: 8px"><label for="nw" class="sr">Новое слово или фраза</label><input id="nw" class="inp" maxlength="200" value="{{ wordDraft }}" onChange="{{ setWordDraft }}" placeholder="Слово или фраза, несколько через запятую" autocomplete="off" aria-invalid="{{ wordBad }}" style="flex: 1"><button type="submit" class="bs">Добавить</button></form>
+<sc-if value="{{ wordBad }}" hint-placeholder-val="{{ false }}"><span role="alert" class="err">{{ wordErr }}</span></sc-if>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 12px; border-top: 1px solid #1F1F1F; font-size: 13px"><span style="color: #B4B4B4; flex: 1 1 140px">Наказание за слово из списка</span><select class="sel" aria-label="Наказание за запрещённое слово" value="{{ wf.action }}" onChange="{{ wf.setAction }}" disabled="{{ wf.off }}" style="flex: 1 1 190px"><option value="ladder">По лестнице наказаний</option><option value="review">На проверку модератору</option><option value="delete">Удалить сообщение</option><option value="warn">Удалить и предупредить</option><option value="timeout">Мут на время</option><option value="ban">Бан сразу</option></select><sc-if value="{{ wf.isTimeout }}" hint-placeholder-val="{{ false }}"><select class="sel" aria-label="Длительность мута за запрещённое слово" value="{{ wf.dur }}" onChange="{{ wf.setDur }}" disabled="{{ wf.off }}" style="flex: 0 0 110px"><sc-for list="{{ wf.durOpts }}" as="o" hint-placeholder-count="7"><option value="{{ o.v }}">{{ o.label }}</option></sc-for></select></sc-if></div>
 </section>
+
+<section class="card" aria-labelledby="dm-t" style="padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0">
+<div class="row"><h3 id="dm-t" style="margin: 0; font-size: 17px; font-weight: 600">Разрешённые ссылки <span class="mono" style="font-size: 14px; color: #8F8F8F">{{ domainsN }}</span></h3><span style="display: inline-flex; align-items: center; gap: 8px; color: #B4B4B4">{{ lf.stateLabel }}<button type="button" role="switch" class="sw" aria-checked="{{ lf.on }}" aria-label="Фильтр «Ссылки»" onClick="{{ lf.toggle }}"><span></span></button></span></div>
+<p style="margin: 0; font-size: 13px; line-height: 18px; color: #8F8F8F">Ссылки на эти сайты и их поддомены фильтр «Ссылки» пропускает. Остальные он наказывает: {{ lf.actionText }}.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{ domains }}" as="d" hint-placeholder-count="5"><span class="chip mono"><span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ d.text }}</span><button type="button" aria-label="{{ d.label }}" onClick="{{ d.del }}">✕</button></span></sc-for><sc-if value="{{ domainsEmpty }}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #8F8F8F">Ни одного сайта: фильтр «Ссылки» наказывает за любую ссылку.</span></sc-if></div>
+<form onSubmit="{{ addDomain }}" style="display: flex; gap: 8px"><label for="nd" class="sr">Новый сайт</label><input id="nd" class="inp mono" maxlength="120" value="{{ domDraft }}" onChange="{{ setDomDraft }}" placeholder="youtube.com" autocomplete="off" inputmode="url" aria-invalid="{{ domBad }}" aria-describedby="nd-h" style="flex: 1; font-size: 13px"><button type="submit" class="bs">Добавить</button></form>
+<sc-if value="{{ domBad }}" hint-placeholder-val="{{ false }}"><span role="alert" class="err">{{ domErr }}</span></sc-if>
+<span id="nd-h" style="font-size: 12px; line-height: 16px; color: #8F8F8F">Только адрес сайта, без пути: discord.gg/kira превратится в discord.gg.</span>
+<div style="display: flex; flex-direction: column; gap: 4px; padding-top: 12px; border-top: 1px solid #1F1F1F"><div class="row"><span id="sl-l" style="color: #DCDCDC">Подписчики и VIP могут кидать любые ссылки</span><button type="button" role="switch" class="sw" aria-checked="{{ subsLinksOn }}" aria-labelledby="sl-l" onClick="{{ toggleSubsLinks }}"><span></span></button></div></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><div class="row"><span id="pm-l" style="color: #DCDCDC">Разрешать по команде <span class="mono">!permit ник</span></span><button type="button" role="switch" class="sw" aria-checked="{{ permitOn }}" aria-labelledby="pm-l" aria-describedby="pm-h" onClick="{{ togglePermit }}"><span></span></button></div><span id="pm-h" style="font-size: 12px; line-height: 16px; color: #8F8F8F">Модератор пишет в чат <span class="mono">!permit ник</span>, и зритель может отправить ссылку в течение минуты. Если выключено, команда не работает.</span></div>
+</section>
+</div>
+
+<section class="card" aria-labelledby="ex-t" style="padding: 20px; display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<h3 id="ex-t" style="margin: 0; font-size: 17px; font-weight: 600">Исключения</h3>
+<p style="margin: 0 0 8px; font-size: 13px; line-height: 18px; color: #8F8F8F">Кого фильтры не проверяют. Стримера, бота StreOps и известных ботов (Nightbot, StreamElements, Moobot и других) бот не проверяет никогда.</p>
+<sc-for list="{{ exempt }}" as="x" hint-placeholder-count="3"><div class="mode"><span style="min-width: 0"><span id="{{ x.id }}" style="display: block; font-size: 14px">{{ x.name }}</span><span style="display: block; font-size: 12px; color: #8F8F8F">{{ x.note }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ x.on }}" aria-labelledby="{{ x.id }}" onClick="{{ x.toggle }}"><span></span></button></div></sc-for>
+</section>
+
+<section class="card" aria-labelledby="modes-t" style="padding: 20px; min-width: 0">
+<h3 id="modes-t" style="margin: 0; font-size: 17px; font-weight: 600">Режимы чата Twitch</h3>
+<p style="margin: 4px 0 8px; font-size: 13px; line-height: 18px; color: #B4B4B4">Это настройки самого чата Twitch, например медленный режим: одно сообщение раз в 5 секунд. Меняются сразу, от имени бота. Состояние обновляется само, раз в полминуты.</p>
+<sc-if value="{{ modesLoading }}" hint-placeholder-val="{{ false }}"><p style="margin: 8px 0; font-size: 13px; color: #8F8F8F">Загружаем…</p></sc-if>
+<sc-if value="{{ modesNA }}" hint-placeholder-val="{{ false }}"><div class="note" style="margin: 8px 0"><span style="flex: 1 1 320px">{{ modesNAText }}</span><button type="button" class="bs" onClick="{{ reloadModes }}">Проверить снова</button></div></sc-if>
+<sc-if value="{{ modesFailed }}" hint-placeholder-val="{{ false }}"><div role="alert" class="alert" style="margin: 8px 0; display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap"><span style="flex: 1 1 260px">Не удалось загрузить режимы чата: {{ modesErr }}.</span><button type="button" class="bs" onClick="{{ reloadModes }}">Повторить</button></div></sc-if>
+<sc-if value="{{ modesShow }}" hint-placeholder-val="{{ true }}"><sc-for list="{{ modes }}" as="m" hint-placeholder-count="6"><div class="mode"><span style="min-width: 0"><span id="{{ m.id }}" style="display: block; font-size: 14px">{{ m.name }}</span><span style="display: block; font-size: 12px; color: #8F8F8F">{{ m.note }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ m.on }}" aria-labelledby="{{ m.id }}" onClick="{{ m.toggle }}" disabled="{{ m.disabled }}"><span></span></button></div></sc-for></sc-if>
+</section>
+
+</div>
+</sc-if>
+</section>
+</sc-if>
 </div>
 </sc-if>
 
@@ -238,15 +307,16 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 <div role="tabpanel" id="panel-queue" aria-labelledby="tab-queue" style="display: flex; flex-direction: column; gap: 24px">
 <section aria-labelledby="held-t">
 <h2 id="held-t" style="margin: 0; font-size: 20px; font-weight: 600">На проверке <span class="mono" style="font-size: 15px; color: #8F8F8F">{{ queueN }}</span></h2>
-<p style="margin: 4px 0 12px; font-size: 14px; line-height: 20px; color: #B4B4B4">Сюда попадают сообщения фильтров с наказанием «На проверку модератору». Бот их не трогает: сообщение остаётся в чате, пока ты не решишь.</p>
+<p style="margin: 4px 0 12px; font-size: 14px; line-height: 20px; color: #B4B4B4">Сюда попадают сообщения, которые фильтр отправил тебе на проверку (действие «На проверку модератору»). Бот их не трогает: сообщение остаётся в чате, пока ты не решишь.</p>
+<sc-if value="{{ queueErr }}" hint-placeholder-val="{{ false }}"><div role="alert" class="alert" style="margin-bottom: 8px; display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap"><span style="flex: 1 1 260px">Не удалось загрузить очередь: {{ queueErrText }}. Пробуем снова каждые 10 секунд.</span><button type="button" class="bs" onClick="{{ reloadQueue }}">Повторить</button></div></sc-if>
 <div style="display: flex; flex-direction: column; gap: 8px">
 <sc-for list="{{ queue }}" as="h" hint-placeholder-count="2">
 <div class="held">
 <span style="flex: 1 1 320px; min-width: 0"><span style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 13px"><b style="font-weight: 600">{{ h.login }}</b><span style="color: #8F8F8F">{{ h.reason }}</span><span class="mono" style="color: #8F8F8F">{{ h.time }}</span></span><span style="display: block; margin-top: 4px; font-size: 14px; line-height: 20px; color: #DCDCDC; overflow-wrap: anywhere; filter: {{ h.blur }}">{{ h.text }}</span></span>
-<span style="display: flex; gap: 6px; flex-wrap: wrap"><button type="button" class="bs" aria-pressed="{{ h.shown }}" onClick="{{ h.reveal }}">{{ h.revealLabel }}</button><button type="button" class="bp" onClick="{{ h.allow }}" aria-label="{{ h.allowAria }}">Разрешить</button><button type="button" class="bs" onClick="{{ h.deny }}" aria-label="{{ h.denyAria }}">Удалить</button><button type="button" class="bs" onClick="{{ h.timeout }}" aria-label="{{ h.muteAria }}">Мут 10 мин</button><button type="button" class="bs danger" onClick="{{ h.ban }}" aria-label="{{ h.banAria }}">Бан</button></span>
+<span style="display: flex; gap: 6px; flex-wrap: wrap"><button type="button" class="bs" aria-pressed="{{ h.shown }}" onClick="{{ h.reveal }}">{{ h.revealLabel }}</button><button type="button" class="bs" onClick="{{ h.allow }}" aria-label="{{ h.allowAria }}">Разрешить</button><button type="button" class="bs" onClick="{{ h.deny }}" aria-label="{{ h.denyAria }}">Удалить</button><button type="button" class="bs" onClick="{{ h.timeout }}" aria-label="{{ h.muteAria }}">Мут 10 мин</button><button type="button" class="bs danger" onClick="{{ h.ban }}" aria-label="{{ h.banAria }}">Бан</button></span>
 </div>
 </sc-for>
-<sc-if value="{{ queueLoading }}" hint-placeholder-val="{{ false }}"><p class="empty">Загрузка…</p></sc-if>
+<sc-if value="{{ queueLoading }}" hint-placeholder-val="{{ false }}"><p class="empty">Загружаем…</p></sc-if>
 <sc-if value="{{ queueEmpty }}" hint-placeholder-val="{{ false }}"><p class="empty">{{ queueEmptyText }}</p></sc-if>
 </div>
 </section>
@@ -254,7 +324,8 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 <section aria-labelledby="log-t">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap"><h2 id="log-t" style="margin: 0; font-size: 20px; font-weight: 600">Журнал действий</h2>
 <div role="group" aria-label="Тип действия" style="display: flex; gap: 6px; flex-wrap: wrap"><sc-for list="{{ logF }}" as="l" hint-placeholder-count="6"><button type="button" class="bs" style="height: 32px; {{ l.style }}" aria-pressed="{{ l.sel }}" onClick="{{ l.pick }}">{{ l.label }}</button></sc-for></div></div>
-<p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">Последние 100 действий бота и модераторов. «Отменить» снимает бан или мут в Twitch и обнуляет счётчик нарушений зрителя.</p>
+<p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">Последние 100 действий бота и модераторов. «Отменить» снимает бан или мут в Twitch и обнуляет счётчик нарушений зрителя. Предупреждение нельзя вернуть в чат, отмена только сбрасывает счётчик.</p>
+<sc-if value="{{ logErr }}" hint-placeholder-val="{{ false }}"><div role="alert" class="alert" style="margin-top: 12px; display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap"><span style="flex: 1 1 260px">Не удалось загрузить журнал: {{ logErrText }}. Пробуем снова каждые 10 секунд.</span><button type="button" class="bs" onClick="{{ reloadJournal }}">Повторить</button></div></sc-if>
 <div style="margin-top: 12px">
 <div class="tr" aria-hidden="true" style="border-top: 0; color: #8F8F8F; font-size: 12px"><span>Время</span><span>Зритель</span><span class="hide">Действие</span><span class="hide">Причина и сообщение</span><span class="hide">Кто</span><span></span></div>
 <sc-for list="{{ log }}" as="r" hint-placeholder-count="6">
@@ -267,7 +338,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 <span style="text-align: right"><sc-if value="{{ r.canUndo }}" hint-placeholder-val="{{ true }}"><button type="button" class="bs" style="height: 30px" aria-label="{{ r.undoAria }}" title="{{ r.undoTitle }}" onClick="{{ r.undo }}" disabled="{{ r.busy }}">{{ r.undoLabel }}</button></sc-if><sc-if value="{{ r.hasState }}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: #8F8F8F">{{ r.stateLabel }}</span></sc-if></span>
 </div>
 </sc-for>
-<sc-if value="{{ logLoading }}" hint-placeholder-val="{{ false }}"><p class="empty" style="margin-top: 8px">Загрузка…</p></sc-if>
+<sc-if value="{{ logLoading }}" hint-placeholder-val="{{ false }}"><p class="empty" style="margin-top: 8px">Загружаем…</p></sc-if>
 <sc-if value="{{ logEmpty }}" hint-placeholder-val="{{ false }}"><p class="empty" style="margin-top: 8px">{{ logEmptyText }}</p></sc-if>
 </div>
 </section>
@@ -275,49 +346,13 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 <section class="card" aria-labelledby="unban-t" style="padding: 20px">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap"><h2 id="unban-t" style="margin: 0; font-size: 17px; font-weight: 600">Запросы на разбан <span class="mono" style="font-size: 14px; color: #8F8F8F">{{ unbanN }}</span></h2><button type="button" class="bs" style="height: 32px" onClick="{{ reloadUnban }}" disabled="{{ unbanLoading }}">Обновить</button></div>
 <p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">Забаненные зрители отправляют их на Twitch. Решение сразу уходит в Twitch от имени бота.</p>
+<sc-if value="{{ unbanErr }}" hint-placeholder-val="{{ false }}"><div role="alert" class="alert" style="margin-top: 12px; display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap"><span style="flex: 1 1 260px">Не удалось загрузить запросы: {{ unbanErrText }}.</span><button type="button" class="bs" onClick="{{ reloadUnban }}">Повторить</button></div></sc-if>
 <div style="margin-top: 12px; display: flex; flex-direction: column">
-<sc-for list="{{ unban }}" as="u" hint-placeholder-count="1"><div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid #1F1F1F"><span style="min-width: 0"><b style="font-weight: 600">{{ u.login }}</b> <span class="mono" style="font-size: 12px; color: #8F8F8F">{{ u.when }}</span><span style="display: block; margin-top: 4px; font-size: 13px; line-height: 18px; color: #DCDCDC; overflow-wrap: anywhere">{{ u.text }}</span></span><span style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end"><button type="button" class="bs" onClick="{{ u.deny }}" disabled="{{ u.busy }}" aria-label="{{ u.denyAria }}">Отказать</button><button type="button" class="bp" onClick="{{ u.approve }}" disabled="{{ u.busy }}" aria-label="{{ u.approveAria }}">Разбанить</button></span></div></sc-for>
-<sc-if value="{{ unbanLoadingFirst }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 12px 0; border-top: 1px solid #1F1F1F; font-size: 13px; color: #8F8F8F">Загрузка…</p></sc-if>
+<sc-for list="{{ unban }}" as="u" hint-placeholder-count="1"><div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid #1F1F1F"><span style="min-width: 0"><b style="font-weight: 600">{{ u.login }}</b> <span class="mono" style="font-size: 12px; color: #8F8F8F">{{ u.when }}</span><span style="display: block; margin-top: 4px; font-size: 13px; line-height: 18px; color: #DCDCDC; overflow-wrap: anywhere">{{ u.text }}</span></span><span style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end"><button type="button" class="bs" onClick="{{ u.deny }}" disabled="{{ u.busy }}" aria-label="{{ u.denyAria }}">Отказать</button><button type="button" class="bs" onClick="{{ u.approve }}" disabled="{{ u.busy }}" aria-label="{{ u.approveAria }}">Разбанить</button></span></div></sc-for>
+<sc-if value="{{ unbanLoadingFirst }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 12px 0; border-top: 1px solid #1F1F1F; font-size: 13px; color: #8F8F8F">Загружаем…</p></sc-if>
 <sc-if value="{{ unbanEmpty }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 12px 0; border-top: 1px solid #1F1F1F; font-size: 13px; line-height: 18px; color: #8F8F8F">{{ unbanEmptyText }}</p></sc-if>
 </div>
 </section>
-</div>
-</sc-if>
-
-<!-- ============ СПИСКИ И ИСКЛЮЧЕНИЯ ============ -->
-<sc-if value="{{ tL }}" hint-placeholder-val="{{ false }}">
-<div role="tabpanel" id="panel-lists" aria-labelledby="tab-lists" style="display: flex; flex-direction: column; gap: 16px">
-<sc-if value="{{ cfgLoading }}" hint-placeholder-val="{{ false }}"><p class="empty">Загрузка настроек…</p></sc-if>
-<sc-if value="{{ cfgFailed }}" hint-placeholder-val="{{ false }}"><div role="alert" class="alert" style="display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap"><span>Не удалось загрузить настройки: {{ cfgErr }}</span><button type="button" class="bp" onClick="{{ reloadCfg }}">Повторить</button></div></sc-if>
-<sc-if value="{{ hasCfg }}" hint-placeholder-val="{{ true }}">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 16px; align-items: start">
-<section class="card" aria-labelledby="bw-t" style="padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0">
-<div class="row"><h2 id="bw-t" style="margin: 0; font-size: 17px; font-weight: 600">Запрещённые слова <span class="mono" style="font-size: 14px; color: #8F8F8F">{{ wordsN }}</span></h2><span style="display: inline-flex; align-items: center; gap: 8px; color: #B4B4B4">{{ wf.stateLabel }}<button type="button" role="switch" class="sw" aria-checked="{{ wf.on }}" aria-label="Фильтр «Запрещённые слова»" onClick="{{ wf.toggle }}"><span></span></button></span></div>
-<p style="margin: 0; font-size: 13px; line-height: 18px; color: #8F8F8F">Слова и фразы без учёта регистра. Бот ловит обход: латиницу вместо кириллицы, «0» вместо «о», пробелы и точки между буквами. Звёздочка <span class="mono">*</span> — любые символы: <span class="mono">к*зел</span>.</p>
-<div style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{ words }}" as="w" hint-placeholder-count="3"><span class="chip mono"><span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ w.text }}</span><button type="button" aria-label="{{ w.label }}" onClick="{{ w.del }}">✕</button></span></sc-for><sc-if value="{{ wordsEmpty }}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #8F8F8F">Список пуст — добавь слова, которые не хочешь видеть в чате.</span></sc-if></div>
-<form onSubmit="{{ addWord }}" style="display: flex; gap: 8px"><label for="nw" class="sr">Новое слово или фраза</label><input id="nw" class="inp" maxlength="200" value="{{ wordDraft }}" onChange="{{ setWordDraft }}" placeholder="Слово, фраза или несколько через запятую" autocomplete="off" aria-invalid="{{ wordBad }}" style="flex: 1"><button type="submit" class="bp">Добавить</button></form>
-<sc-if value="{{ wordBad }}" hint-placeholder-val="{{ false }}"><span role="alert" class="err">{{ wordErr }}</span></sc-if>
-<div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 12px; border-top: 1px solid #1F1F1F; font-size: 13px"><span style="color: #B4B4B4; flex: 1 1 140px">Наказание за слово из списка</span><select class="sel" aria-label="Наказание за запрещённое слово" value="{{ wf.action }}" onChange="{{ wf.setAction }}" disabled="{{ wf.off }}" style="flex: 1 1 190px"><option value="ladder">По лестнице наказаний</option><option value="review">На проверку модератору</option><option value="delete">Удалить сообщение</option><option value="warn">Удалить и предупредить</option><option value="timeout">Мут на время</option><option value="ban">Бан сразу</option></select><sc-if value="{{ wf.isTimeout }}" hint-placeholder-val="{{ false }}"><select class="sel" aria-label="Длительность мута за запрещённое слово" value="{{ wf.dur }}" onChange="{{ wf.setDur }}" disabled="{{ wf.off }}" style="flex: 0 0 110px"><sc-for list="{{ wf.durOpts }}" as="o" hint-placeholder-count="7"><option value="{{ o.v }}">{{ o.label }}</option></sc-for></select></sc-if></div>
-</section>
-
-<section class="card" aria-labelledby="dm-t" style="padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0">
-<div class="row"><h2 id="dm-t" style="margin: 0; font-size: 17px; font-weight: 600">Разрешённые ссылки <span class="mono" style="font-size: 14px; color: #8F8F8F">{{ domainsN }}</span></h2><span style="display: inline-flex; align-items: center; gap: 8px; color: #B4B4B4">{{ lf.stateLabel }}<button type="button" role="switch" class="sw" aria-checked="{{ lf.on }}" aria-label="Фильтр «Ссылки»" onClick="{{ lf.toggle }}"><span></span></button></span></div>
-<p style="margin: 0; font-size: 13px; line-height: 18px; color: #8F8F8F">Ссылки на эти сайты и их поддомены фильтр «Ссылки» пропускает, остальные — наказывает: {{ lf.actionText }}.</p>
-<div style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{ domains }}" as="d" hint-placeholder-count="5"><span class="chip mono"><span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{ d.text }}</span><button type="button" aria-label="{{ d.label }}" onClick="{{ d.del }}">✕</button></span></sc-for><sc-if value="{{ domainsEmpty }}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #8F8F8F">Ни одного сайта — фильтр «Ссылки» наказывает за любую ссылку.</span></sc-if></div>
-<form onSubmit="{{ addDomain }}" style="display: flex; gap: 8px"><label for="nd" class="sr">Новый сайт</label><input id="nd" class="inp mono" maxlength="120" value="{{ domDraft }}" onChange="{{ setDomDraft }}" placeholder="youtube.com" autocomplete="off" inputmode="url" aria-invalid="{{ domBad }}" aria-describedby="nd-h" style="flex: 1; font-size: 13px"><button type="submit" class="bp">Добавить</button></form>
-<sc-if value="{{ domBad }}" hint-placeholder-val="{{ false }}"><span role="alert" class="err">{{ domErr }}</span></sc-if>
-<span id="nd-h" style="font-size: 12px; line-height: 16px; color: #8F8F8F">Только адрес сайта, без пути: discord.gg/kira превратится в discord.gg.</span>
-<div style="display: flex; flex-direction: column; gap: 4px; padding-top: 12px; border-top: 1px solid #1F1F1F"><div class="row"><span id="sl-l" style="color: #DCDCDC">Подписчики и VIP могут кидать любые ссылки</span><button type="button" role="switch" class="sw" aria-checked="{{ subsLinksOn }}" aria-labelledby="sl-l" onClick="{{ toggleSubsLinks }}"><span></span></button></div></div>
-<div style="display: flex; flex-direction: column; gap: 4px"><div class="row"><span id="pm-l" style="color: #DCDCDC">Разрешать по команде <span class="mono">!permit ник</span></span><button type="button" role="switch" class="sw" aria-checked="{{ permitOn }}" aria-labelledby="pm-l" aria-describedby="pm-h" onClick="{{ togglePermit }}"><span></span></button></div><span id="pm-h" style="font-size: 12px; line-height: 16px; color: #8F8F8F">Модератор пишет в чат <span class="mono">!permit ник</span> — зритель может отправить ссылку в течение минуты. <span style="padding: 0 4px; border: 1px dashed #6E6E6E; border-radius: 4px">скоро</span> Сейчас бот принимает команду всегда; выключатель начнёт действовать после обновления бота.</span></div>
-</section>
-
-<section class="card" aria-labelledby="ex-t" style="padding: 20px; display: flex; flex-direction: column; gap: 4px; min-width: 0">
-<h2 id="ex-t" style="margin: 0; font-size: 17px; font-weight: 600">Исключения</h2>
-<p style="margin: 0 0 8px; font-size: 13px; line-height: 18px; color: #8F8F8F">На кого фильтры не действуют вообще. Стримера, бота StreOps и известных ботов — Nightbot, StreamElements, Moobot и других — бот не проверяет никогда.</p>
-<sc-for list="{{ exempt }}" as="x" hint-placeholder-count="3"><div class="mode"><span style="min-width: 0"><span id="{{ x.id }}" style="display: block; font-size: 14px">{{ x.name }}</span><span style="display: block; font-size: 12px; color: #8F8F8F">{{ x.note }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ x.on }}" aria-labelledby="{{ x.id }}" onClick="{{ x.toggle }}"><span></span></button></div></sc-for>
-</section>
-</div>
-</sc-if>
 </div>
 </sc-if>
 </main>
@@ -328,7 +363,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 // Модерация: настройки бота (mod.config), очередь (mod.review), журнал (mod.journal / mod.undo),
 // аналитика (mod.stats), режимы чата Twitch (mod.chat), запросы на разбан (mod.unban).
 // Настройки сохраняются автоматически через полсекунды после изменения.
-const MOD_TABS = [['analytics', 'Аналитика'], ['filters', 'Фильтры и наказания'], ['queue', 'Очередь и журнал'], ['lists', 'Списки и исключения']];
+const MOD_TABS = [['analytics', 'Аналитика'], ['filters', 'Фильтры и наказания'], ['queue', 'Очередь и журнал']];
 // Порядок — как в moderate() на сервере: срабатывает первый подходящий фильтр.
 const MOD_FKEYS = ['threat', 'tox', 'words', 'bots', 'links', 'promo', 'personal', 'zalgo', 'caps', 'flood', 'mentions', 'long', 'spam', 'newacc'];
 const MOD_FMETA = {
@@ -355,6 +390,77 @@ const MOD_STEP_ACTS = ['warn', 'delete', 'timeout', 'ban'];
 const MOD_DURS = [[30, '30 с'], [60, '1 мин'], [300, '5 мин'], [600, '10 мин'], [1800, '30 мин'], [3600, '1 ч'], [86400, '24 ч'], [604800, '7 дней'], [1209600, '14 дней']];
 // Подписи, которые понимает parse_dur() на сервере; остальные длительности пишем числом секунд
 const MOD_BACK = { 30: '30 с', 60: '1 мин', 300: '5 мин', 600: '10 мин', 3600: '1 ч', 86400: '24 ч', 604800: '7 дней' };
+
+// Уровни защиты. Меняют только фильтры (вкл., действие, чувствительность, длительность мута) и лестницу.
+// Списки, исключения, текст предупреждения, автомодерация и сроки сброса счётчика не трогаем.
+// «Стандартный» совпадает с mod_defaults() в server/app/lib/bot.php.
+const MOD_LEVEL_KEYS = ['soft', 'std', 'strict'];
+const MOD_LEVELS = {
+  soft: {
+    label: 'Мягкий',
+    desc: 'Капс и флуд только предупреждают, ругань ловит только явную. Лестница заканчивается мутом, а не баном.',
+    ladder: [{ a: 'warn' }, { a: 'warn' }, { a: 'warn' }, { a: 'timeout', d: '10 мин' }],
+    f: {
+      threat: { on: true, action: 'ban', sens: 3 },
+      tox: { on: true, action: 'review', sens: 1 },
+      words: { on: true, action: 'ladder' },
+      bots: { on: true, action: 'ban' },
+      links: { on: true, action: 'warn' },
+      promo: { on: true, action: 'timeout', dur: 600 },
+      personal: { on: true, action: 'delete' },
+      zalgo: { on: true, action: 'delete' },
+      caps: { on: true, action: 'warn' },
+      flood: { on: true, action: 'warn' },
+      spam: { on: true, action: 'timeout', dur: 300 },
+      mentions: { on: false, action: 'timeout', dur: 60 },
+      long: { on: false, action: 'delete' },
+      newacc: { on: false, action: 'review' },
+    },
+  },
+  std: {
+    label: 'Стандартный',
+    desc: 'Рекомендуем. Ругань — на твою проверку, спам — мут 5 мин, угрозы и спам-боты — сразу бан, слова и капс — три предупреждения, потом бан.',
+    ladder: [{ a: 'warn' }, { a: 'warn' }, { a: 'warn' }, { a: 'ban' }],
+    f: {
+      threat: { on: true, action: 'ban', sens: 3 },
+      tox: { on: true, action: 'review', sens: 2 },
+      words: { on: true, action: 'ladder' },
+      bots: { on: true, action: 'ban' },
+      links: { on: true, action: 'warn' },
+      promo: { on: true, action: 'timeout', dur: 600 },
+      personal: { on: true, action: 'delete' },
+      zalgo: { on: true, action: 'delete' },
+      caps: { on: true, action: 'ladder' },
+      flood: { on: true, action: 'delete' },
+      spam: { on: true, action: 'timeout', dur: 300 },
+      mentions: { on: false, action: 'timeout', dur: 60 },
+      long: { on: false, action: 'delete' },
+      newacc: { on: false, action: 'review' },
+    },
+  },
+  strict: {
+    label: 'Строгий',
+    desc: 'Все фильтры включены, ругань ловит строже. Ступени: предупреждение, мут 10 мин, мут 24 ч, бан.',
+    ladder: [{ a: 'warn' }, { a: 'timeout', d: '10 мин' }, { a: 'timeout', d: '24 ч' }, { a: 'ban' }],
+    f: {
+      threat: { on: true, action: 'ban', sens: 3 },
+      tox: { on: true, action: 'ladder', sens: 3 },
+      words: { on: true, action: 'ladder' },
+      bots: { on: true, action: 'ban' },
+      links: { on: true, action: 'ladder' },
+      promo: { on: true, action: 'ladder' },
+      personal: { on: true, action: 'delete' },
+      zalgo: { on: true, action: 'delete' },
+      caps: { on: true, action: 'ladder' },
+      flood: { on: true, action: 'delete' },
+      spam: { on: true, action: 'timeout', dur: 600 },
+      mentions: { on: true, action: 'timeout', dur: 60 },
+      long: { on: true, action: 'delete' },
+      newacc: { on: true, action: 'review' },
+    },
+  },
+};
+// Быстрый выбор только лестницы (без фильтров)
 const MOD_PRESETS = [
   ['Бан сразу', [{ a: 'ban' }]],
   ['Только предупреждения', [{ a: 'warn' }]],
@@ -368,8 +474,12 @@ const MOD_MODES = [
   ['subs', 'Только подписчики', 'Остальные читают, но не пишут'],
   ['emote', 'Только эмоуты', 'Сообщения без текста'],
   ['unique', 'Уникальный чат', 'Нельзя повторять одно и то же сообщение'],
-  ['shield', 'Режим щита', 'Защита Twitch от атак с настройками из панели автора'],
+  ['shield', 'Режим щита', 'Экстренная защита на время атаки, по настройкам из панели автора на Twitch'],
 ];
+const MOD_BADGE = {
+  ban: 'border: 2px solid #FF6369; color: #FF6369', timeout: 'border: 1px dashed #B4B4B4; color: #F2F2F2', warn: 'border: 1px solid #6E6E6E; color: #DCDCDC',
+  delete: 'border: 1px dotted #6E6E6E; color: #B4B4B4', review: 'border: 1px dashed #6E6E6E; color: #B4B4B4', music: 'border: 1px solid #3A3A3A; color: #B4B4B4',
+};
 
 function modPl(n, a, b, c) { n = Math.abs(n) % 100; const d = n % 10; return n > 10 && n < 20 ? c : d === 1 ? a : d >= 2 && d <= 4 ? b : c; }
 function modSec(d) { const back = Object.keys(MOD_BACK).find((k) => MOD_BACK[k] === d); return back ? Number(back) : Math.max(1, parseInt(d, 10) || 1); }
@@ -414,20 +524,85 @@ function modDurOpts(sec) {
   if (!list.some((x) => x.s === sec)) { list.push({ s: sec, label: modHuman(sec) }); list.sort((a, b) => a.s - b.s); }
   return list;
 }
+// Снимок того, что задаёт уровень защиты: лестница и фильтры (вкл., действие, чувствительность, мут)
+function modSnap(ladder, F) {
+  const f = {};
+  MOD_FKEYS.forEach((k) => {
+    const p = F(k);
+    const o = { on: !!p.on, action: String(p.action) };
+    if (MOD_FMETA[k].sens) o.sens = Number(p.sens);
+    if (o.action === 'timeout') o.dur = Number(p.dur);
+    f[k] = o;
+  });
+  return JSON.stringify({ ladder: ladder.map((x) => (x.a === 'timeout' ? { a: 'timeout', d: String(x.d) } : { a: String(x.a) })), f });
+}
+// Какой уровень совпадает с настройками; пусто — «Свои настройки»
+function modLevelOf(cfg) {
+  if (!cfg) return '';
+  const now = modSnap(cfg.ladder, (k) => cfg.filters[k]);
+  return MOD_LEVEL_KEYS.find((key) => modSnap(MOD_LEVELS[key].ladder, (k) => MOD_LEVELS[key].f[k]) === now) || '';
+}
+function modApplyLevel(c, key) {
+  const lv = MOD_LEVELS[key];
+  c.ladder = lv.ladder.map((x) => Object.assign({}, x));
+  MOD_FKEYS.forEach((k) => {
+    const p = lv.f[k];
+    const x = c.filters[k];
+    x.on = p.on;
+    x.action = p.action;
+    if (MOD_FMETA[k].sens) x.sens = p.sens;
+    if (p.action === 'timeout') x.dur = p.dur;
+  });
+}
+// Лестница простыми словами: «Сначала 3 предупреждения, потом бан»
+function modLadderText(Ld) {
+  const word = (x) => (x.a === 'warn' ? 'предупреждение' : x.a === 'delete' ? 'удалить сообщение' : x.a === 'timeout' ? 'мут ' + modHuman(modSec(x.d)) : 'бан');
+  const last = Ld[Ld.length - 1];
+  if (Ld.length === 1) return { short: word(last), full: last.a === 'ban' ? 'бан с первого нарушения.' : 'каждое нарушение — ' + word(last) + '.' };
+  const runs = [];
+  Ld.forEach((x) => { const w = word(x); const r = runs[runs.length - 1]; if (r && r.w === w) r.n++; else runs.push({ w, n: 1, a: x.a }); });
+  const parts = runs.map((r) => {
+    if (r.n === 1) return r.w;
+    if (r.a === 'warn') return r.n + ' ' + modPl(r.n, 'предупреждение', 'предупреждения', 'предупреждений');
+    return r.n + ' × ' + r.w;
+  });
+  const short = parts.join(', потом ');
+  return { short, full: 'сначала ' + short + '.' + (last.a === 'ban' ? '' : ' Дальше каждое нарушение — ' + word(last) + '.') };
+}
+// Строка журнала: общие поля для журнала и для блока «Последние действия»
+function modRow(r, nowS, undoneLocal) {
+  const und = !!r.undone || !!(undoneLocal && undoneLocal[r.id]);
+  const expired = r.action === 'timeout' && r.duration > 0 && r.at + r.duration < nowS;
+  const undoable = ['ban', 'timeout', 'warn'].indexOf(r.action) >= 0;
+  const fk = MOD_REASON[r.reason];
+  const act = { ban: 'Бан', timeout: 'Мут ' + modHuman(r.duration || 600), warn: 'Предупреждение', delete: 'Удалено сообщение', review: 'На проверку', music: 'Музыка' }[r.action] || r.action;
+  const isMusic = r.action === 'music';
+  const msg = isMusic ? '' : (r.message || '');
+  return {
+    time: modWhen(r.at), nick: r.login || (isMusic ? (r.by || '') : '') || '—', strikes: r.strikes ? 'ступень ' + r.strikes : '',
+    action: act, badge: MOD_BADGE[r.action] || MOD_BADGE.delete,
+    reason: fk ? MOD_FMETA[fk].name : (r.reason === 'вручную из панели' ? 'Вручную' : (r.reason || '')),
+    message: msg, msgShort: msg ? '«' + (msg.length > 120 ? msg.slice(0, 120) + '…' : msg) + '»' : '',
+    by: isMusic ? 'Помощник музыки' : (r.by || ''),
+    und, undoable, expired, canUndo: undoable && !und && !expired,
+  };
+}
 
 class Component extends DCLogic {
   constructor(props) {
     super(props);
     const h = location.hash.replace('#', '');
-    const tab = Math.max(0, MOD_TABS.findIndex((t) => t[0] === h));
+    // Старый адрес #lists ведёт в раздел «Фильтры и наказания» с открытыми расширенными настройками
+    const tab = h === 'lists' ? 1 : Math.max(0, MOD_TABS.findIndex((t) => t[0] === h));
     this.state = {
-      tab, me: null, cfg: null, cfgErr: '', save: 'saved', saveErr: '', drafts: {},
+      tab, advOpen: h === 'lists', me: null, cfg: null, cfgErr: '', save: 'saved', saveErr: '', drafts: {},
       wordDraft: '', wordErr: '', domDraft: '', domErr: '',
       modes: null, modesAvail: true, modesErr: '', modeBusy: {},
-      queue: null, qGone: {}, revealed: {},
+      queue: null, qErr: '', qGone: {}, revealed: {},
       journal: null, jType: '', jErr: '', undoBusy: {}, undoneLocal: {},
+      recent: null, recentErr: '',
       stats: null, statsErr: '',
-      unban: null, unbanBusy: {}, unbanLoading: false,
+      unban: null, unbanBusy: {}, unbanLoading: false, unbanErr: '',
       watchBusy: {}, botBusy: false,
     };
     this.savedJson = '';
@@ -445,7 +620,6 @@ class Component extends DCLogic {
     this.loadCfg();
     this.loadModes();
     this.loadQueue();
-    this.loadUnban();
     this.loadTab(this.state.tab);
     this.timer = setInterval(() => this.tick(), 10000);
     document.addEventListener('visibilitychange', () => { if (document.hidden) this.flush(); else this.tick(); });
@@ -462,12 +636,12 @@ class Component extends DCLogic {
     if (document.hidden) return;
     this.ticks++;
     this.loadQueue();
-    if (this.state.tab === 0) this.loadStats();
+    if (this.state.tab === 0) { this.loadStats(); this.loadRecent(); }
     if (this.state.tab === 2) { this.loadJournal(); if (this.ticks % 6 === 0) this.loadUnban(); }
     if (this.ticks % 3 === 0) { this.loadModes(); this.loadMe(); }
   }
   loadTab(i) {
-    if (i === 0) this.loadStats();
+    if (i === 0) { this.loadStats(); this.loadRecent(); }
     if (i === 1) this.loadModes();
     if (i === 2) { this.loadQueue(); this.loadJournal(); this.loadUnban(); }
   }
@@ -483,6 +657,11 @@ class Component extends DCLogic {
     this.setState({ tab: i });
     try { history.replaceState(null, '', '#' + MOD_TABS[i][0]); } catch (e) { /* без адреса */ }
     this.loadTab(i);
+  }
+  toggleAdv() { this.setState({ advOpen: !this.state.advOpen }); }
+  openAdv() {
+    this.setState({ advOpen: true });
+    setTimeout(() => { const el = document.getElementById('adv-b'); if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 0);
   }
 
   async loadMe() {
@@ -556,6 +735,10 @@ class Component extends DCLogic {
   }
   setDraft(key, val) { this.setState({ drafts: Object.assign({}, this.state.drafts, { [key]: val }) }); }
   dropDraft(key) { if (key in this.state.drafts) { const d = Object.assign({}, this.state.drafts); delete d[key]; this.setState({ drafts: d }); } }
+  pickLevel(key) {
+    if (!this.state.cfg || modLevelOf(this.state.cfg) === key) return;
+    this.edit((c) => modApplyLevel(c, key), 0);
+  }
 
   // ---------- режимы чата ----------
   async loadModes() {
@@ -589,8 +772,8 @@ class Component extends DCLogic {
   async loadQueue() {
     if (this.qBusy) return;
     this.qBusy = true;
-    try { const r = await StreAPI.get('mod.review'); this.put('queue', r.items || []); }
-    catch (e) { if (this.state.queue === null) this.setState({ queue: [] }); }
+    try { const r = await StreAPI.get('mod.review'); this.put('queue', r.items || [], this.state.qErr ? { qErr: '' } : null); }
+    catch (e) { if (this.state.qErr !== e.message) this.setState({ qErr: e.message }); }
     this.qBusy = false;
   }
   async review(h, action) {
@@ -619,12 +802,21 @@ class Component extends DCLogic {
       const r = await StreAPI.get('mod.journal', type ? { type } : null);
       if (seq !== this.jSeq) return;
       this.put('journal', r.items || [], this.state.jErr ? { jErr: '' } : null);
-    } catch (e) { if (seq === this.jSeq && this.state.journal === null) this.setState({ journal: [], jErr: e.message }); }
+    } catch (e) { if (seq === this.jSeq && this.state.jErr !== e.message) this.setState({ jErr: e.message }); }
+  }
+  async loadRecent() {
+    if (this.rBusy) return;
+    this.rBusy = true;
+    try {
+      const r = await StreAPI.get('mod.journal', null);
+      this.put('recent', (r.items || []).slice(0, 10), this.state.recentErr ? { recentErr: '' } : null);
+    } catch (e) { if (this.state.recentErr !== e.message) this.setState({ recentErr: e.message }); }
+    this.rBusy = false;
   }
   setJType(t) {
     if (t === this.state.jType) return;
     this.seen.journal = '';
-    this.setState({ jType: t, journal: null });
+    this.setState({ jType: t, journal: null, jErr: '' });
     setTimeout(() => this.loadJournal(), 0);
   }
   async undo(row) {
@@ -632,8 +824,9 @@ class Component extends DCLogic {
     try {
       await StreAPI.post('mod.undo', { id: row.id });
       this.setState({ undoneLocal: Object.assign({}, this.state.undoneLocal, { [row.id]: true }) });
-      StreAPI.toast({ ban: row.login + ' разбанен', timeout: 'Мут для ' + row.login + ' снят', warn: 'Предупреждение для ' + row.login + ' снято' }[row.action] + ', счётчик нарушений обнулён');
+      StreAPI.toast({ ban: row.login + ' разбанен, счётчик нарушений обнулён', timeout: 'Мут для ' + row.login + ' снят, счётчик нарушений обнулён', warn: 'Счётчик нарушений ' + row.login + ' сброшен' }[row.action] || 'Отменено');
       this.loadJournal();
+      this.loadRecent();
       this.loadStats();
     } catch (e) { StreAPI.toast(e.message, 'error'); }
     this.setState({ undoBusy: Object.assign({}, this.state.undoBusy, { [row.id]: false }) });
@@ -666,8 +859,8 @@ class Component extends DCLogic {
   async loadUnban() {
     if (this.state.unbanLoading) return;
     this.setState({ unbanLoading: true });
-    try { const r = await StreAPI.get('mod.unban'); this.put('unban', r.items || []); }
-    catch (e) { if (this.state.unban === null) this.setState({ unban: [] }); StreAPI.toast('Запросы на разбан: ' + e.message, 'error'); }
+    try { const r = await StreAPI.get('mod.unban'); this.put('unban', r.items || [], this.state.unbanErr ? { unbanErr: '' } : null); }
+    catch (e) { if (this.state.unbanErr !== e.message) this.setState({ unbanErr: e.message }); }
     this.setState({ unbanLoading: false });
   }
   async unbanAct(u, approve) {
@@ -701,35 +894,35 @@ class Component extends DCLogic {
   }
 
   // ---------- модели для разметки ----------
-  vmFilter(k, cfg, ladderText) {
+  vmFilter(k, cfg, ladderShort) {
     const s = this.state;
     const m = MOD_FMETA[k];
     const c = cfg.filters[k];
     const upd = (patch, delay) => this.edit((x) => { Object.assign(x.filters[k], patch); }, delay);
     const descs = {
-      threat: 'Словарь угроз: «убью тебя», «сдохни», «знаю, где ты живёшь». Чем строже, тем шире список.',
-      tox: 'Словарь оскорблений с поиском обхода: «д е б и л», «т.у.п.о.й», латиница вместо кириллицы. Смысл фразы бот не понимает.',
-      words: 'Твой список на вкладке «Списки»: ' + cfg.words.length + ' ' + modPl(cfg.words.length, 'слово', 'слова', 'слов') + '. Ловит замену букв, пробелы и точки между буквами.',
-      bots: 'Типичная реклама накрутки от спам-ботов: «cheap viewers», «dogehype», «бесплатные зрители».',
-      links: 'Ссылки на сайты не из списка разрешённых (' + cfg.domains.length + ' на вкладке «Списки»).' + (cfg.subsLinks ? ' Подписчикам и VIP можно.' : ''),
-      promo: '«Заходите ко мне», «подпишись на мой канал», «мой канал», «follow me».',
-      personal: 'Номера телефонов и банковских карт.',
-      zalgo: 'Зальго-текст и невидимые символы.',
-      caps: 'Сообщение от ' + c.min + ' ' + modPl(c.min, 'буквы', 'букв', 'букв') + ', где заглавных ' + c.pct + '% и больше.',
-      flood: 'Больше ' + c.emotes + ' эмоутов или один символ ' + c.chars + ' раз подряд.',
-      mentions: 'Больше ' + c.max + ' @упоминаний в одном сообщении.',
-      long: 'Сообщения длиннее ' + c.max + ' ' + modPl(c.max, 'символа', 'символов', 'символов') + '.',
-      spam: c.repeats + '-е одинаковое сообщение от одного зрителя за ' + c.window + ' с.',
-      newacc: 'Аккаунты Twitch младше ' + c.days + ' ' + modPl(c.days, 'дня', 'дней', 'дней') + '. Возраст аккаунта бот узнаёт у Twitch.',
+      threat: 'Срабатывает на фразы из словаря угроз: «убью тебя», «сдохни», «знаю, где ты живёшь».',
+      tox: 'Срабатывает на ругань из словаря, в том числе спрятанную: «д е б и л», «т.у.п.о.й», латиница вместо букв. Смысл фразы не понимает.',
+      words: 'Срабатывает на слова и фразы из твоего списка: ' + cfg.words.length + ' ' + modPl(cfg.words.length, 'слово', 'слова', 'слов') + '. Список — в «Расширенных настройках».',
+      bots: 'Срабатывает на типичную рекламу накрутки от спам-ботов: «cheap viewers», «dogehype», «бесплатные зрители».',
+      links: 'Срабатывает на ссылку на сайт, которого нет в списке разрешённых: ' + cfg.domains.length + ' ' + modPl(cfg.domains.length, 'сайт', 'сайта', 'сайтов') + ' в «Расширенных настройках».' + (cfg.subsLinks ? ' Подписчикам и VIP можно.' : ''),
+      promo: 'Срабатывает на рекламу своего канала: «заходите ко мне», «подпишись на мой канал», «follow me».',
+      personal: 'Срабатывает, если в сообщении похоже на номер телефона или банковской карты.',
+      zalgo: 'Срабатывает на «зальго»-текст с нагромождением знаков и на невидимые символы, которыми забивают чат.',
+      caps: 'Срабатывает, когда сообщение длиннее ' + c.min + ' ' + modPl(c.min, 'буквы', 'букв', 'букв') + ', и заглавных в нём ' + c.pct + '% и больше.',
+      flood: 'Срабатывает, если в одном сообщении больше ' + c.emotes + ' ' + modPl(c.emotes, 'эмоута', 'эмоутов', 'эмоутов') + ' или один символ повторяется ' + c.chars + ' раз подряд.',
+      mentions: 'Срабатывает, если в одном сообщении больше ' + c.max + ' @упоминаний.',
+      long: 'Срабатывает на сообщения длиннее ' + c.max + ' ' + modPl(c.max, 'символа', 'символов', 'символов') + '.',
+      spam: 'Срабатывает, если один зритель пишет одно и то же сообщение ' + c.repeats + ' ' + modPl(c.repeats, 'раз', 'раза', 'раз') + ' за ' + c.window + ' с.',
+      newacc: 'Срабатывает на сообщения от аккаунтов Twitch младше ' + c.days + ' ' + modPl(c.days, 'дня', 'дней', 'дней') + '. Возраст аккаунта бот узнаёт у Twitch.',
     };
     const durSec = c.dur > 0 ? c.dur : 600;
     const hints = {
-      ladder: [ladderText, 'color: #DCDCDC'],
-      review: ['Сообщение остаётся в чате и попадает в очередь — решаешь ты', 'color: #DCDCDC; border: 1px dashed #6E6E6E; border-radius: 4px; padding: 4px 8px; align-self: flex-start'],
-      delete: ['Сообщение удаляется, зритель не наказывается', 'color: #8F8F8F'],
-      warn: ['Удаляем сообщение и пишем в чат предупреждение', 'color: #8F8F8F'],
-      timeout: ['Мут на ' + modHuman(durSec) + (cfg.announce ? ', бот сообщит об этом в чат' : ''), 'color: #B4B4B4'],
-      ban: ['Бан без предупреждения. Снять можно в журнале', 'color: #FF6369'],
+      ladder: [ladderShort, 'color: #DCDCDC'],
+      review: ['Сообщение остаётся в чате и попадает в очередь. Решаешь ты: вкладка «Очередь и журнал»', 'color: #DCDCDC; border: 1px dashed #6E6E6E; border-radius: 4px; padding: 4px 8px; align-self: flex-start'],
+      delete: ['Сообщение удаляется. Зритель не наказывается', 'color: #8F8F8F'],
+      warn: ['Сообщение удаляется, в чат пишется предупреждение', 'color: #8F8F8F'],
+      timeout: ['Мут на ' + modHuman(durSec) + (cfg.announce ? '. Бот сообщит об этом в чат' : ''), 'color: #B4B4B4'],
+      ban: ['Бан сразу, без предупреждения. Снять можно в журнале', 'color: #FF6369'],
     };
     const h = hints[c.action];
     const SENS = ['Мягко', 'Средне', 'Строго', 'Максимум'];
@@ -776,31 +969,65 @@ class Component extends DCLogic {
     const modes = s.modes || {};
     const qGone = s.qGone;
     const queue = (s.queue || []).filter((x) => !qGone[x.id]);
+    const lvKey = modLevelOf(cfg);
+    const nowS = Date.now() / 1000;
+    const out = {};
 
-    // ----- шапка -----
+    // ----- шапка и уровень защиты -----
+    const botName = (me.bot && me.bot.login) || 'StreOps';
+    out.subtitle = user ? 'Бот ' + botName + ' следит за чатом twitch.tv/' + user.login + ' и наказывает нарушителей, как модератор канала.' : 'Фильтры чата Twitch, наказания, очередь на проверку и журнал действий.';
+    out.botOff = !!user && !user.botEnabled;
+    out.botWarn = !!user && user.botEnabled && !!user.botError;
+    out.botError = user ? String(user.botError || '').replace(/\.$/, '') + '.' : '';
+    out.botBusy = s.botBusy;
+    out.botBtn = s.botBusy ? 'Включаем…' : 'Включить бота';
+    out.botRetryBtn = s.botBusy ? 'Проверяем…' : 'Проверить снова';
+    out.enableBot = () => this.enableBot();
+
     const shieldOn = !!modes.shield;
     const modesReady = !!s.modes && s.modesAvail;
-    const out = {
-      subtitle: user ? 'Чат twitch.tv/' + user.login + '. Бот ' + ((me.bot && me.bot.login) || 'StreOps') + ' проверяет сообщения и наказывает нарушителей как модератор канала.' : 'Фильтры чата Twitch, наказания, очередь на проверку и журнал действий.',
-      noCfg: !cfg, autoOn: cfg && cfg.auto ? 'true' : 'false',
-      toggleAuto: () => this.edit((c) => { c.auto = !c.auto; }, 0),
-      autoOff: !!cfg && !cfg.auto,
-      botOff: !!user && !user.botEnabled, botWarn: !!user && user.botEnabled && !!user.botError, botError: user ? String(user.botError || '').replace(/\.$/, '') + '.' : '',
-      botBusy: s.botBusy, botBtn: s.botBusy ? 'Включаем…' : 'Включить бота', botRetryBtn: s.botBusy ? 'Проверяем…' : 'Проверить снова',
-      enableBot: () => this.enableBot(),
-      shieldOn, shieldPressed: shieldOn ? 'true' : 'false', shieldDisabled: !modesReady || !!s.modeBusy.shield,
-      shieldLabel: shieldOn ? 'Выключить режим щита' : 'Режим щита',
-      shieldTitle: modesReady ? 'Режим щита Twitch: защита от атак на чат' : 'Недоступно: бот должен быть подключён и быть модератором канала',
-      shieldStyle: 'height: 40px; padding: 0 14px; border-radius: 6px; font: 500 14px/20px Onest, sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; ' + (shieldOn ? 'background: #F2F2F2; color: #0A0A0A; border: 0' : 'background: transparent; color: #F2F2F2; border: 1px solid #6E6E6E') + (modesReady ? '' : '; opacity: 0.5; cursor: not-allowed'),
-      toggleShield: () => this.setMode('shield', !shieldOn),
-      saveFailed: s.save === 'error', saveErr: s.saveErr,
-      revert: () => this.revert(), retrySave: () => { this.retryN = 0; this.flush(); },
-      saveOk: !!cfg && s.save === 'saved',
-      saveLabel: !cfg ? '' : ({ saved: 'Все изменения сохранены', dirty: 'Сохраним через секунду…', saving: 'Сохраняем…', error: 'Не сохранено' })[s.save],
-      saveColor: s.save === 'error' ? '#F2F2F2' : '#8F8F8F',
-      tA: s.tab === 0, tF: s.tab === 1, tJ: s.tab === 2, tL: s.tab === 3,
-      hasCfg: !!cfg, cfgLoading: !cfg && !s.cfgErr, cfgFailed: !cfg && !!s.cfgErr, cfgErr: s.cfgErr, reloadCfg: () => this.loadCfg(),
-    };
+    out.shieldOn = shieldOn;
+    out.shieldBusy = !!s.modeBusy.shield || !modesReady;
+    out.toggleShield = () => this.setMode('shield', !shieldOn);
+
+    out.noCfg = !cfg;
+    out.autoOn = cfg && cfg.auto ? 'true' : 'false';
+    out.autoOff = !!cfg && !cfg.auto;
+    out.autoHint = !cfg ? 'Загружаем…' : cfg.auto ? 'Включена: фильтры проверяют каждое сообщение.' : 'Выключена: фильтры чат не проверяют. Ручные действия и журнал работают.';
+    out.toggleAuto = () => this.edit((c) => { c.auto = !c.auto; }, 0);
+
+    out.lvlCurrent = !cfg ? '…' : lvKey ? MOD_LEVELS[lvKey].label : 'Свои настройки';
+    out.levelCustom = !!cfg && !lvKey;
+    out.levels = MOD_LEVEL_KEYS.map((key) => {
+      const sel = lvKey === key;
+      return {
+        label: MOD_LEVELS[key].label, desc: MOD_LEVELS[key].desc,
+        sel: sel ? 'true' : 'false', tag: sel ? 'Сейчас' : '', off: !cfg,
+        style: sel ? 'box-shadow: inset 0 0 0 1px #FFFFFF; border-color: #FFFFFF' : '',
+        pick: () => this.pickLevel(key),
+      };
+    });
+    out.hasCfg = !!cfg;
+    out.cfgLoading = !cfg && !s.cfgErr;
+    out.cfgFailed = !cfg && !!s.cfgErr;
+    out.cfgErr = s.cfgErr;
+    out.reloadCfg = () => this.loadCfg();
+    const ex = ['стримера'];
+    const exc = cfg ? cfg.exempt : { mods: true, vip: true, subs: false };
+    if (exc.mods) ex.push('модераторов');
+    if (exc.vip) ex.push('VIP');
+    if (exc.subs) ex.push('подписчиков');
+    ex.push('известных ботов');
+    out.exemptText = ex.slice(0, -1).join(', ') + ' и ' + ex[ex.length - 1];
+
+    out.saveFailed = s.save === 'error';
+    out.saveErr = s.saveErr;
+    out.revert = () => this.revert();
+    out.retrySave = () => { this.retryN = 0; this.flush(); };
+    out.saveOk = !!cfg && s.save === 'saved';
+    out.saveLabel = !cfg ? '' : ({ saved: 'Все изменения сохранены', dirty: 'Сохраним через секунду…', saving: 'Сохраняем…', error: 'Не сохранено' })[s.save];
+    out.saveColor = s.save === 'error' ? '#F2F2F2' : '#8F8F8F';
+
     out.tabs = MOD_TABS.map((t, i) => {
       const n = i === 2 ? queue.length : 0;
       return {
@@ -818,17 +1045,33 @@ class Component extends DCLogic {
         },
       };
     });
+    out.tA = s.tab === 0; out.tF = s.tab === 1; out.tJ = s.tab === 2;
+
+    // ----- последние действия (на первом экране) -----
+    out.goJournal = () => this.pickTab(2);
+    out.recFailed = !!s.recentErr;
+    out.recErrText = String(s.recentErr || '').replace(/\.$/, '');
+    out.reloadRecent = () => this.loadRecent();
+    out.recLoading = s.recent === null && !s.recentErr;
+    out.recEmpty = s.recent !== null && s.recent.length === 0 && !s.recentErr;
+    out.recEmptyText = user && !user.botEnabled ? 'Бот выключен, поэтому он никого не проверяет. Включи его на этой странице.' : 'Пока никого не наказали. Здесь появятся удаления, предупреждения, муты и баны от бота и модераторов.';
+    out.recent = (s.recent || []).map((r) => {
+      const row = modRow(r, nowS, s.undoneLocal);
+      return { time: row.time, nick: row.nick, reason: row.reason, action: row.action, badge: row.badge };
+    });
 
     // ----- аналитика -----
     const st = s.stats;
     const live = me.stream && me.stream.live;
-    out.periodLabel = (live ? 'Текущий стрим · с ' + StreAPI.fmtTime(me.stream.startedAt) : 'Последние 24 часа — сейчас не в эфире') + ' · обновляется каждые 10 секунд';
+    out.periodLabel = (live ? 'Текущий стрим · с ' + StreAPI.fmtTime(me.stream.startedAt) : 'Последние 24 часа, сейчас не в эфире') + ' · обновляется каждые 10 секунд';
     out.statsFailed = !!s.statsErr;
     out.statsErr = String(s.statsErr || '').replace(/\.$/, '');
+    out.retryStats = () => { this.sBusy = false; this.loadStats(); };
+    const stWait = s.statsErr ? 'Не загрузилось, см. сообщение выше' : 'Загружаем…';
     const A = st && st.actions && !Array.isArray(st.actions) ? st.actions : {};
     const num = (v) => (st ? StreAPI.fmtNum(v || 0) : '—');
     out.statCards = [
-      { k: 'Сообщений', v: num(st && st.messages), sub: st ? StreAPI.fmtNum(st.chatters) + ' ' + modPl(st.chatters, 'автор', 'автора', 'авторов') : 'Загрузка…' },
+      { k: 'Сообщений', v: num(st && st.messages), sub: st ? StreAPI.fmtNum(st.chatters) + ' ' + modPl(st.chatters, 'автор', 'автора', 'авторов') : stWait },
       { k: 'Удалено', v: num(A.delete), sub: 'сообщений без мута и бана' },
       { k: 'Предупреждений', v: num(A.warn), sub: 'бот удалил сообщение и написал в чат' },
       { k: 'Муты / баны', v: st ? StreAPI.fmtNum(A.timeout || 0) + ' / ' + StreAPI.fmtNum(A.ban || 0) : '—', sub: 'от бота и вручную' },
@@ -836,7 +1079,7 @@ class Component extends DCLogic {
     ];
     const tox = st ? Math.max(0, Math.min(100, st.toxIndex || 0)) : 0;
     out.toxV = st ? String(tox) : '—';
-    out.toxLevel = st ? 'из 100 · ' + (tox <= 25 ? 'низкий' : tox <= 50 ? 'заметный' : tox <= 75 ? 'высокий' : 'критический') : 'из 100';
+    out.toxLevel = st ? 'из 100 · ' + (tox <= 25 ? 'низкий' : tox <= 50 ? 'заметный' : tox <= 75 ? 'высокий' : 'критический') : (s.statsErr ? 'нет данных' : 'из 100');
     out.toxSegs = [0, 1, 2, 3].map((i) => ({ w: Math.max(0, Math.min(1, (tox - i * 25) / 25)) * 100 + '%' }));
     const buckets = st && st.chart && Array.isArray(st.chart.buckets) ? st.chart.buckets : [];
     const from = st && st.chart ? st.chart.from : Math.floor(Date.now() / 1000) - 3 * 3600;
@@ -849,11 +1092,11 @@ class Component extends DCLogic {
       return {
         v: b.v ? 'max(2px, ' + (b.v / peak * 100).toFixed(1) + '%)' : '0',
         m: (Math.max(0, b.m - b.v) / peak * 100).toFixed(1) + '%',
-        title: t0 + ' — ' + b.m + ' ' + modPl(b.m, 'сообщение', 'сообщения', 'сообщений') + ', ' + b.v + ' ' + modPl(b.v, 'нарушение', 'нарушения', 'нарушений'),
+        title: t0 + ': ' + b.m + ' ' + modPl(b.m, 'сообщение', 'сообщения', 'сообщений') + ', ' + b.v + ' ' + modPl(b.v, 'нарушение', 'нарушения', 'нарушений'),
       };
     });
     out.chartEmpty = !st || (totM === 0 && totV === 0);
-    out.chartEmptyText = st ? 'За последние 3 часа в чате не было сообщений' : 'Загрузка…';
+    out.chartEmptyText = st ? 'За последние 3 часа в чате не было сообщений' : stWait;
     out.chartAria = 'Сообщения и нарушения по 10 минут за 3 часа: всего ' + totM + ' ' + modPl(totM, 'сообщение', 'сообщения', 'сообщений') + ', ' + totV + ' ' + modPl(totV, 'нарушение', 'нарушения', 'нарушений') + (totV > 0 ? ', больше всего нарушений в ' + StreAPI.fmtTime(peakAt) : '');
     out.ticks = [0, 1, 2, 3].map((i) => ({ t: i === 3 ? 'сейчас' : StreAPI.fmtTime(from + i * 3600) }));
     const rs = {};
@@ -868,7 +1111,7 @@ class Component extends DCLogic {
     const rmax = Math.max(1, ...rl.map((r) => r.n));
     out.reasons = rl.map((r) => ({ name: r.name, n: r.n, w: Math.round(r.n / rmax * 100) + '%', title: 'Причина в журнале: ' + r.title.join(', ') }));
     out.reasonsEmpty = rl.length === 0;
-    out.reasonsEmptyText = st ? 'Бот пока никого не наказал за этот период. Когда сработают фильтры, здесь появится разбивка по причинам.' : 'Загрузка…';
+    out.reasonsEmptyText = st ? 'Бот пока никого не наказал за этот период. Когда сработают фильтры, здесь появится разбивка по причинам.' : stWait;
     const L = cfg ? cfg.ladder.length : 0;
     out.watch = ((st && st.watch) || []).map((w) => {
       const nick = w.login || 'id ' + w.chatter_id;
@@ -881,24 +1124,22 @@ class Component extends DCLogic {
       };
     });
     out.watchEmpty = out.watch.length === 0;
-    out.watchEmptyText = st ? 'Никого. Сюда попадают зрители, которых за последние 7 дней наказывали фильтры с наказанием «По лестнице».' : 'Загрузка…';
+    out.watchEmptyText = st ? 'Никого. Сюда попадают зрители, которых за последние 7 дней наказывали по лестнице.' : stWait;
     out.top = ((st && st.top) || []).map((r) => ({ login: r.chatter_login, c: StreAPI.fmtNum(r.c), v: r.violations, vStyle: r.violations > 0 ? 'color: #F2F2F2; font-weight: 500' : 'color: #8F8F8F' }));
     out.topHas = out.top.length > 0;
     out.topEmpty = !out.topHas;
-    out.topEmptyText = st ? 'В чате пока никто не писал за этот период. Статистика появится, когда бот увидит сообщения.' : 'Загрузка…';
+    out.topEmptyText = st ? 'В чате пока никто не писал за этот период. Статистика появится, когда бот увидит сообщения.' : stWait;
 
-    // ----- лестница -----
+    // ----- лестница и фильтры -----
     const ACT = { warn: 'предупреждение', delete: 'удаление', timeout: 'мут', ban: 'бан' };
-    let ladderText = '';
+    let ladderShort = '';
     if (cfg) {
       const Ld = cfg.ladder;
-      const warnN = Ld.filter((x) => x.a === 'warn').length;
-      const stepTxt = (x) => (x.a === 'timeout' ? 'мут ' + modHuman(modSec(x.d)) : ACT[x.a]);
-      if (Ld.length === 1) ladderText = Ld[0].a === 'ban' ? 'бан с первого нарушения' : 'каждое нарушение — ' + stepTxt(Ld[0]);
-      else if (Ld[Ld.length - 1].a === 'ban' && warnN === Ld.length - 1) ladderText = 'бан после ' + warnN + ' ' + modPl(warnN, 'предупреждения', 'предупреждений', 'предупреждений');
-      else ladderText = Ld.map((x, i) => (i + 1) + (i === Ld.length - 1 ? '+' : '') + ' → ' + stepTxt(x)).join(' · ');
+      const lt = modLadderText(Ld);
+      ladderShort = lt.short;
+      out.ladderSummary = lt.full.charAt(0).toUpperCase() + lt.full.slice(1);
       const users = MOD_FKEYS.filter((k) => cfg.filters[k].on && cfg.filters[k].action === 'ladder').map((k) => MOD_FMETA[k].name);
-      out.ladderUsers = users.length ? 'Сейчас по лестнице: ' + users.join(', ') + '.' : 'Сейчас ни один включённый фильтр не использует лестницу.';
+      out.ladderUsers = users.length ? 'Сейчас по лестнице работают: ' + users.join(', ') + '.' : 'Сейчас ни один включённый фильтр не использует лестницу.';
       const sig = (L2) => JSON.stringify(L2.map((x) => (x.a === 'timeout' ? 'timeout' : x.a)));
       const cur = JSON.stringify(Ld);
       out.presets = MOD_PRESETS.map((p, i) => {
@@ -917,7 +1158,7 @@ class Component extends DCLogic {
           title: (i + 1) + '-е нарушение' + (i === Ld.length - 1 && Ld.length > 1 ? ' и далее' : (Ld.length === 1 ? ' и каждое' : '')),
           a: x.a, d: modCanon(sec), isTimeout: x.a === 'timeout', lone: Ld.length < 2,
           durOpts: modDurOpts(sec).map((o) => ({ v: modCanon(o.s), label: o.label })),
-          note: { warn: 'Сообщение удаляется, бот пишет предупреждение', delete: 'Сообщение удаляется молча', timeout: 'Зритель молчит ' + modHuman(sec) + (cfg.announce ? ', бот сообщит в чат' : ''), ban: 'Бан навсегда: снять можно в журнале или по запросу на разбан' }[x.a],
+          note: { warn: 'Сообщение удаляется, бот пишет предупреждение', delete: 'Сообщение удаляется молча', timeout: 'Зритель молчит ' + modHuman(sec) + (cfg.announce ? ', бот сообщит в чат' : ''), ban: 'Бан навсегда. Снять можно в журнале или по запросу на разбан' }[x.a],
           noteColor: isBan ? '#FF6369' : '#8F8F8F', style: isBan ? 'border-color: rgba(255,99,105,0.55)' : '',
           actLabel: 'Действие на ступени ' + (i + 1), durLabel: 'Длительность мута на ступени ' + (i + 1), delLabel: 'Убрать ступень ' + (i + 1),
           setA: (e) => { const a = e.target.value; setL((l) => { l[i] = a === 'timeout' ? { a, d: '10 мин' } : { a }; }); },
@@ -928,7 +1169,6 @@ class Component extends DCLogic {
       out.ladderFull = Ld.length >= 6;
       out.addStepTitle = Ld.length >= 6 ? 'Не больше 6 ступеней' : 'Добавить ступень в конец';
       out.addStep = () => setL((l) => { if (l.length < 6) l.push({ a: 'timeout', d: '10 мин' }); });
-      out.ladderSummary = 'Итог: ' + ladderText + '.';
       const rd = cfg.resetDays;
       const RO = [[1, 'через 1 день'], [3, 'через 3 дня'], [7, 'через 7 дней'], [30, 'через 30 дней'], [0, 'никогда']];
       if (!RO.some((o) => o[0] === rd)) RO.push([rd, 'через ' + rd + ' ' + modPl(rd, 'день', 'дня', 'дней')]);
@@ -941,28 +1181,20 @@ class Component extends DCLogic {
       out.warnBad = wHas && !wt.trim();
       out.setWarn = (e) => { const v = e.target.value; this.setDraft('warnText', v); if (v.trim()) this.edit((c) => { c.warnText = v; }, 800); };
       out.blurWarn = () => this.dropDraft('warnText');
-      out.warnTags = [['{user}', 'Ник нарушителя'], ['{reason}', 'Причина: «без капса, пожалуйста», «оскорбления»…'], ['{n}', 'Номер предупреждения'], ['{max}', 'Сколько предупреждений на лестнице']].map((t) => ({
+      out.warnTags = [['{user}', 'Ник нарушителя'], ['{reason}', 'Причина, например «без капса, пожалуйста»'], ['{n}', 'Номер предупреждения'], ['{max}', 'Сколько предупреждений на лестнице']].map((t) => ({
         tag: t[0], title: t[1],
         pick: () => { const v = (wt && !/\s$/.test(wt) ? wt + ' ' : wt) + t[0]; this.dropDraft('warnText'); this.edit((c) => { c.warnText = v; }, 400); setTimeout(() => { const el = document.getElementById('wt'); if (el) el.focus(); }, 0); },
       }));
-      out.warnPreview = (wt.trim() ? wt : cfg.warnText).replace(/\{user\}/g, 'ник').replace(/\{reason\}/g, 'без капса, пожалуйста').replace(/\{n\}/g, '1').replace(/\{max\}/g, String(Math.max(1, warnN)));
+      out.warnPreview = (wt.trim() ? wt : cfg.warnText).replace(/\{user\}/g, 'ник').replace(/\{reason\}/g, 'без капса, пожалуйста').replace(/\{n\}/g, '1').replace(/\{max\}/g, String(Math.max(1, L)));
       out.announceOn = cfg.announce ? 'true' : 'false';
       out.toggleAnnounce = () => this.edit((c) => { c.announce = !c.announce; }, 250);
 
-      // ----- фильтры -----
-      const lt = 'Лестница: ' + ladderText;
-      out.filters = MOD_FKEYS.map((k) => this.vmFilter(k, cfg, lt));
+      out.filters = MOD_FKEYS.map((k) => this.vmFilter(k, cfg, 'По лестнице: ' + ladderShort));
       out.fOn = MOD_FKEYS.filter((k) => cfg.filters[k].on).length;
       out.fTotal = MOD_FKEYS.length;
-      const ex = ['стримера'];
-      if (cfg.exempt.mods) ex.push('модераторов');
-      if (cfg.exempt.vip) ex.push('VIP');
-      if (cfg.exempt.subs) ex.push('подписчиков');
-      ex.push('известных ботов');
-      out.exemptText = ex.slice(0, -1).join(', ') + ' и ' + ex[ex.length - 1];
-      out.goLists = () => this.pickTab(3);
+      out.goLists = () => this.openAdv();
 
-      // ----- списки -----
+      // ----- расширенные: списки, исключения, режимы -----
       out.wf = out.filters.find((f) => f.key === 'words');
       out.lf = out.filters.find((f) => f.key === 'links');
       out.words = cfg.words.map((w, i) => ({ text: w, label: 'Убрать «' + w + '»', del: () => this.edit((c) => { c.words.splice(i, 1); }, 250) }));
@@ -980,8 +1212,12 @@ class Component extends DCLogic {
         toggle: () => this.edit((c) => { c.exempt[x[0]] = !c.exempt[x[0]]; }, 250),
       }));
     } else {
-      Object.assign(out, { presets: [], ladder: [], filters: [], words: [], domains: [], exempt: [], resetOpts: [], warnTags: [], wf: {}, lf: {} });
+      Object.assign(out, { presets: [], ladder: [], filters: [], words: [], domains: [], exempt: [], resetOpts: [], warnTags: [], wf: {}, lf: {}, ladderSummary: '', ladderUsers: '', warnPreview: '', warnText: '', warnBad: false, fOn: 0, fTotal: MOD_FKEYS.length, wordsN: 0, domainsN: 0, subsLinksOn: 'false', permitOn: 'false', announceOn: 'false', resetDays: '7', ladderFull: true, addStepTitle: '', addStep: () => {}, setReset: () => {}, setWarn: () => {}, blurWarn: () => {}, toggleAnnounce: () => {}, goLists: () => {}, toggleSubsLinks: () => {}, togglePermit: () => {} });
     }
+    out.advOpen = s.advOpen;
+    out.advOpenS = s.advOpen ? 'true' : 'false';
+    out.advRot = s.advOpen ? 'rotate(180deg)' : 'none';
+    out.toggleAdv = () => this.toggleAdv();
     out.wordDraft = s.wordDraft;
     out.setWordDraft = (e) => this.setState({ wordDraft: e.target.value, wordErr: '' });
     out.addWord = () => this.addWord();
@@ -994,17 +1230,18 @@ class Component extends DCLogic {
     out.domErr = s.domErr;
 
     // ----- режимы чата -----
-    out.modesLoading = !s.modes;
+    out.modesLoading = !s.modes && !s.modesErr;
     out.modesNA = !!s.modes && !s.modesAvail && !s.modesErr;
-    out.modesNAText = 'Twitch не отдаёт настройки чата. Бот должен быть подключён и быть модератором канала' + (user && !user.botEnabled ? ' — включи бота кнопкой вверху страницы.' : '. Если бот только что включён, проверь снова через минуту.');
-    out.modesFailed = !!s.modesErr;
-    out.modesErr = s.modesErr;
+    out.modesNAText = 'Twitch не отдаёт настройки чата. Бот должен быть подключён и быть модератором канала' + (user && !user.botEnabled ? ', включи бота кнопкой вверху страницы.' : '. Если бот только что включён, проверь снова через минуту.');
+    out.modesFailed = !!s.modesErr && !(s.modes && s.modesAvail && Object.keys(s.modes).length > 0);
+    out.modesErr = String(s.modesErr || '').replace(/\.$/, '');
     out.reloadModes = () => this.loadModes();
-    out.modes = s.modes ? MOD_MODES.map((m) => ({
+    out.modesShow = !!s.modes && !!s.modesAvail && Object.keys(s.modes).length > 0;
+    out.modes = MOD_MODES.map((m) => ({
       id: 'md-' + m[0], name: m[1], note: m[2], on: modes[m[0]] ? 'true' : 'false',
       disabled: !s.modesAvail || !!s.modeBusy[m[0]],
       toggle: () => this.setMode(m[0], !modes[m[0]]),
-    })) : [];
+    }));
 
     // ----- очередь -----
     out.queue = queue.map((h) => {
@@ -1019,41 +1256,39 @@ class Component extends DCLogic {
       };
     });
     out.queueN = queue.length;
-    out.queueLoading = s.queue === null;
-    out.queueEmpty = s.queue !== null && queue.length === 0;
+    out.queueErr = !!s.qErr;
+    out.queueErrText = String(s.qErr || '').replace(/\.$/, '');
+    out.reloadQueue = () => this.loadQueue();
+    out.queueLoading = s.queue === null && !s.qErr;
+    out.queueEmpty = s.queue !== null && queue.length === 0 && !s.qErr;
     const reviewers = cfg ? MOD_FKEYS.filter((k) => cfg.filters[k].on && cfg.filters[k].action === 'review').map((k) => '«' + MOD_FMETA[k].name + '»') : [];
-    out.queueEmptyText = 'Очередь пуста. ' + (reviewers.length ? 'На проверку отправляют: ' + reviewers.join(', ') + '.' : 'Ни один включённый фильтр не отправляет сообщения на проверку — выбери «На проверку модератору» в карточке фильтра.');
+    out.queueEmptyText = 'Очередь пуста. ' + (reviewers.length ? 'На проверку отправляют: ' + reviewers.join(', ') + '.' : 'Ни один включённый фильтр не отправляет сообщения на проверку. Выбери «На проверку модератору» в карточке фильтра.');
 
     // ----- журнал -----
-    const BADGE = { ban: 'border: 2px solid #FF6369; color: #FF6369', timeout: 'border: 1px dashed #B4B4B4; color: #F2F2F2', warn: 'border: 1px solid #6E6E6E; color: #DCDCDC', delete: 'border: 1px dotted #6E6E6E; color: #B4B4B4', review: 'border: 1px dashed #6E6E6E; color: #B4B4B4' };
     const LF = [['', 'Все'], ['ban', 'Баны'], ['timeout', 'Муты'], ['warn', 'Предупреждения'], ['delete', 'Удаления'], ['review', 'На проверку']];
     out.logF = LF.map((l) => ({ label: l[1], sel: s.jType === l[0] ? 'true' : 'false', style: s.jType === l[0] ? 'background: #F2F2F2; color: #0A0A0A; border-color: #F2F2F2' : '', pick: () => this.setJType(l[0]) }));
-    const nowS = Date.now() / 1000;
     out.log = (s.journal || []).map((r) => {
-      const und = r.undone || !!s.undoneLocal[r.id];
-      const expired = r.action === 'timeout' && r.duration > 0 && r.at + r.duration < nowS;
-      const undoable = ['ban', 'timeout', 'warn'].indexOf(r.action) >= 0;
-      const fk = MOD_REASON[r.reason];
-      const actLabel = { ban: 'Бан', timeout: 'Мут ' + modHuman(r.duration || 600), warn: 'Предупреждение', delete: 'Удалено', review: 'На проверку' }[r.action] || r.action;
-      const msg = r.message || '';
+      const row = modRow(r, nowS, s.undoneLocal);
+      const busy = !!s.undoBusy[r.id];
       return {
-        time: modWhen(r.at), nick: r.login, strikes: r.strikes ? 'ступень ' + r.strikes : '',
-        action: actLabel, badge: BADGE[r.action] || BADGE.delete,
-        reason: fk ? MOD_FMETA[fk].name : (r.reason === 'вручную из панели' ? 'Вручную' : r.reason),
-        message: msg, msgShort: msg ? '«' + (msg.length > 120 ? msg.slice(0, 120) + '…' : msg) + '»' : '',
-        by: r.by === 'Бот' ? 'Бот' : r.by,
-        canUndo: undoable && !und && !expired, busy: !!s.undoBusy[r.id],
-        hasState: undoable && (und || expired), stateLabel: und ? 'Отменено' : 'Мут истёк',
-        undoLabel: s.undoBusy[r.id] ? 'Отменяем…' : 'Отменить',
-        undoAria: 'Отменить: ' + actLabel.toLowerCase() + ', ' + r.login,
-        undoTitle: { ban: 'Разбанить в Twitch', timeout: 'Снять мут в Twitch', warn: 'Снять предупреждение' }[r.action] + ' и обнулить счётчик нарушений зрителя',
-        rowStyle: und ? 'opacity: 0.55' : '',
+        time: row.time, nick: row.nick, strikes: row.strikes, action: row.action, badge: row.badge,
+        reason: row.reason, message: row.message, msgShort: row.msgShort, by: row.by,
+        canUndo: row.canUndo, busy, hasState: row.undoable && (row.und || row.expired), stateLabel: row.und ? 'Отменено' : 'Мут истёк',
+        undoLabel: busy ? 'Отменяем…' : 'Отменить',
+        undoAria: 'Отменить: ' + row.action.toLowerCase() + ', ' + row.nick,
+        undoTitle: { ban: 'Разбанить в Twitch и обнулить счётчик нарушений', timeout: 'Снять мут в Twitch и обнулить счётчик нарушений', warn: 'Обнулить счётчик нарушений (сообщение в чате останется)' }[r.action] || 'Отменить',
+        rowStyle: row.und ? 'opacity: 0.55' : '',
         undo: () => this.undo(r),
       };
     });
-    out.logLoading = s.journal === null;
-    out.logEmpty = s.journal !== null && s.journal.length === 0;
-    out.logEmptyText = s.jErr ? 'Не удалось загрузить журнал: ' + s.jErr : (s.jType ? 'Таких действий пока не было.' : 'Журнал пуст. Здесь появятся действия бота и решения модераторов: удаления, предупреждения, муты и баны.');
+    out.logLoading = s.journal === null && !s.jErr;
+    out.logErr = !!s.jErr;
+    out.logErrText = String(s.jErr || '').replace(/\.$/, '');
+    out.reloadJournal = () => this.loadJournal();
+    out.logEmpty = s.journal !== null && s.journal.length === 0 && !s.jErr;
+    out.logEmptyText = s.jType
+      ? 'Таких действий пока не было.'
+      : 'Журнал пуст. Здесь появятся действия бота и модераторов: удаления, предупреждения, муты и баны. Записи создаёт бот, когда он включён и автомодерация работает.';
 
     // ----- разбан -----
     const ub = s.unban || [];
@@ -1064,9 +1299,11 @@ class Component extends DCLogic {
     }));
     out.unbanN = ub.length;
     out.unbanLoading = s.unbanLoading;
-    out.unbanLoadingFirst = s.unban === null;
-    out.unbanEmpty = s.unban !== null && ub.length === 0;
-    out.unbanEmptyText = user && !user.botEnabled ? 'Запросы видит только подключённый бот — включи его кнопкой вверху страницы.' : 'Запросов нет. Если забаненный зритель попросит разбан на Twitch, запрос появится здесь.';
+    out.unbanErr = !!s.unbanErr;
+    out.unbanErrText = String(s.unbanErr || '').replace(/\.$/, '');
+    out.unbanLoadingFirst = s.unban === null && !s.unbanErr;
+    out.unbanEmpty = s.unban !== null && ub.length === 0 && !s.unbanErr;
+    out.unbanEmptyText = user && !user.botEnabled ? 'Запросы видит только подключённый бот. Включи его кнопкой вверху страницы.' : 'Запросов нет. Если забаненный зритель попросит разбан на Twitch, запрос появится здесь.';
     out.reloadUnban = () => this.loadUnban();
     return out;
   }

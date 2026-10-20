@@ -12,34 +12,27 @@
 <style>
 body{margin:0;background:#0A0A0A}
 a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
+[hidden]{display:none!important}
 .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
-.ov{font-size:11px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#8F8F8F;margin:0}
 .ic{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.tab{height:44px;padding:0;border:0;background:transparent;color:#8F8F8F;font:500 14px/20px 'Onest',sans-serif;display:flex;gap:6px;align-items:center;cursor:pointer}
-.tab:hover{color:#F2F2F2}
-.cmd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 20px;border-radius:8px;border:1px solid #2A2A2A;background:#111111}
-.cmd:hover{border-color:#3A3A3A}
-.sw{position:relative;width:40px;height:24px;border-radius:999px;border:1px solid #6E6E6E;background:transparent;cursor:pointer;flex:none;padding:0}
-.sw span{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:#8F8F8F;transition:transform 180ms cubic-bezier(.2,0,0,1)}
-.sw[aria-checked="true"]{background:#FFFFFF;border-color:#FFFFFF}
-.sw[aria-checked="true"] span{transform:translateX(16px);background:#0A0A0A}
-.ib{width:36px;height:36px;border-radius:6px;border:0;background:transparent;color:#B4B4B4;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.ib:hover{background:rgba(255,255,255,.06);color:#F2F2F2}
-.fl{display:flex;flex-direction:column;gap:8px}
-.fl > label,.lab{font-size:13px;line-height:18px;font-weight:500;color:#DCDCDC}
-.inp{height:40px;box-sizing:border-box;padding:0 12px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 15px/22px 'Onest',sans-serif;width:100%}
+.card{display:flex;flex-direction:column;gap:12px;min-width:0;padding:20px 22px;border-radius:12px;background:rgba(18,18,18,.62);border:1px solid rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.h2{margin:0;font-size:18px;line-height:24px;font-weight:600}
+.hint{margin:0;font-size:13px;line-height:18px;color:#8F8F8F}
+.lab{font-size:13px;line-height:18px;font-weight:500;color:#DCDCDC}
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.inp{box-sizing:border-box;height:38px;padding:0 12px;border-radius:6px;background:#171717;border:1px solid #6E6E6E;color:#F2F2F2;font:400 14px/20px 'Onest',sans-serif;width:100%;min-width:0}
 .inp:hover{border-color:#8F8F8F}
-.hint{font-size:12px;line-height:16px;color:#8F8F8F;margin:0}
-.seg{height:36px;padding:0 14px;border:0;border-radius:4px;background:transparent;color:#B4B4B4;font:500 14px/20px 'Onest',sans-serif;cursor:pointer}
-.seg:hover{color:#F2F2F2}
-.tag{height:28px;padding:0 10px;border-radius:4px;border:1px solid #3A3A3A;background:transparent;color:#DCDCDC;font:400 12px/16px 'JetBrains Mono',monospace;cursor:pointer}
-.tag:hover{border-color:#8F8F8F;background:rgba(255,255,255,.04)}
-.rad{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:6px;font-size:14px;color:#DCDCDC;cursor:pointer;border:0;background:transparent;width:100%;text-align:left;font-family:'Onest',sans-serif}
-.rad:hover{background:rgba(255,255,255,.04)}
-.dot{width:18px;height:18px;border-radius:999px;border:1px solid #6E6E6E;box-sizing:border-box;flex:none;display:inline-flex;align-items:center;justify-content:center}
-.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 4px 0 10px;border-radius:4px;background:#1F1F1F;border:1px solid #3A3A3A;font-size:13px}
-.chip button{width:20px;height:20px;border:0;border-radius:3px;background:transparent;color:#8F8F8F;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.chip button:hover{color:#F2F2F2;background:rgba(255,255,255,.08)}
+.btn{height:40px;padding:0 16px;border-radius:6px;border:0;background:#FFFFFF;color:#0A0A0A;font:500 14px/20px 'Onest',sans-serif;cursor:pointer;flex:none}
+.btn:disabled{opacity:.5;cursor:default}
+.btn-s{height:40px;padding:0 16px;border-radius:6px;border:1px solid #3A3A3A;background:transparent;color:#F2F2F2;font:500 14px/20px 'Onest',sans-serif;cursor:pointer;flex:none}
+.btn-s:hover{border-color:#8F8F8F}
+.btn-s:disabled{opacity:.5;cursor:default}
+.note{display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-radius:8px;border:1px solid #3A3A3A;background:#171717}
+.empty{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:20px 16px;border-radius:8px;border:1px dashed #2A2A2A}
+.faq{display:flex;flex-direction:column;min-width:0;border-top:1px solid #1F1F1F}
+.faq-q{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;min-height:48px;padding:12px 0;border:0;background:transparent;color:#F2F2F2;font:500 15px/22px 'Onest',sans-serif;text-align:left;cursor:pointer}
+.faq-q:hover{color:#FFFFFF}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #F2F2F2;outline-offset:2px}
 </style>
 </helmet>
 <div style="min-height: 100vh; background: #0A0A0A; color: #F2F2F2; font-family: 'Onest', system-ui, sans-serif">
@@ -54,32 +47,75 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <div style="display: flex; flex-wrap: wrap; gap: 24px; padding: 24px; box-sizing: border-box; max-width: 1920px; margin: 0 auto">
 <nav aria-label="Разделы стрим-панели"></nav>
 <div style="flex: 999 1 640px; min-width: 0">
-<nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px"><li><a href="WebDashboard.dc.html" style="color: #8F8F8F">Стрим-панель</a></li><li aria-hidden="true" style="color: #525252">/</li><li><span style="color: #8F8F8F">Чат-бот</span></li><li aria-hidden="true" style="color: #525252">/</li><li aria-current="page" style="color: #F2F2F2">Поддержка</li></ol></nav>
+<nav aria-label="Хлебные крошки"><ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px"><li><a href="WebDashboard.dc.html" style="color: #8F8F8F">Стрим-панель</a></li><li aria-hidden="true" style="color: #525252">/</li><li><a href="WebDashboard.dc.html" style="color: #8F8F8F">Обзор</a></li><li aria-hidden="true" style="color: #525252">/</li><li aria-current="page" style="color: #F2F2F2">Поддержка</li></ol></nav>
+
 <div style="margin-top: 16px">
 <h1 style="margin: 0; font-size: 32px; line-height: 38px; letter-spacing: -0.02em; font-weight: 600">Поддержка</h1>
-<p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4">Напиши, что нужно: вопросы по настройке, ошибки, оплата. Ответ придёт сюда же, в этот чат.</p>
+<p style="margin: 6px 0 0; font-size: 15px; line-height: 22px; color: #B4B4B4">Сначала загляни в частые вопросы: часто ответ там уже есть. Если нет, напиши в чат ниже. Ответ придёт в этот же чат.</p>
 </div>
-<div style="margin-top: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; align-items: start">
 
-<section aria-labelledby="sc-chat" style="display: flex; flex-direction: column; gap: 12px; padding: 20px 22px; border-radius: 12px; background: rgba(18,18,18,0.72); border: 1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06); min-height: 420px">
-<h2 id="sc-chat" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">Чат с поддержкой</h2>
-<div role="log" aria-live="polite" aria-label="Сообщения" style="display: flex; flex-direction: column; gap: 8px; flex: 1; min-height: 240px; max-height: 480px; overflow-y: auto; padding-right: 4px">
-<sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}"><p style="margin: auto; padding: 24px; text-align: center; font-size: 14px; line-height: 20px; color: #8F8F8F">Сообщений пока нет. Опиши проблему — администратор ответит здесь.</p></sc-if>
-<sc-for list="{{ msgs }}" as="m" hint-placeholder-count="4"><div style="max-width: 78%; padding: 10px 12px; border-radius: 10px; font-size: 14px; line-height: 20px; white-space: pre-wrap; overflow-wrap: anywhere; {{ m.style }}"><span style="display: block; margin-bottom: 2px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; opacity: .7">{{ m.who }} · {{ m.time }}</span>{{ m.text }}</div></sc-for>
-</div>
-<form onSubmit="{{ send }}" style="display: flex; gap: 8px; align-items: flex-end">
-<label for="sc-in" class="vh" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Сообщение в поддержку</label>
-<textarea id="sc-in" rows="2" maxlength="1000" value="{{ text }}" onChange="{{ setText }}" placeholder="Напиши сообщение" style="flex: 1; box-sizing: border-box; padding: 10px 12px; border-radius: 6px; background: #171717; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px/20px 'Onest', sans-serif; resize: vertical"></textarea>
-<button type="submit" disabled="{{ sending }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 0; background: #FFFFFF; color: #0A0A0A; font: 500 14px/20px 'Onest', sans-serif; cursor: pointer; flex: none">{{ sendLabel }}</button>
-</form>
-<sc-if value="{{ hasErr }}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 0; padding: 10px 12px; border: 2px solid #F2F2F2; border-radius: 6px; font-size: 13px; line-height: 18px">{{ err }}</p></sc-if>
+<section class="card" aria-labelledby="sp-faq" style="margin-top: 24px">
+<h2 id="sp-faq" class="h2">Частые вопросы</h2>
+<p class="hint">Нажми на вопрос, чтобы увидеть ответ.</p>
+<sc-for list="{{ faq }}" as="f" hint-placeholder-count="4"><div class="faq">
+<button type="button" class="faq-q" aria-expanded="{{ f.exp }}" aria-controls="{{ f.id }}" onClick="{{ f.toggle }}"><span>{{ f.q }}</span><span aria-hidden="true" class="mono" style="font-size: 18px; line-height: 20px; color: #8F8F8F">{{ f.mark }}</span></button>
+<div id="{{ f.id }}" hidden="{{ f.closed }}" style="padding: 0 0 16px; font-size: 14px; line-height: 22px; color: #B4B4B4; white-space: pre-line">{{ f.a }}</div>
+</div></sc-for>
 </section>
 
-<section aria-labelledby="sc-code" style="display: flex; flex-direction: column; gap: 12px; padding: 20px 22px; border-radius: 12px; background: rgba(18,18,18,0.72); border: 1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06)">
-<h2 id="sc-code" style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600">Помощь с настройкой</h2>
-<p style="margin: 0; font-size: 14px; line-height: 20px; color: #B4B4B4">Если хочешь, чтобы администратор сам настроил канал, создай код. Он действует один час и работает один раз. Все входы записываются, а доступ закрывается сам по истечении часа.</p>
-<sc-if value="{{ hasCode }}" hint-placeholder-val="{{ false }}"><div style="padding: 14px 16px; border-radius: 8px; border: 1px dashed #3A3A3A; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: #8F8F8F">Код поддержки</span><span class="mono" style="font-size: 26px; line-height: 30px; letter-spacing: .14em; color: #F2F2F2">{{ code }}</span><span style="font-size: 13px; color: #B4B4B4">{{ codeUntilLabel }}. Передай его администратору StreOps.</span></div></sc-if>
-<div><button type="button" onClick="{{ makeCode }}" style="height: 40px; padding: 0 16px; border-radius: 6px; border: 1px solid #3A3A3A; background: transparent; color: #F2F2F2; font: 500 14px/20px 'Onest', sans-serif; cursor: pointer">{{ codeLabel }}</button></div>
+<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; align-items: start">
+
+<section class="card" aria-labelledby="sp-chat" style="min-height: 460px">
+<h2 id="sp-chat" class="h2">Написать в поддержку</h2>
+<p class="hint">Ответим здесь, в этом чате. Точный срок ответа пока не обещаем.</p>
+
+<sc-if value="{{ histLoading }}" hint-placeholder-val="{{ false }}"><p role="status" style="margin: 0; font-size: 14px; line-height: 20px; color: #B4B4B4">Загружаем переписку…</p></sc-if>
+
+<sc-if value="{{ hasHistErr }}" hint-placeholder-val="{{ false }}"><div role="alert" class="note"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Не получилось загрузить переписку</p><p style="margin: 0; font-size: 13px; line-height: 18px; color: #B4B4B4">{{ histErr }}</p><div><button type="button" class="btn-s" onClick="{{ retryLoad }}">Повторить</button></div></div></sc-if>
+
+<sc-if value="{{ histEmpty }}" hint-placeholder-val="{{ false }}"><div class="empty"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Обращений пока нет</p><p class="hint" style="line-height: 19px">Опиши, что случилось: что делал, чего ждал и что увидел. Ответы поддержки появятся здесь.</p></div></sc-if>
+
+<div role="log" aria-live="polite" aria-label="Сообщения" style="display: flex; flex-direction: column; gap: 8px; max-height: 420px; overflow-y: auto; padding-right: 4px">
+<sc-for list="{{ msgs }}" as="m" hint-placeholder-count="4"><div style="max-width: 78%; padding: 10px 12px; border-radius: 10px; font-size: 14px; line-height: 20px; white-space: pre-wrap; overflow-wrap: anywhere; {{ m.style }}"><span style="display: block; margin-bottom: 2px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; opacity: .7">{{ m.who }} · {{ m.time }}</span>{{ m.text }}</div></sc-for>
+</div>
+
+<sc-if value="{{ hasPollErr }}" hint-placeholder-val="{{ false }}"><div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap"><span class="hint">Не удалось обновить переписку. {{ pollErr }}</span><button type="button" class="btn-s" onClick="{{ retryLoad }}" style="height: 32px; padding: 0 10px; font-size: 13px">Повторить</button></div></sc-if>
+
+<form onSubmit="{{ send }}" style="display: flex; flex-direction: column; gap: 10px">
+<div class="fld">
+<label class="lab" for="sp-topic">Тема (необязательно)</label>
+<select id="sp-topic" class="inp" value="{{ topic }}" onChange="{{ setTopic }}"><option value="">Выбери тему</option><option value="Настройка бота">Настройка бота</option><option value="Музыка и заказы">Музыка и заказы</option><option value="Оплата и тариф">Оплата и тариф</option><option value="Ошибка в панели">Ошибка в панели</option><option value="Другое">Другое</option></select>
+</div>
+<div class="fld">
+<label class="lab" for="sp-in">Сообщение</label>
+<textarea id="sp-in" rows="3" maxlength="900" value="{{ text }}" onChange="{{ setText }}" placeholder="Что случилось: что делал, чего ждал и что увидел" style="box-sizing: border-box; padding: 10px 12px; border-radius: 6px; background: #171717; border: 1px solid #6E6E6E; color: #F2F2F2; font: 400 14px/20px 'Onest', sans-serif; resize: vertical; width: 100%"></textarea>
+<p class="hint">Не присылай пароли и ключи: токен канала и ключ OBS.</p>
+</div>
+<div><button type="submit" class="btn" disabled="{{ sendOff }}">{{ sendLabel }}</button></div>
+</form>
+
+<sc-if value="{{ hasSendErr }}" hint-placeholder-val="{{ false }}"><div role="alert" class="note"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Сообщение не отправлено</p><p style="margin: 0; font-size: 13px; line-height: 18px; color: #B4B4B4">{{ sendErr }}. Текст сохранён, его можно отправить снова.</p><div><button type="button" class="btn-s" onClick="{{ retrySend }}" disabled="{{ sending }}">Повторить</button></div></div></sc-if>
+</section>
+
+<section class="card" aria-labelledby="sp-code">
+<h2 id="sp-code" class="h2">Код для администратора</h2>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #B4B4B4">Нужен, если сам не можешь разобраться и доверяешь администратору StreOps. По коду администратор войдёт в твой аккаунт и поможет на месте.</p>
+<ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; line-height: 19px; color: #B4B4B4">
+<li><span style="color: #F2F2F2">Что он получит:</span> доступ как у тебя. Администратор увидит и сможет поменять настройки, команды, тариф и подключения.</li>
+<li><span style="color: #F2F2F2">Срок:</span> код действует 1 час и работает один раз. После входа доступ по таймеру не закрывается: завершить его может только администратор, когда закончит.</li>
+<li><span style="color: #F2F2F2">Контроль:</span> все входы администратора записываются.</li>
+<li><span style="color: #F2F2F2">Не работает?</span> Значит, код истёк или уже был использован. Создай новый.</li>
+</ul>
+
+<sc-if value="{{ hasCode }}" hint-placeholder-val="{{ false }}"><div style="padding: 14px 16px; border-radius: 8px; border: 1px dashed #3A3A3A; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 11px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: #8F8F8F">Код для администратора</span>
+<span class="mono" style="font-size: 26px; line-height: 30px; letter-spacing: .14em; color: #F2F2F2">{{ code }}</span>
+<span style="font-size: 13px; line-height: 18px; color: #B4B4B4">{{ codeUntilLabel }}. Передай его администратору StreOps и не публикуй в чате.</span>
+</div></sc-if>
+
+<sc-if value="{{ hasCodeErr }}" hint-placeholder-val="{{ false }}"><div role="alert" class="note"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Код не создан</p><p style="margin: 0; font-size: 13px; line-height: 18px; color: #B4B4B4">{{ codeErr }}</p><div><button type="button" class="btn-s" onClick="{{ makeCode }}" disabled="{{ making }}">Повторить</button></div></div></sc-if>
+
+<div><button type="button" class="btn-s" onClick="{{ makeCode }}" disabled="{{ making }}">{{ codeLabel }}</button></div>
 </section>
 </div>
 </div>
@@ -87,41 +123,87 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+// Частые вопросы: ответы по текущему поведению сервиса
+const FAQ = [
+  {
+    q: 'Как подключить бота к каналу?',
+    a: 'Открой «Стрим-панель» → «Обзор» и нажми «Подключить бота». Бот станет модератором твоего канала и напишет в чат, что подключён.\nЕсли кнопка неактивна и подписана «Ждём администратора», бот ещё не настроен на сервисе. Напиши в поддержку ниже: там подскажут, что делать.',
+  },
+  {
+    q: 'Почему не играет музыка?',
+    a: 'Проверь по порядку:\n1. Музыка доступна с тарифа «Про». На «Бесплатном» и «Продвинутой» музыки нет, команда в чате молчит.\n2. Треки играют там, где открыт плеер: во вкладке «Музыка и заказы» в панели или в OBS по ссылке из блока «Плеер для OBS». Закрыл вкладку, и музыка остановилась.\n3. На странице включён «Приём заказов» и включена команда заказа.\n4. Если трек ждёт, включена ручная проверка: одобри его в очереди.\n5. Если пишет «Плеер YouTube не загрузился», проверь интернет и отключи блокировщик рекламы для этой страницы.',
+  },
+  {
+    q: 'Как работает тариф и оплата?',
+    a: 'Оплата проходит на странице ЮKassa: картой или через СБП, что доступно в форме. Тариф включается, как только оплата подтверждена, и действует 30 дней.\nАвтосписаний нет. Когда срок закончится, аккаунт вернётся на бесплатный тариф, а команды и настройки сохранятся.\nПредоплаты нет: каждый тариф оплачивается отдельно, когда он нужен.',
+  },
+  {
+    q: 'Как удалить аккаунт?',
+    a: 'Нажми свой ник в правом верхнем углу, найди блок «Опасная зона» и нажми «Удалить аккаунт». Подтверди, введя свой ник.\nУдалятся команды, настройки, история чата, розыгрыши, очередь музыки и сам аккаунт. Бот отключится от канала. Отменить удаление нельзя.\nЗаписи об оплатах останутся: это история платежей.',
+  },
+];
+
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { items: [], loaded: false, text: '', sending: false, err: '', code: '', codeUntil: 0, making: false };
+    this.state = {
+      faqOpen: -1,
+      items: [], loaded: false, histBusy: false, histErr: '', pollErr: '',
+      text: '', topic: '', sending: false, sendErr: '',
+      code: '', codeUntil: 0, making: false, codeErr: '',
+    };
   }
   componentDidMount() {
     this.load(false);
     this.timer = setInterval(() => this.load(true), 5000);
   }
   componentWillUnmount() { clearInterval(this.timer); }
+
+  // Переписка: первая загрузка и «Повторить» показывают состояние загрузки. Фоновое обновление тихое.
   async load(quiet) {
+    if (!quiet) this.setState({ histBusy: true });
     try {
       const r = await StreAPI.get('support.list');
-      if (JSON.stringify(r.items) !== JSON.stringify(this.state.items)) this.setState({ items: r.items, loaded: true });
-      else if (!this.state.loaded) this.setState({ loaded: true });
-    } catch (e) { if (!quiet) StreAPI.toast(e.message, 'error'); this.setState({ loaded: true }); }
+      const changed = JSON.stringify(r.items) !== JSON.stringify(this.state.items);
+      this.setState({ histBusy: false, loaded: true, histErr: '', pollErr: '', items: changed ? r.items : this.state.items });
+    } catch (e) {
+      // если переписка уже видна, ошибка фонового обновления не должна выглядеть как пустой список
+      if (this.state.loaded) this.setState({ histBusy: false, pollErr: e.message || 'Нет связи с сервером.' });
+      else this.setState({ histBusy: false, histErr: e.message || 'Нет связи с сервером.' });
+    }
   }
+
+  toggleFaq(i) {
+    this.setState({ faqOpen: this.state.faqOpen === i ? -1 : i });
+  }
+
   async send(e) {
     if (e && e.preventDefault) e.preventDefault();
-    const t = this.state.text.trim();
-    if (!t || this.state.sending) return;
-    this.setState({ sending: true, err: '' });
+    const raw = this.state.text.trim();
+    if (!raw || this.state.sending) return;
+    // тема уходит первой строкой текста: отдельного поля в API нет
+    const text = (this.state.topic ? 'Тема: ' + this.state.topic + '\n' : '') + raw;
+    this.setState({ sending: true, sendErr: '' });
     try {
-      const r = await StreAPI.post('support.send', { text: t });
-      this.setState({ items: r.items, text: '', sending: false });
-    } catch (err) { this.setState({ sending: false, err: err.message }); }
+      const r = await StreAPI.post('support.send', { text });
+      this.setState({ items: r.items, loaded: true, histErr: '', text: '', topic: '', sending: false });
+    } catch (err) {
+      // текст не очищаем: его можно отправить снова кнопкой «Повторить»
+      this.setState({ sending: false, sendErr: err.message || 'Нет связи с сервером.' });
+    }
   }
+
   async makeCode() {
-    this.setState({ making: true, err: '' });
+    this.setState({ making: true, codeErr: '' });
     try {
       const r = await StreAPI.post('account.supportCode');
       this.setState({ code: r.code, codeUntil: r.until, making: false });
       StreAPI.toast('Код создан. Передай его администратору.');
-    } catch (e) { this.setState({ making: false, err: e.message }); }
+    } catch (e) {
+      this.setState({ making: false, codeErr: e.message || 'Нет связи с сервером.' });
+    }
   }
+
   renderVals() {
     const s = this.state;
     const time = (ts) => new Date(ts * 1000).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
@@ -136,14 +218,31 @@ class Component extends DCLogic {
     });
     const until = s.codeUntil ? new Date(s.codeUntil * 1000).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }) : '';
     return {
-      msgs, empty: s.loaded && !msgs.length,
+      faq: FAQ.map((f, i) => {
+        const open = s.faqOpen === i;
+        return { id: 'sp-faq-' + i, q: f.q, a: f.a, exp: open ? 'true' : 'false', closed: !open, mark: open ? '−' : '+', toggle: () => this.toggleFaq(i) };
+      }),
+      histLoading: s.histBusy && !s.loaded,
+      hasHistErr: !s.loaded && !s.histBusy && !!s.histErr,
+      histErr: s.histErr,
+      retryLoad: () => this.load(false),
+      hasPollErr: s.loaded && !!s.pollErr,
+      pollErr: s.pollErr,
+      histEmpty: s.loaded && !msgs.length && !s.histErr,
+      msgs,
       text: s.text, setText: (e) => this.setState({ text: e.target.value }),
-      send: (e) => this.send(e), sending: !!s.sending,
-      sendLabel: s.sending ? 'Отправка…' : 'Отправить',
-      hasErr: !!s.err, err: s.err,
+      topic: s.topic, setTopic: (e) => this.setState({ topic: e.target.value }),
+      send: (e) => this.send(e),
+      retrySend: () => this.send(),
+      sending: !!s.sending,
+      sendOff: !!s.sending || !s.text.trim(),
+      sendLabel: s.sending ? 'Отправляем…' : 'Отправить',
+      hasSendErr: !!s.sendErr, sendErr: s.sendErr,
       hasCode: !!s.code, code: s.code, codeUntilLabel: 'Действует до ' + until,
       makeCode: () => this.makeCode(),
-      codeLabel: s.making ? 'Создаём…' : (s.code ? 'Создать новый код' : 'Создать код на 1 час'),
+      making: !!s.making,
+      codeLabel: s.making ? 'Создаём…' : (s.code ? 'Создать новый код' : 'Создать код для администратора'),
+      hasCodeErr: !!s.codeErr, codeErr: s.codeErr,
     };
   }
 }
