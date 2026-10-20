@@ -626,6 +626,21 @@ function music_act(array $u, string $act, int $id): void {
                 if ($prev) { db_update('songs', ['pos' => $prev['pos']], 'id = ?', [$id]); db_update('songs', ['pos' => $song['pos'] == $prev['pos'] ? $prev['pos'] + 1 : $song['pos']], 'id = ?', [$prev['id']]); }
             }
             break;
+        case 'down': // ниже: меняемся местами со следующим треком очереди
+            if ($song) {
+                $next = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'queued' AND (pos > ? OR (pos = ? AND id > ?)) ORDER BY pos, id LIMIT 1", [$uid, $song['pos'], $song['pos'], $id]);
+                if ($next) { db_update('songs', ['pos' => $next['pos']], 'id = ?', [$id]); db_update('songs', ['pos' => $song['pos']], 'id = ?', [$next['id']]); }
+            }
+            break;
+        case 'top': // в начало очереди
+            if ($song) { $pos = (int)(db_one("SELECT MIN(pos) m FROM songs WHERE user_id = ? AND status = 'queued'", [$uid])['m'] ?? 1) - 1; db_update('songs', ['pos' => $pos], 'id = ?', [$id]); }
+            break;
+        case 'playnow': // сыграть сейчас: текущий трек считается сыгранным, выбранный запускается
+            if ($song && in_array($song['status'], ['queued', 'pending'], true)) {
+                db_exec("UPDATE songs SET status = 'played', played_at = ? WHERE user_id = ? AND status = 'playing'", [now(), $uid]);
+                db_update('songs', ['status' => 'playing', 'played_at' => now()], 'id = ?', [$id]);
+            }
+            break;
         case 'approve':
             if ($song) { $pos = (int)(db_one("SELECT MAX(pos) m FROM songs WHERE user_id = ? AND status = 'queued'", [$uid])['m'] ?? 0) + 1; db_update('songs', ['status' => 'queued', 'pos' => $pos], 'id = ?', [$id]); }
             break;
