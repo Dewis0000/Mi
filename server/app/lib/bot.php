@@ -462,13 +462,15 @@ function stream_fresh(array $user): ?array {
 }
 
 // Список включённых команд канала для ответа «!команды»
-function commands_line(int $uid): string {
+function commands_line(array $user): string {
     // только команды, которые может вызвать любой зритель; длина ограничена, чтобы сообщение не обрезалось в Twitch
-    $rows = db_all("SELECT prefix, name FROM commands WHERE user_id = ? AND enabled = 1 AND access = 'all' ORDER BY name", [$uid]);
+    $rows = db_all("SELECT prefix, name FROM commands WHERE user_id = ? AND enabled = 1 AND access = 'all' ORDER BY name", [(int)$user['id']]);
+    $items = array_map(fn($c) => $c['prefix'] . $c['name'], $rows);
+    // встроенные команды музыки работают на тарифе «Про» и выше; ставим их первыми, чтобы не обрезались длинным списком
+    if (plan_limits($user)['music']) $items = array_values(array_unique(array_merge(['!трек', '!очередь'], $items)));
     $out = []; $len = 0;
-    foreach ($rows as $i => $c) {
-        $t = $c['prefix'] . $c['name'];
-        if ($len + mb_strlen($t) + 2 > 360) return implode(', ', $out) . ' и ещё ' . (count($rows) - $i);
+    foreach ($items as $i => $t) {
+        if ($len + mb_strlen($t) + 2 > 360) return implode(', ', $out) . ' и ещё ' . (count($items) - $i);
         $out[] = $t; $len += mb_strlen($t) + 2;
     }
     return $out ? implode(', ', $out) : 'пока нет команд';
@@ -484,7 +486,7 @@ function render_vars(string $tpl, array $user, array $ctx, int $count, string $a
         '{viewers}' => $live ? (string)$st['viewers'] : '0',
         '{time}' => date('H:i') . ' МСК', '{channel}' => $user['display_name'] ?: $user['login'],
         '{game}' => $st['game'] ?? '', '{title}' => $st['title'] ?? '',
-        '{commands}' => str_contains($tpl, '{commands}') ? commands_line((int)$user['id']) : '',
+        '{commands}' => str_contains($tpl, '{commands}') ? commands_line($user) : '',
     ]);
 }
 
@@ -509,6 +511,8 @@ function music_link_title(string $url): ?string {
 }
 
 function song_request(array $user, string $query, string $requester, string $method, ?string $redemptionId = null, ?string $rewardId = null): array {
+    // музыка — функция тарифа «Про»: проверяем здесь, чтобы не обходилось ни командой, ни наградой, ни донатом
+    if (!plan_limits($user)['music']) return ['ok' => false, 'message' => 'заказ музыки доступен на тарифе «Про» и выше'];
     $cfg = music_config((int)$user['id']);
     if (empty($cfg['open'])) return ['ok' => false, 'message' => 'приём заказов сейчас закрыт'];
     $query = trim($query);

@@ -110,7 +110,7 @@ function api_dispatch(string $r): never {
             $since = since_for($uid);
             $msgs = (int)db_one('SELECT COUNT(*) c FROM chat_messages WHERE user_id = ? AND created_at >= ?', [$uid, $since])['c'];
             $chatters = (int)db_one('SELECT COUNT(DISTINCT chatter_id) c FROM chat_messages WHERE user_id = ? AND created_at >= ?', [$uid, $since])['c'];
-            $follows = (int)db_one("SELECT COUNT(*) c FROM events WHERE user_id = ? AND type = 'follow' AND created_at >= ? AND COALESCE(data, '') NOT LIKE '%\"test\":true%'", [$uid, $since])['c'];
+            $follows = (int)db_one("SELECT COUNT(*) c FROM events WHERE user_id = ? AND type = 'follow' AND created_at >= ? AND (type = 'tts' OR COALESCE(data, '') NOT LIKE '%\"test\":true%')", [$uid, $since])['c'];
             $deleted = (int)db_one("SELECT COUNT(*) c FROM mod_actions WHERE user_id = ? AND created_at >= ? AND action IN ('delete','warn','timeout','ban')", [$uid, $since])['c'];
             // активность по 10 минут за последние 3 часа
             $from = now() - 3 * 3600;
@@ -121,7 +121,7 @@ function api_dispatch(string $r): never {
                 $buckets[$i]['m']++;
                 if (str_starts_with((string)$row['text'], '!')) $buckets[$i]['c']++;
             }
-            $events = array_map('event_row', db_all("SELECT * FROM events WHERE user_id = ? AND COALESCE(data, '') NOT LIKE '%\"test\":true%' ORDER BY id DESC LIMIT 30", [$uid]));
+            $events = array_map('event_row', db_all("SELECT * FROM events WHERE user_id = ? AND (type = 'tts' OR COALESCE(data, '') NOT LIKE '%\"test\":true%') ORDER BY id DESC LIMIT 30", [$uid]));
             $topChatters = array_map(fn($r) => ['login' => $r['chatter_login'], 'name' => $r['chatter_name'] ?: $r['chatter_login'], 'count' => (int)$r['c']],
                 db_all('SELECT chatter_login, chatter_name, COUNT(*) AS c FROM chat_messages WHERE user_id = ? AND created_at >= ? GROUP BY chatter_login, chatter_name ORDER BY c DESC LIMIT 10', [$uid, now() - 86400]));
             $hourly = array_fill(0, 24, 0);
@@ -134,10 +134,10 @@ function api_dispatch(string $r): never {
                 'chart' => ['from' => $from, 'buckets' => $buckets], 'events' => $events, 'actions' => $actions, 'topCommands' => $top,
                 'topChatters' => $topChatters, 'hourly' => ['from' => now() - 86400, 'counts' => $hourly],
                 'viewers' => array_map(fn($r) => ['ts' => (int)$r['ts'], 'v' => (int)$r['viewers']], db_all('SELECT ts, viewers FROM stream_samples WHERE user_id = ? AND ts >= ? ORDER BY ts', [$uid, now() - 3 * 3600])),
-                'eventsByType' => db_all("SELECT type, COUNT(*) AS c FROM events WHERE user_id = ? AND created_at >= ? AND COALESCE(data, '') NOT LIKE '%\"test\":true%' GROUP BY type ORDER BY c DESC", [$uid, now() - 86400]),
+                'eventsByType' => db_all("SELECT type, COUNT(*) AS c FROM events WHERE user_id = ? AND created_at >= ? AND (type = 'tts' OR COALESCE(data, '') NOT LIKE '%\"test\":true%') GROUP BY type ORDER BY c DESC", [$uid, now() - 86400]),
                 'modByType' => db_all('SELECT action, COUNT(*) AS c FROM mod_actions WHERE user_id = ? AND created_at >= ? GROUP BY action ORDER BY c DESC', [$uid, now() - 86400]),
                 'prev' => ['messages' => (int)db_one('SELECT COUNT(*) c FROM chat_messages WHERE user_id = ? AND created_at >= ? AND created_at < ?', [$uid, now() - 172800, now() - 86400])['c'],
-                    'follows' => (int)db_one("SELECT COUNT(*) c FROM events WHERE user_id = ? AND type = 'follow' AND created_at >= ? AND created_at < ? AND COALESCE(data, '') NOT LIKE '%\"test\":true%'", [$uid, now() - 172800, now() - 86400])['c']],
+                    'follows' => (int)db_one("SELECT COUNT(*) c FROM events WHERE user_id = ? AND type = 'follow' AND created_at >= ? AND created_at < ? AND (type = 'tts' OR COALESCE(data, '') NOT LIKE '%\"test\":true%')", [$uid, now() - 172800, now() - 86400])['c']],
                 'music' => ['played' => (int)db_one("SELECT COUNT(*) c FROM songs WHERE user_id = ? AND status = 'played' AND played_at >= ?", [$uid, now() - 86400])['c'],
                     'requests' => (int)db_one("SELECT COUNT(*) c FROM songs WHERE user_id = ? AND created_at >= ?", [$uid, now() - 86400])['c'],
                     'queue' => (int)db_one("SELECT COUNT(*) c FROM songs WHERE user_id = ? AND status = 'queued'", [$uid])['c']]]);
@@ -838,7 +838,7 @@ function api_dispatch(string $r): never {
                 if (strlen($m['text']) > strlen($buckets[$i]['best']) && !str_starts_with($m['text'], '!')) $buckets[$i]['best'] = $m['text'];
             }
             $weights = ['donation' => 10, 'sub' => 6, 'resub' => 6, 'gift' => 6, 'raid' => 8, 'follow' => 1];
-            foreach (db_all("SELECT created_at, type, login, name FROM events WHERE user_id = ? AND created_at BETWEEN ? AND ? AND type IN ('donation','sub','resub','gift','raid','follow') AND COALESCE(data, '') NOT LIKE '%\"test\":true%'", [$u['id'], $from, $to]) as $e) {
+            foreach (db_all("SELECT created_at, type, login, name FROM events WHERE user_id = ? AND created_at BETWEEN ? AND ? AND type IN ('donation','sub','resub','gift','raid','follow') AND (type = 'tts' OR COALESCE(data, '') NOT LIKE '%\"test\":true%')", [$u['id'], $from, $to]) as $e) {
                 $i = intdiv((int)$e['created_at'] - $from, $bucket);
                 $buckets[$i] ??= ['score' => 0, 'chat' => 0, 'events' => [], 'best' => ''];
                 $buckets[$i]['score'] += $weights[$e['type']] ?? 1;
@@ -1064,7 +1064,7 @@ function widget_payload(array $u, string $w, int $after): array {
             break;
         case 'subgoal':
             $base = (int)($cfg['content']['current'] ?? 0);
-            $n = (int)db_one("SELECT COUNT(*) c FROM events WHERE user_id = ? AND type IN ('sub','resub','gift') AND created_at >= ? AND COALESCE(data, '') NOT LIKE '%\"test\":true%'", [$uid, (int)($cfg['since'] ?? 0)])['c'];
+            $n = (int)db_one("SELECT COUNT(*) c FROM events WHERE user_id = ? AND type IN ('sub','resub','gift') AND created_at >= ? AND (type = 'tts' OR COALESCE(data, '') NOT LIKE '%\"test\":true%')", [$uid, (int)($cfg['since'] ?? 0)])['c'];
             $data['current'] = $base + $n;
             break;
         case 'chat':
