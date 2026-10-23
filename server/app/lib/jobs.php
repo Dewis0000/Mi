@@ -73,6 +73,7 @@ function jobs_fast(): void {
     });
     if (job_claim('job:streams', 15)) job_step('streams', 'job_streams');
     if (job_claim('job:imports', 20)) job_step('imports', 'music_import_job');
+    if (job_claim('job:watchdog', 60)) job_step('watchdog', 'music_watchdog');
     if (job_claim('job:plans', 60)) job_step('plans', function () {
         db_exec("UPDATE users SET plan = 'free', plan_until = 0 WHERE plan <> 'free' AND plan_until > 0 AND plan_until < ?", [now()]);
     });

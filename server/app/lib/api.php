@@ -245,7 +245,9 @@ function api_dispatch(string $r): never {
             $u = require_user();
             $uid = (int)$u['id'];
             $since = since_for($uid);
+            player_heartbeat($uid); // панель открыта — плеер на связи
             json_out(['ok' => true, 'config' => music_config($uid), 'allowed' => plan_limits($u)['music'], 'youtube' => (bool)cfg('YOUTUBE_API_KEY'),
+                'pointsErr' => (string)(kv_get('pts:err:' . $uid) ?? ''),
                 'current' => ($c = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'playing' ORDER BY id DESC LIMIT 1", [$uid])) ? song_row($c) : null,
                 'queue' => array_map('song_row', db_all("SELECT * FROM songs WHERE user_id = ? AND status = 'queued' ORDER BY pos, id", [$uid])),
                 'pending' => array_map('song_row', db_all("SELECT * FROM songs WHERE user_id = ? AND status = 'pending' ORDER BY id", [$uid])),
@@ -395,18 +397,23 @@ function api_dispatch(string $r): never {
             $msg = null;
             if (!empty($cfg['points']['on'])) {
                 $token = tw_user_token($u);
-                $reward = ['title' => 'Заказать трек', 'cost' => max(1, (int)$cfg['points']['cost']), 'prompt' => 'Ссылка на YouTube или название трека', 'is_user_input_required' => true, 'is_enabled' => true];
+                $reward = ['title' => 'Заказать трек', 'cost' => max(1, (int)$cfg['points']['cost']), 'prompt' => 'Ссылка на YouTube или название трека', 'is_user_input_required' => true, 'is_enabled' => true,
+                    'should_redemptions_skip_request_queue' => false]; // заказ остаётся в очереди Twitch до конца трека: тогда баллы можно вернуть
                 if ($token && empty($cfg['points']['rewardId'])) {
                     $r = helix('POST', 'channel_points/custom_rewards', ['broadcaster_id' => $u['twitch_id']], $reward, $token);
                     if ($r['code'] === 200) $cfg['points']['rewardId'] = $r['json']['data'][0]['id'];
                     else { $cfg['points']['on'] = false; $msg = 'Не удалось создать награду: ' . ($r['json']['message'] ?? 'баллы канала доступны только компаньонам и партнёрам Twitch'); }
                 } elseif ($token) {
-                    helix('PATCH', 'channel_points/custom_rewards', ['broadcaster_id' => $u['twitch_id'], 'id' => $cfg['points']['rewardId']], ['cost' => $reward['cost'], 'is_enabled' => true], $token);
+                    helix('PATCH', 'channel_points/custom_rewards', ['broadcaster_id' => $u['twitch_id'], 'id' => $cfg['points']['rewardId']], ['cost' => $reward['cost'], 'is_enabled' => true, 'should_redemptions_skip_request_queue' => false], $token);
                 }
             } elseif (!empty($cur['points']['on']) && !empty($cfg['points']['rewardId']) && ($token = tw_user_token($u))) {
                 helix('PATCH', 'channel_points/custom_rewards', ['broadcaster_id' => $u['twitch_id'], 'id' => $cfg['points']['rewardId']], ['is_enabled' => false], $token);
             }
             settings_set($uid, 'music', $cfg);
+            if (!empty($cfg['points']['on'])) { // подписка на награды — сразу, без ожидания фоновой проверки
+                eventsub_ensure_channel($u);
+                $msg = $msg ?: kv_get('pts:err:' . $uid) ?: null;
+            }
             json_out(['ok' => true, 'config' => $cfg, 'message' => $msg]);
         }
 
@@ -611,14 +618,19 @@ function api_dispatch(string $r): never {
             if (!$u || (int)$u['banned']) fail('Плеер не найден', 404);
             $cur = db_one("SELECT id FROM songs WHERE user_id = ? AND status = 'playing' ORDER BY id DESC LIMIT 1", [$u['id']]);
             $finished = in_int('finished');
+            $err = in_int('err'); // код ошибки YouTube: трек не проигрался
+            player_heartbeat((int)$u['id']);
             // переключаем, только если доиграл именно текущий трек: два открытых плеера не пропустят трек дважды
-            if (($cur && (int)$cur['id'] === $finished) || (!$cur && $finished === 0)) music_next($u);
+            if (($cur && (int)$cur['id'] === $finished) || (!$cur && $finished === 0)) {
+                if ($err) music_next($u, 'skipped', music_yt_error_text($err)); else music_next($u);
+            }
             $c = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'playing' ORDER BY id DESC LIMIT 1", [$u['id']]);
             json_out(['ok' => true, 'current' => $c ? song_row($c) : null, 'volume' => (int)music_config((int)$u['id'])['volume']]);
         }
         case 'widget.data': {
             $u = db_one('SELECT * FROM users WHERE widget_token = ?', [in_str('t', 64)]);
             if (!$u || (int)$u['banned']) fail('Виджет не найден', 404);
+            if (in_str('w', 16) === 'np') player_heartbeat((int)$u['id']); // OBS-источник плеера опрашивает сервер — значит, он на связи
             json_out(['ok' => true] + widget_payload($u, in_str('w', 16), in_int('after')));
         }
 

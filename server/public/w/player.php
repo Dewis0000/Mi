@@ -138,18 +138,18 @@ body{font-family:'Onest',system-ui,sans-serif;color:#F2F2F2}
     var id = playingId;
     if (errCount >= 3) { // несколько ошибок подряд — скорее всего, пропал интернет: не листаем всю очередь
       holdUntil = Date.now() + 20000;
-      setTimeout(function () { if (playingId === id) advance(id); }, 20000);
+      setTimeout(function () { if (playingId === id) advance(id, code); }, 20000);
       return;
     }
-    advance(id);
+    advance(id, code);
   }
 
   // трек доиграл или очередь ждёт запуска: сервер переключит, только если finished — текущий трек
-  function advance(finished) {
+  function advance(finished, err) {
     if (advancing || !ready) return;
     advancing = true;
     gen++;
-    api('player.next', { t: token, finished: finished }).then(function (j) {
+    api('player.next', { t: token, finished: finished, err: err || 0 }).then(function (j) {
       if (typeof j.volume === 'number') volume = j.volume;
       if (j.current) play(j.current); else idle();
     }).catch(function (e) {

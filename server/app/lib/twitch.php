@@ -191,11 +191,13 @@ function eventsub_secret(): string {
     return $s;
 }
 
-function eventsub_subscribe(string $type, string $version, array $condition): array {
+// Подписка на награды канала требует токен самого стримера (scope channel:read:redemptions):
+// токеном приложения Twitch её не создаёт — поэтому передаём $token явно.
+function eventsub_subscribe(string $type, string $version, array $condition, ?string $token = null): array {
     return helix('POST', 'eventsub/subscriptions', null, [
         'type' => $type, 'version' => $version, 'condition' => $condition,
         'transport' => ['method' => 'webhook', 'callback' => eventsub_callback(), 'secret' => eventsub_secret()],
-    ]);
+    ], $token);
 }
 
 function eventsub_list(): array {
@@ -221,13 +223,15 @@ function eventsub_ensure_channel(array $user, ?array $existing = null): array {
     if (!$b || empty($b['own_app'])) return ['Аккаунт бота не подключён к приложению: админ-панель → «Подключить аккаунт бота»'];
     $existing = $existing ?? eventsub_list();
     $bid = $user['twitch_id'];
+    $redeem = 'channel.channel_points_custom_reward_redemption.add';
+    $streamerToken = tw_user_token($user); // для наград нужен токен стримера, а не приложения
     $want = [
         ['channel.chat.message', '1', ['broadcaster_user_id' => $bid, 'user_id' => $b['id']]],
         ['channel.chat.notification', '1', ['broadcaster_user_id' => $bid, 'user_id' => $b['id']]],
         ['stream.online', '1', ['broadcaster_user_id' => $bid]],
         ['stream.offline', '1', ['broadcaster_user_id' => $bid]],
         ['channel.follow', '2', ['broadcaster_user_id' => $bid, 'moderator_user_id' => $b['id']]],
-        ['channel.channel_points_custom_reward_redemption.add', '1', ['broadcaster_user_id' => $bid]],
+        [$redeem, '1', ['broadcaster_user_id' => $bid]],
         ['channel.moderate', '2', ['broadcaster_user_id' => $bid, 'moderator_user_id' => $b['id']]],
     ];
     foreach ($want as [$type, $ver, $cond]) {
@@ -236,10 +240,20 @@ function eventsub_ensure_channel(array $user, ?array $existing = null): array {
             if ($s['type'] === $type && ($s['condition']['broadcaster_user_id'] ?? '') === $bid && in_array($s['status'], ['enabled', 'webhook_callback_verification_pending'], true)) { $found = true; break; }
         }
         if ($found) continue;
-        $r = eventsub_subscribe($type, $ver, $cond);
+        if ($type === $redeem && !$streamerToken) {
+            kv_set('pts:err:' . $user['id'], 'Нет доступа к баллам канала: выйди из StreOps и войди через Twitch заново, разрешив доступ к наградам');
+            continue;
+        }
+        $r = eventsub_subscribe($type, $ver, $cond, $type === $redeem ? $streamerToken : null);
+        if ($type === $redeem) {
+            // ошибку баллов показываем стримеру на странице музыки, а не прячем в логе
+            kv_set('pts:err:' . $user['id'], in_array($r['code'], [202, 409], true) ? '' : 'Twitch не подписал награды канала: ' . ($r['json']['message'] ?? 'код ' . $r['code']));
+            if (!in_array($r['code'], [202, 409], true)) logline('eventsub', "redemptions for {$user['login']}: " . ($r['json']['message'] ?? $r['code']));
+            continue;
+        }
         if (!in_array($r['code'], [202, 409], true)) {
             $msg = $r['json']['message'] ?? ('код ' . $r['code']);
-            // follow и баллы канала необязательны (нет прав/не компаньон) — не считаем это поломкой бота
+            // follow необязателен (нет прав/не компаньон) — не считаем это поломкой бота
             if (in_array($type, ['channel.chat.message', 'channel.chat.notification'], true)) $errors[] = $type . ': ' . $msg;
             else logline('eventsub', "optional $type for {$user['login']}: $msg");
         }

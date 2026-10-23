@@ -373,7 +373,7 @@ function handle_builtin(array $ctx): bool {
         return true;
     }
     if ($r['mod'] && in_array($word, ['!skip', '!пропустить', '!скип'], true)) {
-        music_next($user);
+        music_next($user, 'skipped', 'пропущен модератором');
         tw_send($bid, 'Трек пропущен', $ctx['msgId']);
         return true;
     }
@@ -568,34 +568,84 @@ function song_request(array $user, string $query, string $requester, string $met
 }
 
 // Автовоспроизведение — в music_auto.php (music_autofill)
-function music_next(array $user): ?array {
-    db_exec("UPDATE songs SET status = 'played', played_at = ? WHERE user_id = ? AND status = 'playing'", [now(), $user['id']]);
+// Переход к следующему треку. outcome: played — доиграл до конца; skipped — не доигран, $reason объясняет зрителю почему
+function music_next(array $user, string $outcome = 'played', string $reason = ''): ?array {
+    $cur = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'playing' ORDER BY id DESC LIMIT 1", [$user['id']]);
+    db_exec("UPDATE songs SET status = ?, played_at = ? WHERE user_id = ? AND status = 'playing'", [$outcome === 'played' ? 'played' : 'skipped', now(), $user['id']]);
+    if ($cur) {
+        if ($outcome === 'played') music_fulfil($user, $cur);
+        else music_unplayed($user, $cur, $reason !== '' ? $reason : 'пропущен');
+    }
     $next = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'queued' ORDER BY pos, id LIMIT 1", [$user['id']]);
     if (!$next && music_autofill($user)) $next = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'queued' ORDER BY pos, id LIMIT 1", [$user['id']]);
     if ($next) db_exec("UPDATE songs SET status = 'playing', played_at = ? WHERE id = ?", [now(), $next['id']]);
     return $next;
 }
 
-function refund_redemption(array $user, array $song): void {
-    if (!$song['redemption_id'] || !$song['reward_id']) return;
+// Статус заказа баллов в Twitch: FULFILLED — трек сыграл, CANCELED — заказ отменён и баллы вернулись зрителю.
+// Twitch меняет статус только у ещё не выполненного заказа (UNFULFILLED), поэтому заказ держим невыполненным до конца трека.
+function redemption_set(array $user, string $rewardId, string $redemptionId, string $status): bool {
+    if ($rewardId === '' || $redemptionId === '') return false;
     $token = tw_user_token($user);
-    if (!$token) return;
-    helix('PATCH', 'channel_points/custom_rewards/redemptions', ['broadcaster_id' => $user['twitch_id'], 'reward_id' => $song['reward_id'], 'id' => $song['redemption_id']], ['status' => 'CANCELED'], $token);
+    if (!$token) {
+        logline('points', $user['login'] . ': нет токена, заказ ' . $status . ' не отправлен');
+        return false;
+    }
+    $r = helix('PATCH', 'channel_points/custom_rewards/redemptions', ['broadcaster_id' => $user['twitch_id'], 'reward_id' => $rewardId, 'id' => $redemptionId], ['status' => $status], $token);
+    if ($r['code'] !== 200) logline('points', $user['login'] . ": $status $redemptionId: " . ($r['json']['message'] ?? 'код ' . $r['code']));
+    return $r['code'] === 200;
 }
 
+// Трек сыграл до конца — заказ выполнен
+function music_fulfil(array $user, array $song): void {
+    if ($song['redemption_id'] && $song['reward_id']) redemption_set($user, (string)$song['reward_id'], (string)$song['redemption_id'], 'FULFILLED');
+}
+
+// Заказ за баллы не сыграл (пропущен, удалён, отклонён, не проигрывается): баллы возвращаем и говорим зрителю почему
+function music_unplayed(array $user, array $song, string $reason): void {
+    if (!$song['redemption_id'] || !$song['reward_id']) return;
+    redemption_set($user, (string)$song['reward_id'], (string)$song['redemption_id'], 'CANCELED');
+    tw_send($user['twitch_id'], '@' . $song['requester'] . ', «' . mb_substr((string)$song['title'], 0, 60) . '» не сыграл (' . $reason . '). Баллы возвращены.');
+}
+
+// Текущий трек прерван (сыграть другой сейчас) — он не доигран, значит пропущен
+function music_cut_current(array $user, string $reason): void {
+    $cur = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'playing' ORDER BY id DESC LIMIT 1", [$user['id']]);
+    if (!$cur) return;
+    db_exec("UPDATE songs SET status = 'skipped', played_at = ? WHERE id = ? AND status = 'playing'", [now(), $cur['id']]);
+    music_unplayed($user, $cur, $reason);
+}
+
+// Причина для зрителя, если YouTube не дал проиграть трек (код ошибки плеера YouTube)
+function music_yt_error_text(int $code): string {
+    return match ($code) {
+        2 => 'неверная ссылка на видео',
+        5 => 'браузер не смог воспроизвести видео',
+        100 => 'видео удалено или скрыто',
+        101, 150 => 'автор запретил проигрывать видео на других сайтах',
+        default => 'видео не проигрывается',
+    };
+}
+
+// Баллы канала: Twitch списал их сразу, заказ встаёт в очередь. Если заказ не принят — баллы возвращаем сразу.
 function bot_on_redemption(array $user, array $ev): void {
-    $music = music_config((int)$user['id']);
-    $rewardId = $ev['reward']['id'] ?? '';
-    if (empty($music['points']['on']) || $rewardId !== ($music['points']['rewardId'] ?? null)) return;
-    if (bl_find((string)($ev['user_login'] ?? ''), (string)($ev['user_id'] ?? ''))) { // заблокированный зритель не получает музыку за баллы
-        refund_redemption($user, ['redemption_id' => $ev['id'], 'reward_id' => $rewardId]);
-        tw_send($user['twitch_id'], '@' . $ev['user_name'] . ' заказ недоступен: ты в чёрном списке StreOps');
-        return;
-    }
-    $res = song_request($user, (string)($ev['user_input'] ?? ''), (string)$ev['user_name'], 'points', (string)$ev['id'], $rewardId);
-    tw_send($user['twitch_id'], '@' . $ev['user_name'] . ' ' . $res['message']);
-    if (!$res['ok']) refund_redemption($user, ['redemption_id' => $ev['id'], 'reward_id' => $rewardId]);
-    db_insert('events', ['user_id' => $user['id'], 'type' => 'redemption', 'login' => $ev['user_login'] ?? '', 'name' => $ev['user_name'] ?? '',
+    $uid = (int)$user['id'];
+    $music = music_config($uid);
+    $rewardId = (string)($ev['reward']['id'] ?? '');
+    if (empty($music['points']['on']) || $rewardId === '' || $rewardId !== (string)($music['points']['rewardId'] ?? '')) return; // чужая награда
+    $redemptionId = (string)($ev['id'] ?? '');
+    $login = (string)($ev['user_login'] ?? '');
+    $name = (string)($ev['user_name'] ?? $login);
+    $refund = function (string $why) use ($user, $redemptionId, $rewardId, $name): void {
+        redemption_set($user, $rewardId, $redemptionId, 'CANCELED');
+        tw_send($user['twitch_id'], '@' . $name . ' заказ не принят: ' . $why . '. Баллы возвращены.');
+    };
+    if (!plan_limits($user)['music']) { $refund('музыка доступна на тарифе «Про» и выше'); return; }
+    if (bl_find($login, (string)($ev['user_id'] ?? ''))) { $refund('ты в чёрном списке StreOps'); return; } // заблокированный зритель не получает музыку за баллы
+    $res = song_request($user, (string)($ev['user_input'] ?? ''), $name, 'points', $redemptionId, $rewardId);
+    if (!$res['ok']) $refund($res['message']);
+    else tw_send($user['twitch_id'], '@' . $name . ' ' . $res['message'] . '. Если трек не сыграет, баллы вернутся.');
+    db_insert('events', ['user_id' => $user['id'], 'type' => 'redemption', 'login' => $login, 'name' => $name,
         'data' => json_encode(['reward' => $ev['reward']['title'] ?? '', 'input' => $ev['user_input'] ?? ''], JSON_UNESCAPED_UNICODE), 'created_at' => now()]);
 }
 
@@ -659,8 +709,8 @@ function music_act(array $u, string $act, int $id): void {
     $uid = (int)$u['id'];
     $song = $id ? db_one('SELECT * FROM songs WHERE id = ? AND user_id = ?', [$id, $uid]) : null;
     switch ($act) {
-        case 'next': music_next($u); break;
-        case 'remove': if ($song) db_update('songs', ['status' => 'skipped', 'played_at' => now()], 'id = ?', [$id]); break;
+        case 'next': music_next($u, 'skipped', 'пропущен стримером'); break;
+        case 'remove': if ($song) { db_update('songs', ['status' => 'skipped', 'played_at' => now()], 'id = ?', [$id]); music_unplayed($u, $song, 'убран из очереди'); } break;
         case 'up':
             if ($song) {
                 $prev = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'queued' AND (pos < ? OR (pos = ? AND id < ?)) ORDER BY pos DESC, id DESC LIMIT 1", [$uid, $song['pos'], $song['pos'], $id]);
@@ -678,7 +728,7 @@ function music_act(array $u, string $act, int $id): void {
             break;
         case 'playnow': // сыграть сейчас: текущий трек считается сыгранным, выбранный запускается
             if ($song && in_array($song['status'], ['queued', 'pending'], true)) {
-                db_exec("UPDATE songs SET status = 'played', played_at = ? WHERE user_id = ? AND status = 'playing'", [now(), $uid]);
+                music_cut_current($u, 'заменён другим треком');
                 db_update('songs', ['status' => 'playing', 'played_at' => now()], 'id = ?', [$id]);
             }
             break;
@@ -686,9 +736,30 @@ function music_act(array $u, string $act, int $id): void {
             if ($song) { $pos = (int)(db_one("SELECT MAX(pos) m FROM songs WHERE user_id = ? AND status = 'queued'", [$uid])['m'] ?? 0) + 1; db_update('songs', ['status' => 'queued', 'pos' => $pos], 'id = ?', [$id]); }
             break;
         case 'reject':
-            if ($song) { db_update('songs', ['status' => 'rejected', 'played_at' => now()], 'id = ?', [$id]); refund_redemption($u, $song); }
+            if ($song) { db_update('songs', ['status' => 'rejected', 'played_at' => now()], 'id = ?', [$id]); music_unplayed($u, $song, 'отклонён стримером'); }
             break;
-        case 'clear': db_exec("UPDATE songs SET status = 'skipped' WHERE user_id = ? AND status = 'queued'", [$uid]); break;
+        case 'clear':
+            foreach (db_all("SELECT * FROM songs WHERE user_id = ? AND status = 'queued'", [$uid]) as $q) {
+                db_update('songs', ['status' => 'skipped', 'played_at' => now()], 'id = ?', [$q['id']]);
+                music_unplayed($u, $q, 'очередь очищена');
+            }
+            break;
         default: fail('Неизвестное действие');
     }
+}
+
+// Сторож: трек «играет» дольше своей длины, и ни один плеер не выходил на связь (панель и OBS-источник молчат) —
+// трек не сыгран, баллы возвращаются. Пауза и буферизация не считаются: плеер на связи.
+function music_watchdog(): void {
+    foreach (db_all("SELECT * FROM songs WHERE status = 'playing' AND played_at > 0 AND played_at + duration + 120 < ? LIMIT 50", [now()]) as $song) {
+        if ((int)(kv_get('player:seen:' . $song['user_id']) ?? 0) > now() - 120) continue;
+        $u = db_one('SELECT * FROM users WHERE id = ?', [$song['user_id']]);
+        if (!$u || db_exec("UPDATE songs SET status = 'skipped' WHERE id = ? AND status = 'playing'", [$song['id']]) === 0) continue;
+        music_unplayed($u, $song, 'плеер музыки не был открыт');
+    }
+}
+
+// Плеер на связи: панель или OBS-источник недавно обращались к серверу (сторож это проверяет)
+function player_heartbeat(int $uid): void {
+    if ((int)(kv_get('player:seen:' . $uid) ?? 0) < now() - 30) kv_set('player:seen:' . $uid, now(), 3600);
 }

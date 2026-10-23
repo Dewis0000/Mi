@@ -347,10 +347,11 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 
 <div class="meth">
 <div class="mh"><span class="mt" id="m-pts"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v10M8.5 10h5a2 2 0 0 1 0 4h-5"></path></svg>Заказ за баллы канала</span><span style="display: flex; gap: 10px; align-items: center"><sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><span class="tagp"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Доступно на тарифе «Про»</span></sc-if><button type="button" role="switch" class="sw" aria-checked="{{ ptsOn }}" aria-labelledby="m-pts" onClick="{{ togglePts }}" disabled="{{ ptsOff }}"><span></span></button></span></div>
-<p class="mp">Зрители тратят баллы канала на награду «Заказать трек» и вписывают в неё ссылку или название. Если заказ отклонён или не прошёл проверку, баллы вернутся. Баллы канала есть только у компаньонов и партнёров Twitch.</p>
+<p class="mp">Зрители тратят баллы канала на награду «Заказать трек» и вписывают в неё ссылку или название. Баллы вернутся, если трек не сыграл: пропущен, удалён, отклонён, не проигрался или не нашёлся. Баллы канала есть только у компаньонов и партнёров Twitch.</p>
 <div class="kv"><label for="pts-cost">Стоимость заказа</label><span class="unit"><input id="pts-cost" class="inp sm mono" type="number" inputmode="numeric" min="1" value="{{ d.pointsCost }}" onChange="{{ setPtsCost }}" disabled="{{ ctlOff }}">баллов</span></div>
 <sc-if value="{{ hasReward }}" hint-placeholder-val="{{ false }}"><p class="hint">Награда создана на Twitch, стоимость меняется там же при сохранении.</p></sc-if>
 <sc-if value="{{ hasPtsMsg }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert" style="font-size: 13px; line-height: 18px; padding: 10px 12px">{{ ptsMsg }}</p></sc-if>
+<sc-if value="{{ hasPtsErr }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert" style="font-size: 13px; line-height: 18px; padding: 10px 12px">{{ ptsErr }}</p></sc-if>
 </div>
 
 <div class="meth">
@@ -432,7 +433,7 @@ class Component extends DCLogic {
       const json = JSON.stringify(r);
       if (json !== this.lastJson || s.err || !s.loaded) {
         this.lastJson = json;
-        const patch = { loaded: true, err: '', allowed: !!r.allowed, youtube: !!r.youtube, config: r.config, current: r.current, queue: r.queue || [], pending: r.pending || [], history: r.history || [], stats: r.stats || { ordered: 0, rejected: 0 } };
+        const patch = { loaded: true, err: '', allowed: !!r.allowed, youtube: !!r.youtube, pointsErr: r.pointsErr || '', config: r.config, current: r.current, queue: r.queue || [], pending: r.pending || [], history: r.history || [], stats: r.stats || { ordered: 0, rejected: 0 } };
         if (!s.draft || !this.isDirty()) patch.draft = this.draftOf(r.config);
         if (!this.volTimer) patch.vol = Number(r.config.volume);
         if (s.tab === 'pending' && !r.config.manual && !(r.pending || []).length) patch.tab = 'queue';
@@ -691,12 +692,12 @@ class Component extends DCLogic {
   token() { return this.state.me && this.state.me.widgetToken; }
 
   // трек доиграл (или не играет): сервер переключит, только если finished — текущий трек
-  async advance(finished) {
+  async advance(finished, err = 0) {
     if (this.advancing) return;
     this.advancing = true;
     this.gen++;
     try {
-      const r = await StreAPI.post('player.next', { t: this.token(), finished });
+      const r = await StreAPI.post('player.next', { t: this.token(), finished, err });
       if (!this.state.here) return;
       if (r.current) this.play(r.current); else this.idle();
     } catch (e) {
@@ -732,7 +733,7 @@ class Component extends DCLogic {
     this.errCount++;
     if (this.errCount >= 3) { this.stopHere('Три трека подряд не проиграли (' + why + '). Плеер остановлен, чтобы не пролистать всю очередь. Проверь интернет и нажми «Играть здесь».'); return; }
     StreAPI.toast(name + ' не проигрывается: ' + why + '. Включаю следующий.', 'error');
-    this.advance(id);
+    this.advance(id, code);
   }
 
   tick() {
@@ -992,7 +993,7 @@ class Component extends DCLogic {
       togglePts: () => { if (c && !locked) this.saveCfg({ points: { on: !c.points.on } }); },
       setPtsCost: (e) => this.setD({ pointsCost: e.target.value }),
       hasReward: !!(c && c.points.on && c.points.rewardId),
-      hasPtsMsg: !!s.ptsMsg, ptsMsg: s.ptsMsg,
+      hasPtsMsg: !!s.ptsMsg, ptsMsg: s.ptsMsg, hasPtsErr: !!s.pointsErr && !!(c && c.points.on), ptsErr: s.pointsErr,
 
       donOn: c && c.donate.on ? 'true' : 'false',
       donOff: !ready || locked || (!me.daConnected && !(c && c.donate.on)),
