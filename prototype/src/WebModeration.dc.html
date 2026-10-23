@@ -282,7 +282,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{ou
 
 <section class="card" aria-labelledby="ex-t" style="padding: 20px; display: flex; flex-direction: column; gap: 4px; min-width: 0">
 <h3 id="ex-t" style="margin: 0; font-size: 17px; font-weight: 600">Исключения</h3>
-<p style="margin: 0 0 8px; font-size: 13px; line-height: 18px; color: #8F8F8F">Кого фильтры не проверяют. Стримера, бота StreOps и известных ботов (Nightbot, StreamElements, Moobot и других) бот не проверяет никогда.</p>
+<p style="margin: 0 0 8px; font-size: 13px; line-height: 18px; color: #8F8F8F">Кого фильтры не проверяют. Стримера, модераторов канала, бота StreOps и известных ботов (Nightbot, StreamElements, Moobot и других) бот не проверяет никогда.</p>
 <sc-for list="{{ exempt }}" as="x" hint-placeholder-count="3"><div class="mode"><span style="min-width: 0"><span id="{{ x.id }}" style="display: block; font-size: 14px">{{ x.name }}</span><span style="display: block; font-size: 12px; color: #8F8F8F">{{ x.note }}</span></span><button type="button" role="switch" class="sw" aria-checked="{{ x.on }}" aria-labelledby="{{ x.id }}" onClick="{{ x.toggle }}"><span></span></button></div></sc-for>
 </section>
 
@@ -505,7 +505,7 @@ function modNorm(c) {
     .map((s) => (s.a === 'timeout' ? { a: 'timeout', d: modCanon(modSec(String(s.d == null ? '10 мин' : s.d))) } : { a: s.a }));
   if (!ladder.length) ladder = [{ a: 'warn' }];
   const out = {
-    auto: !!c.auto, exempt: { mods: !!ex.mods, vip: !!ex.vip, subs: !!ex.subs }, ladder,
+    auto: !!c.auto, exempt: { mods: true, vip: !!ex.vip, subs: !!ex.subs }, ladder,
     resetDays: Math.max(0, parseInt(c.resetDays, 10) || 0), warnText: String(c.warnText == null ? '' : c.warnText), announce: !!c.announce,
     filters: {}, words: (Array.isArray(c.words) ? c.words : []).map(String), domains: (Array.isArray(c.domains) ? c.domains : []).map(String),
     subsLinks: !!c.subsLinks, permit: !!c.permit,
@@ -1014,7 +1014,7 @@ class Component extends DCLogic {
     out.reloadCfg = () => this.loadCfg();
     const ex = ['стримера'];
     const exc = cfg ? cfg.exempt : { mods: true, vip: true, subs: false };
-    if (exc.mods) ex.push('модераторов');
+    ex.push('модераторов');
     if (exc.vip) ex.push('VIP');
     if (exc.subs) ex.push('подписчиков');
     ex.push('известных ботов');
@@ -1207,7 +1207,7 @@ class Component extends DCLogic {
       out.toggleSubsLinks = () => this.edit((c) => { c.subsLinks = !c.subsLinks; }, 250);
       out.permitOn = cfg.permit ? 'true' : 'false';
       out.togglePermit = () => this.edit((c) => { c.permit = !c.permit; }, 250);
-      out.exempt = [['mods', 'Модераторы', 'Модераторов канала фильтры не проверяют'], ['vip', 'VIP', 'Зрители со значком VIP'], ['subs', 'Подписчики', 'Все платные подписчики канала']].map((x) => ({
+      out.exempt = [['vip', 'VIP', 'Зрители со значком VIP'], ['subs', 'Подписчики', 'Все платные подписчики канала']].map((x) => ({
         id: 'ex-' + x[0], name: x[1], note: x[2], on: cfg.exempt[x[0]] ? 'true' : 'false',
         toggle: () => this.edit((c) => { c.exempt[x[0]] = !c.exempt[x[0]]; }, 250),
       }));

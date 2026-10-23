@@ -174,9 +174,11 @@ function site_dispatch(string $r): bool {
             if (bl_find($u['login'], (string)$u['twitch_id'])) fail('Ты в чёрном списке StreOps: писать в чат нельзя');
             $text = in_str('text', 300);
             if ($text === '') fail('Пустое сообщение');
-            $rateKey = 'sitechat:' . (int)$u['id'];
-            if (kv_get($rateKey) !== null) fail('Не так часто, подожди пару секунд');
-            kv_set($rateKey, 1, 3);
+            if (!site_can_moderate($streamer, $u)) { // владелец и модераторы сайта пишут без паузы
+                $rateKey = 'sitechat:' . (int)$u['id'];
+                if (kv_get($rateKey) !== null) fail('Не так часто, подожди пару секунд');
+                kv_set($rateKey, 1, 3);
+            }
             db_exec('INSERT INTO site_chat (streamer_id, user_id, login, name, text, created_at) VALUES (?, ?, ?, ?, ?, ?)',
                 [(int)$streamer['id'], (int)$u['id'], $u['login'], $u['display_name'] ?: $u['login'], $text, now()]);
             json_out(['ok' => true]);

@@ -42,6 +42,7 @@ function mod_config(int $uid): array {
     if (isset($c['ladder'])) $out['ladder'] = $c['ladder'];
     if (isset($c['words'])) $out['words'] = $c['words'];
     if (isset($c['domains'])) $out['domains'] = $c['domains'];
+    $out['exempt']['mods'] = true; // модераторы канала всегда в исключениях, даже если в старых настройках стоит «нет»
     return $out;
 }
 
@@ -207,8 +208,8 @@ function moderate(array $ctx): bool {
     $cfg = mod_config((int)$user['id']);
     if (empty($cfg['auto'])) return false;
     $r = $ctx['roles'];
-    if ($r['broadcaster'] || $r['bot']) return false;
-    if ($r['mod'] && !empty($cfg['exempt']['mods'])) return false;
+    // стример, бот StreOps и модераторы канала не проверяются никогда: это не настраивается
+    if ($r['broadcaster'] || $r['bot'] || $r['mod']) return false;
     if ($r['vip'] && !empty($cfg['exempt']['vip'])) return false;
     if ($r['sub'] && !empty($cfg['exempt']['subs'])) return false;
 
