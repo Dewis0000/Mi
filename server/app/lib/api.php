@@ -355,6 +355,33 @@ function api_dispatch(string $r): never {
             if (!$res['ok']) fail($res['message']);
             json_out(['ok' => true, 'message' => $res['message']]);
         }
+        case 'music.import.create': { // плейлист по ссылке или список текстом
+            $u = require_user();
+            if (!plan_limits($u)['music']) fail('Импорт плейлистов доступен на тарифе «Про» и выше');
+            $r = music_import_create($u, in_str('source', 6000));
+            json_out(['ok' => true, 'id' => $r['id'], 'import' => music_import_view($u)]);
+        }
+        case 'music.import.get': { // пока страница открыта, импорт идёт дальше (лимит поиска — по порядку)
+            $u = require_user();
+            $running = db_one("SELECT id FROM music_imports WHERE user_id = ? AND status = 'running' ORDER BY id DESC LIMIT 1", [$u['id']]);
+            if ($running) music_import_step($u, (int)$running['id'], MI_STEP);
+            json_out(['ok' => true, 'import' => music_import_view($u)]);
+        }
+        case 'music.import.act': { // «Да, это он», «Ссылка», «Добавить всё равно»
+            $u = require_user();
+            music_import_act($u, in_int('id'), in_str('action', 16), in_str('url', 300));
+            json_out(['ok' => true, 'import' => music_import_view($u)]);
+        }
+        case 'music.import.pickAll': {
+            $u = require_user();
+            $n = music_import_pick_all($u, in_int('id'));
+            json_out(['ok' => true, 'added' => $n, 'import' => music_import_view($u)]);
+        }
+        case 'music.import.cancel': {
+            $u = require_user();
+            music_import_cancel($u, in_int('id'));
+            json_out(['ok' => true, 'import' => music_import_view($u)]);
+        }
         case 'music.config': {
             $u = require_user();
             $uid = (int)$u['id'];

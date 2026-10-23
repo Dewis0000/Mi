@@ -188,10 +188,11 @@ function music_draw_sources(array $mix): array {
 
 // Кандидаты из выдачи YouTube. rank — место в выдаче (первые лучше), aff — близость к вкусу канала.
 // seedKey — исполнитель, по которому искали: совпадение с ним повышает близость и меняет причину.
-function music_from_items(array $items, string $src, float $aff, string $seedRaw, string $seedKey): array {
+function music_from_items(?array $items, string $src, float $aff, string $seedRaw, string $seedKey): array {
+    $items = array_values($items ?? []); // null — поиск сейчас недоступен: кандидатов нет
     $n = max(1, count($items));
     $out = [];
-    foreach (array_values($items) as $i => $it) {
+    foreach ($items as $i => $it) {
         if (trim((string)$it['title']) === '') continue; // без названия трек не ставим
         $t = music_split((string)$it['title']);
         $match = $seedKey !== '' && $t['artist'] === $seedKey;
@@ -208,7 +209,7 @@ function music_from_items(array $items, string $src, float $aff, string $seedRaw
 const AUTO_QUERIES = [['', 'relevance'], [' песни', 'relevance'], [' лучшие песни', 'viewCount'], [' хиты', 'viewCount']];
 
 // Кандидаты по исполнителю: случайный вариант запроса
-function music_search(string $raw): array {
+function music_search(string $raw): ?array {
     [$suffix, $order] = AUTO_QUERIES[mt_rand(0, count(AUTO_QUERIES) - 1)];
     return yt_search_items($raw . $suffix, 50, $order);
 }

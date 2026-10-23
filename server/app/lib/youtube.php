@@ -65,27 +65,64 @@ function yt_details(array $ids): array {
 }
 
 // Суточный лимит поисков. Кэшированный ответ лимит не тратит. Когда лимит кончился, подбор работает на чарте и уже найденном.
+function yt_budget_limit(): int {
+    return (int)(cfg('YOUTUBE_SEARCH_DAILY') ?: 60);
+}
+
+function yt_budget_left(): int {
+    return max(0, yt_budget_limit() - (int)(kv_get('yt:budget:' . gmdate('Ymd')) ?? 0));
+}
+
 function yt_budget_take(): bool {
     $k = 'yt:budget:' . gmdate('Ymd');
     $used = (int)(kv_get($k) ?? 0);
-    if ($used >= (int)(cfg('YOUTUBE_SEARCH_DAILY') ?: 60)) return false;
+    if ($used >= yt_budget_limit()) return false;
     kv_set($k, $used + 1, 2 * 86400);
     return true;
 }
 
+// Плейлист YouTube: название и видео по порядку. Удалённые и закрытые ролики приходят с пометкой unavailable.
+// Стоит одну единицу квоты за страницу из 50 строк, поиска не требует.
+function yt_playlist(string $pid, int $max = 200): ?array {
+    $apiKey = cfg('YOUTUBE_API_KEY');
+    if (!$apiKey) return null;
+    $meta = http_request('GET', 'https://www.googleapis.com/youtube/v3/playlists?' . http_build_query(['part' => 'snippet', 'id' => $pid, 'key' => $apiKey]));
+    if ($meta['code'] !== 200 || empty($meta['json']['items'])) return null;
+    $title = html_entity_decode((string)($meta['json']['items'][0]['snippet']['title'] ?? ''), ENT_QUOTES);
+    $items = [];
+    $token = null;
+    do {
+        $q = ['part' => 'snippet,contentDetails', 'playlistId' => $pid, 'maxResults' => 50, 'key' => $apiKey];
+        if ($token) $q['pageToken'] = $token;
+        $r = http_request('GET', 'https://www.googleapis.com/youtube/v3/playlistItems?' . http_build_query($q));
+        if ($r['code'] !== 200) break;
+        foreach ($r['json']['items'] ?? [] as $it) {
+            $vid = (string)($it['contentDetails']['videoId'] ?? '');
+            if ($vid === '') continue;
+            $t = html_entity_decode((string)($it['snippet']['title'] ?? ''), ENT_QUOTES);
+            $items[] = ['video_id' => $vid, 'title' => $t, 'channel' => (string)($it['snippet']['videoOwnerChannelTitle'] ?? ''),
+                'unavailable' => in_array($t, ['Deleted video', 'Private video'], true)];
+            if (count($items) >= $max) break 2;
+        }
+        $token = $r['json']['nextPageToken'] ?? null;
+    } while ($token);
+    return ['title' => $title, 'items' => $items, 'total' => (int)($meta['json']['pageInfo']['totalResults'] ?? count($items))];
+}
+
 // Кандидаты для подбора по запросу (исполнитель, название). Кэш на неделю: один исполнитель с разных каналов не тратит квоту дважды.
 // Фильтр по длительности не ставим: «medium» у YouTube отсекает песни короче 4 минут, длину проверяем сами.
-function yt_search_items(string $q, int $n = 50, string $order = 'relevance'): array {
+// Возвращает null, если поиск сейчас недоступен (лимит или ошибка), и [] — если ничего не нашлось.
+function yt_search_items(string $q, int $n = 50, string $order = 'relevance'): ?array {
     $key = 'yt:s:' . sha1(mb_strtolower($q) . '|' . $n . '|' . $order);
     $hit = kv_get($key);
     if (is_array($hit)) return $hit;
     $apiKey = cfg('YOUTUBE_API_KEY');
-    if (!$apiKey || !yt_budget_take()) return [];
+    if (!$apiKey || !yt_budget_take()) return null;
     $r = http_request('GET', 'https://www.googleapis.com/youtube/v3/search?' . http_build_query([
         'part' => 'snippet', 'q' => $q, 'type' => 'video', 'videoCategoryId' => '10', 'videoEmbeddable' => 'true',
         'order' => $order, 'maxResults' => $n, 'regionCode' => 'RU', 'key' => $apiKey,
     ]));
-    if ($r['code'] !== 200) return [];
+    if ($r['code'] !== 200) return null;
     $items = [];
     foreach ($r['json']['items'] ?? [] as $i) {
         $id = $i['id']['videoId'] ?? '';

@@ -515,6 +515,19 @@ function music_link_title(string $url): ?string {
     return mb_strlen($t) >= 2 && !preg_match('~^(Яндекс Музыка|Yandex Music|SoundCloud|ВКонтакте|VK)$~ui', $t) ? mb_substr($t, 0, 120) : null;
 }
 
+// Почему видео не ставим в очередь (null — можно). Одна проверка для заказов, импорта плейлистов и подбора:
+// тексты — те же, что уходят в чат и показываются в списке импорта.
+function music_video_problem(array $cfg, array $v): ?array {
+    if ($v['duration'] <= 0) return ['code' => 'unavailable', 'text' => 'не удалось узнать длительность: видео недоступно'];
+    if ($v['live']) return ['code' => 'live', 'text' => 'прямая трансляция — такие не ставим'];
+    if (!$v['embeddable']) return ['code' => 'embed', 'text' => 'видео запрещено проигрывать на других сайтах'];
+    if ($v['duration'] < 30) return ['code' => 'short', 'text' => 'короче 30 секунд — это не песня'];
+    if ((int)$cfg['maxLen'] > 0 && $v['duration'] > (int)$cfg['maxLen']) return ['code' => 'long', 'text' => 'длиннее ' . gmdate('i:s', (int)$cfg['maxLen']) . ' — лимит канала'];
+    if ((int)$cfg['minViews'] > 0 && $v['views'] < (int)$cfg['minViews']) return ['code' => 'views', 'text' => 'меньше ' . number_format((int)$cfg['minViews'], 0, '', ' ') . ' просмотров — лимит канала'];
+    if (($w = text_has_any($v['title'], $cfg['stop'] ?? [])) !== null) return ['code' => 'stop', 'text' => 'в названии стоп-слово «' . $w . '»'];
+    return null;
+}
+
 function song_request(array $user, string $query, string $requester, string $method, ?string $redemptionId = null, ?string $rewardId = null): array {
     // музыка — функция тарифа «Про»: проверяем здесь, чтобы не обходилось ни командой, ни наградой, ни донатом
     if (!plan_limits($user)['music']) return ['ok' => false, 'message' => 'заказ музыки доступен на тарифе «Про» и выше'];
@@ -532,11 +545,8 @@ function song_request(array $user, string $query, string $requester, string $met
     }
     $v = $id ? yt_video($id) : (!empty($cfg['search']) ? yt_search($query) : null);
     if (!$v) return ['ok' => false, 'message' => $id ? 'не нашёл это видео' : 'ничего не нашёл по запросу'];
-    if ($v['live']) return ['ok' => false, 'message' => 'прямые трансляции заказывать нельзя'];
-    if (!$v['embeddable']) return ['ok' => false, 'message' => 'это видео запрещено проигрывать на других сайтах'];
-    if ((int)$cfg['maxLen'] > 0 && $v['duration'] > (int)$cfg['maxLen']) return ['ok' => false, 'message' => 'трек длиннее ' . gmdate('i:s', (int)$cfg['maxLen']) . ', выбери покороче'];
-    if ((int)$cfg['minViews'] > 0 && $v['views'] < (int)$cfg['minViews']) return ['ok' => false, 'message' => 'у видео слишком мало просмотров'];
-    if (text_has_any($v['title'], $cfg['stop'] ?? [])) return ['ok' => false, 'message' => 'этот трек нельзя заказать'];
+    $problem = music_video_problem($cfg, $v);
+    if ($problem) return ['ok' => false, 'message' => $problem['text']];
     $mine = db_one("SELECT COUNT(*) AS c FROM songs WHERE user_id = ? AND requester = ? AND status IN ('queued','pending')", [$user['id'], $requester]);
     if ((int)$cfg['perUser'] > 0 && (int)$mine['c'] >= (int)$cfg['perUser'] && !in_array($method, ['donate', 'manual'], true)) return ['ok' => false, 'message' => 'у тебя уже ' . $mine['c'] . ' трека в очереди'];
     $status = !empty($cfg['manual']) && $method !== 'manual' ? 'pending' : 'queued'; // стример добавляет сам — без одобрения и лимита

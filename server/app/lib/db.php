@@ -50,7 +50,7 @@ function db_update(string $table, array $row, string $where, array $args): int {
     return db_exec('UPDATE ' . $table . ' SET ' . $set . ' WHERE ' . $where, array_merge(array_values($row), $args));
 }
 
-const DB_VERSION = 10;
+const DB_VERSION = 11;
 
 function db_migrate(PDO $pdo, string $driver): void {
     $sqlite = $driver === 'sqlite';
@@ -110,6 +110,8 @@ function db_migrate(PDO $pdo, string $driver): void {
         "blacklist (id $id, login {$vc(64)} NOT NULL UNIQUE, twitch_id {$vc(32)} NOT NULL DEFAULT '', reason $text, by_login {$vc(64)} NOT NULL DEFAULT '', created_at INT NOT NULL DEFAULT 0)",
         "site_members (streamer_id INT NOT NULL, user_id INT NOT NULL, is_mod INT NOT NULL DEFAULT 0, color {$vc(16)} NOT NULL DEFAULT '', verified INT NOT NULL DEFAULT 0, PRIMARY KEY (streamer_id, user_id))",
         "site_watch (id $id, streamer_id INT NOT NULL, url $text NOT NULL, title {$vc(200)} NOT NULL DEFAULT '', note {$vc(300)} NOT NULL DEFAULT '', public INT NOT NULL DEFAULT 0, created_at INT NOT NULL DEFAULT 0)",
+        "music_imports (id $id, user_id INT NOT NULL, source {$vc(16)} NOT NULL, title {$vc(200)} NOT NULL DEFAULT '', source_url $text, note $text, status {$vc(16)} NOT NULL DEFAULT 'running', created_at INT NOT NULL DEFAULT 0, updated_at INT NOT NULL DEFAULT 0)",
+        "music_import_items (id $id, import_id INT NOT NULL, user_id INT NOT NULL, pos INT NOT NULL DEFAULT 0, artist {$vc(200)} NOT NULL DEFAULT '', track {$vc(300)} NOT NULL DEFAULT '', query $text, video_id {$vc(32)} NOT NULL DEFAULT '', video_title $text, status {$vc(16)} NOT NULL DEFAULT 'queued', reason {$vc(24)} NOT NULL DEFAULT '', info $text, cand_id {$vc(32)} NOT NULL DEFAULT '', cands $text, cand_title $text, cand_channel {$vc(128)} NOT NULL DEFAULT '', song_id INT NOT NULL DEFAULT 0, force INT NOT NULL DEFAULT 0, attempts INT NOT NULL DEFAULT 0, updated_at INT NOT NULL DEFAULT 0)",
     ];
     foreach ($tables as $t) $pdo->exec('CREATE TABLE IF NOT EXISTS ' . $t . $tail);
 
@@ -125,6 +127,8 @@ function db_migrate(PDO $pdo, string $driver): void {
         'idx_samples ON stream_samples (user_id, ts)',
         'idx_blacklist_tid ON blacklist (twitch_id)',
         'idx_site_chat ON site_chat (streamer_id, id)',
+        'idx_mi_user ON music_imports (user_id, id)',
+        'idx_mi_items ON music_import_items (import_id, pos)',
     ];
     foreach ($idx as $i) {
         try { $pdo->exec('CREATE INDEX ' . ($sqlite ? 'IF NOT EXISTS ' : '') . $i); } catch (Throwable $e) { /* индекс уже есть */ }

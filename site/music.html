@@ -316,6 +316,32 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 </template>
 
+<template data-if="tabImport">
+<section style="display: flex; flex-direction: column; gap: 14px; padding-top: 16px" aria-labelledby="imp-t">
+<h2 id="imp-t" class="h3" style="margin: 0">Импорт плейлиста</h2>
+<p class="hint" style="margin: 0; font-size: 13px; line-height: 18px">Вставь ссылку на плейлист YouTube, Deezer или Apple Music. Яндекс Музыка, Spotify, VK и другие сервисы по ссылке без входа не открываются: скопируй названия треков и вставь списком, по одному треку на строку, например «Кино — Группа крови». Каждый трек получит статус и причину.</p>
+<div class="fl"><label for="imp-in" class="lab">Ссылка или список треков</label><textarea id="imp-in" class="inp" rows="4" style="resize: vertical; font-family: inherit; min-height: 96px" placeholder="https://www.youtube.com/playlist?list=…" value="{{ impInput }}" onChange="{{ setImpInput }}" disabled="{{ impOff }}"></textarea></div>
+<div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap"><button type="button" class="btn" onClick="{{ startImport }}" disabled="{{ impOff }}">{{ impBtn }}</button><template data-if="impErrOn"><span role="alert" class="err">{{ impErr }}</span></template></div>
+<template data-if="impHas">
+<div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: flex-start">
+<div style="min-width: 0"><p style="margin: 0; font-weight: 500; overflow-wrap: anywhere">{{ impTitle }}</p><p class="hint" style="margin-top: 2px">{{ impStatusText }}</p></div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap"><template data-if="impPickAllOn"><button type="button" class="btn sm" onClick="{{ pickAllImport }}" disabled="{{ impOff }}">{{ pickAllLabel }}</button></template><template data-if="impRunning"><button type="button" class="bdx" onClick="{{ cancelImport }}" disabled="{{ impOff }}">Остановить</button></template></div>
+</div>
+<p style="margin: 0; font-size: 14px; color: var(--n-11)">{{ impCounts }}</p>
+<template data-if="impNoteOn"><p class="hint" style="margin: 0; font-size: 13px">{{ impNote }}</p></template>
+<p class="hint" style="margin: 0; font-size: 13px">{{ impBudget }}</p>
+<div role="radiogroup" aria-label="Какие треки показать" style="display: flex; flex-wrap: wrap; gap: 8px"><template data-for="impFilters" data-as="f"><button type="button" role="radio" aria-checked="{{ f.sel }}" class="{{ f.cls }}" style="{{ f.style }}" onClick="{{ f.pick }}">{{ f.label }}</button></template></div>
+<div class="tw"><table class="tbl">
+<thead><tr><th scope="col">№</th><th scope="col">Трек</th><th scope="col">Статус</th><th scope="col">Почему</th><th scope="col"><span class="sr">Действия</span></th></tr></thead>
+<tbody>
+<template data-for="impRows" data-as="r"><tr><td class="first mono muted">{{ r.pos }}</td><td data-l="Трек" class="wrap" style="max-width: 300px">{{ r.text }}</td><td data-l="Статус"><span class="{{ r.labelCls }}">{{ r.label }}</span></td><td data-l="Почему" class="wrap" style="font-size: 13px; color: var(--n-10); max-width: 340px">{{ r.info }}<template data-if="r.linkOpen"><form onSubmit="{{ r.submitLink }}" style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap"><input class="inp" style="flex: 1 1 200px" value="{{ r.linkUrl }}" onChange="{{ r.setLinkUrl }}" placeholder="https://youtu.be/…" aria-label="Ссылка на видео YouTube"><button type="submit" class="btn sm">Добавить</button></form></template></td><td class="nolab" style="text-align: right"><div style="display: inline-flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end"><template data-if="r.canPick"><button type="button" class="btn sm" onClick="{{ r.pick }}" disabled="{{ impOff }}">Да, это он</button></template><template data-if="r.canForce"><button type="button" class="bs sm" onClick="{{ r.force }}" disabled="{{ impOff }}">Добавить всё равно</button></template><template data-if="r.canLink"><button type="button" class="bs sm" onClick="{{ r.toggleLink }}" disabled="{{ impOff }}">Ссылка на YouTube</button></template></div></td></tr></template>
+</tbody>
+</table></div>
+<template data-if="impEmptyRows"><p style="margin: 0; padding: 20px; border: 1px dashed var(--n-6); border-radius: 8px; font-size: 14px; color: var(--n-9); text-align: center">В этом фильтре треков нет</p></template>
+</template>
+<template data-if="impNone"><p style="margin: 0; padding: 24px; border: 1px dashed var(--n-6); border-radius: 8px; font-size: 14px; color: var(--n-9); text-align: center">Импортов пока не было. Вставь ссылку или список выше.</p></template>
+</section>
+</template>
 <template data-if="tabPending">
 <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 8px">
 <p style="margin: 0 0 4px; font-size: 13px; line-height: 18px; color: var(--n-9)">{{ pendingNote }}</p>
@@ -344,6 +370,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <h2 id="bot-t" class="sech">Что можно заказать</h2>
 <ul style="margin: 0; padding: 0 0 0 18px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 20px; color: var(--n-11)">
 <li><b style="font-weight: 500">Ссылку на YouTube или YouTube Music</b> — трек встанет в очередь как есть.</li>
+<li><b style="font-weight: 500">Плейлист целиком</b> — на вкладке «Импорт»: ссылка YouTube, Deezer или Apple Music, либо список треков текстом. По каждому треку видно, добавлен он или почему нет.</li>
 <li><b style="font-weight: 500">Название трека</b> — бот возьмёт первое подходящее видео из поиска YouTube. {{ searchState }}</li>
 <li><b style="font-weight: 500">Ссылку на Яндекс Музыку, Spotify, VK, SoundCloud, Apple Music, Deezer или Звук</b> — бот прочитает со страницы название трека и найдёт его на YouTube. Тоже работает только с поиском по названию; версия на YouTube может отличаться от оригинала.</li>
 <li style="color: var(--n-10)">Играет всегда YouTube. Не примем прямые трансляции, видео с запретом на встраивание, треки длиннее лимита и со стоп-словами в названии.</li>
@@ -447,6 +474,7 @@ class Component extends DCLogic {
       current: null, queue: [], pending: [], history: [], stats: { ordered: 0, rejected: 0 },
       me: null, live: false, tab: 'queue', busy: {}, botBusy: false,
       draft: null, saving: false, formErr: '', ptsMsg: '', vol: 70,
+      impInput: '', impBusy: false, impErr: '', impData: null, impFilter: 'all', impLinkId: 0, impLinkUrl: '',
       addQ: '', adding: false, addMsg: '', addErr: '', stopQ: '',
       here: false, hereLoading: false, paused: false, blocked: false, pos: 0, len: 0, ytErr: '',
       copied: false, obsUi: true, advOpen: false,
@@ -458,7 +486,9 @@ class Component extends DCLogic {
 
   componentDidMount() {
     this.load();
+    this.loadImport();
     setInterval(() => this.load(), 4000);
+    setInterval(() => { if (this.state.tab === 'import' || (this.state.impData && this.state.impData.status === 'running')) this.loadImport(); }, 4000);
     setInterval(() => this.tick(), 500);
   }
 
@@ -611,6 +641,45 @@ class Component extends DCLogic {
       this.setState({ adding: false, addQ: '', addMsg: this.cap(r.message || 'Трек добавлен') });
       this.refresh();
     } catch (e) { this.setState({ adding: false, addErr: this.cap(e.message) }); }
+  }
+
+  // ---------- импорт плейлиста ----------
+  async loadImport() {
+    try { const r = await StreAPI.get('music.import.get'); this.setState({ impData: r.import || null }); } catch (e) { /* подождём следующего опроса */ }
+  }
+  async startImport() {
+    const src = this.state.impInput.trim();
+    if (!src) { this.setState({ impErr: 'Вставь ссылку на плейлист или список треков.' }); return; }
+    this.setState({ impBusy: true, impErr: '' });
+    try {
+      const r = await StreAPI.post('music.import.create', { source: src });
+      this.setState({ impBusy: false, impInput: '', impData: r.import, impFilter: 'all' });
+    } catch (e) { this.setState({ impBusy: false, impErr: this.cap(e.message) }); }
+  }
+  async actImport(id, action, url) {
+    this.setState({ impBusy: true, impErr: '' });
+    try {
+      const r = await StreAPI.post('music.import.act', { id, action, url: url || '' });
+      this.setState({ impBusy: false, impData: r.import, impLinkId: 0, impLinkUrl: '' });
+    } catch (e) { this.setState({ impBusy: false, impErr: this.cap(e.message) }); }
+  }
+  async pickAllImport() {
+    const imp = this.state.impData;
+    if (!imp) return;
+    this.setState({ impBusy: true, impErr: '' });
+    try {
+      const r = await StreAPI.post('music.import.pickAll', { id: imp.id });
+      this.setState({ impBusy: false, impData: r.import });
+    } catch (e) { this.setState({ impBusy: false, impErr: this.cap(e.message) }); }
+  }
+  async cancelImport() {
+    const imp = this.state.impData;
+    if (!imp || !confirm('Остановить импорт? Треки, которые ещё не добавлены, не добавятся.')) return;
+    this.setState({ impBusy: true, impErr: '' });
+    try {
+      const r = await StreAPI.post('music.import.cancel', { id: imp.id });
+      this.setState({ impBusy: false, impData: r.import });
+    } catch (e) { this.setState({ impBusy: false, impErr: this.cap(e.message) }); }
   }
 
   cap(t) { t = String(t || ''); return t.charAt(0).toUpperCase() + t.slice(1) + (/[.!?…]$/.test(t) ? '' : '.'); }
@@ -774,7 +843,27 @@ class Component extends DCLogic {
     const plural = (n, a, b, cc) => { const m10 = n % 10, m100 = n % 100; return m10 === 1 && m100 !== 11 ? a : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? b : cc; };
     const cmdName = c ? '!' + c.cmd.name : '!музыка';
     const showPending = !!(c && c.manual) || s.pending.length > 0;
-    const tabDefs = [['queue', 'Очередь', nQ]].concat(showPending ? [['pending', 'На проверке', s.pending.length]] : []).concat([['history', 'История', s.history.length]]);
+    const tabDefs = [['queue', 'Очередь', nQ]].concat(showPending ? [['pending', 'На проверке', s.pending.length]] : []).concat([['history', 'История', s.history.length], ['import', 'Импорт', s.impData ? s.impData.total : '']]);
+    const imp = s.impData;
+    const impCnt = imp ? imp.counts : { added: 0, skipped: 0, unsure: 0, queued: 0 };
+    const impAll = imp ? imp.items : [];
+    const impShown = impAll.filter((x) => s.impFilter === 'all' || x.status === s.impFilter);
+    const impRows = impShown.map((x) => ({
+      pos: x.pos, text: x.text, label: x.label, info: x.info, labelCls: x.status === 'added' ? 'pill on' : 'pill',
+      canPick: !!x.canPick, canForce: !!x.canForce, canLink: !!x.canLink,
+      linkOpen: s.impLinkId === x.id, linkUrl: s.impLinkUrl,
+      setLinkUrl: (e) => this.setState({ impLinkUrl: e.target.value }),
+      pick: () => this.actImport(x.id, 'pick', ''),
+      force: () => this.actImport(x.id, 'force', ''),
+      toggleLink: () => this.setState({ impLinkId: s.impLinkId === x.id ? 0 : x.id, impLinkUrl: '' }),
+      submitLink: (e) => { if (e && e.preventDefault) e.preventDefault(); this.actImport(x.id, 'link', this.state.impLinkUrl); },
+    }));
+    const impFilters = [['all', 'Все', impAll.length], ['added', 'Добавлены', impCnt.added], ['skipped', 'Не добавлены', impCnt.skipped], ['unsure', 'Проверить', impCnt.unsure], ['queued', 'Ещё ищем', impCnt.queued]].map((f) => {
+      const sel = s.impFilter === f[0];
+      return { label: f[1] + ' ' + f[2], sel: sel ? 'true' : 'false', cls: sel ? 'btn sm' : '', style: sel ? '' : 'height: 36px; padding: 0 12px; border-radius: 6px; border: 1px solid var(--n-5); background: transparent; color: var(--n-11); font: 500 13px/20px \'Onest\', sans-serif; cursor: pointer', pick: () => this.setState({ impFilter: f[0] }) };
+    });
+    const impStatusText = !imp ? '' : ({ running: 'Ищем треки на YouTube по порядку списка', done: 'Импорт готов', replaced: 'Список заменён новым импортом', paused: 'Пауза: музыка доступна с тарифа «Про»', cancelled: 'Импорт остановлен' }[imp.status] || '');
+    const impBudget = !imp ? '' : 'Поисков YouTube на сегодня осталось ' + imp.budget.left + ' из ' + imp.budget.limit + '.' + (imp.budget.left === 0 && impCnt.queued > 0 ? ' Оставшиеся треки ждут завтрашнего дня — или вставь ссылки на видео.' : '');
     const tab = tabDefs.some((t) => t[0] === s.tab) ? s.tab : 'queue';
     const pickTab = (k) => this.setState({ tab: k });
     const queuedBy = {};
@@ -888,6 +977,16 @@ class Component extends DCLogic {
           setTimeout(() => { const b = document.getElementById('tab-' + tabDefs[j][0]); if (b) b.focus(); }, 0);
         },
       })),
+      tabImport: tab === 'import',
+      impInput: s.impInput, setImpInput: (e) => this.setState({ impInput: e.target.value }), impOff: !!s.impBusy || locked,
+      impBtn: s.impBusy ? 'Импортируем…' : 'Импортировать', startImport: () => this.startImport(),
+      impErrOn: !!s.impErr, impErr: s.impErr,
+      impHas: !!imp, impNone: !imp, impTitle: imp ? (imp.title || 'Импорт') : '', impStatusText,
+      impCounts: 'Добавлено ' + impCnt.added + ' · Не добавлены ' + impCnt.skipped + ' · Проверить ' + impCnt.unsure + ' · Ещё ищем ' + impCnt.queued,
+      impNoteOn: !!(imp && imp.note), impNote: imp ? imp.note : '', impBudget,
+      impFilters, impRows, impEmptyRows: !!imp && !impRows.length,
+      impPickAllOn: impCnt.unsure > 0, pickAllLabel: 'Добавить все «Проверьте» (' + impCnt.unsure + ')', pickAllImport: () => this.pickAllImport(),
+      impRunning: !!imp && imp.status === 'running', cancelImport: () => this.cancelImport(),
       tabId: 'tab-' + tab,
       tabQueue: tab === 'queue', tabPending: tab === 'pending', tabHistory: tab === 'history',
 

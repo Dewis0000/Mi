@@ -72,6 +72,7 @@ function jobs_fast(): void {
         db_exec("UPDATE giveaways SET status = 'closed' WHERE status = 'collecting' AND ends_at > 0 AND ends_at < ?", [now()]);
     });
     if (job_claim('job:streams', 15)) job_step('streams', 'job_streams');
+    if (job_claim('job:imports', 20)) job_step('imports', 'music_import_job');
     if (job_claim('job:plans', 60)) job_step('plans', function () {
         db_exec("UPDATE users SET plan = 'free', plan_until = 0 WHERE plan <> 'free' AND plan_until > 0 AND plan_until < ?", [now()]);
     });
