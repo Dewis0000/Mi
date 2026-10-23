@@ -365,6 +365,7 @@ function music_import_act(array $user, int $itemId, string $action, string $url 
     }
     $det = yt_details(array_values(array_unique($vids)));
     $ctx = mi_context($uid, (int)$it['import_id']);
+    if (!array_filter($det)) fail('Видео по этой ссылке не нашлось на YouTube: проверь ссылку'); // строка остаётся как была
     [$vid, $v, $d] = mi_choose_candidate($vids, $det, $ctx, music_config($uid), $force);
     mi_apply($user, $it, $vid, $v, $d, $ctx, (string)($imp['title'] ?? ''));
 }
