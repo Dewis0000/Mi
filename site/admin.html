@@ -960,7 +960,7 @@ class Component extends DCLogic {
       const r = await StreAPI.post('admin.blacklist.add', { login, reason, banNow: f.banNow });
       let msg = login + ' в чёрном списке';
       if (!r.twitchFound) msg += '. Такого ника нет в Twitch: проверь написание';
-      else if (f.banNow) msg += '. Бан: ' + r.banned + ' из ' + r.channels + (r.banned < r.channels ? ' (в остальных боту не выдали модерацию)' : '');
+      else if (f.banNow && r.channels) msg += '. Бан: ' + r.banned + ' из ' + r.channels + (r.banned < r.channels ? ' (в остальных боту не выдали модерацию)' : '');
       StreAPI.toast(msg);
       this.setState({ blF: { login: '', reason: '', banNow: f.banNow } });
       await this.loadBlacklist();
@@ -972,7 +972,7 @@ class Component extends DCLogic {
     this.setBusy('bl' + it.id, true);
     try {
       const r = await StreAPI.post('admin.blacklist.remove', { id: it.id, unbanNow });
-      StreAPI.toast(it.login + ' убран из списка' + (unbanNow ? '. Разбан: ' + r.unbanned + ' из ' + r.channels : ''));
+      StreAPI.toast(it.login + ' убран из списка' + (unbanNow && r.channels ? '. Разбан: ' + r.unbanned + ' из ' + r.channels : ''));
       await this.loadBlacklist();
     } catch (e) { if (!this.denied(e)) StreAPI.toast(e.message, 'error'); }
     finally { this.setBusy('bl' + it.id, false); }

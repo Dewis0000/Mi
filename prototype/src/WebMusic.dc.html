@@ -132,6 +132,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <div style="display: flex; flex-wrap: wrap; gap: 12px">
 <div hidden="{{ hideOpen }}" class="swrow"><span class="swtxt"><span id="open-l" style="font-size: 14px; font-weight: 500">Приём заказов</span><span class="swst">{{ openLabel }}</span></span><sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><span class="tagp"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Доступно на тарифе «Про»</span></sc-if><button type="button" role="switch" class="sw" aria-checked="{{ openOn }}" aria-labelledby="open-l" onClick="{{ toggleOpen }}" disabled="{{ ctlOff }}"><span></span></button></div>
 <div hidden="{{ hideOpen }}" class="swrow"><span class="swtxt"><span id="auto-l" style="font-size: 14px; font-weight: 500">Автовоспроизведение</span><span class="swst">{{ autoLabel }}</span></span><sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><span class="tagp"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Доступно на тарифе «Про»</span></sc-if><button type="button" role="switch" class="sw" aria-checked="{{ autoOn }}" aria-labelledby="auto-l" onClick="{{ toggleAuto }}" disabled="{{ ctlOff }}"><span></span></button></div>
+<div hidden="{{ hideMix }}" class="swrow" style="flex-direction: column; align-items: stretch; gap: 10px"><span class="swtxt"><span id="mix-l" style="font-size: 14px; font-weight: 500">Как подбирать</span><span class="swst">{{ mixLabel }}</span></span><div role="radiogroup" aria-labelledby="mix-l" style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{ mixOpts }}" as="m" hint-placeholder-count="3"><button type="button" role="radio" aria-checked="{{ m.sel }}" class="{{ m.cls }}" style="{{ m.style }}" onClick="{{ m.pick }}" disabled="{{ ctlOff }}">{{ m.label }}</button></sc-for></div></div>
 </div>
 </div>
 
@@ -152,7 +153,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <li><b style="font-weight: 500; color: #F2F2F2">Заказы от зрителей.</b> Команда в чате, баллы канала или донат, и трек встаёт в очередь.</li>
 <li><b style="font-weight: 500; color: #F2F2F2">Очередь.</b> Треки можно поднять, опустить, поставить первым, сыграть сейчас или убрать.</li>
 <li><b style="font-weight: 500; color: #F2F2F2">Плеер.</b> Музыка играет в этой вкладке панели или в OBS.</li>
-<li><b style="font-weight: 500; color: #F2F2F2">Автовоспроизведение.</b> Когда очередь кончилась, играют похожие треки.</li>
+<li><b style="font-weight: 500; color: #F2F2F2">Автовоспроизведение.</b> Когда очередь кончилась, играют похожие треки: одна песня не повторяется 60 дней, исполнитель не идёт подряд. Стиль подбора выбирается под переключателем.</li>
 </ul>
 <p class="hint" style="margin-top: 12px">Ниже видна вся страница. Недоступное помечено плашкой «Доступно на тарифе «Про»».</p>
 </div>
@@ -722,7 +723,13 @@ class Component extends DCLogic {
       noCfg: !ready,
       openOn: c && c.open ? 'true' : 'false', openLabel: !c ? '…' : c.open ? 'Зрители могут заказывать' : 'Заказы не принимаются',
       toggleOpen: () => { if (c && !locked) this.saveCfg({ open: !c.open }); },
-      autoOn: c && c.auto ? 'true' : 'false', autoLabel: !c ? '…' : c.auto ? 'Вкл: после очереди играют похожие треки' : 'Выкл: когда очередь кончится, тишина', toggleAuto: () => { if (c && !locked) this.saveCfg({ auto: !c.auto }); },
+      autoOn: c && c.auto ? 'true' : 'false', autoLabel: !c ? '…' : c.auto ? 'Вкл: после очереди играют похожие треки без повторов' : 'Выкл: когда очередь кончится, тишина', toggleAuto: () => { if (c && !locked) this.saveCfg({ auto: !c.auto }); },
+      hideMix: !c || !c.auto,
+      mixLabel: !c ? '' : ({ similar: 'Похожее: исполнители, которые уже играли, и те, кого слушают похожие каналы', discover: 'Больше нового: чаще популярное сейчас и незнакомые исполнители' }[c.mix] || 'Вперемешку: похожее, популярное сейчас и новые для канала'),
+      mixOpts: [['mixed', 'Вперемешку'], ['similar', 'Похожее'], ['discover', 'Больше нового']].map((o) => {
+        const sel = !!c && (c.mix || 'mixed') === o[0];
+        return { label: o[1], sel: sel ? 'true' : 'false', cls: sel ? 'btn sm' : '', style: sel ? '' : 'height: 36px; padding: 0 12px; border-radius: 6px; border: 1px solid #2A2A2A; background: transparent; color: #DCDCDC; font: 500 13px/20px \'Onest\', sans-serif; cursor: pointer', pick: () => { if (c && !locked) this.saveCfg({ mix: o[0] }); } };
+      }),
 
       hasErr: !!s.err, err: /[.!?]$/.test(s.err) ? s.err : s.err + '.', retry: () => this.refresh(),
       noYoutube: ready && s.allowed && !s.youtube,

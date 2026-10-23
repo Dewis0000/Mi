@@ -48,7 +48,8 @@ function mod_config(int $uid): array {
 function music_defaults(): array {
     return [
         'open' => true,
-        'auto' => true, // автовоспроизведение: очередь пуста — подбираем трек по последним 50
+        'auto' => true, // автовоспроизведение: очередь пуста — подбираем похожие треки (music_auto.php)
+        'mix' => 'mixed', // стиль подбора: similar — похожее, mixed — вперемешку, discover — новое
         'cmd' => ['on' => true, 'name' => 'музыка', 'access' => 'followers', 'cooldown' => 60],
         'points' => ['on' => false, 'cost' => 500, 'rewardId' => null],
         'donate' => ['on' => false, 'min' => 100],
@@ -555,40 +556,7 @@ function song_request(array $user, string $query, string $requester, string $met
     return ['ok' => true, 'message' => '«' . $v['title'] . '» в очереди, позиция ' . $place . ($eta ? ', примерно через ' . $eta . ' мин' : '')];
 }
 
-// Автовоспроизведение: очередь пуста — берём исполнителей из последних 50 сыгранных треков
-// и ставим в очередь трек одного из них, которого не было в этих 50 (method = auto, заказал «авто»).
-function music_autofill(array $user): bool {
-    $uid = (int)$user['id'];
-    if (empty(music_config($uid)['auto'])) return false;
-    $hist = db_all("SELECT title, video_id FROM songs WHERE user_id = ? AND status = 'played' ORDER BY played_at DESC, id DESC LIMIT 50", [$uid]);
-    if (!$hist) return false;
-    $seen = array_flip(array_column($hist, 'video_id'));
-    $count = [];
-    foreach ($hist as $h) {
-        $parts = preg_split('~\s+[—–-]\s+~u', (string)$h['title'], 2);
-        $artist = mb_strtolower(trim(count($parts) === 2 ? $parts[0] : ''));
-        if ($artist !== '') $count[$artist] = ($count[$artist] ?? 0) + 1;
-    }
-    arsort($count);
-    $seeds = array_keys(array_slice($count, 0, 3, true));
-    if (!$seeds) $seeds = [mb_strtolower((string)$hist[0]['title'])];
-    shuffle($seeds);
-    foreach (array_slice($seeds, 0, 3) as $seed) {
-        foreach (yt_search_ids($seed . ' music', 5) as $id) {
-            if (isset($seen[$id])) continue;
-            $v = yt_video($id);
-            if (!$v || $v['live'] || !$v['embeddable']) continue;
-            $pos = (int)(db_one("SELECT MAX(pos) AS m FROM songs WHERE user_id = ? AND status = 'queued'", [$uid])['m'] ?? 0) + 1;
-            db_insert('songs', [
-                'user_id' => $uid, 'video_id' => $v['id'], 'url' => 'https://youtu.be/' . $v['id'], 'source' => 'YouTube', 'title' => $v['title'],
-                'duration' => $v['duration'], 'requester' => 'авто', 'method' => 'auto', 'status' => 'queued', 'pos' => $pos, 'created_at' => now(),
-            ]);
-            return true;
-        }
-    }
-    return false;
-}
-
+// Автовоспроизведение — в music_auto.php (music_autofill)
 function music_next(array $user): ?array {
     db_exec("UPDATE songs SET status = 'played', played_at = ? WHERE user_id = ? AND status = 'playing'", [now(), $user['id']]);
     $next = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'queued' ORDER BY pos, id LIMIT 1", [$user['id']]);
