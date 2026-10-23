@@ -159,18 +159,21 @@
       ov.setAttribute('aria-label', 'Объявление от StreOps');
       ov.style.cssText = 'position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box';
       const dlg = el('div');
-      dlg.style.cssText = 'width:100%;max-width:440px;padding:24px;border-radius:12px;background:#111111;border:1px solid #2A2A2A;color:#F2F2F2;font-family:Onest,system-ui,sans-serif;box-shadow:0 24px 64px rgba(0,0,0,.6)';
+      dlg.style.cssText = 'box-sizing:border-box;width:100%;max-width:440px;max-height:calc(100vh - 32px);overflow:auto;padding:24px;border-radius:12px;background:#111111;border:1px solid #2A2A2A;color:#F2F2F2;font-family:Onest,system-ui,sans-serif;box-shadow:0 24px 64px rgba(0,0,0,.6)';
       const h = el('p', null, 'Сообщение от StreOps');
       h.style.cssText = 'margin:0;font-size:13px;color:#8F8F8F';
       const t = el('p', null, a.text);
       t.style.cssText = 'margin:10px 0 0;font-size:17px;line-height:24px;white-space:pre-wrap;word-break:break-word';
+      const hasAct = !!(a.action && a.action.url);
+      const parts = [h, t];
+      if (hasAct) { const c = el('div'); c.style.cssText = 'margin-top:20px;text-align:center'; c.appendChild(actionLink(a.action)); parts.push(c); }
       const ok = el('button', 'stre-btn-p', 'Понятно'); ok.type = 'button';
-      ok.style.cssText = 'margin-top:20px;height:40px;padding:0 18px';
+      ok.style.cssText = 'margin-top:' + (hasAct ? 12 : 20) + 'px;height:40px;padding:0 18px';
       const done = () => { ov.remove(); document.removeEventListener('keydown', onKey); close(); };
       const onKey = (e) => { if (e.key === 'Escape') done(); };
       ok.onclick = done;
       document.addEventListener('keydown', onKey);
-      dlg.append(h, t, ok);
+      dlg.append(...parts, ok);
       ov.appendChild(dlg);
       document.body.appendChild(ov);
       ok.focus();
@@ -181,12 +184,15 @@
     box.setAttribute('role', 'region');
     box.setAttribute('aria-label', 'Объявление от StreOps');
     const txt = el('span', null, a.text);
-    txt.style.flex = '1';
+    txt.style.cssText = 'flex:1;min-width:0;max-height:40vh;overflow:auto;white-space:pre-wrap;word-break:break-word';
     const ok = el('button', 'stre-btn-p', 'Понятно');
     ok.type = 'button';
     ok.style.height = '32px';
     ok.onclick = () => { box.remove(); close(); };
-    box.append(txt, ok);
+    const parts = [txt];
+    if (a.action && a.action.url) parts.push(actionLink(a.action));
+    parts.push(ok);
+    box.append(...parts);
     document.body.appendChild(box);
   }
 
@@ -197,6 +203,27 @@
     link.href = a.url;
     link.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 18px;border-radius:6px;background:#F2F2F2;color:#0A0A0A;font:500 14px/20px Onest,system-ui,sans-serif;text-decoration:none';
     return link;
+  }
+
+  // Кнопка-ссылка для объявления и ответа поддержки: текст, адрес (путь /… или https://…) и готовые варианты
+  const REAUTH_URL = '/auth/login.php?reauth=1&next=/panel.html';
+  function buttonEditor(toggleText, presets) {
+    const toggle = el('button', 'stre-btn', toggleText); toggle.type = 'button';
+    toggle.style.marginTop = '8px';
+    const box = el('div');
+    box.style.cssText = 'margin-top:8px;display:none;flex-direction:column;gap:8px';
+    const lbl = el('input', 'stre-in'); lbl.type = 'text'; lbl.maxLength = 40; lbl.placeholder = 'Текст кнопки'; lbl.setAttribute('aria-label', 'Текст кнопки');
+    const url = el('input', 'stre-in'); url.type = 'text'; url.maxLength = 500; url.placeholder = '/путь или https://адрес'; url.setAttribute('aria-label', 'Ссылка кнопки');
+    const set = (label, href) => { lbl.value = label; url.value = href; box.style.display = 'flex'; };
+    const reset = () => { lbl.value = ''; url.value = ''; box.style.display = 'none'; };
+    const row = el('div');
+    row.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap';
+    presets.forEach(([label, href]) => { const b = el('button', 'stre-btn', 'Кнопка «' + label + '»'); b.type = 'button'; b.onclick = () => set(label, href); row.appendChild(b); });
+    const hide = el('button', 'stre-btn', 'Убрать кнопку'); hide.type = 'button'; hide.onclick = reset;
+    row.appendChild(hide);
+    box.append(lbl, url, row);
+    toggle.onclick = () => { box.style.display = box.style.display === 'flex' ? 'none' : 'flex'; };
+    return { toggle, box, set, reset, value: () => (url.value.trim() ? { buttonUrl: url.value.trim(), buttonLabel: lbl.value.trim() } : {}) };
   }
 
   function supportNote(text, action) {
@@ -327,15 +354,27 @@
     return card;
   }
 
+  // Шаблон объявления: последние обновления и просьба перезайти; текст можно поправить перед публикацией
+  const ANN_TEMPLATE = [
+    'Обновления StreOps за последнее время:',
+    '• Заказы за баллы канала работают: заказ попадает в очередь, а если трек не сыграл, баллы возвращаются.',
+    '• Импорт плейлистов: ссылка на YouTube, Deezer или Apple Music либо список песен текстом. Статус видно по каждому треку.',
+    '• Автоподбор музыки: без повторов песни и без одного исполнителя подряд, подбирает похожие треки.',
+    '• Модераторы канала не попадают под автомодерацию, а владелец и модераторы пишут на сайте без паузы.',
+    '• В ответах поддержки бывают кнопки-ссылки, например для обновления доступа к Twitch.',
+    '',
+    'В связи с технической настройкой нужно заново войти в аккаунт. Нажми кнопку ниже.',
+  ].join('\n');
+
   function announceCard() {
     const card = el('section', 'stre-card');
     card.setAttribute('aria-labelledby', 'stre-ann-h');
-    card.append(el('h2', 'stre-h', 'Объявление пользователям'), el('p', 'stre-p', 'Баннер увидят все, кто зайдёт в панель. Пользователь закрывает его сам. Ник оставь пустым, чтобы показать всем.'));
+    card.append(el('h2', 'stre-h', 'Объявление пользователям'), el('p', 'stre-p', 'Увидят все, кто зайдёт в панель: полосой сверху или окном по центру. Можно добавить кнопку-ссылку. Пользователь закрывает объявление сам. Ник оставь пустым, чтобы показать всем.'));
     const now = el('p', 'stre-p');
     now.style.color = '#8F8F8F';
-    const lab1 = el('label', 'stre-lbl', 'Текст (до 300 символов)');
+    const lab1 = el('label', 'stre-lbl', 'Текст (до 1000 символов)');
     const ta = el('textarea', 'stre-ta');
-    ta.rows = 2; ta.maxLength = 300;
+    ta.rows = 3; ta.maxLength = 1000;
     lab1.appendChild(ta);
     const row = el('div');
     row.style.cssText = 'display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin:12px 0';
@@ -350,27 +389,33 @@
     const login = el('input', 'stre-in'); login.type = 'text'; login.placeholder = 'всем'; login.style.width = '200px';
     hLab.appendChild(hours); nLab.appendChild(login);
     row.append(mLab, hLab, nLab);
+    // Кнопка-ссылка под текстом (перезайти в аккаунт) и заполнение шаблоном с обновлениями
+    const btn = buttonEditor('Добавить кнопку под текстом', [['Перезайти в аккаунт', REAUTH_URL], ['Обновить доступ к Twitch', REAUTH_URL]]);
+    btn.toggle.style.display = 'inline-flex';
     const btns = el('div');
     btns.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap';
+    const tpl = el('button', 'stre-btn', 'Заполнить шаблоном: обновления и перезаход'); tpl.type = 'button';
+    tpl.onclick = () => { ta.value = ANN_TEMPLATE; mode.value = 'center'; btn.set('Перезайти в аккаунт', REAUTH_URL); ta.focus(); };
     const pub = el('button', 'stre-btn-p', 'Опубликовать'); pub.type = 'button';
     const clr = el('button', 'stre-btn', 'Убрать объявление'); clr.type = 'button';
-    btns.append(pub, clr);
+    btns.append(pub, tpl, clr);
     const showNow = () => StreAPI.get('admin.announce.get').then((r) => {
       const a = r.item;
-      now.textContent = a && a.until > Date.now() / 1000 ? 'Сейчас показывается: «' + a.text + '»' + (a.userId ? ' — одному пользователю' : ' — всем') : 'Сейчас объявления нет.';
+      const short = a && a.text.length > 120 ? a.text.slice(0, 120) + '…' : a && a.text;
+      now.textContent = a && a.until > Date.now() / 1000 ? 'Сейчас показывается: «' + short + '»' + (a.userId ? ' — одному пользователю' : ' — всем') + (a.action ? ' · с кнопкой «' + a.action.label + '»' : '') : 'Сейчас объявления нет.';
     }).catch(() => {});
     pub.onclick = () => {
       const text = ta.value.trim();
       if (!text) { toast('Напиши текст объявления', 'error'); return; }
-      StreAPI.post('admin.announce.set', { text, mode: mode.value, hours: Number(hours.value) || 24, login: login.value.trim() })
-        .then(() => { toast('Объявление опубликовано'); ta.value = ''; showNow(); })
+      StreAPI.post('admin.announce.set', Object.assign({ text, mode: mode.value, hours: Number(hours.value) || 24, login: login.value.trim() }, btn.value()))
+        .then(() => { toast('Объявление опубликовано'); ta.value = ''; btn.reset(); showNow(); })
         .catch((e) => toast(e.message, 'error'));
     };
     clr.onclick = () => {
       if (!confirm('Убрать объявление у всех?')) return;
       StreAPI.post('admin.announce.clear').then(() => { toast('Объявление убрано'); showNow(); }).catch((e) => toast(e.message, 'error'));
     };
-    card.append(now, lab1, row, btns);
+    card.append(now, lab1, row, btn.toggle, btn.box, btns);
     showNow();
     return card;
   }
@@ -412,18 +457,8 @@
     const send = el('button', 'stre-btn-p', 'Ответить'); send.type = 'button';
     replyBox.append(ta, send);
     // Кнопка под сообщением: текст и ссылка (путь на сайте /… или https://…); пользователь нажмёт её в переписке
-    const btnToggle = el('button', 'stre-btn', 'Добавить кнопку под сообщением'); btnToggle.type = 'button';
-    btnToggle.style.cssText = 'display:none;margin-top:8px';
-    const btnBox = el('div');
-    btnBox.style.cssText = 'margin-top:8px;display:none;flex-direction:column;gap:8px';
-    const btnLbl = el('input', 'stre-in'); btnLbl.type = 'text'; btnLbl.maxLength = 40; btnLbl.placeholder = 'Текст кнопки'; btnLbl.setAttribute('aria-label', 'Текст кнопки');
-    const btnUrl = el('input', 'stre-in'); btnUrl.type = 'text'; btnUrl.maxLength = 500; btnUrl.placeholder = '/путь или https://адрес'; btnUrl.setAttribute('aria-label', 'Ссылка кнопки');
-    const btnTwitch = el('button', 'stre-btn', 'Кнопка «Обновить доступ к Twitch»'); btnTwitch.type = 'button';
-    btnTwitch.onclick = () => { btnLbl.value = 'Обновить доступ к Twitch'; btnUrl.value = '/auth/login.php?reauth=1&next=/panel.html'; };
-    const btnHide = el('button', 'stre-btn', 'Убрать кнопку'); btnHide.type = 'button';
-    btnHide.onclick = () => { btnLbl.value = ''; btnUrl.value = ''; btnBox.style.display = 'none'; };
-    btnBox.append(btnLbl, btnUrl, btnTwitch, btnHide);
-    btnToggle.onclick = () => { btnBox.style.display = btnBox.style.display === 'flex' ? 'none' : 'flex'; };
+    const btn = buttonEditor('Добавить кнопку под сообщением', [['Обновить доступ к Twitch', REAUTH_URL]]);
+    btn.toggle.style.display = 'none';
     // Быстрые ответы: нажал — текст попал в поле, можно поправить и отправить
     const TEMPLATES = ['Заявка закрыта, спасибо за обращение.', 'Заявка принята, ответим здесь же.', 'Нужна дополнительная информация: опиши, что произошло и на какой странице.', 'Проблема решена. Если появится снова, напиши сюда.', 'Тариф и промокоды проверь в разделе «Тариф» в настройках.'];
     const tplRow = el('div');
@@ -459,7 +494,7 @@
       thread.style.display = 'flex';
       tplRow.style.display = 'flex';
       replyBox.style.display = 'flex';
-      btnToggle.style.display = 'inline-flex';
+      btn.toggle.style.display = 'inline-flex';
       card.querySelector('#stre-thread-h') && card.querySelector('#stre-thread-h').remove();
       const th = el('h3', 'stre-lbl', 'Переписка с ' + login + '. Слева — пользователь, справа — ты');
       th.id = 'stre-thread-h';
@@ -487,14 +522,13 @@
     send.onclick = () => {
       const text = ta.value.trim();
       if (!text || !current) return;
-      const body = { id: current, text };
-      if (btnUrl.value.trim()) { body.buttonUrl = btnUrl.value.trim(); body.buttonLabel = btnLbl.value.trim(); }
+      const body = Object.assign({ id: current, text }, btn.value());
       send.disabled = true;
-      StreAPI.post('admin.support.reply', body).then((r) => { ta.value = ''; btnLbl.value = ''; btnUrl.value = ''; btnBox.style.display = 'none'; renderThread(r.items); loadInbox(); })
+      StreAPI.post('admin.support.reply', body).then((r) => { ta.value = ''; btn.reset(); renderThread(r.items); loadInbox(); })
         .catch((e) => toast(e.message, 'error')).then(() => { send.disabled = false; });
     };
     refresh.onclick = () => { loadInbox(); if (current) openThread(current, (card.querySelector('#stre-thread-h') || { textContent: '' }).textContent.replace('Переписка с ', '')); };
-    card.append(head, list, thread, tplRow, replyBox, btnToggle, btnBox);
+    card.append(head, list, thread, tplRow, replyBox, btn.toggle, btn.box);
     loadInbox();
     return card;
   }

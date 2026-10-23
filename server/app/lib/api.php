@@ -851,13 +851,7 @@ function api_dispatch(string $r): never {
             if (!db_one('SELECT id FROM users WHERE id = ?', [$id])) fail('Пользователь не найден', 404);
             $text = in_str('text', 1000);
             if ($text === '') fail('Напиши ответ');
-            $action = null;
-            $url = in_str('buttonUrl', 500);
-            if ($url !== '') {
-                // кнопка ведёт на путь сайта (/…) или на https-адрес; остальное не принимаем
-                if (!preg_match('~^(/(?!/)|https://)~', $url)) fail('Ссылка кнопки: путь на сайте (/…) или адрес с https://');
-                $action = ['label' => in_str('buttonLabel', 40) ?: 'Открыть', 'url' => $url];
-            }
+            $action = button_input();
             support_add($id, 'admin', $text, $action);
             logline('support', $admin['login'] . ' replied to user ' . $id);
             json_out(['ok' => true, 'items' => support_thread($id)]);
@@ -916,7 +910,7 @@ function api_dispatch(string $r): never {
         }
         case 'admin.announce.set': {
             $admin = require_admin();
-            $text = in_str('text', 300);
+            $text = in_str('text', 1000);
             if ($text === '') fail('Напиши текст объявления');
             $hours = in_int('hours', 24, 1, 720);
             $target = in_str('login', 64);
@@ -927,7 +921,8 @@ function api_dispatch(string $r): never {
                 if (!$x) fail('Нет пользователя с таким ником');
                 $uid = (int)$x['id'];
             }
-            $a = ['id' => rand_token(6), 'text' => $text, 'mode' => $mode, 'until' => now() + $hours * 3600, 'userId' => $uid, 'by' => $admin['login'], 'at' => now()];
+            $action = button_input();
+            $a = ['id' => rand_token(6), 'text' => $text, 'mode' => $mode, 'action' => $action, 'until' => now() + $hours * 3600, 'userId' => $uid, 'by' => $admin['login'], 'at' => now()];
             kv_set('announcement', $a, $hours * 3600);
             logline('admin', $admin['login'] . ' announcement ' . $a['id'] . ($uid ? ' to user ' . $uid : ' to all') . ': ' . mb_substr($text, 0, 120));
             json_out(['ok' => true, 'item' => $a]);
@@ -1105,7 +1100,15 @@ function announcement_for(array $u): ?array {
     if (!$a || (int)$a['until'] < now()) return null;
     if ((int)$a['userId'] && (int)$a['userId'] !== (int)$u['id']) return null;
     if ((string)settings_get((int)$u['id'], 'ann_seen', '') === (string)$a['id']) return null;
-    return ['id' => $a['id'], 'text' => $a['text'], 'mode' => ($a['mode'] ?? 'top') === 'center' ? 'center' : 'top'];
+    return ['id' => $a['id'], 'text' => $a['text'], 'mode' => ($a['mode'] ?? 'top') === 'center' ? 'center' : 'top', 'action' => $a['action'] ?? null];
+}
+
+// Кнопка-ссылка из запроса: путь на сайте (/…) или адрес с https://; остальное не принимаем
+function button_input(): ?array {
+    $url = in_str('buttonUrl', 500);
+    if ($url === '') return null;
+    if (!preg_match('~^(/(?!/)|https://)~', $url)) fail('Ссылка кнопки: путь на сайте (/…) или адрес с https://');
+    return ['label' => in_str('buttonLabel', 40) ?: 'Открыть', 'url' => $url];
 }
 
 function timers_list(int $uid): array {
