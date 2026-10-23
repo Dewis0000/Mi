@@ -851,7 +851,14 @@ function api_dispatch(string $r): never {
             if (!db_one('SELECT id FROM users WHERE id = ?', [$id])) fail('Пользователь не найден', 404);
             $text = in_str('text', 1000);
             if ($text === '') fail('Напиши ответ');
-            support_add($id, 'admin', $text);
+            $action = null;
+            $url = in_str('buttonUrl', 500);
+            if ($url !== '') {
+                // кнопка ведёт на путь сайта (/…) или на https-адрес; остальное не принимаем
+                if (!preg_match('~^(/(?!/)|https://)~', $url)) fail('Ссылка кнопки: путь на сайте (/…) или адрес с https://');
+                $action = ['label' => in_str('buttonLabel', 40) ?: 'Открыть', 'url' => $url];
+            }
+            support_add($id, 'admin', $text, $action);
             logline('support', $admin['login'] . ' replied to user ' . $id);
             json_out(['ok' => true, 'items' => support_thread($id)]);
         }
@@ -929,7 +936,7 @@ function api_dispatch(string $r): never {
             $u = require_user();
             $admins = array_values(array_filter(support_thread((int)$u['id']), fn($m) => ($m['from'] ?? '') === 'admin'));
             $last = $admins ? end($admins) : null;
-            json_out(['ok' => true, 'announcement' => announcement_for($u), 'support' => ['last' => $last ? ['text' => $last['text'], 'at' => (int)$last['at']] : null]]);
+            json_out(['ok' => true, 'announcement' => announcement_for($u), 'support' => ['last' => $last ? ['text' => $last['text'], 'at' => (int)$last['at'], 'action' => $last['action'] ?? null] : null]]);
         }
         case 'admin.announce.clear': {
             $admin = require_admin();
@@ -1083,9 +1090,12 @@ function support_thread(int $uid): array {
     return is_array($t) ? array_values($t) : [];
 }
 
-function support_add(int $uid, string $from, string $text): void {
+// action — необязательная кнопка под текстом: ['label' => ..., 'url' => ...]
+function support_add(int $uid, string $from, string $text, ?array $action = null): void {
     $t = support_thread($uid);
-    $t[] = ['from' => $from, 'text' => mb_substr($text, 0, 1000), 'at' => now()];
+    $m = ['from' => $from, 'text' => mb_substr($text, 0, 1000), 'at' => now()];
+    if ($action) $m['action'] = $action;
+    $t[] = $m;
     settings_set($uid, 'support_chat', array_slice($t, -60));
 }
 

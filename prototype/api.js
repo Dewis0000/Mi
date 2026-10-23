@@ -190,8 +190,16 @@
     document.body.appendChild(box);
   }
 
+  // Кнопка-ссылка в ответе поддержки (открывает адрес в этой же вкладке)
+  function actionLink(a) {
+    const link = el('a', null, a.label);
+    link.href = a.url;
+    link.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 18px;border-radius:6px;background:#F2F2F2;color:#0A0A0A;font:500 14px/20px Onest,system-ui,sans-serif;text-decoration:none';
+    return link;
+  }
+
   // Ответ поддержки: уведомление в углу, пока его не закроют
-  function supportNote(text) {
+  function supportNote(text, action) {
     styles();
     document.getElementById('stre-sup-note') && document.getElementById('stre-sup-note').remove();
     const box = el('div');
@@ -209,7 +217,10 @@
     const x = el('button', 'stre-btn', 'Закрыть'); x.type = 'button';
     x.onclick = () => box.remove();
     row.append(x, open);
-    box.append(h, t, row);
+    const parts = [h, t];
+    if (action && action.url) { const c = el('div'); c.style.cssText = 'margin-top:12px;text-align:center'; c.appendChild(actionLink(action)); parts.push(c); }
+    parts.push(row);
+    box.append(...parts);
     document.body.appendChild(box);
   }
 
@@ -225,7 +236,7 @@
       if (supKey === null) { supKey = key; return; } // первый опрос — старые ответы не всплывают
       if (key !== supKey) {
         supKey = key;
-        if (!/support\.html$/.test(location.pathname)) supportNote(last.text);
+        if (!/support\.html$/.test(location.pathname)) supportNote(last.text, last.action);
       }
     }).catch(() => {});
   }
@@ -400,6 +411,19 @@
     const ta = el('textarea', 'stre-ta'); ta.rows = 2; ta.maxLength = 1000; ta.placeholder = 'Ответ пользователю'; ta.setAttribute('aria-label', 'Ответ пользователю');
     const send = el('button', 'stre-btn-p', 'Ответить'); send.type = 'button';
     replyBox.append(ta, send);
+    // Кнопка под сообщением: текст и ссылка (путь на сайте /… или https://…); пользователь нажмёт её в переписке
+    const btnToggle = el('button', 'stre-btn', 'Добавить кнопку под сообщением'); btnToggle.type = 'button';
+    btnToggle.style.cssText = 'display:none;margin-top:8px';
+    const btnBox = el('div');
+    btnBox.style.cssText = 'margin-top:8px;display:none;flex-direction:column;gap:8px';
+    const btnLbl = el('input', 'stre-in'); btnLbl.type = 'text'; btnLbl.maxLength = 40; btnLbl.placeholder = 'Текст кнопки'; btnLbl.setAttribute('aria-label', 'Текст кнопки');
+    const btnUrl = el('input', 'stre-in'); btnUrl.type = 'text'; btnUrl.maxLength = 500; btnUrl.placeholder = '/путь или https://адрес'; btnUrl.setAttribute('aria-label', 'Ссылка кнопки');
+    const btnTwitch = el('button', 'stre-btn', 'Кнопка «Обновить доступ к Twitch»'); btnTwitch.type = 'button';
+    btnTwitch.onclick = () => { btnLbl.value = 'Обновить доступ к Twitch'; btnUrl.value = '/auth/login.php?reauth=1&next=/panel.html'; };
+    const btnHide = el('button', 'stre-btn', 'Убрать кнопку'); btnHide.type = 'button';
+    btnHide.onclick = () => { btnLbl.value = ''; btnUrl.value = ''; btnBox.style.display = 'none'; };
+    btnBox.append(btnLbl, btnUrl, btnTwitch, btnHide);
+    btnToggle.onclick = () => { btnBox.style.display = btnBox.style.display === 'flex' ? 'none' : 'flex'; };
     // Быстрые ответы: нажал — текст попал в поле, можно поправить и отправить
     const TEMPLATES = ['Заявка закрыта, спасибо за обращение.', 'Заявка принята, ответим здесь же.', 'Нужна дополнительная информация: опиши, что произошло и на какой странице.', 'Проблема решена. Если появится снова, напиши сюда.', 'Тариф и промокоды проверь в разделе «Тариф» в настройках.'];
     const tplRow = el('div');
@@ -422,7 +446,8 @@
         meta.style.cssText = 'font-size:11px;color:#8F8F8F;margin-bottom:4px';
         const wrapM = el('div');
         wrapM.style.cssText = 'display:flex;flex-direction:column;max-width:100%;align-items:' + (mine ? 'flex-end' : 'flex-start');
-        wrapM.append(meta, bub);
+        if (m.action && m.action.url) { const ab = el('div'); ab.style.cssText = 'text-align:center;margin-top:6px'; ab.appendChild(actionLink(m.action)); wrapM.append(meta, bub, ab); }
+        else wrapM.append(meta, bub);
         thread.appendChild(wrapM);
       });
       if (!items.length) thread.appendChild(el('p', 'stre-p', 'Сообщений пока нет.'));
@@ -434,6 +459,7 @@
       thread.style.display = 'flex';
       tplRow.style.display = 'flex';
       replyBox.style.display = 'flex';
+      btnToggle.style.display = 'inline-flex';
       card.querySelector('#stre-thread-h') && card.querySelector('#stre-thread-h').remove();
       const th = el('h3', 'stre-lbl', 'Переписка с ' + login + '. Слева — пользователь, справа — ты');
       th.id = 'stre-thread-h';
@@ -461,12 +487,14 @@
     send.onclick = () => {
       const text = ta.value.trim();
       if (!text || !current) return;
+      const body = { id: current, text };
+      if (btnUrl.value.trim()) { body.buttonUrl = btnUrl.value.trim(); body.buttonLabel = btnLbl.value.trim(); }
       send.disabled = true;
-      StreAPI.post('admin.support.reply', { id: current, text }).then((r) => { ta.value = ''; renderThread(r.items); loadInbox(); })
+      StreAPI.post('admin.support.reply', body).then((r) => { ta.value = ''; btnLbl.value = ''; btnUrl.value = ''; btnBox.style.display = 'none'; renderThread(r.items); loadInbox(); })
         .catch((e) => toast(e.message, 'error')).then(() => { send.disabled = false; });
     };
     refresh.onclick = () => { loadInbox(); if (current) openThread(current, (card.querySelector('#stre-thread-h') || { textContent: '' }).textContent.replace('Переписка с ', '')); };
-    card.append(head, list, thread, tplRow, replyBox);
+    card.append(head, list, thread, tplRow, replyBox, btnToggle, btnBox);
     loadInbox();
     return card;
   }

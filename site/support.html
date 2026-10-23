@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script src="assets/theme.js?v=460ce522"></script>
-<script src="assets/api.js?v=c464f264"></script>
+<script src="assets/api.js?v=35d22610"></script>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:var(--n-1)}
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <template data-if="histEmpty"><div class="empty"><p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500">Обращений пока нет</p><p class="hint" style="line-height: 19px">Опиши, что случилось: что делал, чего ждал и что увидел. Ответы поддержки появятся здесь.</p></div></template>
 
 <div role="log" aria-live="polite" aria-label="Сообщения" style="display: flex; flex-direction: column; gap: 8px; max-height: 420px; overflow-y: auto; padding-right: 4px">
-<template data-for="msgs" data-as="m"><div style="max-width: 78%; padding: 10px 12px; border-radius: 10px; font-size: 14px; line-height: 20px; white-space: pre-wrap; overflow-wrap: anywhere; {{ m.style }}"><span style="display: block; margin-bottom: 2px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; opacity: .7">{{ m.who }} · {{ m.time }}</span>{{ m.text }}</div></template>
+<template data-for="msgs" data-as="m"><div style="max-width: 78%; padding: 10px 12px; border-radius: 10px; font-size: 14px; line-height: 20px; white-space: pre-wrap; overflow-wrap: anywhere; {{ m.style }}"><span style="display: block; margin-bottom: 2px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; opacity: .7">{{ m.who }} · {{ m.time }}</span>{{ m.text }}<template data-if="m.hasAction"><div style="margin-top: 10px; text-align: center"><a href="{{ m.actionUrl }}" style="display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 18px; border-radius: 6px; background: var(--n-12); color: var(--n-1); font: 500 14px/20px var(--font-sans), sans-serif; text-decoration: none">{{ m.actionLabel }}</a></div></template></div></template>
 </div>
 
 <template data-if="hasPollErr"><div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap"><span class="hint">Не удалось обновить переписку. {{ pollErr }}</span><button type="button" class="btn-s" onClick="{{ retryLoad }}" style="height: 32px; padding: 0 10px; font-size: 13px">Повторить</button></div></template>
@@ -290,6 +290,7 @@ class Component extends DCLogic {
         who: admin ? 'Поддержка' : 'Вы',
         time: time(m.at),
         text: m.text,
+        hasAction: !!(m.action && m.action.url), actionLabel: m.action ? m.action.label : '', actionUrl: m.action ? m.action.url : '',
         style: admin ? 'background: var(--n-4); border: 1px solid var(--n-5); color: var(--n-12); align-self: flex-start' : 'background: var(--n-12); color: var(--n-1); align-self: flex-end; margin-left: auto',
       };
     });
