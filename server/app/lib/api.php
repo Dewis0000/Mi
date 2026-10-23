@@ -396,18 +396,10 @@ function api_dispatch(string $r): never {
             // награда за баллы канала
             $msg = null;
             if (!empty($cfg['points']['on'])) {
-                $token = tw_user_token($u);
-                $reward = ['title' => 'Заказать трек', 'cost' => max(1, (int)$cfg['points']['cost']), 'prompt' => 'Ссылка на YouTube или название трека', 'is_user_input_required' => true, 'is_enabled' => true,
-                    'should_redemptions_skip_request_queue' => false]; // заказ остаётся в очереди Twitch до конца трека: тогда баллы можно вернуть
-                if ($token && empty($cfg['points']['rewardId'])) {
-                    $r = helix('POST', 'channel_points/custom_rewards', ['broadcaster_id' => $u['twitch_id']], $reward, $token);
-                    if ($r['code'] === 200) $cfg['points']['rewardId'] = $r['json']['data'][0]['id'];
-                    else { $cfg['points']['on'] = false; $msg = 'Не удалось создать награду: ' . ($r['json']['message'] ?? 'баллы канала доступны только компаньонам и партнёрам Twitch'); }
-                } elseif ($token) {
-                    helix('PATCH', 'channel_points/custom_rewards', ['broadcaster_id' => $u['twitch_id'], 'id' => $cfg['points']['rewardId']], ['cost' => $reward['cost'], 'is_enabled' => true, 'should_redemptions_skip_request_queue' => false], $token);
-                }
-            } elseif (!empty($cur['points']['on']) && !empty($cfg['points']['rewardId']) && ($token = tw_user_token($u))) {
-                helix('PATCH', 'channel_points/custom_rewards', ['broadcaster_id' => $u['twitch_id'], 'id' => $cfg['points']['rewardId']], ['is_enabled' => false], $token);
+                $msg = points_reward_enable($u, $cfg['points']);
+                if ($msg && empty($cfg['points']['rewardId'])) $cfg['points']['on'] = false; // без награды заказов не будет: переключатель выключаем
+            } elseif (!empty($cur['points']['on'])) {
+                $msg = points_reward_disable($u, $cfg['points']);
             }
             settings_set($uid, 'music', $cfg);
             if (!empty($cfg['points']['on'])) { // подписка на награды — сразу, без ожидания фоновой проверки

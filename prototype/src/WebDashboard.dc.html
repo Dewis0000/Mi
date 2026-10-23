@@ -579,7 +579,7 @@ class Component extends DCLogic {
       case 'redemption':
         icon = ICONS.redemption;
         title = 'награда за баллы канала';
-        sub = [d.reward, d.input].filter(Boolean).join(' · ');
+        sub = [d.reward, d.input, d.note].filter(Boolean).join(' · ');
         break;
     }
     return { name, title, sub, hasSub: !!sub, d: icon, time: when(e.at) };

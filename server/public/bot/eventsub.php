@@ -57,7 +57,7 @@ try {
             bot_handle_notification($user, $ev);
             break;
         case 'channel.channel_points_custom_reward_redemption.add':
-            if ((int)$user['bot_enabled']) bot_on_redemption($user, $ev);
+            bot_on_redemption($user, $ev); // баллы списаны независимо от бота: заказ обрабатываем всегда
             break;
         case 'channel.follow':
             db_insert('events', ['user_id' => $user['id'], 'type' => 'follow', 'login' => $ev['user_login'] ?? '', 'name' => $ev['user_name'] ?? '', 'data' => '{}', 'created_at' => now()]);

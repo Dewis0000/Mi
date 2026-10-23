@@ -627,26 +627,78 @@ function music_yt_error_text(int $code): string {
     };
 }
 
-// Баллы канала: Twitch списал их сразу, заказ встаёт в очередь. Если заказ не принят — баллы возвращаем сразу.
+const POINTS_TITLE = 'Заказать трек';
+
+// Баллы канала: Twitch списал их сразу. Каждый заказ что-то оставляет: трек в очереди, либо баллы возвращены с причиной
+// и строка в истории «Отклонён». Молча не отбрасываем ни один заказ, даже если бот не подключён или награда чужая.
 function bot_on_redemption(array $user, array $ev): void {
     $uid = (int)$user['id'];
     $music = music_config($uid);
     $rewardId = (string)($ev['reward']['id'] ?? '');
-    if (empty($music['points']['on']) || $rewardId === '' || $rewardId !== (string)($music['points']['rewardId'] ?? '')) return; // чужая награда
     $redemptionId = (string)($ev['id'] ?? '');
     $login = (string)($ev['user_login'] ?? '');
     $name = (string)($ev['user_name'] ?? $login);
-    $refund = function (string $why) use ($user, $redemptionId, $rewardId, $name): void {
-        redemption_set($user, $rewardId, $redemptionId, 'CANCELED');
-        tw_send($user['twitch_id'], '@' . $name . ' заказ не принят: ' . $why . '. Баллы возвращены.');
+    $input = trim((string)($ev['user_input'] ?? ''));
+    $title = (string)($ev['reward']['title'] ?? '');
+    $ours = $rewardId !== '' && $rewardId === (string)($music['points']['rewardId'] ?? '');
+    $journal = function (string $note) use ($uid, $login, $name, $title, $input): void {
+        db_insert('events', ['user_id' => $uid, 'type' => 'redemption', 'login' => $login, 'name' => $name,
+            'data' => json_encode(['reward' => $title, 'input' => $input, 'note' => $note], JSON_UNESCAPED_UNICODE), 'created_at' => now()]);
     };
-    if (!plan_limits($user)['music']) { $refund('музыка доступна на тарифе «Про» и выше'); return; }
-    if (bl_find($login, (string)($ev['user_id'] ?? ''))) { $refund('ты в чёрном списке StreOps'); return; } // заблокированный зритель не получает музыку за баллы
-    $res = song_request($user, (string)($ev['user_input'] ?? ''), $name, 'points', $redemptionId, $rewardId);
-    if (!$res['ok']) $refund($res['message']);
-    else tw_send($user['twitch_id'], '@' . $name . ' ' . $res['message'] . '. Если трек не сыграет, баллы вернутся.');
-    db_insert('events', ['user_id' => $user['id'], 'type' => 'redemption', 'login' => $login, 'name' => $name,
-        'data' => json_encode(['reward' => $ev['reward']['title'] ?? '', 'input' => $ev['user_input'] ?? ''], JSON_UNESCAPED_UNICODE), 'created_at' => now()]);
+    if (!$ours) { // награда не из StreOps: вернуть можно, только если Twitch разрешает. Зрителю в чат не пишем — награда чужая
+        $back = redemption_set($user, $rewardId, $redemptionId, 'CANCELED');
+        $journal('награда создана не в StreOps: ' . ($back ? 'баллы возвращены' : 'баллы не возвращены, верни вручную в Twitch'));
+        return;
+    }
+    $refuse = function (string $why) use ($user, $uid, $rewardId, $redemptionId, $name, $input, $journal): void {
+        $back = redemption_set($user, $rewardId, $redemptionId, 'CANCELED');
+        db_insert('songs', ['user_id' => $uid, 'video_id' => '', 'url' => '', 'source' => 'YouTube', 'title' => mb_substr($input !== '' ? $input : 'без ссылки', 0, 200),
+            'duration' => 0, 'requester' => $name, 'method' => 'points', 'redemption_id' => $redemptionId, 'reward_id' => $rewardId,
+            'status' => 'rejected', 'pos' => 0, 'created_at' => now(), 'played_at' => now()]);
+        tw_send($user['twitch_id'], '@' . $name . ' заказ не принят: ' . $why . ($back ? '. Баллы возвращены.' : '. Баллы вернуть не получилось, верни их вручную.'));
+        $journal('не принят: ' . $why . ($back ? ', баллы возвращены' : ', баллы не возвращены'));
+    };
+    if (empty($music['points']['on'])) { $refuse('заказы баллами выключены'); return; }
+    if (!plan_limits($user)['music']) { $refuse('музыка доступна на тарифе «Про» и выше'); return; }
+    if (bl_find($login, (string)($ev['user_id'] ?? ''))) { $refuse('ты в чёрном списке StreOps'); return; } // заблокированный зритель не получает музыку за баллы
+    $res = song_request($user, $input, $name, 'points', $redemptionId, $rewardId);
+    if (!$res['ok']) { $refuse($res['message']); return; }
+    tw_send($user['twitch_id'], '@' . $name . ' ' . $res['message'] . '. Если трек не сыграет, баллы вернутся.');
+    $journal('принят: ' . $res['message']);
+}
+
+// Награда «Заказать трек» на Twitch: включаем и ставим цену. Награды нет — создаём. Уже есть (создана раньше и id не сохранился) —
+// берём её. Удалена на Twitch — создаём заново. Возвращает текст ошибки или null.
+function points_reward_enable(array $user, array &$points): ?string {
+    $token = tw_user_token($user);
+    if (!$token) return 'Нет доступа к Twitch: выйди из StreOps и войди через Twitch заново';
+    $bid = ['broadcaster_id' => $user['twitch_id']];
+    $body = ['cost' => max(1, (int)$points['cost']), 'is_enabled' => true, 'should_redemptions_skip_request_queue' => false];
+    if (!empty($points['rewardId'])) {
+        $r = helix('PATCH', 'channel_points/custom_rewards', $bid + ['id' => $points['rewardId']], $body, $token);
+        if ($r['code'] === 200) return null;
+        if ($r['code'] !== 404) return 'Не удалось включить награду на Twitch: ' . ($r['json']['message'] ?? 'код ' . $r['code']);
+        $points['rewardId'] = null;
+    }
+    $r = helix('POST', 'channel_points/custom_rewards', $bid, $body + ['title' => POINTS_TITLE, 'prompt' => 'Ссылка на YouTube или название трека', 'is_user_input_required' => true], $token);
+    if ($r['code'] === 200) { $points['rewardId'] = $r['json']['data'][0]['id']; return null; }
+    $list = helix('GET', 'channel_points/custom_rewards', $bid + ['only_manageable_rewards' => 'true'], null, $token);
+    foreach ($list['json']['data'] ?? [] as $x) {
+        if (($x['title'] ?? '') !== POINTS_TITLE) continue;
+        $points['rewardId'] = $x['id'];
+        $p = helix('PATCH', 'channel_points/custom_rewards', $bid + ['id' => $x['id']], $body, $token);
+        return $p['code'] === 200 ? null : 'Награда найдена, но не удалось включить её на Twitch: ' . ($p['json']['message'] ?? 'код ' . $p['code']);
+    }
+    return 'Не удалось создать награду: ' . ($r['json']['message'] ?? 'баллы канала доступны только компаньонам и партнёрам Twitch');
+}
+
+// Выключаем награду на Twitch, чтобы зрители не тратили баллы на заказ, который уже не принимается
+function points_reward_disable(array $user, array $points): ?string {
+    if (empty($points['rewardId'])) return null;
+    $token = tw_user_token($user);
+    if (!$token) return 'Выключи награду «' . POINTS_TITLE . '» в Twitch вручную: нет доступа к Twitch';
+    $r = helix('PATCH', 'channel_points/custom_rewards', ['broadcaster_id' => $user['twitch_id'], 'id' => $points['rewardId']], ['is_enabled' => false], $token);
+    return in_array($r['code'], [200, 404], true) ? null : 'Награду не удалось выключить на Twitch, выключи её вручную: ' . ($r['json']['message'] ?? 'код ' . $r['code']);
 }
 
 function bot_on_donation(array $user, string $name, int $amount, string $message): void {
