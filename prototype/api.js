@@ -190,6 +190,7 @@
     document.body.appendChild(box);
   }
 
+  // Ответ поддержки: уведомление в углу, пока его не закроют
   // Кнопка-ссылка в ответе поддержки (открывает адрес в этой же вкладке)
   function actionLink(a) {
     const link = el('a', null, a.label);
@@ -198,7 +199,6 @@
     return link;
   }
 
-  // Ответ поддержки: уведомление в углу, пока его не закроют
   function supportNote(text, action) {
     styles();
     document.getElementById('stre-sup-note') && document.getElementById('stre-sup-note').remove();
