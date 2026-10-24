@@ -30,7 +30,6 @@ const PAGES = {
   WebLegal: 'legal.html',
   WebHelp: 'help.html',
   WebTestPay: 'test-pay.html',
-  WebConnect: 'connect.html',
   Main: 'design/index.html',
   Color: 'design/color.html',
   Glass: 'design/glass.html',
@@ -220,7 +219,7 @@ function pick(re, text, what, file) {
 }
 
 // ?v=хеш содержимого: после обновления браузер сразу берёт новые скрипты
-const ASSETS = { 'dc-lite.js': 'dc-lite.js', 'theme.js': 'theme.js', 'widgets-lib.js': 'widgets-lib.js', 'api.js': 'api.js', 'widget-render.js': 'widget-render.js', 'connect.js': 'connect.js' };
+const ASSETS = { 'dc-lite.js': 'dc-lite.js', 'theme.js': 'theme.js', 'widgets-lib.js': 'widgets-lib.js', 'api.js': 'api.js', 'widget-render.js': 'widget-render.js' };
 const VER = {};
 for (const [k, f] of Object.entries(ASSETS)) VER[k] = createHash('sha1').update(readFileSync(join(here, f))).digest('hex').slice(0, 8);
 function asset(fromPath, name) { return relLink(fromPath, 'assets/' + name) + '?v=' + VER[name]; }
@@ -274,8 +273,7 @@ function convert(file, outPath) {
     script = themeizeCss(script);
     head = themeizeCss(head);
   }
-  const libTag = /^Web(Widgets|WidgetEditor)$/.test(pageName) ? `<script src="${asset(outPath, 'widgets-lib.js')}"></script>\n`
-    : pageName === 'WebConnect' ? `<script src="${asset(outPath, 'connect.js')}"></script>\n` : '';
+  const libTag = /^Web(Widgets|WidgetEditor)$/.test(pageName) ? `<script src="${asset(outPath, 'widgets-lib.js')}"></script>\n` : '';
   const themeTag = themed ? `<script src="${asset(outPath, 'theme.js')}"></script>\n<script src="${asset(outPath, 'api.js')}"></script>\n` : '';
   if (hasSidebar) head += '\n' + SIDEBAR_CSS + '\n' + SIDEBAR_JS;
 

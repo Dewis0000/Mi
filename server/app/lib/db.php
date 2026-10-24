@@ -50,7 +50,7 @@ function db_update(string $table, array $row, string $where, array $args): int {
     return db_exec('UPDATE ' . $table . ' SET ' . $set . ' WHERE ' . $where, array_merge(array_values($row), $args));
 }
 
-const DB_VERSION = 12;
+const DB_VERSION = 11;
 
 function db_migrate(PDO $pdo, string $driver): void {
     $sqlite = $driver === 'sqlite';
@@ -112,13 +112,6 @@ function db_migrate(PDO $pdo, string $driver): void {
         "site_watch (id $id, streamer_id INT NOT NULL, url $text NOT NULL, title {$vc(200)} NOT NULL DEFAULT '', note {$vc(300)} NOT NULL DEFAULT '', public INT NOT NULL DEFAULT 0, created_at INT NOT NULL DEFAULT 0)",
         "music_imports (id $id, user_id INT NOT NULL, source {$vc(16)} NOT NULL, title {$vc(200)} NOT NULL DEFAULT '', source_url $text, note $text, status {$vc(16)} NOT NULL DEFAULT 'running', created_at INT NOT NULL DEFAULT 0, updated_at INT NOT NULL DEFAULT 0)",
         "music_import_items (id $id, import_id INT NOT NULL, user_id INT NOT NULL, pos INT NOT NULL DEFAULT 0, artist {$vc(200)} NOT NULL DEFAULT '', track {$vc(300)} NOT NULL DEFAULT '', query $text, video_id {$vc(32)} NOT NULL DEFAULT '', video_title $text, status {$vc(16)} NOT NULL DEFAULT 'queued', reason {$vc(24)} NOT NULL DEFAULT '', info $text, cand_id {$vc(32)} NOT NULL DEFAULT '', cands $text, cand_title $text, cand_channel {$vc(128)} NOT NULL DEFAULT '', song_id INT NOT NULL DEFAULT 0, attempts INT NOT NULL DEFAULT 0, updated_at INT NOT NULL DEFAULT 0)",
-        "connect_servers (id $id, name {$vc(64)} NOT NULL, owner_id INT NOT NULL, invite {$vc(40)} NOT NULL DEFAULT '', created_at INT NOT NULL DEFAULT 0)",
-        "connect_members (server_id INT NOT NULL, user_id INT NOT NULL, role {$vc(16)} NOT NULL DEFAULT 'member', joined_at INT NOT NULL DEFAULT 0, PRIMARY KEY (server_id, user_id))",
-        "connect_channels (id $id, server_id INT NOT NULL, name {$vc(64)} NOT NULL, pos INT NOT NULL DEFAULT 0, created_at INT NOT NULL DEFAULT 0)",
-        "connect_dms (id $id, a_id INT NOT NULL, b_id INT NOT NULL, created_at INT NOT NULL DEFAULT 0, UNIQUE (a_id, b_id))",
-        "connect_messages (id $id, scope {$vc(2)} NOT NULL, scope_id INT NOT NULL, user_id INT NOT NULL, text $text NOT NULL, reply_to INT NOT NULL DEFAULT 0, deleted INT NOT NULL DEFAULT 0, created_at INT NOT NULL DEFAULT 0, edited_at INT NOT NULL DEFAULT 0)",
-        "connect_reactions (message_id INT NOT NULL, user_id INT NOT NULL, emoji {$vc(16)} NOT NULL, PRIMARY KEY (message_id, user_id, emoji))",
-        "connect_reads (user_id INT NOT NULL, scope {$vc(2)} NOT NULL, scope_id INT NOT NULL, last_id INT NOT NULL DEFAULT 0, PRIMARY KEY (user_id, scope, scope_id))",
     ];
     foreach ($tables as $t) $pdo->exec('CREATE TABLE IF NOT EXISTS ' . $t . $tail);
 
@@ -136,12 +129,6 @@ function db_migrate(PDO $pdo, string $driver): void {
         'idx_site_chat ON site_chat (streamer_id, id)',
         'idx_mi_user ON music_imports (user_id, id)',
         'idx_mi_items ON music_import_items (import_id, pos)',
-        'idx_cm_scope ON connect_messages (scope, scope_id, id)',
-        'idx_cm_user ON connect_messages (user_id, created_at)',
-        'idx_cmem_user ON connect_members (user_id)',
-        'idx_cch_server ON connect_channels (server_id, pos)',
-        'idx_cdm_b ON connect_dms (b_id)',
-        'idx_csrv_invite ON connect_servers (invite)',
     ];
     foreach ($idx as $i) {
         try { $pdo->exec('CREATE INDEX ' . ($sqlite ? 'IF NOT EXISTS ' : '') . $i); } catch (Throwable $e) { /* индекс уже есть */ }

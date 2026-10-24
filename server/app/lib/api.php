@@ -67,7 +67,6 @@ function api_dispatch(string $r): never {
     require_same_origin();
     jobs_fast(); // фоновые задачи идут от запросов панели и виджетов — отдельный cron не нужен
     site_dispatch($r); // сайт стримера и зритель-панель; для остальных маршрутов возвращает false
-    connect_dispatch($r); // StreOps Connect: маршруты connect.*; остальные возвращает без ответа
     switch ($r) {
         // ---------- профиль ----------
         case 'me': {
