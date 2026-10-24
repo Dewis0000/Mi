@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Hearth: чат и звонки">
+  <meta name="referrer" content="same-origin">
+  <title>Hearth</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <a class="skip-link" href="#composer-input">Перейти к сообщениям</a>
+
+  <!-- Вход и регистрация по никнейму -->
+  <main id="login" class="login" hidden>
+    <form id="login-form" class="login-card" novalidate>
+      <div class="brand"><span class="mark" aria-hidden="true"></span>Hearth</div>
+      <h1>Выбери никнейм</h1>
+      <p class="muted">По нему тебя увидят в Hearth. Вместе с ним создастся твой уникальный ID, по которому тебя смогут найти.</p>
+      <label for="login-nick" class="field-label">Никнейм</label>
+      <input id="login-nick" name="nick" autocomplete="nickname" maxlength="40" placeholder="Например, Nova" required>
+      <p id="login-hint" class="hint" aria-live="polite"></p>
+      <button id="login-submit" class="btn primary block" type="submit">Продолжить</button>
+    </form>
+  </main>
+
+  <!-- Основное приложение -->
+  <div id="app" class="app" hidden>
+    <nav class="rail" aria-label="Хабы">
+      <button class="hearth" type="button" aria-label="Hearth Home" aria-current="true">H</button>
+    </nav>
+
+    <aside id="sidebar" class="sidebar" aria-label="Комнаты">
+      <header class="sidebar-head">Hearth Home</header>
+      <div class="channels">
+        <div class="group-label">Комнаты</div>
+        <ul id="text-channels" class="channel-list"></ul>
+        <div class="group-label">Голосовые</div>
+        <ul id="voice-channels" class="channel-list"></ul>
+      </div>
+      <div class="me">
+        <span id="me-avatar" class="avatar" aria-hidden="true"></span>
+        <div class="me-text">
+          <span id="me-nick" class="me-nick"></span>
+          <span id="me-handle" class="me-handle"></span>
+        </div>
+        <button id="open-settings" class="btn ghost small" type="button">Настройки</button>
+      </div>
+    </aside>
+
+    <section id="chat" class="chat" aria-labelledby="chat-title">
+      <header class="chat-head">
+        <button id="menu-btn" class="btn ghost small menu-btn" type="button" aria-controls="sidebar" aria-expanded="false">Комнаты</button>
+        <h2 id="chat-title" class="chat-title"></h2>
+        <span id="chat-topic" class="topic"></span>
+      </header>
+      <ol id="messages" class="messages" aria-label="Сообщения"></ol>
+      <form id="composer" class="composer" autocomplete="off">
+        <label for="composer-input" class="sr-only">Сообщение</label>
+        <input id="composer-input" maxlength="2000" placeholder="Написать в чат">
+        <button class="btn primary" type="submit">Отправить</button>
+      </form>
+    </section>
+
+    <aside class="members" aria-labelledby="members-label">
+      <div id="members-label" class="group-label">Онлайн</div>
+      <ul id="members" class="member-list"></ul>
+    </aside>
+  </div>
+
+  <!-- Окно звонка -->
+  <section id="call" class="call" aria-label="Звонок" hidden>
+    <header class="call-head">
+      <div class="call-title">
+        <span class="live-dot" aria-hidden="true"></span>
+        <strong id="call-title"></strong>
+        <span id="call-sub" class="muted"></span>
+      </div>
+      <span id="call-timer" class="timer" aria-label="Длительность звонка">00:00</span>
+    </header>
+    <div class="call-body">
+      <div id="tiles" class="tiles"></div>
+      <aside id="call-chat" class="call-chat" aria-label="Чат звонка" hidden>
+        <div class="call-chat-head">Чат</div>
+        <ol id="call-messages" class="messages compact-messages"></ol>
+        <form id="call-composer" class="composer compact-composer" autocomplete="off">
+          <label for="call-input" class="sr-only">Сообщение</label>
+          <input id="call-input" maxlength="2000" placeholder="Написать в чат">
+          <button class="btn primary small" type="submit">Отправить</button>
+        </form>
+      </aside>
+    </div>
+    <footer class="call-controls">
+      <button id="btn-mic" class="ctl" type="button" aria-pressed="true">Микрофон</button>
+      <button id="btn-cam" class="ctl" type="button" aria-pressed="false">Камера</button>
+      <button id="btn-share" class="ctl" type="button" aria-pressed="false">Экран</button>
+      <button id="btn-chat" class="ctl" type="button" aria-pressed="false">Чат</button>
+      <button id="btn-ember" class="ctl pill" type="button">Ember <span id="ember-count">0</span></button>
+      <button id="btn-leave" class="ctl danger" type="button">Выйти</button>
+    </footer>
+  </section>
+
+  <!-- Входящий звонок -->
+  <dialog id="incoming" class="dialog" aria-labelledby="incoming-text">
+    <p id="incoming-text" class="dialog-text"></p>
+    <div class="dialog-actions">
+      <button id="btn-decline" class="btn ghost" type="button">Отклонить</button>
+      <button id="btn-accept" class="btn primary" type="button">Принять</button>
+    </div>
+  </dialog>
+
+  <!-- Настройки -->
+  <dialog id="settings" class="dialog wide" aria-labelledby="settings-title">
+    <header class="dialog-head">
+      <h2 id="settings-title">Настройки</h2>
+      <button id="settings-close" class="btn ghost small" type="button">Закрыть</button>
+    </header>
+
+    <section class="settings-block" aria-labelledby="s-profile">
+      <h3 id="s-profile">Профиль</h3>
+      <form id="nick-form" class="inline-form" autocomplete="off">
+        <label for="nick-input" class="field-label">Никнейм</label>
+        <div class="row">
+          <input id="nick-input" maxlength="40">
+          <button class="btn primary small" type="submit">Сохранить</button>
+        </div>
+        <p id="nick-hint" class="hint" aria-live="polite"></p>
+      </form>
+      <p class="muted small-text">Твой ID: <span id="settings-handle" class="mono"></span>. Он не меняется, даже если меняешь ник.</p>
+    </section>
+
+    <section class="settings-block" aria-labelledby="s-look">
+      <h3 id="s-look">Внешний вид</h3>
+      <div class="field-label">Тема</div>
+      <div id="themes" class="choice-row" role="group" aria-label="Тема"></div>
+      <div class="field-label">Акцент</div>
+      <div id="accents" class="choice-row" role="group" aria-label="Акцентный цвет"></div>
+      <label class="field-inline">
+        <span>Плотность</span>
+        <select id="density">
+          <option value="cozy">Уютно</option>
+          <option value="compact">Компактно</option>
+        </select>
+      </label>
+      <label class="field-inline check">
+        <input id="pref-group" type="checkbox">
+        <span>Группировать сообщения одного автора</span>
+      </label>
+      <label class="field-inline check">
+        <input id="pref-times" type="checkbox">
+        <span>Показывать время</span>
+      </label>
+    </section>
+
+    <section class="settings-block" aria-labelledby="s-account">
+      <h3 id="s-account">Аккаунт</h3>
+      <p class="muted small-text">Вход без пароля: данные живут в этом браузере. Выход удаляет ключ входа отсюда.</p>
+      <button id="logout" class="btn danger small" type="button">Выйти из аккаунта</button>
+    </section>
+  </dialog>
+
+  <div id="conn" class="conn" role="status" aria-live="polite" hidden></div>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

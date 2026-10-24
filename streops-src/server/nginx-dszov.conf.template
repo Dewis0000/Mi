@@ -1,0 +1,27 @@
+# Hearth: отдаёт __BASE__/ с Node-сервера (127.0.0.1:__PORT__).
+# Подключается строкой include внутри server-блока streops.ru (HTTPS).
+# Файл создаётся из шаблона server/install.sh; не редактируй вручную копию в /etc/nginx.
+
+location = __BASE__ {
+    return 301 __BASE__/;
+}
+
+location __BASE__/ {
+    proxy_pass http://127.0.0.1:__PORT__;
+    proxy_http_version 1.1;
+
+    # WebSocket для сообщений и сигналинга звонков
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+    # Соединения живут долго, пока открыт чат
+    proxy_read_timeout 3600s;
+    proxy_send_timeout 3600s;
+
+    client_max_body_size 16k;
+}
