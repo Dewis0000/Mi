@@ -40,6 +40,7 @@ require APP_DIR . '/lib/yookassa.php';
 require APP_DIR . '/lib/jobs.php';
 require APP_DIR . '/lib/site.php';
 require APP_DIR . '/lib/admin.php';
+require APP_DIR . '/lib/connect.php';
 
 function base_url(): string {
     return rtrim(cfg('APP_URL', 'https://streops.ru'), '/');
