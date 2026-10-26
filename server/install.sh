@@ -24,29 +24,64 @@ log "Репозиторий: ${REPO_ROOT}"
 cd "${REPO_ROOT}"
 
 # --- 1. Node.js/npm ---------------------------------------------------------
-if ! command -v node >/dev/null 2>&1; then
-  # ISPmanager часто подключает Node.js через nvm или свой менеджер версий,
-  # который не всегда есть в PATH неинтерактивного SSH-сеанса — пробуем
-  # типичные места перед тем, как сдаться.
-  for candidate in \
-    "$HOME/.nvm/nvm.sh" \
-    "/opt/nvm/nvm.sh" \
-    "/usr/local/nvm/nvm.sh"
-  do
-    if [ -f "$candidate" ]; then
-      # shellcheck disable=SC1090
-      source "$candidate"
-      nvm use --lts >/dev/null 2>&1 || nvm use node >/dev/null 2>&1 || true
+# Нужен Node 18+ (это минимум для Vite 5) — системный node на таких
+# хостингах часто древний (ISPmanager/CloudLinux нередко держат node v10-12
+# как системный пакет "для совместимости"), и просто "node есть в PATH"
+# недостаточно: старый npm не умеет читать современный package-lock.json и
+# падает с непонятными ошибками вместо честного "версия не подходит".
+MIN_NODE_MAJOR=18
+
+node_major() {
+  "$1" -e 'console.log(process.versions.node.split(".")[0])' 2>/dev/null || echo 0
+}
+
+node_good_enough() {
+  [ "$(node_major "$1")" -ge "$MIN_NODE_MAJOR" ] 2>/dev/null
+}
+
+NODE_BIN=""
+if command -v node >/dev/null 2>&1 && node_good_enough "$(command -v node)"; then
+  NODE_BIN="$(command -v node)"
+else
+  # Пробуем alt-nodejs (CloudLinux SCL — типично для reg.ru/ISPmanager),
+  # отдельные nodevenv-установки ISPmanager и nvm, от новой версии к старой.
+  CANDIDATES=()
+  for v in 22 20 18; do
+    CANDIDATES+=("/opt/alt/alt-nodejs${v}/root/usr/bin/node")
+  done
+  for d in "$HOME"/nodevenv/*/*/bin/node /opt/nodejs*/bin/node /usr/local/node*/bin/node; do
+    CANDIDATES+=("$d")
+  done
+  for candidate in "${CANDIDATES[@]}"; do
+    if [ -x "$candidate" ] && node_good_enough "$candidate"; then
+      NODE_BIN="$candidate"
       break
     fi
   done
+
+  if [ -z "$NODE_BIN" ]; then
+    for nvmsh in "$HOME/.nvm/nvm.sh" "/opt/nvm/nvm.sh" "/usr/local/nvm/nvm.sh"; do
+      if [ -f "$nvmsh" ]; then
+        # shellcheck disable=SC1090
+        source "$nvmsh"
+        nvm install "$MIN_NODE_MAJOR" >/dev/null 2>&1 || nvm use --lts >/dev/null 2>&1 || true
+        if command -v node >/dev/null 2>&1 && node_good_enough "$(command -v node)"; then
+          NODE_BIN="$(command -v node)"
+        fi
+        break
+      fi
+    done
+  fi
 fi
 
-if ! command -v node >/dev/null 2>&1; then
-  fail "node не найден в PATH. В панели ISPmanager включите поддержку Node.js для этого аккаунта (раздел \"Node.js\" / \"WWW-домены\" → Node.js), затем повторите запуск. Текущий PATH: $PATH"
+if [ -z "$NODE_BIN" ]; then
+  current="(не найден)"
+  command -v node >/dev/null 2>&1 && current="$(node --version) по пути $(command -v node)"
+  fail "Нужен Node.js ${MIN_NODE_MAJOR}+ (сейчас: ${current} — слишком старый или не найден). В ISPmanager: WWW-домены → ${DOMAIN} → раздел \"Node.js\" → выберите версию ${MIN_NODE_MAJOR} или новее для этого сайта, сохраните, затем запустите установку заново. Если Node.js в ISPmanager уже включён другой версией — допишите путь до его node в CANDIDATES в этом скрипте (проверить можно командой: which -a node)."
 fi
 
-log "node $(node --version), npm $(npm --version)"
+export PATH="$(dirname "$NODE_BIN"):$PATH"
+log "node $(node --version), npm $(npm --version) ($NODE_BIN)"
 
 # --- 2. Зависимости и сборка -------------------------------------------------
 log "Устанавливаю зависимости"
