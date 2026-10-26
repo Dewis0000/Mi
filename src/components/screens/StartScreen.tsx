@@ -18,6 +18,7 @@ export function StartScreen() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-bg px-6 text-center">
+      <img src="/favicon.svg" alt="" aria-hidden="true" width={44} height={44} className="mb-6 rounded-lg" />
       <p className="mb-3 text-sm text-muted">{translate(locale, 'start.liveCounter.prefix')}</p>
       <NumberTicker compute={compute} className="text-4xl text-text sm:text-6xl" ariaLabel="население Земли" />
       <p className="mt-3 max-w-sm text-sm text-muted">{translate(locale, 'start.liveCounter.suffix')}</p>
