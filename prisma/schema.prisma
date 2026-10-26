@@ -1,0 +1,536 @@
+// Схема данных квест-клуба — см. docs/ARCHITECTURE.md, раздел 11.
+// Денежные суммы хранятся как целые рубли (Int), без копеек.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------- Перечисления ----------
+
+enum UserRole {
+  CUSTOMER
+  ACTOR
+  MANAGER
+  ADMIN
+}
+
+enum ExternalProvider {
+  VK
+  YANDEX
+  TELEGRAM
+  MAX
+}
+
+enum LoyaltyTierLevel {
+  BASE
+  SILVER
+  GOLD
+  VIP
+}
+
+enum PointsTransactionType {
+  ACCRUAL
+  REDEMPTION
+  EXPIRY
+  ADMIN_ADJUSTMENT
+  REFERRAL_BONUS
+}
+
+enum RoomGenre {
+  HORROR
+  DETECTIVE
+  SCIFI
+  FAMILY
+  ADVENTURE
+  THRILLER
+}
+
+enum RoomDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum RoomStatus {
+  ACTIVE
+  PAUSED
+  ARCHIVED
+}
+
+enum SlotStatus {
+  OPEN
+  HELD
+  BOOKED
+  BLOCKED
+}
+
+enum BookingStatus {
+  PENDING_PAYMENT
+  CONFIRMED
+  CHECKED_IN
+  IN_PROGRESS
+  COMPLETED
+  NO_SHOW
+  CANCELLED
+  REFUNDED
+}
+
+enum OrderType {
+  BOOKING
+  CERTIFICATE
+  RECORDING
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentProviderName {
+  MOCK
+  YOOKASSA
+  CLOUDPAYMENTS
+  ROBOKASSA
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+}
+
+enum ReceiptType {
+  SALE
+  REFUND
+}
+
+enum PromoCodeType {
+  PERCENT
+  FIXED
+}
+
+enum CameraStatus {
+  ONLINE
+  OFFLINE
+  MAINTENANCE
+}
+
+enum LiveSessionStatus {
+  SCHEDULED
+  LIVE
+  ENDED
+}
+
+enum RecordingStatus {
+  PROCESSING
+  READY
+  DELETED
+}
+
+enum NotificationChannel {
+  SMS
+  EMAIL
+  TELEGRAM
+}
+
+enum NotificationStatus {
+  QUEUED
+  SENT
+  FAILED
+}
+
+// ---------- Пользователи и вход ----------
+
+model User {
+  id               String    @id @default(cuid())
+  name             String
+  phone            String    @unique
+  phoneVerifiedAt  DateTime?
+  email            String?   @unique
+  emailVerifiedAt  DateTime?
+  passwordHash     String?
+  birthDate        DateTime?
+  role             UserRole  @default(CUSTOMER)
+  // Для CUSTOMER — предпочитаемая локация. Для ACTOR/MANAGER — закреплённая локация.
+  locationId       String?
+  location         Location? @relation(fields: [locationId], references: [id])
+  marketingConsent Boolean   @default(false)
+  dataConsentAt    DateTime?
+  avatarUrl        String?
+  pointsBalance    Int       @default(0)
+  notifyBySms      Boolean   @default(true)
+  notifyByEmail    Boolean   @default(true)
+  notifyByTelegram Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  externalAccounts    ExternalAccount[]
+  bookings            Booking[]
+  orders              Order[]
+  pointsTransactions  PointsTransaction[]
+  recordingPurchases  RecordingPurchase[]
+  giftCertificates    GiftCertificate[]    @relation("CertificateOwner")
+  reviews             Review[]
+  notificationLogs    NotificationLog[]
+  auditLogsAsActor    AuditLog[]
+  blogPosts           BlogPost[]
+
+  @@index([role])
+}
+
+model ExternalAccount {
+  id                String           @id @default(cuid())
+  provider          ExternalProvider
+  providerAccountId String
+  userId            String
+  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rawProfile        Json?
+  createdAt         DateTime         @default(now())
+
+  @@unique([provider, providerAccountId])
+}
+
+// ---------- Локации, квесты, расписание ----------
+
+model Location {
+  id        String   @id @default(cuid())
+  name      String
+  city      String
+  address   String
+  timezone  String   @default("Europe/Moscow")
+  phone     String?
+  lat       Float?
+  lng       Float?
+  createdAt DateTime @default(now())
+
+  rooms Room[]
+  users User[]
+}
+
+model Room {
+  id               String         @id @default(cuid())
+  locationId       String
+  location         Location       @relation(fields: [locationId], references: [id])
+  slug             String         @unique
+  title            String
+  description      String
+  genre            RoomGenre
+  difficulty       RoomDifficulty
+  minPlayers       Int
+  maxPlayers       Int
+  durationMinutes  Int            @default(60)
+  cleanupMinutes   Int            @default(15)
+  basePrice        Int
+  extraPlayerPrice Int            @default(0)
+  ageLimit         Int            @default(12)
+  coverImageUrl    String?
+  status           RoomStatus     @default(ACTIVE)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  scheduleTemplates ScheduleTemplate[]
+  slots             Slot[]
+  cameras           Camera[]
+  reviews           Review[]
+
+  @@index([status, genre])
+}
+
+model ScheduleTemplate {
+  id        String  @id @default(cuid())
+  roomId    String
+  room      Room    @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  weekday   Int // 0 = воскресенье … 6 = субота
+  startTime String // "10:00"
+  endTime   String // "23:00"
+  isActive  Boolean @default(true)
+}
+
+model Slot {
+  id            String     @id @default(cuid())
+  roomId        String
+  room          Room       @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  startsAt      DateTime
+  endsAt        DateTime
+  status        SlotStatus @default(OPEN)
+  holdExpiresAt DateTime?
+  createdAt     DateTime   @default(now())
+
+  booking Booking?
+
+  @@unique([roomId, startsAt])
+  @@index([startsAt, status])
+}
+
+// ---------- Бронирование ----------
+
+model Booking {
+  id             String        @id @default(cuid())
+  code           String        @unique
+  slotId         String        @unique
+  slot           Slot          @relation(fields: [slotId], references: [id])
+  userId         String?
+  user           User?         @relation(fields: [userId], references: [id])
+  guestName      String?
+  guestPhone     String?
+  playersCount   Int
+  priceTotal     Int
+  pointsUsed     Int           @default(0)
+  promoCodeId    String?
+  promoCode      PromoCode?    @relation(fields: [promoCodeId], references: [id])
+  status         BookingStatus @default(PENDING_PAYMENT)
+  filmingConsent Boolean       @default(false)
+  cancelReason   String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  players            BookingPlayer[]
+  order              Order?
+  pointsTransactions PointsTransaction[]
+  liveSession        LiveSession?
+  recording          Recording?
+
+  @@index([status])
+  @@index([userId])
+}
+
+model BookingPlayer {
+  id        String  @id @default(cuid())
+  bookingId String
+  booking   Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  fullName  String
+}
+
+model PromoCode {
+  id         String        @id @default(cuid())
+  code       String        @unique
+  type       PromoCodeType
+  value      Int // процент (1-100) или фиксированная сумма в рублях
+  maxUses    Int?
+  usedCount  Int           @default(0)
+  validFrom  DateTime?
+  validUntil DateTime?
+  isActive   Boolean       @default(true)
+  createdAt  DateTime      @default(now())
+
+  bookings Booking[]
+}
+
+model GiftCertificate {
+  id             String    @id @default(cuid())
+  code           String    @unique
+  amount         Int
+  balance        Int
+  ownerId        String?
+  owner          User?     @relation("CertificateOwner", fields: [ownerId], references: [id])
+  purchaserName  String?
+  purchaserEmail String?
+  recipientName  String?
+  message        String?
+  expiresAt      DateTime?
+  isRedeemed     Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+
+  order Order?
+}
+
+// ---------- Заказы, платежи, чеки (54-ФЗ) ----------
+
+model Order {
+  id                   String      @id @default(cuid())
+  userId               String?
+  user                 User?       @relation(fields: [userId], references: [id])
+  type                 OrderType
+  bookingId            String?     @unique
+  booking              Booking?    @relation(fields: [bookingId], references: [id])
+  certificateId        String?     @unique
+  certificate          GiftCertificate? @relation(fields: [certificateId], references: [id])
+  recordingPurchaseId  String?     @unique
+  recordingPurchase    RecordingPurchase? @relation(fields: [recordingPurchaseId], references: [id])
+  amount               Int
+  currency             String      @default("RUB")
+  status               OrderStatus @default(PENDING)
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+
+  payments Payment[]
+
+  @@index([status])
+}
+
+model Payment {
+  id         String              @id @default(cuid())
+  orderId    String
+  order      Order               @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  provider   PaymentProviderName
+  externalId String?
+  method     String?
+  status     PaymentStatus       @default(PENDING)
+  amount     Int
+  rawPayload Json?
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+
+  receipts Receipt[]
+
+  @@index([provider, externalId])
+}
+
+model Receipt {
+  id         String      @id @default(cuid())
+  paymentId  String
+  payment    Payment     @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  type       ReceiptType @default(SALE)
+  externalId String?
+  url        String?
+  amount     Int
+  createdAt  DateTime    @default(now())
+}
+
+// ---------- Баллы и лояльность ----------
+
+model LoyaltyTier {
+  id           String           @id @default(cuid())
+  level        LoyaltyTierLevel @unique
+  minVisits    Int
+  bonusPercent Int              @default(0)
+  perks        String?
+}
+
+model PointsTransaction {
+  id           String                @id @default(cuid())
+  userId       String
+  user         User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type         PointsTransactionType
+  amount       Int
+  balanceAfter Int
+  bookingId    String?
+  booking      Booking?              @relation(fields: [bookingId], references: [id])
+  note         String?
+  createdAt    DateTime              @default(now())
+
+  @@index([userId])
+}
+
+// ---------- Камеры, прямой эфир, записи ----------
+
+model Camera {
+  id        String       @id @default(cuid())
+  roomId    String
+  room      Room         @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  label     String
+  rtspUrl   String? // внутренний адрес медиасервера (не публичный)
+  hlsUrl    String? // публичный плейлист, доступ только по подписанному токену
+  status    CameraStatus @default(OFFLINE)
+  createdAt DateTime     @default(now())
+
+  liveSessions LiveSession[]
+  recordings   Recording[]
+}
+
+model LiveSession {
+  id          String            @id @default(cuid())
+  bookingId   String            @unique
+  booking     Booking           @relation(fields: [bookingId], references: [id])
+  cameraId    String
+  camera      Camera            @relation(fields: [cameraId], references: [id])
+  status      LiveSessionStatus @default(SCHEDULED)
+  viewerToken String            @unique @default(cuid())
+  startedAt   DateTime?
+  endedAt     DateTime?
+  createdAt   DateTime          @default(now())
+}
+
+model Recording {
+  id              String          @id @default(cuid())
+  bookingId       String          @unique
+  booking         Booking         @relation(fields: [bookingId], references: [id])
+  cameraId        String?
+  camera          Camera?         @relation(fields: [cameraId], references: [id])
+  status          RecordingStatus @default(PROCESSING)
+  previewUrl      String?
+  fullUrl         String?
+  price           Int
+  durationSeconds Int?
+  expiresAt       DateTime? // когда удалится исходник, если не куплен (раздел 8)
+  createdAt       DateTime        @default(now())
+
+  purchase RecordingPurchase?
+}
+
+model RecordingPurchase {
+  id          String    @id @default(cuid())
+  recordingId String    @unique
+  recording   Recording @relation(fields: [recordingId], references: [id])
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  createdAt   DateTime  @default(now())
+
+  order Order?
+}
+
+// ---------- Контент ----------
+
+model Review {
+  id          String   @id @default(cuid())
+  roomId      String?
+  room        Room?    @relation(fields: [roomId], references: [id])
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
+  authorName  String
+  rating      Int
+  text        String
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([isPublished])
+}
+
+model BlogPost {
+  id            String    @id @default(cuid())
+  slug          String    @unique
+  title         String
+  excerpt       String
+  content       String
+  coverImageUrl String?
+  authorId      String?
+  author        User?     @relation(fields: [authorId], references: [id])
+  isPublished   Boolean   @default(false)
+  publishedAt   DateTime?
+  createdAt     DateTime  @default(now())
+}
+
+// ---------- Служебное ----------
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  actor      User?    @relation(fields: [actorId], references: [id])
+  action     String
+  targetType String?
+  targetId   String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([targetType, targetId])
+}
+
+model NotificationLog {
+  id       String              @id @default(cuid())
+  userId   String?
+  user     User?               @relation(fields: [userId], references: [id])
+  channel  NotificationChannel
+  template String
+  payload  Json?
+  status   NotificationStatus  @default(QUEUED)
+  error    String?
+  createdAt DateTime           @default(now())
+}
