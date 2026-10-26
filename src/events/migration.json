@@ -1,0 +1,1282 @@
+{
+  "events": [
+    {
+      "id": "migration_rural_to_urban_move",
+      "category": "migration",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        35
+      ],
+      "weightBy": {
+        "rural": 1.6
+      },
+      "baseWeight": 1.8,
+      "titleKey": "event.migration_rural_to_urban_move.title",
+      "bodyKey": "event.migration_rural_to_urban_move.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "move_alone",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 3,
+            "bonds": -5,
+            "education": 2
+          },
+          "mortalityDelta": 1.05
+        },
+        {
+          "id": "move_with_family",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 1,
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "stay_in_village",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 1,
+            "wealth": -1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "migration_urban_housing_shock",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        40
+      ],
+      "weightBy": {
+        "urban": 1.3
+      },
+      "baseWeight": 1.2,
+      "titleKey": "event.migration_urban_housing_shock.title",
+      "bodyKey": "event.migration_urban_housing_shock.body",
+      "choices": [
+        {
+          "id": "find_cheaper_housing",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -3,
+            "health": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "accept_the_cost_housing",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -8
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "migration_overseas_labor_contract",
+      "category": "migration",
+      "severity": "major",
+      "ageGate": [
+        18,
+        29
+      ],
+      "baseWeight": 1.4,
+      "titleKey": "event.migration_overseas_labor_contract.title",
+      "bodyKey": "event.migration_overseas_labor_contract.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "accept_contract",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 10,
+            "bonds": -8
+          },
+          "mortalityDelta": 1.1,
+          "unlockTraits": [
+            "overseas_worker"
+          ]
+        },
+        {
+          "id": "decline_contract",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "informal_route",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 6,
+            "bonds": -10,
+            "health": -3
+          },
+          "mortalityDelta": 1.6,
+          "unlockTraits": [
+            "overseas_worker"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "migration_remittances_sent_home",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        19,
+        45
+      ],
+      "requires": {
+        "traits": [
+          "overseas_worker"
+        ]
+      },
+      "baseWeight": 1.3,
+      "titleKey": "event.migration_remittances_sent_home.title",
+      "bodyKey": "event.migration_remittances_sent_home.body",
+      "effects": {
+        "wealth": -3,
+        "bonds": 4
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "migration_homesickness_abroad",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        19,
+        45
+      ],
+      "requires": {
+        "traits": [
+          "overseas_worker"
+        ]
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.migration_homesickness_abroad.title",
+      "bodyKey": "event.migration_homesickness_abroad.body",
+      "choices": [
+        {
+          "id": "push_through",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -3,
+            "wealth": 3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "return_early",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 4,
+            "wealth": -4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "seek_community_support",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 3,
+            "health": 1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "migration_return_after_years_abroad",
+      "category": "migration",
+      "severity": "notable",
+      "ageGate": [
+        25,
+        40
+      ],
+      "requires": {
+        "traits": [
+          "overseas_worker"
+        ]
+      },
+      "baseWeight": 1.3,
+      "titleKey": "event.migration_return_after_years_abroad.title",
+      "bodyKey": "event.migration_return_after_years_abroad.body",
+      "once": true,
+      "effects": {
+        "wealth": 6,
+        "bonds": 3
+      },
+      "mortalityDelta": 1,
+      "unlockTraits": [
+        "returned_migrant"
+      ]
+    },
+    {
+      "id": "migration_reintegration_difficulty",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        25,
+        44
+      ],
+      "requires": {
+        "traits": [
+          "returned_migrant"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.migration_reintegration_difficulty.title",
+      "bodyKey": "event.migration_reintegration_difficulty.body",
+      "effects": {
+        "standing": -2,
+        "bonds": 2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "migration_family_left_behind",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        45
+      ],
+      "requires": {
+        "traits": [
+          "overseas_worker"
+        ]
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.migration_family_left_behind.title",
+      "bodyKey": "event.migration_family_left_behind.body",
+      "effects": {
+        "bonds": -3
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "migration_undocumented_border_crossing",
+      "category": "migration",
+      "severity": "fatal",
+      "ageGate": [
+        18,
+        36
+      ],
+      "baseWeight": 0.7,
+      "titleKey": "event.migration_undocumented_border_crossing.title",
+      "bodyKey": "event.migration_undocumented_border_crossing.body",
+      "choices": [
+        {
+          "id": "cross_undocumented",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 4,
+            "health": -3
+          },
+          "mortalityDelta": 2.2,
+          "mortalityYears": 1,
+          "unlockTraits": [
+            "overseas_worker"
+          ]
+        },
+        {
+          "id": "wait_for_papers",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "migration_labor_exploitation_abroad",
+      "category": "migration",
+      "severity": "notable",
+      "ageGate": [
+        19,
+        45
+      ],
+      "requires": {
+        "traits": [
+          "overseas_worker"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.migration_labor_exploitation_abroad.title",
+      "bodyKey": "event.migration_labor_exploitation_abroad.body",
+      "choices": [
+        {
+          "id": "endure_conditions",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 1,
+            "health": -5
+          },
+          "mortalityDelta": 1.2
+        },
+        {
+          "id": "seek_different_employer",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -6,
+            "health": -1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "migration_legal_status_regularization",
+      "category": "migration",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        45
+      ],
+      "requires": {
+        "traits": [
+          "overseas_worker"
+        ]
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.migration_legal_status_regularization.title",
+      "bodyKey": "event.migration_legal_status_regularization.body",
+      "choices": [
+        {
+          "id": "pursue_regularization",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -5,
+            "standing": 4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "skip_regularization",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 2
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    },
+    {
+      "id": "migration_seasonal_labor",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        55
+      ],
+      "weightBy": {
+        "rural": 1.3
+      },
+      "baseWeight": 1.3,
+      "titleKey": "event.migration_seasonal_labor.title",
+      "bodyKey": "event.migration_seasonal_labor.body",
+      "effects": {
+        "wealth": 4,
+        "bonds": -2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "migration_internal_displacement_resettlement",
+      "category": "migration",
+      "severity": "major",
+      "ageGate": [
+        5,
+        80
+      ],
+      "requires": {
+        "traits": [
+          "displaced"
+        ]
+      },
+      "baseWeight": 1.4,
+      "titleKey": "event.migration_internal_displacement_resettlement.title",
+      "bodyKey": "event.migration_internal_displacement_resettlement.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "formal_resettlement",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": 2,
+            "bonds": -3,
+            "wealth": -4
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "refugee"
+          ]
+        },
+        {
+          "id": "informal_resettlement",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -2,
+            "bonds": -1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "wait_to_return",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": 2,
+            "wealth": -3
+          },
+          "mortalityDelta": 1.2
+        }
+      ]
+    },
+    {
+      "id": "migration_host_community_tension",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        80
+      ],
+      "requires": {
+        "traits": [
+          "refugee"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.migration_host_community_tension.title",
+      "bodyKey": "event.migration_host_community_tension.body",
+      "effects": {
+        "standing": 1,
+        "bonds": 2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "migration_flood_drought_permanent_relocation",
+      "category": "migration",
+      "severity": "major",
+      "ageGate": [
+        1,
+        80
+      ],
+      "requires": {
+        "traits": [
+          "flood_displaced"
+        ]
+      },
+      "baseWeight": 1.3,
+      "titleKey": "event.migration_flood_drought_permanent_relocation.title",
+      "bodyKey": "event.migration_flood_drought_permanent_relocation.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "relocate_to_city",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -3,
+            "education": 2,
+            "bonds": -3
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "relocate_rural",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -2,
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "split_the_family",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "bonds": -5,
+            "wealth": 1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "migration_remote_work_opportunity",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        50
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.migration_remote_work_opportunity.title",
+      "bodyKey": "event.migration_remote_work_opportunity.body",
+      "effects": {
+        "wealth": 5,
+        "education": 1
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "migration_marriage_migration",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        36
+      ],
+      "requires": {
+        "traits": [
+          "married"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.migration_marriage_migration.title",
+      "bodyKey": "event.migration_marriage_migration.body",
+      "effects": {
+        "bonds": -3,
+        "standing": 1
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "migration_student_migration_abroad",
+      "category": "migration",
+      "severity": "notable",
+      "ageGate": [
+        17,
+        25
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.migration_student_migration_abroad.title",
+      "bodyKey": "event.migration_student_migration_abroad.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "go_abroad_study",
+          "riskLabel": "рискованно",
+          "effects": {
+            "education": 10,
+            "wealth": -6,
+            "bonds": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "stay_local_education",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 3,
+            "bonds": 1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "migration_chain_family_sponsorship",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        25,
+        55
+      ],
+      "requires": {
+        "traits": [
+          "overseas_worker"
+        ]
+      },
+      "baseWeight": 0.8,
+      "titleKey": "event.migration_chain_family_sponsorship.title",
+      "bodyKey": "event.migration_chain_family_sponsorship.body",
+      "effects": {
+        "wealth": -4,
+        "bonds": 4
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "migration_remittance_dependency_strain",
+      "category": "migration",
+      "severity": "notable",
+      "ageGate": [
+        40,
+        68
+      ],
+      "requires": {
+        "traits": [
+          "overseas_worker"
+        ]
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.migration_remittance_dependency_strain.title",
+      "bodyKey": "event.migration_remittance_dependency_strain.body",
+      "choices": [
+        {
+          "id": "diversify_household_income",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -3,
+            "education": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "keep_relying_on_transfers",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 1,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "migration_return_migration_investment",
+      "category": "migration",
+      "severity": "notable",
+      "ageGate": [
+        28,
+        46
+      ],
+      "requires": {
+        "traits": [
+          "returned_migrant"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.migration_return_migration_investment.title",
+      "bodyKey": "event.migration_return_migration_investment.body",
+      "choices": [
+        {
+          "id": "invest_business",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 6,
+            "standing": 3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "invest_land",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 4,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "save_conservatively",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "migration_urban_slum_settlement",
+      "category": "migration",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        42
+      ],
+      "weightBy": {
+        "urban": 1.2
+      },
+      "baseWeight": 1,
+      "titleKey": "event.migration_urban_slum_settlement.title",
+      "bodyKey": "event.migration_urban_slum_settlement.body",
+      "choices": [
+        {
+          "id": "settle_in_informal_district",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -4,
+            "wealth": 3
+          },
+          "mortalityDelta": 1.2
+        },
+        {
+          "id": "pay_more_for_safer_area",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -3,
+            "health": 1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "migration_cross_border_family_separation",
+      "category": "migration",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        55
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.migration_cross_border_family_separation.title",
+      "bodyKey": "event.migration_cross_border_family_separation.body",
+      "choices": [
+        {
+          "id": "pursue_family_reunification",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -6,
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "accept_the_separation",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": -7
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "migration_citizenship_naturalization",
+      "category": "migration",
+      "severity": "notable",
+      "ageGate": [
+        25,
+        58
+      ],
+      "requires": {
+        "traits": [
+          "refugee"
+        ]
+      },
+      "baseWeight": 0.8,
+      "titleKey": "event.migration_citizenship_naturalization.title",
+      "bodyKey": "event.migration_citizenship_naturalization.body",
+      "choices": [
+        {
+          "id": "apply_citizenship",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": 5,
+            "wealth": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "keep_refugee_status",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "standing": -1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "migration_deportation_risk",
+      "category": "migration",
+      "severity": "major",
+      "ageGate": [
+        20,
+        48
+      ],
+      "weightBy": {
+        "homicideRate": 0.1
+      },
+      "baseWeight": 0.7,
+      "titleKey": "event.migration_deportation_risk.title",
+      "bodyKey": "event.migration_deportation_risk.body",
+      "choices": [
+        {
+          "id": "seek_legal_aid",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -5,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "remain_in_hiding",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -3,
+            "bonds": -3
+          },
+          "mortalityDelta": 1.2
+        },
+        {
+          "id": "voluntary_return",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -3,
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "migration_village_depopulation_pressure",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        55
+      ],
+      "weightBy": {
+        "rural": 1.3
+      },
+      "baseWeight": 1,
+      "titleKey": "event.migration_village_depopulation_pressure.title",
+      "bodyKey": "event.migration_village_depopulation_pressure.body",
+      "effects": {
+        "bonds": -2,
+        "wealth": -2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "migration_return_for_family_care",
+      "category": "migration",
+      "severity": "notable",
+      "ageGate": [
+        30,
+        55
+      ],
+      "requires": {
+        "traits": [
+          "overseas_worker"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.migration_return_for_family_care.title",
+      "bodyKey": "event.migration_return_for_family_care.body",
+      "choices": [
+        {
+          "id": "return_early_for_care",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -6,
+            "bonds": 6
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "returned_migrant"
+          ]
+        },
+        {
+          "id": "send_money_instead",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -2,
+            "bonds": -3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "migration_border_region_commute",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        55
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.migration_border_region_commute.title",
+      "bodyKey": "event.migration_border_region_commute.body",
+      "effects": {
+        "wealth": 4,
+        "health": -1
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "migration_resettlement_assistance_program",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        65
+      ],
+      "requires": {
+        "traits": [
+          "refugee"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.migration_resettlement_assistance_program.title",
+      "bodyKey": "event.migration_resettlement_assistance_program.body",
+      "effects": {
+        "standing": 3,
+        "education": 2,
+        "wealth": 2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "migration_informal_remittance_network_risk",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        50
+      ],
+      "requires": {
+        "traits": [
+          "overseas_worker"
+        ]
+      },
+      "baseWeight": 0.8,
+      "titleKey": "event.migration_informal_remittance_network_risk.title",
+      "bodyKey": "event.migration_informal_remittance_network_risk.body",
+      "choices": [
+        {
+          "id": "use_informal_channel",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "use_bank_transfer",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "migration_urban_return_after_failed_venture",
+      "category": "migration",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        48
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.migration_urban_return_after_failed_venture.title",
+      "bodyKey": "event.migration_urban_return_after_failed_venture.body",
+      "effects": {
+        "wealth": -6,
+        "standing": -4,
+        "bonds": 2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "migration_cross_border_trade_livelihood",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        58
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.migration_cross_border_trade_livelihood.title",
+      "bodyKey": "event.migration_cross_border_trade_livelihood.body",
+      "effects": {
+        "wealth": 5
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "migration_asylum_application",
+      "category": "migration",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        55
+      ],
+      "requires": {
+        "traits": [
+          "displaced"
+        ]
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.migration_asylum_application.title",
+      "bodyKey": "event.migration_asylum_application.body",
+      "effects": {
+        "standing": -2,
+        "bonds": -2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "migration_language_barrier_employment",
+      "category": "migration",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        50
+      ],
+      "requires": {
+        "traits": [
+          "overseas_worker"
+        ]
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.migration_language_barrier_employment.title",
+      "bodyKey": "event.migration_language_barrier_employment.body",
+      "effects": {
+        "wealth": -2,
+        "education": -1
+      },
+      "mortalityDelta": 1
+    }
+  ],
+  "i18n": {
+    "ru": {
+      "event.migration_rural_to_urban_move.choice.move_alone.label": "Уехать одному",
+      "event.migration_rural_to_urban_move.choice.move_with_family.label": "Переехать с семьёй",
+      "event.migration_rural_to_urban_move.choice.stay_in_village.label": "Остаться в селе",
+      "event.migration_rural_to_urban_move.title": "Переезд в город",
+      "event.migration_rural_to_urban_move.body": "Работа или учёба зовут в город. Переезд обещает больше возможностей, но означает разрыв с привычным укладом села.",
+      "event.migration_urban_housing_shock.choice.find_cheaper_housing.label": "Искать более дешёвое жильё",
+      "event.migration_urban_housing_shock.choice.accept_the_cost_housing.label": "Принять расходы как есть",
+      "event.migration_urban_housing_shock.title": "Жильё в городе",
+      "event.migration_urban_housing_shock.body": "Съёмное жильё в городе стоит заметно больше, чем ожидалось. Бюджет первых месяцев уходит почти целиком на аренду.",
+      "event.migration_overseas_labor_contract.choice.accept_contract.label": "Принять контракт",
+      "event.migration_overseas_labor_contract.choice.decline_contract.label": "Отказаться",
+      "event.migration_overseas_labor_contract.choice.informal_route.label": "Уехать по неофициальному каналу",
+      "event.migration_overseas_labor_contract.title": "Контракт на работу за границей",
+      "event.migration_overseas_labor_contract.body": "Агентство предлагает контракт на работу за границей — заработок выше, чем дома, но цена — разлука с семьёй на годы.",
+      "event.migration_remittances_sent_home.title": "Денежные переводы домой",
+      "event.migration_remittances_sent_home.body": "Часть заработка за границей регулярно уходит домой переводами. Семья на родине меньше нуждается, но сам ты откладываешь заметно меньше.",
+      "event.migration_homesickness_abroad.choice.push_through.label": "Продолжать работать дальше",
+      "event.migration_homesickness_abroad.choice.return_early.label": "Вернуться раньше срока",
+      "event.migration_homesickness_abroad.choice.seek_community_support.label": "Найти землячество за границей",
+      "event.migration_homesickness_abroad.title": "Тоска по дому",
+      "event.migration_homesickness_abroad.body": "Разлука с семьёй и непривычная среда дают о себе знать. Повседневная жизнь за границей ощущается тяжелее, чем планировалось.",
+      "event.migration_return_after_years_abroad.title": "Возвращение после лет за границей",
+      "event.migration_return_after_years_abroad.body": "После нескольких лет работы за границей ты возвращаешься домой. Накопления и опыт едут с тобой, но дом уже немного другой, чем ты помнишь.",
+      "event.migration_reintegration_difficulty.title": "Трудности возвращения",
+      "event.migration_reintegration_difficulty.body": "Привычки и ожидания, усвоенные за границей, не всегда совпадают с жизнью дома. На привыкание уходит больше времени, чем казалось.",
+      "event.migration_family_left_behind.title": "Семья, оставшаяся дома",
+      "event.migration_family_left_behind.body": "Дети или пожилые родственники остаются на попечении родни, пока ты работаешь за границей. Забота распределяется между оставшимися дома.",
+      "event.migration_undocumented_border_crossing.choice.cross_undocumented.label": "Пересечь границу без документов",
+      "event.migration_undocumented_border_crossing.choice.wait_for_papers.label": "Подождать оформления документов",
+      "event.migration_undocumented_border_crossing.title": "Пересечение границы без документов",
+      "event.migration_undocumented_border_crossing.body": "Нужные документы для легальной работы за границей недоступны или слишком дороги. Решение о пересечении границы без них ложится на тебя.",
+      "event.migration_labor_exploitation_abroad.choice.endure_conditions.label": "Терпеть условия ради заработка",
+      "event.migration_labor_exploitation_abroad.choice.seek_different_employer.label": "Искать другого работодателя",
+      "event.migration_labor_exploitation_abroad.title": "Условия труда за границей",
+      "event.migration_labor_exploitation_abroad.body": "Работодатель за границей задерживает зарплату и требует больше часов, чем оговорено. Возможности пожаловаться у приезжего работника немного.",
+      "event.migration_legal_status_regularization.choice.pursue_regularization.label": "Заняться оформлением",
+      "event.migration_legal_status_regularization.choice.skip_regularization.label": "Не заниматься этим",
+      "event.migration_legal_status_regularization.title": "Легализация статуса",
+      "event.migration_legal_status_regularization.body": "Появляется возможность оформить легальный вид на жительство за границей. Процедура стоит денег и времени, но снижает риски на будущее.",
+      "event.migration_seasonal_labor.title": "Сезонная трудовая миграция",
+      "event.migration_seasonal_labor.body": "Каждый год на несколько месяцев приходится уезжать на сезонные работы — сбор урожая или строительство в другом регионе.",
+      "event.migration_internal_displacement_resettlement.choice.formal_resettlement.label": "Оформить статус беженца",
+      "event.migration_internal_displacement_resettlement.choice.informal_resettlement.label": "Обустроиться неофициально",
+      "event.migration_internal_displacement_resettlement.choice.wait_to_return.label": "Ждать возможности вернуться",
+      "event.migration_internal_displacement_resettlement.title": "Оформление статуса беженца",
+      "event.migration_internal_displacement_resettlement.body": "После бегства от насилия встаёт вопрос о дальнейшем пути — вернуться при первой возможности или оформить постоянное переселение в другой стране или регионе.",
+      "event.migration_host_community_tension.title": "Отношения с местным населением",
+      "event.migration_host_community_tension.body": "Жизнь на новом месте означает выстраивание отношений с местными — где-то настороженных, где-то открытых. Со временем положение понемногу меняется.",
+      "event.migration_flood_drought_permanent_relocation.choice.relocate_to_city.label": "Переехать в город",
+      "event.migration_flood_drought_permanent_relocation.choice.relocate_rural.label": "Переехать в другой сельский район",
+      "event.migration_flood_drought_permanent_relocation.choice.split_the_family.label": "Разделить семью между родственниками",
+      "event.migration_flood_drought_permanent_relocation.title": "Окончательный переезд после потери дома",
+      "event.migration_flood_drought_permanent_relocation.body": "Земля больше не пригодна для жизни после наводнения или засухи. Семья решает, куда переселиться окончательно.",
+      "event.migration_remote_work_opportunity.title": "Удалённая работа на зарубежного заказчика",
+      "event.migration_remote_work_opportunity.body": "Появляется возможность работать удалённо на заказчика из другой страны, не покидая родной регион. Заработок выше среднего местного.",
+      "event.migration_marriage_migration.title": "Переезд к супругу",
+      "event.migration_marriage_migration.body": "После брака приходится переехать в регион или страну супруга. Привычные связи остаются позади, новые только предстоит выстроить.",
+      "event.migration_student_migration_abroad.choice.go_abroad_study.label": "Поехать учиться за границу",
+      "event.migration_student_migration_abroad.choice.stay_local_education.label": "Остаться учиться на месте",
+      "event.migration_student_migration_abroad.title": "Учёба за границей",
+      "event.migration_student_migration_abroad.body": "Появляется шанс продолжить учёбу за границей — по стипендии или на займ. Решение требует средств и готовности уехать на годы.",
+      "event.migration_chain_family_sponsorship.title": "Приглашение родственника",
+      "event.migration_chain_family_sponsorship.body": "Устроившись за границей, ты помогаешь оформить переезд ещё одному члену семьи. Процедура стоит денег, но сокращает разлуку.",
+      "event.migration_remittance_dependency_strain.choice.diversify_household_income.label": "Искать другой источник дохода для семьи",
+      "event.migration_remittance_dependency_strain.choice.keep_relying_on_transfers.label": "Продолжать рассчитывать на переводы",
+      "event.migration_remittance_dependency_strain.title": "Зависимость семьи от переводов",
+      "event.migration_remittance_dependency_strain.body": "Со временем домашнее хозяйство всё больше рассчитывает на переводы из-за границы, а не на собственный доход. Любой сбой в переводах теперь ощущается сильнее.",
+      "event.migration_return_migration_investment.choice.invest_business.label": "Вложить в собственное дело",
+      "event.migration_return_migration_investment.choice.invest_land.label": "Купить землю",
+      "event.migration_return_migration_investment.choice.save_conservatively.label": "Сохранить сбережения на будущее",
+      "event.migration_return_migration_investment.title": "Вложение сбережений после возвращения",
+      "event.migration_return_migration_investment.body": "Накопленные за границей средства можно вложить дома — в своё дело, землю или образование детей. Решение определяет, как сложится жизнь после возвращения.",
+      "event.migration_urban_slum_settlement.choice.settle_in_informal_district.label": "Поселиться в неформальном районе",
+      "event.migration_urban_slum_settlement.choice.pay_more_for_safer_area.label": "Платить больше за более безопасный район",
+      "event.migration_urban_slum_settlement.title": "Поселение в неформальном районе",
+      "event.migration_urban_slum_settlement.body": "Доступное жильё в городе находится только в неформальном районе без устойчивого доступа к воде и электричеству. Переезд туда — вопрос цены, а не выбора.",
+      "event.migration_cross_border_family_separation.choice.pursue_family_reunification.label": "Добиваться объединения семьи",
+      "event.migration_cross_border_family_separation.choice.accept_the_separation.label": "Принять разделение как есть",
+      "event.migration_cross_border_family_separation.title": "Семья разделена границей",
+      "event.migration_cross_border_family_separation.body": "Визовые ограничения не позволяют всей семье находиться в одной стране. Встречи становятся редкими и требуют заметных затрат.",
+      "event.migration_citizenship_naturalization.choice.apply_citizenship.label": "Подать заявление",
+      "event.migration_citizenship_naturalization.choice.keep_refugee_status.label": "Остаться со статусом беженца",
+      "event.migration_citizenship_naturalization.title": "Заявление на гражданство",
+      "event.migration_citizenship_naturalization.body": "После нескольких лет проживания появляется право подать на гражданство принимающей страны. Процедура долгая, но меняет правовой статус окончательно.",
+      "event.migration_deportation_risk.choice.seek_legal_aid.label": "Обратиться за юридической помощью",
+      "event.migration_deportation_risk.choice.remain_in_hiding.label": "Оставаться, не привлекая внимания",
+      "event.migration_deportation_risk.choice.voluntary_return.label": "Вернуться добровольно",
+      "event.migration_deportation_risk.title": "Риск депортации",
+      "event.migration_deportation_risk.body": "Истёкшие документы или изменившиеся правила ставят под вопрос право оставаться в стране. Нужно решить, как действовать.",
+      "event.migration_village_depopulation_pressure.title": "Опустение села",
+      "event.migration_village_depopulation_pressure.body": "Большинство молодых соседей уже уехали на заработки. Оставшимся всё труднее поддерживать прежний уклад жизни.",
+      "event.migration_return_for_family_care.choice.return_early_for_care.label": "Вернуться раньше срока",
+      "event.migration_return_for_family_care.choice.send_money_instead.label": "Отправлять деньги, не возвращаясь",
+      "event.migration_return_for_family_care.title": "Возвращение ради ухода за родителем",
+      "event.migration_return_for_family_care.body": "Один из родителей серьёзно болеет, и требуется помощь дома. Решение прервать работу за границей ложится на тебя.",
+      "event.migration_border_region_commute.title": "Трудовая миграция через границу",
+      "event.migration_border_region_commute.body": "Работа по другую сторону границы оказывается выгоднее местной. Еженедельные поездки становятся частью привычного распорядка.",
+      "event.migration_resettlement_assistance_program.title": "Программа помощи переселенцам",
+      "event.migration_resettlement_assistance_program.body": "Местная программа предлагает помощь с жильём и языковыми курсами. Участие требует времени, но заметно облегчает обустройство.",
+      "event.migration_informal_remittance_network_risk.choice.use_informal_channel.label": "Использовать неформальный канал",
+      "event.migration_informal_remittance_network_risk.choice.use_bank_transfer.label": "Перевести через банк",
+      "event.migration_informal_remittance_network_risk.title": "Неформальный канал денежных переводов",
+      "event.migration_informal_remittance_network_risk.body": "Банковский перевод домой обходится дороже, чем неформальный посредник. Выбор экономит деньги, но убирает гарантии.",
+      "event.migration_urban_return_after_failed_venture.title": "Возвращение после неудачи в городе",
+      "event.migration_urban_return_after_failed_venture.body": "Дело, затеянное в городе, не задалось. Возвращение домой означает признать это перед семьёй и начать заново с меньшими средствами.",
+      "event.migration_cross_border_trade_livelihood.title": "Заработок на приграничной торговле",
+      "event.migration_cross_border_trade_livelihood.body": "Разница в ценах по разные стороны границы открывает постоянный источник дохода — перевозка товаров туда и обратно становится регулярным делом.",
+      "event.migration_asylum_application.title": "Заявление о предоставлении убежища",
+      "event.migration_asylum_application.body": "Формальное заявление о предоставлении убежища подано, но решение по нему может растянуться на годы неопределённости.",
+      "event.migration_language_barrier_employment.title": "Языковой барьер на работе",
+      "event.migration_language_barrier_employment.body": "Слабое знание местного языка ограничивает выбор работы за границей — приходится соглашаться на менее квалифицированные позиции."
+    },
+    "en": {
+      "event.migration_rural_to_urban_move.choice.move_alone.label": "Move alone",
+      "event.migration_rural_to_urban_move.choice.move_with_family.label": "Move with the family",
+      "event.migration_rural_to_urban_move.choice.stay_in_village.label": "Stay in the village",
+      "event.migration_rural_to_urban_move.title": "Moving to the city",
+      "event.migration_rural_to_urban_move.body": "Work or study calls you to the city. The move promises more opportunity, but it means breaking with the familiar rural routine.",
+      "event.migration_urban_housing_shock.choice.find_cheaper_housing.label": "Look for cheaper housing",
+      "event.migration_urban_housing_shock.choice.accept_the_cost_housing.label": "Accept the cost as it is",
+      "event.migration_urban_housing_shock.title": "Housing in the city",
+      "event.migration_urban_housing_shock.body": "Rented housing in the city costs noticeably more than expected. The first months' budget goes almost entirely to rent.",
+      "event.migration_overseas_labor_contract.choice.accept_contract.label": "Accept the contract",
+      "event.migration_overseas_labor_contract.choice.decline_contract.label": "Decline",
+      "event.migration_overseas_labor_contract.choice.informal_route.label": "Travel through an informal, unregulated route",
+      "event.migration_overseas_labor_contract.title": "A labor contract abroad",
+      "event.migration_overseas_labor_contract.body": "An agency offers a contract to work abroad — the pay is higher than at home, but the price is years of separation from family.",
+      "event.migration_remittances_sent_home.title": "Sending remittances home",
+      "event.migration_remittances_sent_home.body": "Part of the pay earned abroad is sent home in regular transfers. The family back home needs less, but your own savings grow more slowly.",
+      "event.migration_homesickness_abroad.choice.push_through.label": "Push through and keep working",
+      "event.migration_homesickness_abroad.choice.return_early.label": "Return home early",
+      "event.migration_homesickness_abroad.choice.seek_community_support.label": "Seek out a community of fellow migrants",
+      "event.migration_homesickness_abroad.title": "Homesickness abroad",
+      "event.migration_homesickness_abroad.body": "The separation from family and the unfamiliar surroundings start to weigh. Daily life abroad feels harder than planned.",
+      "event.migration_return_after_years_abroad.title": "Return after years abroad",
+      "event.migration_return_after_years_abroad.body": "After several years working abroad, you return home. Savings and experience travel with you, but home is slightly different than you remember it.",
+      "event.migration_reintegration_difficulty.title": "Difficulty reintegrating",
+      "event.migration_reintegration_difficulty.body": "Habits and expectations picked up abroad do not always match life back home. Readjusting takes longer than it seemed it would.",
+      "event.migration_family_left_behind.title": "The family left behind",
+      "event.migration_family_left_behind.body": "Children or elderly relatives are left in the care of relatives while you work abroad. The caregiving is shared among those who stayed home.",
+      "event.migration_undocumented_border_crossing.choice.cross_undocumented.label": "Cross without documents",
+      "event.migration_undocumented_border_crossing.choice.wait_for_papers.label": "Wait for the paperwork",
+      "event.migration_undocumented_border_crossing.title": "Crossing the border without documents",
+      "event.migration_undocumented_border_crossing.body": "The documents needed for legal work abroad are unavailable or too costly. The decision whether to cross without them is yours.",
+      "event.migration_labor_exploitation_abroad.choice.endure_conditions.label": "Endure the conditions for the pay",
+      "event.migration_labor_exploitation_abroad.choice.seek_different_employer.label": "Look for a different employer",
+      "event.migration_labor_exploitation_abroad.title": "Exploitative conditions abroad",
+      "event.migration_labor_exploitation_abroad.body": "The employer abroad withholds wages and demands more hours than agreed. A migrant worker has little room to complain.",
+      "event.migration_legal_status_regularization.choice.pursue_regularization.label": "Pursue regularization",
+      "event.migration_legal_status_regularization.choice.skip_regularization.label": "Skip it for now",
+      "event.migration_legal_status_regularization.title": "Regularizing legal status",
+      "event.migration_legal_status_regularization.body": "A chance comes up to regularize legal residency abroad. The process costs money and time but lowers future risk.",
+      "event.migration_seasonal_labor.title": "Seasonal labor migration",
+      "event.migration_seasonal_labor.body": "Every year, several months are spent away doing seasonal work — harvest labor or construction in another region.",
+      "event.migration_internal_displacement_resettlement.choice.formal_resettlement.label": "Apply for formal refugee status",
+      "event.migration_internal_displacement_resettlement.choice.informal_resettlement.label": "Resettle informally, without papers",
+      "event.migration_internal_displacement_resettlement.choice.wait_to_return.label": "Wait for a chance to return",
+      "event.migration_internal_displacement_resettlement.title": "Formal refugee resettlement",
+      "event.migration_internal_displacement_resettlement.body": "After fleeing violence, the question becomes what comes next — return at the first chance, or formally resettle in another country or region.",
+      "event.migration_host_community_tension.title": "Relations with the host community",
+      "event.migration_host_community_tension.body": "Life in the new place means building relations with locals — sometimes wary, sometimes open. Standing shifts gradually over time.",
+      "event.migration_flood_drought_permanent_relocation.choice.relocate_to_city.label": "Relocate to the city",
+      "event.migration_flood_drought_permanent_relocation.choice.relocate_rural.label": "Relocate to another rural area",
+      "event.migration_flood_drought_permanent_relocation.choice.split_the_family.label": "Split the family up among relatives",
+      "event.migration_flood_drought_permanent_relocation.title": "Permanent relocation after losing the home",
+      "event.migration_flood_drought_permanent_relocation.body": "The land is no longer fit to live on after the flood or drought. The family decides where to resettle permanently.",
+      "event.migration_remote_work_opportunity.title": "Remote work for a foreign employer",
+      "event.migration_remote_work_opportunity.body": "A chance appears to work remotely for a client in another country without leaving the home region. The pay is above the local average.",
+      "event.migration_marriage_migration.title": "Relocating for a spouse",
+      "event.migration_marriage_migration.body": "After the marriage, you relocate to the spouse's region or country. Old ties are left behind, new ones still have to be built.",
+      "event.migration_student_migration_abroad.choice.go_abroad_study.label": "Go study abroad",
+      "event.migration_student_migration_abroad.choice.stay_local_education.label": "Stay and study locally",
+      "event.migration_student_migration_abroad.title": "Studying abroad",
+      "event.migration_student_migration_abroad.body": "A chance comes up to continue studies abroad — on a scholarship or a loan. The decision takes money and a willingness to leave for years.",
+      "event.migration_chain_family_sponsorship.title": "Sponsoring a relative",
+      "event.migration_chain_family_sponsorship.body": "Once settled abroad, you help arrange the move for another family member. The process costs money but shortens the separation.",
+      "event.migration_remittance_dependency_strain.choice.diversify_household_income.label": "Look for another income source for the family",
+      "event.migration_remittance_dependency_strain.choice.keep_relying_on_transfers.label": "Keep relying on the transfers",
+      "event.migration_remittance_dependency_strain.title": "The family's dependency on remittances",
+      "event.migration_remittance_dependency_strain.body": "Over time, the household comes to rely more on transfers from abroad than on its own income. Any disruption to those transfers is now felt more sharply.",
+      "event.migration_return_migration_investment.choice.invest_business.label": "Invest in a business of your own",
+      "event.migration_return_migration_investment.choice.invest_land.label": "Buy land",
+      "event.migration_return_migration_investment.choice.save_conservatively.label": "Keep the savings for later",
+      "event.migration_return_migration_investment.title": "Investing savings after returning",
+      "event.migration_return_migration_investment.body": "Savings brought back from abroad can be invested at home — in a business, land, or children's education. The decision shapes life after the return.",
+      "event.migration_urban_slum_settlement.choice.settle_in_informal_district.label": "Settle in the informal district",
+      "event.migration_urban_slum_settlement.choice.pay_more_for_safer_area.label": "Pay more to live in a safer area",
+      "event.migration_urban_slum_settlement.title": "Settling in an informal urban district",
+      "event.migration_urban_slum_settlement.body": "Affordable housing in the city is only available in an informal settlement without reliable water or power. Moving there is a matter of price, not preference.",
+      "event.migration_cross_border_family_separation.choice.pursue_family_reunification.label": "Pursue family reunification",
+      "event.migration_cross_border_family_separation.choice.accept_the_separation.label": "Accept the separation as it stands",
+      "event.migration_cross_border_family_separation.title": "Family split by a border",
+      "event.migration_cross_border_family_separation.body": "Visa restrictions keep the whole family from living in one country. Reunions become rare and come at real cost.",
+      "event.migration_citizenship_naturalization.choice.apply_citizenship.label": "Apply for citizenship",
+      "event.migration_citizenship_naturalization.choice.keep_refugee_status.label": "Keep refugee status for now",
+      "event.migration_citizenship_naturalization.title": "Applying for citizenship",
+      "event.migration_citizenship_naturalization.body": "After several years of residence, the right to apply for citizenship of the host country opens up. The process is long but settles legal status for good.",
+      "event.migration_deportation_risk.choice.seek_legal_aid.label": "Seek legal aid",
+      "event.migration_deportation_risk.choice.remain_in_hiding.label": "Remain, staying out of sight",
+      "event.migration_deportation_risk.choice.voluntary_return.label": "Return voluntarily",
+      "event.migration_deportation_risk.title": "Risk of deportation",
+      "event.migration_deportation_risk.body": "Expired documents or changed rules put the right to stay in the country in question. A course of action has to be chosen.",
+      "event.migration_village_depopulation_pressure.title": "The village emptying out",
+      "event.migration_village_depopulation_pressure.body": "Most of the younger neighbors have already left for work elsewhere. Those who remain find it harder to keep up the old way of life.",
+      "event.migration_return_for_family_care.choice.return_early_for_care.label": "Return home early",
+      "event.migration_return_for_family_care.choice.send_money_instead.label": "Send money instead of returning",
+      "event.migration_return_for_family_care.title": "Returning to care for a parent",
+      "event.migration_return_for_family_care.body": "A parent falls seriously ill and needs help at home. The decision to cut short work abroad falls to you.",
+      "event.migration_border_region_commute.title": "Cross-border commuting for work",
+      "event.migration_border_region_commute.body": "Work on the other side of the border pays better than anything local. Weekly trips across it become part of the routine.",
+      "event.migration_resettlement_assistance_program.title": "A resettlement assistance program",
+      "event.migration_resettlement_assistance_program.body": "A local program offers help with housing and language classes. Taking part costs time but noticeably eases getting settled.",
+      "event.migration_informal_remittance_network_risk.choice.use_informal_channel.label": "Use the informal channel",
+      "event.migration_informal_remittance_network_risk.choice.use_bank_transfer.label": "Transfer through the bank",
+      "event.migration_informal_remittance_network_risk.title": "An informal remittance channel",
+      "event.migration_informal_remittance_network_risk.body": "A bank transfer home costs more than an informal go-between. The choice saves money but removes any guarantee.",
+      "event.migration_urban_return_after_failed_venture.title": "Returning after a failed venture in the city",
+      "event.migration_urban_return_after_failed_venture.body": "The venture started in the city did not work out. Returning home means admitting it to the family and starting over with less.",
+      "event.migration_cross_border_trade_livelihood.title": "A livelihood from cross-border trade",
+      "event.migration_cross_border_trade_livelihood.body": "The price gap across the border opens a steady source of income — hauling goods back and forth becomes a regular trade.",
+      "event.migration_asylum_application.title": "An asylum application",
+      "event.migration_asylum_application.body": "A formal asylum application has been filed, but the decision can stretch into years of uncertainty.",
+      "event.migration_language_barrier_employment.title": "A language barrier at work",
+      "event.migration_language_barrier_employment.body": "Limited command of the local language narrows job options abroad — lower-skilled positions are what remain on offer."
+    }
+  }
+}

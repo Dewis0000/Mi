@@ -1,0 +1,1192 @@
+{
+  "events": [
+    {
+      "id": "death_parent_sudden_illness",
+      "category": "death",
+      "severity": "major",
+      "ageGate": [
+        0,
+        40
+      ],
+      "baseWeight": 1.3,
+      "titleKey": "event.death_parent_sudden_illness.title",
+      "bodyKey": "event.death_parent_sudden_illness.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "take_time_to_grieve",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": -6,
+            "wealth": -8
+          },
+          "mortalityDelta": 1.15,
+          "mortalityYears": 2
+        },
+        {
+          "id": "return_to_work_quickly_parent",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -14,
+            "wealth": -2
+          },
+          "mortalityDelta": 1.2,
+          "mortalityYears": 1
+        }
+      ]
+    },
+    {
+      "id": "death_parent_chronic_illness",
+      "category": "death",
+      "severity": "major",
+      "ageGate": [
+        10,
+        50
+      ],
+      "baseWeight": 1.1,
+      "titleKey": "event.death_parent_chronic_illness.title",
+      "bodyKey": "event.death_parent_chronic_illness.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "settle_remaining_care_debts",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -10,
+            "bonds": -6
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "let_debts_lapse",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -3,
+            "standing": -4,
+            "bonds": -8
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    },
+    {
+      "id": "death_parent_workplace_accident",
+      "category": "death",
+      "severity": "major",
+      "ageGate": [
+        0,
+        40
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.death_parent_workplace_accident.title",
+      "bodyKey": "event.death_parent_workplace_accident.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "pursue_compensation_claim",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -4,
+            "bonds": -10
+          },
+          "mortalityDelta": 1.15,
+          "mortalityYears": 2
+        },
+        {
+          "id": "accept_the_loss_parent",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -12,
+            "bonds": -12,
+            "standing": -2
+          },
+          "mortalityDelta": 1.15,
+          "mortalityYears": 2
+        }
+      ]
+    },
+    {
+      "id": "death_parent_old_age",
+      "category": "death",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        60
+      ],
+      "baseWeight": 1.4,
+      "titleKey": "event.death_parent_old_age.title",
+      "bodyKey": "event.death_parent_old_age.body",
+      "once": true,
+      "effects": {
+        "bonds": -8,
+        "wealth": 2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "death_parent_funeral_costs",
+      "category": "death",
+      "severity": "notable",
+      "ageGate": [
+        15,
+        60
+      ],
+      "baseWeight": 1.2,
+      "titleKey": "event.death_parent_funeral_costs.title",
+      "bodyKey": "event.death_parent_funeral_costs.body",
+      "choices": [
+        {
+          "id": "modest_ceremony",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -3,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "traditional_ceremony",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -9,
+            "standing": 4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "community_contribution",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -2,
+            "bonds": 3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "death_parent_inheritance_dispute",
+      "category": "death",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        60
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.death_parent_inheritance_dispute.title",
+      "bodyKey": "event.death_parent_inheritance_dispute.body",
+      "choices": [
+        {
+          "id": "negotiate_inheritance",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 2,
+            "bonds": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "pursue_legal_claim",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -5,
+            "bonds": -6
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "cede_claim_for_peace",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -4,
+            "bonds": 5
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "death_sibling_childhood_illness",
+      "category": "death",
+      "severity": "major",
+      "ageGate": [
+        0,
+        17
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.death_sibling_childhood_illness.title",
+      "bodyKey": "event.death_sibling_childhood_illness.body",
+      "once": true,
+      "effects": {
+        "bonds": -10,
+        "health": -2
+      },
+      "mortalityDelta": 1.1,
+      "mortalityYears": 1
+    },
+    {
+      "id": "death_sibling_accident",
+      "category": "death",
+      "severity": "major",
+      "ageGate": [
+        0,
+        55
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.death_sibling_accident.title",
+      "bodyKey": "event.death_sibling_accident.body",
+      "once": true,
+      "effects": {
+        "bonds": -10
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "death_sibling_amid_violence",
+      "category": "death",
+      "severity": "major",
+      "ageGate": [
+        15,
+        55
+      ],
+      "weightBy": {
+        "conflictIndex": 1.4,
+        "homicideRate": 0.07
+      },
+      "baseWeight": 0.8,
+      "titleKey": "event.death_sibling_amid_violence.title",
+      "bodyKey": "event.death_sibling_amid_violence.body",
+      "effects": {
+        "bonds": -12,
+        "health": -3
+      },
+      "mortalityDelta": 1.1
+    },
+    {
+      "id": "death_grandparent_old_age",
+      "category": "death",
+      "severity": "minor",
+      "ageGate": [
+        0,
+        30
+      ],
+      "baseWeight": 1.3,
+      "titleKey": "event.death_grandparent_old_age.title",
+      "bodyKey": "event.death_grandparent_old_age.body",
+      "once": true,
+      "effects": {
+        "bonds": -5
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "death_grandparent_caregiver_role",
+      "category": "death",
+      "severity": "notable",
+      "ageGate": [
+        5,
+        25
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.death_grandparent_caregiver_role.title",
+      "bodyKey": "event.death_grandparent_caregiver_role.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "relative_moves_in_help",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": -2,
+            "wealth": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "older_sibling_more_housework",
+          "riskLabel": "рискованно",
+          "effects": {
+            "education": -5,
+            "bonds": -3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "death_close_friend_illness",
+      "category": "death",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        80
+      ],
+      "baseWeight": 1.2,
+      "titleKey": "event.death_close_friend_illness.title",
+      "bodyKey": "event.death_close_friend_illness.body",
+      "choices": [
+        {
+          "id": "attend_the_funeral",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": -3,
+            "wealth": -1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "keep_distance_from_grief",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "bonds": -7
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "death_close_friend_accident",
+      "category": "death",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        80
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.death_close_friend_accident.title",
+      "bodyKey": "event.death_close_friend_accident.body",
+      "effects": {
+        "bonds": -6
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "death_childhood_friend_lost_touch",
+      "category": "death",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        80
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.death_childhood_friend_lost_touch.title",
+      "bodyKey": "event.death_childhood_friend_lost_touch.body",
+      "effects": {
+        "bonds": -2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "death_community_elder",
+      "category": "death",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        80
+      ],
+      "baseWeight": 1.1,
+      "titleKey": "event.death_community_elder.title",
+      "bodyKey": "event.death_community_elder.body",
+      "effects": {
+        "bonds": -2,
+        "standing": -1
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "death_neighbor_sudden",
+      "category": "death",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        80
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.death_neighbor_sudden.title",
+      "bodyKey": "event.death_neighbor_sudden.body",
+      "effects": {
+        "bonds": 2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "death_coworker_workplace_accident",
+      "category": "death",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        65
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.death_coworker_workplace_accident.title",
+      "bodyKey": "event.death_coworker_workplace_accident.body",
+      "choices": [
+        {
+          "id": "push_for_safety_changes",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": -2,
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "say_nothing_coworker",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "death_mentor_teacher",
+      "category": "death",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        40
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.death_mentor_teacher.title",
+      "bodyKey": "event.death_mentor_teacher.body",
+      "effects": {
+        "bonds": -4
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "death_sibling_in_law",
+      "category": "death",
+      "severity": "minor",
+      "ageGate": [
+        25,
+        70
+      ],
+      "requires": {
+        "traits": [
+          "married"
+        ]
+      },
+      "baseWeight": 0.8,
+      "titleKey": "event.death_sibling_in_law.title",
+      "bodyKey": "event.death_sibling_in_law.body",
+      "choices": [
+        {
+          "id": "help_with_their_family",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -4,
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "limit_involvement",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "bonds": -5
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "death_spouse_parent",
+      "category": "death",
+      "severity": "notable",
+      "ageGate": [
+        25,
+        70
+      ],
+      "requires": {
+        "traits": [
+          "married"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.death_spouse_parent.title",
+      "bodyKey": "event.death_spouse_parent.body",
+      "effects": {
+        "bonds": 2,
+        "wealth": -4
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "death_relative_child",
+      "category": "death",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        70
+      ],
+      "baseWeight": 0.7,
+      "titleKey": "event.death_relative_child.title",
+      "bodyKey": "event.death_relative_child.body",
+      "choices": [
+        {
+          "id": "support_grieving_parents",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": -2,
+            "wealth": -1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "keep_distance_relative_child",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "bonds": -6
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "death_community_multiple_losses",
+      "category": "death",
+      "severity": "major",
+      "ageGate": [
+        0,
+        80
+      ],
+      "weightBy": {
+        "conflictIndex": 1.3,
+        "hazardTag": {
+          "quake": 1.3,
+          "flood": 1.2
+        }
+      },
+      "baseWeight": 0.8,
+      "titleKey": "event.death_community_multiple_losses.title",
+      "bodyKey": "event.death_community_multiple_losses.body",
+      "choices": [
+        {
+          "id": "take_part_in_collective_mourning",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 1,
+            "standing": 2
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "withdraw_from_community",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -8
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    },
+    {
+      "id": "death_funeral_rites_participation",
+      "category": "death",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        80
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.death_funeral_rites_participation.title",
+      "bodyKey": "event.death_funeral_rites_participation.body",
+      "choices": [
+        {
+          "id": "fulfill_full_obligation",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -5,
+            "bonds": 4,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "minimal_participation",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -1,
+            "bonds": -1,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "death_mourning_period_economic_pause",
+      "category": "death",
+      "severity": "minor",
+      "ageGate": [
+        15,
+        70
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.death_mourning_period_economic_pause.title",
+      "bodyKey": "event.death_mourning_period_economic_pause.body",
+      "choices": [
+        {
+          "id": "observe_full_mourning",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -6,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "return_to_work_early_mourning",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -1,
+            "standing": -3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "death_surviving_parent_remarries",
+      "category": "death",
+      "severity": "notable",
+      "ageGate": [
+        5,
+        20
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.death_surviving_parent_remarries.title",
+      "bodyKey": "event.death_surviving_parent_remarries.body",
+      "effects": {
+        "bonds": -2,
+        "wealth": 2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "death_orphaned_sibling_responsibility",
+      "category": "death",
+      "severity": "major",
+      "ageGate": [
+        10,
+        25
+      ],
+      "baseWeight": 0.6,
+      "titleKey": "event.death_orphaned_sibling_responsibility.title",
+      "bodyKey": "event.death_orphaned_sibling_responsibility.body",
+      "choices": [
+        {
+          "id": "take_on_responsibility",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": 4,
+            "education": -5,
+            "wealth": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "extended_family_takes_over",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 2,
+            "standing": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "split_among_relatives",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "bonds": -4
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "death_estate_debts_inherited",
+      "category": "death",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        60
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.death_estate_debts_inherited.title",
+      "bodyKey": "event.death_estate_debts_inherited.body",
+      "choices": [
+        {
+          "id": "accept_inheritance_with_debt",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -6
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "renounce_inheritance",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 1,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "death_family_business_succession",
+      "category": "death",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        55
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.death_family_business_succession.title",
+      "bodyKey": "event.death_family_business_succession.body",
+      "choices": [
+        {
+          "id": "take_over_family_business",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 3,
+            "education": -2,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "sell_liquidate",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 6,
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "hand_to_sibling",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "death_grief_support_seeking",
+      "category": "death",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        80
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.death_grief_support_seeking.title",
+      "bodyKey": "event.death_grief_support_seeking.body",
+      "choices": [
+        {
+          "id": "seek_community_religious_support",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 4,
+            "health": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "seek_counseling",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "health": 2,
+            "wealth": -2
+          },
+          "mortalityDelta": 1,
+          "requires": {
+            "urban": true
+          }
+        },
+        {
+          "id": "cope_alone",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -2,
+            "bonds": -1
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    },
+    {
+      "id": "death_public_figure_mourning",
+      "category": "death",
+      "severity": "minor",
+      "ageGate": [
+        5,
+        80
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.death_public_figure_mourning.title",
+      "bodyKey": "event.death_public_figure_mourning.body",
+      "effects": {
+        "standing": 1,
+        "bonds": 1
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "death_friend_migration_abroad",
+      "category": "death",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        60
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.death_friend_migration_abroad.title",
+      "bodyKey": "event.death_friend_migration_abroad.body",
+      "effects": {
+        "bonds": -4
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "death_sibling_maternal_complication",
+      "category": "death",
+      "severity": "major",
+      "ageGate": [
+        10,
+        55
+      ],
+      "baseWeight": 0.6,
+      "titleKey": "event.death_sibling_maternal_complication.title",
+      "bodyKey": "event.death_sibling_maternal_complication.body",
+      "effects": {
+        "bonds": -10,
+        "wealth": -2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "death_household_earner_sibling",
+      "category": "death",
+      "severity": "major",
+      "ageGate": [
+        15,
+        55
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.death_household_earner_sibling.title",
+      "bodyKey": "event.death_household_earner_sibling.body",
+      "choices": [
+        {
+          "id": "take_on_extra_work",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -4,
+            "health": -2,
+            "bonds": -8
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "seek_community_support_earner",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -7,
+            "bonds": -4
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "take_on_debt_earner",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -2,
+            "standing": -3,
+            "bonds": -8
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    },
+    {
+      "id": "death_caregiver_exhaustion",
+      "category": "death",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        60
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.death_caregiver_exhaustion.title",
+      "bodyKey": "event.death_caregiver_exhaustion.body",
+      "choices": [
+        {
+          "id": "continue_solo_caregiving",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -7,
+            "bonds": 3
+          },
+          "mortalityDelta": 1.2
+        },
+        {
+          "id": "seek_paid_help_caregiving",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "health": -1,
+            "wealth": -8
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "share_burden_with_relatives",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": -2,
+            "bonds": -1
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    }
+  ],
+  "i18n": {
+    "ru": {
+      "event.death_parent_sudden_illness.choice.take_time_to_grieve.label": "Взять время на траур",
+      "event.death_parent_sudden_illness.choice.return_to_work_quickly_parent.label": "Быстро вернуться к работе",
+      "event.death_parent_sudden_illness.title": "Внезапная болезнь родителя",
+      "event.death_parent_sudden_illness.body": "Один из родителей умирает после короткой, но тяжёлой болезни. Семья теряет не только близкого человека, но и часть дохода.",
+      "event.death_parent_chronic_illness.choice.settle_remaining_care_debts.label": "Погасить долги за лечение",
+      "event.death_parent_chronic_illness.choice.let_debts_lapse.label": "Оставить долги непогашенными",
+      "event.death_parent_chronic_illness.title": "Смерть родителя после долгой болезни",
+      "event.death_parent_chronic_illness.body": "Родитель умирает после долгой болезни, уход за которым уже истощил сбережения семьи. Горе приходит вместе с финансовой пустотой.",
+      "event.death_parent_workplace_accident.choice.pursue_compensation_claim.label": "Добиваться компенсации от работодателя",
+      "event.death_parent_workplace_accident.choice.accept_the_loss_parent.label": "Принять потерю без разбирательств",
+      "event.death_parent_workplace_accident.title": "Смерть родителя на производстве",
+      "event.death_parent_workplace_accident.body": "Родитель погибает в результате несчастного случая на работе. Семья резко теряет основной источник дохода.",
+      "event.death_parent_old_age.title": "Смерть родителя в старости",
+      "event.death_parent_old_age.body": "Родитель умирает в преклонном возрасте, после долгой жизни. Утрата ожидаема, но всё равно тяжела.",
+      "event.death_parent_funeral_costs.choice.modest_ceremony.label": "Скромная церемония",
+      "event.death_parent_funeral_costs.choice.traditional_ceremony.label": "Полная традиционная церемония",
+      "event.death_parent_funeral_costs.choice.community_contribution.label": "Принять вклад общины",
+      "event.death_parent_funeral_costs.title": "Расходы на похороны родителя",
+      "event.death_parent_funeral_costs.body": "Похороны родителя нужно организовать и оплатить по принятому обычаю. Расходы ложатся на всю семью.",
+      "event.death_parent_inheritance_dispute.choice.negotiate_inheritance.label": "Договориться",
+      "event.death_parent_inheritance_dispute.choice.pursue_legal_claim.label": "Подать в суд",
+      "event.death_parent_inheritance_dispute.choice.cede_claim_for_peace.label": "Уступить ради мира в семье",
+      "event.death_parent_inheritance_dispute.title": "Спор о наследстве родителя",
+      "event.death_parent_inheritance_dispute.body": "После смерти родителя братья и сёстры спорят о разделе наследства. Как решить вопрос, зависит от готовности идти на уступки.",
+      "event.death_sibling_childhood_illness.title": "Смерть брата или сестры в детстве",
+      "event.death_sibling_childhood_illness.body": "Брат или сестра умирает от болезни в детском возрасте. Утрата меняет атмосферу в доме на долгое время.",
+      "event.death_sibling_accident.title": "Смерть брата или сестры в результате несчастного случая",
+      "event.death_sibling_accident.body": "Брат или сестра погибает в результате несчастного случая. Семья проходит через внезапное и острое горе.",
+      "event.death_sibling_amid_violence.title": "Смерть брата или сестры в обстановке насилия",
+      "event.death_sibling_amid_violence.body": "Брат или сестра погибает в обстановке вооружённого насилия в регионе. Горе здесь переплетается со страхом за остальных близких.",
+      "event.death_grandparent_old_age.title": "Смерть деда или бабушки",
+      "event.death_grandparent_old_age.body": "Дед или бабушка умирают в старости. Роль, которую они играли в семье, теперь переходит к другим.",
+      "event.death_grandparent_caregiver_role.choice.relative_moves_in_help.label": "Пригласить родственника на помощь",
+      "event.death_grandparent_caregiver_role.choice.older_sibling_more_housework.label": "Переложить больше обязанностей на старших детей",
+      "event.death_grandparent_caregiver_role.title": "Смерть бабушки или дедушки, которые заботились о доме",
+      "event.death_grandparent_caregiver_role.body": "Дед или бабушка, которые присматривали за детьми и домом, умирают. Семье приходится заново распределять эти обязанности.",
+      "event.death_close_friend_illness.choice.attend_the_funeral.label": "Проводить друга в последний путь",
+      "event.death_close_friend_illness.choice.keep_distance_from_grief.label": "Держаться в стороне от горя",
+      "event.death_close_friend_illness.title": "Смерть близкого друга от болезни",
+      "event.death_close_friend_illness.body": "Близкий друг умирает после болезни. Круг людей, на которых можно опереться, становится уже.",
+      "event.death_close_friend_accident.title": "Смерть близкого друга в результате несчастного случая",
+      "event.death_close_friend_accident.body": "Близкий друг погибает в результате несчастного случая. Новость застаёт врасплох и надолго меняет настроение.",
+      "event.death_childhood_friend_lost_touch.title": "Весть о смерти друга детства",
+      "event.death_childhood_friend_lost_touch.body": "Приходит весть о смерти друга детства, с которым связь давно потерялась. Новость вызывает тихую, отложенную грусть.",
+      "event.death_community_elder.title": "Смерть уважаемого старейшины",
+      "event.death_community_elder.body": "Уважаемый старейшина или глава общины умирает. Вопрос о том, кто займёт его роль, волнует всю округу.",
+      "event.death_neighbor_sudden.title": "Внезапная смерть соседа",
+      "event.death_neighbor_sudden.body": "Соседа внезапно не стало. Его семье помогают всей улицей — с похоронами и в первые недели после.",
+      "event.death_coworker_workplace_accident.choice.push_for_safety_changes.label": "Добиваться улучшения условий труда",
+      "event.death_coworker_workplace_accident.choice.say_nothing_coworker.label": "Промолчать",
+      "event.death_coworker_workplace_accident.title": "Смерть коллеги на производстве",
+      "event.death_coworker_workplace_accident.body": "Коллега погибает в результате несчастного случая на работе. Вопрос о безопасности труда встаёт перед всем коллективом.",
+      "event.death_mentor_teacher.title": "Смерть наставника или учителя",
+      "event.death_mentor_teacher.body": "Учитель или наставник, во многом определивший твой путь, умирает. Благодарность и утрата соседствуют в равной мере.",
+      "event.death_sibling_in_law.choice.help_with_their_family.label": "Помочь их семье",
+      "event.death_sibling_in_law.choice.limit_involvement.label": "Ограничить своё участие",
+      "event.death_sibling_in_law.title": "Смерть родственника супруга",
+      "event.death_sibling_in_law.body": "Брат или сестра супруга умирает. Обязательства перед их семьёй — моральные и материальные — переходят на вас обоих.",
+      "event.death_spouse_parent.title": "Смерть родителя супруга",
+      "event.death_spouse_parent.body": "Родитель супруга умирает. Ты поддерживаешь партнёра в горе и помогаешь с расходами на похороны.",
+      "event.death_relative_child.choice.support_grieving_parents.label": "Поддержать родителей ребёнка",
+      "event.death_relative_child.choice.keep_distance_relative_child.label": "Держаться на расстоянии",
+      "event.death_relative_child.title": "Смерть племянника или племянницы",
+      "event.death_relative_child.body": "Племянник или племянница умирает от болезни или несчастного случая. Горе расходится по всей большой семье.",
+      "event.death_community_multiple_losses.choice.take_part_in_collective_mourning.label": "Участвовать в общем трауре и восстановлении",
+      "event.death_community_multiple_losses.choice.withdraw_from_community.label": "Отстраниться",
+      "event.death_community_multiple_losses.title": "Община теряет сразу нескольких человек",
+      "event.death_community_multiple_losses.body": "Несчастье — стихийное или связанное с насилием — уносит сразу нескольких жителей общины. Траур становится общим делом для всей округи.",
+      "event.death_funeral_rites_participation.choice.fulfill_full_obligation.label": "Выполнить обряд полностью",
+      "event.death_funeral_rites_participation.choice.minimal_participation.label": "Ограничиться минимальным участием",
+      "event.death_funeral_rites_participation.title": "Участие в похоронных обрядах",
+      "event.death_funeral_rites_participation.body": "Принятые в общине похоронные обряды требуют времени, присутствия и денежного вклада. Участие в них — вопрос не только скорби, но и обязательства.",
+      "event.death_mourning_period_economic_pause.choice.observe_full_mourning.label": "Соблюсти траур полностью",
+      "event.death_mourning_period_economic_pause.choice.return_to_work_early_mourning.label": "Вернуться к работе раньше срока",
+      "event.death_mourning_period_economic_pause.title": "Траурный период и остановка дел",
+      "event.death_mourning_period_economic_pause.body": "Принятый обычаем траурный период не позволяет работать или торговать в полную силу. Доход семьи на это время снижается.",
+      "event.death_surviving_parent_remarries.title": "Оставшийся родитель вступает в новый брак",
+      "event.death_surviving_parent_remarries.body": "После смерти одного из родителей другой через время решает вступить в новый брак. Состав и уклад семьи меняются заново.",
+      "event.death_orphaned_sibling_responsibility.choice.take_on_responsibility.label": "Взять на себя заботу о семье",
+      "event.death_orphaned_sibling_responsibility.choice.extended_family_takes_over.label": "Передать заботу родственникам",
+      "event.death_orphaned_sibling_responsibility.choice.split_among_relatives.label": "Разделить детей между родственниками",
+      "event.death_orphaned_sibling_responsibility.title": "Ответственность за младших после потери родителей",
+      "event.death_orphaned_sibling_responsibility.body": "Без обоих родителей забота о младших братьях и сёстрах должна лечь на кого-то из семьи. Решение о том, как именно, принимается сейчас.",
+      "event.death_estate_debts_inherited.choice.accept_inheritance_with_debt.label": "Принять наследство вместе с долгами",
+      "event.death_estate_debts_inherited.choice.renounce_inheritance.label": "Отказаться от наследства целиком",
+      "event.death_estate_debts_inherited.title": "Долги, оставшиеся после родителя",
+      "event.death_estate_debts_inherited.body": "Вместе с небольшим наследством обнаруживаются и непогашенные долги родителя. Итоговый баланс оказывается отрицательным.",
+      "event.death_family_business_succession.choice.take_over_family_business.label": "Взять дело на себя",
+      "event.death_family_business_succession.choice.sell_liquidate.label": "Продать или ликвидировать",
+      "event.death_family_business_succession.choice.hand_to_sibling.label": "Передать брату или сестре",
+      "event.death_family_business_succession.title": "Судьба семейного дела после смерти родителя",
+      "event.death_family_business_succession.body": "После смерти родителя нужно решить судьбу семейного дела или хозяйства — продолжать его, продать или передать другому.",
+      "event.death_grief_support_seeking.choice.seek_community_religious_support.label": "Обратиться за поддержкой общины",
+      "event.death_grief_support_seeking.choice.seek_counseling.label": "Обратиться к психологу",
+      "event.death_grief_support_seeking.choice.cope_alone.label": "Переживать это в одиночку",
+      "event.death_grief_support_seeking.title": "Переживание горя после утраты",
+      "event.death_grief_support_seeking.body": "После смерти близкого человека нужно найти способ справиться с горем. Разные пути требуют разного — времени, доверия, денег.",
+      "event.death_public_figure_mourning.title": "Траур по общественному деятелю",
+      "event.death_public_figure_mourning.body": "Известный в стране или общине деятель умирает, и объявляется общий траур. Повседневная жизнь на день-другой замедляется.",
+      "event.death_friend_migration_abroad.title": "Смерть друга, уехавшего на заработки",
+      "event.death_friend_migration_abroad.body": "Приходит весть, что друг, уехавший на заработки за границу, умер там. Расстояние делает горе более отстранённым, но не менее настоящим.",
+      "event.death_sibling_maternal_complication.title": "Смерть сестры от осложнений при родах",
+      "event.death_sibling_maternal_complication.body": "Сестра умирает от осложнений при родах. Утрата оставляет и горе, и заботу о новорождённом ребёнке на руках семьи.",
+      "event.death_household_earner_sibling.choice.take_on_extra_work.label": "Взять на себя дополнительную работу",
+      "event.death_household_earner_sibling.choice.seek_community_support_earner.label": "Обратиться за помощью к общине",
+      "event.death_household_earner_sibling.choice.take_on_debt_earner.label": "Взять в долг, чтобы продержаться",
+      "event.death_household_earner_sibling.title": "Смерть старшего брата или сестры, кормившего семью",
+      "event.death_household_earner_sibling.body": "Старший брат или сестра, на чьём заработке держалось хозяйство, внезапно умирает. Семье нужно быстро найти, как закрыть образовавшуюся дыру в бюджете.",
+      "event.death_caregiver_exhaustion.choice.continue_solo_caregiving.label": "Продолжать заботиться в одиночку",
+      "event.death_caregiver_exhaustion.choice.seek_paid_help_caregiving.label": "Нанять помощь по уходу",
+      "event.death_caregiver_exhaustion.choice.share_burden_with_relatives.label": "Разделить заботу с другими родственниками",
+      "event.death_caregiver_exhaustion.title": "Истощение от долгого ухода за больным родственником",
+      "event.death_caregiver_exhaustion.body": "Многомесячный уход за тяжело больным родственником отнимает силы и сбережения ещё до его смерти. Усталость накапливается незаметно."
+    },
+    "en": {
+      "event.death_parent_sudden_illness.choice.take_time_to_grieve.label": "Take time to grieve",
+      "event.death_parent_sudden_illness.choice.return_to_work_quickly_parent.label": "Return to work quickly",
+      "event.death_parent_sudden_illness.title": "A parent's sudden illness",
+      "event.death_parent_sudden_illness.body": "One of the parents dies after a short but severe illness. The family loses not only a person close to them but part of its income.",
+      "event.death_parent_chronic_illness.choice.settle_remaining_care_debts.label": "Settle the remaining care debts",
+      "event.death_parent_chronic_illness.choice.let_debts_lapse.label": "Let the debts go unpaid",
+      "event.death_parent_chronic_illness.title": "A parent's death after a long illness",
+      "event.death_parent_chronic_illness.body": "A parent dies after a long illness, the care for which had already drained the family's savings. Grief arrives alongside an empty purse.",
+      "event.death_parent_workplace_accident.choice.pursue_compensation_claim.label": "Pursue a compensation claim from the employer",
+      "event.death_parent_workplace_accident.choice.accept_the_loss_parent.label": "Accept the loss without pursuing a claim",
+      "event.death_parent_workplace_accident.title": "A parent's death in a workplace accident",
+      "event.death_parent_workplace_accident.body": "A parent dies in a workplace accident. The family abruptly loses its main source of income.",
+      "event.death_parent_old_age.title": "A parent's death in old age",
+      "event.death_parent_old_age.body": "A parent dies at an advanced age, after a long life. The loss was expected, but no less heavy for it.",
+      "event.death_parent_funeral_costs.choice.modest_ceremony.label": "A modest ceremony",
+      "event.death_parent_funeral_costs.choice.traditional_ceremony.label": "A full traditional ceremony",
+      "event.death_parent_funeral_costs.choice.community_contribution.label": "Accept a community contribution",
+      "event.death_parent_funeral_costs.title": "Paying for a parent's funeral",
+      "event.death_parent_funeral_costs.body": "The parent's funeral has to be organized and paid for according to custom. The cost falls on the whole family.",
+      "event.death_parent_inheritance_dispute.choice.negotiate_inheritance.label": "Negotiate a settlement",
+      "event.death_parent_inheritance_dispute.choice.pursue_legal_claim.label": "Pursue a legal claim",
+      "event.death_parent_inheritance_dispute.choice.cede_claim_for_peace.label": "Cede the claim to keep family peace",
+      "event.death_parent_inheritance_dispute.title": "A dispute over a parent's inheritance",
+      "event.death_parent_inheritance_dispute.body": "After the parent's death, siblings disagree over how the inheritance is divided. How it is settled depends on each side's willingness to give ground.",
+      "event.death_sibling_childhood_illness.title": "A sibling's death in childhood",
+      "event.death_sibling_childhood_illness.body": "A brother or sister dies of illness in childhood. The loss changes the atmosphere at home for a long time.",
+      "event.death_sibling_accident.title": "A sibling's death in an accident",
+      "event.death_sibling_accident.body": "A brother or sister dies in an accident. The family goes through sudden, sharp grief.",
+      "event.death_sibling_amid_violence.title": "A sibling's death amid violence",
+      "event.death_sibling_amid_violence.body": "A brother or sister dies amid armed violence in the region. Grief here is tangled together with fear for everyone else close to you.",
+      "event.death_grandparent_old_age.title": "A grandparent's death",
+      "event.death_grandparent_old_age.body": "A grandparent dies in old age. The role they played in the family now passes to others.",
+      "event.death_grandparent_caregiver_role.choice.relative_moves_in_help.label": "Have a relative move in to help",
+      "event.death_grandparent_caregiver_role.choice.older_sibling_more_housework.label": "Shift more duties onto the older children",
+      "event.death_grandparent_caregiver_role.title": "Death of a grandparent who ran the household's care",
+      "event.death_grandparent_caregiver_role.body": "The grandparent who looked after the children and the household dies. The family has to redistribute those duties.",
+      "event.death_close_friend_illness.choice.attend_the_funeral.label": "Attend the funeral",
+      "event.death_close_friend_illness.choice.keep_distance_from_grief.label": "Keep some distance from the grief",
+      "event.death_close_friend_illness.title": "A close friend's death from illness",
+      "event.death_close_friend_illness.body": "A close friend dies after an illness. The circle of people you can lean on grows narrower.",
+      "event.death_close_friend_accident.title": "A close friend's death in an accident",
+      "event.death_close_friend_accident.body": "A close friend dies in an accident. The news comes as a shock and darkens the mood for a long time.",
+      "event.death_childhood_friend_lost_touch.title": "News of a childhood friend's death",
+      "event.death_childhood_friend_lost_touch.body": "Word arrives of the death of a childhood friend whose trail had long gone cold. The news brings a quiet, delayed sadness.",
+      "event.death_community_elder.title": "Death of a respected elder",
+      "event.death_community_elder.body": "A respected elder or community leader dies. The question of who will take on that role concerns the whole area.",
+      "event.death_neighbor_sudden.title": "A neighbor's sudden death",
+      "event.death_neighbor_sudden.body": "A neighbor dies suddenly. The whole street pitches in to help the family — with the funeral and in the weeks after.",
+      "event.death_coworker_workplace_accident.choice.push_for_safety_changes.label": "Push for workplace safety changes",
+      "event.death_coworker_workplace_accident.choice.say_nothing_coworker.label": "Say nothing",
+      "event.death_coworker_workplace_accident.title": "A coworker's death in a workplace accident",
+      "event.death_coworker_workplace_accident.body": "A coworker dies in a workplace accident. The question of workplace safety becomes urgent for the whole team.",
+      "event.death_mentor_teacher.title": "Death of a mentor or teacher",
+      "event.death_mentor_teacher.body": "A teacher or mentor who shaped much of your path dies. Gratitude and loss sit side by side in equal measure.",
+      "event.death_sibling_in_law.choice.help_with_their_family.label": "Help their family",
+      "event.death_sibling_in_law.choice.limit_involvement.label": "Limit your involvement",
+      "event.death_sibling_in_law.title": "Death of a spouse's sibling",
+      "event.death_sibling_in_law.body": "A sibling of the spouse dies. Obligations to their family — moral and material — now fall partly on you both.",
+      "event.death_spouse_parent.title": "Death of a spouse's parent",
+      "event.death_spouse_parent.body": "The spouse's parent dies. You support your partner through the grief and help with the funeral costs.",
+      "event.death_relative_child.choice.support_grieving_parents.label": "Support the child's grieving parents",
+      "event.death_relative_child.choice.keep_distance_relative_child.label": "Keep some distance",
+      "event.death_relative_child.title": "Death of a niece or nephew",
+      "event.death_relative_child.body": "A niece or nephew dies of illness or an accident. The grief spreads through the whole extended family.",
+      "event.death_community_multiple_losses.choice.take_part_in_collective_mourning.label": "Take part in the collective mourning and rebuilding",
+      "event.death_community_multiple_losses.choice.withdraw_from_community.label": "Withdraw",
+      "event.death_community_multiple_losses.title": "The community loses several people at once",
+      "event.death_community_multiple_losses.body": "A disaster, natural or tied to violence, takes several members of the community at once. Mourning becomes a shared matter for the whole area.",
+      "event.death_funeral_rites_participation.choice.fulfill_full_obligation.label": "Fulfill the full obligation",
+      "event.death_funeral_rites_participation.choice.minimal_participation.label": "Limit yourself to minimal participation",
+      "event.death_funeral_rites_participation.title": "Taking part in funeral rites",
+      "event.death_funeral_rites_participation.body": "The funeral rites accepted in the community call for time, presence, and a financial contribution. Taking part is a matter of obligation as much as grief.",
+      "event.death_mourning_period_economic_pause.choice.observe_full_mourning.label": "Observe the full mourning period",
+      "event.death_mourning_period_economic_pause.choice.return_to_work_early_mourning.label": "Return to work early",
+      "event.death_mourning_period_economic_pause.title": "A mourning period pauses work",
+      "event.death_mourning_period_economic_pause.body": "The customary mourning period keeps work or trade from running at full pace. The family's income dips for the duration.",
+      "event.death_surviving_parent_remarries.title": "The surviving parent remarries",
+      "event.death_surviving_parent_remarries.body": "After the death of one parent, the other decides after a time to remarry. The makeup and rhythm of the household change once again.",
+      "event.death_orphaned_sibling_responsibility.choice.take_on_responsibility.label": "Take on responsibility for the family",
+      "event.death_orphaned_sibling_responsibility.choice.extended_family_takes_over.label": "Let extended family take over",
+      "event.death_orphaned_sibling_responsibility.choice.split_among_relatives.label": "Split the children up among relatives",
+      "event.death_orphaned_sibling_responsibility.title": "Responsibility for younger siblings after losing both parents",
+      "event.death_orphaned_sibling_responsibility.body": "With both parents gone, care for younger siblings has to fall to someone in the family. The decision on how is made now.",
+      "event.death_estate_debts_inherited.choice.accept_inheritance_with_debt.label": "Accept the inheritance along with the debts",
+      "event.death_estate_debts_inherited.choice.renounce_inheritance.label": "Renounce the inheritance entirely",
+      "event.death_estate_debts_inherited.title": "Debts left behind by a parent",
+      "event.death_estate_debts_inherited.body": "Along with a modest inheritance come the parent's unpaid debts. The net balance turns out to be negative.",
+      "event.death_family_business_succession.choice.take_over_family_business.label": "Take over the business",
+      "event.death_family_business_succession.choice.sell_liquidate.label": "Sell or liquidate it",
+      "event.death_family_business_succession.choice.hand_to_sibling.label": "Hand it to a sibling",
+      "event.death_family_business_succession.title": "The fate of the family business after a parent's death",
+      "event.death_family_business_succession.body": "After the parent's death, the family business or farm needs a decision — keep running it, sell it, or hand it to someone else.",
+      "event.death_grief_support_seeking.choice.seek_community_religious_support.label": "Seek support from the community",
+      "event.death_grief_support_seeking.choice.seek_counseling.label": "Seek counseling",
+      "event.death_grief_support_seeking.choice.cope_alone.label": "Cope with it alone",
+      "event.death_grief_support_seeking.title": "Working through grief after a loss",
+      "event.death_grief_support_seeking.body": "After the death of someone close, a way to process the grief has to be found. Different paths ask for different things — time, trust, money.",
+      "event.death_public_figure_mourning.title": "Mourning a public figure",
+      "event.death_public_figure_mourning.body": "A figure known across the country or community dies, and public mourning is declared. Daily life slows for a day or two.",
+      "event.death_friend_migration_abroad.title": "Death of a friend who migrated for work",
+      "event.death_friend_migration_abroad.body": "News arrives that a friend who had left to work abroad has died there. The distance makes the grief feel more removed, but no less real.",
+      "event.death_sibling_maternal_complication.title": "A sister's death from childbirth complications",
+      "event.death_sibling_maternal_complication.body": "A sister dies from childbirth complications. The loss leaves both grief and the care of the newborn in the family's hands.",
+      "event.death_household_earner_sibling.choice.take_on_extra_work.label": "Take on extra work yourself",
+      "event.death_household_earner_sibling.choice.seek_community_support_earner.label": "Seek support from the community",
+      "event.death_household_earner_sibling.choice.take_on_debt_earner.label": "Take on debt to get by",
+      "event.death_household_earner_sibling.title": "Death of an older sibling who supported the family",
+      "event.death_household_earner_sibling.body": "An older sibling, whose earnings held the household together, suddenly dies. The family must quickly find a way to cover the gap in the budget.",
+      "event.death_caregiver_exhaustion.choice.continue_solo_caregiving.label": "Continue caregiving alone",
+      "event.death_caregiver_exhaustion.choice.seek_paid_help_caregiving.label": "Hire paid caregiving help",
+      "event.death_caregiver_exhaustion.choice.share_burden_with_relatives.label": "Share the burden with other relatives",
+      "event.death_caregiver_exhaustion.title": "Exhaustion from long-term caregiving",
+      "event.death_caregiver_exhaustion.body": "Months of caring for a seriously ill relative drain both energy and savings even before their death. The exhaustion builds up unnoticed."
+    }
+  }
+}

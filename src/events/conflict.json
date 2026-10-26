@@ -1,0 +1,1177 @@
+{
+  "events": [
+    {
+      "id": "conflict_outbreak_of_unrest",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        80
+      ],
+      "weightBy": {
+        "conflictIndex": 2
+      },
+      "baseWeight": 1.5,
+      "titleKey": "event.conflict_outbreak_of_unrest.title",
+      "bodyKey": "event.conflict_outbreak_of_unrest.body",
+      "effects": {
+        "health": -2,
+        "wealth": -3
+      },
+      "mortalityDelta": 1.2
+    },
+    {
+      "id": "conflict_curfew_restrictions",
+      "category": "conflict",
+      "severity": "minor",
+      "ageGate": [
+        5,
+        80
+      ],
+      "weightBy": {
+        "conflictIndex": 1.8
+      },
+      "baseWeight": 1.3,
+      "titleKey": "event.conflict_curfew_restrictions.title",
+      "bodyKey": "event.conflict_curfew_restrictions.body",
+      "effects": {
+        "wealth": -2,
+        "bonds": -1
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "conflict_fleeing_violence",
+      "category": "conflict",
+      "severity": "fatal",
+      "ageGate": [
+        0,
+        75
+      ],
+      "weightBy": {
+        "conflictIndex": 2.5
+      },
+      "baseWeight": 1.3,
+      "titleKey": "event.conflict_fleeing_violence.title",
+      "bodyKey": "event.conflict_fleeing_violence.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "flee_to_another_region",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -4,
+            "wealth": -8,
+            "health": -2
+          },
+          "mortalityDelta": 1.8,
+          "mortalityYears": 1,
+          "unlockTraits": [
+            "displaced"
+          ]
+        },
+        {
+          "id": "shelter_in_place",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -3,
+            "bonds": 2
+          },
+          "mortalityDelta": 1.7,
+          "mortalityYears": 1
+        },
+        {
+          "id": "flee_to_relatives_nearby",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -3,
+            "bonds": 1
+          },
+          "mortalityDelta": 1.3
+        }
+      ]
+    },
+    {
+      "id": "conflict_draft_notice",
+      "category": "conflict",
+      "severity": "major",
+      "ageGate": [
+        18,
+        24
+      ],
+      "weightBy": {
+        "conflictIndex": 1.6
+      },
+      "baseWeight": 1.4,
+      "titleKey": "event.conflict_draft_notice.title",
+      "bodyKey": "event.conflict_draft_notice.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "report_for_duty",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": -3,
+            "standing": 3,
+            "health": -2
+          },
+          "mortalityDelta": 1.2,
+          "unlockTraits": [
+            "conscripted"
+          ]
+        },
+        {
+          "id": "evade_draft",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": -8,
+            "bonds": -4
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    },
+    {
+      "id": "conflict_exemption_negotiation",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        24
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.conflict_exemption_negotiation.title",
+      "bodyKey": "event.conflict_exemption_negotiation.body",
+      "choices": [
+        {
+          "id": "pursue_exemption",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -4,
+            "standing": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "accept_conscription",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": -2
+          },
+          "mortalityDelta": 1.1,
+          "unlockTraits": [
+            "conscripted"
+          ]
+        },
+        {
+          "id": "evade_quietly",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": -6,
+            "bonds": -2
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    },
+    {
+      "id": "conflict_service_continuation",
+      "category": "conflict",
+      "severity": "major",
+      "ageGate": [
+        19,
+        27
+      ],
+      "requires": {
+        "traits": [
+          "conscripted"
+        ]
+      },
+      "baseWeight": 1.4,
+      "titleKey": "event.conflict_service_continuation.title",
+      "bodyKey": "event.conflict_service_continuation.body",
+      "choices": [
+        {
+          "id": "routine_service",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": -1,
+            "standing": 1
+          },
+          "mortalityDelta": 1.15
+        },
+        {
+          "id": "combat_deployment",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -4,
+            "bonds": -2,
+            "standing": 4
+          },
+          "mortalityDelta": 2,
+          "mortalityYears": 1,
+          "unlockTraits": [
+            "veteran"
+          ]
+        },
+        {
+          "id": "discharge",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 2,
+            "wealth": 1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "conflict_checkpoint_harassment",
+      "category": "conflict",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        70
+      ],
+      "weightBy": {
+        "conflictIndex": 1.6
+      },
+      "baseWeight": 1.2,
+      "titleKey": "event.conflict_checkpoint_harassment.title",
+      "bodyKey": "event.conflict_checkpoint_harassment.body",
+      "effects": {
+        "standing": -1,
+        "health": -1
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "conflict_property_destruction",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        80
+      ],
+      "weightBy": {
+        "conflictIndex": 2
+      },
+      "baseWeight": 1.3,
+      "titleKey": "event.conflict_property_destruction.title",
+      "bodyKey": "event.conflict_property_destruction.body",
+      "choices": [
+        {
+          "id": "rebuild_property",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -12
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "leave_it_in_ruins",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -5,
+            "standing": -2
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    },
+    {
+      "id": "conflict_livelihood_disruption",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        65
+      ],
+      "weightBy": {
+        "conflictIndex": 1.8
+      },
+      "baseWeight": 1.2,
+      "titleKey": "event.conflict_livelihood_disruption.title",
+      "bodyKey": "event.conflict_livelihood_disruption.body",
+      "choices": [
+        {
+          "id": "seek_alternative_income",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -3,
+            "education": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "wait_for_stability",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -8
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "conflict_civilian_relief_volunteering",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        16,
+        60
+      ],
+      "weightBy": {
+        "conflictIndex": 1.5
+      },
+      "baseWeight": 1,
+      "titleKey": "event.conflict_civilian_relief_volunteering.title",
+      "bodyKey": "event.conflict_civilian_relief_volunteering.body",
+      "choices": [
+        {
+          "id": "volunteer",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": 5,
+            "standing": 3,
+            "health": -1
+          },
+          "mortalityDelta": 1.3
+        },
+        {
+          "id": "decline_volunteering",
+          "riskLabel": "надёжно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "conflict_armed_group_pressure",
+      "category": "conflict",
+      "severity": "major",
+      "ageGate": [
+        14,
+        25
+      ],
+      "weightBy": {
+        "conflictIndex": 2
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.conflict_armed_group_pressure.title",
+      "bodyKey": "event.conflict_armed_group_pressure.body",
+      "choices": [
+        {
+          "id": "refuse_join",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": -3,
+            "health": -1
+          },
+          "mortalityDelta": 1.3
+        },
+        {
+          "id": "comply_reluctantly",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 3,
+            "bonds": -4,
+            "health": -2
+          },
+          "mortalityDelta": 1.8,
+          "mortalityYears": 1
+        },
+        {
+          "id": "flee_the_area",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -4,
+            "wealth": -5
+          },
+          "mortalityDelta": 1.5,
+          "unlockTraits": [
+            "displaced"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "conflict_relative_conscripted_elsewhere",
+      "category": "conflict",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        70
+      ],
+      "weightBy": {
+        "conflictIndex": 1.6
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.conflict_relative_conscripted_elsewhere.title",
+      "bodyKey": "event.conflict_relative_conscripted_elsewhere.body",
+      "effects": {
+        "bonds": -3,
+        "wealth": -1
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "conflict_refugee_camp_conditions",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        75
+      ],
+      "requires": {
+        "traits": [
+          "displaced"
+        ]
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.conflict_refugee_camp_conditions.title",
+      "bodyKey": "event.conflict_refugee_camp_conditions.body",
+      "effects": {
+        "health": -3,
+        "bonds": 1
+      },
+      "mortalityDelta": 1.1
+    },
+    {
+      "id": "conflict_safe_passage_negotiation",
+      "category": "conflict",
+      "severity": "fatal",
+      "ageGate": [
+        10,
+        75
+      ],
+      "requires": {
+        "traits": [
+          "displaced"
+        ]
+      },
+      "baseWeight": 0.7,
+      "titleKey": "event.conflict_safe_passage_negotiation.title",
+      "bodyKey": "event.conflict_safe_passage_negotiation.body",
+      "choices": [
+        {
+          "id": "attempt_crossing",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -3,
+            "bonds": -2
+          },
+          "mortalityDelta": 2.8,
+          "mortalityYears": 1
+        },
+        {
+          "id": "wait_for_safer_route",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -2,
+            "health": -1
+          },
+          "mortalityDelta": 1.4
+        }
+      ]
+    },
+    {
+      "id": "conflict_ceasefire_calm",
+      "category": "conflict",
+      "severity": "minor",
+      "ageGate": [
+        0,
+        80
+      ],
+      "weightBy": {
+        "conflictIndex": 1.4
+      },
+      "baseWeight": 1,
+      "titleKey": "event.conflict_ceasefire_calm.title",
+      "bodyKey": "event.conflict_ceasefire_calm.body",
+      "effects": {
+        "bonds": 2,
+        "health": 2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "conflict_hostilities_resume",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        80
+      ],
+      "weightBy": {
+        "conflictIndex": 1.8
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.conflict_hostilities_resume.title",
+      "bodyKey": "event.conflict_hostilities_resume.body",
+      "effects": {
+        "health": -3,
+        "wealth": -3
+      },
+      "mortalityDelta": 1.3
+    },
+    {
+      "id": "conflict_veteran_reintegration",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        22,
+        36
+      ],
+      "requires": {
+        "traits": [
+          "veteran"
+        ]
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.conflict_veteran_reintegration.title",
+      "bodyKey": "event.conflict_veteran_reintegration.body",
+      "effects": {
+        "bonds": -2,
+        "health": -2,
+        "standing": 2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "conflict_veteran_benefits",
+      "category": "conflict",
+      "severity": "minor",
+      "ageGate": [
+        22,
+        50
+      ],
+      "requires": {
+        "traits": [
+          "veteran"
+        ]
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.conflict_veteran_benefits.title",
+      "bodyKey": "event.conflict_veteran_benefits.body",
+      "choices": [
+        {
+          "id": "pursue_benefits",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 4,
+            "standing": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "forgo_benefits",
+          "riskLabel": "неизвестно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "conflict_elder_mediation",
+      "category": "conflict",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        70
+      ],
+      "weightBy": {
+        "conflictIndex": 1.4
+      },
+      "baseWeight": 1,
+      "titleKey": "event.conflict_elder_mediation.title",
+      "bodyKey": "event.conflict_elder_mediation.body",
+      "effects": {
+        "bonds": 3
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "conflict_sectarian_daily_tension",
+      "category": "conflict",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        70
+      ],
+      "weightBy": {
+        "conflictIndex": 1.7
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.conflict_sectarian_daily_tension.title",
+      "bodyKey": "event.conflict_sectarian_daily_tension.body",
+      "effects": {
+        "standing": -2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "conflict_landmine_contaminated_land",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        70
+      ],
+      "weightBy": {
+        "conflictIndex": 1.9
+      },
+      "baseWeight": 0.8,
+      "titleKey": "event.conflict_landmine_contaminated_land.title",
+      "bodyKey": "event.conflict_landmine_contaminated_land.body",
+      "choices": [
+        {
+          "id": "request_demining",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -2
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "avoid_contaminated_land",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -6
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "conflict_siege_blockade",
+      "category": "conflict",
+      "severity": "major",
+      "ageGate": [
+        0,
+        80
+      ],
+      "weightBy": {
+        "conflictIndex": 2.1
+      },
+      "baseWeight": 1,
+      "titleKey": "event.conflict_siege_blockade.title",
+      "bodyKey": "event.conflict_siege_blockade.body",
+      "effects": {
+        "health": -4,
+        "wealth": -6
+      },
+      "mortalityDelta": 1.3
+    },
+    {
+      "id": "conflict_organized_evacuation",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        80
+      ],
+      "weightBy": {
+        "conflictIndex": 1.8
+      },
+      "baseWeight": 1,
+      "titleKey": "event.conflict_organized_evacuation.title",
+      "bodyKey": "event.conflict_organized_evacuation.body",
+      "choices": [
+        {
+          "id": "join_evacuation",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -3,
+            "wealth": -4
+          },
+          "mortalityDelta": 1.4,
+          "unlockTraits": [
+            "displaced"
+          ]
+        },
+        {
+          "id": "remain",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": 1
+          },
+          "mortalityDelta": 1.6
+        }
+      ]
+    },
+    {
+      "id": "conflict_returning_to_destroyed_home",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        80
+      ],
+      "weightBy": {
+        "conflictIndex": 1.6
+      },
+      "baseWeight": 1,
+      "titleKey": "event.conflict_returning_to_destroyed_home.title",
+      "bodyKey": "event.conflict_returning_to_destroyed_home.body",
+      "effects": {
+        "wealth": -8,
+        "bonds": 1
+      },
+      "mortalityDelta": 1.1
+    },
+    {
+      "id": "conflict_community_solidarity_rebuilding",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        80
+      ],
+      "weightBy": {
+        "conflictIndex": 1.4
+      },
+      "baseWeight": 1,
+      "titleKey": "event.conflict_community_solidarity_rebuilding.title",
+      "bodyKey": "event.conflict_community_solidarity_rebuilding.body",
+      "effects": {
+        "bonds": 4,
+        "standing": 2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "conflict_informant_suspicion",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        15,
+        70
+      ],
+      "weightBy": {
+        "conflictIndex": 1.8
+      },
+      "baseWeight": 0.7,
+      "titleKey": "event.conflict_informant_suspicion.title",
+      "bodyKey": "event.conflict_informant_suspicion.body",
+      "choices": [
+        {
+          "id": "defend_reputation",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": -2,
+            "bonds": -2
+          },
+          "mortalityDelta": 1.3
+        },
+        {
+          "id": "leave_the_area_suspicion",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -5,
+            "wealth": -4
+          },
+          "mortalityDelta": 1.3,
+          "unlockTraits": [
+            "displaced"
+          ]
+        },
+        {
+          "id": "stay_silent",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "standing": -4
+          },
+          "mortalityDelta": 1.2
+        }
+      ]
+    },
+    {
+      "id": "conflict_wartime_black_market",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        60
+      ],
+      "weightBy": {
+        "conflictIndex": 1.7
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.conflict_wartime_black_market.title",
+      "bodyKey": "event.conflict_wartime_black_market.body",
+      "choices": [
+        {
+          "id": "engage_black_market",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 6,
+            "standing": -3
+          },
+          "mortalityDelta": 1.3
+        },
+        {
+          "id": "avoid_black_market",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "conflict_youth_resistance_movement",
+      "category": "conflict",
+      "severity": "major",
+      "ageGate": [
+        15,
+        30
+      ],
+      "weightBy": {
+        "conflictIndex": 1.9
+      },
+      "baseWeight": 0.7,
+      "titleKey": "event.conflict_youth_resistance_movement.title",
+      "bodyKey": "event.conflict_youth_resistance_movement.body",
+      "choices": [
+        {
+          "id": "join_defense_group",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": 5,
+            "standing": 5,
+            "health": -2
+          },
+          "mortalityDelta": 2.2,
+          "mortalityYears": 1
+        },
+        {
+          "id": "stay_out",
+          "riskLabel": "надёжно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "conflict_reconstruction_work",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        55
+      ],
+      "weightBy": {
+        "conflictIndex": 1.3
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.conflict_reconstruction_work.title",
+      "bodyKey": "event.conflict_reconstruction_work.body",
+      "choices": [
+        {
+          "id": "take_reconstruction_job",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 7,
+            "health": -2
+          },
+          "mortalityDelta": 1.5
+        },
+        {
+          "id": "decline_reconstruction_job",
+          "riskLabel": "надёжно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "conflict_long_term_stress_toll",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        15,
+        80
+      ],
+      "weightBy": {
+        "conflictIndex": 1.6
+      },
+      "baseWeight": 1,
+      "titleKey": "event.conflict_long_term_stress_toll.title",
+      "bodyKey": "event.conflict_long_term_stress_toll.body",
+      "effects": {
+        "health": -4
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "conflict_family_separation_front_lines",
+      "category": "conflict",
+      "severity": "notable",
+      "ageGate": [
+        5,
+        80
+      ],
+      "weightBy": {
+        "conflictIndex": 1.9
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.conflict_family_separation_front_lines.title",
+      "bodyKey": "event.conflict_family_separation_front_lines.body",
+      "choices": [
+        {
+          "id": "attempt_contact_across_lines",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": 1,
+            "wealth": -2
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "accept_the_silence",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": -8
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "conflict_demobilization_program",
+      "category": "conflict",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        45
+      ],
+      "requires": {
+        "traits": [
+          "conscripted"
+        ]
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.conflict_demobilization_program.title",
+      "bodyKey": "event.conflict_demobilization_program.body",
+      "effects": {
+        "wealth": 4,
+        "standing": 2
+      },
+      "mortalityDelta": 1
+    }
+  ],
+  "i18n": {
+    "ru": {
+      "event.conflict_outbreak_of_unrest.title": "Начало беспорядков",
+      "event.conflict_outbreak_of_unrest.body": "Вооружённое противостояние доходит до региона. Привычный распорядок дня рушится почти сразу.",
+      "event.conflict_curfew_restrictions.title": "Комендантский час",
+      "event.conflict_curfew_restrictions.body": "Власти вводят комендантский час. Передвижение по городу ограничено, работа и учёба подстраиваются под новый режим.",
+      "event.conflict_fleeing_violence.choice.flee_to_another_region.label": "Уехать в другой регион или страну",
+      "event.conflict_fleeing_violence.choice.shelter_in_place.label": "Укрыться в подвале или убежище",
+      "event.conflict_fleeing_violence.choice.flee_to_relatives_nearby.label": "Переждать у родни в соседнем районе",
+      "event.conflict_fleeing_violence.title": "Бегство от боевых действий",
+      "event.conflict_fleeing_violence.body": "Бои подходят слишком близко к дому. Семье нужно решить, что делать прямо сейчас.",
+      "event.conflict_draft_notice.choice.report_for_duty.label": "Явиться на службу",
+      "event.conflict_draft_notice.choice.evade_draft.label": "Уклониться от призыва",
+      "event.conflict_draft_notice.title": "Повестка о призыве",
+      "event.conflict_draft_notice.body": "Приходит повестка о призыве на военную службу. Ответ на неё определяет следующие годы жизни.",
+      "event.conflict_exemption_negotiation.choice.pursue_exemption.label": "Добиваться отсрочки",
+      "event.conflict_exemption_negotiation.choice.accept_conscription.label": "Принять призыв как есть",
+      "event.conflict_exemption_negotiation.choice.evade_quietly.label": "Уклониться без лишнего шума",
+      "event.conflict_exemption_negotiation.title": "Попытка получить отсрочку",
+      "event.conflict_exemption_negotiation.body": "Перед призывом есть шанс добиться законной отсрочки — по состоянию здоровья, учёбе или тяжёлому положению семьи.",
+      "event.conflict_service_continuation.choice.routine_service.label": "Продолжить службу в обычном режиме",
+      "event.conflict_service_continuation.choice.combat_deployment.label": "Отправиться в зону боевых действий",
+      "event.conflict_service_continuation.choice.discharge.label": "Демобилизоваться",
+      "event.conflict_service_continuation.title": "Продолжение военной службы",
+      "event.conflict_service_continuation.body": "Срок службы подходит к развилке. От решения зависит, останется ли служба рутинной, станет ли она боевой, или закончится увольнением в запас.",
+      "event.conflict_checkpoint_harassment.title": "Проверка на контрольно-пропускном пункте",
+      "event.conflict_checkpoint_harassment.body": "Поездка через контрольно-пропускной пункт оборачивается долгой проверкой документов и вещей. Задержка стала частью повседневности.",
+      "event.conflict_property_destruction.choice.rebuild_property.label": "Восстановить разрушенное",
+      "event.conflict_property_destruction.choice.leave_it_in_ruins.label": "Оставить разрушенным",
+      "event.conflict_property_destruction.title": "Разрушение имущества в ходе боёв",
+      "event.conflict_property_destruction.body": "Дом или хозяйственные постройки повреждены в ходе боевых действий. Восстановление требует средств, которых почти не осталось.",
+      "event.conflict_livelihood_disruption.choice.seek_alternative_income.label": "Искать другой источник дохода",
+      "event.conflict_livelihood_disruption.choice.wait_for_stability.label": "Ждать стабилизации обстановки",
+      "event.conflict_livelihood_disruption.title": "Работа парализована нестабильностью",
+      "event.conflict_livelihood_disruption.body": "Нестабильность в регионе вынуждает закрыть предприятие или прекратить работу на неопределённый срок.",
+      "event.conflict_civilian_relief_volunteering.choice.volunteer.label": "Стать добровольцем",
+      "event.conflict_civilian_relief_volunteering.choice.decline_volunteering.label": "Отказаться",
+      "event.conflict_civilian_relief_volunteering.title": "Волонтёрская помощь пострадавшим",
+      "event.conflict_civilian_relief_volunteering.body": "Организация гуманитарной помощи ищет добровольцев для работы с пострадавшими от конфликта. Участие требует времени и несёт риск.",
+      "event.conflict_armed_group_pressure.choice.refuse_join.label": "Отказаться",
+      "event.conflict_armed_group_pressure.choice.comply_reluctantly.label": "Согласиться вынужденно",
+      "event.conflict_armed_group_pressure.choice.flee_the_area.label": "Покинуть район",
+      "event.conflict_armed_group_pressure.title": "Давление вступить в вооружённую группировку",
+      "event.conflict_armed_group_pressure.body": "Местная вооружённая группировка предлагает вступить в её ряды — обещая защиту и доход. Отказ может быть замечен и не остаться без последствий.",
+      "event.conflict_relative_conscripted_elsewhere.title": "Призыв близкого родственника",
+      "event.conflict_relative_conscripted_elsewhere.body": "Близкого родственника призывают на службу далеко от дома. Тревога за него и экономическая нагрузка на семью растут одновременно.",
+      "event.conflict_refugee_camp_conditions.title": "Условия во временном лагере",
+      "event.conflict_refugee_camp_conditions.body": "До переселения на постоянное место семья живёт во временном лагере для перемещённых лиц. Условия скромные, но безопаснее, чем дома.",
+      "event.conflict_safe_passage_negotiation.choice.attempt_crossing.label": "Рискнуть и пересечь линию",
+      "event.conflict_safe_passage_negotiation.choice.wait_for_safer_route.label": "Подождать более безопасного пути",
+      "event.conflict_safe_passage_negotiation.title": "Переход через линию фронта",
+      "event.conflict_safe_passage_negotiation.body": "Чтобы добраться до безопасной территории, нужно пересечь зону активных боевых действий. Договорённость о безопасном проходе не гарантирует, что путь окажется спокойным.",
+      "event.conflict_ceasefire_calm.title": "Временное перемирие",
+      "event.conflict_ceasefire_calm.body": "Объявленное перемирие позволяет на время вернуться к привычной жизни. Рынки и школы открываются снова.",
+      "event.conflict_hostilities_resume.title": "Возобновление боевых действий",
+      "event.conflict_hostilities_resume.body": "Перемирие срывается, и бои начинаются заново. Планы, выстроенные за время затишья, приходится отложить.",
+      "event.conflict_veteran_reintegration.title": "Возвращение к гражданской жизни",
+      "event.conflict_veteran_reintegration.body": "После службы в зоне боевых действий привыкание к гражданской жизни занимает больше времени, чем ожидалось. Прежние знакомства и работа выглядят иначе.",
+      "event.conflict_veteran_benefits.choice.pursue_benefits.label": "Добиваться положенных выплат",
+      "event.conflict_veteran_benefits.choice.forgo_benefits.label": "Не заниматься оформлением",
+      "event.conflict_veteran_benefits.title": "Оформление льгот ветерана",
+      "event.conflict_veteran_benefits.body": "Положенные по закону льготы и выплаты ветерану нужно оформить через длинную бюрократическую процедуру.",
+      "event.conflict_elder_mediation.title": "Посредничество старейшин",
+      "event.conflict_elder_mediation.body": "Старейшины общины берутся примирить враждующие стороны местного конфликта. Их усилия на время снижают напряжение.",
+      "event.conflict_sectarian_daily_tension.title": "Напряжение между общинами",
+      "event.conflict_sectarian_daily_tension.body": "Разделение по религиозному или этническому признаку ощущается в повседневных делах — на рынке, в очередях, на работе.",
+      "event.conflict_landmine_contaminated_land.choice.request_demining.label": "Запросить разминирование",
+      "event.conflict_landmine_contaminated_land.choice.avoid_contaminated_land.label": "Просто обходить опасный участок",
+      "event.conflict_landmine_contaminated_land.title": "Заминированные земли",
+      "event.conflict_landmine_contaminated_land.body": "Часть сельскохозяйственных угодий закрыта из-за риска неразорвавшихся мин. Пахотной земли, доступной для хозяйства, стало меньше.",
+      "event.conflict_siege_blockade.title": "Блокада и нехватка товаров",
+      "event.conflict_siege_blockade.body": "Дороги в регион заблокированы, и поставки товаров почти прекращаются. Цены резко растут, а некоторых товаров просто нет.",
+      "event.conflict_organized_evacuation.choice.join_evacuation.label": "Присоединиться к эвакуации",
+      "event.conflict_organized_evacuation.choice.remain.label": "Остаться",
+      "event.conflict_organized_evacuation.title": "Организованная эвакуация",
+      "event.conflict_organized_evacuation.body": "Власти или гуманитарные организации предлагают организованный выезд из зоны боевых действий. Решение нужно принять быстро.",
+      "event.conflict_returning_to_destroyed_home.title": "Возвращение к разрушенному дому",
+      "event.conflict_returning_to_destroyed_home.body": "Когда бои стихают, семья возвращается, чтобы найти дом разрушенным или занятым. Начинать приходится почти с нуля.",
+      "event.conflict_community_solidarity_rebuilding.title": "Совместное восстановление общины",
+      "event.conflict_community_solidarity_rebuilding.body": "После окончания активных боёв соседи сообща восстанавливают разрушенные дома и общественные здания. Совместный труд укрепляет связи между людьми.",
+      "event.conflict_informant_suspicion.choice.defend_reputation.label": "Отстаивать свою репутацию",
+      "event.conflict_informant_suspicion.choice.leave_the_area_suspicion.label": "Уехать из района",
+      "event.conflict_informant_suspicion.choice.stay_silent.label": "Не отвечать на обвинения",
+      "event.conflict_informant_suspicion.title": "Ложное подозрение в сотрудничестве со стороной конфликта",
+      "event.conflict_informant_suspicion.body": "По округе расходится слух, что ты сотрудничаешь с одной из сторон конфликта. Подозрение беспочвенно, но от этого не менее опасно.",
+      "event.conflict_wartime_black_market.choice.engage_black_market.label": "Заняться такой торговлей",
+      "event.conflict_wartime_black_market.choice.avoid_black_market.label": "Избегать этого",
+      "event.conflict_wartime_black_market.title": "Торговля в условиях дефицита",
+      "event.conflict_wartime_black_market.body": "Дефицит товаров открывает возможность заработать на неформальной торговле — за пределами обычного закона и контроля.",
+      "event.conflict_youth_resistance_movement.choice.join_defense_group.label": "Присоединиться",
+      "event.conflict_youth_resistance_movement.choice.stay_out.label": "Не вступать",
+      "event.conflict_youth_resistance_movement.title": "Присоединение к отряду самообороны",
+      "event.conflict_youth_resistance_movement.body": "Молодёжь района создаёт отряд для защиты своих кварталов. Участие даёт уважение соседей, но связано с прямой опасностью.",
+      "event.conflict_reconstruction_work.choice.take_reconstruction_job.label": "Взяться за эту работу",
+      "event.conflict_reconstruction_work.choice.decline_reconstruction_job.label": "Отказаться",
+      "event.conflict_reconstruction_work.title": "Работа на восстановлении после конфликта",
+      "event.conflict_reconstruction_work.body": "Программа восстановления инфраструктуры предлагает работу — разминирование территорий или строительство. Оплата выше обычной, но и риск заметно выше.",
+      "event.conflict_long_term_stress_toll.title": "Долгий груз пережитого",
+      "event.conflict_long_term_stress_toll.body": "Годы жизни под угрозой насилия оставляют след — сон, внимание и настроение страдают даже после того, как опасность отступила.",
+      "event.conflict_family_separation_front_lines.choice.attempt_contact_across_lines.label": "Попытаться наладить связь через линию фронта",
+      "event.conflict_family_separation_front_lines.choice.accept_the_silence.label": "Принять долгое молчание",
+      "event.conflict_family_separation_front_lines.title": "Семья разделена линией фронта",
+      "event.conflict_family_separation_front_lines.body": "Линия фронта смещается и оставляет часть семьи на другой стороне. Связь с ними становится редкой и ненадёжной.",
+      "event.conflict_demobilization_program.title": "Программа демобилизации",
+      "event.conflict_demobilization_program.body": "Официальная программа помогает бывшим военнослужащим вернуться к гражданской жизни — переподготовка, подъёмные выплаты, поиск работы."
+    },
+    "en": {
+      "event.conflict_outbreak_of_unrest.title": "Unrest breaks out",
+      "event.conflict_outbreak_of_unrest.body": "Armed confrontation reaches the region. The normal rhythm of daily life breaks down almost at once.",
+      "event.conflict_curfew_restrictions.title": "Curfew restrictions",
+      "event.conflict_curfew_restrictions.body": "Authorities impose a curfew. Movement around town is restricted, and work and school have to fit around it.",
+      "event.conflict_fleeing_violence.choice.flee_to_another_region.label": "Flee to another region or country",
+      "event.conflict_fleeing_violence.choice.shelter_in_place.label": "Shelter in a basement or bunker",
+      "event.conflict_fleeing_violence.choice.flee_to_relatives_nearby.label": "Wait it out with relatives nearby",
+      "event.conflict_fleeing_violence.title": "Fleeing the fighting",
+      "event.conflict_fleeing_violence.body": "The fighting draws too close to home. The family has to decide what to do right now.",
+      "event.conflict_draft_notice.choice.report_for_duty.label": "Report for duty",
+      "event.conflict_draft_notice.choice.evade_draft.label": "Evade the draft",
+      "event.conflict_draft_notice.title": "A draft notice",
+      "event.conflict_draft_notice.body": "A draft notice arrives, calling you up for military service. The response to it shapes the years that follow.",
+      "event.conflict_exemption_negotiation.choice.pursue_exemption.label": "Pursue the exemption",
+      "event.conflict_exemption_negotiation.choice.accept_conscription.label": "Accept conscription as it stands",
+      "event.conflict_exemption_negotiation.choice.evade_quietly.label": "Evade quietly",
+      "event.conflict_exemption_negotiation.title": "Seeking an exemption",
+      "event.conflict_exemption_negotiation.body": "Before the draft, there is a chance to seek a lawful exemption — on medical grounds, for study, or because of family hardship.",
+      "event.conflict_service_continuation.choice.routine_service.label": "Continue in routine service",
+      "event.conflict_service_continuation.choice.combat_deployment.label": "Deploy to the combat zone",
+      "event.conflict_service_continuation.choice.discharge.label": "Be discharged",
+      "event.conflict_service_continuation.title": "Continuing military service",
+      "event.conflict_service_continuation.body": "The term of service reaches a turning point. The decision determines whether it stays routine, turns into active combat duty, or ends in discharge.",
+      "event.conflict_checkpoint_harassment.title": "A checkpoint stop",
+      "event.conflict_checkpoint_harassment.body": "A trip through a checkpoint turns into a long check of documents and belongings. The delay has become part of daily life.",
+      "event.conflict_property_destruction.choice.rebuild_property.label": "Rebuild what was destroyed",
+      "event.conflict_property_destruction.choice.leave_it_in_ruins.label": "Leave it in ruins for now",
+      "event.conflict_property_destruction.title": "Property destroyed in the fighting",
+      "event.conflict_property_destruction.body": "The home or farm buildings are damaged in the fighting. Rebuilding takes money that is now in short supply.",
+      "event.conflict_livelihood_disruption.choice.seek_alternative_income.label": "Seek an alternative income source",
+      "event.conflict_livelihood_disruption.choice.wait_for_stability.label": "Wait for things to stabilize",
+      "event.conflict_livelihood_disruption.title": "Livelihood disrupted by instability",
+      "event.conflict_livelihood_disruption.body": "Instability in the region forces a business to close or work to stop for an indefinite stretch.",
+      "event.conflict_civilian_relief_volunteering.choice.volunteer.label": "Volunteer",
+      "event.conflict_civilian_relief_volunteering.choice.decline_volunteering.label": "Decline",
+      "event.conflict_civilian_relief_volunteering.title": "Volunteering for relief work",
+      "event.conflict_civilian_relief_volunteering.body": "A humanitarian organization is looking for volunteers to work with people affected by the conflict. Taking part costs time and carries some risk.",
+      "event.conflict_armed_group_pressure.choice.refuse_join.label": "Refuse",
+      "event.conflict_armed_group_pressure.choice.comply_reluctantly.label": "Comply reluctantly",
+      "event.conflict_armed_group_pressure.choice.flee_the_area.label": "Leave the area",
+      "event.conflict_armed_group_pressure.title": "Pressure to join an armed group",
+      "event.conflict_armed_group_pressure.body": "A local armed group pressures you to join its ranks, offering protection and income. Refusal may be noticed and carry its own consequences.",
+      "event.conflict_relative_conscripted_elsewhere.title": "A relative is drafted elsewhere",
+      "event.conflict_relative_conscripted_elsewhere.body": "A close relative is called up for service far from home. Worry for them and the economic strain on the family rise together.",
+      "event.conflict_refugee_camp_conditions.title": "Conditions in the temporary camp",
+      "event.conflict_refugee_camp_conditions.body": "Before resettling permanently, the family lives in a temporary camp for displaced people. Conditions are modest but safer than back home.",
+      "event.conflict_safe_passage_negotiation.choice.attempt_crossing.label": "Risk the crossing",
+      "event.conflict_safe_passage_negotiation.choice.wait_for_safer_route.label": "Wait for a safer route",
+      "event.conflict_safe_passage_negotiation.title": "Crossing the front line",
+      "event.conflict_safe_passage_negotiation.body": "Reaching safe territory means crossing an active conflict zone. An arrangement for safe passage is no guarantee the route stays calm.",
+      "event.conflict_ceasefire_calm.title": "A temporary ceasefire",
+      "event.conflict_ceasefire_calm.body": "A declared ceasefire allows a return to ordinary life for a while. Markets and schools reopen.",
+      "event.conflict_hostilities_resume.title": "Hostilities resume",
+      "event.conflict_hostilities_resume.body": "The ceasefire collapses and the fighting starts again. Plans made during the lull have to be set aside.",
+      "event.conflict_veteran_reintegration.title": "Returning to civilian life",
+      "event.conflict_veteran_reintegration.body": "After service in the combat zone, adjusting to civilian life takes longer than expected. Old acquaintances and work look different now.",
+      "event.conflict_veteran_benefits.choice.pursue_benefits.label": "Pursue the benefits",
+      "event.conflict_veteran_benefits.choice.forgo_benefits.label": "Forgo the process",
+      "event.conflict_veteran_benefits.title": "Applying for veteran benefits",
+      "event.conflict_veteran_benefits.body": "The benefits and payments a veteran is legally entitled to require working through a long bureaucratic process.",
+      "event.conflict_elder_mediation.title": "Mediation by community elders",
+      "event.conflict_elder_mediation.body": "Community elders step in to mediate between the sides of a local dispute. Their effort eases the tension for a while.",
+      "event.conflict_sectarian_daily_tension.title": "Tension along communal lines",
+      "event.conflict_sectarian_daily_tension.body": "Division along religious or ethnic lines is felt in everyday dealings — at the market, in lines, at work.",
+      "event.conflict_landmine_contaminated_land.choice.request_demining.label": "Request demining of the land",
+      "event.conflict_landmine_contaminated_land.choice.avoid_contaminated_land.label": "Simply avoid the contaminated area",
+      "event.conflict_landmine_contaminated_land.title": "Mine-contaminated land",
+      "event.conflict_landmine_contaminated_land.body": "Part of the farmland is closed off because of unexploded mines. The amount of land safely available for farming has shrunk.",
+      "event.conflict_siege_blockade.title": "Blockade and shortages",
+      "event.conflict_siege_blockade.body": "Roads into the region are blocked and supply shipments nearly stop. Prices jump sharply, and some goods simply disappear.",
+      "event.conflict_organized_evacuation.choice.join_evacuation.label": "Join the evacuation",
+      "event.conflict_organized_evacuation.choice.remain.label": "Remain behind",
+      "event.conflict_organized_evacuation.title": "An organized evacuation",
+      "event.conflict_organized_evacuation.body": "Authorities or aid organizations offer an organized evacuation out of the conflict zone. The decision has to be made quickly.",
+      "event.conflict_returning_to_destroyed_home.title": "Returning to a destroyed home",
+      "event.conflict_returning_to_destroyed_home.body": "When the fighting dies down, the family returns to find the home destroyed or occupied. Rebuilding starts almost from nothing.",
+      "event.conflict_community_solidarity_rebuilding.title": "The community rebuilds together",
+      "event.conflict_community_solidarity_rebuilding.body": "Once active fighting ends, neighbors rebuild damaged homes and public buildings together. The shared work strengthens ties between people.",
+      "event.conflict_informant_suspicion.choice.defend_reputation.label": "Defend your reputation",
+      "event.conflict_informant_suspicion.choice.leave_the_area_suspicion.label": "Leave the area",
+      "event.conflict_informant_suspicion.choice.stay_silent.label": "Stay silent about the accusation",
+      "event.conflict_informant_suspicion.title": "Wrongly suspected of collaboration",
+      "event.conflict_informant_suspicion.body": "A rumor spreads locally that you are collaborating with one side of the conflict. The suspicion is groundless, but no less dangerous for it.",
+      "event.conflict_wartime_black_market.choice.engage_black_market.label": "Engage in this trade",
+      "event.conflict_wartime_black_market.choice.avoid_black_market.label": "Avoid it",
+      "event.conflict_wartime_black_market.title": "Trading under wartime scarcity",
+      "event.conflict_wartime_black_market.body": "The shortage of goods opens a way to earn through informal trade — outside the usual bounds of law and oversight.",
+      "event.conflict_youth_resistance_movement.choice.join_defense_group.label": "Join the group",
+      "event.conflict_youth_resistance_movement.choice.stay_out.label": "Stay out of it",
+      "event.conflict_youth_resistance_movement.title": "Joining a self-defense group",
+      "event.conflict_youth_resistance_movement.body": "Young people in the area form a group to defend their neighborhood. Joining earns respect from neighbors, but carries direct danger.",
+      "event.conflict_reconstruction_work.choice.take_reconstruction_job.label": "Take the job",
+      "event.conflict_reconstruction_work.choice.decline_reconstruction_job.label": "Decline",
+      "event.conflict_reconstruction_work.title": "Employment in post-conflict reconstruction",
+      "event.conflict_reconstruction_work.body": "A reconstruction program offers work — mine clearance or building. The pay is better than usual, but so is the risk.",
+      "event.conflict_long_term_stress_toll.title": "The long-term weight of what was lived through",
+      "event.conflict_long_term_stress_toll.body": "Years lived under the threat of violence leave their mark — sleep, concentration, and mood suffer even after the danger has passed.",
+      "event.conflict_family_separation_front_lines.choice.attempt_contact_across_lines.label": "Try to maintain contact across the front line",
+      "event.conflict_family_separation_front_lines.choice.accept_the_silence.label": "Accept the long silence",
+      "event.conflict_family_separation_front_lines.title": "Family split by the front line",
+      "event.conflict_family_separation_front_lines.body": "The front line shifts and leaves part of the family on the other side of it. Contact with them becomes rare and unreliable.",
+      "event.conflict_demobilization_program.title": "A demobilization program",
+      "event.conflict_demobilization_program.body": "An official program helps former servicemembers return to civilian life — retraining, a resettlement payment, help finding work."
+    }
+  }
+}

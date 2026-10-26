@@ -1,0 +1,1241 @@
+{
+  "events": [
+    {
+      "id": "health_infant_fever",
+      "category": "health",
+      "titleKey": "event.health_infant_fever.title",
+      "bodyKey": "event.health_infant_fever.body",
+      "severity": "minor",
+      "ageGate": [
+        0,
+        2
+      ],
+      "baseWeight": 1.5,
+      "mortalityDelta": 1.3,
+      "effects": {
+        "health": -5
+      }
+    },
+    {
+      "id": "health_vaccination_access",
+      "category": "health",
+      "titleKey": "event.health_vaccination_access.title",
+      "bodyKey": "event.health_vaccination_access.body",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        4
+      ],
+      "baseWeight": 1.4,
+      "weightBy": {
+        "rural": 1.3,
+        "incomeTier": {
+          "low": 1.4
+        }
+      },
+      "choices": [
+        {
+          "id": "travel",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 8,
+            "wealth": -3
+          },
+          "mortalityDelta": 0.8
+        },
+        {
+          "id": "skip",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1.4
+        }
+      ]
+    },
+    {
+      "id": "health_early_malnutrition",
+      "category": "health",
+      "titleKey": "event.health_early_malnutrition.title",
+      "bodyKey": "event.health_early_malnutrition.body",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        4
+      ],
+      "baseWeight": 1.3,
+      "weightBy": {
+        "incomeTier": {
+          "low": 1.6,
+          "lower-middle": 1.2
+        },
+        "rural": 1.2
+      },
+      "mortalityDelta": 1.3,
+      "mortalityYears": 2,
+      "effects": {
+        "health": -8,
+        "education": -2
+      }
+    },
+    {
+      "id": "health_frail_survivor",
+      "category": "health",
+      "titleKey": "event.health_frail_survivor.title",
+      "bodyKey": "event.health_frail_survivor.body",
+      "severity": "major",
+      "ageGate": [
+        0,
+        2
+      ],
+      "baseWeight": 0.9,
+      "mortalityDelta": 1.6,
+      "mortalityYears": 2,
+      "unlockTraits": [
+        "frail_child"
+      ],
+      "effects": {
+        "health": -10
+      }
+    },
+    {
+      "id": "health_congenital_condition",
+      "category": "health",
+      "titleKey": "event.health_congenital_condition.title",
+      "bodyKey": "event.health_congenital_condition.body",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        1
+      ],
+      "baseWeight": 0.8,
+      "effects": {
+        "health": -6
+      }
+    },
+    {
+      "id": "health_recurring_childhood_illness",
+      "category": "health",
+      "titleKey": "event.health_recurring_childhood_illness.title",
+      "bodyKey": "event.health_recurring_childhood_illness.body",
+      "severity": "notable",
+      "ageGate": [
+        3,
+        10
+      ],
+      "baseWeight": 1.6,
+      "requires": {
+        "traits": [
+          "frail_child"
+        ]
+      },
+      "choices": [
+        {
+          "id": "treat",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 6,
+            "wealth": -6
+          },
+          "mortalityDelta": 0.9
+        },
+        {
+          "id": "home_remedy",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -4
+          },
+          "mortalityDelta": 1.3
+        }
+      ]
+    },
+    {
+      "id": "health_childhood_fracture",
+      "category": "health",
+      "titleKey": "event.health_childhood_fracture.title",
+      "bodyKey": "event.health_childhood_fracture.body",
+      "severity": "notable",
+      "ageGate": [
+        5,
+        11
+      ],
+      "baseWeight": 1.3,
+      "choices": [
+        {
+          "id": "clinic",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 4,
+            "wealth": -5
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "bonesetter",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -3
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    },
+    {
+      "id": "health_parasitic_infection",
+      "category": "health",
+      "titleKey": "event.health_parasitic_infection.title",
+      "bodyKey": "event.health_parasitic_infection.body",
+      "severity": "minor",
+      "ageGate": [
+        5,
+        11
+      ],
+      "baseWeight": 1.4,
+      "weightBy": {
+        "rural": 1.6,
+        "incomeTier": {
+          "low": 1.3
+        }
+      },
+      "choices": [
+        {
+          "id": "medicine",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 5,
+            "wealth": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "ignore",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -5
+          },
+          "mortalityDelta": 1.15
+        }
+      ]
+    },
+    {
+      "id": "health_uncorrected_vision",
+      "category": "health",
+      "titleKey": "event.health_uncorrected_vision.title",
+      "bodyKey": "event.health_uncorrected_vision.body",
+      "severity": "minor",
+      "ageGate": [
+        5,
+        12
+      ],
+      "baseWeight": 1.1,
+      "effects": {
+        "education": -4
+      }
+    },
+    {
+      "id": "health_measles_outbreak",
+      "category": "health",
+      "titleKey": "event.health_measles_outbreak.title",
+      "bodyKey": "event.health_measles_outbreak.body",
+      "severity": "fatal",
+      "ageGate": [
+        1,
+        11
+      ],
+      "baseWeight": 0.9,
+      "weightBy": {
+        "incomeTier": {
+          "low": 1.4
+        }
+      },
+      "choices": [
+        {
+          "id": "care",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 2,
+            "wealth": -8
+          },
+          "mortalityDelta": 1.4
+        },
+        {
+          "id": "no_care",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -10
+          },
+          "mortalityDelta": 2.6
+        }
+      ]
+    },
+    {
+      "id": "health_dental_neglect",
+      "category": "health",
+      "titleKey": "event.health_dental_neglect.title",
+      "bodyKey": "event.health_dental_neglect.body",
+      "severity": "minor",
+      "ageGate": [
+        6,
+        17
+      ],
+      "baseWeight": 1,
+      "effects": {
+        "health": -3
+      }
+    },
+    {
+      "id": "health_asthma_onset",
+      "category": "health",
+      "titleKey": "event.health_asthma_onset.title",
+      "bodyKey": "event.health_asthma_onset.body",
+      "severity": "notable",
+      "ageGate": [
+        8,
+        17
+      ],
+      "baseWeight": 1.1,
+      "choices": [
+        {
+          "id": "inhaler",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 6,
+            "wealth": -5
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "untreated",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -5
+          },
+          "mortalityDelta": 1.2
+        }
+      ]
+    },
+    {
+      "id": "health_sports_injury_teen",
+      "category": "health",
+      "titleKey": "event.health_sports_injury_teen.title",
+      "bodyKey": "event.health_sports_injury_teen.body",
+      "severity": "notable",
+      "ageGate": [
+        12,
+        17
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "rest",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 3,
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "play_through",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -6,
+            "standing": 3
+          },
+          "mortalityDelta": 1.2
+        }
+      ]
+    },
+    {
+      "id": "health_adolescent_mental_health_crisis",
+      "category": "health",
+      "titleKey": "event.health_adolescent_mental_health_crisis.title",
+      "bodyKey": "event.health_adolescent_mental_health_crisis.body",
+      "severity": "notable",
+      "ageGate": [
+        13,
+        19
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "seek_help",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 6,
+            "health": 4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "withdraw",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -8,
+            "health": -5
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    },
+    {
+      "id": "health_first_chronic_diagnosis_young_adult",
+      "category": "health",
+      "titleKey": "event.health_first_chronic_diagnosis_young_adult.title",
+      "bodyKey": "event.health_first_chronic_diagnosis_young_adult.body",
+      "severity": "major",
+      "ageGate": [
+        15,
+        29
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "manage",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 8,
+            "wealth": -8
+          },
+          "mortalityDelta": 0.9,
+          "mortalityYears": 3
+        },
+        {
+          "id": "skip_treatment",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 2
+          },
+          "mortalityDelta": 1.5,
+          "mortalityYears": 3
+        }
+      ]
+    },
+    {
+      "id": "health_disabling_workplace_injury",
+      "category": "health",
+      "titleKey": "event.health_disabling_workplace_injury.title",
+      "bodyKey": "event.health_disabling_workplace_injury.body",
+      "severity": "fatal",
+      "ageGate": [
+        16,
+        55
+      ],
+      "baseWeight": 0.8,
+      "choices": [
+        {
+          "id": "caution",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "risky_shift",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 6,
+            "health": -18
+          },
+          "mortalityDelta": 2.8,
+          "unlockTraits": [
+            "disabled"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health_infectious_disease_adult",
+      "category": "health",
+      "titleKey": "event.health_infectious_disease_adult.title",
+      "bodyKey": "event.health_infectious_disease_adult.body",
+      "severity": "major",
+      "ageGate": [
+        18,
+        45
+      ],
+      "baseWeight": 1.1,
+      "weightBy": {
+        "incomeTier": {
+          "low": 1.3
+        }
+      },
+      "choices": [
+        {
+          "id": "full_treatment",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 6,
+            "wealth": -10
+          },
+          "mortalityDelta": 0.9,
+          "mortalityYears": 2
+        },
+        {
+          "id": "partial",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -2,
+            "health": -6
+          },
+          "mortalityDelta": 1.6,
+          "mortalityYears": 2
+        }
+      ]
+    },
+    {
+      "id": "health_postpartum_complication",
+      "category": "health",
+      "titleKey": "event.health_postpartum_complication.title",
+      "bodyKey": "event.health_postpartum_complication.body",
+      "severity": "major",
+      "ageGate": [
+        18,
+        40
+      ],
+      "baseWeight": 1,
+      "requires": {
+        "sex": "female"
+      },
+      "choices": [
+        {
+          "id": "hospital",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 5,
+            "wealth": -8
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "home",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 1,
+            "health": -8
+          },
+          "mortalityDelta": 1.9
+        }
+      ]
+    },
+    {
+      "id": "health_repetitive_strain_labor",
+      "category": "health",
+      "titleKey": "event.health_repetitive_strain_labor.title",
+      "bodyKey": "event.health_repetitive_strain_labor.body",
+      "severity": "minor",
+      "ageGate": [
+        22,
+        55
+      ],
+      "baseWeight": 1.1,
+      "effects": {
+        "health": -4
+      }
+    },
+    {
+      "id": "health_hypertension_onset",
+      "category": "health",
+      "titleKey": "event.health_hypertension_onset.title",
+      "bodyKey": "event.health_hypertension_onset.body",
+      "severity": "notable",
+      "ageGate": [
+        35,
+        60
+      ],
+      "baseWeight": 1.3,
+      "choices": [
+        {
+          "id": "treat",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 6,
+            "wealth": -6
+          },
+          "mortalityDelta": 0.95,
+          "mortalityYears": 5
+        },
+        {
+          "id": "ignore",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1.3,
+          "mortalityYears": 5
+        }
+      ]
+    },
+    {
+      "id": "health_vision_decline_midlife",
+      "category": "health",
+      "titleKey": "event.health_vision_decline_midlife.title",
+      "bodyKey": "event.health_vision_decline_midlife.body",
+      "severity": "minor",
+      "ageGate": [
+        35,
+        60
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "glasses",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -3,
+            "education": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "without",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "health_severe_illness_disabling",
+      "category": "health",
+      "titleKey": "event.health_severe_illness_disabling.title",
+      "bodyKey": "event.health_severe_illness_disabling.body",
+      "severity": "fatal",
+      "ageGate": [
+        20,
+        70
+      ],
+      "baseWeight": 0.7,
+      "choices": [
+        {
+          "id": "hospital",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -15,
+            "health": -8
+          },
+          "mortalityDelta": 1.6
+        },
+        {
+          "id": "delay",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -18
+          },
+          "mortalityDelta": 2.4,
+          "unlockTraits": [
+            "disabled"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health_cancer_screening_decision",
+      "category": "health",
+      "titleKey": "event.health_cancer_screening_decision.title",
+      "bodyKey": "event.health_cancer_screening_decision.body",
+      "severity": "major",
+      "ageGate": [
+        40,
+        65
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "screen",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -6,
+            "health": 4
+          },
+          "mortalityDelta": 0.85,
+          "mortalityYears": 4
+        },
+        {
+          "id": "skip",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1.3,
+          "mortalityYears": 4
+        }
+      ]
+    },
+    {
+      "id": "health_cataract_surgery_access",
+      "category": "health",
+      "titleKey": "event.health_cataract_surgery_access.title",
+      "bodyKey": "event.health_cataract_surgery_access.body",
+      "severity": "notable",
+      "ageGate": [
+        55,
+        75
+      ],
+      "baseWeight": 1.1,
+      "choices": [
+        {
+          "id": "surgery",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 10,
+            "wealth": -10
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "no_surgery",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -5
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "health_mobility_decline_aging",
+      "category": "health",
+      "titleKey": "event.health_mobility_decline_aging.title",
+      "bodyKey": "event.health_mobility_decline_aging.body",
+      "severity": "notable",
+      "ageGate": [
+        60,
+        85
+      ],
+      "baseWeight": 1.2,
+      "effects": {
+        "health": -5,
+        "bonds": -2
+      }
+    },
+    {
+      "id": "health_fall_injury_elderly",
+      "category": "health",
+      "titleKey": "event.health_fall_injury_elderly.title",
+      "bodyKey": "event.health_fall_injury_elderly.body",
+      "severity": "major",
+      "ageGate": [
+        65,
+        90
+      ],
+      "baseWeight": 1.2,
+      "choices": [
+        {
+          "id": "hospital",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -8,
+            "health": 2
+          },
+          "mortalityDelta": 1.3
+        },
+        {
+          "id": "home_care",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -10
+          },
+          "mortalityDelta": 1.9
+        }
+      ]
+    },
+    {
+      "id": "health_cognitive_decline",
+      "category": "health",
+      "titleKey": "event.health_cognitive_decline.title",
+      "bodyKey": "event.health_cognitive_decline.body",
+      "severity": "notable",
+      "ageGate": [
+        70,
+        95
+      ],
+      "baseWeight": 1.1,
+      "effects": {
+        "bonds": -4,
+        "standing": -2
+      }
+    },
+    {
+      "id": "health_end_of_life_care_decision",
+      "category": "health",
+      "titleKey": "event.health_end_of_life_care_decision.title",
+      "bodyKey": "event.health_end_of_life_care_decision.body",
+      "severity": "fatal",
+      "ageGate": [
+        65,
+        95
+      ],
+      "baseWeight": 0.9,
+      "choices": [
+        {
+          "id": "hospital_care",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -15,
+            "bonds": -3
+          },
+          "mortalityDelta": 0.9
+        },
+        {
+          "id": "home_care",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": 8,
+            "wealth": -4
+          },
+          "mortalityDelta": 1.5
+        }
+      ]
+    },
+    {
+      "id": "health_chronic_pain_elderly",
+      "category": "health",
+      "titleKey": "event.health_chronic_pain_elderly.title",
+      "bodyKey": "event.health_chronic_pain_elderly.body",
+      "severity": "minor",
+      "ageGate": [
+        60,
+        90
+      ],
+      "baseWeight": 1.3,
+      "effects": {
+        "health": -4,
+        "bonds": -1
+      }
+    },
+    {
+      "id": "health_dental_adult_decay",
+      "category": "health",
+      "titleKey": "event.health_dental_adult_decay.title",
+      "bodyKey": "event.health_dental_adult_decay.body",
+      "severity": "minor",
+      "ageGate": [
+        30,
+        65
+      ],
+      "baseWeight": 0.9,
+      "effects": {
+        "health": -3,
+        "standing": -1
+      }
+    },
+    {
+      "id": "health_veteran_chronic_condition",
+      "category": "health",
+      "titleKey": "event.health_veteran_chronic_condition.title",
+      "bodyKey": "event.health_veteran_chronic_condition.body",
+      "severity": "major",
+      "ageGate": [
+        25,
+        80
+      ],
+      "baseWeight": 1,
+      "requires": {
+        "traits": [
+          "veteran"
+        ]
+      },
+      "choices": [
+        {
+          "id": "treat",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 6,
+            "wealth": -8
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "endure",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 1,
+            "health": -6
+          },
+          "mortalityDelta": 1.3
+        }
+      ]
+    },
+    {
+      "id": "health_crime_victim_lasting_injury",
+      "category": "health",
+      "titleKey": "event.health_crime_victim_lasting_injury.title",
+      "bodyKey": "event.health_crime_victim_lasting_injury.body",
+      "severity": "major",
+      "ageGate": [
+        10,
+        85
+      ],
+      "baseWeight": 0.9,
+      "requires": {
+        "traits": [
+          "crime_victim"
+        ]
+      },
+      "choices": [
+        {
+          "id": "treat",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 6,
+            "wealth": -6
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "no_treat",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1.2
+        }
+      ]
+    },
+    {
+      "id": "health_famine_survivor_marker",
+      "category": "health",
+      "titleKey": "event.health_famine_survivor_marker.title",
+      "bodyKey": "event.health_famine_survivor_marker.body",
+      "severity": "notable",
+      "ageGate": [
+        55,
+        75
+      ],
+      "baseWeight": 0.9,
+      "requires": {
+        "traits": [
+          "famine_survivor"
+        ]
+      },
+      "effects": {
+        "health": -5
+      }
+    },
+    {
+      "id": "health_seasonal_epidemic",
+      "category": "health",
+      "titleKey": "event.health_seasonal_epidemic.title",
+      "bodyKey": "event.health_seasonal_epidemic.body",
+      "severity": "fatal",
+      "ageGate": [
+        0,
+        90
+      ],
+      "baseWeight": 0.8,
+      "weightBy": {
+        "hazardTag": {
+          "flood": 1.6,
+          "drought": 1.3
+        },
+        "incomeTier": {
+          "low": 1.4
+        }
+      },
+      "effects": {
+        "health": -6
+      },
+      "mortalityDelta": 1.5
+    },
+    {
+      "id": "health_rural_care_access_decision",
+      "category": "health",
+      "titleKey": "event.health_rural_care_access_decision.title",
+      "bodyKey": "event.health_rural_care_access_decision.body",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        90
+      ],
+      "baseWeight": 1.1,
+      "weightBy": {
+        "rural": 1.8
+      },
+      "choices": [
+        {
+          "id": "travel_city",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 6,
+            "wealth": -7
+          },
+          "mortalityDelta": 0.95
+        },
+        {
+          "id": "local_remedy",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1.3
+        }
+      ]
+    },
+    {
+      "id": "health_adult_depression_anxiety",
+      "category": "health",
+      "titleKey": "event.health_adult_depression_anxiety.title",
+      "bodyKey": "event.health_adult_depression_anxiety.body",
+      "severity": "notable",
+      "ageGate": [
+        25,
+        60
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "therapy",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 5,
+            "health": 4,
+            "wealth": -4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "carry_on",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -5
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    }
+  ],
+  "i18n": {
+    "ru": {
+      "event.health_infant_fever.title": "Лихорадка в младенчестве",
+      "event.health_infant_fever.body": "В первые два года жизни организм слабо защищён от инфекций. Ребёнок переносит сильную лихорадку, выздоровление идёт медленно.",
+      "event.health_vaccination_access.title": "Прививочная бригада в районе",
+      "event.health_vaccination_access.body": "В окрестности приезжает выездная медицинская бригада с прививками. Поездка к пункту занимает день и стоит денег на дорогу.",
+      "event.health_vaccination_access.choice.travel.label": "Съездить и привить ребёнка",
+      "event.health_vaccination_access.choice.skip.label": "Остаться дома",
+      "event.health_early_malnutrition.title": "Недоедание в раннем детстве",
+      "event.health_early_malnutrition.body": "Нехватка еды в семье сказывается на развитии ребёнка. Это ощущается ещё годы после.",
+      "event.health_frail_survivor.title": "Тяжёлая болезнь позади",
+      "event.health_frail_survivor.body": "Ребёнок переносит тяжёлую болезнь и выживает, но остаётся ослабленным на годы вперёд.",
+      "event.health_congenital_condition.title": "Врождённая особенность здоровья",
+      "event.health_congenital_condition.body": "Врач отмечает врождённую особенность, которая будет требовать внимания всю жизнь.",
+      "event.health_recurring_childhood_illness.title": "Болезнь возвращается снова",
+      "event.health_recurring_childhood_illness.body": "Ослабленный с младенчества ребёнок снова заболевает. Семья решает, платить ли за осмотр врача.",
+      "event.health_recurring_childhood_illness.choice.treat.label": "Показать врачу",
+      "event.health_recurring_childhood_illness.choice.home_remedy.label": "Лечить дома своими средствами",
+      "event.health_childhood_fracture.title": "Перелом после падения",
+      "event.health_childhood_fracture.body": "Ребёнок падает и ломает руку. Можно обратиться в больницу или к местному костоправу.",
+      "event.health_childhood_fracture.choice.clinic.label": "Везти в больницу",
+      "event.health_childhood_fracture.choice.bonesetter.label": "Обратиться к костоправу",
+      "event.health_parasitic_infection.title": "Паразитарная инфекция",
+      "event.health_parasitic_infection.body": "Грязная вода в деревне становится причиной частых болей в животе. Лекарство есть в аптеке соседнего посёлка.",
+      "event.health_parasitic_infection.choice.medicine.label": "Купить лекарство",
+      "event.health_parasitic_infection.choice.ignore.label": "Перетерпеть",
+      "event.health_uncorrected_vision.title": "Плохое зрение остаётся незамеченным",
+      "event.health_uncorrected_vision.body": "В школе выясняется, что ребёнок плохо видит доску. Очков в семье никто не покупает.",
+      "event.health_measles_outbreak.title": "Вспышка кори в округе",
+      "event.health_measles_outbreak.body": "В округе распространяется корь. Платное лечение доступно, но стоит дорого для семейного бюджета.",
+      "event.health_measles_outbreak.choice.care.label": "Оплатить лечение",
+      "event.health_measles_outbreak.choice.no_care.label": "Лечить дома, без врача",
+      "event.health_dental_neglect.title": "Больной зуб остаётся без лечения",
+      "event.health_dental_neglect.body": "Зубная боль не проходит сама, но стоматолог в семейный бюджет не вписывается.",
+      "event.health_asthma_onset.title": "Появляется астма",
+      "event.health_asthma_onset.body": "Врач диагностирует астму. Постоянное лекарство помогает, но требует регулярных расходов.",
+      "event.health_asthma_onset.choice.inhaler.label": "Покупать лекарство регулярно",
+      "event.health_asthma_onset.choice.untreated.label": "Обходиться без лекарства",
+      "event.health_sports_injury_teen.title": "Травма на тренировке",
+      "event.health_sports_injury_teen.body": "Во время игры подросток подворачивает ногу. Можно отлежаться или вернуться в команду раньше срока.",
+      "event.health_sports_injury_teen.choice.rest.label": "Полностью восстановиться",
+      "event.health_sports_injury_teen.choice.play_through.label": "Играть через боль",
+      "event.health_adolescent_mental_health_crisis.title": "Тяжёлый период",
+      "event.health_adolescent_mental_health_crisis.body": "Подросток переживает затяжной упадок сил и настроения. Рядом есть взрослые, к которым можно обратиться за помощью.",
+      "event.health_adolescent_mental_health_crisis.choice.seek_help.label": "Поговорить со взрослым",
+      "event.health_adolescent_mental_health_crisis.choice.withdraw.label": "Замкнуться в себе",
+      "event.health_first_chronic_diagnosis_young_adult.title": "Хронический диагноз в молодости",
+      "event.health_first_chronic_diagnosis_young_adult.body": "Врачи ставят хронический диагноз, который потребует постоянного наблюдения и лекарств.",
+      "event.health_first_chronic_diagnosis_young_adult.choice.manage.label": "Лечиться постоянно",
+      "event.health_first_chronic_diagnosis_young_adult.choice.skip_treatment.label": "Откладывать лечение",
+      "event.health_disabling_workplace_injury.title": "Опасная смена на производстве",
+      "event.health_disabling_workplace_injury.body": "Мастер предлагает дополнительную смену на опасном участке за повышенную плату. На объекте уже случались травмы.",
+      "event.health_disabling_workplace_injury.choice.caution.label": "Отказаться от смены",
+      "event.health_disabling_workplace_injury.choice.risky_shift.label": "Взять опасную смену",
+      "event.health_infectious_disease_adult.title": "Затяжная инфекционная болезнь",
+      "event.health_infectious_disease_adult.body": "Диагностируется болезнь, требующая долгого курса лечения. Полный курс стоит дорого, неполный снижает шансы на выздоровление.",
+      "event.health_infectious_disease_adult.choice.full_treatment.label": "Пройти полный курс лечения",
+      "event.health_infectious_disease_adult.choice.partial.label": "Прервать лечение, когда станет легче",
+      "event.health_postpartum_complication.title": "Осложнение после родов",
+      "event.health_postpartum_complication.body": "После родов начинается осложнение, требующее медицинского вмешательства. Больница далеко и приём платный.",
+      "event.health_postpartum_complication.choice.hospital.label": "Ехать в больницу",
+      "event.health_postpartum_complication.choice.home.label": "Остаться дома с повитухой",
+      "event.health_repetitive_strain_labor.title": "Износ от многолетнего труда",
+      "event.health_repetitive_strain_labor.body": "Годы однообразного физического труда дают о себе знать болью в спине и суставах.",
+      "event.health_hypertension_onset.title": "Повышенное давление",
+      "event.health_hypertension_onset.body": "Врач обнаруживает повышенное давление и советует постоянный приём лекарств.",
+      "event.health_hypertension_onset.choice.treat.label": "Принимать лекарства постоянно",
+      "event.health_hypertension_onset.choice.ignore.label": "Отложить лечение",
+      "event.health_vision_decline_midlife.title": "Зрение начинает слабеть",
+      "event.health_vision_decline_midlife.body": "Читать и работать с мелкими деталями становится труднее. Очки есть в продаже в городе.",
+      "event.health_vision_decline_midlife.choice.glasses.label": "Купить очки",
+      "event.health_vision_decline_midlife.choice.without.label": "Обойтись без очков",
+      "event.health_severe_illness_disabling.title": "Внезапный тяжёлый приступ",
+      "event.health_severe_illness_disabling.body": "Резкий приступ болезни требует немедленной госпитализации. Задержка повышает риск стойких последствий.",
+      "event.health_severe_illness_disabling.choice.hospital.label": "Немедленно ехать в больницу",
+      "event.health_severe_illness_disabling.choice.delay.label": "Подождать, станет ли легче",
+      "event.health_cancer_screening_decision.title": "Плановое обследование",
+      "event.health_cancer_screening_decision.body": "Клиника предлагает платное обследование, способное выявить болезнь на ранней стадии.",
+      "event.health_cancer_screening_decision.choice.screen.label": "Пройти обследование",
+      "event.health_cancer_screening_decision.choice.skip.label": "Отказаться от обследования",
+      "event.health_cataract_surgery_access.title": "Катаракта мешает видеть",
+      "event.health_cataract_surgery_access.body": "Зрение мутнеет из-за катаракты. Операция доступна, но стоит значительных денег.",
+      "event.health_cataract_surgery_access.choice.surgery.label": "Оплатить операцию",
+      "event.health_cataract_surgery_access.choice.no_surgery.label": "Жить с ухудшающимся зрением",
+      "event.health_mobility_decline_aging.title": "Снижается подвижность",
+      "event.health_mobility_decline_aging.body": "Суставы и мышцы слабеют с возрастом, повседневные дела требуют больше времени и помощи.",
+      "event.health_fall_injury_elderly.title": "Падение дома",
+      "event.health_fall_injury_elderly.body": "Падение в собственном доме приводит к травме. Больница далеко, но без неё перелом срастается хуже.",
+      "event.health_fall_injury_elderly.choice.hospital.label": "Везти в больницу",
+      "event.health_fall_injury_elderly.choice.home_care.label": "Оставить восстанавливаться дома",
+      "event.health_cognitive_decline.title": "Память начинает подводить",
+      "event.health_cognitive_decline.body": "Забывчивость становится постоянной, и близким приходится всё чаще напоминать об обычных делах.",
+      "event.health_end_of_life_care_decision.title": "Решение о дальнейшем лечении",
+      "event.health_end_of_life_care_decision.body": "Тяжёлая болезнь требует решения: лечиться в больнице или остаться дома с родными.",
+      "event.health_end_of_life_care_decision.choice.hospital_care.label": "Остаться в больнице",
+      "event.health_end_of_life_care_decision.choice.home_care.label": "Вернуться домой, к семье",
+      "event.health_chronic_pain_elderly.title": "Постоянная боль в суставах",
+      "event.health_chronic_pain_elderly.body": "Боль в суставах стала постоянным спутником, с которым приходится считаться каждый день.",
+      "event.health_dental_adult_decay.title": "Проблемы с зубами во взрослом возрасте",
+      "event.health_dental_adult_decay.body": "Годы без визитов к стоматологу дают о себе знать потерей нескольких зубов.",
+      "event.health_veteran_chronic_condition.title": "Последствия службы напоминают о себе",
+      "event.health_veteran_chronic_condition.body": "Проблема со здоровьем, начавшаяся ещё во время службы, становится хронической.",
+      "event.health_veteran_chronic_condition.choice.treat.label": "Проходить постоянное лечение",
+      "event.health_veteran_chronic_condition.choice.endure.label": "Терпеть без лечения",
+      "event.health_crime_victim_lasting_injury.title": "Последствия нападения дают о себе знать",
+      "event.health_crime_victim_lasting_injury.body": "Травма, полученная во время нападения, оставляет долговременный след на здоровье.",
+      "event.health_crime_victim_lasting_injury.choice.treat.label": "Долечиться у врача",
+      "event.health_crime_victim_lasting_injury.choice.no_treat.label": "Оставить как есть",
+      "event.health_famine_survivor_marker.title": "Отголосок давнего голода",
+      "event.health_famine_survivor_marker.body": "Врач связывает нынешнюю слабость обмена веществ с голодом, перенесённым в детстве.",
+      "event.health_seasonal_epidemic.title": "Сезонная эпидемия в районе",
+      "event.health_seasonal_epidemic.body": "В районе распространяется кишечная инфекция, связанная с загрязнённой водой после непогоды.",
+      "event.health_rural_care_access_decision.title": "Болезнь далеко от врача",
+      "event.health_rural_care_access_decision.body": "Ближайшая больница в нескольких часах пути. Можно поехать туда или обойтись местными средствами.",
+      "event.health_rural_care_access_decision.choice.travel_city.label": "Поехать в больницу",
+      "event.health_rural_care_access_decision.choice.local_remedy.label": "Обойтись домашними средствами",
+      "event.health_adult_depression_anxiety.title": "Долгий период тревоги и усталости",
+      "event.health_adult_depression_anxiety.body": "Постоянная тревога и усталость не проходят сами. В городе есть врач, к которому можно обратиться.",
+      "event.health_adult_depression_anxiety.choice.therapy.label": "Обратиться за помощью",
+      "event.health_adult_depression_anxiety.choice.carry_on.label": "Продолжать как раньше"
+    },
+    "en": {
+      "event.health_infant_fever.title": "A fever in infancy",
+      "event.health_infant_fever.body": "In the first two years of life the body has little defense against infection. The child goes through a severe fever, and recovery is slow.",
+      "event.health_vaccination_access.title": "A vaccination team nearby",
+      "event.health_vaccination_access.body": "A traveling medical team with vaccines arrives nearby. Reaching the clinic takes a day and costs money for travel.",
+      "event.health_vaccination_access.choice.travel.label": "Travel there and vaccinate the child",
+      "event.health_vaccination_access.choice.skip.label": "Stay home",
+      "event.health_early_malnutrition.title": "Early childhood malnutrition",
+      "event.health_early_malnutrition.body": "A shortage of food in the household affects the child's development, with effects that linger for years.",
+      "event.health_frail_survivor.title": "A serious illness survived",
+      "event.health_frail_survivor.body": "The child survives a serious illness, but stays weakened for years afterward.",
+      "event.health_congenital_condition.title": "A congenital health condition",
+      "event.health_congenital_condition.body": "A doctor notes a congenital condition that will need attention for life.",
+      "event.health_recurring_childhood_illness.title": "The illness returns again",
+      "event.health_recurring_childhood_illness.body": "A child weakened since infancy falls ill again. The family must decide whether to pay for a doctor's visit.",
+      "event.health_recurring_childhood_illness.choice.treat.label": "Take the child to a doctor",
+      "event.health_recurring_childhood_illness.choice.home_remedy.label": "Treat it at home with what they have",
+      "event.health_childhood_fracture.title": "A fracture after a fall",
+      "event.health_childhood_fracture.body": "The child falls and breaks an arm. The family can go to a hospital or to a local bonesetter.",
+      "event.health_childhood_fracture.choice.clinic.label": "Take the child to a hospital",
+      "event.health_childhood_fracture.choice.bonesetter.label": "Go to the local bonesetter",
+      "event.health_parasitic_infection.title": "A parasitic infection",
+      "event.health_parasitic_infection.body": "Unclean water in the village causes frequent stomach pain. Medicine is available at a pharmacy in the next town.",
+      "event.health_parasitic_infection.choice.medicine.label": "Buy the medicine",
+      "event.health_parasitic_infection.choice.ignore.label": "Wait it out",
+      "event.health_uncorrected_vision.title": "Poor eyesight goes unnoticed",
+      "event.health_uncorrected_vision.body": "At school it becomes clear the child can barely see the blackboard. No one in the family buys glasses.",
+      "event.health_measles_outbreak.title": "A measles outbreak nearby",
+      "event.health_measles_outbreak.body": "Measles is spreading through the area. Paid treatment is available, but it strains the family budget.",
+      "event.health_measles_outbreak.choice.care.label": "Pay for treatment",
+      "event.health_measles_outbreak.choice.no_care.label": "Treat it at home, without a doctor",
+      "event.health_dental_neglect.title": "A bad tooth left untreated",
+      "event.health_dental_neglect.body": "The toothache does not go away on its own, but a dentist does not fit in the family budget.",
+      "event.health_asthma_onset.title": "Asthma develops",
+      "event.health_asthma_onset.body": "A doctor diagnoses asthma. Regular medication helps, but it means an ongoing expense.",
+      "event.health_asthma_onset.choice.inhaler.label": "Buy the medication regularly",
+      "event.health_asthma_onset.choice.untreated.label": "Go without medication",
+      "event.health_sports_injury_teen.title": "An injury during practice",
+      "event.health_sports_injury_teen.body": "During a game the teenager twists an ankle. They can rest it properly or return to the team early.",
+      "event.health_sports_injury_teen.choice.rest.label": "Rest and recover fully",
+      "event.health_sports_injury_teen.choice.play_through.label": "Play through the pain",
+      "event.health_adolescent_mental_health_crisis.title": "A difficult period",
+      "event.health_adolescent_mental_health_crisis.body": "The teenager goes through a long stretch of low mood and exhaustion. There are adults nearby they could turn to for help.",
+      "event.health_adolescent_mental_health_crisis.choice.seek_help.label": "Talk to an adult about it",
+      "event.health_adolescent_mental_health_crisis.choice.withdraw.label": "Withdraw and keep it inside",
+      "event.health_first_chronic_diagnosis_young_adult.title": "A chronic diagnosis at a young age",
+      "event.health_first_chronic_diagnosis_young_adult.body": "Doctors give a chronic diagnosis that will require ongoing monitoring and medication.",
+      "event.health_first_chronic_diagnosis_young_adult.choice.manage.label": "Manage it with ongoing treatment",
+      "event.health_first_chronic_diagnosis_young_adult.choice.skip_treatment.label": "Put off treatment",
+      "event.health_disabling_workplace_injury.title": "A dangerous shift at work",
+      "event.health_disabling_workplace_injury.body": "The foreman offers an extra shift on a hazardous section for higher pay. Injuries have already happened there before.",
+      "event.health_disabling_workplace_injury.choice.caution.label": "Turn down the shift",
+      "event.health_disabling_workplace_injury.choice.risky_shift.label": "Take the dangerous shift",
+      "event.health_infectious_disease_adult.title": "A prolonged infectious illness",
+      "event.health_infectious_disease_adult.body": "An illness is diagnosed that needs a long course of treatment. The full course is expensive; an incomplete one lowers the odds of recovery.",
+      "event.health_infectious_disease_adult.choice.full_treatment.label": "Complete the full course of treatment",
+      "event.health_infectious_disease_adult.choice.partial.label": "Stop treatment once symptoms ease",
+      "event.health_postpartum_complication.title": "A complication after childbirth",
+      "event.health_postpartum_complication.body": "A complication develops after childbirth that calls for medical care. The hospital is far away and the visit costs money.",
+      "event.health_postpartum_complication.choice.hospital.label": "Go to the hospital",
+      "event.health_postpartum_complication.choice.home.label": "Stay home with a midwife",
+      "event.health_repetitive_strain_labor.title": "Wear from years of labor",
+      "event.health_repetitive_strain_labor.body": "Years of repetitive physical labor start showing as back and joint pain.",
+      "event.health_hypertension_onset.title": "High blood pressure",
+      "event.health_hypertension_onset.body": "A doctor finds elevated blood pressure and recommends ongoing medication.",
+      "event.health_hypertension_onset.choice.treat.label": "Take the medication long-term",
+      "event.health_hypertension_onset.choice.ignore.label": "Put off treating it",
+      "event.health_vision_decline_midlife.title": "Eyesight begins to fade",
+      "event.health_vision_decline_midlife.body": "Reading and fine detail work grow harder. Glasses are available for sale in the city.",
+      "event.health_vision_decline_midlife.choice.glasses.label": "Buy glasses",
+      "event.health_vision_decline_midlife.choice.without.label": "Go without",
+      "event.health_severe_illness_disabling.title": "A sudden severe episode",
+      "event.health_severe_illness_disabling.body": "A sudden medical episode calls for immediate hospitalization. Delay raises the risk of lasting consequences.",
+      "event.health_severe_illness_disabling.choice.hospital.label": "Go to the hospital immediately",
+      "event.health_severe_illness_disabling.choice.delay.label": "Wait and see if it passes",
+      "event.health_cancer_screening_decision.title": "A routine screening",
+      "event.health_cancer_screening_decision.body": "The clinic offers a paid screening that could catch an illness early.",
+      "event.health_cancer_screening_decision.choice.screen.label": "Get screened",
+      "event.health_cancer_screening_decision.choice.skip.label": "Skip the screening",
+      "event.health_cataract_surgery_access.title": "A cataract clouds the vision",
+      "event.health_cataract_surgery_access.body": "Vision clouds over with a cataract. Surgery is available, but costs a significant sum.",
+      "event.health_cataract_surgery_access.choice.surgery.label": "Pay for the surgery",
+      "event.health_cataract_surgery_access.choice.no_surgery.label": "Live with the worsening vision",
+      "event.health_mobility_decline_aging.title": "Mobility declines",
+      "event.health_mobility_decline_aging.body": "Joints and muscles weaken with age; everyday tasks take more time and help.",
+      "event.health_fall_injury_elderly.title": "A fall at home",
+      "event.health_fall_injury_elderly.body": "A fall at home causes an injury. The hospital is far away, but without it the break heals poorly.",
+      "event.health_fall_injury_elderly.choice.hospital.label": "Go to the hospital",
+      "event.health_fall_injury_elderly.choice.home_care.label": "Let them recover at home",
+      "event.health_cognitive_decline.title": "Memory starts to fail",
+      "event.health_cognitive_decline.body": "Forgetfulness becomes constant, and family members have to remind them of everyday things more and more often.",
+      "event.health_end_of_life_care_decision.title": "A decision about further care",
+      "event.health_end_of_life_care_decision.body": "A serious illness calls for a decision: stay in hospital for treatment, or remain at home with family.",
+      "event.health_end_of_life_care_decision.choice.hospital_care.label": "Stay in the hospital",
+      "event.health_end_of_life_care_decision.choice.home_care.label": "Go home, to be with family",
+      "event.health_chronic_pain_elderly.title": "Constant joint pain",
+      "event.health_chronic_pain_elderly.body": "Joint pain has become a constant companion that shapes every day.",
+      "event.health_dental_adult_decay.title": "Dental problems in adulthood",
+      "event.health_dental_adult_decay.body": "Years without dental visits catch up, with the loss of a few teeth.",
+      "event.health_veteran_chronic_condition.title": "The service leaves its mark",
+      "event.health_veteran_chronic_condition.body": "A health problem that began during service becomes a chronic condition.",
+      "event.health_veteran_chronic_condition.choice.treat.label": "Get ongoing treatment",
+      "event.health_veteran_chronic_condition.choice.endure.label": "Endure it without treatment",
+      "event.health_crime_victim_lasting_injury.title": "The lasting effects of the attack",
+      "event.health_crime_victim_lasting_injury.body": "An injury from the attack leaves a lasting mark on health.",
+      "event.health_crime_victim_lasting_injury.choice.treat.label": "Finish treatment with a doctor",
+      "event.health_crime_victim_lasting_injury.choice.no_treat.label": "Leave it as it is",
+      "event.health_famine_survivor_marker.title": "An echo of the old famine",
+      "event.health_famine_survivor_marker.body": "A doctor links the current metabolic weakness to the famine endured in childhood.",
+      "event.health_seasonal_epidemic.title": "A seasonal epidemic in the area",
+      "event.health_seasonal_epidemic.body": "An intestinal infection spreads through the area, linked to contaminated water after bad weather.",
+      "event.health_rural_care_access_decision.title": "An illness far from any doctor",
+      "event.health_rural_care_access_decision.body": "The nearest hospital is hours away. They can travel there or rely on local remedies instead.",
+      "event.health_rural_care_access_decision.choice.travel_city.label": "Travel to the hospital",
+      "event.health_rural_care_access_decision.choice.local_remedy.label": "Make do with home remedies",
+      "event.health_adult_depression_anxiety.title": "A long stretch of anxiety and exhaustion",
+      "event.health_adult_depression_anxiety.body": "The constant anxiety and exhaustion will not pass on their own. There is a doctor in the city they could see.",
+      "event.health_adult_depression_anxiety.choice.therapy.label": "Seek professional help",
+      "event.health_adult_depression_anxiety.choice.carry_on.label": "Carry on as before"
+    }
+  }
+}

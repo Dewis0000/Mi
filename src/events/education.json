@@ -1,0 +1,1105 @@
+{
+  "events": [
+    {
+      "id": "education_preschool_access",
+      "category": "education",
+      "titleKey": "event.education_preschool_access.title",
+      "bodyKey": "event.education_preschool_access.body",
+      "severity": "minor",
+      "ageGate": [
+        3,
+        6
+      ],
+      "baseWeight": 1,
+      "weightBy": {
+        "urban": 1.4
+      },
+      "effects": {
+        "education": 4,
+        "bonds": 2
+      }
+    },
+    {
+      "id": "education_enrollment_decision",
+      "category": "education",
+      "titleKey": "event.education_enrollment_decision.title",
+      "bodyKey": "event.education_enrollment_decision.body",
+      "severity": "notable",
+      "ageGate": [
+        5,
+        11
+      ],
+      "baseWeight": 1.6,
+      "choices": [
+        {
+          "id": "enroll",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 8,
+            "wealth": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "skip",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_long_walk_to_school",
+      "category": "education",
+      "titleKey": "event.education_long_walk_to_school.title",
+      "bodyKey": "event.education_long_walk_to_school.body",
+      "severity": "notable",
+      "ageGate": [
+        6,
+        13
+      ],
+      "baseWeight": 1.1,
+      "weightBy": {
+        "rural": 1.7
+      },
+      "choices": [
+        {
+          "id": "walk",
+          "riskLabel": "рискованно",
+          "effects": {
+            "education": 5,
+            "health": -2
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "stop",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": -5
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_literacy_milestone",
+      "category": "education",
+      "titleKey": "event.education_literacy_milestone.title",
+      "bodyKey": "event.education_literacy_milestone.body",
+      "severity": "minor",
+      "ageGate": [
+        6,
+        11
+      ],
+      "baseWeight": 1.3,
+      "once": true,
+      "effects": {
+        "education": 6,
+        "standing": 1
+      }
+    },
+    {
+      "id": "education_teacher_shortage",
+      "category": "education",
+      "titleKey": "event.education_teacher_shortage.title",
+      "bodyKey": "event.education_teacher_shortage.body",
+      "severity": "notable",
+      "ageGate": [
+        6,
+        13
+      ],
+      "baseWeight": 1,
+      "weightBy": {
+        "rural": 1.4,
+        "incomeTier": {
+          "low": 1.3
+        }
+      },
+      "effects": {
+        "education": -4
+      }
+    },
+    {
+      "id": "education_gender_enrollment_gap",
+      "category": "education",
+      "titleKey": "event.education_gender_enrollment_gap.title",
+      "bodyKey": "event.education_gender_enrollment_gap.body",
+      "severity": "major",
+      "ageGate": [
+        6,
+        14
+      ],
+      "baseWeight": 0.9,
+      "requires": {
+        "sex": "female"
+      },
+      "choices": [
+        {
+          "id": "push_for_school",
+          "riskLabel": "рискованно",
+          "effects": {
+            "education": 7,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "accept_custom",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": -6,
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_school_fees_burden",
+      "category": "education",
+      "titleKey": "event.education_school_fees_burden.title",
+      "bodyKey": "event.education_school_fees_burden.body",
+      "severity": "notable",
+      "ageGate": [
+        8,
+        15
+      ],
+      "baseWeight": 1.2,
+      "choices": [
+        {
+          "id": "pay",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 5,
+            "wealth": -6
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "stop_paying",
+          "riskLabel": "рискованно",
+          "effects": {
+            "education": -6
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_exam_performance",
+      "category": "education",
+      "titleKey": "event.education_exam_performance.title",
+      "bodyKey": "event.education_exam_performance.body",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        16
+      ],
+      "baseWeight": 1.3,
+      "effects": {
+        "education": 4,
+        "standing": 1
+      }
+    },
+    {
+      "id": "education_left_school_early",
+      "category": "education",
+      "titleKey": "event.education_left_school_early.title",
+      "bodyKey": "event.education_left_school_early.body",
+      "severity": "major",
+      "ageGate": [
+        10,
+        16
+      ],
+      "baseWeight": 1.3,
+      "weightBy": {
+        "incomeTier": {
+          "low": 1.5
+        },
+        "rural": 1.2
+      },
+      "choices": [
+        {
+          "id": "leave",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 4,
+            "education": -8
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "left_school_early"
+          ]
+        },
+        {
+          "id": "persist",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 3,
+            "wealth": -3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_dropout_social_pressure",
+      "category": "education",
+      "titleKey": "event.education_dropout_social_pressure.title",
+      "bodyKey": "event.education_dropout_social_pressure.body",
+      "severity": "major",
+      "ageGate": [
+        12,
+        16
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "drop_out",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": 3,
+            "education": -7
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "dropout"
+          ]
+        },
+        {
+          "id": "stay_in_school",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 4,
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_scholarship_offer",
+      "category": "education",
+      "titleKey": "event.education_scholarship_offer.title",
+      "bodyKey": "event.education_scholarship_offer.body",
+      "severity": "major",
+      "ageGate": [
+        12,
+        17
+      ],
+      "baseWeight": 0.8,
+      "choices": [
+        {
+          "id": "accept",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 10,
+            "standing": 4
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "scholarship"
+          ]
+        },
+        {
+          "id": "decline",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_vocational_track_choice",
+      "category": "education",
+      "titleKey": "event.education_vocational_track_choice.title",
+      "bodyKey": "event.education_vocational_track_choice.body",
+      "severity": "notable",
+      "ageGate": [
+        13,
+        17
+      ],
+      "baseWeight": 1.2,
+      "choices": [
+        {
+          "id": "vocational",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 4,
+            "wealth": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "academic",
+          "riskLabel": "рискованно",
+          "effects": {
+            "education": 7,
+            "wealth": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_secondary_school_access",
+      "category": "education",
+      "titleKey": "event.education_secondary_school_access.title",
+      "bodyKey": "event.education_secondary_school_access.body",
+      "severity": "notable",
+      "ageGate": [
+        13,
+        18
+      ],
+      "baseWeight": 1.3,
+      "weightBy": {
+        "urban": 1.3
+      },
+      "choices": [
+        {
+          "id": "enroll",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 7,
+            "wealth": -4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "forgo",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_school_belonging_or_bullying",
+      "category": "education",
+      "titleKey": "event.education_school_belonging_or_bullying.title",
+      "bodyKey": "event.education_school_belonging_or_bullying.body",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        17
+      ],
+      "baseWeight": 1.1,
+      "choices": [
+        {
+          "id": "speak_up",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": 4,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "endure",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": -5
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_university_access",
+      "category": "education",
+      "titleKey": "event.education_university_access.title",
+      "bodyKey": "event.education_university_access.body",
+      "severity": "major",
+      "ageGate": [
+        17,
+        22
+      ],
+      "baseWeight": 0.8,
+      "requires": {
+        "traits": [
+          "scholarship"
+        ]
+      },
+      "choices": [
+        {
+          "id": "go",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 14,
+            "standing": 5,
+            "wealth": -4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "stay_local",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": 3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_trade_school_decision",
+      "category": "education",
+      "titleKey": "event.education_trade_school_decision.title",
+      "bodyKey": "event.education_trade_school_decision.body",
+      "severity": "notable",
+      "ageGate": [
+        15,
+        19
+      ],
+      "baseWeight": 1.1,
+      "choices": [
+        {
+          "id": "enroll",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 6,
+            "wealth": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "skip",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_self_study_path",
+      "category": "education",
+      "titleKey": "event.education_self_study_path.title",
+      "bodyKey": "event.education_self_study_path.body",
+      "severity": "notable",
+      "ageGate": [
+        16,
+        25
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "self_study",
+          "riskLabel": "рискованно",
+          "effects": {
+            "education": 6
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "drop",
+          "riskLabel": "надёжно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_correspondence_course",
+      "category": "education",
+      "titleKey": "event.education_correspondence_course.title",
+      "bodyKey": "event.education_correspondence_course.body",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        35
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "enroll",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 8,
+            "wealth": -4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "skip",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_adult_literacy_program",
+      "category": "education",
+      "titleKey": "event.education_adult_literacy_program.title",
+      "bodyKey": "event.education_adult_literacy_program.body",
+      "severity": "notable",
+      "ageGate": [
+        25,
+        45
+      ],
+      "baseWeight": 0.9,
+      "choices": [
+        {
+          "id": "attend",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 9,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "skip",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_second_chance_school_success",
+      "category": "education",
+      "titleKey": "event.education_second_chance_school_success.title",
+      "bodyKey": "event.education_second_chance_school_success.body",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        22
+      ],
+      "baseWeight": 0.7,
+      "requires": {
+        "traits": [
+          "child_laborer"
+        ]
+      },
+      "effects": {
+        "education": 9,
+        "standing": 2
+      }
+    },
+    {
+      "id": "education_second_chance_school_fails",
+      "category": "education",
+      "titleKey": "event.education_second_chance_school_fails.title",
+      "bodyKey": "event.education_second_chance_school_fails.body",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        22
+      ],
+      "baseWeight": 0.7,
+      "requires": {
+        "traits": [
+          "child_laborer"
+        ]
+      },
+      "effects": {
+        "education": -2,
+        "bonds": -3
+      }
+    },
+    {
+      "id": "education_night_school",
+      "category": "education",
+      "titleKey": "event.education_night_school.title",
+      "bodyKey": "event.education_night_school.body",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        35
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "attend",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 7,
+            "health": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "skip",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_distance_from_city_college",
+      "category": "education",
+      "titleKey": "event.education_distance_from_city_college.title",
+      "bodyKey": "event.education_distance_from_city_college.body",
+      "severity": "notable",
+      "ageGate": [
+        17,
+        25
+      ],
+      "baseWeight": 1,
+      "weightBy": {
+        "rural": 1.5
+      },
+      "choices": [
+        {
+          "id": "move",
+          "riskLabel": "рискованно",
+          "effects": {
+            "education": 9,
+            "bonds": -5,
+            "wealth": -5
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "stay",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_parents_illiteracy_effect",
+      "category": "education",
+      "titleKey": "event.education_parents_illiteracy_effect.title",
+      "bodyKey": "event.education_parents_illiteracy_effect.body",
+      "severity": "minor",
+      "ageGate": [
+        6,
+        12
+      ],
+      "baseWeight": 1,
+      "effects": {
+        "education": -3
+      }
+    },
+    {
+      "id": "education_school_closure_hazard",
+      "category": "education",
+      "titleKey": "event.education_school_closure_hazard.title",
+      "bodyKey": "event.education_school_closure_hazard.body",
+      "severity": "major",
+      "ageGate": [
+        6,
+        16
+      ],
+      "baseWeight": 0.8,
+      "weightBy": {
+        "hazardTag": {
+          "conflict": 1.8,
+          "flood": 1.4,
+          "quake": 1.4
+        }
+      },
+      "effects": {
+        "education": -8
+      }
+    },
+    {
+      "id": "education_mentor_teacher",
+      "category": "education",
+      "titleKey": "event.education_mentor_teacher.title",
+      "bodyKey": "event.education_mentor_teacher.body",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        17
+      ],
+      "baseWeight": 1.1,
+      "effects": {
+        "education": 6,
+        "bonds": 3
+      }
+    },
+    {
+      "id": "education_return_to_school_as_adult",
+      "category": "education",
+      "titleKey": "event.education_return_to_school_as_adult.title",
+      "bodyKey": "event.education_return_to_school_as_adult.body",
+      "severity": "notable",
+      "ageGate": [
+        28,
+        45
+      ],
+      "baseWeight": 0.8,
+      "choices": [
+        {
+          "id": "enroll",
+          "riskLabel": "рискованно",
+          "effects": {
+            "education": 10,
+            "wealth": -6
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "skip",
+          "riskLabel": "надёжно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_informal_tutoring",
+      "category": "education",
+      "titleKey": "event.education_informal_tutoring.title",
+      "bodyKey": "event.education_informal_tutoring.body",
+      "severity": "minor",
+      "ageGate": [
+        8,
+        15
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "tutor",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 5,
+            "wealth": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "skip",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_graduation_milestone",
+      "category": "education",
+      "titleKey": "event.education_graduation_milestone.title",
+      "bodyKey": "event.education_graduation_milestone.body",
+      "severity": "notable",
+      "ageGate": [
+        16,
+        19
+      ],
+      "baseWeight": 1,
+      "once": true,
+      "effects": {
+        "education": 8,
+        "standing": 3
+      }
+    },
+    {
+      "id": "education_higher_degree_pursuit",
+      "category": "education",
+      "titleKey": "event.education_higher_degree_pursuit.title",
+      "bodyKey": "event.education_higher_degree_pursuit.body",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        30
+      ],
+      "baseWeight": 0.9,
+      "requires": {
+        "statsAbove": {
+          "education": 50
+        }
+      },
+      "choices": [
+        {
+          "id": "pursue",
+          "riskLabel": "рискованно",
+          "effects": {
+            "education": 10,
+            "wealth": -8
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "work_instead",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 5
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "education_illiterate_adult_barrier",
+      "category": "education",
+      "titleKey": "event.education_illiterate_adult_barrier.title",
+      "bodyKey": "event.education_illiterate_adult_barrier.body",
+      "severity": "notable",
+      "ageGate": [
+        25,
+        55
+      ],
+      "baseWeight": 1,
+      "effects": {
+        "wealth": -3,
+        "standing": -2
+      }
+    },
+    {
+      "id": "education_school_supplies_shortage",
+      "category": "education",
+      "titleKey": "event.education_school_supplies_shortage.title",
+      "bodyKey": "event.education_school_supplies_shortage.body",
+      "severity": "minor",
+      "ageGate": [
+        6,
+        13
+      ],
+      "baseWeight": 1,
+      "effects": {
+        "education": -3,
+        "wealth": -1
+      }
+    },
+    {
+      "id": "education_home_tutoring_by_family",
+      "category": "education",
+      "titleKey": "event.education_home_tutoring_by_family.title",
+      "bodyKey": "event.education_home_tutoring_by_family.body",
+      "severity": "minor",
+      "ageGate": [
+        6,
+        14
+      ],
+      "baseWeight": 1,
+      "effects": {
+        "education": 4,
+        "bonds": 2
+      }
+    }
+  ],
+  "i18n": {
+    "ru": {
+      "event.education_preschool_access.title": "Место в детском саду",
+      "event.education_preschool_access.body": "В районе открывается детский сад, и ребёнок начинает ходить туда ещё до школы.",
+      "event.education_enrollment_decision.title": "Пора решать насчёт школы",
+      "event.education_enrollment_decision.body": "Ребёнку исполняется возраст для начальной школы. Обучение не бесплатное, а в хозяйстве не хватает рук.",
+      "event.education_enrollment_decision.choice.enroll.label": "Отдать в школу",
+      "event.education_enrollment_decision.choice.skip.label": "Оставить дома помогать",
+      "event.education_long_walk_to_school.title": "Школа в нескольких часах пути",
+      "event.education_long_walk_to_school.body": "Ближайшая школа находится в нескольких часах ходьбы. Дорога отнимает силы, но знания того стоят.",
+      "event.education_long_walk_to_school.choice.walk.label": "Продолжать ходить каждый день",
+      "event.education_long_walk_to_school.choice.stop.label": "Перестать ходить в школу",
+      "event.education_literacy_milestone.title": "Ребёнок учится читать",
+      "event.education_literacy_milestone.body": "Ребёнок наконец свободно читает — небольшое, но заметное достижение для всей семьи.",
+      "event.education_teacher_shortage.title": "В школе не хватает учителей",
+      "event.education_teacher_shortage.body": "Один учитель ведёт сразу несколько классов, и качество обучения заметно страдает.",
+      "event.education_gender_enrollment_gap.title": "Местный обычай и учёба девочки",
+      "event.education_gender_enrollment_gap.body": "По местному обычаю мальчиков в семье учат дольше, чем девочек. Родители решают, следовать ли этому правилу.",
+      "event.education_gender_enrollment_gap.choice.push_for_school.label": "Настоять на учёбе для дочери",
+      "event.education_gender_enrollment_gap.choice.accept_custom.label": "Последовать обычаю",
+      "event.education_school_fees_burden.title": "Плата за школу растёт",
+      "event.education_school_fees_burden.body": "Школа повышает плату за обучение, и семье приходится решать, продолжать ли платить.",
+      "event.education_school_fees_burden.choice.pay.label": "Найти деньги на оплату",
+      "event.education_school_fees_burden.choice.stop_paying.label": "Прекратить платить",
+      "event.education_exam_performance.title": "Итоги экзаменов",
+      "event.education_exam_performance.body": "Итоговые экзамены проходят лучше, чем ожидалось, и это открывает дополнительные возможности.",
+      "event.education_left_school_early.title": "Семье нужны рабочие руки",
+      "event.education_left_school_early.body": "Доход семьи падает, и родители предлагают забрать ребёнка из школы ради работы в хозяйстве.",
+      "event.education_left_school_early.choice.leave.label": "Уйти из школы работать",
+      "event.education_left_school_early.choice.persist.label": "Уговорить родителей дать доучиться",
+      "event.education_dropout_social_pressure.title": "Сверстники бросают школу",
+      "event.education_dropout_social_pressure.body": "Несколько друзей уже бросили школу ради заработка или раннего брака, и давление продолжать учёбу ослабевает.",
+      "event.education_dropout_social_pressure.choice.drop_out.label": "Уйти вслед за друзьями",
+      "event.education_dropout_social_pressure.choice.stay_in_school.label": "Остаться в школе",
+      "event.education_scholarship_offer.title": "Предложение стипендии",
+      "event.education_scholarship_offer.body": "Школа предлагает стипендию для способного ученика, но она означает переезд или учёбу в интернате далеко от дома.",
+      "event.education_scholarship_offer.choice.accept.label": "Принять стипендию",
+      "event.education_scholarship_offer.choice.decline.label": "Отказаться и остаться дома",
+      "event.education_vocational_track_choice.title": "Ремесленное училище или гимназия",
+      "event.education_vocational_track_choice.body": "Пора выбрать между практическим училищем, где учат ремеслу, и программой, готовящей к университету.",
+      "event.education_vocational_track_choice.choice.vocational.label": "Выбрать училище",
+      "event.education_vocational_track_choice.choice.academic.label": "Выбрать академическую программу",
+      "event.education_secondary_school_access.title": "Поступление в среднюю школу",
+      "event.education_secondary_school_access.body": "Старшая школа есть только в городе, и обучение там требует платы за проживание.",
+      "event.education_secondary_school_access.choice.enroll.label": "Поступить, несмотря на расходы",
+      "event.education_secondary_school_access.choice.forgo.label": "Отказаться от учёбы в городе",
+      "event.education_school_belonging_or_bullying.title": "Непростые отношения в классе",
+      "event.education_school_belonging_or_bullying.body": "Отношения с частью класса складываются плохо, и это сказывается на желании ходить в школу.",
+      "event.education_school_belonging_or_bullying.choice.speak_up.label": "Рассказать учителю",
+      "event.education_school_belonging_or_bullying.choice.endure.label": "Терпеть молча",
+      "event.education_university_access.title": "Путь в университет открыт",
+      "event.education_university_access.body": "Прежняя стипендия открывает путь к учёбе в университете или городском колледже.",
+      "event.education_university_access.choice.go.label": "Поехать учиться в университет",
+      "event.education_university_access.choice.stay_local.label": "Остаться рядом с семьёй",
+      "event.education_trade_school_decision.title": "Курс при ремесленной школе",
+      "event.education_trade_school_decision.body": "Местная ремесленная школа открывает набор на курс, дающий официальный диплом по специальности.",
+      "event.education_trade_school_decision.choice.enroll.label": "Записаться на курс",
+      "event.education_trade_school_decision.choice.skip.label": "Пропустить этот набор",
+      "event.education_self_study_path.title": "Учёба без школы",
+      "event.education_self_study_path.body": "Без доступа к учебным заведениям остаётся только самостоятельное изучение по книгам, которые удаётся достать.",
+      "event.education_self_study_path.choice.self_study.label": "Заниматься самостоятельно",
+      "event.education_self_study_path.choice.drop.label": "Оставить эту мысль",
+      "event.education_correspondence_course.title": "Заочное обучение",
+      "event.education_correspondence_course.body": "Появляется возможность получить диплом заочно, без отрыва от работы.",
+      "event.education_correspondence_course.choice.enroll.label": "Записаться на заочное обучение",
+      "event.education_correspondence_course.choice.skip.label": "Отказаться",
+      "event.education_adult_literacy_program.title": "Курсы ликвидации неграмотности",
+      "event.education_adult_literacy_program.body": "В общине открываются вечерние курсы для взрослых, которые не научились читать в детстве.",
+      "event.education_adult_literacy_program.choice.attend.label": "Начать посещать курсы",
+      "event.education_adult_literacy_program.choice.skip.label": "Не идти",
+      "event.education_second_chance_school_success.title": "Возвращение в школу удаётся",
+      "event.education_second_chance_school_success.body": "После лет работы удаётся вернуться за школьную парту, и учёба идёт на удивление хорошо.",
+      "event.education_second_chance_school_fails.title": "Возвращение в школу не удаётся",
+      "event.education_second_chance_school_fails.body": "Попытка вернуться в школу после лет работы заканчивается неудачей: разница в возрасте с классом слишком заметна, и учёбу приходится бросить.",
+      "event.education_night_school.title": "Вечерняя школа после работы",
+      "event.education_night_school.body": "После рабочего дня можно пойти на занятия вечерней школы, хотя сил почти не остаётся.",
+      "event.education_night_school.choice.attend.label": "Ходить на вечерние занятия",
+      "event.education_night_school.choice.skip.label": "Отказаться от учёбы по вечерам",
+      "event.education_distance_from_city_college.title": "Колледж далеко в городе",
+      "event.education_distance_from_city_college.body": "Ближайший колледж находится в далёком городе, и учёба там означает переезд от семьи.",
+      "event.education_distance_from_city_college.choice.move.label": "Переехать и учиться",
+      "event.education_distance_from_city_college.choice.stay.label": "Остаться рядом с домом",
+      "event.education_parents_illiteracy_effect.title": "Дома нет кому помочь с уроками",
+      "event.education_parents_illiteracy_effect.body": "Родители сами не умеют читать, и домашние задания приходится разбирать без их помощи.",
+      "event.education_school_closure_hazard.title": "Школа закрывается",
+      "event.education_school_closure_hazard.body": "Из-за происходящего в округе школа закрывается на неопределённый срок, и учёба прерывается.",
+      "event.education_mentor_teacher.title": "Учитель, который замечает",
+      "event.education_mentor_teacher.body": "Один из учителей замечает способности и начинает уделять дополнительное внимание занятиям.",
+      "event.education_return_to_school_as_adult.title": "Вернуться к учёбе во взрослом возрасте",
+      "event.education_return_to_school_as_adult.body": "Появляется возможность наконец получить диплом, который не удалось получить в молодости.",
+      "event.education_return_to_school_as_adult.choice.enroll.label": "Записаться на учёбу",
+      "event.education_return_to_school_as_adult.choice.skip.label": "Отказаться от этой мысли",
+      "event.education_informal_tutoring.title": "Частные занятия с соседом-студентом",
+      "event.education_informal_tutoring.body": "Студент, живущий рядом, предлагает заниматься за небольшую плату.",
+      "event.education_informal_tutoring.choice.tutor.label": "Заниматься у соседа",
+      "event.education_informal_tutoring.choice.skip.label": "Отказаться от занятий",
+      "event.education_graduation_milestone.title": "Окончание школы",
+      "event.education_graduation_milestone.body": "Выпускной становится важной отметкой: аттестат на руках, и дальше дорога открыта в несколько сторон.",
+      "event.education_higher_degree_pursuit.title": "Решение об аспирантуре или специализации",
+      "event.education_higher_degree_pursuit.body": "Хорошие результаты в учёбе открывают путь к более глубокой специализации, но это требует ещё нескольких лет без заработка.",
+      "event.education_higher_degree_pursuit.choice.pursue.label": "Продолжить учёбу дальше",
+      "event.education_higher_degree_pursuit.choice.work_instead.label": "Пойти работать",
+      "event.education_illiterate_adult_barrier.title": "Неграмотность мешает во взрослой жизни",
+      "event.education_illiterate_adult_barrier.body": "Невозможность прочитать документ или заполнить бланк то и дело оборачивается неудобством и упущенной выгодой.",
+      "event.education_school_supplies_shortage.title": "Не хватает тетрадей и книг",
+      "event.education_school_supplies_shortage.body": "В семье не находится денег на все нужные учебники, и часть заданий выполняется по чужим тетрадям.",
+      "event.education_home_tutoring_by_family.title": "Старший родственник учит читать",
+      "event.education_home_tutoring_by_family.body": "Школы рядом нет, но грамотный дядя или тётя берётся учить ребёнка читать и считать дома."
+    },
+    "en": {
+      "event.education_preschool_access.title": "A spot at the preschool",
+      "event.education_preschool_access.body": "A preschool opens in the area, and the child begins attending before regular school.",
+      "event.education_enrollment_decision.title": "Time to decide about school",
+      "event.education_enrollment_decision.body": "The child reaches school age. Schooling is not free, and the household is short of hands.",
+      "event.education_enrollment_decision.choice.enroll.label": "Enroll the child in school",
+      "event.education_enrollment_decision.choice.skip.label": "Keep them home to help",
+      "event.education_long_walk_to_school.title": "School is hours away on foot",
+      "event.education_long_walk_to_school.body": "The nearest school is hours away on foot. The walk is exhausting, but the learning is worth it.",
+      "event.education_long_walk_to_school.choice.walk.label": "Keep walking there every day",
+      "event.education_long_walk_to_school.choice.stop.label": "Stop going to school",
+      "event.education_literacy_milestone.title": "The child learns to read",
+      "event.education_literacy_milestone.body": "The child finally reads fluently — a small but noticeable achievement for the whole family.",
+      "event.education_teacher_shortage.title": "The school is short of teachers",
+      "event.education_teacher_shortage.body": "A single teacher runs several grades at once, and the quality of teaching clearly suffers.",
+      "event.education_gender_enrollment_gap.title": "Local custom and a girl's schooling",
+      "event.education_gender_enrollment_gap.body": "Local custom keeps boys in school longer than girls. The parents must decide whether to follow it.",
+      "event.education_gender_enrollment_gap.choice.push_for_school.label": "Insist on schooling for the daughter",
+      "event.education_gender_enrollment_gap.choice.accept_custom.label": "Follow the custom",
+      "event.education_school_fees_burden.title": "School fees go up",
+      "event.education_school_fees_burden.body": "The school raises its fees, and the family has to decide whether to keep paying.",
+      "event.education_school_fees_burden.choice.pay.label": "Find the money to pay",
+      "event.education_school_fees_burden.choice.stop_paying.label": "Stop paying",
+      "event.education_exam_performance.title": "Exam results come in",
+      "event.education_exam_performance.body": "The final exams go better than expected, opening up a few extra opportunities.",
+      "event.education_left_school_early.title": "The family needs another worker",
+      "event.education_left_school_early.body": "Family income drops, and the parents suggest pulling the child out of school to help earn money.",
+      "event.education_left_school_early.choice.leave.label": "Leave school to work",
+      "event.education_left_school_early.choice.persist.label": "Convince the parents to let them finish school",
+      "event.education_dropout_social_pressure.title": "Classmates are dropping out",
+      "event.education_dropout_social_pressure.body": "Several friends have already left school for work or early marriage, and the pressure to keep studying is fading.",
+      "event.education_dropout_social_pressure.choice.drop_out.label": "Leave school along with the friends",
+      "event.education_dropout_social_pressure.choice.stay_in_school.label": "Stay in school",
+      "event.education_scholarship_offer.title": "A scholarship offer",
+      "event.education_scholarship_offer.body": "The school offers a scholarship to a promising student, but it means moving away or boarding far from home.",
+      "event.education_scholarship_offer.choice.accept.label": "Accept the scholarship",
+      "event.education_scholarship_offer.choice.decline.label": "Turn it down and stay home",
+      "event.education_vocational_track_choice.title": "Trade school or academic track",
+      "event.education_vocational_track_choice.body": "The time comes to choose between a practical trade school and a program aimed at university.",
+      "event.education_vocational_track_choice.choice.vocational.label": "Choose the trade school",
+      "event.education_vocational_track_choice.choice.academic.label": "Choose the academic track",
+      "event.education_secondary_school_access.title": "Enrolling in secondary school",
+      "event.education_secondary_school_access.body": "Secondary school only exists in the city, and attending means paying for lodging there.",
+      "event.education_secondary_school_access.choice.enroll.label": "Enroll despite the cost",
+      "event.education_secondary_school_access.choice.forgo.label": "Give up on schooling in the city",
+      "event.education_school_belonging_or_bullying.title": "A hard time with classmates",
+      "event.education_school_belonging_or_bullying.body": "Relations with part of the class turn sour, and it affects the wish to keep going to school.",
+      "event.education_school_belonging_or_bullying.choice.speak_up.label": "Tell a teacher about it",
+      "event.education_school_belonging_or_bullying.choice.endure.label": "Endure it quietly",
+      "event.education_university_access.title": "The door to university opens",
+      "event.education_university_access.body": "The scholarship earned earlier opens the way to university or a city college.",
+      "event.education_university_access.choice.go.label": "Go study at the university",
+      "event.education_university_access.choice.stay_local.label": "Stay close to the family instead",
+      "event.education_trade_school_decision.title": "A course at the trade school",
+      "event.education_trade_school_decision.body": "The local trade school opens enrollment for a course that grants a formal trade certificate.",
+      "event.education_trade_school_decision.choice.enroll.label": "Sign up for the course",
+      "event.education_trade_school_decision.choice.skip.label": "Skip this intake",
+      "event.education_self_study_path.title": "Learning outside of school",
+      "event.education_self_study_path.body": "With no school within reach, the only option left is self-study from whatever books can be found.",
+      "event.education_self_study_path.choice.self_study.label": "Study on their own",
+      "event.education_self_study_path.choice.drop.label": "Let the idea go",
+      "event.education_correspondence_course.title": "A correspondence course",
+      "event.education_correspondence_course.body": "A chance comes up to earn a diploma by correspondence, without leaving the job.",
+      "event.education_correspondence_course.choice.enroll.label": "Enroll in the correspondence course",
+      "event.education_correspondence_course.choice.skip.label": "Decline",
+      "event.education_adult_literacy_program.title": "An adult literacy program",
+      "event.education_adult_literacy_program.body": "The community opens an evening program for adults who never learned to read as children.",
+      "event.education_adult_literacy_program.choice.attend.label": "Start attending the classes",
+      "event.education_adult_literacy_program.choice.skip.label": "Not go",
+      "event.education_second_chance_school_success.title": "The return to school succeeds",
+      "event.education_second_chance_school_success.body": "After years of work, a return to the classroom becomes possible, and it goes surprisingly well.",
+      "event.education_second_chance_school_fails.title": "The return to school does not work out",
+      "event.education_second_chance_school_fails.body": "An attempt to return to school after years of work fails: the age gap with classmates is too obvious, and the attempt is abandoned.",
+      "event.education_night_school.title": "Night school after work",
+      "event.education_night_school.body": "After a full day of work, there is a chance to attend night school, even though little energy is left.",
+      "event.education_night_school.choice.attend.label": "Attend the evening classes",
+      "event.education_night_school.choice.skip.label": "Skip the evening classes",
+      "event.education_distance_from_city_college.title": "The college is far away in the city",
+      "event.education_distance_from_city_college.body": "The nearest college is in a distant city, and studying there means moving away from the family.",
+      "event.education_distance_from_city_college.choice.move.label": "Move away to study",
+      "event.education_distance_from_city_college.choice.stay.label": "Stay close to home",
+      "event.education_parents_illiteracy_effect.title": "No one at home can help with homework",
+      "event.education_parents_illiteracy_effect.body": "The parents cannot read themselves, so homework has to be worked through without their help.",
+      "event.education_school_closure_hazard.title": "The school shuts down",
+      "event.education_school_closure_hazard.body": "Because of what is happening in the area, the school closes for an unknown period, and schooling stops.",
+      "event.education_mentor_teacher.title": "A teacher who takes notice",
+      "event.education_mentor_teacher.body": "One of the teachers notices real ability and starts giving extra attention to the lessons.",
+      "event.education_return_to_school_as_adult.title": "Returning to study as an adult",
+      "event.education_return_to_school_as_adult.body": "A chance comes up to finally earn the diploma that was out of reach in their youth.",
+      "event.education_return_to_school_as_adult.choice.enroll.label": "Enroll in the program",
+      "event.education_return_to_school_as_adult.choice.skip.label": "Let the idea go",
+      "event.education_informal_tutoring.title": "Private lessons from a neighbor",
+      "event.education_informal_tutoring.body": "A student living nearby offers lessons for a small fee.",
+      "event.education_informal_tutoring.choice.tutor.label": "Take lessons with the neighbor",
+      "event.education_informal_tutoring.choice.skip.label": "Decline the lessons",
+      "event.education_graduation_milestone.title": "Finishing school",
+      "event.education_graduation_milestone.body": "Graduation marks an important milestone: certificate in hand, with the road now open in several directions.",
+      "event.education_higher_degree_pursuit.title": "A decision about advanced study",
+      "event.education_higher_degree_pursuit.body": "Strong academic results open the door to further specialization, but it means several more years without income.",
+      "event.education_higher_degree_pursuit.choice.pursue.label": "Continue studying further",
+      "event.education_higher_degree_pursuit.choice.work_instead.label": "Go to work instead",
+      "event.education_illiterate_adult_barrier.title": "Illiteracy becomes a barrier in adult life",
+      "event.education_illiterate_adult_barrier.body": "Being unable to read a document or fill out a form keeps turning into inconvenience and missed opportunity.",
+      "event.education_school_supplies_shortage.title": "Short on notebooks and books",
+      "event.education_school_supplies_shortage.body": "The family cannot afford all the required textbooks, and some assignments are done from borrowed notebooks.",
+      "event.education_home_tutoring_by_family.title": "An older relative teaches reading",
+      "event.education_home_tutoring_by_family.body": "There is no school nearby, but a literate aunt or uncle takes on teaching the child to read and do sums at home."
+    }
+  }
+}

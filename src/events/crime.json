@@ -1,0 +1,1179 @@
+{
+  "events": [
+    {
+      "id": "crime_petty_theft_victim",
+      "category": "crime",
+      "severity": "minor",
+      "ageGate": [
+        12,
+        80
+      ],
+      "weightBy": {
+        "homicideRate": 0.06
+      },
+      "baseWeight": 1.6,
+      "titleKey": "event.crime_petty_theft_victim.title",
+      "bodyKey": "event.crime_petty_theft_victim.body",
+      "choices": [
+        {
+          "id": "report_to_police_petty",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -3,
+            "standing": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "let_it_go_petty",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "crime_violent_robbery_victim",
+      "category": "crime",
+      "severity": "major",
+      "ageGate": [
+        12,
+        80
+      ],
+      "weightBy": {
+        "homicideRate": 0.12
+      },
+      "baseWeight": 1.2,
+      "titleKey": "event.crime_violent_robbery_victim.title",
+      "bodyKey": "event.crime_violent_robbery_victim.body",
+      "effects": {
+        "wealth": -6,
+        "health": -4
+      },
+      "mortalityDelta": 1.4,
+      "unlockTraits": [
+        "crime_victim"
+      ]
+    },
+    {
+      "id": "crime_home_burglary_victim",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        80
+      ],
+      "weightBy": {
+        "homicideRate": 0.08
+      },
+      "baseWeight": 1.3,
+      "titleKey": "event.crime_home_burglary_victim.title",
+      "bodyKey": "event.crime_home_burglary_victim.body",
+      "choices": [
+        {
+          "id": "file_police_report_burglary",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -7,
+            "standing": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "install_security_measures",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -10
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "crime_petty_theft_perpetrator",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        14,
+        30
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.crime_petty_theft_perpetrator.title",
+      "bodyKey": "event.crime_petty_theft_perpetrator.body",
+      "choices": [
+        {
+          "id": "go_through_with_theft",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 4,
+            "standing": -2
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "refrain_from_theft",
+          "riskLabel": "надёжно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "crime_fraud_scheme_victim",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        80
+      ],
+      "weightBy": {
+        "homicideRate": 0.03
+      },
+      "baseWeight": 1.2,
+      "titleKey": "event.crime_fraud_scheme_victim.title",
+      "bodyKey": "event.crime_fraud_scheme_victim.body",
+      "choices": [
+        {
+          "id": "pursue_legal_recovery",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -10
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "write_off_the_loss",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -8,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "crime_fraud_scheme_perpetrator",
+      "category": "crime",
+      "severity": "major",
+      "ageGate": [
+        20,
+        55
+      ],
+      "baseWeight": 0.7,
+      "titleKey": "event.crime_fraud_scheme_perpetrator.title",
+      "bodyKey": "event.crime_fraud_scheme_perpetrator.body",
+      "choices": [
+        {
+          "id": "participate_in_fraud",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 8,
+            "standing": -4
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "refuse_fraud",
+          "riskLabel": "надёжно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "crime_assault_perpetrator_altercation",
+      "category": "crime",
+      "severity": "major",
+      "ageGate": [
+        16,
+        45
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.crime_assault_perpetrator_altercation.title",
+      "bodyKey": "event.crime_assault_perpetrator_altercation.body",
+      "choices": [
+        {
+          "id": "walk_away",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": -1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "retaliate",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -3,
+            "standing": -2
+          },
+          "mortalityDelta": 1.3
+        }
+      ]
+    },
+    {
+      "id": "crime_arrest_and_trial",
+      "category": "crime",
+      "severity": "major",
+      "ageGate": [
+        18,
+        60
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.crime_arrest_and_trial.title",
+      "bodyKey": "event.crime_arrest_and_trial.body",
+      "choices": [
+        {
+          "id": "accept_plea_deal",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": -5,
+            "wealth": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "contest_in_court",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -8,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "flee_prosecution",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -6,
+            "standing": -8
+          },
+          "mortalityDelta": 1.4
+        }
+      ]
+    },
+    {
+      "id": "crime_conviction_and_imprisonment",
+      "category": "crime",
+      "severity": "major",
+      "ageGate": [
+        18,
+        60
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.crime_conviction_and_imprisonment.title",
+      "bodyKey": "event.crime_conviction_and_imprisonment.body",
+      "once": true,
+      "effects": {
+        "wealth": -10,
+        "standing": -10,
+        "bonds": -6,
+        "education": -3
+      },
+      "mortalityDelta": 1.2,
+      "unlockTraits": [
+        "convicted"
+      ]
+    },
+    {
+      "id": "crime_wrongful_accusation",
+      "category": "crime",
+      "severity": "major",
+      "ageGate": [
+        16,
+        60
+      ],
+      "baseWeight": 0.6,
+      "titleKey": "event.crime_wrongful_accusation.title",
+      "bodyKey": "event.crime_wrongful_accusation.body",
+      "choices": [
+        {
+          "id": "fight_the_charge",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -9,
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "accept_plea_despite_innocence",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": -8,
+            "wealth": -3
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "convicted"
+          ]
+        },
+        {
+          "id": "flee_accusation",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -8,
+            "wealth": -4
+          },
+          "mortalityDelta": 1.3
+        }
+      ]
+    },
+    {
+      "id": "crime_prison_release_reentry",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        65
+      ],
+      "requires": {
+        "traits": [
+          "convicted"
+        ]
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.crime_prison_release_reentry.title",
+      "bodyKey": "event.crime_prison_release_reentry.body",
+      "choices": [
+        {
+          "id": "seek_legitimate_work",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 2,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "rely_on_family_reentry",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 3,
+            "wealth": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "return_to_crime",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 5,
+            "standing": -4
+          },
+          "mortalityDelta": 1.3
+        }
+      ]
+    },
+    {
+      "id": "crime_organized_crime_recruitment",
+      "category": "crime",
+      "severity": "major",
+      "ageGate": [
+        16,
+        30
+      ],
+      "weightBy": {
+        "homicideRate": 0.08
+      },
+      "baseWeight": 0.7,
+      "titleKey": "event.crime_organized_crime_recruitment.title",
+      "bodyKey": "event.crime_organized_crime_recruitment.body",
+      "choices": [
+        {
+          "id": "join_network",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 8,
+            "bonds": -3,
+            "standing": -3
+          },
+          "mortalityDelta": 1.6
+        },
+        {
+          "id": "refuse_network",
+          "riskLabel": "надёжно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "crime_business_extortion",
+      "category": "crime",
+      "severity": "major",
+      "ageGate": [
+        27,
+        75
+      ],
+      "requires": {
+        "traits": [
+          "business_owner"
+        ]
+      },
+      "weightBy": {
+        "homicideRate": 0.1,
+        "conflictIndex": 0.5
+      },
+      "baseWeight": 1.2,
+      "titleKey": "event.crime_business_extortion.title",
+      "bodyKey": "event.crime_business_extortion.body",
+      "choices": [
+        {
+          "id": "pay_protection",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -6
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "refuse_and_report",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -3,
+            "health": -2
+          },
+          "mortalityDelta": 1.4
+        },
+        {
+          "id": "relocate_business",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -5,
+            "standing": -1
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    },
+    {
+      "id": "crime_business_theft_inventory",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        27,
+        75
+      ],
+      "requires": {
+        "traits": [
+          "business_owner"
+        ]
+      },
+      "weightBy": {
+        "homicideRate": 0.07
+      },
+      "baseWeight": 1,
+      "titleKey": "event.crime_business_theft_inventory.title",
+      "bodyKey": "event.crime_business_theft_inventory.body",
+      "effects": {
+        "wealth": -6
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "crime_domestic_violence_exposure",
+      "category": "crime",
+      "severity": "major",
+      "ageGate": [
+        14,
+        70
+      ],
+      "weightBy": {
+        "homicideRate": 0.09
+      },
+      "baseWeight": 1,
+      "titleKey": "event.crime_domestic_violence_exposure.title",
+      "bodyKey": "event.crime_domestic_violence_exposure.body",
+      "effects": {
+        "health": -5,
+        "bonds": -5,
+        "standing": -2
+      },
+      "mortalityDelta": 1.3,
+      "unlockTraits": [
+        "crime_victim"
+      ]
+    },
+    {
+      "id": "crime_kidnapping_ransom",
+      "category": "crime",
+      "severity": "fatal",
+      "ageGate": [
+        10,
+        60
+      ],
+      "weightBy": {
+        "homicideRate": 0.15
+      },
+      "baseWeight": 0.4,
+      "titleKey": "event.crime_kidnapping_ransom.title",
+      "bodyKey": "event.crime_kidnapping_ransom.body",
+      "effects": {
+        "wealth": -14,
+        "health": -4
+      },
+      "mortalityDelta": 2,
+      "mortalityYears": 1,
+      "unlockTraits": [
+        "crime_victim"
+      ]
+    },
+    {
+      "id": "crime_witness_to_violence",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        80
+      ],
+      "weightBy": {
+        "homicideRate": 0.08
+      },
+      "baseWeight": 1,
+      "titleKey": "event.crime_witness_to_violence.title",
+      "bodyKey": "event.crime_witness_to_violence.body",
+      "choices": [
+        {
+          "id": "testify_as_witness",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": 2,
+            "health": -2,
+            "bonds": -1
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "avoid_involvement_witness",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": -2,
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "crime_cybercrime_fraud_victim",
+      "category": "crime",
+      "severity": "minor",
+      "ageGate": [
+        16,
+        80
+      ],
+      "baseWeight": 1.1,
+      "titleKey": "event.crime_cybercrime_fraud_victim.title",
+      "bodyKey": "event.crime_cybercrime_fraud_victim.body",
+      "effects": {
+        "wealth": -5
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "crime_smuggling_involvement",
+      "category": "crime",
+      "severity": "major",
+      "ageGate": [
+        18,
+        45
+      ],
+      "weightBy": {
+        "homicideRate": 0.06
+      },
+      "baseWeight": 0.7,
+      "titleKey": "event.crime_smuggling_involvement.title",
+      "bodyKey": "event.crime_smuggling_involvement.body",
+      "choices": [
+        {
+          "id": "accept_smuggling",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 7
+          },
+          "mortalityDelta": 1.3
+        },
+        {
+          "id": "refuse_smuggling",
+          "riskLabel": "надёжно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "crime_corruption_bribery_demand",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        65
+      ],
+      "baseWeight": 1.1,
+      "titleKey": "event.crime_corruption_bribery_demand.title",
+      "bodyKey": "event.crime_corruption_bribery_demand.body",
+      "choices": [
+        {
+          "id": "pay_bribe",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "refuse_bribe",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "standing": -1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "report_bribe_demand",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": 2,
+            "bonds": -2
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    },
+    {
+      "id": "crime_vigilante_justice",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        65
+      ],
+      "weightBy": {
+        "homicideRate": 0.09
+      },
+      "baseWeight": 0.8,
+      "titleKey": "event.crime_vigilante_justice.title",
+      "bodyKey": "event.crime_vigilante_justice.body",
+      "effects": {
+        "standing": 1,
+        "bonds": -1
+      },
+      "mortalityDelta": 1.1
+    },
+    {
+      "id": "crime_gang_territory_pressure",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        14,
+        30
+      ],
+      "weightBy": {
+        "homicideRate": 0.12
+      },
+      "baseWeight": 1,
+      "titleKey": "event.crime_gang_territory_pressure.title",
+      "bodyKey": "event.crime_gang_territory_pressure.body",
+      "effects": {
+        "health": -1,
+        "standing": -1
+      },
+      "mortalityDelta": 1.1
+    },
+    {
+      "id": "crime_remittance_courier_robbery",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        55
+      ],
+      "weightBy": {
+        "homicideRate": 0.1
+      },
+      "baseWeight": 0.7,
+      "titleKey": "event.crime_remittance_courier_robbery.title",
+      "bodyKey": "event.crime_remittance_courier_robbery.body",
+      "effects": {
+        "wealth": -6
+      },
+      "mortalityDelta": 1.1
+    },
+    {
+      "id": "crime_self_defense_legal_aftermath",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        60
+      ],
+      "baseWeight": 0.6,
+      "titleKey": "event.crime_self_defense_legal_aftermath.title",
+      "bodyKey": "event.crime_self_defense_legal_aftermath.body",
+      "choices": [
+        {
+          "id": "cooperate_with_investigation",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -2,
+            "standing": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "seek_legal_counsel",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -5
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "flee_self_defense_case",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -5,
+            "standing": -6
+          },
+          "mortalityDelta": 1.3,
+          "unlockTraits": [
+            "convicted"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "crime_juvenile_offense_record",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        12,
+        17
+      ],
+      "baseWeight": 0.7,
+      "titleKey": "event.crime_juvenile_offense_record.title",
+      "bodyKey": "event.crime_juvenile_offense_record.body",
+      "choices": [
+        {
+          "id": "complete_diversion_program",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": -1,
+            "education": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "formal_charge_juvenile",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": -5,
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "crime_informal_dispute_resolution",
+      "category": "crime",
+      "severity": "minor",
+      "ageGate": [
+        16,
+        60
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.crime_informal_dispute_resolution.title",
+      "bodyKey": "event.crime_informal_dispute_resolution.body",
+      "effects": {
+        "bonds": 2,
+        "wealth": -1
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "crime_theft_of_crops_livestock",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        65
+      ],
+      "weightBy": {
+        "homicideRate": 0.05
+      },
+      "baseWeight": 1,
+      "titleKey": "event.crime_theft_of_crops_livestock.title",
+      "bodyKey": "event.crime_theft_of_crops_livestock.body",
+      "effects": {
+        "wealth": -5
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "crime_identity_theft_financial_fraud",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        70
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.crime_identity_theft_financial_fraud.title",
+      "bodyKey": "event.crime_identity_theft_financial_fraud.body",
+      "choices": [
+        {
+          "id": "dispute_with_bank",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -4,
+            "standing": -1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "absorb_the_loss_identity",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -8,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "crime_police_misconduct_encounter",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        16,
+        60
+      ],
+      "weightBy": {
+        "homicideRate": 0.07
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.crime_police_misconduct_encounter.title",
+      "bodyKey": "event.crime_police_misconduct_encounter.body",
+      "effects": {
+        "standing": -3,
+        "health": -2
+      },
+      "mortalityDelta": 1.1
+    },
+    {
+      "id": "crime_parole_conditions",
+      "category": "crime",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        65
+      ],
+      "requires": {
+        "traits": [
+          "convicted"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.crime_parole_conditions.title",
+      "bodyKey": "event.crime_parole_conditions.body",
+      "effects": {
+        "standing": -2,
+        "wealth": -2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "crime_debt_related_temptation",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        55
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.crime_debt_related_temptation.title",
+      "bodyKey": "event.crime_debt_related_temptation.body",
+      "choices": [
+        {
+          "id": "take_the_risky_shortcut",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 6,
+            "standing": -3
+          },
+          "mortalityDelta": 1.2
+        },
+        {
+          "id": "pursue_legal_remedy",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "crime_prevention_initiative",
+      "category": "crime",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        70
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.crime_prevention_initiative.title",
+      "bodyKey": "event.crime_prevention_initiative.body",
+      "effects": {
+        "bonds": 4,
+        "standing": 2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "crime_stalking_harassment_victim",
+      "category": "crime",
+      "severity": "notable",
+      "ageGate": [
+        14,
+        60
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.crime_stalking_harassment_victim.title",
+      "bodyKey": "event.crime_stalking_harassment_victim.body",
+      "effects": {
+        "health": -3,
+        "bonds": -3
+      },
+      "mortalityDelta": 1.1
+    }
+  ],
+  "i18n": {
+    "ru": {
+      "event.crime_petty_theft_victim.choice.report_to_police_petty.label": "Заявить в полицию",
+      "event.crime_petty_theft_victim.choice.let_it_go_petty.label": "Оставить это без последствий",
+      "event.crime_petty_theft_victim.title": "Кража личных вещей",
+      "event.crime_petty_theft_victim.body": "На рынке или в транспорте у тебя крадут деньги или вещи. Заявление в полицию мало что меняет.",
+      "event.crime_violent_robbery_victim.title": "Нападение с целью грабежа",
+      "event.crime_violent_robbery_victim.body": "Тебя останавливают и грабят силой на улице. Деньги и вещи отбирают, прежде чем нападавшие скрываются.",
+      "event.crime_home_burglary_victim.choice.file_police_report_burglary.label": "Подать заявление в полицию",
+      "event.crime_home_burglary_victim.choice.install_security_measures.label": "Установить дополнительную защиту дома",
+      "event.crime_home_burglary_victim.title": "Проникновение в дом",
+      "event.crime_home_burglary_victim.body": "В отсутствие семьи в дом проникают и выносят ценные вещи. Замки меняют, но ощущение безопасности возвращается не сразу.",
+      "event.crime_petty_theft_perpetrator.choice.go_through_with_theft.label": "Пойти на это",
+      "event.crime_petty_theft_perpetrator.choice.refrain_from_theft.label": "Отказаться от этой мысли",
+      "event.crime_petty_theft_perpetrator.title": "Искушение украсть",
+      "event.crime_petty_theft_perpetrator.body": "Нехватка денег подталкивает к мысли украсть что-нибудь ценное. Решение остаётся за тобой.",
+      "event.crime_fraud_scheme_victim.choice.pursue_legal_recovery.label": "Добиваться возврата средств через суд",
+      "event.crime_fraud_scheme_victim.choice.write_off_the_loss.label": "Списать потерю",
+      "event.crime_fraud_scheme_victim.title": "Жертва финансового мошенничества",
+      "event.crime_fraud_scheme_victim.body": "Выгодное на первый взгляд предложение оборачивается мошенничеством. Вложенные сбережения не возвращаются.",
+      "event.crime_fraud_scheme_perpetrator.choice.participate_in_fraud.label": "Согласиться",
+      "event.crime_fraud_scheme_perpetrator.choice.refuse_fraud.label": "Отказаться",
+      "event.crime_fraud_scheme_perpetrator.title": "Участие в мошеннической схеме",
+      "event.crime_fraud_scheme_perpetrator.body": "Знакомый предлагает поучаствовать в схеме, которая обещает быстрый доход за счёт обмана других. Условия звучат заманчиво, но риски очевидны.",
+      "event.crime_assault_perpetrator_altercation.choice.walk_away.label": "Уйти от конфликта",
+      "event.crime_assault_perpetrator_altercation.choice.retaliate.label": "Ответить силой",
+      "event.crime_assault_perpetrator_altercation.title": "Обострение конфликта",
+      "event.crime_assault_perpetrator_altercation.body": "Спор с другим человеком заходит слишком далеко и грозит перейти в драку. Решение, как поступить дальше, нужно принять быстро.",
+      "event.crime_arrest_and_trial.choice.accept_plea_deal.label": "Согласиться на сделку со следствием",
+      "event.crime_arrest_and_trial.choice.contest_in_court.label": "Оспорить обвинение в суде",
+      "event.crime_arrest_and_trial.choice.flee_prosecution.label": "Скрыться от следствия",
+      "event.crime_arrest_and_trial.title": "Арест и суд",
+      "event.crime_arrest_and_trial.body": "Тебя задерживают по обвинению в правонарушении. Дальнейший путь зависит от того, как выстраивать защиту.",
+      "event.crime_conviction_and_imprisonment.title": "Осуждение и тюремное заключение",
+      "event.crime_conviction_and_imprisonment.body": "Суд признаёт тебя виновным и назначает срок заключения. Образование, доход и связи на свободе приостанавливаются на годы.",
+      "event.crime_wrongful_accusation.choice.fight_the_charge.label": "Оспаривать обвинение",
+      "event.crime_wrongful_accusation.choice.accept_plea_despite_innocence.label": "Признать вину ради скорого исхода",
+      "event.crime_wrongful_accusation.choice.flee_accusation.label": "Скрыться",
+      "event.crime_wrongful_accusation.title": "Ложное обвинение",
+      "event.crime_wrongful_accusation.body": "Тебя обвиняют в преступлении, которого ты не совершал. Доказать невиновность может оказаться дольше и дороже, чем принять обвинение.",
+      "event.crime_prison_release_reentry.choice.seek_legitimate_work.label": "Искать законную работу",
+      "event.crime_prison_release_reentry.choice.rely_on_family_reentry.label": "Опереться на помощь семьи",
+      "event.crime_prison_release_reentry.choice.return_to_crime.label": "Вернуться к незаконным заработкам",
+      "event.crime_prison_release_reentry.title": "Освобождение и возвращение к жизни на свободе",
+      "event.crime_prison_release_reentry.body": "Срок заключения закончен. Судимость заметно сужает круг доступных вариантов для дальнейшей жизни.",
+      "event.crime_organized_crime_recruitment.choice.join_network.label": "Присоединиться",
+      "event.crime_organized_crime_recruitment.choice.refuse_network.label": "Отказаться",
+      "event.crime_organized_crime_recruitment.title": "Предложение от организованной группы",
+      "event.crime_organized_crime_recruitment.body": "Знакомые по соседству предлагают присоединиться к сети, зарабатывающей на незаконных операциях. Доход выше обычного, риски — тоже.",
+      "event.crime_business_extortion.choice.pay_protection.label": "Платить",
+      "event.crime_business_extortion.choice.refuse_and_report.label": "Отказаться и заявить властям",
+      "event.crime_business_extortion.choice.relocate_business.label": "Перенести дело в другое место",
+      "event.crime_business_extortion.title": "Вымогательство у своего дела",
+      "event.crime_business_extortion.body": "К делу приходят люди с требованием платить за «защиту». Отказ грозит последствиями, согласие — постоянной статьёй расхода.",
+      "event.crime_business_theft_inventory.title": "Кража товара",
+      "event.crime_business_theft_inventory.body": "Со склада или из кассы пропадает значительная сумма или партия товара. Расследование ничего не даёт.",
+      "event.crime_domestic_violence_exposure.title": "Насилие в близком окружении",
+      "event.crime_domestic_violence_exposure.body": "Насилие в семье или ближайшем окружении оставляет последствия для здоровья и доверия. Обращение за помощью — непростой шаг.",
+      "event.crime_kidnapping_ransom.title": "Похищение с целью выкупа",
+      "event.crime_kidnapping_ransom.body": "Тебя удерживают с требованием выкупа. Семья собирает всё, что может, чтобы добиться освобождения.",
+      "event.crime_witness_to_violence.choice.testify_as_witness.label": "Дать показания следствию",
+      "event.crime_witness_to_violence.choice.avoid_involvement_witness.label": "Избежать вовлечённости",
+      "event.crime_witness_to_violence.title": "Свидетель насилия",
+      "event.crime_witness_to_violence.body": "На глазах происходит нападение на другого человека. Само присутствие при этом оставляет тяжёлый след, хотя ты сам не пострадал физически.",
+      "event.crime_cybercrime_fraud_victim.title": "Онлайн-мошенничество",
+      "event.crime_cybercrime_fraud_victim.body": "Поддельное сообщение от «банка» или знакомого приводит к потере доступа к сбережениям. Деньги возвращаются редко.",
+      "event.crime_smuggling_involvement.choice.accept_smuggling.label": "Согласиться",
+      "event.crime_smuggling_involvement.choice.refuse_smuggling.label": "Отказаться",
+      "event.crime_smuggling_involvement.title": "Предложение заняться контрабандой",
+      "event.crime_smuggling_involvement.body": "За разовую перевозку товара без документов предлагают заметную сумму. Условия звучат просто, последствия при провале — нет.",
+      "event.crime_corruption_bribery_demand.choice.pay_bribe.label": "Заплатить",
+      "event.crime_corruption_bribery_demand.choice.refuse_bribe.label": "Отказаться",
+      "event.crime_corruption_bribery_demand.choice.report_bribe_demand.label": "Подать жалобу",
+      "event.crime_corruption_bribery_demand.title": "Требование взятки",
+      "event.crime_corruption_bribery_demand.body": "Чиновник требует неофициальную плату за услугу, положенную по закону бесплатно. Отказ может означать долгую задержку.",
+      "event.crime_vigilante_justice.title": "Самосуд в общине",
+      "event.crime_vigilante_justice.body": "После очередного преступления в районе соседи решают действовать сами, не дожидаясь властей. Решение находит разную поддержку среди жителей.",
+      "event.crime_gang_territory_pressure.title": "Территория местной группировки",
+      "event.crime_gang_territory_pressure.body": "Присутствие местной группировки определяет, какими улицами безопасно ходить и в какое время. Повседневные маршруты строятся с учётом этого.",
+      "event.crime_remittance_courier_robbery.title": "Кража денег при перевозке",
+      "event.crime_remittance_courier_robbery.body": "Наличные деньги, которые везли домой или для передачи родным, похищают в пути. Сумма теряется без следа.",
+      "event.crime_self_defense_legal_aftermath.choice.cooperate_with_investigation.label": "Сотрудничать со следствием",
+      "event.crime_self_defense_legal_aftermath.choice.seek_legal_counsel.label": "Обратиться к адвокату",
+      "event.crime_self_defense_legal_aftermath.choice.flee_self_defense_case.label": "Скрыться",
+      "event.crime_self_defense_legal_aftermath.title": "Правовые последствия самозащиты",
+      "event.crime_self_defense_legal_aftermath.body": "Защищая себя или близких во время нападения, ты причиняешь вред напавшему. Следствие теперь разбирается в случившемся.",
+      "event.crime_juvenile_offense_record.choice.complete_diversion_program.label": "Пройти программу для несовершеннолетних",
+      "event.crime_juvenile_offense_record.choice.formal_charge_juvenile.label": "Получить формальное обвинение",
+      "event.crime_juvenile_offense_record.title": "Мелкое правонарушение в подростковом возрасте",
+      "event.crime_juvenile_offense_record.body": "Небольшое правонарушение привлекает внимание полиции. Для несовершеннолетнего предусмотрена альтернатива формальной записи в досье.",
+      "event.crime_informal_dispute_resolution.title": "Спор решён без суда",
+      "event.crime_informal_dispute_resolution.body": "Спор о земле или долге решается через посредничество уважаемых в общине людей, а не через суд. Решение быстрее, но не всегда равноценно закону.",
+      "event.crime_theft_of_crops_livestock.title": "Кража урожая или скота",
+      "event.crime_theft_of_crops_livestock.body": "Часть урожая или несколько голов скота исчезают за ночь. Для небольшого хозяйства это заметный удар по доходу.",
+      "event.crime_identity_theft_financial_fraud.choice.dispute_with_bank.label": "Оспорить операции в банке",
+      "event.crime_identity_theft_financial_fraud.choice.absorb_the_loss_identity.label": "Принять потерю без разбирательств",
+      "event.crime_identity_theft_financial_fraud.title": "Использование личных данных для мошенничества",
+      "event.crime_identity_theft_financial_fraud.body": "Кто-то использует твои личные данные для оформления займа или покупок. Разбирательство с банком и властями растягивается на месяцы.",
+      "event.crime_police_misconduct_encounter.title": "Встреча с недобросовестной полицией",
+      "event.crime_police_misconduct_encounter.body": "Рядовая проверка оборачивается грубым и несправедливым обращением со стороны полиции. Жаловаться на это решаются немногие.",
+      "event.crime_parole_conditions.title": "Условия условно-досрочного освобождения",
+      "event.crime_parole_conditions.body": "Условия досрочного освобождения ограничивают передвижение и выбор работы. Любое нарушение грозит возвращением под стражу.",
+      "event.crime_debt_related_temptation.choice.take_the_risky_shortcut.label": "Пойти на риск",
+      "event.crime_debt_related_temptation.choice.pursue_legal_remedy.label": "Искать законный выход",
+      "event.crime_debt_related_temptation.title": "Долг толкает к рискованному шагу",
+      "event.crime_debt_related_temptation.body": "Накопившийся долг делает заманчивым быстрый, но незаконный способ получить деньги. Есть и более медленный законный путь.",
+      "event.crime_prevention_initiative.title": "Инициатива по предотвращению преступности",
+      "event.crime_prevention_initiative.body": "Соседи организуют совместное патрулирование и освещение улиц, чтобы снизить число преступлений в районе. Усилие требует времени, но укрепляет связи.",
+      "event.crime_stalking_harassment_victim.title": "Преследование и угрозы",
+      "event.crime_stalking_harassment_victim.body": "Некто настойчиво преследует и угрожает тебе на протяжении месяцев. Обращение за помощью к властям или близким требует решимости."
+    },
+    "en": {
+      "event.crime_petty_theft_victim.choice.report_to_police_petty.label": "Report it to the police",
+      "event.crime_petty_theft_victim.choice.let_it_go_petty.label": "Let it go",
+      "event.crime_petty_theft_victim.title": "Theft of personal belongings",
+      "event.crime_petty_theft_victim.body": "At the market or on transit, money or belongings are stolen from you. A police report changes little.",
+      "event.crime_violent_robbery_victim.title": "A violent robbery",
+      "event.crime_violent_robbery_victim.body": "You are stopped and robbed by force on the street. Money and belongings are taken before the attackers get away.",
+      "event.crime_home_burglary_victim.choice.file_police_report_burglary.label": "File a police report",
+      "event.crime_home_burglary_victim.choice.install_security_measures.label": "Install extra home security",
+      "event.crime_home_burglary_victim.title": "A home burglary",
+      "event.crime_home_burglary_victim.body": "While the family is away, someone breaks in and takes the valuables. The locks get changed, but the sense of safety takes longer to return.",
+      "event.crime_petty_theft_perpetrator.choice.go_through_with_theft.label": "Go through with it",
+      "event.crime_petty_theft_perpetrator.choice.refrain_from_theft.label": "Refrain from it",
+      "event.crime_petty_theft_perpetrator.title": "The temptation to steal",
+      "event.crime_petty_theft_perpetrator.body": "Financial hardship raises the thought of stealing something valuable. The decision is yours.",
+      "event.crime_fraud_scheme_victim.choice.pursue_legal_recovery.label": "Pursue legal recovery of the funds",
+      "event.crime_fraud_scheme_victim.choice.write_off_the_loss.label": "Write off the loss",
+      "event.crime_fraud_scheme_victim.title": "Victim of a financial scam",
+      "event.crime_fraud_scheme_victim.body": "An offer that looked promising turns out to be a scam. The savings put into it are not coming back.",
+      "event.crime_fraud_scheme_perpetrator.choice.participate_in_fraud.label": "Participate",
+      "event.crime_fraud_scheme_perpetrator.choice.refuse_fraud.label": "Refuse",
+      "event.crime_fraud_scheme_perpetrator.title": "A chance to join a fraudulent scheme",
+      "event.crime_fraud_scheme_perpetrator.body": "An acquaintance offers a cut of a scheme that promises quick money by deceiving others. The terms sound tempting, but the risks are plain.",
+      "event.crime_assault_perpetrator_altercation.choice.walk_away.label": "Walk away",
+      "event.crime_assault_perpetrator_altercation.choice.retaliate.label": "Retaliate",
+      "event.crime_assault_perpetrator_altercation.title": "An altercation escalates",
+      "event.crime_assault_perpetrator_altercation.body": "A dispute with someone else goes too far and threatens to turn physical. The decision on how to act has to be made fast.",
+      "event.crime_arrest_and_trial.choice.accept_plea_deal.label": "Accept a plea deal",
+      "event.crime_arrest_and_trial.choice.contest_in_court.label": "Contest the charge in court",
+      "event.crime_arrest_and_trial.choice.flee_prosecution.label": "Flee the prosecution",
+      "event.crime_arrest_and_trial.title": "Arrest and trial",
+      "event.crime_arrest_and_trial.body": "You are detained on a charge of an offense. What happens next depends on how the defense is handled.",
+      "event.crime_conviction_and_imprisonment.title": "Conviction and imprisonment",
+      "event.crime_conviction_and_imprisonment.body": "The court finds you guilty and hands down a prison sentence. Education, income, and ties on the outside are put on hold for years.",
+      "event.crime_wrongful_accusation.choice.fight_the_charge.label": "Fight the charge",
+      "event.crime_wrongful_accusation.choice.accept_plea_despite_innocence.label": "Accept a plea despite innocence",
+      "event.crime_wrongful_accusation.choice.flee_accusation.label": "Flee",
+      "event.crime_wrongful_accusation.title": "A wrongful accusation",
+      "event.crime_wrongful_accusation.body": "You are accused of a crime you did not commit. Proving innocence may take longer and cost more than accepting the charge.",
+      "event.crime_prison_release_reentry.choice.seek_legitimate_work.label": "Seek legitimate work",
+      "event.crime_prison_release_reentry.choice.rely_on_family_reentry.label": "Rely on family support",
+      "event.crime_prison_release_reentry.choice.return_to_crime.label": "Return to crime",
+      "event.crime_prison_release_reentry.title": "Release and reentry",
+      "event.crime_prison_release_reentry.body": "The prison term is over. A criminal record noticeably narrows the options for what comes next.",
+      "event.crime_organized_crime_recruitment.choice.join_network.label": "Join",
+      "event.crime_organized_crime_recruitment.choice.refuse_network.label": "Refuse",
+      "event.crime_organized_crime_recruitment.title": "An offer from an organized crime network",
+      "event.crime_organized_crime_recruitment.body": "Acquaintances from the neighborhood offer a place in a network that earns through illegal operations. The pay is higher than usual — so is the risk.",
+      "event.crime_business_extortion.choice.pay_protection.label": "Pay the protection money",
+      "event.crime_business_extortion.choice.refuse_and_report.label": "Refuse and report it",
+      "event.crime_business_extortion.choice.relocate_business.label": "Relocate the business",
+      "event.crime_business_extortion.title": "Extortion targeting the business",
+      "event.crime_business_extortion.body": "People show up demanding payment for 'protection.' Refusal risks consequences; agreeing becomes a permanent line item.",
+      "event.crime_business_theft_inventory.title": "Theft of inventory",
+      "event.crime_business_theft_inventory.body": "A significant sum or batch of goods disappears from the stockroom or till. The investigation turns up nothing.",
+      "event.crime_domestic_violence_exposure.title": "Violence within the household",
+      "event.crime_domestic_violence_exposure.body": "Violence within the family or close circle leaves consequences for health and trust. Seeking help is not a simple step.",
+      "event.crime_kidnapping_ransom.title": "A kidnapping for ransom",
+      "event.crime_kidnapping_ransom.body": "You are held and a ransom is demanded. The family scrapes together everything it can to secure release.",
+      "event.crime_witness_to_violence.choice.testify_as_witness.label": "Give testimony to the investigation",
+      "event.crime_witness_to_violence.choice.avoid_involvement_witness.label": "Avoid getting involved",
+      "event.crime_witness_to_violence.title": "Witness to violence",
+      "event.crime_witness_to_violence.body": "An attack on someone else happens right in front of you. Simply witnessing it leaves a heavy mark, even though you were not physically harmed.",
+      "event.crime_cybercrime_fraud_victim.title": "An online scam",
+      "event.crime_cybercrime_fraud_victim.body": "A fake message from a 'bank' or acquaintance leads to losing access to savings. The money is rarely recovered.",
+      "event.crime_smuggling_involvement.choice.accept_smuggling.label": "Accept",
+      "event.crime_smuggling_involvement.choice.refuse_smuggling.label": "Refuse",
+      "event.crime_smuggling_involvement.title": "An offer to help with smuggling",
+      "event.crime_smuggling_involvement.body": "A sizable sum is offered for a one-time run of undeclared goods. The terms sound simple; the consequences of getting caught are not.",
+      "event.crime_corruption_bribery_demand.choice.pay_bribe.label": "Pay the bribe",
+      "event.crime_corruption_bribery_demand.choice.refuse_bribe.label": "Refuse",
+      "event.crime_corruption_bribery_demand.choice.report_bribe_demand.label": "Report the demand",
+      "event.crime_corruption_bribery_demand.title": "A demand for a bribe",
+      "event.crime_corruption_bribery_demand.body": "An official demands an unofficial payment for a service that is supposed to be free by law. Refusal may mean a long delay.",
+      "event.crime_vigilante_justice.title": "Informal community justice",
+      "event.crime_vigilante_justice.body": "After another local crime, neighbors decide to act on their own rather than wait for the authorities. The move finds mixed support among residents.",
+      "event.crime_gang_territory_pressure.title": "Local gang territory",
+      "event.crime_gang_territory_pressure.body": "The presence of a local gang shapes which streets are safe to walk and when. Daily routes are planned around it.",
+      "event.crime_remittance_courier_robbery.title": "Robbery of cash in transit",
+      "event.crime_remittance_courier_robbery.body": "Cash being carried home, or to be passed on to relatives, is stolen along the way. The money is gone without a trace.",
+      "event.crime_self_defense_legal_aftermath.choice.cooperate_with_investigation.label": "Cooperate with the investigation",
+      "event.crime_self_defense_legal_aftermath.choice.seek_legal_counsel.label": "Seek legal counsel",
+      "event.crime_self_defense_legal_aftermath.choice.flee_self_defense_case.label": "Flee",
+      "event.crime_self_defense_legal_aftermath.title": "Legal aftermath of self-defense",
+      "event.crime_self_defense_legal_aftermath.body": "Defending yourself or family during an attack, you injure the attacker. An investigation now looks into what happened.",
+      "event.crime_juvenile_offense_record.choice.complete_diversion_program.label": "Complete the youth diversion program",
+      "event.crime_juvenile_offense_record.choice.formal_charge_juvenile.label": "Receive a formal charge",
+      "event.crime_juvenile_offense_record.title": "A minor offense as a teenager",
+      "event.crime_juvenile_offense_record.body": "A small offense draws police attention. For a minor, there is an alternative to a formal record.",
+      "event.crime_informal_dispute_resolution.title": "A dispute settled outside court",
+      "event.crime_informal_dispute_resolution.body": "A dispute over land or debt is settled through mediation by respected community figures rather than the courts. It is faster, but not always equal to a court ruling.",
+      "event.crime_theft_of_crops_livestock.title": "Theft of crops or livestock",
+      "event.crime_theft_of_crops_livestock.body": "Part of the harvest or several head of livestock disappear overnight. For a small household, it is a real hit to income.",
+      "event.crime_identity_theft_financial_fraud.choice.dispute_with_bank.label": "Dispute the charges with the bank",
+      "event.crime_identity_theft_financial_fraud.choice.absorb_the_loss_identity.label": "Absorb the loss without a dispute",
+      "event.crime_identity_theft_financial_fraud.title": "Identity used for financial fraud",
+      "event.crime_identity_theft_financial_fraud.body": "Someone uses your personal details to take out a loan or make purchases. Sorting it out with the bank and authorities drags on for months.",
+      "event.crime_police_misconduct_encounter.title": "An encounter with abusive policing",
+      "event.crime_police_misconduct_encounter.body": "A routine stop turns into rough and unfair treatment by the police. Few decide to file a complaint about it.",
+      "event.crime_parole_conditions.title": "Parole conditions",
+      "event.crime_parole_conditions.body": "The terms of parole restrict movement and limit job choices. Any violation risks a return to custody.",
+      "event.crime_debt_related_temptation.choice.take_the_risky_shortcut.label": "Take the risky shortcut",
+      "event.crime_debt_related_temptation.choice.pursue_legal_remedy.label": "Pursue a legal remedy",
+      "event.crime_debt_related_temptation.title": "Debt tempts toward a risky shortcut",
+      "event.crime_debt_related_temptation.body": "Mounting debt makes a quick but illegal way to raise money tempting. There is also a slower, lawful path.",
+      "event.crime_prevention_initiative.title": "A crime-prevention initiative",
+      "event.crime_prevention_initiative.body": "Neighbors organize joint patrols and better street lighting to cut down on local crime. The effort costs time but strengthens ties.",
+      "event.crime_stalking_harassment_victim.title": "Sustained harassment",
+      "event.crime_stalking_harassment_victim.body": "Someone persistently harasses and threatens you over months. Turning to the authorities or to family for help takes resolve."
+    }
+  }
+}
