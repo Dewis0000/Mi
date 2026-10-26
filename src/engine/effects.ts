@@ -51,10 +51,16 @@ export function pruneExpiredModifiers(character: Character): Character {
   return { ...character, activeMortalityModifiers: kept };
 }
 
+function applyChildrenDelta(character: Character, delta: number | undefined): Character {
+  if (!delta) return character;
+  return { ...character, childrenCount: Math.max(0, character.childrenCount + delta) };
+}
+
 export function applyChoice(character: Character, defId: string, choice: Choice): Character {
   let next = applyStatEffects(character, choice.effects);
   next = applyUnlockTraits(next, choice.unlockTraits);
   next = applyMortalityDelta(next, choice.mortalityDelta, choice.mortalityYears, `${defId}_${choice.id}`);
+  next = applyChildrenDelta(next, choice.childrenDelta);
   return next;
 }
 
@@ -64,11 +70,13 @@ interface AmbientLike {
   mortalityDelta?: number;
   mortalityYears?: number;
   unlockTraits?: string[];
+  childrenDelta?: number;
 }
 
 export function applyAmbient(character: Character, def: AmbientLike): Character {
   let next = applyStatEffects(character, def.effects);
   next = applyUnlockTraits(next, def.unlockTraits);
   next = applyMortalityDelta(next, def.mortalityDelta, def.mortalityYears, def.id);
+  next = applyChildrenDelta(next, def.childrenDelta);
   return next;
 }

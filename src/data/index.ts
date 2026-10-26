@@ -13,6 +13,7 @@ export const causes = causesRaw as unknown as CauseOfDeath[];
 export const countryByIso3 = new Map<string, Country>(countries.map((c) => [c.iso3, c]));
 export const regionById = new Map<string, Region>(regions.map((r) => [r.id, r]));
 export const traditionById = new Map<string, TraditionPack>(traditions.map((t) => [t.id, t]));
+export const causeById = new Map<string, CauseOfDeath>(causes.map((c) => [c.id, c]));
 
 export const regionsByCountry = new Map<string, Region[]>();
 for (const r of regions) {
@@ -47,4 +48,11 @@ export function getTradition(id: string): TraditionPack {
 
 export function causesInRange(age: number): CauseOfDeath[] {
   return causes.filter((c) => age >= c.ageGate[0] && age <= c.ageGate[1]);
+}
+
+export function causeLabel(id: string | null, locale: string): string {
+  if (!id) return '—';
+  const cause = causeById.get(id);
+  if (!cause) return id;
+  return cause.label[locale] ?? cause.label.ru ?? id;
 }

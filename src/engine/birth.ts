@@ -144,6 +144,7 @@ export function generateCharacter(seed: string, rng: RngFn, options: BirthOption
     stats,
     ageYears: 0,
     alive: true,
+    childrenCount: 0,
     traits: [],
     activeMortalityModifiers: [],
     manualSelection: options.mode,

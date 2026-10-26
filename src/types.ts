@@ -102,6 +102,7 @@ export interface Character {
   stats: Stats;
   ageYears: number;
   alive: boolean;
+  childrenCount: number;
   traits: string[];
   activeMortalityModifiers: MortalityModifier[];
   manualSelection: 'random' | 'country' | 'region';
@@ -135,6 +136,7 @@ export interface Choice {
   mortalityDelta: number;
   mortalityYears?: number;
   unlockTraits?: string[];
+  childrenDelta?: number;
   requires?: Requirement;
 }
 
@@ -161,6 +163,7 @@ export interface EventDefinition {
   mortalityDelta?: number;
   mortalityYears?: number;
   unlockTraits?: string[];
+  childrenDelta?: number;
 }
 
 export interface LifeEvent {

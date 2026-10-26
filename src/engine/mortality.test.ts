@@ -30,6 +30,7 @@ function referenceCharacter(iso3: string, sex: Sex): Character {
     stats: { health: 85.7, wealth: 70, education: 50, bonds: 50, standing: 50 },
     ageYears: 0,
     alive: true,
+    childrenCount: 0,
     traits: [],
     activeMortalityModifiers: [],
     manualSelection: 'random',

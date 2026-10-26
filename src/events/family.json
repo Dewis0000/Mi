@@ -867,6 +867,72 @@
         "bonds": 5,
         "wealth": 2
       }
+    },
+    {
+      "id": "family_child_born",
+      "category": "family",
+      "titleKey": "event.family_child_born.title",
+      "bodyKey": "event.family_child_born.body",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        45
+      ],
+      "requires": {
+        "traits": [
+          "married"
+        ]
+      },
+      "baseWeight": 1.3,
+      "choices": [
+        {
+          "id": "hospital_birth",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -6,
+            "bonds": 5
+          },
+          "mortalityDelta": 1,
+          "childrenDelta": 1,
+          "requires": {
+            "statsAbove": {
+              "wealth": 25
+            }
+          }
+        },
+        {
+          "id": "home_birth",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": 5
+          },
+          "mortalityDelta": 1.4,
+          "mortalityYears": 1,
+          "childrenDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_late_child_born",
+      "category": "family",
+      "titleKey": "event.family_late_child_born.title",
+      "bodyKey": "event.family_late_child_born.body",
+      "severity": "minor",
+      "ageGate": [
+        35,
+        49
+      ],
+      "requires": {
+        "traits": [
+          "married"
+        ]
+      },
+      "baseWeight": 0.5,
+      "effects": {
+        "bonds": 4,
+        "wealth": -4
+      },
+      "childrenDelta": 1
     }
   ],
   "i18n": {
@@ -972,7 +1038,13 @@
       "event.family_longtime_caregiver_fatigue.title": "Усталость многолетнего ухода",
       "event.family_longtime_caregiver_fatigue.body": "Годы ухода за больным родственником подкашивают собственное здоровье.",
       "event.family_sibling_support_network.title": "Братья и сёстры держатся вместе",
-      "event.family_sibling_support_network.body": "Братья и сёстры договариваются помогать друг другу деньгами и временем в трудные месяцы."
+      "event.family_sibling_support_network.body": "Братья и сёстры договариваются помогать друг другу деньгами и временем в трудные месяцы.",
+      "event.family_child_born.title": "В семье родился ребёнок",
+      "event.family_child_born.body": "У персонажа родился ребёнок. Это меняет расходы семьи и то, как соседи и родственники воспринимают её положение.",
+      "event.family_child_born.choice.hospital_birth.label": "Рожать в больнице",
+      "event.family_child_born.choice.home_birth.label": "Рожать дома",
+      "event.family_late_child_born.title": "Позднее рождение ребёнка",
+      "event.family_late_child_born.body": "Уже немолодые родители снова ждут ребёнка. Семья перераспределяет и так ограниченные средства на нового члена семьи."
     },
     "en": {
       "event.family_sibling_death.title": "The death of a sibling",
@@ -1076,7 +1148,13 @@
       "event.family_longtime_caregiver_fatigue.title": "The weariness of years of caregiving",
       "event.family_longtime_caregiver_fatigue.body": "Years of caring for a sick relative take a toll on their own health.",
       "event.family_sibling_support_network.title": "Siblings stick together",
-      "event.family_sibling_support_network.body": "The siblings agree to help each other with money and time during hard months."
+      "event.family_sibling_support_network.body": "The siblings agree to help each other with money and time during hard months.",
+      "event.family_child_born.title": "A child is born into the family",
+      "event.family_child_born.body": "A child was born to the character. It reshapes the household's spending and how relatives and neighbors see its standing.",
+      "event.family_child_born.choice.hospital_birth.label": "Give birth at a hospital",
+      "event.family_child_born.choice.home_birth.label": "Give birth at home",
+      "event.family_late_child_born.title": "A late child is born",
+      "event.family_late_child_born.body": "Already no longer young, the parents are expecting again. The family stretches its already limited means to cover a new member."
     }
   }
 }

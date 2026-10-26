@@ -84,6 +84,9 @@ const ru: Record<string, string> = {
 
   // Экран 5 — жизнь
   'life.age': 'Возраст',
+  'life.tab.life': 'Жизнь',
+  'life.tab.stats': 'Шкалы',
+  'life.tab.analytics': 'Аналитика',
   'life.stats.health': 'Здоровье',
   'life.stats.wealth': 'Достаток',
   'life.stats.education': 'Образование',
@@ -115,7 +118,7 @@ const ru: Record<string, string> = {
 
   // Экран 7 — смерть
   'death.title': 'Конец',
-  'death.summary': 'Умер{genderSuffix} в {age} {ageWord}, в {year} году, в {place}. Причина: {cause}',
+  'death.summary': 'Умер{genderSuffix} в {age} {ageWord}, в {year} году. Место: {place}. Причина: {cause}',
   'death.continue': 'Дальше',
 
   // Экран 8 — эпилог

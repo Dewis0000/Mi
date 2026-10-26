@@ -77,6 +77,9 @@ const en: Record<string, string> = {
   'birth.seed.copied': 'Seed copied',
 
   'life.age': 'Age',
+  'life.tab.life': 'Life',
+  'life.tab.stats': 'Stats',
+  'life.tab.analytics': 'Analytics',
   'life.stats.health': 'Health',
   'life.stats.wealth': 'Wealth',
   'life.stats.education': 'Education',
