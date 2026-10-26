@@ -3,8 +3,9 @@
 # nery-quest.online. Рассчитан именно на этот сайт — не универсальный
 # мультисайтовый установщик.
 #
-# Использование (на сервере, после git pull в ~/streops-src):
-#   cd ~/streops-src && git pull && bash ~/streops-src/server/install.sh
+# Использование на сервере:
+#   первый раз:        git clone <repo-url> ~/nery-src && bash ~/nery-src/server/install.sh
+#   каждое обновление:  cd ~/nery-src && git pull && bash server/install.sh
 #
 # Скрипт НИЧЕГО не знает про пароли/логины — он просто собирает статический
 # билд (Vite/React, бэкенда у игры нет) и раскладывает его в докрут домена.

@@ -40,11 +40,21 @@ npm test          # движок: вероятностные тесты из р�
 
 ## Деплой на nery-quest.online
 
-Хостинг — reg.ru / ISPmanager. На сервере (после того как репозиторий
-склонирован в `~/streops-src`):
+Хостинг — reg.ru / ISPmanager. По SSH, на сервере:
+
+**Первый раз** (клонирует репозиторий и сразу собирает/публикует сайт):
 
 ```bash
-cd ~/streops-src && git pull && bash ~/streops-src/server/install.sh
+git clone -b claude/fervent-knuth-sv7rh9 https://github.com/Dewis0000/Mi.git ~/nery-src
+bash ~/nery-src/server/install.sh
+```
+
+(после того как ветка `claude/fervent-knuth-sv7rh9` смёржится в основную — клонируйте без `-b <ветка>`, по умолчанию возьмётся основная ветка репозитория)
+
+**Каждое следующее обновление:**
+
+```bash
+cd ~/nery-src && git pull && bash server/install.sh
 ```
 
 Скрипт сам: проверяет node/npm, ставит зависимости, собирает `dist/`,
