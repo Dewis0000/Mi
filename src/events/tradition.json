@@ -1,0 +1,1009 @@
+{
+  "events": [
+    {
+      "id": "tradition_naming_ceremony",
+      "category": "tradition",
+      "titleKey": "event.tradition_naming_ceremony.title",
+      "bodyKey": "event.tradition_naming_ceremony.body",
+      "severity": "minor",
+      "ageGate": [
+        0,
+        1
+      ],
+      "baseWeight": 1.3,
+      "once": true,
+      "effects": {
+        "bonds": 4,
+        "standing": 1
+      }
+    },
+    {
+      "id": "tradition_blessing_ritual",
+      "category": "tradition",
+      "titleKey": "event.tradition_blessing_ritual.title",
+      "bodyKey": "event.tradition_blessing_ritual.body",
+      "severity": "minor",
+      "ageGate": [
+        0,
+        4
+      ],
+      "baseWeight": 1.1,
+      "effects": {
+        "bonds": 3
+      }
+    },
+    {
+      "id": "tradition_community_festival_childhood",
+      "category": "tradition",
+      "titleKey": "event.tradition_community_festival_childhood.title",
+      "bodyKey": "event.tradition_community_festival_childhood.body",
+      "severity": "minor",
+      "ageGate": [
+        3,
+        11
+      ],
+      "baseWeight": 1.3,
+      "effects": {
+        "bonds": 4
+      }
+    },
+    {
+      "id": "tradition_rite_of_passage_coming_of_age",
+      "category": "tradition",
+      "titleKey": "event.tradition_rite_of_passage_coming_of_age.title",
+      "bodyKey": "event.tradition_rite_of_passage_coming_of_age.body",
+      "severity": "notable",
+      "ageGate": [
+        12,
+        17
+      ],
+      "baseWeight": 1.1,
+      "choices": [
+        {
+          "id": "full_ceremony",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": 4,
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "modest_version",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "tradition_initiation_rite_male",
+      "category": "tradition",
+      "titleKey": "event.tradition_initiation_rite_male.title",
+      "bodyKey": "event.tradition_initiation_rite_male.body",
+      "severity": "notable",
+      "ageGate": [
+        12,
+        17
+      ],
+      "baseWeight": 1,
+      "requires": {
+        "sex": "male"
+      },
+      "effects": {
+        "standing": 4,
+        "bonds": 2
+      }
+    },
+    {
+      "id": "tradition_initiation_rite_female",
+      "category": "tradition",
+      "titleKey": "event.tradition_initiation_rite_female.title",
+      "bodyKey": "event.tradition_initiation_rite_female.body",
+      "severity": "notable",
+      "ageGate": [
+        12,
+        17
+      ],
+      "baseWeight": 1,
+      "requires": {
+        "sex": "female"
+      },
+      "choices": [
+        {
+          "id": "observe_custom",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": 3,
+            "education": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "limit_restrictions",
+          "riskLabel": "рискованно",
+          "effects": {
+            "education": 3,
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "tradition_religious_confirmation",
+      "category": "tradition",
+      "titleKey": "event.tradition_religious_confirmation.title",
+      "bodyKey": "event.tradition_religious_confirmation.body",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        16
+      ],
+      "baseWeight": 1.1,
+      "effects": {
+        "bonds": 3,
+        "standing": 1
+      }
+    },
+    {
+      "id": "tradition_orphan_raised_by_community",
+      "category": "tradition",
+      "titleKey": "event.tradition_orphan_raised_by_community.title",
+      "bodyKey": "event.tradition_orphan_raised_by_community.body",
+      "severity": "major",
+      "ageGate": [
+        1,
+        16
+      ],
+      "baseWeight": 0.8,
+      "requires": {
+        "traits": [
+          "orphan"
+        ]
+      },
+      "choices": [
+        {
+          "id": "communal_care",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 6,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "distant_relative",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -2,
+            "wealth": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "tradition_community_labor_obligation",
+      "category": "tradition",
+      "titleKey": "event.tradition_community_labor_obligation.title",
+      "bodyKey": "event.tradition_community_labor_obligation.body",
+      "severity": "notable",
+      "ageGate": [
+        16,
+        40
+      ],
+      "baseWeight": 1.1,
+      "choices": [
+        {
+          "id": "participate",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 4,
+            "wealth": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "pay_exemption",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -5,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "tradition_adulthood_recognition_ceremony",
+      "category": "tradition",
+      "titleKey": "event.tradition_adulthood_recognition_ceremony.title",
+      "bodyKey": "event.tradition_adulthood_recognition_ceremony.body",
+      "severity": "notable",
+      "ageGate": [
+        16,
+        20
+      ],
+      "baseWeight": 1,
+      "once": true,
+      "effects": {
+        "standing": 4,
+        "bonds": 2
+      }
+    },
+    {
+      "id": "tradition_becoming_godparent_sponsor",
+      "category": "tradition",
+      "titleKey": "event.tradition_becoming_godparent_sponsor.title",
+      "bodyKey": "event.tradition_becoming_godparent_sponsor.body",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        45
+      ],
+      "baseWeight": 1.1,
+      "choices": [
+        {
+          "id": "accept",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": 3,
+            "bonds": 3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "decline",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "tradition_funeral_rite_participation",
+      "category": "tradition",
+      "titleKey": "event.tradition_funeral_rite_participation.title",
+      "bodyKey": "event.tradition_funeral_rite_participation.body",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        70
+      ],
+      "baseWeight": 1.3,
+      "effects": {
+        "bonds": 3
+      }
+    },
+    {
+      "id": "tradition_land_water_rights_custom",
+      "category": "tradition",
+      "titleKey": "event.tradition_land_water_rights_custom.title",
+      "bodyKey": "event.tradition_land_water_rights_custom.body",
+      "severity": "notable",
+      "ageGate": [
+        25,
+        55
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "follow_custom",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 2,
+            "wealth": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "dispute_it",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 4,
+            "bonds": -4
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "tradition_elder_caregiver_duty",
+      "category": "tradition",
+      "titleKey": "event.tradition_elder_caregiver_duty.title",
+      "bodyKey": "event.tradition_elder_caregiver_duty.body",
+      "severity": "notable",
+      "ageGate": [
+        40,
+        55
+      ],
+      "baseWeight": 1.1,
+      "choices": [
+        {
+          "id": "accept_role",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 4,
+            "standing": 2
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "elder_caregiver"
+          ]
+        },
+        {
+          "id": "share_duty",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "tradition_passing_down_oral_history",
+      "category": "tradition",
+      "titleKey": "event.tradition_passing_down_oral_history.title",
+      "bodyKey": "event.tradition_passing_down_oral_history.body",
+      "severity": "minor",
+      "ageGate": [
+        45,
+        75
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "teach",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 5,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "let_it_fade",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "tradition_becoming_village_elder",
+      "category": "tradition",
+      "titleKey": "event.tradition_becoming_village_elder.title",
+      "bodyKey": "event.tradition_becoming_village_elder.body",
+      "severity": "notable",
+      "ageGate": [
+        55,
+        80
+      ],
+      "baseWeight": 0.8,
+      "once": true,
+      "effects": {
+        "standing": 6,
+        "bonds": 3
+      }
+    },
+    {
+      "id": "tradition_elder_cohabitation_decision",
+      "category": "tradition",
+      "titleKey": "event.tradition_elder_cohabitation_decision.title",
+      "bodyKey": "event.tradition_elder_cohabitation_decision.body",
+      "severity": "notable",
+      "ageGate": [
+        55,
+        75
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "move_in_with_children",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 4,
+            "standing": -1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "live_separately",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -2,
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "tradition_refugee_rebuilding_community",
+      "category": "tradition",
+      "titleKey": "event.tradition_refugee_rebuilding_community.title",
+      "bodyKey": "event.tradition_refugee_rebuilding_community.body",
+      "severity": "major",
+      "ageGate": [
+        12,
+        75
+      ],
+      "baseWeight": 0.8,
+      "requires": {
+        "traits": [
+          "refugee"
+        ]
+      },
+      "choices": [
+        {
+          "id": "rebuild_ties",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 6,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "keep_apart",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "tradition_final_rites_planning",
+      "category": "tradition",
+      "titleKey": "event.tradition_final_rites_planning.title",
+      "bodyKey": "event.tradition_final_rites_planning.body",
+      "severity": "notable",
+      "ageGate": [
+        70,
+        95
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "traditional_rites",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 3,
+            "wealth": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "simple_arrangement",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "tradition_honored_at_ceremony",
+      "category": "tradition",
+      "titleKey": "event.tradition_honored_at_ceremony.title",
+      "bodyKey": "event.tradition_honored_at_ceremony.body",
+      "severity": "minor",
+      "ageGate": [
+        65,
+        95
+      ],
+      "baseWeight": 0.8,
+      "effects": {
+        "standing": 4,
+        "bonds": 2
+      }
+    },
+    {
+      "id": "tradition_blessing_grandchildren",
+      "category": "tradition",
+      "titleKey": "event.tradition_blessing_grandchildren.title",
+      "bodyKey": "event.tradition_blessing_grandchildren.body",
+      "severity": "minor",
+      "ageGate": [
+        55,
+        90
+      ],
+      "baseWeight": 1.1,
+      "effects": {
+        "bonds": 5
+      }
+    },
+    {
+      "id": "tradition_seasonal_pilgrimage",
+      "category": "tradition",
+      "titleKey": "event.tradition_seasonal_pilgrimage.title",
+      "bodyKey": "event.tradition_seasonal_pilgrimage.body",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        70
+      ],
+      "baseWeight": 0.9,
+      "choices": [
+        {
+          "id": "go",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 3,
+            "wealth": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "skip",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "tradition_harvest_festival_obligation",
+      "category": "tradition",
+      "titleKey": "event.tradition_harvest_festival_obligation.title",
+      "bodyKey": "event.tradition_harvest_festival_obligation.body",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        70
+      ],
+      "baseWeight": 1.2,
+      "effects": {
+        "bonds": 4,
+        "wealth": -1
+      }
+    },
+    {
+      "id": "tradition_sacred_site_visit",
+      "category": "tradition",
+      "titleKey": "event.tradition_sacred_site_visit.title",
+      "bodyKey": "event.tradition_sacred_site_visit.body",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        80
+      ],
+      "baseWeight": 1,
+      "effects": {
+        "bonds": 2,
+        "standing": 1
+      }
+    },
+    {
+      "id": "tradition_community_mourning_customs",
+      "category": "tradition",
+      "titleKey": "event.tradition_community_mourning_customs.title",
+      "bodyKey": "event.tradition_community_mourning_customs.body",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        90
+      ],
+      "baseWeight": 1.1,
+      "effects": {
+        "bonds": 3
+      }
+    },
+    {
+      "id": "tradition_coming_of_age_gift_exchange",
+      "category": "tradition",
+      "titleKey": "event.tradition_coming_of_age_gift_exchange.title",
+      "bodyKey": "event.tradition_coming_of_age_gift_exchange.body",
+      "severity": "minor",
+      "ageGate": [
+        12,
+        18
+      ],
+      "baseWeight": 1,
+      "effects": {
+        "bonds": 3,
+        "wealth": -1
+      }
+    },
+    {
+      "id": "tradition_village_council_participation",
+      "category": "tradition",
+      "titleKey": "event.tradition_village_council_participation.title",
+      "bodyKey": "event.tradition_village_council_participation.body",
+      "severity": "notable",
+      "ageGate": [
+        35,
+        70
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "join",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": 4,
+            "wealth": -1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "decline",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": 1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "tradition_naming_of_firstborn_custom",
+      "category": "tradition",
+      "titleKey": "event.tradition_naming_of_firstborn_custom.title",
+      "bodyKey": "event.tradition_naming_of_firstborn_custom.body",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        40
+      ],
+      "baseWeight": 1.1,
+      "choices": [
+        {
+          "id": "elder_names",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 3,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "choose_own_name",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "tradition_ancestral_land_ceremony",
+      "category": "tradition",
+      "titleKey": "event.tradition_ancestral_land_ceremony.title",
+      "bodyKey": "event.tradition_ancestral_land_ceremony.body",
+      "severity": "minor",
+      "ageGate": [
+        30,
+        70
+      ],
+      "baseWeight": 0.9,
+      "effects": {
+        "bonds": 3,
+        "standing": 1
+      }
+    },
+    {
+      "id": "tradition_community_apprentice_blessing",
+      "category": "tradition",
+      "titleKey": "event.tradition_community_apprentice_blessing.title",
+      "bodyKey": "event.tradition_community_apprentice_blessing.body",
+      "severity": "minor",
+      "ageGate": [
+        14,
+        20
+      ],
+      "baseWeight": 0.9,
+      "effects": {
+        "bonds": 2,
+        "standing": 1
+      }
+    },
+    {
+      "id": "tradition_charitable_obligation_tithe",
+      "category": "tradition",
+      "titleKey": "event.tradition_charitable_obligation_tithe.title",
+      "bodyKey": "event.tradition_charitable_obligation_tithe.body",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        60
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "give",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -5,
+            "standing": 3,
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "give_less",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -1,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "tradition_coming_home_festival",
+      "category": "tradition",
+      "titleKey": "event.tradition_coming_home_festival.title",
+      "bodyKey": "event.tradition_coming_home_festival.body",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        70
+      ],
+      "baseWeight": 0.9,
+      "effects": {
+        "bonds": 4
+      }
+    },
+    {
+      "id": "tradition_respect_for_elders_custom",
+      "category": "tradition",
+      "titleKey": "event.tradition_respect_for_elders_custom.title",
+      "bodyKey": "event.tradition_respect_for_elders_custom.body",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        30
+      ],
+      "baseWeight": 1.1,
+      "effects": {
+        "bonds": 2,
+        "standing": 1
+      }
+    },
+    {
+      "id": "tradition_community_dispute_mediation",
+      "category": "tradition",
+      "titleKey": "event.tradition_community_dispute_mediation.title",
+      "bodyKey": "event.tradition_community_dispute_mediation.body",
+      "severity": "notable",
+      "ageGate": [
+        30,
+        65
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "mediate",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": 4,
+            "bonds": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "stay_out",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    }
+  ],
+  "i18n": {
+    "ru": {
+      "event.tradition_naming_ceremony.title": "Обряд имянаречения",
+      "event.tradition_naming_ceremony.body": "По обычаю общины новорождённому дают имя на собрании родных и соседей.",
+      "event.tradition_blessing_ritual.title": "Обряд благословения",
+      "event.tradition_blessing_ritual.body": "Старейшина рода произносит традиционные слова благословения над маленьким ребёнком.",
+      "event.tradition_community_festival_childhood.title": "Общинный праздник",
+      "event.tradition_community_festival_childhood.body": "Ежегодный праздник собирает всю округу: музыку, еду и общие игры для детей.",
+      "event.tradition_rite_of_passage_coming_of_age.title": "Обряд перехода во взрослость",
+      "event.tradition_rite_of_passage_coming_of_age.body": "По местному обычаю подростку полагается обряд, отмечающий переход к взрослым обязанностям в общине. Устроить его в полном виде стоит денег.",
+      "event.tradition_rite_of_passage_coming_of_age.choice.full_ceremony.label": "Устроить обряд полностью",
+      "event.tradition_rite_of_passage_coming_of_age.choice.modest_version.label": "Ограничиться скромным вариантом",
+      "event.tradition_initiation_rite_male.title": "Обряд посвящения для юноши",
+      "event.tradition_initiation_rite_male.body": "Юношу принимают в круг взрослых мужчин общины после установленного обряда, определяющего его новые обязанности.",
+      "event.tradition_initiation_rite_female.title": "Обряд признания взрослости для девушки",
+      "event.tradition_initiation_rite_female.body": "Обряд отмечает новый общественный статус девушки и несёт с собой новые ограничения на то, что ей теперь позволено: меньше свободы передвижения, иные ожидания от школы и хозяйства.",
+      "event.tradition_initiation_rite_female.choice.observe_custom.label": "Полностью следовать обычаю",
+      "event.tradition_initiation_rite_female.choice.limit_restrictions.label": "Договориться об исключении для учёбы",
+      "event.tradition_religious_confirmation.title": "Религиозный обряд подтверждения",
+      "event.tradition_religious_confirmation.body": "Община отмечает обряд, подтверждающий принадлежность подростка к общей вере.",
+      "event.tradition_orphan_raised_by_community.title": "Община берёт на себя заботу",
+      "event.tradition_orphan_raised_by_community.body": "По местному обычаю потерявшего родителей ребёнка не оставляют одного: заботу делят между собой несколько семей общины.",
+      "event.tradition_orphan_raised_by_community.choice.communal_care.label": "Расти под общей опекой общины",
+      "event.tradition_orphan_raised_by_community.choice.distant_relative.label": "Переехать к дальнему родственнику",
+      "event.tradition_community_labor_obligation.title": "Общинная трудовая обязанность",
+      "event.tradition_community_labor_obligation.body": "По обычаю каждая семья обязана выделить несколько дней труда на общие нужды — ремонт дороги, канала или колодца.",
+      "event.tradition_community_labor_obligation.choice.participate.label": "Отработать положенные дни",
+      "event.tradition_community_labor_obligation.choice.pay_exemption.label": "Заплатить, чтобы освободиться",
+      "event.tradition_adulthood_recognition_ceremony.title": "Признание полноправным членом общины",
+      "event.tradition_adulthood_recognition_ceremony.body": "Община официально признаёт человека полноправным взрослым со всеми правами и обязанностями, которые это несёт.",
+      "event.tradition_becoming_godparent_sponsor.title": "Просят стать крёстным или наставником",
+      "event.tradition_becoming_godparent_sponsor.body": "Друзья просят стать крёстным родителем или наставником для их ребёнка — почётная, но обязывающая роль.",
+      "event.tradition_becoming_godparent_sponsor.choice.accept.label": "Согласиться",
+      "event.tradition_becoming_godparent_sponsor.choice.decline.label": "Вежливо отказаться",
+      "event.tradition_funeral_rite_participation.title": "Участие в похоронном обряде общины",
+      "event.tradition_funeral_rite_participation.body": "Смерть уважаемого в общине человека собирает соседей для традиционного прощального обряда.",
+      "event.tradition_land_water_rights_custom.title": "Обычное право на воду и землю",
+      "event.tradition_land_water_rights_custom.body": "Распределение воды для полива между семьями подчиняется давнему обычаю, а не официальному закону.",
+      "event.tradition_land_water_rights_custom.choice.follow_custom.label": "Следовать обычному порядку",
+      "event.tradition_land_water_rights_custom.choice.dispute_it.label": "Оспорить свою долю",
+      "event.tradition_elder_caregiver_duty.title": "Обычай требует заботы о старших",
+      "event.tradition_elder_caregiver_duty.body": "По обычаю забота о пожилых родителях ложится на определённого члена семьи, и этим человеком оказываются они.",
+      "event.tradition_elder_caregiver_duty.choice.accept_role.label": "Принять эту роль",
+      "event.tradition_elder_caregiver_duty.choice.share_duty.label": "Настоять на разделении обязанности",
+      "event.tradition_passing_down_oral_history.title": "Передача устных преданий",
+      "event.tradition_passing_down_oral_history.body": "Внуки просят рассказать о том, как жила семья раньше — истории, которые иначе рискуют быть забыты.",
+      "event.tradition_passing_down_oral_history.choice.teach.label": "Рассказать и передать дальше",
+      "event.tradition_passing_down_oral_history.choice.let_it_fade.label": "Отмахнуться, не до того",
+      "event.tradition_becoming_village_elder.title": "Признание старейшиной",
+      "event.tradition_becoming_village_elder.body": "Соседи всё чаще обращаются за советом, и со временем это превращается в неформальное признание старейшиной.",
+      "event.tradition_elder_cohabitation_decision.title": "Жить с детьми или отдельно",
+      "event.tradition_elder_cohabitation_decision.body": "По обычаю пожилые родители переезжают жить к одному из детей, но решение остаётся за ними.",
+      "event.tradition_elder_cohabitation_decision.choice.move_in_with_children.label": "Переехать к детям",
+      "event.tradition_elder_cohabitation_decision.choice.live_separately.label": "Остаться жить отдельно",
+      "event.tradition_refugee_rebuilding_community.title": "Восстановление общины на новом месте",
+      "event.tradition_refugee_rebuilding_community.body": "На новом месте сохранить привычные обряды и праздники трудно, но несколько семей из прежних мест решают делать это вместе.",
+      "event.tradition_refugee_rebuilding_community.choice.rebuild_ties.label": "Воссоздать общину с земляками",
+      "event.tradition_refugee_rebuilding_community.choice.keep_apart.label": "Держаться в стороне",
+      "event.tradition_final_rites_planning.title": "Решение о прощальном обряде",
+      "event.tradition_final_rites_planning.body": "Пора заранее договориться с семьёй о том, как пройдут похороны: по полному традиционному обряду или скромно.",
+      "event.tradition_final_rites_planning.choice.traditional_rites.label": "Настоять на полном обряде",
+      "event.tradition_final_rites_planning.choice.simple_arrangement.label": "Договориться о скромном варианте",
+      "event.tradition_honored_at_ceremony.title": "Чествование на общинном празднике",
+      "event.tradition_honored_at_ceremony.body": "На ежегодном празднике общины отмечают вклад старшего поколения, и в их числе — и его самого.",
+      "event.tradition_blessing_grandchildren.title": "Благословение внуков",
+      "event.tradition_blessing_grandchildren.body": "По обычаю старший в роду произносит слова благословения над подрастающими внуками.",
+      "event.tradition_seasonal_pilgrimage.title": "Сезонное паломничество",
+      "event.tradition_seasonal_pilgrimage.body": "Раз в год многие в округе отправляются к почитаемому месту. Поездка стоит денег и времени.",
+      "event.tradition_seasonal_pilgrimage.choice.go.label": "Отправиться в путь",
+      "event.tradition_seasonal_pilgrimage.choice.skip.label": "Остаться дома в этом году",
+      "event.tradition_harvest_festival_obligation.title": "Праздник урожая",
+      "event.tradition_harvest_festival_obligation.body": "По обычаю каждая семья вносит свою долю еды и труда в общий праздник урожая.",
+      "event.tradition_sacred_site_visit.title": "Посещение почитаемого места",
+      "event.tradition_sacred_site_visit.body": "Семья отправляется к месту, которое в общине считается особенно значимым, чтобы отдать дань уважения.",
+      "event.tradition_community_mourning_customs.title": "Обряды общего траура",
+      "event.tradition_community_mourning_customs.body": "Смерть кого-то из общины требует соблюдения установленных обрядами сроков и действий траура.",
+      "event.tradition_coming_of_age_gift_exchange.title": "Обмен дарами при переходе во взрослость",
+      "event.tradition_coming_of_age_gift_exchange.body": "По случаю обряда взрослости родственники по традиции приносят небольшие подарки.",
+      "event.tradition_village_council_participation.title": "Приглашение в совет общины",
+      "event.tradition_village_council_participation.body": "Старейшины приглашают войти в совет, который решает общие дела посёлка.",
+      "event.tradition_village_council_participation.choice.join.label": "Войти в совет",
+      "event.tradition_village_council_participation.choice.decline.label": "Отказаться от участия",
+      "event.tradition_naming_of_firstborn_custom.title": "Кто даст имя первенцу",
+      "event.tradition_naming_of_firstborn_custom.body": "По обычаю имя первому ребёнку в семье полагается выбирать старшему в роду, а не родителям.",
+      "event.tradition_naming_of_firstborn_custom.choice.elder_names.label": "Доверить имя старшему в роду",
+      "event.tradition_naming_of_firstborn_custom.choice.choose_own_name.label": "Выбрать имя самим",
+      "event.tradition_ancestral_land_ceremony.title": "Обряд у родовой земли",
+      "event.tradition_ancestral_land_ceremony.body": "Раз в несколько лет семья собирается у родового участка, чтобы отметить память предков.",
+      "event.tradition_community_apprentice_blessing.title": "Благословение на начало ремесла",
+      "event.tradition_community_apprentice_blessing.body": "Перед началом обучения ремеслу община по обычаю желает успеха новому подмастерью.",
+      "event.tradition_charitable_obligation_tithe.title": "Обычай доли для общины",
+      "event.tradition_charitable_obligation_tithe.body": "По обычаю каждая семья отдаёт часть урожая или заработка на поддержку нуждающихся в общине.",
+      "event.tradition_charitable_obligation_tithe.choice.give.label": "Отдать полную положенную долю",
+      "event.tradition_charitable_obligation_tithe.choice.give_less.label": "Отдать меньше, чем положено",
+      "event.tradition_coming_home_festival.title": "Праздник возвращения",
+      "event.tradition_coming_home_festival.body": "Раз в году те, кто уехал на заработки, стараются вернуться на общий праздник, объединяющий всю родню.",
+      "event.tradition_respect_for_elders_custom.title": "Обычай уважения к старшим",
+      "event.tradition_respect_for_elders_custom.body": "С раннего возраста прививается привычка первым приветствовать и слушаться старших в семье.",
+      "event.tradition_community_dispute_mediation.title": "Просят рассудить спор соседей",
+      "event.tradition_community_dispute_mediation.body": "Двое соседей просят помочь рассудить спор по старому обычаю, минуя официальный суд.",
+      "event.tradition_community_dispute_mediation.choice.mediate.label": "Взяться рассудить спор",
+      "event.tradition_community_dispute_mediation.choice.stay_out.label": "Остаться в стороне"
+    },
+    "en": {
+      "event.tradition_naming_ceremony.title": "The naming ceremony",
+      "event.tradition_naming_ceremony.body": "Following local custom, the newborn is given a name at a gathering of relatives and neighbors.",
+      "event.tradition_blessing_ritual.title": "A blessing ritual",
+      "event.tradition_blessing_ritual.body": "A clan elder speaks the traditional words of blessing over the small child.",
+      "event.tradition_community_festival_childhood.title": "A community festival",
+      "event.tradition_community_festival_childhood.body": "The yearly festival draws in the whole area: music, food, and games shared among the children.",
+      "event.tradition_rite_of_passage_coming_of_age.title": "A coming-of-age rite",
+      "event.tradition_rite_of_passage_coming_of_age.body": "Local custom calls for a rite marking the move into adult responsibilities within the community. A full ceremony costs money.",
+      "event.tradition_rite_of_passage_coming_of_age.choice.full_ceremony.label": "Hold the full ceremony",
+      "event.tradition_rite_of_passage_coming_of_age.choice.modest_version.label": "Keep it to a modest version",
+      "event.tradition_initiation_rite_male.title": "An initiation rite for a young man",
+      "event.tradition_initiation_rite_male.body": "The young man is admitted into the circle of the community's adult men after the set rite, which marks out his new duties.",
+      "event.tradition_initiation_rite_female.title": "A rite marking a young woman's new status",
+      "event.tradition_initiation_rite_female.body": "The rite marks the young woman's new social status and brings new limits on what she is now permitted: less freedom of movement, different expectations around school and household duties.",
+      "event.tradition_initiation_rite_female.choice.observe_custom.label": "Follow the custom in full",
+      "event.tradition_initiation_rite_female.choice.limit_restrictions.label": "Negotiate an exception to keep schooling",
+      "event.tradition_religious_confirmation.title": "A religious confirmation rite",
+      "event.tradition_religious_confirmation.body": "The community marks a rite confirming the teenager's place within the shared faith.",
+      "event.tradition_orphan_raised_by_community.title": "The community takes on the care",
+      "event.tradition_orphan_raised_by_community.body": "Local custom does not leave a child who has lost their parents alone: several families in the community share the responsibility between them.",
+      "event.tradition_orphan_raised_by_community.choice.communal_care.label": "Grow up under the community's shared care",
+      "event.tradition_orphan_raised_by_community.choice.distant_relative.label": "Move in with a distant relative instead",
+      "event.tradition_community_labor_obligation.title": "A communal labor obligation",
+      "event.tradition_community_labor_obligation.body": "By custom, every household must contribute a few days of labor to shared needs — repairing a road, a canal, or a well.",
+      "event.tradition_community_labor_obligation.choice.participate.label": "Work the required days",
+      "event.tradition_community_labor_obligation.choice.pay_exemption.label": "Pay a fee to be excused",
+      "event.tradition_adulthood_recognition_ceremony.title": "Recognition as a full community member",
+      "event.tradition_adulthood_recognition_ceremony.body": "The community formally recognizes the person as a full adult, with all the rights and duties that come with it.",
+      "event.tradition_becoming_godparent_sponsor.title": "Asked to become a sponsor",
+      "event.tradition_becoming_godparent_sponsor.body": "Friends ask them to become a godparent or sponsor to their child — an honor, but one that comes with lasting obligations.",
+      "event.tradition_becoming_godparent_sponsor.choice.accept.label": "Accept the role",
+      "event.tradition_becoming_godparent_sponsor.choice.decline.label": "Politely decline",
+      "event.tradition_funeral_rite_participation.title": "Taking part in a community funeral rite",
+      "event.tradition_funeral_rite_participation.body": "The death of a respected figure in the community draws the neighbors together for the traditional farewell rite.",
+      "event.tradition_land_water_rights_custom.title": "Customary rights to land and water",
+      "event.tradition_land_water_rights_custom.body": "The sharing of irrigation water among households follows a long-standing custom rather than formal law.",
+      "event.tradition_land_water_rights_custom.choice.follow_custom.label": "Follow the customary order",
+      "event.tradition_land_water_rights_custom.choice.dispute_it.label": "Dispute their share",
+      "event.tradition_elder_caregiver_duty.title": "Custom calls for care of the elders",
+      "event.tradition_elder_caregiver_duty.body": "By custom, care for aging parents falls to a particular family member, and this time it falls to them.",
+      "event.tradition_elder_caregiver_duty.choice.accept_role.label": "Take on the role",
+      "event.tradition_elder_caregiver_duty.choice.share_duty.label": "Insist on sharing the duty",
+      "event.tradition_passing_down_oral_history.title": "Passing down the oral traditions",
+      "event.tradition_passing_down_oral_history.body": "The grandchildren ask to hear how the family used to live — stories that would otherwise risk being forgotten.",
+      "event.tradition_passing_down_oral_history.choice.teach.label": "Tell the stories and pass them on",
+      "event.tradition_passing_down_oral_history.choice.let_it_fade.label": "Wave it off, with other things on their mind",
+      "event.tradition_becoming_village_elder.title": "Recognition as a village elder",
+      "event.tradition_becoming_village_elder.body": "Neighbors increasingly come for advice, and over time this turns into informal recognition as an elder.",
+      "event.tradition_elder_cohabitation_decision.title": "Living with the children, or apart",
+      "event.tradition_elder_cohabitation_decision.body": "Custom expects aging parents to move in with one of their children, but the choice is still theirs to make.",
+      "event.tradition_elder_cohabitation_decision.choice.move_in_with_children.label": "Move in with the children",
+      "event.tradition_elder_cohabitation_decision.choice.live_separately.label": "Continue living on their own",
+      "event.tradition_refugee_rebuilding_community.title": "Rebuilding community in a new place",
+      "event.tradition_refugee_rebuilding_community.body": "Keeping the old rites and festivals alive is hard in a new place, but a few families from back home decide to do it together.",
+      "event.tradition_refugee_rebuilding_community.choice.rebuild_ties.label": "Rebuild a community with fellow displaced families",
+      "event.tradition_refugee_rebuilding_community.choice.keep_apart.label": "Keep to themselves instead",
+      "event.tradition_final_rites_planning.title": "A decision about the final rite",
+      "event.tradition_final_rites_planning.body": "It is time to settle with the family, ahead of time, how the funeral will go: a full traditional rite, or a modest one.",
+      "event.tradition_final_rites_planning.choice.traditional_rites.label": "Insist on the full traditional rite",
+      "event.tradition_final_rites_planning.choice.simple_arrangement.label": "Settle for a modest arrangement",
+      "event.tradition_honored_at_ceremony.title": "Honored at a community gathering",
+      "event.tradition_honored_at_ceremony.body": "At the community's yearly festival, the elders' contributions are recognized, and they are among those honored.",
+      "event.tradition_blessing_grandchildren.title": "Blessing the grandchildren",
+      "event.tradition_blessing_grandchildren.body": "By custom, the family elder speaks words of blessing over the growing grandchildren.",
+      "event.tradition_seasonal_pilgrimage.title": "A seasonal pilgrimage",
+      "event.tradition_seasonal_pilgrimage.body": "Once a year, many in the area travel to a revered site. The trip costs both money and time.",
+      "event.tradition_seasonal_pilgrimage.choice.go.label": "Make the journey",
+      "event.tradition_seasonal_pilgrimage.choice.skip.label": "Stay home this year",
+      "event.tradition_harvest_festival_obligation.title": "The harvest festival",
+      "event.tradition_harvest_festival_obligation.body": "By custom, every family contributes its share of food and work to the shared harvest festival.",
+      "event.tradition_sacred_site_visit.title": "A visit to a revered site",
+      "event.tradition_sacred_site_visit.body": "The family travels to a place the community holds especially significant, to pay their respects.",
+      "event.tradition_community_mourning_customs.title": "Shared mourning customs",
+      "event.tradition_community_mourning_customs.body": "A death within the community calls for observing the set periods and acts of mourning that custom requires.",
+      "event.tradition_coming_of_age_gift_exchange.title": "An exchange of gifts marking adulthood",
+      "event.tradition_coming_of_age_gift_exchange.body": "To mark the coming-of-age rite, relatives traditionally bring small gifts.",
+      "event.tradition_village_council_participation.title": "An invitation to the community council",
+      "event.tradition_village_council_participation.body": "The elders invite them to join the council that handles the village's shared affairs.",
+      "event.tradition_village_council_participation.choice.join.label": "Join the council",
+      "event.tradition_village_council_participation.choice.decline.label": "Decline to take part",
+      "event.tradition_naming_of_firstborn_custom.title": "Who names the firstborn",
+      "event.tradition_naming_of_firstborn_custom.body": "Custom holds that the family's eldest, not the parents, should choose the name for the firstborn child.",
+      "event.tradition_naming_of_firstborn_custom.choice.elder_names.label": "Let the family elder choose the name",
+      "event.tradition_naming_of_firstborn_custom.choice.choose_own_name.label": "Choose the name themselves",
+      "event.tradition_ancestral_land_ceremony.title": "A rite at the ancestral land",
+      "event.tradition_ancestral_land_ceremony.body": "Every few years the family gathers at the ancestral plot of land to honor the memory of those who came before.",
+      "event.tradition_community_apprentice_blessing.title": "A blessing to begin a trade",
+      "event.tradition_community_apprentice_blessing.body": "Before training in a trade begins, the community by custom wishes the new apprentice well.",
+      "event.tradition_charitable_obligation_tithe.title": "The custom of a communal share",
+      "event.tradition_charitable_obligation_tithe.body": "By custom, every family sets aside part of its harvest or earnings to support those in need within the community.",
+      "event.tradition_charitable_obligation_tithe.choice.give.label": "Give the full customary share",
+      "event.tradition_charitable_obligation_tithe.choice.give_less.label": "Give less than custom asks",
+      "event.tradition_coming_home_festival.title": "A homecoming festival",
+      "event.tradition_coming_home_festival.body": "Once a year, those who have gone off to work elsewhere try to return for the shared festival that brings the whole family together.",
+      "event.tradition_respect_for_elders_custom.title": "The custom of respect for elders",
+      "event.tradition_respect_for_elders_custom.body": "From an early age, the habit is instilled of greeting and heeding the family's elders first.",
+      "event.tradition_community_dispute_mediation.title": "Asked to mediate a neighbors' dispute",
+      "event.tradition_community_dispute_mediation.body": "Two neighbors ask for help settling a dispute the old way, without going to a formal court.",
+      "event.tradition_community_dispute_mediation.choice.mediate.label": "Take on mediating the dispute",
+      "event.tradition_community_dispute_mediation.choice.stay_out.label": "Stay out of it"
+    }
+  }
+}

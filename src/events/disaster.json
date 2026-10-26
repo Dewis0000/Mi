@@ -1,0 +1,1317 @@
+{
+  "events": [
+    {
+      "id": "disaster_drought_crop_failure",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        62
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "drought": 2.2
+        }
+      },
+      "baseWeight": 1.6,
+      "titleKey": "event.disaster_drought_crop_failure.title",
+      "bodyKey": "event.disaster_drought_crop_failure.body",
+      "choices": [
+        {
+          "id": "sell_reserves_early",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "wait_for_rain",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -10,
+            "health": -3
+          },
+          "mortalityDelta": 1.2
+        },
+        {
+          "id": "borrow_for_irrigation",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -6
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "disaster_drought_livestock_loss",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        62
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "drought": 2
+        }
+      },
+      "baseWeight": 1.3,
+      "titleKey": "event.disaster_drought_livestock_loss.title",
+      "bodyKey": "event.disaster_drought_livestock_loss.body",
+      "choices": [
+        {
+          "id": "sell_remaining",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 2,
+            "bonds": -1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "migrate_for_work",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -2,
+            "bonds": -3
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "seek_community_aid",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 2,
+            "wealth": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "disaster_flood_home_damage",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        70
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "flood": 2.2
+        }
+      },
+      "baseWeight": 1.6,
+      "titleKey": "event.disaster_flood_home_damage.title",
+      "bodyKey": "event.disaster_flood_home_damage.body",
+      "choices": [
+        {
+          "id": "repair_with_savings",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -6,
+            "health": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "temporary_shelter",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -2,
+            "bonds": 1
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "abandon_home",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -8,
+            "bonds": -3
+          },
+          "mortalityDelta": 1.1,
+          "unlockTraits": [
+            "flood_displaced"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "disaster_flood_crop_loss",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        62
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "flood": 2
+        }
+      },
+      "baseWeight": 1.4,
+      "titleKey": "event.disaster_flood_crop_loss.title",
+      "bodyKey": "event.disaster_flood_crop_loss.body",
+      "choices": [
+        {
+          "id": "salvage_remaining_crop",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -3,
+            "health": -1
+          },
+          "mortalityDelta": 1.2
+        },
+        {
+          "id": "wait_for_water_recession",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -8
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "disaster_earthquake_home_collapse",
+      "category": "disaster",
+      "severity": "fatal",
+      "ageGate": [
+        5,
+        80
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "quake": 2.5
+        }
+      },
+      "baseWeight": 1,
+      "titleKey": "event.disaster_earthquake_home_collapse.title",
+      "bodyKey": "event.disaster_earthquake_home_collapse.body",
+      "choices": [
+        {
+          "id": "rebuild",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -10,
+            "standing": 2
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "relocate_temporarily",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -4,
+            "bonds": 1
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "live_in_shelter",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -4,
+            "wealth": -2
+          },
+          "mortalityDelta": 1.3
+        }
+      ]
+    },
+    {
+      "id": "disaster_earthquake_aftershock_fear",
+      "category": "disaster",
+      "severity": "minor",
+      "ageGate": [
+        5,
+        80
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "quake": 1.8
+        }
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.disaster_earthquake_aftershock_fear.title",
+      "bodyKey": "event.disaster_earthquake_aftershock_fear.body",
+      "effects": {
+        "health": -2,
+        "bonds": 1
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "disaster_famine_childhood_food_shortage",
+      "category": "disaster",
+      "severity": "major",
+      "ageGate": [
+        0,
+        12
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "drought": 2
+        }
+      },
+      "baseWeight": 1,
+      "titleKey": "event.disaster_famine_childhood_food_shortage.title",
+      "bodyKey": "event.disaster_famine_childhood_food_shortage.body",
+      "effects": {
+        "health": -6
+      },
+      "mortalityDelta": 1.3,
+      "mortalityYears": 1,
+      "unlockTraits": [
+        "famine_survivor"
+      ]
+    },
+    {
+      "id": "disaster_famine_family_rationing",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        12
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "drought": 1.8
+        }
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.disaster_famine_family_rationing.title",
+      "bodyKey": "event.disaster_famine_family_rationing.body",
+      "choices": [
+        {
+          "id": "migrate_for_food_aid",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -2,
+            "health": 2
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "rely_on_relief_program",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 2,
+            "wealth": -1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "sell_remaining_assets",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -5,
+            "health": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "disaster_flood_displacement_permanent",
+      "category": "disaster",
+      "severity": "major",
+      "ageGate": [
+        5,
+        75
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "flood": 2.3
+        }
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.disaster_flood_displacement_permanent.title",
+      "bodyKey": "event.disaster_flood_displacement_permanent.body",
+      "once": true,
+      "effects": {
+        "wealth": -10,
+        "bonds": -3
+      },
+      "mortalityDelta": 1.1,
+      "unlockTraits": [
+        "flood_displaced"
+      ]
+    },
+    {
+      "id": "disaster_drought_displacement_permanent",
+      "category": "disaster",
+      "severity": "major",
+      "ageGate": [
+        5,
+        75
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "drought": 2.3
+        }
+      },
+      "baseWeight": 1,
+      "titleKey": "event.disaster_drought_displacement_permanent.title",
+      "bodyKey": "event.disaster_drought_displacement_permanent.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "abandon_land",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -9,
+            "bonds": -2
+          },
+          "mortalityDelta": 1.1,
+          "unlockTraits": [
+            "flood_displaced"
+          ]
+        },
+        {
+          "id": "hold_on_longer",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -5,
+            "health": -2
+          },
+          "mortalityDelta": 1.2
+        }
+      ]
+    },
+    {
+      "id": "disaster_quake_rebuilding_aid",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        68
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "quake": 1.8
+        }
+      },
+      "baseWeight": 1,
+      "titleKey": "event.disaster_quake_rebuilding_aid.title",
+      "bodyKey": "event.disaster_quake_rebuilding_aid.body",
+      "choices": [
+        {
+          "id": "accept_aid",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": 4,
+            "standing": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "decline_aid",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "disaster_flood_aid_claim",
+      "category": "disaster",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        62
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "flood": 1.6
+        }
+      },
+      "baseWeight": 1,
+      "titleKey": "event.disaster_flood_aid_claim.title",
+      "bodyKey": "event.disaster_flood_aid_claim.body",
+      "choices": [
+        {
+          "id": "file_through_official_program",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "use_informal_broker",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 3,
+            "standing": -1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "disaster_drought_migration_pressure",
+      "category": "disaster",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        50
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "drought": 1.8
+        }
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.disaster_drought_migration_pressure.title",
+      "bodyKey": "event.disaster_drought_migration_pressure.body",
+      "choices": [
+        {
+          "id": "join_the_exodus",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -4,
+            "wealth": 1
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "stay_and_hope",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "disaster_flood_waterborne_illness",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        80
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "flood": 1.8
+        }
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.disaster_flood_waterborne_illness.title",
+      "bodyKey": "event.disaster_flood_waterborne_illness.body",
+      "choices": [
+        {
+          "id": "seek_clinic_treatment",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 2,
+            "wealth": -5
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "home_remedies",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -6,
+            "wealth": -1
+          },
+          "mortalityDelta": 1.3
+        }
+      ]
+    },
+    {
+      "id": "disaster_quake_injury_recovery",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        5,
+        80
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "quake": 1.6
+        }
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.disaster_quake_injury_recovery.title",
+      "bodyKey": "event.disaster_quake_injury_recovery.body",
+      "choices": [
+        {
+          "id": "pay_for_proper_care",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": 1,
+            "wealth": -8
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "informal_care",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": -7,
+            "wealth": -1
+          },
+          "mortalityDelta": 1.2
+        }
+      ]
+    },
+    {
+      "id": "disaster_drought_water_scarcity_tension",
+      "category": "disaster",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        60
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "drought": 1.7
+        }
+      },
+      "baseWeight": 1,
+      "titleKey": "event.disaster_drought_water_scarcity_tension.title",
+      "bodyKey": "event.disaster_drought_water_scarcity_tension.body",
+      "choices": [
+        {
+          "id": "join_water_sharing",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 1,
+            "health": -1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "dig_own_well",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -6,
+            "bonds": -1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "disaster_flood_school_disruption",
+      "category": "disaster",
+      "severity": "minor",
+      "ageGate": [
+        6,
+        17
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "flood": 1.8
+        }
+      },
+      "baseWeight": 1,
+      "titleKey": "event.disaster_flood_school_disruption.title",
+      "bodyKey": "event.disaster_flood_school_disruption.body",
+      "effects": {
+        "education": -4
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "disaster_quake_community_rebuilding",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        17
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "quake": 1.6
+        }
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.disaster_quake_community_rebuilding.title",
+      "bodyKey": "event.disaster_quake_community_rebuilding.body",
+      "effects": {
+        "bonds": 4,
+        "standing": 1
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "disaster_drought_herd_sale_distress",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        58
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "drought": 1.9
+        }
+      },
+      "baseWeight": 1,
+      "titleKey": "event.disaster_drought_herd_sale_distress.title",
+      "bodyKey": "event.disaster_drought_herd_sale_distress.body",
+      "effects": {
+        "wealth": -5
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "disaster_flood_repeated_exposure",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        65
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "flood": 2
+        }
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.disaster_flood_repeated_exposure.title",
+      "bodyKey": "event.disaster_flood_repeated_exposure.body",
+      "choices": [
+        {
+          "id": "invest_in_flood_proofing",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -7
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "keep_absorbing_losses",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -3,
+            "health": -3
+          },
+          "mortalityDelta": 1.2
+        }
+      ]
+    },
+    {
+      "id": "disaster_quake_building_survives",
+      "category": "disaster",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        70
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "quake": 1.5
+        }
+      },
+      "baseWeight": 0.8,
+      "titleKey": "event.disaster_quake_building_survives.title",
+      "bodyKey": "event.disaster_quake_building_survives.body",
+      "effects": {
+        "standing": 2,
+        "bonds": 1
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "disaster_drought_relief_program",
+      "category": "disaster",
+      "severity": "minor",
+      "ageGate": [
+        0,
+        70
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "drought": 1.7
+        }
+      },
+      "baseWeight": 1,
+      "titleKey": "event.disaster_drought_relief_program.title",
+      "bodyKey": "event.disaster_drought_relief_program.body",
+      "effects": {
+        "health": 3,
+        "wealth": 2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "disaster_flood_rescue",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        80
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "flood": 1.9
+        }
+      },
+      "baseWeight": 1,
+      "titleKey": "event.disaster_flood_rescue.title",
+      "bodyKey": "event.disaster_flood_rescue.body",
+      "effects": {
+        "bonds": 2,
+        "wealth": -3
+      },
+      "mortalityDelta": 1.3
+    },
+    {
+      "id": "disaster_quake_delayed_economic_toll",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        65
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "quake": 1.7
+        }
+      },
+      "baseWeight": 1,
+      "titleKey": "event.disaster_quake_delayed_economic_toll.title",
+      "bodyKey": "event.disaster_quake_delayed_economic_toll.body",
+      "choices": [
+        {
+          "id": "diversify_income",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -1,
+            "education": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "wait_for_recovery",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -5
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "disaster_drought_child_labor_pressure",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        8,
+        16
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "drought": 1.8
+        }
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.disaster_drought_child_labor_pressure.title",
+      "bodyKey": "event.disaster_drought_child_labor_pressure.body",
+      "choices": [
+        {
+          "id": "comply_with_family",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": -4,
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "resist_and_attend_school",
+          "riskLabel": "рискованно",
+          "effects": {
+            "education": 2,
+            "bonds": -3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "disaster_flood_temporary_shelter",
+      "category": "disaster",
+      "severity": "minor",
+      "ageGate": [
+        5,
+        75
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "flood": 1.7
+        }
+      },
+      "baseWeight": 1,
+      "titleKey": "event.disaster_flood_temporary_shelter.title",
+      "bodyKey": "event.disaster_flood_temporary_shelter.body",
+      "choices": [
+        {
+          "id": "stay_in_public_shelter",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "rent_temporary_room",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -4,
+            "health": 1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "disaster_quake_aid_corruption",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        60
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "quake": 1.6
+        }
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.disaster_quake_aid_corruption.title",
+      "bodyKey": "event.disaster_quake_aid_corruption.body",
+      "choices": [
+        {
+          "id": "accept_reduced_aid",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "report_irregularity",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": -3,
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "seek_alternative_aid",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": 2,
+            "bonds": -1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "disaster_drought_food_price_spike",
+      "category": "disaster",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        70
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "drought": 1.6
+        }
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.disaster_drought_food_price_spike.title",
+      "bodyKey": "event.disaster_drought_food_price_spike.body",
+      "choices": [
+        {
+          "id": "buy_in_bulk_early",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -7
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "ration_spending_weekly",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -3,
+            "health": -1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "disaster_famine_severe_adult",
+      "category": "disaster",
+      "severity": "major",
+      "ageGate": [
+        18,
+        70
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "drought": 2
+        }
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.disaster_famine_severe_adult.title",
+      "bodyKey": "event.disaster_famine_severe_adult.body",
+      "effects": {
+        "health": -6,
+        "wealth": -4
+      },
+      "mortalityDelta": 1.3,
+      "mortalityYears": 1
+    },
+    {
+      "id": "disaster_flood_livestock_drowning",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        60
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "flood": 1.9
+        }
+      },
+      "baseWeight": 1,
+      "titleKey": "event.disaster_flood_livestock_drowning.title",
+      "bodyKey": "event.disaster_flood_livestock_drowning.body",
+      "choices": [
+        {
+          "id": "restock_with_loan",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "scale_down_herd",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -7
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "disaster_drought_borrowing_for_seed",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        60
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "drought": 1.7
+        }
+      },
+      "baseWeight": 1,
+      "titleKey": "event.disaster_drought_borrowing_for_seed.title",
+      "bodyKey": "event.disaster_drought_borrowing_for_seed.body",
+      "choices": [
+        {
+          "id": "formal_loan",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "informal_moneylender",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -1,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "cooperative_support",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -2,
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "disaster_quake_psychological_aftermath",
+      "category": "disaster",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        80
+      ],
+      "weightBy": {
+        "hazardTag": {
+          "quake": 1.6
+        }
+      },
+      "baseWeight": 1,
+      "titleKey": "event.disaster_quake_psychological_aftermath.title",
+      "bodyKey": "event.disaster_quake_psychological_aftermath.body",
+      "effects": {
+        "health": -2,
+        "bonds": 2
+      },
+      "mortalityDelta": 1
+    }
+  ],
+  "i18n": {
+    "ru": {
+      "event.disaster_drought_crop_failure.choice.sell_reserves_early.label": "Продать резервы заранее",
+      "event.disaster_drought_crop_failure.choice.wait_for_rain.label": "Ждать дождей",
+      "event.disaster_drought_crop_failure.choice.borrow_for_irrigation.label": "Взять в долг на полив",
+      "event.disaster_drought_crop_failure.title": "Неурожай из-за засухи",
+      "event.disaster_drought_crop_failure.body": "Засуха уничтожает большую часть урожая за сезон. Дохода, на который рассчитывала семья, не будет.",
+      "event.disaster_drought_livestock_loss.choice.sell_remaining.label": "Продать оставшийся скот",
+      "event.disaster_drought_livestock_loss.choice.migrate_for_work.label": "Уехать на заработки",
+      "event.disaster_drought_livestock_loss.choice.seek_community_aid.label": "Обратиться за помощью к общине",
+      "event.disaster_drought_livestock_loss.title": "Потеря скота от засухи",
+      "event.disaster_drought_livestock_loss.body": "Без воды и корма часть поголовья гибнет. Семье нужно решить, как компенсировать потерю.",
+      "event.disaster_flood_home_damage.choice.repair_with_savings.label": "Отремонтировать на свои средства",
+      "event.disaster_flood_home_damage.choice.temporary_shelter.label": "Переждать во временном укрытии",
+      "event.disaster_flood_home_damage.choice.abandon_home.label": "Оставить дом окончательно",
+      "event.disaster_flood_home_damage.title": "Повреждение дома наводнением",
+      "event.disaster_flood_home_damage.body": "Паводок заливает дом и часть имущества. Семья решает, что делать с жильём дальше.",
+      "event.disaster_flood_crop_loss.choice.salvage_remaining_crop.label": "Спасать то, что осталось, пока вода не сошла",
+      "event.disaster_flood_crop_loss.choice.wait_for_water_recession.label": "Дождаться, когда вода сойдёт",
+      "event.disaster_flood_crop_loss.title": "Гибель урожая от наводнения",
+      "event.disaster_flood_crop_loss.body": "Поля затоплены перед самым сбором урожая. Потеря ощущается сразу — запасов на год не хватит.",
+      "event.disaster_earthquake_home_collapse.choice.rebuild.label": "Восстановить дом на том же месте",
+      "event.disaster_earthquake_home_collapse.choice.relocate_temporarily.label": "Переехать на время к родственникам",
+      "event.disaster_earthquake_home_collapse.choice.live_in_shelter.label": "Жить в палаточном лагере",
+      "event.disaster_earthquake_home_collapse.title": "Разрушение дома при землетрясении",
+      "event.disaster_earthquake_home_collapse.body": "Землетрясение разрушает дом. Семье нужно немедленно решить, где жить дальше.",
+      "event.disaster_earthquake_aftershock_fear.title": "Страх перед повторными толчками",
+      "event.disaster_earthquake_aftershock_fear.body": "После основного землетрясения ещё долго ощущаются повторные толчки. Напряжение не отпускает всё это время.",
+      "event.disaster_famine_childhood_food_shortage.title": "Нехватка еды в детстве",
+      "event.disaster_famine_childhood_food_shortage.body": "Неурожай оставляет семью с острой нехваткой еды на несколько месяцев. Рацион резко сокращается.",
+      "event.disaster_famine_family_rationing.choice.migrate_for_food_aid.label": "Уехать туда, где раздают помощь",
+      "event.disaster_famine_family_rationing.choice.rely_on_relief_program.label": "Обратиться в программу помощи",
+      "event.disaster_famine_family_rationing.choice.sell_remaining_assets.label": "Продать оставшееся имущество ради еды",
+      "event.disaster_famine_family_rationing.title": "Как семья справляется с нехваткой еды",
+      "event.disaster_famine_family_rationing.body": "Пока запасы не восполнятся, семья ищет способы продержаться. Решение о том, как добыть еду, принимают взрослые.",
+      "event.disaster_flood_displacement_permanent.title": "Дом признан непригодным после наводнения",
+      "event.disaster_flood_displacement_permanent.body": "После очередного наводнения дом признают непригодным для восстановления. Семья покидает его навсегда.",
+      "event.disaster_drought_displacement_permanent.choice.abandon_land.label": "Оставить землю окончательно",
+      "event.disaster_drought_displacement_permanent.choice.hold_on_longer.label": "Попытаться продержаться ещё один сезон",
+      "event.disaster_drought_displacement_permanent.title": "Земля больше не пригодна для жизни",
+      "event.disaster_drought_displacement_permanent.body": "Многолетняя засуха делает землю непригодной для хозяйства. Семье приходится навсегда её оставить.",
+      "event.disaster_quake_rebuilding_aid.choice.accept_aid.label": "Подать заявку на помощь",
+      "event.disaster_quake_rebuilding_aid.choice.decline_aid.label": "Обойтись своими силами",
+      "event.disaster_quake_rebuilding_aid.title": "Помощь на восстановление после землетрясения",
+      "event.disaster_quake_rebuilding_aid.body": "Государственная или благотворительная программа предлагает помощь на восстановление жилья. Выплаты задерживаются и не всегда доходят в полном объёме.",
+      "event.disaster_flood_aid_claim.choice.file_through_official_program.label": "Подать через официальную программу",
+      "event.disaster_flood_aid_claim.choice.use_informal_broker.label": "Обратиться к посреднику за долю",
+      "event.disaster_flood_aid_claim.title": "Заявка на компенсацию после наводнения",
+      "event.disaster_flood_aid_claim.body": "Заявку на компенсацию после наводнения рассматривают месяцами. Выплата, если она приходит, оказывается меньше заявленного ущерба.",
+      "event.disaster_drought_migration_pressure.choice.join_the_exodus.label": "Уехать вместе с соседями",
+      "event.disaster_drought_migration_pressure.choice.stay_and_hope.label": "Остаться и ждать перемен",
+      "event.disaster_drought_migration_pressure.title": "Засуха толкает к переезду",
+      "event.disaster_drought_migration_pressure.body": "Ещё один сухой сезон — и всё больше соседей уже строят планы на переезд. Вопрос становится всё более настойчивым и для твоей семьи.",
+      "event.disaster_flood_waterborne_illness.choice.seek_clinic_treatment.label": "Обратиться в клинику",
+      "event.disaster_flood_waterborne_illness.choice.home_remedies.label": "Лечиться домашними средствами",
+      "event.disaster_flood_waterborne_illness.title": "Болезнь после наводнения",
+      "event.disaster_flood_waterborne_illness.body": "Загрязнённая вода после паводка приводит к вспышке кишечной инфекции в округе. Лечение требует времени и денег.",
+      "event.disaster_quake_injury_recovery.choice.pay_for_proper_care.label": "Оплатить полноценное лечение",
+      "event.disaster_quake_injury_recovery.choice.informal_care.label": "Обойтись неформальной помощью",
+      "event.disaster_quake_injury_recovery.title": "Восстановление после травмы при землетрясении",
+      "event.disaster_quake_injury_recovery.body": "Травма, полученная во время землетрясения, требует долгого лечения. Работа и учёба на это время откладываются.",
+      "event.disaster_drought_water_scarcity_tension.choice.join_water_sharing.label": "Присоединиться к соседскому соглашению о воде",
+      "event.disaster_drought_water_scarcity_tension.choice.dig_own_well.label": "Выкопать собственный колодец",
+      "event.disaster_drought_water_scarcity_tension.title": "Напряжение из-за нехватки воды",
+      "event.disaster_drought_water_scarcity_tension.body": "Доступ к оставшимся источникам воды становится предметом спора между соседями. Очереди к колодцу удлиняются.",
+      "event.disaster_flood_school_disruption.title": "Школа закрыта из-за наводнения",
+      "event.disaster_flood_school_disruption.body": "Школьное здание повреждено наводнением и закрыто на ремонт. Занятия приходится пропускать на несколько недель.",
+      "event.disaster_quake_community_rebuilding.title": "Община восстанавливается вместе",
+      "event.disaster_quake_community_rebuilding.body": "Соседи сообща разбирают завалы и помогают друг другу с временным жильём после землетрясения. Совместный труд немного сглаживает тяжесть потерь.",
+      "event.disaster_drought_herd_sale_distress.title": "Вынужденная продажа скота по низкой цене",
+      "event.disaster_drought_herd_sale_distress.body": "Чтобы получить хоть какие-то деньги, приходится продавать скот раньше срока и по заниженной цене — все вокруг делают то же самое.",
+      "event.disaster_flood_repeated_exposure.choice.invest_in_flood_proofing.label": "Вложиться в защиту от воды",
+      "event.disaster_flood_repeated_exposure.choice.keep_absorbing_losses.label": "Продолжать терпеть убытки год за годом",
+      "event.disaster_flood_repeated_exposure.title": "Повторяющиеся наводнения",
+      "event.disaster_flood_repeated_exposure.body": "Сезонные паводки повторяются из года в год, не оставляя времени полностью восстановиться между ними. Запас прочности хозяйства постепенно истощается.",
+      "event.disaster_quake_building_survives.title": "Дом выдержал землетрясение",
+      "event.disaster_quake_building_survives.body": "Построенный с соблюдением норм дом переносит землетрясение почти без повреждений, в отличие от многих соседних строений.",
+      "event.disaster_drought_relief_program.title": "Программа продовольственной помощи",
+      "event.disaster_drought_relief_program.body": "Программа помощи при засухе доходит до региона и обеспечивает семью продовольствием на несколько месяцев.",
+      "event.disaster_flood_rescue.title": "Спасение во время наводнения",
+      "event.disaster_flood_rescue.body": "Поднявшаяся вода отрезает путь к возвышенности, и соседи или спасатели вывозят семью на лодках. Имущество остаётся в доме.",
+      "event.disaster_quake_delayed_economic_toll.choice.diversify_income.label": "Искать другой источник дохода",
+      "event.disaster_quake_delayed_economic_toll.choice.wait_for_recovery.label": "Ждать восстановления прежней экономики",
+      "event.disaster_quake_delayed_economic_toll.title": "Долгие экономические последствия землетрясения",
+      "event.disaster_quake_delayed_economic_toll.body": "Годы спустя восстановление региона после землетрясения всё ещё не завершено. Цены и занятость так и не вернулись к прежнему уровню.",
+      "event.disaster_drought_child_labor_pressure.choice.comply_with_family.label": "Помогать по хозяйству",
+      "event.disaster_drought_child_labor_pressure.choice.resist_and_attend_school.label": "Настоять на посещении школы",
+      "event.disaster_drought_child_labor_pressure.title": "Нехватка средств вынуждает работать",
+      "event.disaster_drought_child_labor_pressure.body": "Засуха вынуждает семью просить помощи по хозяйству вместо посещения школы несколько дней в неделю.",
+      "event.disaster_flood_temporary_shelter.choice.stay_in_public_shelter.label": "Остаться в общественном укрытии",
+      "event.disaster_flood_temporary_shelter.choice.rent_temporary_room.label": "Снять временную комнату, если есть средства",
+      "event.disaster_flood_temporary_shelter.title": "Временное укрытие после наводнения",
+      "event.disaster_flood_temporary_shelter.body": "Пока вода не отступит, семья живёт в школе или другом общественном здании, приспособленном под временное жильё.",
+      "event.disaster_quake_aid_corruption.choice.accept_reduced_aid.label": "Принять то, что дают",
+      "event.disaster_quake_aid_corruption.choice.report_irregularity.label": "Заявить о нарушениях",
+      "event.disaster_quake_aid_corruption.choice.seek_alternative_aid.label": "Искать помощь по другим каналам",
+      "event.disaster_quake_aid_corruption.title": "Раздача помощи с перекосами",
+      "event.disaster_quake_aid_corruption.body": "Гуманитарную помощь после землетрясения распределяют неравномерно — часть уходит к тем, у кого есть связи с распорядителями.",
+      "event.disaster_drought_food_price_spike.choice.buy_in_bulk_early.label": "Закупить продукты заранее впрок",
+      "event.disaster_drought_food_price_spike.choice.ration_spending_weekly.label": "Экономить и покупать понедельно",
+      "event.disaster_drought_food_price_spike.title": "Скачок цен на продовольствие",
+      "event.disaster_drought_food_price_spike.body": "Засуха в регионе поднимает цены на основные продукты. Доля бюджета, уходящая на еду, резко увеличивается.",
+      "event.disaster_famine_severe_adult.title": "Острая нехватка продовольствия",
+      "event.disaster_famine_severe_adult.body": "Продовольственный кризис в регионе затягивается на месяцы. Семья вынуждена жить на урезанном рационе без ясной даты окончания.",
+      "event.disaster_flood_livestock_drowning.choice.restock_with_loan.label": "Восстановить поголовье в долг",
+      "event.disaster_flood_livestock_drowning.choice.scale_down_herd.label": "Сократить хозяйство окончательно",
+      "event.disaster_flood_livestock_drowning.title": "Гибель скота при наводнении",
+      "event.disaster_flood_livestock_drowning.body": "Поднявшаяся вода застаёт скот на пастбище. Значительная часть поголовья не успевает спастись.",
+      "event.disaster_drought_borrowing_for_seed.choice.formal_loan.label": "Взять официальный кредит",
+      "event.disaster_drought_borrowing_for_seed.choice.informal_moneylender.label": "Обратиться к частному заимодавцу",
+      "event.disaster_drought_borrowing_for_seed.choice.cooperative_support.label": "Обратиться в кооператив",
+      "event.disaster_drought_borrowing_for_seed.title": "Заём на семена после засухи",
+      "event.disaster_drought_borrowing_for_seed.body": "Чтобы засеять поля в следующем сезоне, нужны деньги на семена, которых после потерянного урожая не осталось.",
+      "event.disaster_quake_psychological_aftermath.title": "Последствия пережитого землетрясения",
+      "event.disaster_quake_psychological_aftermath.body": "Спустя месяцы после землетрясения тревога за близких и за дом никуда не уходит полностью. Соседи, пережившие то же самое, становятся опорой друг для друга."
+    },
+    "en": {
+      "event.disaster_drought_crop_failure.choice.sell_reserves_early.label": "Sell reserves early",
+      "event.disaster_drought_crop_failure.choice.wait_for_rain.label": "Wait for the rains",
+      "event.disaster_drought_crop_failure.choice.borrow_for_irrigation.label": "Borrow money for irrigation",
+      "event.disaster_drought_crop_failure.title": "Crop failure from drought",
+      "event.disaster_drought_crop_failure.body": "Drought wipes out most of the season's harvest. The income the family counted on will not materialize.",
+      "event.disaster_drought_livestock_loss.choice.sell_remaining.label": "Sell off the remaining livestock",
+      "event.disaster_drought_livestock_loss.choice.migrate_for_work.label": "Leave to find work elsewhere",
+      "event.disaster_drought_livestock_loss.choice.seek_community_aid.label": "Seek help from the community",
+      "event.disaster_drought_livestock_loss.title": "Livestock losses from drought",
+      "event.disaster_drought_livestock_loss.body": "Without water or fodder, part of the herd dies off. The family has to decide how to make up the loss.",
+      "event.disaster_flood_home_damage.choice.repair_with_savings.label": "Repair it using savings",
+      "event.disaster_flood_home_damage.choice.temporary_shelter.label": "Wait it out in temporary shelter",
+      "event.disaster_flood_home_damage.choice.abandon_home.label": "Abandon the home for good",
+      "event.disaster_flood_home_damage.title": "Flood damage to the home",
+      "event.disaster_flood_home_damage.body": "Floodwater fills the house and ruins part of the belongings. The family decides what to do about the home.",
+      "event.disaster_flood_crop_loss.choice.salvage_remaining_crop.label": "Salvage what remains before the water fully recedes",
+      "event.disaster_flood_crop_loss.choice.wait_for_water_recession.label": "Wait for the water to recede",
+      "event.disaster_flood_crop_loss.title": "Crops destroyed by flooding",
+      "event.disaster_flood_crop_loss.body": "The fields are flooded just before harvest. The loss is immediate — this year's stores will not be enough.",
+      "event.disaster_earthquake_home_collapse.choice.rebuild.label": "Rebuild on the same site",
+      "event.disaster_earthquake_home_collapse.choice.relocate_temporarily.label": "Move in with relatives for a while",
+      "event.disaster_earthquake_home_collapse.choice.live_in_shelter.label": "Live in a tent camp",
+      "event.disaster_earthquake_home_collapse.title": "The home destroyed by an earthquake",
+      "event.disaster_earthquake_home_collapse.body": "An earthquake destroys the home. The family must decide at once where to live next.",
+      "event.disaster_earthquake_aftershock_fear.title": "Fear of aftershocks",
+      "event.disaster_earthquake_aftershock_fear.body": "Aftershocks continue to be felt long after the main earthquake. The tension does not let up for weeks.",
+      "event.disaster_famine_childhood_food_shortage.title": "A childhood food shortage",
+      "event.disaster_famine_childhood_food_shortage.body": "A failed harvest leaves the family with a severe food shortage for months. Rations are cut sharply.",
+      "event.disaster_famine_family_rationing.choice.migrate_for_food_aid.label": "Travel to where aid is being distributed",
+      "event.disaster_famine_family_rationing.choice.rely_on_relief_program.label": "Turn to a relief program",
+      "event.disaster_famine_family_rationing.choice.sell_remaining_assets.label": "Sell remaining assets for food",
+      "event.disaster_famine_family_rationing.title": "How the family copes with the shortage",
+      "event.disaster_famine_family_rationing.body": "Until supplies are replenished, the family looks for ways to get by. The adults decide how to secure food.",
+      "event.disaster_flood_displacement_permanent.title": "The home ruled unfit after the flood",
+      "event.disaster_flood_displacement_permanent.body": "After another flood, the home is judged beyond repair. The family leaves it for good.",
+      "event.disaster_drought_displacement_permanent.choice.abandon_land.label": "Abandon the land for good",
+      "event.disaster_drought_displacement_permanent.choice.hold_on_longer.label": "Try to hold on for another season",
+      "event.disaster_drought_displacement_permanent.title": "The land is no longer livable",
+      "event.disaster_drought_displacement_permanent.body": "Years of drought leave the land unfit to farm. The family has no choice but to leave it for good.",
+      "event.disaster_quake_rebuilding_aid.choice.accept_aid.label": "Apply for the assistance",
+      "event.disaster_quake_rebuilding_aid.choice.decline_aid.label": "Decline and manage on your own",
+      "event.disaster_quake_rebuilding_aid.title": "Rebuilding aid after the earthquake",
+      "event.disaster_quake_rebuilding_aid.body": "A government or charity program offers rebuilding assistance. Payments are slow and do not always arrive in full.",
+      "event.disaster_flood_aid_claim.choice.file_through_official_program.label": "File through the official program",
+      "event.disaster_flood_aid_claim.choice.use_informal_broker.label": "Use an informal broker for a cut",
+      "event.disaster_flood_aid_claim.title": "Filing a disaster relief claim",
+      "event.disaster_flood_aid_claim.body": "The claim for flood compensation takes months to process. The payout, when it comes, falls short of the claimed damage.",
+      "event.disaster_drought_migration_pressure.choice.join_the_exodus.label": "Leave along with the neighbors",
+      "event.disaster_drought_migration_pressure.choice.stay_and_hope.label": "Stay and hope conditions improve",
+      "event.disaster_drought_migration_pressure.title": "Drought pushes toward leaving",
+      "event.disaster_drought_migration_pressure.body": "Another dry season, and more neighbors are already making plans to leave. The question grows harder to put off for your own family too.",
+      "event.disaster_flood_waterborne_illness.choice.seek_clinic_treatment.label": "Seek treatment at a clinic",
+      "event.disaster_flood_waterborne_illness.choice.home_remedies.label": "Rely on home remedies",
+      "event.disaster_flood_waterborne_illness.title": "Illness after the flood",
+      "event.disaster_flood_waterborne_illness.body": "Contaminated water after the flood causes an outbreak of intestinal illness in the area. Treatment costs time and money.",
+      "event.disaster_quake_injury_recovery.choice.pay_for_proper_care.label": "Pay for proper medical care",
+      "event.disaster_quake_injury_recovery.choice.informal_care.label": "Rely on informal care",
+      "event.disaster_quake_injury_recovery.title": "Recovering from a quake-related injury",
+      "event.disaster_quake_injury_recovery.body": "An injury sustained during the earthquake needs a long recovery. Work and school are put on hold for the duration.",
+      "event.disaster_drought_water_scarcity_tension.choice.join_water_sharing.label": "Join a neighborhood water-sharing agreement",
+      "event.disaster_drought_water_scarcity_tension.choice.dig_own_well.label": "Dig a well of your own",
+      "event.disaster_drought_water_scarcity_tension.title": "Tension over water scarcity",
+      "event.disaster_drought_water_scarcity_tension.body": "Access to the remaining water sources becomes a point of friction among neighbors. The line at the well grows longer.",
+      "event.disaster_flood_school_disruption.title": "School closed by flooding",
+      "event.disaster_flood_school_disruption.body": "The school building is damaged by flooding and closed for repairs. Classes are missed for several weeks.",
+      "event.disaster_quake_community_rebuilding.title": "The community rebuilds together",
+      "event.disaster_quake_community_rebuilding.body": "Neighbors clear rubble together and help each other with temporary shelter after the earthquake. The shared effort eases some of the weight of the loss.",
+      "event.disaster_drought_herd_sale_distress.title": "Forced sale of livestock at a loss",
+      "event.disaster_drought_herd_sale_distress.body": "To get at least some cash, livestock has to be sold off early and at a depressed price — everyone nearby is doing the same.",
+      "event.disaster_flood_repeated_exposure.choice.invest_in_flood_proofing.label": "Invest in flood-proofing the home",
+      "event.disaster_flood_repeated_exposure.choice.keep_absorbing_losses.label": "Keep absorbing the losses year after year",
+      "event.disaster_flood_repeated_exposure.title": "Repeated flooding",
+      "event.disaster_flood_repeated_exposure.body": "Seasonal floods return year after year, leaving no time to fully recover between them. The household's financial cushion wears thinner each time.",
+      "event.disaster_quake_building_survives.title": "The home withstands the earthquake",
+      "event.disaster_quake_building_survives.body": "Built to code, the home comes through the earthquake with barely any damage, unlike many of the neighboring structures.",
+      "event.disaster_drought_relief_program.title": "A food relief program",
+      "event.disaster_drought_relief_program.body": "A drought relief program reaches the region and supplies the family with food for several months.",
+      "event.disaster_flood_rescue.title": "Rescue during the flood",
+      "event.disaster_flood_rescue.body": "Rising water cuts off the way to higher ground, and neighbors or rescue workers ferry the family out by boat. The belongings stay behind.",
+      "event.disaster_quake_delayed_economic_toll.choice.diversify_income.label": "Look for another source of income",
+      "event.disaster_quake_delayed_economic_toll.choice.wait_for_recovery.label": "Wait for the old economy to recover",
+      "event.disaster_quake_delayed_economic_toll.title": "The long economic toll of the earthquake",
+      "event.disaster_quake_delayed_economic_toll.body": "Years later, the region's recovery from the earthquake is still incomplete. Prices and employment never quite returned to their earlier level.",
+      "event.disaster_drought_child_labor_pressure.choice.comply_with_family.label": "Help with the household work",
+      "event.disaster_drought_child_labor_pressure.choice.resist_and_attend_school.label": "Insist on attending school",
+      "event.disaster_drought_child_labor_pressure.title": "Hardship pushes toward child labor",
+      "event.disaster_drought_child_labor_pressure.body": "Drought pushes the family to ask for help with chores instead of school attendance several days a week.",
+      "event.disaster_flood_temporary_shelter.choice.stay_in_public_shelter.label": "Stay in the public shelter",
+      "event.disaster_flood_temporary_shelter.choice.rent_temporary_room.label": "Rent a temporary room, if funds allow",
+      "event.disaster_flood_temporary_shelter.title": "Temporary shelter after the flood",
+      "event.disaster_flood_temporary_shelter.body": "Until the water recedes, the family lives in a school or other public building converted into temporary housing.",
+      "event.disaster_quake_aid_corruption.choice.accept_reduced_aid.label": "Accept the reduced share",
+      "event.disaster_quake_aid_corruption.choice.report_irregularity.label": "Report the irregularity",
+      "event.disaster_quake_aid_corruption.choice.seek_alternative_aid.label": "Seek aid through another channel",
+      "event.disaster_quake_aid_corruption.title": "Aid distribution marred by favoritism",
+      "event.disaster_quake_aid_corruption.body": "Humanitarian aid after the earthquake is handed out unevenly — much of it goes to those with ties to the people distributing it.",
+      "event.disaster_drought_food_price_spike.choice.buy_in_bulk_early.label": "Buy in bulk early",
+      "event.disaster_drought_food_price_spike.choice.ration_spending_weekly.label": "Ration spending week to week",
+      "event.disaster_drought_food_price_spike.title": "A spike in food prices",
+      "event.disaster_drought_food_price_spike.body": "Regional drought pushes up the price of staple foods. The share of the budget spent on food jumps sharply.",
+      "event.disaster_famine_severe_adult.title": "Severe food insecurity",
+      "event.disaster_famine_severe_adult.body": "The regional food crisis drags on for months. The family is forced to live on a reduced ration with no clear end in sight.",
+      "event.disaster_flood_livestock_drowning.choice.restock_with_loan.label": "Restock the herd on credit",
+      "event.disaster_flood_livestock_drowning.choice.scale_down_herd.label": "Scale the herd down for good",
+      "event.disaster_flood_livestock_drowning.title": "Livestock lost to the flood",
+      "event.disaster_flood_livestock_drowning.body": "Rising water catches the livestock out on pasture. A significant share of the herd does not get away in time.",
+      "event.disaster_drought_borrowing_for_seed.choice.formal_loan.label": "Take a formal bank loan",
+      "event.disaster_drought_borrowing_for_seed.choice.informal_moneylender.label": "Borrow from an informal moneylender",
+      "event.disaster_drought_borrowing_for_seed.choice.cooperative_support.label": "Turn to a farmers' cooperative",
+      "event.disaster_drought_borrowing_for_seed.title": "Borrowing for seed after the drought",
+      "event.disaster_drought_borrowing_for_seed.body": "Planting next season's fields takes money for seed, and the lost harvest left none in reserve.",
+      "event.disaster_quake_psychological_aftermath.title": "The lingering toll of the earthquake",
+      "event.disaster_quake_psychological_aftermath.body": "Months after the earthquake, the anxiety about family and home has not fully lifted. Neighbors who lived through the same thing become a support to each other."
+    }
+  }
+}

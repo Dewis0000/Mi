@@ -1,0 +1,854 @@
+{
+  "events": [
+    {
+      "id": "fortune_strangers_kindness",
+      "category": "fortune",
+      "titleKey": "event.fortune_strangers_kindness.title",
+      "bodyKey": "event.fortune_strangers_kindness.body",
+      "severity": "minor",
+      "ageGate": [
+        0,
+        80
+      ],
+      "baseWeight": 0.6,
+      "effects": {
+        "bonds": 4,
+        "wealth": 2
+      }
+    },
+    {
+      "id": "fortune_surprising_recovery",
+      "category": "fortune",
+      "titleKey": "event.fortune_surprising_recovery.title",
+      "bodyKey": "event.fortune_surprising_recovery.body",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        90
+      ],
+      "baseWeight": 0.5,
+      "effects": {
+        "health": 10
+      }
+    },
+    {
+      "id": "fortune_debt_forgiven_unexpectedly",
+      "category": "fortune",
+      "titleKey": "event.fortune_debt_forgiven_unexpectedly.title",
+      "bodyKey": "event.fortune_debt_forgiven_unexpectedly.body",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        90
+      ],
+      "baseWeight": 0.4,
+      "effects": {
+        "wealth": 8,
+        "bonds": 3
+      }
+    },
+    {
+      "id": "fortune_unexpected_school_sponsor",
+      "category": "fortune",
+      "titleKey": "event.fortune_unexpected_school_sponsor.title",
+      "bodyKey": "event.fortune_unexpected_school_sponsor.body",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        18
+      ],
+      "baseWeight": 0.5,
+      "choices": [
+        {
+          "id": "accept",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 7,
+            "wealth": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "decline_pride",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": 1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "fortune_lucky_harvest",
+      "category": "fortune",
+      "titleKey": "event.fortune_lucky_harvest.title",
+      "bodyKey": "event.fortune_lucky_harvest.body",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        60
+      ],
+      "baseWeight": 0.7,
+      "weightBy": {
+        "rural": 2
+      },
+      "effects": {
+        "wealth": 7
+      }
+    },
+    {
+      "id": "fortune_distant_relative_inheritance",
+      "category": "fortune",
+      "titleKey": "event.fortune_distant_relative_inheritance.title",
+      "bodyKey": "event.fortune_distant_relative_inheritance.body",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        60
+      ],
+      "baseWeight": 0.4,
+      "effects": {
+        "wealth": 10
+      }
+    },
+    {
+      "id": "fortune_small_prize_won",
+      "category": "fortune",
+      "titleKey": "event.fortune_small_prize_won.title",
+      "bodyKey": "event.fortune_small_prize_won.body",
+      "severity": "minor",
+      "ageGate": [
+        15,
+        70
+      ],
+      "baseWeight": 0.6,
+      "effects": {
+        "wealth": 5,
+        "standing": 1
+      }
+    },
+    {
+      "id": "fortune_mentor_opens_doors",
+      "category": "fortune",
+      "titleKey": "event.fortune_mentor_opens_doors.title",
+      "bodyKey": "event.fortune_mentor_opens_doors.body",
+      "severity": "notable",
+      "ageGate": [
+        16,
+        30
+      ],
+      "baseWeight": 0.6,
+      "choices": [
+        {
+          "id": "accept_guidance",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": 4,
+            "education": 3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "go_own_way",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "fortune_lottery_lucky",
+      "category": "fortune",
+      "titleKey": "event.fortune_lottery_lucky.title",
+      "bodyKey": "event.fortune_lottery_lucky.body",
+      "severity": "major",
+      "ageGate": [
+        18,
+        90
+      ],
+      "baseWeight": 0.3,
+      "choices": [
+        {
+          "id": "play",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": 20,
+            "standing": 2
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "lottery_lucky"
+          ]
+        },
+        {
+          "id": "skip",
+          "riskLabel": "надёжно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "fortune_overseas_worker_return",
+      "category": "fortune",
+      "titleKey": "event.fortune_overseas_worker_return.title",
+      "bodyKey": "event.fortune_overseas_worker_return.body",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        60
+      ],
+      "baseWeight": 0.7,
+      "requires": {
+        "traits": [
+          "overseas_worker"
+        ]
+      },
+      "effects": {
+        "wealth": 10,
+        "bonds": 4
+      }
+    },
+    {
+      "id": "fortune_migrant_city_opportunity",
+      "category": "fortune",
+      "titleKey": "event.fortune_migrant_city_opportunity.title",
+      "bodyKey": "event.fortune_migrant_city_opportunity.body",
+      "severity": "notable",
+      "ageGate": [
+        17,
+        45
+      ],
+      "baseWeight": 0.8,
+      "requires": {
+        "traits": [
+          "migrant_city"
+        ]
+      },
+      "choices": [
+        {
+          "id": "seize_it",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 8,
+            "standing": 3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "play_safe",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "fortune_business_owner_success",
+      "category": "fortune",
+      "titleKey": "event.fortune_business_owner_success.title",
+      "bodyKey": "event.fortune_business_owner_success.body",
+      "severity": "notable",
+      "ageGate": [
+        28,
+        60
+      ],
+      "baseWeight": 0.7,
+      "requires": {
+        "traits": [
+          "business_owner"
+        ]
+      },
+      "choices": [
+        {
+          "id": "expand",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 12,
+            "standing": 4
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "consolidate",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 8
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "fortune_returned_migrant_savings",
+      "category": "fortune",
+      "titleKey": "event.fortune_returned_migrant_savings.title",
+      "bodyKey": "event.fortune_returned_migrant_savings.body",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        60
+      ],
+      "baseWeight": 0.7,
+      "requires": {
+        "traits": [
+          "returned_migrant"
+        ]
+      },
+      "effects": {
+        "wealth": 12,
+        "standing": 2
+      }
+    },
+    {
+      "id": "fortune_investment_paid_off",
+      "category": "fortune",
+      "titleKey": "event.fortune_investment_paid_off.title",
+      "bodyKey": "event.fortune_investment_paid_off.body",
+      "severity": "notable",
+      "ageGate": [
+        30,
+        60
+      ],
+      "baseWeight": 0.6,
+      "choices": [
+        {
+          "id": "reinvest",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 10
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "cash_out",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 6
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "fortune_won_legal_dispute",
+      "category": "fortune",
+      "titleKey": "event.fortune_won_legal_dispute.title",
+      "bodyKey": "event.fortune_won_legal_dispute.body",
+      "severity": "minor",
+      "ageGate": [
+        25,
+        65
+      ],
+      "baseWeight": 0.5,
+      "effects": {
+        "wealth": 5,
+        "standing": 2
+      }
+    },
+    {
+      "id": "fortune_community_crowdfunding",
+      "category": "fortune",
+      "titleKey": "event.fortune_community_crowdfunding.title",
+      "bodyKey": "event.fortune_community_crowdfunding.body",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        70
+      ],
+      "baseWeight": 0.6,
+      "effects": {
+        "wealth": 6,
+        "bonds": 5
+      }
+    },
+    {
+      "id": "fortune_unexpected_promotion",
+      "category": "fortune",
+      "titleKey": "event.fortune_unexpected_promotion.title",
+      "bodyKey": "event.fortune_unexpected_promotion.body",
+      "severity": "minor",
+      "ageGate": [
+        25,
+        55
+      ],
+      "baseWeight": 0.6,
+      "effects": {
+        "wealth": 5,
+        "standing": 3
+      }
+    },
+    {
+      "id": "fortune_land_value_increase",
+      "category": "fortune",
+      "titleKey": "event.fortune_land_value_increase.title",
+      "bodyKey": "event.fortune_land_value_increase.body",
+      "severity": "minor",
+      "ageGate": [
+        40,
+        75
+      ],
+      "baseWeight": 0.5,
+      "effects": {
+        "wealth": 7
+      }
+    },
+    {
+      "id": "fortune_childrens_success_benefit",
+      "category": "fortune",
+      "titleKey": "event.fortune_childrens_success_benefit.title",
+      "bodyKey": "event.fortune_childrens_success_benefit.body",
+      "severity": "minor",
+      "ageGate": [
+        50,
+        85
+      ],
+      "baseWeight": 0.6,
+      "effects": {
+        "wealth": 6,
+        "bonds": 5
+      }
+    },
+    {
+      "id": "fortune_reconnect_with_lost_family",
+      "category": "fortune",
+      "titleKey": "event.fortune_reconnect_with_lost_family.title",
+      "bodyKey": "event.fortune_reconnect_with_lost_family.body",
+      "severity": "notable",
+      "ageGate": [
+        40,
+        90
+      ],
+      "baseWeight": 0.5,
+      "effects": {
+        "bonds": 8
+      }
+    },
+    {
+      "id": "fortune_community_honors_elder",
+      "category": "fortune",
+      "titleKey": "event.fortune_community_honors_elder.title",
+      "bodyKey": "event.fortune_community_honors_elder.body",
+      "severity": "minor",
+      "ageGate": [
+        65,
+        95
+      ],
+      "baseWeight": 0.6,
+      "effects": {
+        "standing": 5,
+        "bonds": 3
+      }
+    },
+    {
+      "id": "fortune_estate_resolved_favorably",
+      "category": "fortune",
+      "titleKey": "event.fortune_estate_resolved_favorably.title",
+      "bodyKey": "event.fortune_estate_resolved_favorably.body",
+      "severity": "minor",
+      "ageGate": [
+        55,
+        90
+      ],
+      "baseWeight": 0.5,
+      "effects": {
+        "wealth": 6,
+        "standing": 2
+      }
+    },
+    {
+      "id": "fortune_good_samaritan_during_illness",
+      "category": "fortune",
+      "titleKey": "event.fortune_good_samaritan_during_illness.title",
+      "bodyKey": "event.fortune_good_samaritan_during_illness.body",
+      "severity": "minor",
+      "ageGate": [
+        0,
+        90
+      ],
+      "baseWeight": 0.5,
+      "effects": {
+        "health": 4,
+        "bonds": 3
+      }
+    },
+    {
+      "id": "fortune_rare_talent_recognized",
+      "category": "fortune",
+      "titleKey": "event.fortune_rare_talent_recognized.title",
+      "bodyKey": "event.fortune_rare_talent_recognized.body",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        25
+      ],
+      "baseWeight": 0.5,
+      "choices": [
+        {
+          "id": "pursue",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": 5,
+            "education": 3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "stay_practical",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "fortune_small_business_grant",
+      "category": "fortune",
+      "titleKey": "event.fortune_small_business_grant.title",
+      "bodyKey": "event.fortune_small_business_grant.body",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        45
+      ],
+      "baseWeight": 0.5,
+      "choices": [
+        {
+          "id": "accept_grant",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 8
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "decline_terms",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "fortune_weather_favored_harvest",
+      "category": "fortune",
+      "titleKey": "event.fortune_weather_favored_harvest.title",
+      "bodyKey": "event.fortune_weather_favored_harvest.body",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        65
+      ],
+      "baseWeight": 0.6,
+      "weightBy": {
+        "rural": 1.8
+      },
+      "effects": {
+        "wealth": 5
+      }
+    },
+    {
+      "id": "fortune_old_debt_repaid_to_them",
+      "category": "fortune",
+      "titleKey": "event.fortune_old_debt_repaid_to_them.title",
+      "bodyKey": "event.fortune_old_debt_repaid_to_them.body",
+      "severity": "minor",
+      "ageGate": [
+        30,
+        70
+      ],
+      "baseWeight": 0.5,
+      "effects": {
+        "wealth": 7
+      }
+    },
+    {
+      "id": "fortune_neighbor_support_network",
+      "category": "fortune",
+      "titleKey": "event.fortune_neighbor_support_network.title",
+      "bodyKey": "event.fortune_neighbor_support_network.body",
+      "severity": "minor",
+      "ageGate": [
+        0,
+        90
+      ],
+      "baseWeight": 0.7,
+      "effects": {
+        "bonds": 5
+      }
+    },
+    {
+      "id": "fortune_unexpected_gift_from_employer",
+      "category": "fortune",
+      "titleKey": "event.fortune_unexpected_gift_from_employer.title",
+      "bodyKey": "event.fortune_unexpected_gift_from_employer.body",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        55
+      ],
+      "baseWeight": 0.6,
+      "effects": {
+        "wealth": 4,
+        "bonds": 2
+      }
+    },
+    {
+      "id": "fortune_lucky_escape_from_danger",
+      "category": "fortune",
+      "titleKey": "event.fortune_lucky_escape_from_danger.title",
+      "bodyKey": "event.fortune_lucky_escape_from_danger.body",
+      "severity": "notable",
+      "ageGate": [
+        5,
+        80
+      ],
+      "baseWeight": 0.5,
+      "mortalityDelta": 0.9,
+      "effects": {
+        "bonds": 2
+      }
+    },
+    {
+      "id": "fortune_won_community_raffle",
+      "category": "fortune",
+      "titleKey": "event.fortune_won_community_raffle.title",
+      "bodyKey": "event.fortune_won_community_raffle.body",
+      "severity": "minor",
+      "ageGate": [
+        15,
+        80
+      ],
+      "baseWeight": 0.6,
+      "effects": {
+        "wealth": 4
+      }
+    },
+    {
+      "id": "fortune_surprise_visit_brings_joy",
+      "category": "fortune",
+      "titleKey": "event.fortune_surprise_visit_brings_joy.title",
+      "bodyKey": "event.fortune_surprise_visit_brings_joy.body",
+      "severity": "minor",
+      "ageGate": [
+        60,
+        95
+      ],
+      "baseWeight": 0.7,
+      "effects": {
+        "bonds": 6
+      }
+    },
+    {
+      "id": "fortune_old_friend_helps_find_job",
+      "category": "fortune",
+      "titleKey": "event.fortune_old_friend_helps_find_job.title",
+      "bodyKey": "event.fortune_old_friend_helps_find_job.body",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        40
+      ],
+      "baseWeight": 0.6,
+      "choices": [
+        {
+          "id": "accept_referral",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 5,
+            "bonds": 3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "find_own_way",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    }
+  ],
+  "i18n": {
+    "ru": {
+      "event.fortune_strangers_kindness.title": "Доброта незнакомого человека",
+      "event.fortune_strangers_kindness.body": "Незнакомый человек помогает в трудную минуту, не ожидая ничего в ответ.",
+      "event.fortune_surprising_recovery.title": "Неожиданное выздоровление",
+      "event.fortune_surprising_recovery.body": "Болезнь, которая должна была тянуться месяцами, отступает быстрее, чем ожидали врачи.",
+      "event.fortune_debt_forgiven_unexpectedly.title": "Долг неожиданно простили",
+      "event.fortune_debt_forgiven_unexpectedly.body": "Давний заимодавец решает простить часть долга, сославшись на многолетнюю честность в выплатах.",
+      "event.fortune_unexpected_school_sponsor.title": "Спонсор для школьных расходов",
+      "event.fortune_unexpected_school_sponsor.body": "Дальний знакомый семьи предлагает оплатить учебники и форму на год, прослышав об успехах в учёбе.",
+      "event.fortune_unexpected_school_sponsor.choice.accept.label": "Принять помощь",
+      "event.fortune_unexpected_school_sponsor.choice.decline_pride.label": "Отказаться из гордости",
+      "event.fortune_lucky_harvest.title": "Удачный урожай",
+      "event.fortune_lucky_harvest.body": "Погода в этом году складывается на редкость удачно, и урожай выходит заметно выше обычного.",
+      "event.fortune_distant_relative_inheritance.title": "Наследство от дальнего родственника",
+      "event.fortune_distant_relative_inheritance.body": "Умирает дальний родственник, о котором почти не вспоминали, и небольшая часть его имущества переходит сюда.",
+      "event.fortune_small_prize_won.title": "Небольшой выигрыш",
+      "event.fortune_small_prize_won.body": "Участие в местном конкурсе или розыгрыше неожиданно приносит небольшой денежный приз.",
+      "event.fortune_mentor_opens_doors.title": "Наставник замечает способности",
+      "event.fortune_mentor_opens_doors.body": "Опытный человек в деле замечает способности и предлагает ввести в круг нужных знакомств.",
+      "event.fortune_mentor_opens_doors.choice.accept_guidance.label": "Принять наставничество",
+      "event.fortune_mentor_opens_doors.choice.go_own_way.label": "Пойти своим путём",
+      "event.fortune_lottery_lucky.title": "Крупный выигрыш в лотерею",
+      "event.fortune_lottery_lucky.body": "Купленный по случаю лотерейный билет внезапно приносит крупную сумму денег.",
+      "event.fortune_lottery_lucky.choice.play.label": "Забрать выигрыш",
+      "event.fortune_lottery_lucky.choice.skip.label": "Билет оказался пустым",
+      "event.fortune_overseas_worker_return.title": "Возвращение с заработков за границей",
+      "event.fortune_overseas_worker_return.body": "После нескольких лет работы за границей удаётся вернуться домой с накопленными сбережениями.",
+      "event.fortune_migrant_city_opportunity.title": "Неожиданная возможность в городе",
+      "event.fortune_migrant_city_opportunity.body": "Переезд в город открывает случайную возможность — вакансию или знакомство, — о которой дома и не мечталось.",
+      "event.fortune_migrant_city_opportunity.choice.seize_it.label": "Воспользоваться возможностью",
+      "event.fortune_migrant_city_opportunity.choice.play_safe.label": "Действовать осторожно",
+      "event.fortune_business_owner_success.title": "Дело превосходит ожидания",
+      "event.fortune_business_owner_success.body": "Собственное дело внезапно идёт лучше, чем ожидалось, и появляется возможность расширяться.",
+      "event.fortune_business_owner_success.choice.expand.label": "Расширить дело",
+      "event.fortune_business_owner_success.choice.consolidate.label": "Закрепить успех без риска",
+      "event.fortune_returned_migrant_savings.title": "Привезённые сбережения идут на дом",
+      "event.fortune_returned_migrant_savings.body": "Деньги, скопленные во время работы вдали от дома, уходят на строительство или ремонт собственного жилья.",
+      "event.fortune_investment_paid_off.title": "Вложение неожиданно окупилось",
+      "event.fortune_investment_paid_off.body": "Небольшое вложение, сделанное несколько лет назад, внезапно приносит хорошую прибыль.",
+      "event.fortune_investment_paid_off.choice.reinvest.label": "Вложить прибыль дальше",
+      "event.fortune_investment_paid_off.choice.cash_out.label": "Забрать прибыль",
+      "event.fortune_won_legal_dispute.title": "Выигранный судебный спор",
+      "event.fortune_won_legal_dispute.body": "Затяжной спор о границе участка или о долге наконец решается в их пользу.",
+      "event.fortune_community_crowdfunding.title": "Община собирает помощь",
+      "event.fortune_community_crowdfunding.body": "Соседи вскладчину собирают деньги, чтобы помочь пережить особенно трудный месяц.",
+      "event.fortune_unexpected_promotion.title": "Неожиданное повышение",
+      "event.fortune_unexpected_promotion.body": "Руководитель, которого вовсе не ждали заметить, повышает в должности раньше положенного срока.",
+      "event.fortune_land_value_increase.title": "Земля в цене",
+      "event.fortune_land_value_increase.body": "Строительство дороги рядом с участком неожиданно поднимает цену земли в несколько раз.",
+      "event.fortune_childrens_success_benefit.title": "Успех детей облегчает старость",
+      "event.fortune_childrens_success_benefit.body": "Повзрослевшие дети начинают регулярно помогать деньгами, устроившись на хорошую работу.",
+      "event.fortune_reconnect_with_lost_family.title": "Находится давно потерянный родственник",
+      "event.fortune_reconnect_with_lost_family.body": "После десятилетий без связи находится родственник, которого считали давно потерянным.",
+      "event.fortune_community_honors_elder.title": "Община отмечает заслуги",
+      "event.fortune_community_honors_elder.body": "Соседи устраивают небольшое чествование за годы, отданные общим делам.",
+      "event.fortune_estate_resolved_favorably.title": "Дело о наследстве решается мирно",
+      "event.fortune_estate_resolved_favorably.body": "Давний спор о наследстве наконец разрешается без вражды и к общему удовлетворению.",
+      "event.fortune_good_samaritan_during_illness.title": "Помощь во время болезни",
+      "event.fortune_good_samaritan_during_illness.body": "Во время болезни соседи по очереди приносят еду и присматривают за домом.",
+      "event.fortune_rare_talent_recognized.title": "Замеченный талант",
+      "event.fortune_rare_talent_recognized.body": "Редкий дар — в музыке, ремесле или спорте — замечает человек, способный дать ему развитие.",
+      "event.fortune_rare_talent_recognized.choice.pursue.label": "Развивать дар дальше",
+      "event.fortune_rare_talent_recognized.choice.stay_practical.label": "Остаться на практичном пути",
+      "event.fortune_small_business_grant.title": "Небольшой грант на своё дело",
+      "event.fortune_small_business_grant.body": "Общественная программа предлагает небольшую безвозмездную сумму тем, кто хочет открыть своё дело.",
+      "event.fortune_small_business_grant.choice.accept_grant.label": "Принять грант",
+      "event.fortune_small_business_grant.choice.decline_terms.label": "Отказаться из-за условий",
+      "event.fortune_weather_favored_harvest.title": "Погода на стороне хозяйства",
+      "event.fortune_weather_favored_harvest.body": "Нужное количество дождя в нужный момент сезона даёт неожиданно щедрый сбор.",
+      "event.fortune_old_debt_repaid_to_them.title": "Старый долг возвращается",
+      "event.fortune_old_debt_repaid_to_them.body": "Деньги, которые когда-то дали в долг и уже не надеялись получить обратно, неожиданно возвращаются.",
+      "event.fortune_neighbor_support_network.title": "Соседская взаимопомощь",
+      "event.fortune_neighbor_support_network.body": "Соседи заводят привычку делиться едой и инструментами в трудные недели — и это ощутимо помогает.",
+      "event.fortune_unexpected_gift_from_employer.title": "Неожиданный подарок от работодателя",
+      "event.fortune_unexpected_gift_from_employer.body": "Работодатель, довольный многолетней службой, делает щедрый подарок сверх обычной платы.",
+      "event.fortune_lucky_escape_from_danger.title": "Счастливое избежание беды",
+      "event.fortune_lucky_escape_from_danger.body": "Опасная ситуация на дороге или на производстве заканчивается без вреда — просто по счастливой случайности.",
+      "event.fortune_won_community_raffle.title": "Выигрыш в розыгрыше на празднике",
+      "event.fortune_won_community_raffle.body": "Билет, купленный на местном празднике, неожиданно выигрывает небольшой приз.",
+      "event.fortune_surprise_visit_brings_joy.title": "Неожиданный визит родных",
+      "event.fortune_surprise_visit_brings_joy.body": "Внуки или дети приезжают без предупреждения, и дом наполняется радостью на несколько дней.",
+      "event.fortune_old_friend_helps_find_job.title": "Старый друг рекомендует на работу",
+      "event.fortune_old_friend_helps_find_job.body": "Друг детства, устроившийся в хорошую компанию, предлагает рекомендовать на освободившееся место.",
+      "event.fortune_old_friend_helps_find_job.choice.accept_referral.label": "Принять рекомендацию",
+      "event.fortune_old_friend_helps_find_job.choice.find_own_way.label": "Искать работу самостоятельно"
+    },
+    "en": {
+      "event.fortune_strangers_kindness.title": "The kindness of a stranger",
+      "event.fortune_strangers_kindness.body": "A stranger helps out at a hard moment, expecting nothing in return.",
+      "event.fortune_surprising_recovery.title": "An unexpectedly full recovery",
+      "event.fortune_surprising_recovery.body": "An illness that was expected to drag on for months recedes faster than the doctors expected.",
+      "event.fortune_debt_forgiven_unexpectedly.title": "A debt unexpectedly forgiven",
+      "event.fortune_debt_forgiven_unexpectedly.body": "The old lender decides to forgive part of the debt, citing years of honest repayment.",
+      "event.fortune_unexpected_school_sponsor.title": "A sponsor for school costs",
+      "event.fortune_unexpected_school_sponsor.body": "A distant family acquaintance offers to pay for a year of textbooks and uniforms, having heard about the good grades.",
+      "event.fortune_unexpected_school_sponsor.choice.accept.label": "Accept the help",
+      "event.fortune_unexpected_school_sponsor.choice.decline_pride.label": "Decline out of pride",
+      "event.fortune_lucky_harvest.title": "An unusually good harvest",
+      "event.fortune_lucky_harvest.body": "The weather turns out unusually favorable this year, and the harvest comes in well above normal.",
+      "event.fortune_distant_relative_inheritance.title": "An inheritance from a distant relative",
+      "event.fortune_distant_relative_inheritance.body": "A distant relative, almost forgotten, passes away, and a small share of their property passes this way.",
+      "event.fortune_small_prize_won.title": "A small prize won",
+      "event.fortune_small_prize_won.body": "Taking part in a local contest or drawing unexpectedly brings in a small cash prize.",
+      "event.fortune_mentor_opens_doors.title": "A mentor takes notice",
+      "event.fortune_mentor_opens_doors.body": "An experienced figure in the trade notices real talent and offers to open up useful connections.",
+      "event.fortune_mentor_opens_doors.choice.accept_guidance.label": "Accept the mentorship",
+      "event.fortune_mentor_opens_doors.choice.go_own_way.label": "Go their own way",
+      "event.fortune_lottery_lucky.title": "A big lottery win",
+      "event.fortune_lottery_lucky.body": "A lottery ticket bought on a whim suddenly brings in a large sum of money.",
+      "event.fortune_lottery_lucky.choice.play.label": "Collect the winnings",
+      "event.fortune_lottery_lucky.choice.skip.label": "The ticket turns out to be a loser",
+      "event.fortune_overseas_worker_return.title": "Return from working abroad",
+      "event.fortune_overseas_worker_return.body": "After several years of work abroad, a return home finally comes, with real savings in hand.",
+      "event.fortune_migrant_city_opportunity.title": "An unexpected opportunity in the city",
+      "event.fortune_migrant_city_opportunity.body": "The move to the city opens up a chance opportunity — a job opening or a connection — that would never have come up back home.",
+      "event.fortune_migrant_city_opportunity.choice.seize_it.label": "Seize the opportunity",
+      "event.fortune_migrant_city_opportunity.choice.play_safe.label": "Proceed carefully",
+      "event.fortune_business_owner_success.title": "The business exceeds expectations",
+      "event.fortune_business_owner_success.body": "Their own business suddenly does better than expected, opening up a chance to expand.",
+      "event.fortune_business_owner_success.choice.expand.label": "Expand the business",
+      "event.fortune_business_owner_success.choice.consolidate.label": "Lock in the gains without extra risk",
+      "event.fortune_returned_migrant_savings.title": "Savings brought home go into the house",
+      "event.fortune_returned_migrant_savings.body": "Money saved while working away from home goes toward building or repairing a house of their own.",
+      "event.fortune_investment_paid_off.title": "An investment unexpectedly pays off",
+      "event.fortune_investment_paid_off.body": "A small investment made a few years back suddenly brings in a solid return.",
+      "event.fortune_investment_paid_off.choice.reinvest.label": "Reinvest the gains",
+      "event.fortune_investment_paid_off.choice.cash_out.label": "Cash out the gains",
+      "event.fortune_won_legal_dispute.title": "A legal dispute won",
+      "event.fortune_won_legal_dispute.body": "A long-running dispute over a land boundary or a debt is finally settled in their favor.",
+      "event.fortune_community_crowdfunding.title": "The community pulls together to help",
+      "event.fortune_community_crowdfunding.body": "Neighbors pool their money to help get through an especially hard month.",
+      "event.fortune_unexpected_promotion.title": "An unexpected promotion",
+      "event.fortune_unexpected_promotion.body": "A manager who was not expected to notice them grants a promotion ahead of schedule.",
+      "event.fortune_land_value_increase.title": "The land rises in value",
+      "event.fortune_land_value_increase.body": "A new road built nearby unexpectedly multiplies the value of the land.",
+      "event.fortune_childrens_success_benefit.title": "The children's success eases old age",
+      "event.fortune_childrens_success_benefit.body": "The grown children, now settled in good jobs, start sending regular financial help.",
+      "event.fortune_reconnect_with_lost_family.title": "A long-lost relative is found",
+      "event.fortune_reconnect_with_lost_family.body": "After decades without contact, a relative long thought lost is found again.",
+      "event.fortune_community_honors_elder.title": "The community honors their service",
+      "event.fortune_community_honors_elder.body": "The neighbors hold a small gathering to honor years given to the community's common affairs.",
+      "event.fortune_estate_resolved_favorably.title": "An estate matter is settled peacefully",
+      "event.fortune_estate_resolved_favorably.body": "A long-standing dispute over an inheritance is finally settled without ill will, to everyone's satisfaction.",
+      "event.fortune_good_samaritan_during_illness.title": "Help during an illness",
+      "event.fortune_good_samaritan_during_illness.body": "During the illness, neighbors take turns bringing food and looking after the house.",
+      "event.fortune_rare_talent_recognized.title": "A talent gets noticed",
+      "event.fortune_rare_talent_recognized.body": "A rare gift — in music, a craft, or sport — is noticed by someone able to help it grow.",
+      "event.fortune_rare_talent_recognized.choice.pursue.label": "Pursue the talent further",
+      "event.fortune_rare_talent_recognized.choice.stay_practical.label": "Stick to the practical path",
+      "event.fortune_small_business_grant.title": "A small grant for a business",
+      "event.fortune_small_business_grant.body": "A community program offers a small grant to those looking to start a business of their own.",
+      "event.fortune_small_business_grant.choice.accept_grant.label": "Accept the grant",
+      "event.fortune_small_business_grant.choice.decline_terms.label": "Decline over the terms attached",
+      "event.fortune_weather_favored_harvest.title": "The weather favors the farm",
+      "event.fortune_weather_favored_harvest.body": "The right amount of rain at the right point in the season brings in an unexpectedly generous yield.",
+      "event.fortune_old_debt_repaid_to_them.title": "An old debt is finally repaid",
+      "event.fortune_old_debt_repaid_to_them.body": "Money lent long ago, with little hope of ever seeing it again, unexpectedly comes back.",
+      "event.fortune_neighbor_support_network.title": "Mutual aid among neighbors",
+      "event.fortune_neighbor_support_network.body": "The neighbors fall into a habit of sharing food and tools during hard weeks, and it genuinely helps.",
+      "event.fortune_unexpected_gift_from_employer.title": "An unexpected gift from the employer",
+      "event.fortune_unexpected_gift_from_employer.body": "The employer, pleased with years of loyal service, gives a generous gift on top of the usual pay.",
+      "event.fortune_lucky_escape_from_danger.title": "A lucky escape from danger",
+      "event.fortune_lucky_escape_from_danger.body": "A dangerous situation on the road or at work ends without harm — simply by good fortune.",
+      "event.fortune_won_community_raffle.title": "A prize won at a festival raffle",
+      "event.fortune_won_community_raffle.body": "A ticket bought at the local festival unexpectedly wins a small prize.",
+      "event.fortune_surprise_visit_brings_joy.title": "A surprise visit from family",
+      "event.fortune_surprise_visit_brings_joy.body": "Grandchildren or children arrive without warning, and the house fills with joy for a few days.",
+      "event.fortune_old_friend_helps_find_job.title": "An old friend puts in a good word",
+      "event.fortune_old_friend_helps_find_job.body": "A childhood friend, now settled at a good company, offers to recommend them for an opening.",
+      "event.fortune_old_friend_helps_find_job.choice.accept_referral.label": "Accept the referral",
+      "event.fortune_old_friend_helps_find_job.choice.find_own_way.label": "Look for work on their own instead"
+    }
+  }
+}

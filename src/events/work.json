@@ -1,0 +1,1258 @@
+{
+  "events": [
+    {
+      "id": "work_first_chores",
+      "category": "work",
+      "titleKey": "event.work_first_chores.title",
+      "bodyKey": "event.work_first_chores.body",
+      "severity": "minor",
+      "ageGate": [
+        5,
+        9
+      ],
+      "baseWeight": 1.4,
+      "effects": {
+        "bonds": 2,
+        "education": -1
+      }
+    },
+    {
+      "id": "work_child_labor_begins",
+      "category": "work",
+      "titleKey": "event.work_child_labor_begins.title",
+      "bodyKey": "event.work_child_labor_begins.body",
+      "severity": "major",
+      "ageGate": [
+        8,
+        13
+      ],
+      "baseWeight": 1.1,
+      "weightBy": {
+        "incomeTier": {
+          "low": 1.6
+        },
+        "rural": 1.3
+      },
+      "choices": [
+        {
+          "id": "work_full_time",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 5,
+            "education": -6
+          },
+          "mortalityDelta": 1.1,
+          "unlockTraits": [
+            "child_laborer"
+          ]
+        },
+        {
+          "id": "limit_hours",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 2,
+            "wealth": 1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_herding_duties",
+      "category": "work",
+      "titleKey": "event.work_herding_duties.title",
+      "bodyKey": "event.work_herding_duties.body",
+      "severity": "minor",
+      "ageGate": [
+        7,
+        13
+      ],
+      "baseWeight": 1.3,
+      "weightBy": {
+        "rural": 1.8
+      },
+      "effects": {
+        "health": -1,
+        "bonds": 2
+      }
+    },
+    {
+      "id": "work_apprenticeship_begins",
+      "category": "work",
+      "titleKey": "event.work_apprenticeship_begins.title",
+      "bodyKey": "event.work_apprenticeship_begins.body",
+      "severity": "notable",
+      "ageGate": [
+        12,
+        17
+      ],
+      "baseWeight": 1.2,
+      "choices": [
+        {
+          "id": "apprentice",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 3,
+            "wealth": -1
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "apprenticed"
+          ]
+        },
+        {
+          "id": "decline",
+          "riskLabel": "рискованно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_first_paid_job",
+      "category": "work",
+      "titleKey": "event.work_first_paid_job.title",
+      "bodyKey": "event.work_first_paid_job.body",
+      "severity": "notable",
+      "ageGate": [
+        13,
+        17
+      ],
+      "baseWeight": 1.4,
+      "choices": [
+        {
+          "id": "take_job",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 5,
+            "education": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "focus_school",
+          "riskLabel": "рискованно",
+          "effects": {
+            "education": 3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_family_business_help",
+      "category": "work",
+      "titleKey": "event.work_family_business_help.title",
+      "bodyKey": "event.work_family_business_help.body",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        17
+      ],
+      "baseWeight": 1.2,
+      "effects": {
+        "wealth": 2,
+        "bonds": 2
+      }
+    },
+    {
+      "id": "work_factory_conditions",
+      "category": "work",
+      "titleKey": "event.work_factory_conditions.title",
+      "bodyKey": "event.work_factory_conditions.body",
+      "severity": "major",
+      "ageGate": [
+        16,
+        30
+      ],
+      "baseWeight": 1.1,
+      "choices": [
+        {
+          "id": "endure",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 6,
+            "health": -5
+          },
+          "mortalityDelta": 1.3
+        },
+        {
+          "id": "leave",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -4
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_career_start",
+      "category": "work",
+      "titleKey": "event.work_career_start.title",
+      "bodyKey": "event.work_career_start.body",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        25
+      ],
+      "baseWeight": 1.4,
+      "choices": [
+        {
+          "id": "stable_job",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 5,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "ambitious_role",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 3,
+            "standing": 4,
+            "health": -2
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    },
+    {
+      "id": "work_unemployment_search",
+      "category": "work",
+      "titleKey": "event.work_unemployment_search.title",
+      "bodyKey": "event.work_unemployment_search.body",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        40
+      ],
+      "baseWeight": 1.3,
+      "choices": [
+        {
+          "id": "any_job",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 1,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "hold_out",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -6
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    },
+    {
+      "id": "work_migrates_to_city_for_work",
+      "category": "work",
+      "titleKey": "event.work_migrates_to_city_for_work.title",
+      "bodyKey": "event.work_migrates_to_city_for_work.body",
+      "severity": "notable",
+      "ageGate": [
+        15,
+        29
+      ],
+      "baseWeight": 1.2,
+      "choices": [
+        {
+          "id": "move_city",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 4,
+            "bonds": -5
+          },
+          "mortalityDelta": 1.1,
+          "unlockTraits": [
+            "migrant_city"
+          ]
+        },
+        {
+          "id": "stay_local",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_professional_licensing",
+      "category": "work",
+      "titleKey": "event.work_professional_licensing.title",
+      "bodyKey": "event.work_professional_licensing.body",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        30
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "get_license",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": 4,
+            "wealth": -5,
+            "standing": 3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "work_informally",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 3,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_opens_own_workshop",
+      "category": "work",
+      "titleKey": "event.work_opens_own_workshop.title",
+      "bodyKey": "event.work_opens_own_workshop.body",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        35
+      ],
+      "baseWeight": 0.9,
+      "requires": {
+        "traits": [
+          "apprenticed"
+        ]
+      },
+      "choices": [
+        {
+          "id": "open_shop",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 6,
+            "standing": 4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "stay_employed",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_low_skill_labor_ceiling",
+      "category": "work",
+      "titleKey": "event.work_low_skill_labor_ceiling.title",
+      "bodyKey": "event.work_low_skill_labor_ceiling.body",
+      "severity": "notable",
+      "ageGate": [
+        12,
+        26
+      ],
+      "baseWeight": 1.1,
+      "requires": {
+        "traits": [
+          "left_school_early"
+        ]
+      },
+      "effects": {
+        "wealth": 1,
+        "standing": -3
+      }
+    },
+    {
+      "id": "work_business_ownership",
+      "category": "work",
+      "titleKey": "event.work_business_ownership.title",
+      "bodyKey": "event.work_business_ownership.body",
+      "severity": "notable",
+      "ageGate": [
+        25,
+        45
+      ],
+      "baseWeight": 0.9,
+      "choices": [
+        {
+          "id": "start_business",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -6,
+            "standing": 3
+          },
+          "mortalityDelta": 1.1,
+          "unlockTraits": [
+            "business_owner"
+          ]
+        },
+        {
+          "id": "play_safe",
+          "riskLabel": "надёжно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_post_conviction_discrimination",
+      "category": "work",
+      "titleKey": "event.work_post_conviction_discrimination.title",
+      "bodyKey": "event.work_post_conviction_discrimination.body",
+      "severity": "major",
+      "ageGate": [
+        18,
+        60
+      ],
+      "baseWeight": 0.9,
+      "requires": {
+        "traits": [
+          "convicted"
+        ]
+      },
+      "choices": [
+        {
+          "id": "persist",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -3,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "informal_work",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 1,
+            "standing": -4
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_disability_employment_barrier",
+      "category": "work",
+      "titleKey": "event.work_disability_employment_barrier.title",
+      "bodyKey": "event.work_disability_employment_barrier.body",
+      "severity": "major",
+      "ageGate": [
+        15,
+        80
+      ],
+      "baseWeight": 1,
+      "requires": {
+        "traits": [
+          "disabled"
+        ]
+      },
+      "choices": [
+        {
+          "id": "adapted_work",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 2,
+            "standing": 1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "no_work",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -5,
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_debt_bondage_labor",
+      "category": "work",
+      "titleKey": "event.work_debt_bondage_labor.title",
+      "bodyKey": "event.work_debt_bondage_labor.body",
+      "severity": "major",
+      "ageGate": [
+        26,
+        56
+      ],
+      "baseWeight": 0.9,
+      "requires": {
+        "traits": [
+          "in_debt"
+        ]
+      },
+      "choices": [
+        {
+          "id": "extra_labor",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 3,
+            "health": -5
+          },
+          "mortalityDelta": 1.2
+        },
+        {
+          "id": "slow_repay",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -1,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_workplace_discrimination_gender",
+      "category": "work",
+      "titleKey": "event.work_workplace_discrimination_gender.title",
+      "bodyKey": "event.work_workplace_discrimination_gender.body",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        55
+      ],
+      "baseWeight": 1,
+      "requires": {
+        "sex": "female"
+      },
+      "choices": [
+        {
+          "id": "push_back",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": 4,
+            "bonds": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "accept",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_job_loss_midlife",
+      "category": "work",
+      "titleKey": "event.work_job_loss_midlife.title",
+      "bodyKey": "event.work_job_loss_midlife.body",
+      "severity": "major",
+      "ageGate": [
+        35,
+        55
+      ],
+      "baseWeight": 1.1,
+      "choices": [
+        {
+          "id": "retrain",
+          "riskLabel": "рискованно",
+          "effects": {
+            "education": 4,
+            "wealth": -6
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "take_anything",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": -3,
+            "wealth": 1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_career_advancement",
+      "category": "work",
+      "titleKey": "event.work_career_advancement.title",
+      "bodyKey": "event.work_career_advancement.body",
+      "severity": "minor",
+      "ageGate": [
+        25,
+        50
+      ],
+      "baseWeight": 1.3,
+      "effects": {
+        "wealth": 4,
+        "standing": 3
+      }
+    },
+    {
+      "id": "work_business_struggles",
+      "category": "work",
+      "titleKey": "event.work_business_struggles.title",
+      "bodyKey": "event.work_business_struggles.body",
+      "severity": "notable",
+      "ageGate": [
+        28,
+        55
+      ],
+      "baseWeight": 1.1,
+      "requires": {
+        "traits": [
+          "business_owner"
+        ]
+      },
+      "effects": {
+        "wealth": -6
+      }
+    },
+    {
+      "id": "work_lottery_capital_business",
+      "category": "work",
+      "titleKey": "event.work_lottery_capital_business.title",
+      "bodyKey": "event.work_lottery_capital_business.body",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        70
+      ],
+      "baseWeight": 0.8,
+      "requires": {
+        "traits": [
+          "lottery_lucky"
+        ]
+      },
+      "choices": [
+        {
+          "id": "start_business",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 10,
+            "standing": 3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "buy_land",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 6,
+            "standing": 2
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "landowner"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "work_reentering_workforce_after_widowhood",
+      "category": "work",
+      "titleKey": "event.work_reentering_workforce_after_widowhood.title",
+      "bodyKey": "event.work_reentering_workforce_after_widowhood.body",
+      "severity": "notable",
+      "ageGate": [
+        25,
+        80
+      ],
+      "baseWeight": 0.9,
+      "requires": {
+        "traits": [
+          "widowed"
+        ]
+      },
+      "choices": [
+        {
+          "id": "find_work",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 5,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "rely_on_family",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": 3,
+            "wealth": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_caregiver_career_stall",
+      "category": "work",
+      "titleKey": "event.work_caregiver_career_stall.title",
+      "bodyKey": "event.work_caregiver_career_stall.body",
+      "severity": "notable",
+      "ageGate": [
+        42,
+        65
+      ],
+      "baseWeight": 1,
+      "requires": {
+        "traits": [
+          "elder_caregiver"
+        ]
+      },
+      "effects": {
+        "wealth": -4,
+        "standing": -2
+      }
+    },
+    {
+      "id": "work_forced_early_retirement",
+      "category": "work",
+      "titleKey": "event.work_forced_early_retirement.title",
+      "bodyKey": "event.work_forced_early_retirement.body",
+      "severity": "notable",
+      "ageGate": [
+        50,
+        68
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "accept",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -5,
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "find_new_work",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -1,
+            "health": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_pension_access",
+      "category": "work",
+      "titleKey": "event.work_pension_access.title",
+      "bodyKey": "event.work_pension_access.body",
+      "severity": "minor",
+      "ageGate": [
+        55,
+        70
+      ],
+      "baseWeight": 1.2,
+      "effects": {
+        "wealth": 3,
+        "standing": 1
+      }
+    },
+    {
+      "id": "work_land_provides_stability",
+      "category": "work",
+      "titleKey": "event.work_land_provides_stability.title",
+      "bodyKey": "event.work_land_provides_stability.body",
+      "severity": "minor",
+      "ageGate": [
+        55,
+        75
+      ],
+      "baseWeight": 1.1,
+      "requires": {
+        "traits": [
+          "landowner"
+        ]
+      },
+      "effects": {
+        "wealth": 5,
+        "standing": 2
+      }
+    },
+    {
+      "id": "work_continuing_to_work_elderly",
+      "category": "work",
+      "titleKey": "event.work_continuing_to_work_elderly.title",
+      "bodyKey": "event.work_continuing_to_work_elderly.body",
+      "severity": "minor",
+      "ageGate": [
+        65,
+        85
+      ],
+      "baseWeight": 1,
+      "effects": {
+        "wealth": 2,
+        "health": -2
+      }
+    },
+    {
+      "id": "work_seasonal_labor_migration",
+      "category": "work",
+      "titleKey": "event.work_seasonal_labor_migration.title",
+      "bodyKey": "event.work_seasonal_labor_migration.body",
+      "severity": "notable",
+      "ageGate": [
+        16,
+        45
+      ],
+      "baseWeight": 1.1,
+      "weightBy": {
+        "rural": 1.5
+      },
+      "choices": [
+        {
+          "id": "go_seasonal",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 6,
+            "bonds": -3
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "stay_local",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_injury_compensation_dispute",
+      "category": "work",
+      "titleKey": "event.work_injury_compensation_dispute.title",
+      "bodyKey": "event.work_injury_compensation_dispute.body",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        55
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "claim",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 4,
+            "standing": -1
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "drop_claim",
+          "riskLabel": "надёжно",
+          "effects": {},
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_labor_solidarity_support",
+      "category": "work",
+      "titleKey": "event.work_labor_solidarity_support.title",
+      "bodyKey": "event.work_labor_solidarity_support.body",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        50
+      ],
+      "baseWeight": 1,
+      "effects": {
+        "bonds": 4,
+        "standing": 1
+      }
+    },
+    {
+      "id": "work_promotion_opportunity",
+      "category": "work",
+      "titleKey": "event.work_promotion_opportunity.title",
+      "bodyKey": "event.work_promotion_opportunity.body",
+      "severity": "notable",
+      "ageGate": [
+        25,
+        45
+      ],
+      "baseWeight": 1.2,
+      "choices": [
+        {
+          "id": "accept",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 6,
+            "standing": 4,
+            "health": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "decline",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_informal_economy_reliance",
+      "category": "work",
+      "titleKey": "event.work_informal_economy_reliance.title",
+      "bodyKey": "event.work_informal_economy_reliance.body",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        60
+      ],
+      "baseWeight": 1.1,
+      "weightBy": {
+        "incomeTier": {
+          "low": 1.4
+        }
+      },
+      "effects": {
+        "wealth": 2,
+        "standing": -2
+      }
+    },
+    {
+      "id": "work_apprentice_wage_dispute",
+      "category": "work",
+      "titleKey": "event.work_apprentice_wage_dispute.title",
+      "bodyKey": "event.work_apprentice_wage_dispute.body",
+      "severity": "notable",
+      "ageGate": [
+        13,
+        18
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "demand_pay",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 3,
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "stay_quiet",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_small_trade_startup",
+      "category": "work",
+      "titleKey": "event.work_small_trade_startup.title",
+      "bodyKey": "event.work_small_trade_startup.body",
+      "severity": "notable",
+      "ageGate": [
+        16,
+        30
+      ],
+      "baseWeight": 1.1,
+      "choices": [
+        {
+          "id": "start_trade",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 3,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "stay_employed",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "work_long_hours_exhaustion",
+      "category": "work",
+      "titleKey": "event.work_long_hours_exhaustion.title",
+      "bodyKey": "event.work_long_hours_exhaustion.body",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        50
+      ],
+      "baseWeight": 1.2,
+      "effects": {
+        "health": -4,
+        "bonds": -2
+      }
+    }
+  ],
+  "i18n": {
+    "ru": {
+      "event.work_first_chores.title": "Первые домашние обязанности",
+      "event.work_first_chores.body": "Ребёнок начинает выполнять простую работу по дому: носить воду, следить за младшими, подметать двор.",
+      "event.work_child_labor_begins.title": "Работа вместо части учёбы",
+      "event.work_child_labor_begins.body": "Семье не хватает денег, и ребёнку предлагают работать на поле или в мастерской вместо части школьных занятий.",
+      "event.work_child_labor_begins.choice.work_full_time.label": "Работать полный день",
+      "event.work_child_labor_begins.choice.limit_hours.label": "Работать только после уроков",
+      "event.work_herding_duties.title": "Пастьба скота",
+      "event.work_herding_duties.body": "Семейный скот нужно выгонять на пастбище каждый день, и эта обязанность переходит к ребёнку.",
+      "event.work_apprenticeship_begins.title": "Предложение подмастерья",
+      "event.work_apprenticeship_begins.body": "Местный мастер — кузнец, портной или столяр — предлагает взять подростка в подмастерья на несколько лет.",
+      "event.work_apprenticeship_begins.choice.apprentice.label": "Пойти в подмастерья",
+      "event.work_apprenticeship_begins.choice.decline.label": "Отказаться",
+      "event.work_first_paid_job.title": "Первая настоящая работа за деньги",
+      "event.work_first_paid_job.body": "Появляется возможность подработать после уроков: на рынке, в лавке или в поле у соседа.",
+      "event.work_first_paid_job.choice.take_job.label": "Взять подработку",
+      "event.work_first_paid_job.choice.focus_school.label": "Сосредоточиться на учёбе",
+      "event.work_family_business_help.title": "Помощь в семейном деле",
+      "event.work_family_business_help.body": "Семейная лавка или мастерская требует лишних рук, и подросток встаёт за прилавок или к станку.",
+      "event.work_factory_conditions.title": "Тяжёлые условия на производстве",
+      "event.work_factory_conditions.body": "Работа на фабрике платит хорошо, но смены длинные, а техника безопасности соблюдается слабо.",
+      "event.work_factory_conditions.choice.endure.label": "Остаться ради заработка",
+      "event.work_factory_conditions.choice.leave.label": "Уйти и искать другое место",
+      "event.work_career_start.title": "Начало профессионального пути",
+      "event.work_career_start.body": "Открываются две возможности: спокойная стабильная должность или амбициозная роль с большей нагрузкой.",
+      "event.work_career_start.choice.stable_job.label": "Выбрать спокойную должность",
+      "event.work_career_start.choice.ambitious_role.label": "Рискнуть с амбициозной ролью",
+      "event.work_unemployment_search.title": "Поиск работы после увольнения",
+      "event.work_unemployment_search.body": "Прежнее место сокращено, и поиск новой работы тянется дольше, чем ожидалось.",
+      "event.work_unemployment_search.choice.any_job.label": "Взять любую доступную работу",
+      "event.work_unemployment_search.choice.hold_out.label": "Ждать работу по специальности",
+      "event.work_migrates_to_city_for_work.title": "Работа есть только в городе",
+      "event.work_migrates_to_city_for_work.body": "В родном селе работы для молодых почти нет, а в городе ищут рабочих руки.",
+      "event.work_migrates_to_city_for_work.choice.move_city.label": "Переехать в город на заработки",
+      "event.work_migrates_to_city_for_work.choice.stay_local.label": "Остаться рядом с домом",
+      "event.work_professional_licensing.title": "Получение официальной квалификации",
+      "event.work_professional_licensing.body": "Чтобы работать по специальности законно, нужна официальная лицензия, которая стоит денег и времени.",
+      "event.work_professional_licensing.choice.get_license.label": "Получить лицензию",
+      "event.work_professional_licensing.choice.work_informally.label": "Работать без неё",
+      "event.work_opens_own_workshop.title": "Годы подмастерья окупаются",
+      "event.work_opens_own_workshop.body": "Освоенное за годы подмастерья ремесло позволяет открыть собственную небольшую мастерскую.",
+      "event.work_opens_own_workshop.choice.open_shop.label": "Открыть свою мастерскую",
+      "event.work_opens_own_workshop.choice.stay_employed.label": "Остаться наёмным работником",
+      "event.work_low_skill_labor_ceiling.title": "Потолок без диплома",
+      "event.work_low_skill_labor_ceiling.body": "Без школьного образования доступны только самые простые работы, и продвижение по службе почти не происходит.",
+      "event.work_business_ownership.title": "Решение открыть своё дело",
+      "event.work_business_ownership.body": "Накопленных денег и опыта должно хватить, чтобы открыть собственное небольшое дело, хотя гарантий нет.",
+      "event.work_business_ownership.choice.start_business.label": "Открыть своё дело",
+      "event.work_business_ownership.choice.play_safe.label": "Остаться на прежнем месте",
+      "event.work_post_conviction_discrimination.title": "Судимость закрывает двери",
+      "event.work_post_conviction_discrimination.body": "Прежняя судимость всплывает в каждой проверке при найме, и получить обычную работу становится почти невозможно.",
+      "event.work_post_conviction_discrimination.choice.persist.label": "Продолжать искать официальную работу",
+      "event.work_post_conviction_discrimination.choice.informal_work.label": "Перейти на неофициальную работу",
+      "event.work_disability_employment_barrier.title": "Работа после инвалидности",
+      "event.work_disability_employment_barrier.body": "Работодатели неохотно берут на обычные места человека с инвалидностью, и приходится искать подходящую нишу.",
+      "event.work_disability_employment_barrier.choice.adapted_work.label": "Найти работу, подходящую по силам",
+      "event.work_disability_employment_barrier.choice.no_work.label": "Остаться без постоянной работы",
+      "event.work_debt_bondage_labor.title": "Долг требует отработки",
+      "event.work_debt_bondage_labor.body": "Чтобы расплатиться с долгом, заимодавец предлагает дополнительную, более тяжёлую работу в счёт выплат.",
+      "event.work_debt_bondage_labor.choice.extra_labor.label": "Согласиться на дополнительную работу",
+      "event.work_debt_bondage_labor.choice.slow_repay.label": "Выплачивать долг медленнее, из обычного заработка",
+      "event.work_workplace_discrimination_gender.title": "Неравная оплата за ту же работу",
+      "event.work_workplace_discrimination_gender.body": "Становится известно, что коллеге-мужчине на той же должности платят больше.",
+      "event.work_workplace_discrimination_gender.choice.push_back.label": "Потребовать равной оплаты",
+      "event.work_workplace_discrimination_gender.choice.accept.label": "Промолчать",
+      "event.work_job_loss_midlife.title": "Потеря работы в середине пути",
+      "event.work_job_loss_midlife.body": "Предприятие закрывается, и должность, на которой держалась вся семья, исчезает.",
+      "event.work_job_loss_midlife.choice.retrain.label": "Переучиться на новую профессию",
+      "event.work_job_loss_midlife.choice.take_anything.label": "Взяться за любую работу",
+      "event.work_career_advancement.title": "Продвижение по службе",
+      "event.work_career_advancement.body": "Годы ровной работы наконец приносят повышение и больший доход.",
+      "event.work_business_struggles.title": "Трудный год для дела",
+      "event.work_business_struggles.body": "Собственное дело переживает трудный год: заказов меньше, расходы растут.",
+      "event.work_lottery_capital_business.title": "Куда вложить неожиданные деньги",
+      "event.work_lottery_capital_business.body": "Выигранные деньги можно вложить в своё маленькое дело или в участок земли.",
+      "event.work_lottery_capital_business.choice.start_business.label": "Открыть небольшое дело",
+      "event.work_lottery_capital_business.choice.buy_land.label": "Купить землю",
+      "event.work_reentering_workforce_after_widowhood.title": "Возвращение к работе после вдовства",
+      "event.work_reentering_workforce_after_widowhood.body": "Потеря супруга оставляет без прежнего источника доходов, и нужно искать работу, которой не было раньше.",
+      "event.work_reentering_workforce_after_widowhood.choice.find_work.label": "Найти работу",
+      "event.work_reentering_workforce_after_widowhood.choice.rely_on_family.label": "Опереться на помощь родни",
+      "event.work_caregiver_career_stall.title": "Карьера стоит на месте из-за ухода за старшими",
+      "event.work_caregiver_career_stall.body": "Обязанность по уходу за стареющими родственниками не оставляет времени на продвижение по службе.",
+      "event.work_forced_early_retirement.title": "Предложение уйти раньше срока",
+      "event.work_forced_early_retirement.body": "Предприятие сокращает штат, и должность предлагают покинуть раньше, чем планировалось.",
+      "event.work_forced_early_retirement.choice.accept.label": "Согласиться на раннюю пенсию",
+      "event.work_forced_early_retirement.choice.find_new_work.label": "Искать новую работу",
+      "event.work_pension_access.title": "Начало пенсионных выплат",
+      "event.work_pension_access.body": "Положенные по возрасту выплаты начинают поступать, хотя их едва хватает на расходы.",
+      "event.work_land_provides_stability.title": "Земля кормит в старости",
+      "event.work_land_provides_stability.body": "Унаследованная когда-то земля даёт стабильный доход, когда других источников заработка почти не осталось.",
+      "event.work_continuing_to_work_elderly.title": "Работать и после пенсионного возраста",
+      "event.work_continuing_to_work_elderly.body": "Пенсии не хватает, и приходится продолжать браться за посильную работу.",
+      "event.work_seasonal_labor_migration.title": "Сезонная работа в другом районе",
+      "event.work_seasonal_labor_migration.body": "На время урожая в соседнем районе нужны рабочие руки, платят больше, но на несколько месяцев нужно уехать из дома.",
+      "event.work_seasonal_labor_migration.choice.go_seasonal.label": "Уехать на сезонную работу",
+      "event.work_seasonal_labor_migration.choice.stay_local.label": "Остаться дома",
+      "event.work_injury_compensation_dispute.title": "Спор о компенсации за травму на работе",
+      "event.work_injury_compensation_dispute.body": "После травмы на производстве работодатель не спешит платить компенсацию, положенную по правилам.",
+      "event.work_injury_compensation_dispute.choice.claim.label": "Добиваться выплаты",
+      "event.work_injury_compensation_dispute.choice.drop_claim.label": "Отказаться от претензии",
+      "event.work_labor_solidarity_support.title": "Поддержка коллег по цеху",
+      "event.work_labor_solidarity_support.body": "Коллеги объединяются, чтобы вместе договориться с начальством об условиях труда.",
+      "event.work_promotion_opportunity.title": "Предложение более высокой должности",
+      "event.work_promotion_opportunity.body": "Начальство предлагает более высокую должность с большей ответственностью и меньшим количеством свободного времени.",
+      "event.work_promotion_opportunity.choice.accept.label": "Принять повышение",
+      "event.work_promotion_opportunity.choice.decline.label": "Остаться на прежнем месте",
+      "event.work_informal_economy_reliance.title": "Заработок без официального оформления",
+      "event.work_informal_economy_reliance.body": "Основной заработок идёт из работы, которая нигде официально не оформлена: без контракта и без защиты в случае спора.",
+      "event.work_apprentice_wage_dispute.title": "Мастер задерживает плату",
+      "event.work_apprentice_wage_dispute.body": "Мастер, у которого подросток обучается ремеслу, месяцами не выплачивает обещанную небольшую плату.",
+      "event.work_apprentice_wage_dispute.choice.demand_pay.label": "Потребовать оплату",
+      "event.work_apprentice_wage_dispute.choice.stay_quiet.label": "Промолчать, чтобы не потерять место",
+      "event.work_small_trade_startup.title": "Небольшая торговля на свой счёт",
+      "event.work_small_trade_startup.body": "С небольшим стартовым капиталом можно начать перепродавать товары на рынке вместо наёмной работы.",
+      "event.work_small_trade_startup.choice.start_trade.label": "Начать торговать самостоятельно",
+      "event.work_small_trade_startup.choice.stay_employed.label": "Остаться наёмным работником",
+      "event.work_long_hours_exhaustion.title": "Долгие смены изнашивают силы",
+      "event.work_long_hours_exhaustion.body": "Многолетний режим долгих смен постепенно сказывается на самочувствии и времени для семьи."
+    },
+    "en": {
+      "event.work_first_chores.title": "First household chores",
+      "event.work_first_chores.body": "The child starts doing simple household tasks: carrying water, watching younger siblings, sweeping the yard.",
+      "event.work_child_labor_begins.title": "Work in place of part of school",
+      "event.work_child_labor_begins.body": "The family is short on money, and the child is asked to work the fields or a workshop instead of part of school.",
+      "event.work_child_labor_begins.choice.work_full_time.label": "Work full days",
+      "event.work_child_labor_begins.choice.limit_hours.label": "Work only after lessons",
+      "event.work_herding_duties.title": "Herding the animals",
+      "event.work_herding_duties.body": "The family's animals need to be taken out to pasture every day, and the task falls to the child.",
+      "event.work_apprenticeship_begins.title": "An offer to apprentice",
+      "event.work_apprenticeship_begins.body": "A local craftsman — a smith, tailor, or carpenter — offers to take the teenager on as an apprentice for several years.",
+      "event.work_apprenticeship_begins.choice.apprentice.label": "Become an apprentice",
+      "event.work_apprenticeship_begins.choice.decline.label": "Decline",
+      "event.work_first_paid_job.title": "The first real paying job",
+      "event.work_first_paid_job.body": "A chance to earn money after school comes up: at the market, in a shop, or helping a neighbor's field.",
+      "event.work_first_paid_job.choice.take_job.label": "Take the job",
+      "event.work_first_paid_job.choice.focus_school.label": "Focus on schoolwork instead",
+      "event.work_family_business_help.title": "Helping with the family trade",
+      "event.work_family_business_help.body": "The family shop or workshop needs extra hands, and the teenager starts working the counter or the bench.",
+      "event.work_factory_conditions.title": "Harsh conditions on the factory floor",
+      "event.work_factory_conditions.body": "The factory job pays well, but the shifts are long and safety standards are poorly enforced.",
+      "event.work_factory_conditions.choice.endure.label": "Stay for the pay",
+      "event.work_factory_conditions.choice.leave.label": "Quit and look elsewhere",
+      "event.work_career_start.title": "A career begins",
+      "event.work_career_start.body": "Two options open up: a calm, stable position, or a more ambitious role with a heavier load.",
+      "event.work_career_start.choice.stable_job.label": "Take the steady position",
+      "event.work_career_start.choice.ambitious_role.label": "Take the ambitious role",
+      "event.work_unemployment_search.title": "A job search after being laid off",
+      "event.work_unemployment_search.body": "The old position was cut, and the search for new work drags on longer than expected.",
+      "event.work_unemployment_search.choice.any_job.label": "Take any available job",
+      "event.work_unemployment_search.choice.hold_out.label": "Hold out for a job in their field",
+      "event.work_migrates_to_city_for_work.title": "Work is only to be found in the city",
+      "event.work_migrates_to_city_for_work.body": "There is almost no work for young people in the home village, while the city is hiring.",
+      "event.work_migrates_to_city_for_work.choice.move_city.label": "Move to the city for work",
+      "event.work_migrates_to_city_for_work.choice.stay_local.label": "Stay close to home",
+      "event.work_professional_licensing.title": "Earning a formal qualification",
+      "event.work_professional_licensing.body": "Working in the trade legally requires a formal license, which costs both money and time.",
+      "event.work_professional_licensing.choice.get_license.label": "Get the license",
+      "event.work_professional_licensing.choice.work_informally.label": "Work without it",
+      "event.work_opens_own_workshop.title": "The years as an apprentice pay off",
+      "event.work_opens_own_workshop.body": "The trade learned over years as an apprentice now makes opening a small workshop of their own possible.",
+      "event.work_opens_own_workshop.choice.open_shop.label": "Open their own workshop",
+      "event.work_opens_own_workshop.choice.stay_employed.label": "Stay working for someone else",
+      "event.work_low_skill_labor_ceiling.title": "A ceiling without a diploma",
+      "event.work_low_skill_labor_ceiling.body": "Without a school education, only the simplest jobs are open, and advancement almost never happens.",
+      "event.work_business_ownership.title": "A decision to start a business",
+      "event.work_business_ownership.body": "The money and experience saved up should be enough to start a small business of their own, though nothing is guaranteed.",
+      "event.work_business_ownership.choice.start_business.label": "Start their own business",
+      "event.work_business_ownership.choice.play_safe.label": "Stay in their current job",
+      "event.work_post_conviction_discrimination.title": "A criminal record closes doors",
+      "event.work_post_conviction_discrimination.body": "The old conviction comes up in every background check, making an ordinary job almost impossible to get.",
+      "event.work_post_conviction_discrimination.choice.persist.label": "Keep looking for formal employment",
+      "event.work_post_conviction_discrimination.choice.informal_work.label": "Move into informal work instead",
+      "event.work_disability_employment_barrier.title": "Finding work after a disability",
+      "event.work_disability_employment_barrier.body": "Employers are reluctant to hire someone with a disability for ordinary positions, so a suitable niche has to be found.",
+      "event.work_disability_employment_barrier.choice.adapted_work.label": "Find work suited to their abilities",
+      "event.work_disability_employment_barrier.choice.no_work.label": "Go without steady work",
+      "event.work_debt_bondage_labor.title": "The debt demands repayment through labor",
+      "event.work_debt_bondage_labor.body": "To settle the debt, the lender offers extra, harder work in place of cash payments.",
+      "event.work_debt_bondage_labor.choice.extra_labor.label": "Agree to the extra labor",
+      "event.work_debt_bondage_labor.choice.slow_repay.label": "Repay the debt slowly, from ordinary earnings",
+      "event.work_workplace_discrimination_gender.title": "Unequal pay for the same work",
+      "event.work_workplace_discrimination_gender.body": "It becomes clear that a male colleague in the same position is paid more.",
+      "event.work_workplace_discrimination_gender.choice.push_back.label": "Demand equal pay",
+      "event.work_workplace_discrimination_gender.choice.accept.label": "Say nothing",
+      "event.work_job_loss_midlife.title": "Losing a job midway through a career",
+      "event.work_job_loss_midlife.body": "The enterprise shuts down, and the position the whole family relied on disappears.",
+      "event.work_job_loss_midlife.choice.retrain.label": "Retrain for a new trade",
+      "event.work_job_loss_midlife.choice.take_anything.label": "Take whatever work is available",
+      "event.work_career_advancement.title": "A step up at work",
+      "event.work_career_advancement.body": "Years of steady work finally bring a promotion and more income.",
+      "event.work_business_struggles.title": "A hard year for the business",
+      "event.work_business_struggles.body": "Their own business goes through a hard year: fewer orders, rising costs.",
+      "event.work_lottery_capital_business.title": "Where to put the unexpected money",
+      "event.work_lottery_capital_business.body": "The winnings can be put into a small business of their own, or into a plot of land.",
+      "event.work_lottery_capital_business.choice.start_business.label": "Start a small business",
+      "event.work_lottery_capital_business.choice.buy_land.label": "Buy land",
+      "event.work_reentering_workforce_after_widowhood.title": "Returning to work after being widowed",
+      "event.work_reentering_workforce_after_widowhood.body": "Losing the spouse means losing the previous source of income, and new work has to be found.",
+      "event.work_reentering_workforce_after_widowhood.choice.find_work.label": "Find a job",
+      "event.work_reentering_workforce_after_widowhood.choice.rely_on_family.label": "Rely on help from the family",
+      "event.work_caregiver_career_stall.title": "A career stalled by eldercare",
+      "event.work_caregiver_career_stall.body": "The duty of caring for aging relatives leaves no time for advancement at work.",
+      "event.work_forced_early_retirement.title": "An offer to retire early",
+      "event.work_forced_early_retirement.body": "The enterprise is cutting staff, and the position is offered up for early retirement.",
+      "event.work_forced_early_retirement.choice.accept.label": "Accept the early retirement",
+      "event.work_forced_early_retirement.choice.find_new_work.label": "Look for new work instead",
+      "event.work_pension_access.title": "Pension payments begin",
+      "event.work_pension_access.body": "Age-based payments start coming in, though they barely cover expenses.",
+      "event.work_land_provides_stability.title": "The land provides in old age",
+      "event.work_land_provides_stability.body": "The land inherited years ago provides steady income, now that few other sources of earnings remain.",
+      "event.work_continuing_to_work_elderly.title": "Still working past retirement age",
+      "event.work_continuing_to_work_elderly.body": "The pension is not enough, and it means continuing to take on whatever light work they can manage.",
+      "event.work_seasonal_labor_migration.title": "Seasonal work in another district",
+      "event.work_seasonal_labor_migration.body": "The harvest season in a neighboring district needs extra hands and pays better, but means leaving home for months.",
+      "event.work_seasonal_labor_migration.choice.go_seasonal.label": "Go for the seasonal work",
+      "event.work_seasonal_labor_migration.choice.stay_local.label": "Stay home",
+      "event.work_injury_compensation_dispute.title": "A dispute over injury compensation",
+      "event.work_injury_compensation_dispute.body": "After a workplace injury, the employer is slow to pay the compensation the rules require.",
+      "event.work_injury_compensation_dispute.choice.claim.label": "Push for the payment",
+      "event.work_injury_compensation_dispute.choice.drop_claim.label": "Drop the claim",
+      "event.work_labor_solidarity_support.title": "Support from fellow workers",
+      "event.work_labor_solidarity_support.body": "Coworkers band together to negotiate working conditions with management as a group.",
+      "event.work_promotion_opportunity.title": "An offer of a higher position",
+      "event.work_promotion_opportunity.body": "Management offers a higher position with more responsibility and less free time.",
+      "event.work_promotion_opportunity.choice.accept.label": "Accept the promotion",
+      "event.work_promotion_opportunity.choice.decline.label": "Stay in the current role",
+      "event.work_informal_economy_reliance.title": "Income without formal registration",
+      "event.work_informal_economy_reliance.body": "The main income comes from work that is nowhere formally registered: no contract, no protection in a dispute.",
+      "event.work_apprentice_wage_dispute.title": "The craftsman is late with payment",
+      "event.work_apprentice_wage_dispute.body": "The craftsman teaching the teenager a trade has gone months without paying the small promised wage.",
+      "event.work_apprentice_wage_dispute.choice.demand_pay.label": "Demand the payment",
+      "event.work_apprentice_wage_dispute.choice.stay_quiet.label": "Stay quiet to keep the position",
+      "event.work_small_trade_startup.title": "A small trade of their own",
+      "event.work_small_trade_startup.body": "With a small amount of starting capital, they could begin reselling goods at the market instead of working for someone else.",
+      "event.work_small_trade_startup.choice.start_trade.label": "Start trading on their own",
+      "event.work_small_trade_startup.choice.stay_employed.label": "Stay in paid employment",
+      "event.work_long_hours_exhaustion.title": "Long shifts wear down the body",
+      "event.work_long_hours_exhaustion.body": "Years of long shifts gradually take a toll on health and on time spent with family."
+    }
+  }
+}

@@ -1,0 +1,1160 @@
+{
+  "events": [
+    {
+      "id": "family_sibling_death",
+      "category": "family",
+      "titleKey": "event.family_sibling_death.title",
+      "bodyKey": "event.family_sibling_death.body",
+      "severity": "major",
+      "ageGate": [
+        0,
+        11
+      ],
+      "baseWeight": 0.9,
+      "effects": {
+        "bonds": -10,
+        "health": -3
+      }
+    },
+    {
+      "id": "family_new_sibling_born",
+      "category": "family",
+      "titleKey": "event.family_new_sibling_born.title",
+      "bodyKey": "event.family_new_sibling_born.body",
+      "severity": "minor",
+      "ageGate": [
+        0,
+        11
+      ],
+      "baseWeight": 1.5,
+      "effects": {
+        "bonds": 5,
+        "wealth": -3
+      }
+    },
+    {
+      "id": "family_household_relocation",
+      "category": "family",
+      "titleKey": "event.family_household_relocation.title",
+      "bodyKey": "event.family_household_relocation.body",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        11
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "move",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "bonds": -4,
+            "wealth": 3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "stay",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_loss_of_one_parent",
+      "category": "family",
+      "titleKey": "event.family_loss_of_one_parent.title",
+      "bodyKey": "event.family_loss_of_one_parent.body",
+      "severity": "major",
+      "ageGate": [
+        3,
+        16
+      ],
+      "baseWeight": 1.1,
+      "effects": {
+        "bonds": -12,
+        "wealth": -8
+      }
+    },
+    {
+      "id": "family_orphaned",
+      "category": "family",
+      "titleKey": "event.family_orphaned.title",
+      "bodyKey": "event.family_orphaned.body",
+      "severity": "major",
+      "ageGate": [
+        0,
+        11
+      ],
+      "baseWeight": 0.6,
+      "choices": [
+        {
+          "id": "relative",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 4,
+            "standing": -3
+          },
+          "mortalityDelta": 1.1,
+          "unlockTraits": [
+            "orphan"
+          ]
+        },
+        {
+          "id": "institution",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -8,
+            "wealth": 2
+          },
+          "mortalityDelta": 1.3,
+          "unlockTraits": [
+            "orphan"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "family_housework_burden",
+      "category": "family",
+      "titleKey": "event.family_housework_burden.title",
+      "bodyKey": "event.family_housework_burden.body",
+      "severity": "notable",
+      "ageGate": [
+        6,
+        13
+      ],
+      "baseWeight": 1.3,
+      "choices": [
+        {
+          "id": "chores",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 3,
+            "education": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "school_first",
+          "riskLabel": "рискованно",
+          "effects": {
+            "education": 4,
+            "bonds": -3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_sibling_bond_strengthens",
+      "category": "family",
+      "titleKey": "event.family_sibling_bond_strengthens.title",
+      "bodyKey": "event.family_sibling_bond_strengthens.body",
+      "severity": "minor",
+      "ageGate": [
+        5,
+        14
+      ],
+      "baseWeight": 1.4,
+      "effects": {
+        "bonds": 6
+      }
+    },
+    {
+      "id": "family_relative_moves_in",
+      "category": "family",
+      "titleKey": "event.family_relative_moves_in.title",
+      "bodyKey": "event.family_relative_moves_in.body",
+      "severity": "minor",
+      "ageGate": [
+        8,
+        16
+      ],
+      "baseWeight": 1,
+      "effects": {
+        "bonds": 2,
+        "wealth": -2
+      }
+    },
+    {
+      "id": "family_dowry_savings_plan",
+      "category": "family",
+      "titleKey": "event.family_dowry_savings_plan.title",
+      "bodyKey": "event.family_dowry_savings_plan.body",
+      "severity": "notable",
+      "ageGate": [
+        10,
+        20
+      ],
+      "baseWeight": 1.1,
+      "choices": [
+        {
+          "id": "save",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -6,
+            "standing": 3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "borrow",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 4
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "in_debt"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "family_landowner_inheritance",
+      "category": "family",
+      "titleKey": "event.family_landowner_inheritance.title",
+      "bodyKey": "event.family_landowner_inheritance.body",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        50
+      ],
+      "baseWeight": 0.8,
+      "choices": [
+        {
+          "id": "accept",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 10,
+            "standing": 4
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "landowner"
+          ]
+        },
+        {
+          "id": "sell",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 15,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_medical_debt_crisis",
+      "category": "family",
+      "titleKey": "event.family_medical_debt_crisis.title",
+      "bodyKey": "event.family_medical_debt_crisis.body",
+      "severity": "major",
+      "ageGate": [
+        25,
+        50
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "borrow",
+          "riskLabel": "рискованно",
+          "effects": {
+            "health": 6
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "in_debt"
+          ]
+        },
+        {
+          "id": "forgo",
+          "riskLabel": "надёжно",
+          "effects": {
+            "health": -8
+          },
+          "mortalityDelta": 1.3
+        }
+      ]
+    },
+    {
+      "id": "family_crop_failure_debt",
+      "category": "family",
+      "titleKey": "event.family_crop_failure_debt.title",
+      "bodyKey": "event.family_crop_failure_debt.body",
+      "severity": "major",
+      "ageGate": [
+        25,
+        50
+      ],
+      "baseWeight": 1,
+      "weightBy": {
+        "rural": 1.8,
+        "hazardTag": {
+          "drought": 1.5
+        }
+      },
+      "choices": [
+        {
+          "id": "loan",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 6
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "in_debt"
+          ]
+        },
+        {
+          "id": "sell_assets",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -10,
+            "standing": -3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_divorce_household_split",
+      "category": "family",
+      "titleKey": "event.family_divorce_household_split.title",
+      "bodyKey": "event.family_divorce_household_split.body",
+      "severity": "major",
+      "ageGate": [
+        25,
+        55
+      ],
+      "baseWeight": 0.8,
+      "choices": [
+        {
+          "id": "keep_children",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 5,
+            "wealth": -6
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "split_assets",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 2,
+            "bonds": -6
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_married_young_strain",
+      "category": "family",
+      "titleKey": "event.family_married_young_strain.title",
+      "bodyKey": "event.family_married_young_strain.body",
+      "severity": "notable",
+      "ageGate": [
+        15,
+        45
+      ],
+      "baseWeight": 1.1,
+      "requires": {
+        "traits": [
+          "married_young"
+        ]
+      },
+      "choices": [
+        {
+          "id": "support",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 5,
+            "wealth": -4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "strain",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -5,
+            "health": -3
+          },
+          "mortalityDelta": 1.1
+        }
+      ]
+    },
+    {
+      "id": "family_arranged_marriage_inlaw_tension",
+      "category": "family",
+      "titleKey": "event.family_arranged_marriage_inlaw_tension.title",
+      "bodyKey": "event.family_arranged_marriage_inlaw_tension.body",
+      "severity": "notable",
+      "ageGate": [
+        16,
+        50
+      ],
+      "baseWeight": 1,
+      "requires": {
+        "traits": [
+          "arranged_marriage"
+        ]
+      },
+      "choices": [
+        {
+          "id": "accommodate",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 3,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "resist",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -6,
+            "standing": -3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_arranged_marriage_stable_household",
+      "category": "family",
+      "titleKey": "event.family_arranged_marriage_stable_household.title",
+      "bodyKey": "event.family_arranged_marriage_stable_household.body",
+      "severity": "minor",
+      "ageGate": [
+        16,
+        50
+      ],
+      "baseWeight": 1,
+      "requires": {
+        "traits": [
+          "arranged_marriage"
+        ]
+      },
+      "effects": {
+        "wealth": 5,
+        "bonds": 4
+      }
+    },
+    {
+      "id": "family_returned_migrant_tension",
+      "category": "family",
+      "titleKey": "event.family_returned_migrant_tension.title",
+      "bodyKey": "event.family_returned_migrant_tension.body",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        60
+      ],
+      "baseWeight": 0.9,
+      "requires": {
+        "traits": [
+          "returned_migrant"
+        ]
+      },
+      "choices": [
+        {
+          "id": "reintegrate",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 4,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "friction",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -7,
+            "wealth": 3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_elder_caregiving_duty",
+      "category": "family",
+      "titleKey": "event.family_elder_caregiving_duty.title",
+      "bodyKey": "event.family_elder_caregiving_duty.body",
+      "severity": "notable",
+      "ageGate": [
+        30,
+        60
+      ],
+      "baseWeight": 1.2,
+      "choices": [
+        {
+          "id": "care_personally",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 6,
+            "wealth": -5
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "hire_help",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -8,
+            "bonds": -1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_inheritance_dispute_siblings",
+      "category": "family",
+      "titleKey": "event.family_inheritance_dispute_siblings.title",
+      "bodyKey": "event.family_inheritance_dispute_siblings.body",
+      "severity": "notable",
+      "ageGate": [
+        35,
+        65
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "compromise",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 3,
+            "wealth": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "press_claim",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 8,
+            "bonds": -8
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_grandchildren_arrival",
+      "category": "family",
+      "titleKey": "event.family_grandchildren_arrival.title",
+      "bodyKey": "event.family_grandchildren_arrival.body",
+      "severity": "minor",
+      "ageGate": [
+        50,
+        75
+      ],
+      "baseWeight": 1.6,
+      "effects": {
+        "bonds": 8
+      }
+    },
+    {
+      "id": "family_widowed_remarriage",
+      "category": "family",
+      "titleKey": "event.family_widowed_remarriage.title",
+      "bodyKey": "event.family_widowed_remarriage.body",
+      "severity": "notable",
+      "ageGate": [
+        30,
+        85
+      ],
+      "baseWeight": 0.8,
+      "requires": {
+        "traits": [
+          "widowed"
+        ]
+      },
+      "choices": [
+        {
+          "id": "remarry",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "bonds": 6,
+            "wealth": 3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "stay_alone",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_widowed_moving_in_with_children",
+      "category": "family",
+      "titleKey": "event.family_widowed_moving_in_with_children.title",
+      "bodyKey": "event.family_widowed_moving_in_with_children.body",
+      "severity": "minor",
+      "ageGate": [
+        40,
+        90
+      ],
+      "baseWeight": 0.9,
+      "requires": {
+        "traits": [
+          "widowed"
+        ]
+      },
+      "effects": {
+        "bonds": 5,
+        "wealth": -2,
+        "standing": -1
+      }
+    },
+    {
+      "id": "family_passing_on_the_house",
+      "category": "family",
+      "titleKey": "event.family_passing_on_the_house.title",
+      "bodyKey": "event.family_passing_on_the_house.body",
+      "severity": "notable",
+      "ageGate": [
+        60,
+        85
+      ],
+      "baseWeight": 1.1,
+      "choices": [
+        {
+          "id": "one_heir",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -4,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "divide_equally",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 4
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_loneliness_old_age",
+      "category": "family",
+      "titleKey": "event.family_loneliness_old_age.title",
+      "bodyKey": "event.family_loneliness_old_age.body",
+      "severity": "notable",
+      "ageGate": [
+        70,
+        95
+      ],
+      "baseWeight": 1.3,
+      "effects": {
+        "bonds": -8,
+        "health": -4
+      }
+    },
+    {
+      "id": "family_caring_for_aging_parent",
+      "category": "family",
+      "titleKey": "event.family_caring_for_aging_parent.title",
+      "bodyKey": "event.family_caring_for_aging_parent.body",
+      "severity": "notable",
+      "ageGate": [
+        35,
+        60
+      ],
+      "baseWeight": 1.3,
+      "choices": [
+        {
+          "id": "move_in",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 5,
+            "wealth": -4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "send_care_home",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 1,
+            "bonds": -6
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_large_family_economic_strain",
+      "category": "family",
+      "titleKey": "event.family_large_family_economic_strain.title",
+      "bodyKey": "event.family_large_family_economic_strain.body",
+      "severity": "notable",
+      "ageGate": [
+        25,
+        45
+      ],
+      "baseWeight": 1.3,
+      "weightBy": {
+        "incomeTier": {
+          "low": 1.4
+        }
+      },
+      "effects": {
+        "wealth": -6,
+        "bonds": 3
+      }
+    },
+    {
+      "id": "family_stepparent_arrival",
+      "category": "family",
+      "titleKey": "event.family_stepparent_arrival.title",
+      "bodyKey": "event.family_stepparent_arrival.body",
+      "severity": "notable",
+      "ageGate": [
+        5,
+        16
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "accept",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "reject",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -6
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_adult_child_returns_home",
+      "category": "family",
+      "titleKey": "event.family_adult_child_returns_home.title",
+      "bodyKey": "event.family_adult_child_returns_home.body",
+      "severity": "minor",
+      "ageGate": [
+        45,
+        70
+      ],
+      "baseWeight": 1,
+      "effects": {
+        "wealth": -3,
+        "bonds": 3
+      }
+    },
+    {
+      "id": "family_reunification_after_loss",
+      "category": "family",
+      "titleKey": "event.family_reunification_after_loss.title",
+      "bodyKey": "event.family_reunification_after_loss.body",
+      "severity": "minor",
+      "ageGate": [
+        10,
+        20
+      ],
+      "baseWeight": 1,
+      "effects": {
+        "bonds": 6
+      }
+    },
+    {
+      "id": "family_wealth_transfer_siblings",
+      "category": "family",
+      "titleKey": "event.family_wealth_transfer_siblings.title",
+      "bodyKey": "event.family_wealth_transfer_siblings.body",
+      "severity": "notable",
+      "ageGate": [
+        30,
+        55
+      ],
+      "baseWeight": 1,
+      "choices": [
+        {
+          "id": "help_sibling",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 5,
+            "wealth": -5
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "decline",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -5
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_household_economic_shock_early",
+      "category": "family",
+      "titleKey": "event.family_household_economic_shock_early.title",
+      "bodyKey": "event.family_household_economic_shock_early.body",
+      "severity": "notable",
+      "ageGate": [
+        0,
+        6
+      ],
+      "baseWeight": 1,
+      "weightBy": {
+        "incomeTier": {
+          "low": 1.3
+        }
+      },
+      "effects": {
+        "wealth": -6,
+        "health": -2
+      }
+    },
+    {
+      "id": "family_longtime_caregiver_fatigue",
+      "category": "family",
+      "titleKey": "event.family_longtime_caregiver_fatigue.title",
+      "bodyKey": "event.family_longtime_caregiver_fatigue.body",
+      "severity": "notable",
+      "ageGate": [
+        40,
+        65
+      ],
+      "baseWeight": 1.1,
+      "effects": {
+        "health": -5,
+        "bonds": 2
+      }
+    },
+    {
+      "id": "family_sibling_support_network",
+      "category": "family",
+      "titleKey": "event.family_sibling_support_network.title",
+      "bodyKey": "event.family_sibling_support_network.body",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        40
+      ],
+      "baseWeight": 1.2,
+      "effects": {
+        "bonds": 5,
+        "wealth": 2
+      }
+    },
+    {
+      "id": "family_child_born",
+      "category": "family",
+      "titleKey": "event.family_child_born.title",
+      "bodyKey": "event.family_child_born.body",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        45
+      ],
+      "requires": {
+        "traits": [
+          "married"
+        ]
+      },
+      "baseWeight": 1.3,
+      "choices": [
+        {
+          "id": "hospital_birth",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -6,
+            "bonds": 5
+          },
+          "mortalityDelta": 1,
+          "childrenDelta": 1,
+          "requires": {
+            "statsAbove": {
+              "wealth": 25
+            }
+          }
+        },
+        {
+          "id": "home_birth",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": 5
+          },
+          "mortalityDelta": 1.4,
+          "mortalityYears": 1,
+          "childrenDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "family_late_child_born",
+      "category": "family",
+      "titleKey": "event.family_late_child_born.title",
+      "bodyKey": "event.family_late_child_born.body",
+      "severity": "minor",
+      "ageGate": [
+        35,
+        49
+      ],
+      "requires": {
+        "traits": [
+          "married"
+        ]
+      },
+      "baseWeight": 0.5,
+      "effects": {
+        "bonds": 4,
+        "wealth": -4
+      },
+      "childrenDelta": 1
+    }
+  ],
+  "i18n": {
+    "ru": {
+      "event.family_sibling_death.title": "Смерть брата или сестры",
+      "event.family_sibling_death.body": "Один из братьев или сестёр умирает от болезни. Дом надолго погружается в тишину.",
+      "event.family_new_sibling_born.title": "В семье появляется ещё один ребёнок",
+      "event.family_new_sibling_born.body": "В доме рождается ещё один ребёнок. Забот становится больше, но и опора в будущем — тоже.",
+      "event.family_household_relocation.title": "Семья думает о переезде",
+      "event.family_household_relocation.body": "Работа отца требует переезда в другой район. Это сулит больше денег, но рвёт привычные связи.",
+      "event.family_household_relocation.choice.move.label": "Переехать",
+      "event.family_household_relocation.choice.stay.label": "Остаться на месте",
+      "event.family_loss_of_one_parent.title": "Смерть одного из родителей",
+      "event.family_loss_of_one_parent.body": "Один из родителей умирает. Семейный бюджет и распорядок дома резко меняются.",
+      "event.family_orphaned.title": "Ребёнок теряет обоих родителей",
+      "event.family_orphaned.body": "Оба родителя умирают один за другим. Родственники решают, кто возьмёт ребёнка, или его отправляют в приют.",
+      "event.family_orphaned.choice.relative.label": "Жить у родственников",
+      "event.family_orphaned.choice.institution.label": "Отправить в приют",
+      "event.family_housework_burden.title": "Домашние обязанности растут",
+      "event.family_housework_burden.body": "Матери нужна помощь по дому, а в школе от этого всё больше отстают.",
+      "event.family_housework_burden.choice.chores.label": "Помогать по дому",
+      "event.family_housework_burden.choice.school_first.label": "Отстаивать время на учёбу",
+      "event.family_sibling_bond_strengthens.title": "Крепкая дружба с братом или сестрой",
+      "event.family_sibling_bond_strengthens.body": "С одним из братьев или сестёр складывается особенно тесная дружба, которая останется на всю жизнь.",
+      "event.family_relative_moves_in.title": "В доме появляется родственник",
+      "event.family_relative_moves_in.body": "Дальний родственник, оставшийся без жилья, переезжает жить к ним. Дом становится теснее.",
+      "event.family_dowry_savings_plan.title": "Семья копит на приданое",
+      "event.family_dowry_savings_plan.body": "По местному обычаю семья должна собрать приданое. Можно откладывать годами или взять в долг сразу.",
+      "event.family_dowry_savings_plan.choice.save.label": "Копить постепенно",
+      "event.family_dowry_savings_plan.choice.borrow.label": "Взять в долг",
+      "event.family_landowner_inheritance.title": "Наследство в виде земли",
+      "event.family_landowner_inheritance.body": "После смерти старшего в роду переходит участок земли. Его можно взять в хозяйство или продать.",
+      "event.family_landowner_inheritance.choice.accept.label": "Взять землю в хозяйство",
+      "event.family_landowner_inheritance.choice.sell.label": "Продать землю",
+      "event.family_medical_debt_crisis.title": "Дорогое лечение в семье",
+      "event.family_medical_debt_crisis.body": "Лечение близкого обходится дороже, чем у семьи есть. Нужно решить, брать ли в долг.",
+      "event.family_medical_debt_crisis.choice.borrow.label": "Взять в долг на лечение",
+      "event.family_medical_debt_crisis.choice.forgo.label": "Отказаться от части лечения",
+      "event.family_crop_failure_debt.title": "Урожай не удался",
+      "event.family_crop_failure_debt.body": "Засуха губит урожай, и семье нечем расплатиться за семена и аренду земли.",
+      "event.family_crop_failure_debt.choice.loan.label": "Взять заём у соседа",
+      "event.family_crop_failure_debt.choice.sell_assets.label": "Продать часть имущества",
+      "event.family_divorce_household_split.title": "Семья распадается",
+      "event.family_divorce_household_split.body": "Брак заканчивается разводом, и предстоит разделить имущество и договориться о детях.",
+      "event.family_divorce_household_split.choice.keep_children.label": "Взять на себя заботу о детях",
+      "event.family_divorce_household_split.choice.split_assets.label": "Сосредоточиться на разделе имущества",
+      "event.family_married_young_strain.title": "Большая семья образуется быстро",
+      "event.family_married_young_strain.body": "Дети в раннем браке появляются один за другим, и хозяйство едва успевает справляться.",
+      "event.family_married_young_strain.choice.support.label": "Опереться на родню",
+      "event.family_married_young_strain.choice.strain.label": "Справляться своими силами",
+      "event.family_arranged_marriage_inlaw_tension.title": "Напряжение с роднёй супруга",
+      "event.family_arranged_marriage_inlaw_tension.body": "Договорённый брак сводит под одной крышей две семьи с разными привычками, и это даётся не легко.",
+      "event.family_arranged_marriage_inlaw_tension.choice.accommodate.label": "Подстроиться под уклад семьи супруга",
+      "event.family_arranged_marriage_inlaw_tension.choice.resist.label": "Настаивать на своём укладе",
+      "event.family_arranged_marriage_stable_household.title": "Устойчивое общее хозяйство",
+      "event.family_arranged_marriage_stable_household.body": "Договорённый брак оборачивается прочным союзом: обе семьи вместе ведут хозяйство без лишних раздоров.",
+      "event.family_returned_migrant_tension.title": "Возвращение домой непросто",
+      "event.family_returned_migrant_tension.body": "После долгих лет в отъезде возвращение домой вызывает недопонимание с тем, кто всё это время оставался в семье.",
+      "event.family_returned_migrant_tension.choice.reintegrate.label": "Постепенно встраиваться в прежнюю жизнь",
+      "event.family_returned_migrant_tension.choice.friction.label": "Жить отдельно от остальной родни",
+      "event.family_elder_caregiving_duty.title": "Родителю требуется постоянный уход",
+      "event.family_elder_caregiving_duty.body": "Стареющий родитель больше не может обходиться без посторонней помощи.",
+      "event.family_elder_caregiving_duty.choice.care_personally.label": "Ухаживать лично",
+      "event.family_elder_caregiving_duty.choice.hire_help.label": "Нанять помощника",
+      "event.family_inheritance_dispute_siblings.title": "Спор о наследстве",
+      "event.family_inheritance_dispute_siblings.body": "После смерти родителя братья и сёстры не могут поделить дом и землю без спора.",
+      "event.family_inheritance_dispute_siblings.choice.compromise.label": "Пойти на уступки ради мира",
+      "event.family_inheritance_dispute_siblings.choice.press_claim.label": "Настаивать на своей доле",
+      "event.family_grandchildren_arrival.title": "Рождение внука",
+      "event.family_grandchildren_arrival.body": "У одного из детей появляется собственный ребёнок. Дом снова наполняется заботами о младших.",
+      "event.family_widowed_remarriage.title": "Новая глава после вдовства",
+      "event.family_widowed_remarriage.body": "После смерти супруга родня предлагает новый брак как способ не остаться одной в хозяйстве.",
+      "event.family_widowed_remarriage.choice.remarry.label": "Согласиться на новый брак",
+      "event.family_widowed_remarriage.choice.stay_alone.label": "Остаться одной",
+      "event.family_widowed_moving_in_with_children.title": "Переезд к взрослым детям",
+      "event.family_widowed_moving_in_with_children.body": "После смерти супруга один из взрослых детей забирает родителя жить к себе.",
+      "event.family_passing_on_the_house.title": "Передача дома детям",
+      "event.family_passing_on_the_house.body": "Пора решить, кому из детей достанется дом: одному наследнику или поровну всем.",
+      "event.family_passing_on_the_house.choice.one_heir.label": "Оставить дом одному из детей",
+      "event.family_passing_on_the_house.choice.divide_equally.label": "Разделить между всеми детьми",
+      "event.family_loneliness_old_age.title": "Одиночество в старости",
+      "event.family_loneliness_old_age.body": "Дети разъехались, друзья один за другим уходят из жизни, и дни тянутся в тишине.",
+      "event.family_caring_for_aging_parent.title": "Родитель слабеет",
+      "event.family_caring_for_aging_parent.body": "Стареющий родитель теряет способность жить самостоятельно, и нужно решить, как организовать уход.",
+      "event.family_caring_for_aging_parent.choice.move_in.label": "Забрать родителя к себе",
+      "event.family_caring_for_aging_parent.choice.send_care_home.label": "Устроить в дом престарелых",
+      "event.family_large_family_economic_strain.title": "Большая семья и тугой бюджет",
+      "event.family_large_family_economic_strain.body": "Число детей в доме растёт быстрее, чем доходы семьи, и денег едва хватает на всех.",
+      "event.family_stepparent_arrival.title": "В доме появляется новый взрослый",
+      "event.family_stepparent_arrival.body": "После смерти или развода одного из родителей в доме появляется новый взрослый, с которым предстоит научиться жить.",
+      "event.family_stepparent_arrival.choice.accept.label": "Постепенно принять нового члена семьи",
+      "event.family_stepparent_arrival.choice.reject.label": "Держаться на расстоянии",
+      "event.family_adult_child_returns_home.title": "Взрослый ребёнок возвращается домой",
+      "event.family_adult_child_returns_home.body": "Потеряв работу в городе, взрослый ребёнок возвращается жить к родителям.",
+      "event.family_reunification_after_loss.title": "Семья держится вместе",
+      "event.family_reunification_after_loss.body": "После тяжёлой потери родственники собираются, чтобы помочь друг другу пережить это время.",
+      "event.family_wealth_transfer_siblings.title": "Брат или сестра просит помощи",
+      "event.family_wealth_transfer_siblings.body": "У одного из братьев или сестёр случается тяжёлый год, и он просит взаймы у остальной семьи.",
+      "event.family_wealth_transfer_siblings.choice.help_sibling.label": "Помочь деньгами",
+      "event.family_wealth_transfer_siblings.choice.decline.label": "Отказать",
+      "event.family_household_economic_shock_early.title": "Тяжёлый год для семьи",
+      "event.family_household_economic_shock_early.body": "Потеря работы кормильца оставляет семью без денег на несколько месяцев.",
+      "event.family_longtime_caregiver_fatigue.title": "Усталость многолетнего ухода",
+      "event.family_longtime_caregiver_fatigue.body": "Годы ухода за больным родственником подкашивают собственное здоровье.",
+      "event.family_sibling_support_network.title": "Братья и сёстры держатся вместе",
+      "event.family_sibling_support_network.body": "Братья и сёстры договариваются помогать друг другу деньгами и временем в трудные месяцы.",
+      "event.family_child_born.title": "В семье родился ребёнок",
+      "event.family_child_born.body": "У персонажа родился ребёнок. Это меняет расходы семьи и то, как соседи и родственники воспринимают её положение.",
+      "event.family_child_born.choice.hospital_birth.label": "Рожать в больнице",
+      "event.family_child_born.choice.home_birth.label": "Рожать дома",
+      "event.family_late_child_born.title": "Позднее рождение ребёнка",
+      "event.family_late_child_born.body": "Уже немолодые родители снова ждут ребёнка. Семья перераспределяет и так ограниченные средства на нового члена семьи."
+    },
+    "en": {
+      "event.family_sibling_death.title": "The death of a sibling",
+      "event.family_sibling_death.body": "One of the siblings dies of illness. The household falls quiet for a long time.",
+      "event.family_new_sibling_born.title": "Another child joins the family",
+      "event.family_new_sibling_born.body": "Another child is born into the household. There is more to care for now, but also more support to come.",
+      "event.family_household_relocation.title": "The family weighs a move",
+      "event.family_household_relocation.body": "The father's work calls for a move to another district. It promises more money, but breaks familiar ties.",
+      "event.family_household_relocation.choice.move.label": "Move",
+      "event.family_household_relocation.choice.stay.label": "Stay where they are",
+      "event.family_loss_of_one_parent.title": "The death of a parent",
+      "event.family_loss_of_one_parent.body": "One parent dies. The family budget and the household routine change sharply.",
+      "event.family_orphaned.title": "The child loses both parents",
+      "event.family_orphaned.body": "Both parents die within a short time of each other. Relatives decide who will take the child in, or they send the child to an institution.",
+      "event.family_orphaned.choice.relative.label": "Go to live with relatives",
+      "event.family_orphaned.choice.institution.label": "Send to an institution",
+      "event.family_housework_burden.title": "Household chores pile up",
+      "event.family_housework_burden.body": "The mother needs help around the house, and schoolwork falls further behind because of it.",
+      "event.family_housework_burden.choice.chores.label": "Help around the house",
+      "event.family_housework_burden.choice.school_first.label": "Insist on time for schoolwork",
+      "event.family_sibling_bond_strengthens.title": "A close bond with a sibling",
+      "event.family_sibling_bond_strengthens.body": "An especially close friendship forms with a sibling, one that will last a lifetime.",
+      "event.family_relative_moves_in.title": "A relative moves in",
+      "event.family_relative_moves_in.body": "A distant relative who lost their housing moves in with them. The house gets more crowded.",
+      "event.family_dowry_savings_plan.title": "The family saves for a dowry",
+      "event.family_dowry_savings_plan.body": "Local custom requires the family to put together a dowry. They can save for years, or borrow the sum at once.",
+      "event.family_dowry_savings_plan.choice.save.label": "Save gradually, over years",
+      "event.family_dowry_savings_plan.choice.borrow.label": "Borrow the money",
+      "event.family_landowner_inheritance.title": "An inheritance of land",
+      "event.family_landowner_inheritance.body": "After the family elder's death, a plot of land passes down. It can be kept and worked, or sold.",
+      "event.family_landowner_inheritance.choice.accept.label": "Keep the land and work it",
+      "event.family_landowner_inheritance.choice.sell.label": "Sell the land",
+      "event.family_medical_debt_crisis.title": "An expensive medical bill",
+      "event.family_medical_debt_crisis.body": "A family member's treatment costs more than the household has. They must decide whether to borrow.",
+      "event.family_medical_debt_crisis.choice.borrow.label": "Borrow to pay for treatment",
+      "event.family_medical_debt_crisis.choice.forgo.label": "Forgo part of the treatment",
+      "event.family_crop_failure_debt.title": "The harvest fails",
+      "event.family_crop_failure_debt.body": "A drought ruins the harvest, leaving the family unable to pay for seed and land rent.",
+      "event.family_crop_failure_debt.choice.loan.label": "Take a loan from a neighbor",
+      "event.family_crop_failure_debt.choice.sell_assets.label": "Sell off some belongings",
+      "event.family_divorce_household_split.title": "The household breaks apart",
+      "event.family_divorce_household_split.body": "The marriage ends in divorce, and the property must be divided and arrangements made for the children.",
+      "event.family_divorce_household_split.choice.keep_children.label": "Take on the care of the children",
+      "event.family_divorce_household_split.choice.split_assets.label": "Focus on dividing the property",
+      "event.family_married_young_strain.title": "A large family forms quickly",
+      "event.family_married_young_strain.body": "Children from the early marriage arrive one after another, and the household barely keeps up.",
+      "event.family_married_young_strain.choice.support.label": "Lean on extended family for help",
+      "event.family_married_young_strain.choice.strain.label": "Manage on their own",
+      "event.family_arranged_marriage_inlaw_tension.title": "Tension with the in-laws",
+      "event.family_arranged_marriage_inlaw_tension.body": "The arranged marriage brings two families with different habits under one roof, and it does not come easily.",
+      "event.family_arranged_marriage_inlaw_tension.choice.accommodate.label": "Adapt to the in-laws' household ways",
+      "event.family_arranged_marriage_inlaw_tension.choice.resist.label": "Insist on keeping their own ways",
+      "event.family_arranged_marriage_stable_household.title": "A stable shared household",
+      "event.family_arranged_marriage_stable_household.body": "The arranged marriage turns into a steady partnership: both families run the household together without much friction.",
+      "event.family_returned_migrant_tension.title": "Coming home is not simple",
+      "event.family_returned_migrant_tension.body": "After years away, coming home causes friction with those who stayed behind the whole time.",
+      "event.family_returned_migrant_tension.choice.reintegrate.label": "Work slowly back into the old routine",
+      "event.family_returned_migrant_tension.choice.friction.label": "Live apart from the rest of the family",
+      "event.family_elder_caregiving_duty.title": "A parent now needs constant care",
+      "event.family_elder_caregiving_duty.body": "An aging parent can no longer manage without outside help.",
+      "event.family_elder_caregiving_duty.choice.care_personally.label": "Care for them personally",
+      "event.family_elder_caregiving_duty.choice.hire_help.label": "Hire help",
+      "event.family_inheritance_dispute_siblings.title": "A dispute over the inheritance",
+      "event.family_inheritance_dispute_siblings.body": "After a parent's death, the siblings cannot divide the house and land without a dispute.",
+      "event.family_inheritance_dispute_siblings.choice.compromise.label": "Compromise to keep the peace",
+      "event.family_inheritance_dispute_siblings.choice.press_claim.label": "Press for their full share",
+      "event.family_grandchildren_arrival.title": "A grandchild is born",
+      "event.family_grandchildren_arrival.body": "One of the children has a child of their own. The house fills again with the care of a little one.",
+      "event.family_widowed_remarriage.title": "A new chapter after widowhood",
+      "event.family_widowed_remarriage.body": "After the spouse's death, relatives suggest a new marriage as a way not to be left alone running the household.",
+      "event.family_widowed_remarriage.choice.remarry.label": "Agree to remarry",
+      "event.family_widowed_remarriage.choice.stay_alone.label": "Remain on their own",
+      "event.family_widowed_moving_in_with_children.title": "Moving in with the grown children",
+      "event.family_widowed_moving_in_with_children.body": "After the spouse's death, one of the grown children takes the surviving parent in.",
+      "event.family_passing_on_the_house.title": "Passing the house to the children",
+      "event.family_passing_on_the_house.body": "It is time to decide who inherits the house: a single heir, or an equal share for every child.",
+      "event.family_passing_on_the_house.choice.one_heir.label": "Leave the house to one child",
+      "event.family_passing_on_the_house.choice.divide_equally.label": "Divide it equally among the children",
+      "event.family_loneliness_old_age.title": "Loneliness in old age",
+      "event.family_loneliness_old_age.body": "The children have scattered, friends pass away one by one, and the days stretch on in quiet.",
+      "event.family_caring_for_aging_parent.title": "A parent grows frail",
+      "event.family_caring_for_aging_parent.body": "An aging parent can no longer live alone, and a decision has to be made about how to arrange their care.",
+      "event.family_caring_for_aging_parent.choice.move_in.label": "Take the parent into their own home",
+      "event.family_caring_for_aging_parent.choice.send_care_home.label": "Place them in a care home",
+      "event.family_large_family_economic_strain.title": "A large family and a tight budget",
+      "event.family_large_family_economic_strain.body": "The number of children in the house grows faster than the family income, and money barely stretches to cover everyone.",
+      "event.family_stepparent_arrival.title": "A new adult joins the household",
+      "event.family_stepparent_arrival.body": "After a parent's death or divorce, a new adult joins the household, and learning to live together takes time.",
+      "event.family_stepparent_arrival.choice.accept.label": "Gradually accept the new family member",
+      "event.family_stepparent_arrival.choice.reject.label": "Keep them at a distance",
+      "event.family_adult_child_returns_home.title": "A grown child moves back home",
+      "event.family_adult_child_returns_home.body": "After losing a job in the city, the grown child moves back in with their parents.",
+      "event.family_reunification_after_loss.title": "The family holds together",
+      "event.family_reunification_after_loss.body": "After a hard loss, relatives gather together to help one another through the hardest months.",
+      "event.family_wealth_transfer_siblings.title": "A sibling asks for help",
+      "event.family_wealth_transfer_siblings.body": "One of the siblings goes through a hard year and asks the rest of the family for a loan.",
+      "event.family_wealth_transfer_siblings.choice.help_sibling.label": "Help them out financially",
+      "event.family_wealth_transfer_siblings.choice.decline.label": "Turn them down",
+      "event.family_household_economic_shock_early.title": "A hard year for the family",
+      "event.family_household_economic_shock_early.body": "The breadwinner loses their job, leaving the family without money for months.",
+      "event.family_longtime_caregiver_fatigue.title": "The weariness of years of caregiving",
+      "event.family_longtime_caregiver_fatigue.body": "Years of caring for a sick relative take a toll on their own health.",
+      "event.family_sibling_support_network.title": "Siblings stick together",
+      "event.family_sibling_support_network.body": "The siblings agree to help each other with money and time during hard months.",
+      "event.family_child_born.title": "A child is born into the family",
+      "event.family_child_born.body": "A child was born to the character. It reshapes the household's spending and how relatives and neighbors see its standing.",
+      "event.family_child_born.choice.hospital_birth.label": "Give birth at a hospital",
+      "event.family_child_born.choice.home_birth.label": "Give birth at home",
+      "event.family_late_child_born.title": "A late child is born",
+      "event.family_late_child_born.body": "Already no longer young, the parents are expecting again. The family stretches its already limited means to cover a new member."
+    }
+  }
+}

@@ -1,0 +1,5159 @@
+[
+  {
+    "iso3": "DZA",
+    "name": {
+      "ru": "Алжир",
+      "en": "Algeria"
+    },
+    "population": 45500000,
+    "birthsPerYear": 1103500,
+    "lifeExpectancy": {
+      "male": 69.5,
+      "female": 72.5
+    },
+    "infantMortality": 20,
+    "gdpPerCapita": 11500,
+    "gini": 0.27,
+    "urbanShare": 0.75,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 8,
+    "conflictIndex": 0.15,
+    "homicideRate": 1.3,
+    "traditionPacks": [
+      "mena_levant"
+    ],
+    "regions": [
+      "dza_algiers",
+      "dza_tell",
+      "dza_plateaus",
+      "dza_sahara"
+    ]
+  },
+  {
+    "iso3": "AGO",
+    "name": {
+      "ru": "Ангола",
+      "en": "Angola"
+    },
+    "population": 36700000,
+    "birthsPerYear": 1489800,
+    "lifeExpectancy": {
+      "male": 60,
+      "female": 65
+    },
+    "infantMortality": 50,
+    "gdpPerCapita": 7000,
+    "gini": 0.51,
+    "urbanShare": 0.68,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 5.5,
+    "conflictIndex": 0.15,
+    "homicideRate": 6,
+    "traditionPacks": [
+      "caf"
+    ],
+    "regions": [
+      "ago_luanda",
+      "ago_north",
+      "ago_highlands",
+      "ago_south"
+    ]
+  },
+  {
+    "iso3": "BEN",
+    "name": {
+      "ru": "Бенин",
+      "en": "Benin"
+    },
+    "population": 13700000,
+    "birthsPerYear": 474500,
+    "lifeExpectancy": {
+      "male": 61,
+      "female": 64
+    },
+    "infantMortality": 55,
+    "gdpPerCapita": 3700,
+    "gini": 0.38,
+    "urbanShare": 0.49,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 3.5,
+    "conflictIndex": 0.2,
+    "homicideRate": 6.5,
+    "traditionPacks": [
+      "wafr_coastal"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "BWA",
+    "name": {
+      "ru": "Ботсвана",
+      "en": "Botswana"
+    },
+    "population": 2600000,
+    "birthsPerYear": 66200,
+    "lifeExpectancy": {
+      "male": 61,
+      "female": 67
+    },
+    "infantMortality": 30,
+    "gdpPerCapita": 17000,
+    "gini": 0.53,
+    "urbanShare": 0.72,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 9.5,
+    "conflictIndex": 0.05,
+    "homicideRate": 10,
+    "traditionPacks": [
+      "safr"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "BFA",
+    "name": {
+      "ru": "Буркина-Фасо",
+      "en": "Burkina Faso"
+    },
+    "population": 23300000,
+    "birthsPerYear": 938000,
+    "lifeExpectancy": {
+      "male": 60,
+      "female": 63
+    },
+    "infantMortality": 50,
+    "gdpPerCapita": 2400,
+    "gini": 0.35,
+    "urbanShare": 0.32,
+    "incomeTier": "low",
+    "schoolingYears": 1.8,
+    "conflictIndex": 0.55,
+    "homicideRate": 7,
+    "traditionPacks": [
+      "sahel_muslim"
+    ],
+    "regions": [
+      "bfa_ouaga",
+      "bfa_south",
+      "bfa_north"
+    ]
+  },
+  {
+    "iso3": "BDI",
+    "name": {
+      "ru": "Бурунди",
+      "en": "Burundi"
+    },
+    "population": 13200000,
+    "birthsPerYear": 496600,
+    "lifeExpectancy": {
+      "male": 61,
+      "female": 65
+    },
+    "infantMortality": 40,
+    "gdpPerCapita": 900,
+    "gini": 0.38,
+    "urbanShare": 0.14,
+    "incomeTier": "low",
+    "schoolingYears": 3.2,
+    "conflictIndex": 0.3,
+    "homicideRate": 5,
+    "traditionPacks": [
+      "eafr"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "CPV",
+    "name": {
+      "ru": "Кабо-Верде",
+      "en": "Cabo Verde"
+    },
+    "population": 600000,
+    "birthsPerYear": 13200,
+    "lifeExpectancy": {
+      "male": 71,
+      "female": 77
+    },
+    "infantMortality": 15,
+    "gdpPerCapita": 8500,
+    "gini": 0.42,
+    "urbanShare": 0.67,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 6.5,
+    "conflictIndex": 0.02,
+    "homicideRate": 10,
+    "traditionPacks": [
+      "wafr_coastal"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "CMR",
+    "name": {
+      "ru": "Камерун",
+      "en": "Cameroon"
+    },
+    "population": 28600000,
+    "birthsPerYear": 1048400,
+    "lifeExpectancy": {
+      "male": 59,
+      "female": 62
+    },
+    "infantMortality": 50,
+    "gdpPerCapita": 4100,
+    "gini": 0.46,
+    "urbanShare": 0.58,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 6.5,
+    "conflictIndex": 0.35,
+    "homicideRate": 6,
+    "traditionPacks": [
+      "wafr_coastal",
+      "sahel_muslim"
+    ],
+    "regions": [
+      "cmr_urban",
+      "cmr_west",
+      "cmr_south_east",
+      "cmr_far_north"
+    ]
+  },
+  {
+    "iso3": "CAF",
+    "name": {
+      "ru": "Центральноафриканская Республика",
+      "en": "Central African Republic"
+    },
+    "population": 5600000,
+    "birthsPerYear": 231700,
+    "lifeExpectancy": {
+      "male": 52,
+      "female": 56
+    },
+    "infantMortality": 80,
+    "gdpPerCapita": 1100,
+    "gini": 0.56,
+    "urbanShare": 0.42,
+    "incomeTier": "low",
+    "schoolingYears": 4.5,
+    "conflictIndex": 0.7,
+    "homicideRate": 15,
+    "traditionPacks": [
+      "caf"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "TCD",
+    "name": {
+      "ru": "Чад",
+      "en": "Chad"
+    },
+    "population": 18300000,
+    "birthsPerYear": 860800,
+    "lifeExpectancy": {
+      "male": 53,
+      "female": 56
+    },
+    "infantMortality": 70,
+    "gdpPerCapita": 1700,
+    "gini": 0.38,
+    "urbanShare": 0.24,
+    "incomeTier": "low",
+    "schoolingYears": 2.5,
+    "conflictIndex": 0.5,
+    "homicideRate": 9,
+    "traditionPacks": [
+      "sahel_muslim"
+    ],
+    "regions": [
+      "tcd_ndjamena",
+      "tcd_south",
+      "tcd_sahel",
+      "tcd_north"
+    ]
+  },
+  {
+    "iso3": "COM",
+    "name": {
+      "ru": "Коморы",
+      "en": "Comoros"
+    },
+    "population": 850000,
+    "birthsPerYear": 30900,
+    "lifeExpectancy": {
+      "male": 63,
+      "female": 67
+    },
+    "infantMortality": 45,
+    "gdpPerCapita": 3200,
+    "gini": 0.45,
+    "urbanShare": 0.3,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 5,
+    "conflictIndex": 0.05,
+    "homicideRate": 6,
+    "traditionPacks": [
+      "eafr"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "COG",
+    "name": {
+      "ru": "Республика Конго",
+      "en": "Congo"
+    },
+    "population": 5800000,
+    "birthsPerYear": 220700,
+    "lifeExpectancy": {
+      "male": 61,
+      "female": 65
+    },
+    "infantMortality": 35,
+    "gdpPerCapita": 4300,
+    "gini": 0.49,
+    "urbanShare": 0.68,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 6.5,
+    "conflictIndex": 0.2,
+    "homicideRate": 8,
+    "traditionPacks": [
+      "caf"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "COD",
+    "name": {
+      "ru": "Демократическая Республика Конго",
+      "en": "DR Congo"
+    },
+    "population": 102000000,
+    "birthsPerYear": 4303800,
+    "lifeExpectancy": {
+      "male": 59,
+      "female": 63
+    },
+    "infantMortality": 65,
+    "gdpPerCapita": 1500,
+    "gini": 0.42,
+    "urbanShare": 0.46,
+    "incomeTier": "low",
+    "schoolingYears": 6.9,
+    "conflictIndex": 0.55,
+    "homicideRate": 10,
+    "traditionPacks": [
+      "caf"
+    ],
+    "regions": [
+      "cod_kinshasa",
+      "cod_katanga",
+      "cod_kivu",
+      "cod_kasai",
+      "cod_equateur"
+    ]
+  },
+  {
+    "iso3": "CIV",
+    "name": {
+      "ru": "Кот-д'Ивуар",
+      "en": "Cote d'Ivoire"
+    },
+    "population": 29400000,
+    "birthsPerYear": 1103500,
+    "lifeExpectancy": {
+      "male": 58,
+      "female": 61
+    },
+    "infantMortality": 55,
+    "gdpPerCapita": 6000,
+    "gini": 0.37,
+    "urbanShare": 0.52,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 5.5,
+    "conflictIndex": 0.2,
+    "homicideRate": 7,
+    "traditionPacks": [
+      "wafr_coastal"
+    ],
+    "regions": [
+      "civ_abidjan",
+      "civ_south",
+      "civ_central",
+      "civ_north"
+    ]
+  },
+  {
+    "iso3": "DJI",
+    "name": {
+      "ru": "Джибути",
+      "en": "Djibouti"
+    },
+    "population": 1100000,
+    "birthsPerYear": 29800,
+    "lifeExpectancy": {
+      "male": 65,
+      "female": 68
+    },
+    "infantMortality": 45,
+    "gdpPerCapita": 5500,
+    "gini": 0.42,
+    "urbanShare": 0.78,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 5,
+    "conflictIndex": 0.15,
+    "homicideRate": 8,
+    "traditionPacks": [
+      "horn_africa"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "EGY",
+    "name": {
+      "ru": "Египет",
+      "en": "Egypt"
+    },
+    "population": 112000000,
+    "birthsPerYear": 2207100,
+    "lifeExpectancy": {
+      "male": 70,
+      "female": 74
+    },
+    "infantMortality": 18,
+    "gdpPerCapita": 14500,
+    "gini": 0.31,
+    "urbanShare": 0.43,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 7.6,
+    "conflictIndex": 0.2,
+    "homicideRate": 1,
+    "traditionPacks": [
+      "mena_levant"
+    ],
+    "regions": [
+      "egy_cairo",
+      "egy_delta",
+      "egy_upper",
+      "egy_sinai"
+    ]
+  },
+  {
+    "iso3": "GNQ",
+    "name": {
+      "ru": "Экваториальная Гвинея",
+      "en": "Equatorial Guinea"
+    },
+    "population": 1700000,
+    "birthsPerYear": 60700,
+    "lifeExpectancy": {
+      "male": 59,
+      "female": 62
+    },
+    "infantMortality": 55,
+    "gdpPerCapita": 15000,
+    "gini": 0.5,
+    "urbanShare": 0.73,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 6,
+    "conflictIndex": 0.1,
+    "homicideRate": 8,
+    "traditionPacks": [
+      "caf"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "ERI",
+    "name": {
+      "ru": "Эритрея",
+      "en": "Eritrea"
+    },
+    "population": 3700000,
+    "birthsPerYear": 110400,
+    "lifeExpectancy": {
+      "male": 64,
+      "female": 68
+    },
+    "infantMortality": 35,
+    "gdpPerCapita": 1700,
+    "gini": 0.4,
+    "urbanShare": 0.4,
+    "incomeTier": "low",
+    "schoolingYears": 4,
+    "conflictIndex": 0.4,
+    "homicideRate": 7,
+    "traditionPacks": [
+      "horn_africa"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SWZ",
+    "name": {
+      "ru": "Эсватини",
+      "en": "Eswatini"
+    },
+    "population": 1200000,
+    "birthsPerYear": 33100,
+    "lifeExpectancy": {
+      "male": 58,
+      "female": 63
+    },
+    "infantMortality": 40,
+    "gdpPerCapita": 10500,
+    "gini": 0.54,
+    "urbanShare": 0.25,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 7,
+    "conflictIndex": 0.1,
+    "homicideRate": 14,
+    "traditionPacks": [
+      "safr"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "ETH",
+    "name": {
+      "ru": "Эфиопия",
+      "en": "Ethiopia"
+    },
+    "population": 126000000,
+    "birthsPerYear": 3862400,
+    "lifeExpectancy": {
+      "male": 65,
+      "female": 69
+    },
+    "infantMortality": 38,
+    "gdpPerCapita": 2800,
+    "gini": 0.35,
+    "urbanShare": 0.23,
+    "incomeTier": "low",
+    "schoolingYears": 3.5,
+    "conflictIndex": 0.35,
+    "homicideRate": 7.5,
+    "traditionPacks": [
+      "horn_africa"
+    ],
+    "regions": [
+      "eth_addis",
+      "eth_oromia",
+      "eth_amhara",
+      "eth_tigray",
+      "eth_snnpr",
+      "eth_lowlands"
+    ]
+  },
+  {
+    "iso3": "GAB",
+    "name": {
+      "ru": "Габон",
+      "en": "Gabon"
+    },
+    "population": 2400000,
+    "birthsPerYear": 71700,
+    "lifeExpectancy": {
+      "male": 64,
+      "female": 68
+    },
+    "infantMortality": 32,
+    "gdpPerCapita": 17000,
+    "gini": 0.38,
+    "urbanShare": 0.9,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 8.5,
+    "conflictIndex": 0.1,
+    "homicideRate": 9,
+    "traditionPacks": [
+      "caf"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "GMB",
+    "name": {
+      "ru": "Гамбия",
+      "en": "Gambia"
+    },
+    "population": 2700000,
+    "birthsPerYear": 104800,
+    "lifeExpectancy": {
+      "male": 62,
+      "female": 65
+    },
+    "infantMortality": 40,
+    "gdpPerCapita": 2200,
+    "gini": 0.36,
+    "urbanShare": 0.63,
+    "incomeTier": "low",
+    "schoolingYears": 4.5,
+    "conflictIndex": 0.1,
+    "homicideRate": 6,
+    "traditionPacks": [
+      "sahel_muslim"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "GHA",
+    "name": {
+      "ru": "Гана",
+      "en": "Ghana"
+    },
+    "population": 33500000,
+    "birthsPerYear": 1081500,
+    "lifeExpectancy": {
+      "male": 63,
+      "female": 66
+    },
+    "infantMortality": 33,
+    "gdpPerCapita": 6200,
+    "gini": 0.43,
+    "urbanShare": 0.58,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 7.3,
+    "conflictIndex": 0.1,
+    "homicideRate": 4,
+    "traditionPacks": [
+      "wafr_coastal"
+    ],
+    "regions": [
+      "gha_accra",
+      "gha_south",
+      "gha_north",
+      "gha_coast"
+    ]
+  },
+  {
+    "iso3": "GIN",
+    "name": {
+      "ru": "Гвинея",
+      "en": "Guinea"
+    },
+    "population": 14000000,
+    "birthsPerYear": 551800,
+    "lifeExpectancy": {
+      "male": 60,
+      "female": 62
+    },
+    "infantMortality": 55,
+    "gdpPerCapita": 2700,
+    "gini": 0.33,
+    "urbanShare": 0.38,
+    "incomeTier": "low",
+    "schoolingYears": 2.5,
+    "conflictIndex": 0.25,
+    "homicideRate": 7,
+    "traditionPacks": [
+      "sahel_muslim"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "GNB",
+    "name": {
+      "ru": "Гвинея-Бисау",
+      "en": "Guinea-Bissau"
+    },
+    "population": 2100000,
+    "birthsPerYear": 77200,
+    "lifeExpectancy": {
+      "male": 59,
+      "female": 62
+    },
+    "infantMortality": 55,
+    "gdpPerCapita": 2100,
+    "gini": 0.5,
+    "urbanShare": 0.45,
+    "incomeTier": "low",
+    "schoolingYears": 3,
+    "conflictIndex": 0.25,
+    "homicideRate": 7,
+    "traditionPacks": [
+      "wafr_coastal"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "KEN",
+    "name": {
+      "ru": "Кения",
+      "en": "Kenya"
+    },
+    "population": 55000000,
+    "birthsPerYear": 1544900,
+    "lifeExpectancy": {
+      "male": 64,
+      "female": 69
+    },
+    "infantMortality": 32,
+    "gdpPerCapita": 5800,
+    "gini": 0.4,
+    "urbanShare": 0.29,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 6.6,
+    "conflictIndex": 0.25,
+    "homicideRate": 5,
+    "traditionPacks": [
+      "eafr"
+    ],
+    "regions": [
+      "ken_nairobi",
+      "ken_central",
+      "ken_coast",
+      "ken_west"
+    ]
+  },
+  {
+    "iso3": "LSO",
+    "name": {
+      "ru": "Лесото",
+      "en": "Lesotho"
+    },
+    "population": 2300000,
+    "birthsPerYear": 60700,
+    "lifeExpectancy": {
+      "male": 54,
+      "female": 58
+    },
+    "infantMortality": 55,
+    "gdpPerCapita": 3000,
+    "gini": 0.44,
+    "urbanShare": 0.29,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 6.9,
+    "conflictIndex": 0.1,
+    "homicideRate": 43,
+    "traditionPacks": [
+      "safr"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "LBR",
+    "name": {
+      "ru": "Либерия",
+      "en": "Liberia"
+    },
+    "population": 5300000,
+    "birthsPerYear": 198600,
+    "lifeExpectancy": {
+      "male": 62,
+      "female": 65
+    },
+    "infantMortality": 55,
+    "gdpPerCapita": 1700,
+    "gini": 0.35,
+    "urbanShare": 0.52,
+    "incomeTier": "low",
+    "schoolingYears": 4.7,
+    "conflictIndex": 0.3,
+    "homicideRate": 3.5,
+    "traditionPacks": [
+      "wafr_coastal"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "LBY",
+    "name": {
+      "ru": "Ливия",
+      "en": "Libya"
+    },
+    "population": 6900000,
+    "birthsPerYear": 187600,
+    "lifeExpectancy": {
+      "male": 70,
+      "female": 75
+    },
+    "infantMortality": 11,
+    "gdpPerCapita": 15000,
+    "gini": 0.36,
+    "urbanShare": 0.81,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 7.5,
+    "conflictIndex": 0.65,
+    "homicideRate": 5,
+    "traditionPacks": [
+      "mena_levant"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "MDG",
+    "name": {
+      "ru": "Мадагаскар",
+      "en": "Madagascar"
+    },
+    "population": 29600000,
+    "birthsPerYear": 1048400,
+    "lifeExpectancy": {
+      "male": 65,
+      "female": 68
+    },
+    "infantMortality": 35,
+    "gdpPerCapita": 1700,
+    "gini": 0.42,
+    "urbanShare": 0.4,
+    "incomeTier": "low",
+    "schoolingYears": 6,
+    "conflictIndex": 0.1,
+    "homicideRate": 4,
+    "traditionPacks": [
+      "eafr"
+    ],
+    "regions": [
+      "mdg_antananarivo",
+      "mdg_highlands",
+      "mdg_east",
+      "mdg_south"
+    ]
+  },
+  {
+    "iso3": "MWI",
+    "name": {
+      "ru": "Малави",
+      "en": "Malawi"
+    },
+    "population": 20400000,
+    "birthsPerYear": 662100,
+    "lifeExpectancy": {
+      "male": 63,
+      "female": 67
+    },
+    "infantMortality": 38,
+    "gdpPerCapita": 1700,
+    "gini": 0.39,
+    "urbanShare": 0.18,
+    "incomeTier": "low",
+    "schoolingYears": 4.8,
+    "conflictIndex": 0.1,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "eafr"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "MLI",
+    "name": {
+      "ru": "Мали",
+      "en": "Mali"
+    },
+    "population": 23000000,
+    "birthsPerYear": 1015300,
+    "lifeExpectancy": {
+      "male": 58,
+      "female": 60
+    },
+    "infantMortality": 65,
+    "gdpPerCapita": 2400,
+    "gini": 0.36,
+    "urbanShare": 0.45,
+    "incomeTier": "low",
+    "schoolingYears": 2.3,
+    "conflictIndex": 0.6,
+    "homicideRate": 10,
+    "traditionPacks": [
+      "sahel_muslim"
+    ],
+    "regions": [
+      "mli_bamako",
+      "mli_south",
+      "mli_north"
+    ]
+  },
+  {
+    "iso3": "MRT",
+    "name": {
+      "ru": "Мавритания",
+      "en": "Mauritania"
+    },
+    "population": 4900000,
+    "birthsPerYear": 187600,
+    "lifeExpectancy": {
+      "male": 64,
+      "female": 68
+    },
+    "infantMortality": 45,
+    "gdpPerCapita": 5700,
+    "gini": 0.32,
+    "urbanShare": 0.56,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 4.6,
+    "conflictIndex": 0.2,
+    "homicideRate": 6,
+    "traditionPacks": [
+      "sahel_muslim"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "MUS",
+    "name": {
+      "ru": "Маврикий",
+      "en": "Mauritius"
+    },
+    "population": 1300000,
+    "birthsPerYear": 14300,
+    "lifeExpectancy": {
+      "male": 71,
+      "female": 78
+    },
+    "infantMortality": 11,
+    "gdpPerCapita": 24000,
+    "gini": 0.36,
+    "urbanShare": 0.41,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 9.5,
+    "conflictIndex": 0.02,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "eafr"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "MAR",
+    "name": {
+      "ru": "Марокко",
+      "en": "Morocco"
+    },
+    "population": 37800000,
+    "birthsPerYear": 695200,
+    "lifeExpectancy": {
+      "male": 74,
+      "female": 77
+    },
+    "infantMortality": 15,
+    "gdpPerCapita": 9500,
+    "gini": 0.4,
+    "urbanShare": 0.64,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 6,
+    "conflictIndex": 0.1,
+    "homicideRate": 1.4,
+    "traditionPacks": [
+      "mena_levant"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "MOZ",
+    "name": {
+      "ru": "Мозамбик",
+      "en": "Mozambique"
+    },
+    "population": 33000000,
+    "birthsPerYear": 1269100,
+    "lifeExpectancy": {
+      "male": 58,
+      "female": 62
+    },
+    "infantMortality": 55,
+    "gdpPerCapita": 1400,
+    "gini": 0.5,
+    "urbanShare": 0.37,
+    "incomeTier": "low",
+    "schoolingYears": 3.5,
+    "conflictIndex": 0.4,
+    "homicideRate": 7,
+    "traditionPacks": [
+      "safr"
+    ],
+    "regions": [
+      "moz_maputo",
+      "moz_south",
+      "moz_central",
+      "moz_north"
+    ]
+  },
+  {
+    "iso3": "NAM",
+    "name": {
+      "ru": "Намибия",
+      "en": "Namibia"
+    },
+    "population": 2600000,
+    "birthsPerYear": 71700,
+    "lifeExpectancy": {
+      "male": 61,
+      "female": 67
+    },
+    "infantMortality": 30,
+    "gdpPerCapita": 11500,
+    "gini": 0.59,
+    "urbanShare": 0.52,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 7,
+    "conflictIndex": 0.05,
+    "homicideRate": 17,
+    "traditionPacks": [
+      "safr"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "NER",
+    "name": {
+      "ru": "Нигер",
+      "en": "Niger"
+    },
+    "population": 27000000,
+    "birthsPerYear": 1269100,
+    "lifeExpectancy": {
+      "male": 61,
+      "female": 64
+    },
+    "infantMortality": 55,
+    "gdpPerCapita": 1500,
+    "gini": 0.33,
+    "urbanShare": 0.17,
+    "incomeTier": "low",
+    "schoolingYears": 2.1,
+    "conflictIndex": 0.4,
+    "homicideRate": 5,
+    "traditionPacks": [
+      "sahel_muslim"
+    ],
+    "regions": [
+      "ner_niamey",
+      "ner_south",
+      "ner_north"
+    ]
+  },
+  {
+    "iso3": "NGA",
+    "name": {
+      "ru": "Нигерия",
+      "en": "Nigeria"
+    },
+    "population": 223000000,
+    "birthsPerYear": 7500000,
+    "lifeExpectancy": {
+      "male": 61,
+      "female": 64
+    },
+    "infantMortality": 55,
+    "gdpPerCapita": 5900,
+    "gini": 0.35,
+    "urbanShare": 0.54,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 6.7,
+    "conflictIndex": 0.4,
+    "homicideRate": 22,
+    "traditionPacks": [
+      "sahel_muslim",
+      "wafr_coastal"
+    ],
+    "regions": [
+      "nga_nw",
+      "nga_ne",
+      "nga_nc",
+      "nga_sw",
+      "nga_se",
+      "nga_ss"
+    ]
+  },
+  {
+    "iso3": "RWA",
+    "name": {
+      "ru": "Руанда",
+      "en": "Rwanda"
+    },
+    "population": 13800000,
+    "birthsPerYear": 441400,
+    "lifeExpectancy": {
+      "male": 67,
+      "female": 71
+    },
+    "infantMortality": 30,
+    "gdpPerCapita": 2700,
+    "gini": 0.43,
+    "urbanShare": 0.19,
+    "incomeTier": "low",
+    "schoolingYears": 4.8,
+    "conflictIndex": 0.15,
+    "homicideRate": 2.5,
+    "traditionPacks": [
+      "eafr"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "STP",
+    "name": {
+      "ru": "Сан-Томе и Принсипи",
+      "en": "Sao Tome and Principe"
+    },
+    "population": 230000,
+    "birthsPerYear": 6100,
+    "lifeExpectancy": {
+      "male": 68,
+      "female": 72
+    },
+    "infantMortality": 25,
+    "gdpPerCapita": 4000,
+    "gini": 0.4,
+    "urbanShare": 0.75,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 6,
+    "conflictIndex": 0.02,
+    "homicideRate": 8,
+    "traditionPacks": [
+      "wafr_coastal"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SEN",
+    "name": {
+      "ru": "Сенегал",
+      "en": "Senegal"
+    },
+    "population": 17700000,
+    "birthsPerYear": 695200,
+    "lifeExpectancy": {
+      "male": 66,
+      "female": 70
+    },
+    "infantMortality": 30,
+    "gdpPerCapita": 4200,
+    "gini": 0.4,
+    "urbanShare": 0.49,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 3.3,
+    "conflictIndex": 0.1,
+    "homicideRate": 3,
+    "traditionPacks": [
+      "sahel_muslim"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SYC",
+    "name": {
+      "ru": "Сейшелы",
+      "en": "Seychelles"
+    },
+    "population": 100000,
+    "birthsPerYear": 1700,
+    "lifeExpectancy": {
+      "male": 69,
+      "female": 77
+    },
+    "infantMortality": 12,
+    "gdpPerCapita": 28000,
+    "gini": 0.46,
+    "urbanShare": 0.58,
+    "incomeTier": "high",
+    "schoolingYears": 10,
+    "conflictIndex": 0.02,
+    "homicideRate": 8,
+    "traditionPacks": [
+      "eafr"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SLE",
+    "name": {
+      "ru": "Сьерра-Леоне",
+      "en": "Sierra Leone"
+    },
+    "population": 8600000,
+    "birthsPerYear": 331100,
+    "lifeExpectancy": {
+      "male": 59,
+      "female": 61
+    },
+    "infantMortality": 75,
+    "gdpPerCapita": 1800,
+    "gini": 0.35,
+    "urbanShare": 0.43,
+    "incomeTier": "low",
+    "schoolingYears": 4.5,
+    "conflictIndex": 0.2,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "wafr_coastal"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SOM",
+    "name": {
+      "ru": "Сомали",
+      "en": "Somalia"
+    },
+    "population": 18100000,
+    "birthsPerYear": 993200,
+    "lifeExpectancy": {
+      "male": 55,
+      "female": 59
+    },
+    "infantMortality": 75,
+    "gdpPerCapita": 1100,
+    "gini": 0.4,
+    "urbanShare": 0.47,
+    "incomeTier": "low",
+    "schoolingYears": 1.8,
+    "conflictIndex": 0.7,
+    "homicideRate": 7,
+    "traditionPacks": [
+      "horn_africa"
+    ],
+    "regions": [
+      "som_mogadishu",
+      "som_south",
+      "som_central",
+      "som_somaliland"
+    ]
+  },
+  {
+    "iso3": "ZAF",
+    "name": {
+      "ru": "Южно-Африканская Республика",
+      "en": "South Africa"
+    },
+    "population": 60400000,
+    "birthsPerYear": 1213900,
+    "lifeExpectancy": {
+      "male": 62,
+      "female": 68
+    },
+    "infantMortality": 27,
+    "gdpPerCapita": 14000,
+    "gini": 0.63,
+    "urbanShare": 0.68,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 10.2,
+    "conflictIndex": 0.2,
+    "homicideRate": 42,
+    "traditionPacks": [
+      "safr"
+    ],
+    "regions": [
+      "zaf_gauteng",
+      "zaf_westerncape",
+      "zaf_kwazulu",
+      "zaf_easterncape",
+      "zaf_other"
+    ]
+  },
+  {
+    "iso3": "SSD",
+    "name": {
+      "ru": "Южный Судан",
+      "en": "South Sudan"
+    },
+    "population": 11100000,
+    "birthsPerYear": 463500,
+    "lifeExpectancy": {
+      "male": 55,
+      "female": 58
+    },
+    "infantMortality": 60,
+    "gdpPerCapita": 1100,
+    "gini": 0.44,
+    "urbanShare": 0.21,
+    "incomeTier": "low",
+    "schoolingYears": 5,
+    "conflictIndex": 0.65,
+    "homicideRate": 13,
+    "traditionPacks": [
+      "horn_africa"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SDN",
+    "name": {
+      "ru": "Судан",
+      "en": "Sudan"
+    },
+    "population": 48000000,
+    "birthsPerYear": 1655300,
+    "lifeExpectancy": {
+      "male": 64,
+      "female": 68
+    },
+    "infantMortality": 40,
+    "gdpPerCapita": 3900,
+    "gini": 0.34,
+    "urbanShare": 0.36,
+    "incomeTier": "low",
+    "schoolingYears": 3.8,
+    "conflictIndex": 0.65,
+    "homicideRate": 7,
+    "traditionPacks": [
+      "sahel_muslim"
+    ],
+    "regions": [
+      "sdn_khartoum",
+      "sdn_central",
+      "sdn_darfur",
+      "sdn_east"
+    ]
+  },
+  {
+    "iso3": "TZA",
+    "name": {
+      "ru": "Танзания",
+      "en": "Tanzania"
+    },
+    "population": 67000000,
+    "birthsPerYear": 2427800,
+    "lifeExpectancy": {
+      "male": 64,
+      "female": 68
+    },
+    "infantMortality": 36,
+    "gdpPerCapita": 3100,
+    "gini": 0.4,
+    "urbanShare": 0.37,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 6.3,
+    "conflictIndex": 0.1,
+    "homicideRate": 6,
+    "traditionPacks": [
+      "eafr"
+    ],
+    "regions": [
+      "tza_daressalaam",
+      "tza_coast",
+      "tza_highlands",
+      "tza_rural"
+    ]
+  },
+  {
+    "iso3": "TGO",
+    "name": {
+      "ru": "Того",
+      "en": "Togo"
+    },
+    "population": 8800000,
+    "birthsPerYear": 309000,
+    "lifeExpectancy": {
+      "male": 61,
+      "female": 64
+    },
+    "infantMortality": 44,
+    "gdpPerCapita": 2200,
+    "gini": 0.43,
+    "urbanShare": 0.43,
+    "incomeTier": "low",
+    "schoolingYears": 5,
+    "conflictIndex": 0.15,
+    "homicideRate": 6,
+    "traditionPacks": [
+      "wafr_coastal"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "TUN",
+    "name": {
+      "ru": "Тунис",
+      "en": "Tunisia"
+    },
+    "population": 12400000,
+    "birthsPerYear": 209700,
+    "lifeExpectancy": {
+      "male": 74,
+      "female": 78
+    },
+    "infantMortality": 13,
+    "gdpPerCapita": 11600,
+    "gini": 0.32,
+    "urbanShare": 0.7,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 7.3,
+    "conflictIndex": 0.1,
+    "homicideRate": 2.5,
+    "traditionPacks": [
+      "mena_levant"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "UGA",
+    "name": {
+      "ru": "Уганда",
+      "en": "Uganda"
+    },
+    "population": 48000000,
+    "birthsPerYear": 1876000,
+    "lifeExpectancy": {
+      "male": 63,
+      "female": 68
+    },
+    "infantMortality": 32,
+    "gdpPerCapita": 2600,
+    "gini": 0.43,
+    "urbanShare": 0.26,
+    "incomeTier": "low",
+    "schoolingYears": 5,
+    "conflictIndex": 0.2,
+    "homicideRate": 8,
+    "traditionPacks": [
+      "eafr"
+    ],
+    "regions": [
+      "uga_kampala",
+      "uga_west",
+      "uga_east",
+      "uga_north"
+    ]
+  },
+  {
+    "iso3": "ZMB",
+    "name": {
+      "ru": "Замбия",
+      "en": "Zambia"
+    },
+    "population": 20200000,
+    "birthsPerYear": 606900,
+    "lifeExpectancy": {
+      "male": 62,
+      "female": 67
+    },
+    "infantMortality": 40,
+    "gdpPerCapita": 3400,
+    "gini": 0.57,
+    "urbanShare": 0.45,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 7.2,
+    "conflictIndex": 0.1,
+    "homicideRate": 3,
+    "traditionPacks": [
+      "safr"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "ZWE",
+    "name": {
+      "ru": "Зимбабве",
+      "en": "Zimbabwe"
+    },
+    "population": 16300000,
+    "birthsPerYear": 551800,
+    "lifeExpectancy": {
+      "male": 60,
+      "female": 64
+    },
+    "infantMortality": 35,
+    "gdpPerCapita": 2600,
+    "gini": 0.5,
+    "urbanShare": 0.32,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 8.5,
+    "conflictIndex": 0.2,
+    "homicideRate": 4.5,
+    "traditionPacks": [
+      "safr"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "ESH",
+    "name": {
+      "ru": "Западная Сахара",
+      "en": "Western Sahara"
+    },
+    "population": 600000,
+    "birthsPerYear": 16600,
+    "lifeExpectancy": {
+      "male": 65,
+      "female": 69
+    },
+    "infantMortality": 35,
+    "gdpPerCapita": 2500,
+    "gini": 0.4,
+    "urbanShare": 0.87,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 5,
+    "conflictIndex": 0.3,
+    "homicideRate": 3,
+    "traditionPacks": [
+      "mena_levant"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "AFG",
+    "name": {
+      "ru": "Афганистан",
+      "en": "Afghanistan"
+    },
+    "population": 42000000,
+    "birthsPerYear": 1324200,
+    "lifeExpectancy": {
+      "male": 63,
+      "female": 66
+    },
+    "infantMortality": 45,
+    "gdpPerCapita": 1500,
+    "gini": 0.32,
+    "urbanShare": 0.26,
+    "incomeTier": "low",
+    "schoolingYears": 2.5,
+    "conflictIndex": 0.65,
+    "homicideRate": 6,
+    "traditionPacks": [
+      "sa_muslim"
+    ],
+    "regions": [
+      "afg_kabul",
+      "afg_north",
+      "afg_west",
+      "afg_south_east"
+    ]
+  },
+  {
+    "iso3": "ARM",
+    "name": {
+      "ru": "Армения",
+      "en": "Armenia"
+    },
+    "population": 3000000,
+    "birthsPerYear": 38600,
+    "lifeExpectancy": {
+      "male": 71,
+      "female": 78
+    },
+    "infantMortality": 8,
+    "gdpPerCapita": 15000,
+    "gini": 0.32,
+    "urbanShare": 0.64,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 11.3,
+    "conflictIndex": 0.2,
+    "homicideRate": 1.8,
+    "traditionPacks": [
+      "caucasus"
+    ],
+    "regions": [],
+    "maleBirthShare": 0.515
+  },
+  {
+    "iso3": "AZE",
+    "name": {
+      "ru": "Азербайджан",
+      "en": "Azerbaijan"
+    },
+    "population": 10200000,
+    "birthsPerYear": 154500,
+    "lifeExpectancy": {
+      "male": 70,
+      "female": 76
+    },
+    "infantMortality": 10,
+    "gdpPerCapita": 17000,
+    "gini": 0.33,
+    "urbanShare": 0.57,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 10.5,
+    "conflictIndex": 0.15,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "caucasus"
+    ],
+    "regions": [],
+    "maleBirthShare": 0.515
+  },
+  {
+    "iso3": "BHR",
+    "name": {
+      "ru": "Бахрейн",
+      "en": "Bahrain"
+    },
+    "population": 1500000,
+    "birthsPerYear": 18800,
+    "lifeExpectancy": {
+      "male": 78,
+      "female": 80
+    },
+    "infantMortality": 6,
+    "gdpPerCapita": 50000,
+    "gini": 0.37,
+    "urbanShare": 0.9,
+    "incomeTier": "high",
+    "schoolingYears": 9.8,
+    "conflictIndex": 0.05,
+    "homicideRate": 0.5,
+    "traditionPacks": [
+      "mena_gulf"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "BGD",
+    "name": {
+      "ru": "Бангладеш",
+      "en": "Bangladesh"
+    },
+    "population": 173000000,
+    "birthsPerYear": 3200200,
+    "lifeExpectancy": {
+      "male": 72,
+      "female": 75
+    },
+    "infantMortality": 25,
+    "gdpPerCapita": 6700,
+    "gini": 0.33,
+    "urbanShare": 0.4,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 6.2,
+    "conflictIndex": 0.1,
+    "homicideRate": 2.5,
+    "traditionPacks": [
+      "sa_muslim"
+    ],
+    "regions": [
+      "bgd_dhaka",
+      "bgd_chittagong",
+      "bgd_north",
+      "bgd_south",
+      "bgd_sylhet"
+    ]
+  },
+  {
+    "iso3": "BTN",
+    "name": {
+      "ru": "Бутан",
+      "en": "Bhutan"
+    },
+    "population": 780000,
+    "birthsPerYear": 12100,
+    "lifeExpectancy": {
+      "male": 71,
+      "female": 73
+    },
+    "infantMortality": 25,
+    "gdpPerCapita": 10000,
+    "gini": 0.37,
+    "urbanShare": 0.43,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 4.5,
+    "conflictIndex": 0.02,
+    "homicideRate": 1.5,
+    "traditionPacks": [
+      "sa_rural"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "BRN",
+    "name": {
+      "ru": "Бруней",
+      "en": "Brunei"
+    },
+    "population": 450000,
+    "birthsPerYear": 6600,
+    "lifeExpectancy": {
+      "male": 75,
+      "female": 79
+    },
+    "infantMortality": 8,
+    "gdpPerCapita": 70000,
+    "gini": 0.3,
+    "urbanShare": 0.79,
+    "incomeTier": "high",
+    "schoolingYears": 9,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.5,
+    "traditionPacks": [
+      "sea_muslim"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "KHM",
+    "name": {
+      "ru": "Камбоджа",
+      "en": "Cambodia"
+    },
+    "population": 16900000,
+    "birthsPerYear": 375200,
+    "lifeExpectancy": {
+      "male": 67,
+      "female": 72
+    },
+    "infantMortality": 25,
+    "gdpPerCapita": 5000,
+    "gini": 0.37,
+    "urbanShare": 0.25,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 5,
+    "conflictIndex": 0.1,
+    "homicideRate": 2.5,
+    "traditionPacks": [
+      "sea_buddhist"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "CHN",
+    "name": {
+      "ru": "Китай",
+      "en": "China"
+    },
+    "population": 1412000000,
+    "birthsPerYear": 9500000,
+    "lifeExpectancy": {
+      "male": 76,
+      "female": 82
+    },
+    "infantMortality": 6,
+    "gdpPerCapita": 21000,
+    "gini": 0.38,
+    "urbanShare": 0.65,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 8,
+    "conflictIndex": 0.05,
+    "homicideRate": 0.5,
+    "traditionPacks": [
+      "ea_urban",
+      "ea_rural"
+    ],
+    "regions": [
+      "chn_beijing_tianjin",
+      "chn_east_coast",
+      "chn_south_coast",
+      "chn_central",
+      "chn_northeast",
+      "chn_southwest",
+      "chn_northwest",
+      "chn_other"
+    ],
+    "maleBirthShare": 0.513
+  },
+  {
+    "iso3": "CYP",
+    "name": {
+      "ru": "Кипр",
+      "en": "Cyprus"
+    },
+    "population": 1250000,
+    "birthsPerYear": 12100,
+    "lifeExpectancy": {
+      "male": 80,
+      "female": 84
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 40000,
+    "gini": 0.31,
+    "urbanShare": 0.67,
+    "incomeTier": "high",
+    "schoolingYears": 12.1,
+    "conflictIndex": 0.1,
+    "homicideRate": 1,
+    "traditionPacks": [
+      "southern_europe_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "GEO",
+    "name": {
+      "ru": "Грузия",
+      "en": "Georgia"
+    },
+    "population": 3700000,
+    "birthsPerYear": 44100,
+    "lifeExpectancy": {
+      "male": 70,
+      "female": 78
+    },
+    "infantMortality": 8,
+    "gdpPerCapita": 17000,
+    "gini": 0.34,
+    "urbanShare": 0.6,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 12.8,
+    "conflictIndex": 0.15,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "caucasus"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "IND",
+    "name": {
+      "ru": "Индия",
+      "en": "India"
+    },
+    "population": 1428000000,
+    "birthsPerYear": 23100000,
+    "lifeExpectancy": {
+      "male": 69,
+      "female": 72
+    },
+    "infantMortality": 28,
+    "gdpPerCapita": 7500,
+    "gini": 0.36,
+    "urbanShare": 0.36,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 6.7,
+    "conflictIndex": 0.15,
+    "homicideRate": 3,
+    "traditionPacks": [
+      "sa_rural",
+      "sa_urban"
+    ],
+    "regions": [
+      "ind_delhi_ncr",
+      "ind_maharashtra",
+      "ind_up",
+      "ind_bihar",
+      "ind_wb",
+      "ind_tn",
+      "ind_rajasthan",
+      "ind_kerala",
+      "ind_northeast",
+      "ind_other"
+    ],
+    "maleBirthShare": 0.52
+  },
+  {
+    "iso3": "IDN",
+    "name": {
+      "ru": "Индонезия",
+      "en": "Indonesia"
+    },
+    "population": 278000000,
+    "birthsPerYear": 4750000,
+    "lifeExpectancy": {
+      "male": 69,
+      "female": 73
+    },
+    "infantMortality": 20,
+    "gdpPerCapita": 14500,
+    "gini": 0.38,
+    "urbanShare": 0.58,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 8.6,
+    "conflictIndex": 0.1,
+    "homicideRate": 0.4,
+    "traditionPacks": [
+      "sea_muslim"
+    ],
+    "regions": [
+      "idn_java",
+      "idn_sumatra",
+      "idn_kalimantan",
+      "idn_sulawesi",
+      "idn_bali_nusa",
+      "idn_papua_maluku"
+    ]
+  },
+  {
+    "iso3": "IRN",
+    "name": {
+      "ru": "Иран",
+      "en": "Iran"
+    },
+    "population": 89000000,
+    "birthsPerYear": 1269100,
+    "lifeExpectancy": {
+      "male": 74,
+      "female": 78
+    },
+    "infantMortality": 12,
+    "gdpPerCapita": 17000,
+    "gini": 0.4,
+    "urbanShare": 0.77,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 10.6,
+    "conflictIndex": 0.25,
+    "homicideRate": 2.8,
+    "traditionPacks": [
+      "mena_levant"
+    ],
+    "regions": [
+      "irn_tehran",
+      "irn_north",
+      "irn_central",
+      "irn_border"
+    ]
+  },
+  {
+    "iso3": "IRQ",
+    "name": {
+      "ru": "Ирак",
+      "en": "Iraq"
+    },
+    "population": 44000000,
+    "birthsPerYear": 1213900,
+    "lifeExpectancy": {
+      "male": 68,
+      "female": 73
+    },
+    "infantMortality": 20,
+    "gdpPerCapita": 10500,
+    "gini": 0.3,
+    "urbanShare": 0.71,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 7,
+    "conflictIndex": 0.5,
+    "homicideRate": 8,
+    "traditionPacks": [
+      "mena_levant"
+    ],
+    "regions": [
+      "irq_baghdad",
+      "irq_kurdistan",
+      "irq_south",
+      "irq_central"
+    ]
+  },
+  {
+    "iso3": "ISR",
+    "name": {
+      "ru": "Израиль",
+      "en": "Israel"
+    },
+    "population": 9400000,
+    "birthsPerYear": 198600,
+    "lifeExpectancy": {
+      "male": 81,
+      "female": 85
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 48000,
+    "gini": 0.39,
+    "urbanShare": 0.93,
+    "incomeTier": "high",
+    "schoolingYears": 13.2,
+    "conflictIndex": 0.4,
+    "homicideRate": 1.8,
+    "traditionPacks": [
+      "mena_levant"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "JPN",
+    "name": {
+      "ru": "Япония",
+      "en": "Japan"
+    },
+    "population": 123300000,
+    "birthsPerYear": 805600,
+    "lifeExpectancy": {
+      "male": 81,
+      "female": 87
+    },
+    "infantMortality": 2,
+    "gdpPerCapita": 42000,
+    "gini": 0.33,
+    "urbanShare": 0.92,
+    "incomeTier": "high",
+    "schoolingYears": 12.9,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.25,
+    "traditionPacks": [
+      "japan_korea"
+    ],
+    "regions": [
+      "jpn_kanto",
+      "jpn_kansai",
+      "jpn_chubu",
+      "jpn_kyushu",
+      "jpn_tohoku"
+    ]
+  },
+  {
+    "iso3": "JOR",
+    "name": {
+      "ru": "Иордания",
+      "en": "Jordan"
+    },
+    "population": 11300000,
+    "birthsPerYear": 220700,
+    "lifeExpectancy": {
+      "male": 74,
+      "female": 78
+    },
+    "infantMortality": 13,
+    "gdpPerCapita": 11000,
+    "gini": 0.33,
+    "urbanShare": 0.92,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 10.9,
+    "conflictIndex": 0.2,
+    "homicideRate": 1.5,
+    "traditionPacks": [
+      "mena_levant"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "KAZ",
+    "name": {
+      "ru": "Казахстан",
+      "en": "Kazakhstan"
+    },
+    "population": 19600000,
+    "birthsPerYear": 419300,
+    "lifeExpectancy": {
+      "male": 69,
+      "female": 77
+    },
+    "infantMortality": 9,
+    "gdpPerCapita": 28000,
+    "gini": 0.28,
+    "urbanShare": 0.58,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 11.9,
+    "conflictIndex": 0.1,
+    "homicideRate": 3.5,
+    "traditionPacks": [
+      "central_asia"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "KWT",
+    "name": {
+      "ru": "Кувейт",
+      "en": "Kuwait"
+    },
+    "population": 4300000,
+    "birthsPerYear": 60700,
+    "lifeExpectancy": {
+      "male": 74,
+      "female": 77
+    },
+    "infantMortality": 7,
+    "gdpPerCapita": 52000,
+    "gini": 0.38,
+    "urbanShare": 1,
+    "incomeTier": "high",
+    "schoolingYears": 7.3,
+    "conflictIndex": 0.05,
+    "homicideRate": 1,
+    "traditionPacks": [
+      "mena_gulf"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "KGZ",
+    "name": {
+      "ru": "Киргизия",
+      "en": "Kyrgyzstan"
+    },
+    "population": 7000000,
+    "birthsPerYear": 176600,
+    "lifeExpectancy": {
+      "male": 68,
+      "female": 76
+    },
+    "infantMortality": 15,
+    "gdpPerCapita": 5700,
+    "gini": 0.29,
+    "urbanShare": 0.37,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 11.4,
+    "conflictIndex": 0.1,
+    "homicideRate": 4,
+    "traditionPacks": [
+      "central_asia"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "LAO",
+    "name": {
+      "ru": "Лаос",
+      "en": "Laos"
+    },
+    "population": 7700000,
+    "birthsPerYear": 187600,
+    "lifeExpectancy": {
+      "male": 65,
+      "female": 69
+    },
+    "infantMortality": 35,
+    "gdpPerCapita": 8800,
+    "gini": 0.38,
+    "urbanShare": 0.37,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 5.3,
+    "conflictIndex": 0.1,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "sea_buddhist"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "LBN",
+    "name": {
+      "ru": "Ливан",
+      "en": "Lebanon"
+    },
+    "population": 5500000,
+    "birthsPerYear": 77200,
+    "lifeExpectancy": {
+      "male": 76,
+      "female": 81
+    },
+    "infantMortality": 6,
+    "gdpPerCapita": 7500,
+    "gini": 0.32,
+    "urbanShare": 0.89,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 8.5,
+    "conflictIndex": 0.35,
+    "homicideRate": 2.5,
+    "traditionPacks": [
+      "mena_levant"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "MYS",
+    "name": {
+      "ru": "Малайзия",
+      "en": "Malaysia"
+    },
+    "population": 34000000,
+    "birthsPerYear": 507600,
+    "lifeExpectancy": {
+      "male": 73,
+      "female": 78
+    },
+    "infantMortality": 7,
+    "gdpPerCapita": 32000,
+    "gini": 0.41,
+    "urbanShare": 0.78,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 10.6,
+    "conflictIndex": 0.1,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "sea_muslim"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "MDV",
+    "name": {
+      "ru": "Мальдивы",
+      "en": "Maldives"
+    },
+    "population": 520000,
+    "birthsPerYear": 8300,
+    "lifeExpectancy": {
+      "male": 76,
+      "female": 80
+    },
+    "infantMortality": 6,
+    "gdpPerCapita": 19000,
+    "gini": 0.31,
+    "urbanShare": 0.41,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 7.3,
+    "conflictIndex": 0.02,
+    "homicideRate": 1.5,
+    "traditionPacks": [
+      "sea_muslim"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "MNG",
+    "name": {
+      "ru": "Монголия",
+      "en": "Mongolia"
+    },
+    "population": 3400000,
+    "birthsPerYear": 66200,
+    "lifeExpectancy": {
+      "male": 67,
+      "female": 76
+    },
+    "infantMortality": 13,
+    "gdpPerCapita": 13000,
+    "gini": 0.33,
+    "urbanShare": 0.69,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 10.5,
+    "conflictIndex": 0.05,
+    "homicideRate": 5,
+    "traditionPacks": [
+      "central_asia"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "MMR",
+    "name": {
+      "ru": "Мьянма",
+      "en": "Myanmar"
+    },
+    "population": 54000000,
+    "birthsPerYear": 938000,
+    "lifeExpectancy": {
+      "male": 63,
+      "female": 69
+    },
+    "infantMortality": 35,
+    "gdpPerCapita": 4500,
+    "gini": 0.38,
+    "urbanShare": 0.31,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 5,
+    "conflictIndex": 0.5,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "sea_buddhist"
+    ],
+    "regions": [
+      "mmr_yangon",
+      "mmr_central",
+      "mmr_delta",
+      "mmr_border"
+    ]
+  },
+  {
+    "iso3": "NPL",
+    "name": {
+      "ru": "Непал",
+      "en": "Nepal"
+    },
+    "population": 30500000,
+    "birthsPerYear": 573800,
+    "lifeExpectancy": {
+      "male": 69,
+      "female": 72
+    },
+    "infantMortality": 25,
+    "gdpPerCapita": 4500,
+    "gini": 0.33,
+    "urbanShare": 0.21,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 4.9,
+    "conflictIndex": 0.1,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "sa_rural"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "PRK",
+    "name": {
+      "ru": "Северная Корея",
+      "en": "North Korea"
+    },
+    "population": 26000000,
+    "birthsPerYear": 331100,
+    "lifeExpectancy": {
+      "male": 68,
+      "female": 75
+    },
+    "infantMortality": 15,
+    "gdpPerCapita": 1700,
+    "gini": 0.3,
+    "urbanShare": 0.63,
+    "incomeTier": "low",
+    "schoolingYears": 7,
+    "conflictIndex": 0.3,
+    "homicideRate": 4,
+    "traditionPacks": [
+      "ea_rural"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "OMN",
+    "name": {
+      "ru": "Оман",
+      "en": "Oman"
+    },
+    "population": 4600000,
+    "birthsPerYear": 88300,
+    "lifeExpectancy": {
+      "male": 75,
+      "female": 78
+    },
+    "infantMortality": 9,
+    "gdpPerCapita": 24000,
+    "gini": 0.32,
+    "urbanShare": 0.87,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 9.9,
+    "conflictIndex": 0.05,
+    "homicideRate": 1,
+    "traditionPacks": [
+      "mena_gulf"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "PAK",
+    "name": {
+      "ru": "Пакистан",
+      "en": "Pakistan"
+    },
+    "population": 240000000,
+    "birthsPerYear": 6100000,
+    "lifeExpectancy": {
+      "male": 66,
+      "female": 68
+    },
+    "infantMortality": 55,
+    "gdpPerCapita": 6200,
+    "gini": 0.29,
+    "urbanShare": 0.37,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 4.5,
+    "conflictIndex": 0.35,
+    "homicideRate": 3.9,
+    "traditionPacks": [
+      "sa_muslim"
+    ],
+    "regions": [
+      "pak_punjab",
+      "pak_sindh",
+      "pak_kp",
+      "pak_balochistan",
+      "pak_other"
+    ]
+  },
+  {
+    "iso3": "PHL",
+    "name": {
+      "ru": "Филиппины",
+      "en": "Philippines"
+    },
+    "population": 115000000,
+    "birthsPerYear": 1876000,
+    "lifeExpectancy": {
+      "male": 68,
+      "female": 75
+    },
+    "infantMortality": 22,
+    "gdpPerCapita": 9500,
+    "gini": 0.4,
+    "urbanShare": 0.48,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 9.4,
+    "conflictIndex": 0.2,
+    "homicideRate": 6,
+    "traditionPacks": [
+      "sea_catholic"
+    ],
+    "regions": [
+      "phl_manila",
+      "phl_luzon_rest",
+      "phl_visayas",
+      "phl_mindanao"
+    ]
+  },
+  {
+    "iso3": "QAT",
+    "name": {
+      "ru": "Катар",
+      "en": "Qatar"
+    },
+    "population": 2700000,
+    "birthsPerYear": 29800,
+    "lifeExpectancy": {
+      "male": 80,
+      "female": 82
+    },
+    "infantMortality": 6,
+    "gdpPerCapita": 85000,
+    "gini": 0.41,
+    "urbanShare": 1,
+    "incomeTier": "high",
+    "schoolingYears": 9.9,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.9,
+    "traditionPacks": [
+      "mena_gulf"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SAU",
+    "name": {
+      "ru": "Саудовская Аравия",
+      "en": "Saudi Arabia"
+    },
+    "population": 36400000,
+    "birthsPerYear": 662100,
+    "lifeExpectancy": {
+      "male": 75,
+      "female": 78
+    },
+    "infantMortality": 6,
+    "gdpPerCapita": 55000,
+    "gini": 0.4,
+    "urbanShare": 0.85,
+    "incomeTier": "high",
+    "schoolingYears": 10.2,
+    "conflictIndex": 0.1,
+    "homicideRate": 1,
+    "traditionPacks": [
+      "mena_gulf"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SGP",
+    "name": {
+      "ru": "Сингапур",
+      "en": "Singapore"
+    },
+    "population": 5900000,
+    "birthsPerYear": 38600,
+    "lifeExpectancy": {
+      "male": 81,
+      "female": 86
+    },
+    "infantMortality": 2,
+    "gdpPerCapita": 90000,
+    "gini": 0.38,
+    "urbanShare": 1,
+    "incomeTier": "high",
+    "schoolingYears": 11.6,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.15,
+    "traditionPacks": [
+      "sea_mixed"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "KOR",
+    "name": {
+      "ru": "Южная Корея",
+      "en": "South Korea"
+    },
+    "population": 51700000,
+    "birthsPerYear": 253800,
+    "lifeExpectancy": {
+      "male": 80,
+      "female": 86
+    },
+    "infantMortality": 2.5,
+    "gdpPerCapita": 46000,
+    "gini": 0.31,
+    "urbanShare": 0.81,
+    "incomeTier": "high",
+    "schoolingYears": 12.5,
+    "conflictIndex": 0.1,
+    "homicideRate": 0.6,
+    "traditionPacks": [
+      "japan_korea"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "LKA",
+    "name": {
+      "ru": "Шри-Ланка",
+      "en": "Sri Lanka"
+    },
+    "population": 22000000,
+    "birthsPerYear": 353100,
+    "lifeExpectancy": {
+      "male": 72,
+      "female": 79
+    },
+    "infantMortality": 7,
+    "gdpPerCapita": 13000,
+    "gini": 0.4,
+    "urbanShare": 0.19,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 10.8,
+    "conflictIndex": 0.1,
+    "homicideRate": 2.5,
+    "traditionPacks": [
+      "sa_rural"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SYR",
+    "name": {
+      "ru": "Сирия",
+      "en": "Syria"
+    },
+    "population": 22000000,
+    "birthsPerYear": 606900,
+    "lifeExpectancy": {
+      "male": 66,
+      "female": 74
+    },
+    "infantMortality": 15,
+    "gdpPerCapita": 1500,
+    "gini": 0.35,
+    "urbanShare": 0.55,
+    "incomeTier": "low",
+    "schoolingYears": 5,
+    "conflictIndex": 0.8,
+    "homicideRate": 4,
+    "traditionPacks": [
+      "mena_levant"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "TJK",
+    "name": {
+      "ru": "Таджикистан",
+      "en": "Tajikistan"
+    },
+    "population": 10100000,
+    "birthsPerYear": 309000,
+    "lifeExpectancy": {
+      "male": 69,
+      "female": 75
+    },
+    "infantMortality": 25,
+    "gdpPerCapita": 4000,
+    "gini": 0.34,
+    "urbanShare": 0.28,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 10.4,
+    "conflictIndex": 0.1,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "central_asia"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "THA",
+    "name": {
+      "ru": "Таиланд",
+      "en": "Thailand"
+    },
+    "population": 71600000,
+    "birthsPerYear": 606900,
+    "lifeExpectancy": {
+      "male": 73,
+      "female": 80
+    },
+    "infantMortality": 7,
+    "gdpPerCapita": 20000,
+    "gini": 0.35,
+    "urbanShare": 0.53,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 8.7,
+    "conflictIndex": 0.1,
+    "homicideRate": 3.5,
+    "traditionPacks": [
+      "sea_buddhist"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "TLS",
+    "name": {
+      "ru": "Восточный Тимор",
+      "en": "Timor-Leste"
+    },
+    "population": 1400000,
+    "birthsPerYear": 38600,
+    "lifeExpectancy": {
+      "male": 68,
+      "female": 72
+    },
+    "infantMortality": 35,
+    "gdpPerCapita": 4500,
+    "gini": 0.29,
+    "urbanShare": 0.3,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 5,
+    "conflictIndex": 0.15,
+    "homicideRate": 3,
+    "traditionPacks": [
+      "sea_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "TUR",
+    "name": {
+      "ru": "Турция",
+      "en": "Turkey"
+    },
+    "population": 85800000,
+    "birthsPerYear": 1158700,
+    "lifeExpectancy": {
+      "male": 75,
+      "female": 81
+    },
+    "infantMortality": 9,
+    "gdpPerCapita": 36000,
+    "gini": 0.42,
+    "urbanShare": 0.77,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 8.1,
+    "conflictIndex": 0.2,
+    "homicideRate": 2.5,
+    "traditionPacks": [
+      "mena_levant"
+    ],
+    "regions": [
+      "tur_istanbul",
+      "tur_marmara",
+      "tur_central",
+      "tur_east",
+      "tur_coast"
+    ]
+  },
+  {
+    "iso3": "TKM",
+    "name": {
+      "ru": "Туркменистан",
+      "en": "Turkmenistan"
+    },
+    "population": 6400000,
+    "birthsPerYear": 132400,
+    "lifeExpectancy": {
+      "male": 65,
+      "female": 72
+    },
+    "infantMortality": 35,
+    "gdpPerCapita": 9000,
+    "gini": 0.36,
+    "urbanShare": 0.53,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 10.3,
+    "conflictIndex": 0.1,
+    "homicideRate": 3,
+    "traditionPacks": [
+      "central_asia"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "ARE",
+    "name": {
+      "ru": "Объединённые Арабские Эмираты",
+      "en": "United Arab Emirates"
+    },
+    "population": 9900000,
+    "birthsPerYear": 93800,
+    "lifeExpectancy": {
+      "male": 78,
+      "female": 81
+    },
+    "infantMortality": 6,
+    "gdpPerCapita": 70000,
+    "gini": 0.32,
+    "urbanShare": 0.88,
+    "incomeTier": "high",
+    "schoolingYears": 11.3,
+    "conflictIndex": 0.05,
+    "homicideRate": 0.5,
+    "traditionPacks": [
+      "mena_gulf"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "UZB",
+    "name": {
+      "ru": "Узбекистан",
+      "en": "Uzbekistan"
+    },
+    "population": 35600000,
+    "birthsPerYear": 827600,
+    "lifeExpectancy": {
+      "male": 71,
+      "female": 76
+    },
+    "infantMortality": 15,
+    "gdpPerCapita": 8000,
+    "gini": 0.35,
+    "urbanShare": 0.5,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 11.5,
+    "conflictIndex": 0.1,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "central_asia"
+    ],
+    "regions": [
+      "uzb_tashkent",
+      "uzb_fergana",
+      "uzb_samarkand",
+      "uzb_karakalpak"
+    ]
+  },
+  {
+    "iso3": "VNM",
+    "name": {
+      "ru": "Вьетнам",
+      "en": "Vietnam"
+    },
+    "population": 98900000,
+    "birthsPerYear": 1213900,
+    "lifeExpectancy": {
+      "male": 69,
+      "female": 77
+    },
+    "infantMortality": 15,
+    "gdpPerCapita": 13000,
+    "gini": 0.36,
+    "urbanShare": 0.39,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 8.3,
+    "conflictIndex": 0.05,
+    "homicideRate": 1.5,
+    "traditionPacks": [
+      "sea_mixed"
+    ],
+    "regions": [
+      "vnm_red_river",
+      "vnm_north_mountains",
+      "vnm_central_coast",
+      "vnm_mekong"
+    ],
+    "maleBirthShare": 0.525
+  },
+  {
+    "iso3": "YEM",
+    "name": {
+      "ru": "Йемен",
+      "en": "Yemen"
+    },
+    "population": 34000000,
+    "birthsPerYear": 1103500,
+    "lifeExpectancy": {
+      "male": 64,
+      "female": 68
+    },
+    "infantMortality": 45,
+    "gdpPerCapita": 2000,
+    "gini": 0.37,
+    "urbanShare": 0.38,
+    "incomeTier": "low",
+    "schoolingYears": 3.2,
+    "conflictIndex": 0.75,
+    "homicideRate": 6,
+    "traditionPacks": [
+      "mena_levant"
+    ],
+    "regions": [
+      "yem_sanaa",
+      "yem_highlands",
+      "yem_coast",
+      "yem_east"
+    ]
+  },
+  {
+    "iso3": "TWN",
+    "name": {
+      "ru": "Тайвань",
+      "en": "Taiwan"
+    },
+    "population": 23400000,
+    "birthsPerYear": 149000,
+    "lifeExpectancy": {
+      "male": 78,
+      "female": 84
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 55000,
+    "gini": 0.34,
+    "urbanShare": 0.79,
+    "incomeTier": "high",
+    "schoolingYears": 12,
+    "conflictIndex": 0.15,
+    "homicideRate": 0.6,
+    "traditionPacks": [
+      "ea_urban"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "PSE",
+    "name": {
+      "ru": "Палестина",
+      "en": "Palestine"
+    },
+    "population": 5400000,
+    "birthsPerYear": 165500,
+    "lifeExpectancy": {
+      "male": 71,
+      "female": 75
+    },
+    "infantMortality": 15,
+    "gdpPerCapita": 5500,
+    "gini": 0.34,
+    "urbanShare": 0.78,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 9,
+    "conflictIndex": 0.7,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "mena_levant"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "ALB",
+    "name": {
+      "ru": "Албания",
+      "en": "Albania"
+    },
+    "population": 2800000,
+    "birthsPerYear": 30900,
+    "lifeExpectancy": {
+      "male": 76,
+      "female": 80
+    },
+    "infantMortality": 8,
+    "gdpPerCapita": 16000,
+    "gini": 0.29,
+    "urbanShare": 0.63,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 11.3,
+    "conflictIndex": 0.05,
+    "homicideRate": 2.5,
+    "traditionPacks": [
+      "balkan"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "AND",
+    "name": {
+      "ru": "Андорра",
+      "en": "Andorra"
+    },
+    "population": 80000,
+    "birthsPerYear": 700,
+    "lifeExpectancy": {
+      "male": 80,
+      "female": 85
+    },
+    "infantMortality": 2,
+    "gdpPerCapita": 55000,
+    "gini": 0.3,
+    "urbanShare": 0.88,
+    "incomeTier": "high",
+    "schoolingYears": 11,
+    "conflictIndex": 0,
+    "homicideRate": 0.5,
+    "traditionPacks": [
+      "southern_europe_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "AUT",
+    "name": {
+      "ru": "Австрия",
+      "en": "Austria"
+    },
+    "population": 9100000,
+    "birthsPerYear": 91600,
+    "lifeExpectancy": {
+      "male": 79,
+      "female": 84
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 58000,
+    "gini": 0.3,
+    "urbanShare": 0.59,
+    "incomeTier": "high",
+    "schoolingYears": 12.5,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.6,
+    "traditionPacks": [
+      "western_europe_secular"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "BLR",
+    "name": {
+      "ru": "Беларусь",
+      "en": "Belarus"
+    },
+    "population": 9200000,
+    "birthsPerYear": 97100,
+    "lifeExpectancy": {
+      "male": 69,
+      "female": 79
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 20000,
+    "gini": 0.26,
+    "urbanShare": 0.79,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 12.3,
+    "conflictIndex": 0.1,
+    "homicideRate": 2.5,
+    "traditionPacks": [
+      "post_soviet_slavic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "BEL",
+    "name": {
+      "ru": "Бельгия",
+      "en": "Belgium"
+    },
+    "population": 11700000,
+    "birthsPerYear": 126900,
+    "lifeExpectancy": {
+      "male": 80,
+      "female": 84
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 55000,
+    "gini": 0.27,
+    "urbanShare": 0.98,
+    "incomeTier": "high",
+    "schoolingYears": 12,
+    "conflictIndex": 0.02,
+    "homicideRate": 1.2,
+    "traditionPacks": [
+      "western_europe_secular"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "BIH",
+    "name": {
+      "ru": "Босния и Герцеговина",
+      "en": "Bosnia and Herzegovina"
+    },
+    "population": 3200000,
+    "birthsPerYear": 27600,
+    "lifeExpectancy": {
+      "male": 74,
+      "female": 79
+    },
+    "infantMortality": 5,
+    "gdpPerCapita": 16000,
+    "gini": 0.33,
+    "urbanShare": 0.52,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 10,
+    "conflictIndex": 0.1,
+    "homicideRate": 1.3,
+    "traditionPacks": [
+      "balkan"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "BGR",
+    "name": {
+      "ru": "Болгария",
+      "en": "Bulgaria"
+    },
+    "population": 6400000,
+    "birthsPerYear": 64000,
+    "lifeExpectancy": {
+      "male": 72,
+      "female": 79
+    },
+    "infantMortality": 5,
+    "gdpPerCapita": 27000,
+    "gini": 0.4,
+    "urbanShare": 0.76,
+    "incomeTier": "high",
+    "schoolingYears": 11.4,
+    "conflictIndex": 0.02,
+    "homicideRate": 1.1,
+    "traditionPacks": [
+      "eastern_europe"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "HRV",
+    "name": {
+      "ru": "Хорватия",
+      "en": "Croatia"
+    },
+    "population": 3900000,
+    "birthsPerYear": 37500,
+    "lifeExpectancy": {
+      "male": 75,
+      "female": 82
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 33000,
+    "gini": 0.29,
+    "urbanShare": 0.58,
+    "incomeTier": "high",
+    "schoolingYears": 11.9,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.6,
+    "traditionPacks": [
+      "balkan"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "CZE",
+    "name": {
+      "ru": "Чехия",
+      "en": "Czech Republic"
+    },
+    "population": 10500000,
+    "birthsPerYear": 110400,
+    "lifeExpectancy": {
+      "male": 77,
+      "female": 82
+    },
+    "infantMortality": 2.5,
+    "gdpPerCapita": 45000,
+    "gini": 0.25,
+    "urbanShare": 0.74,
+    "incomeTier": "high",
+    "schoolingYears": 12.7,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.5,
+    "traditionPacks": [
+      "eastern_europe"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "DNK",
+    "name": {
+      "ru": "Дания",
+      "en": "Denmark"
+    },
+    "population": 5900000,
+    "birthsPerYear": 66200,
+    "lifeExpectancy": {
+      "male": 80,
+      "female": 84
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 68000,
+    "gini": 0.28,
+    "urbanShare": 0.88,
+    "incomeTier": "high",
+    "schoolingYears": 12.6,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.9,
+    "traditionPacks": [
+      "nordic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "EST",
+    "name": {
+      "ru": "Эстония",
+      "en": "Estonia"
+    },
+    "population": 1300000,
+    "birthsPerYear": 13200,
+    "lifeExpectancy": {
+      "male": 74,
+      "female": 82
+    },
+    "infantMortality": 2,
+    "gdpPerCapita": 42000,
+    "gini": 0.3,
+    "urbanShare": 0.69,
+    "incomeTier": "high",
+    "schoolingYears": 13.1,
+    "conflictIndex": 0.1,
+    "homicideRate": 1.5,
+    "traditionPacks": [
+      "eastern_europe"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "FIN",
+    "name": {
+      "ru": "Финляндия",
+      "en": "Finland"
+    },
+    "population": 5500000,
+    "birthsPerYear": 50800,
+    "lifeExpectancy": {
+      "male": 79,
+      "female": 84
+    },
+    "infantMortality": 2,
+    "gdpPerCapita": 54000,
+    "gini": 0.27,
+    "urbanShare": 0.86,
+    "incomeTier": "high",
+    "schoolingYears": 12.8,
+    "conflictIndex": 0.02,
+    "homicideRate": 1.4,
+    "traditionPacks": [
+      "nordic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "FRA",
+    "name": {
+      "ru": "Франция",
+      "en": "France"
+    },
+    "population": 68000000,
+    "birthsPerYear": 750400,
+    "lifeExpectancy": {
+      "male": 80,
+      "female": 86
+    },
+    "infantMortality": 3.5,
+    "gdpPerCapita": 50000,
+    "gini": 0.32,
+    "urbanShare": 0.81,
+    "incomeTier": "high",
+    "schoolingYears": 11.7,
+    "conflictIndex": 0.1,
+    "homicideRate": 1.2,
+    "traditionPacks": [
+      "western_europe_secular"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "DEU",
+    "name": {
+      "ru": "Германия",
+      "en": "Germany"
+    },
+    "population": 84400000,
+    "birthsPerYear": 680000,
+    "lifeExpectancy": {
+      "male": 79,
+      "female": 84
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 58000,
+    "gini": 0.32,
+    "urbanShare": 0.78,
+    "incomeTier": "high",
+    "schoolingYears": 14.1,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.8,
+    "traditionPacks": [
+      "western_europe_secular"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "GRC",
+    "name": {
+      "ru": "Греция",
+      "en": "Greece"
+    },
+    "population": 10400000,
+    "birthsPerYear": 82800,
+    "lifeExpectancy": {
+      "male": 79,
+      "female": 84
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 36000,
+    "gini": 0.33,
+    "urbanShare": 0.8,
+    "incomeTier": "high",
+    "schoolingYears": 10.8,
+    "conflictIndex": 0.05,
+    "homicideRate": 0.9,
+    "traditionPacks": [
+      "southern_europe_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "HUN",
+    "name": {
+      "ru": "Венгрия",
+      "en": "Hungary"
+    },
+    "population": 9600000,
+    "birthsPerYear": 99300,
+    "lifeExpectancy": {
+      "male": 73,
+      "female": 80
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 38000,
+    "gini": 0.3,
+    "urbanShare": 0.72,
+    "incomeTier": "high",
+    "schoolingYears": 12,
+    "conflictIndex": 0.02,
+    "homicideRate": 1.1,
+    "traditionPacks": [
+      "eastern_europe"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "ISL",
+    "name": {
+      "ru": "Исландия",
+      "en": "Iceland"
+    },
+    "population": 390000,
+    "birthsPerYear": 4600,
+    "lifeExpectancy": {
+      "male": 81,
+      "female": 84
+    },
+    "infantMortality": 1.5,
+    "gdpPerCapita": 69000,
+    "gini": 0.26,
+    "urbanShare": 0.94,
+    "incomeTier": "high",
+    "schoolingYears": 12.6,
+    "conflictIndex": 0,
+    "homicideRate": 0.3,
+    "traditionPacks": [
+      "nordic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "IRL",
+    "name": {
+      "ru": "Ирландия",
+      "en": "Ireland"
+    },
+    "population": 5100000,
+    "birthsPerYear": 61800,
+    "lifeExpectancy": {
+      "male": 80,
+      "female": 84
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 100000,
+    "gini": 0.29,
+    "urbanShare": 0.64,
+    "incomeTier": "high",
+    "schoolingYears": 12.5,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.6,
+    "traditionPacks": [
+      "western_europe_secular"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "ITA",
+    "name": {
+      "ru": "Италия",
+      "en": "Italy"
+    },
+    "population": 59000000,
+    "birthsPerYear": 430400,
+    "lifeExpectancy": {
+      "male": 81,
+      "female": 85
+    },
+    "infantMortality": 2.5,
+    "gdpPerCapita": 45000,
+    "gini": 0.33,
+    "urbanShare": 0.71,
+    "incomeTier": "high",
+    "schoolingYears": 10.5,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.55,
+    "traditionPacks": [
+      "southern_europe_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "LVA",
+    "name": {
+      "ru": "Латвия",
+      "en": "Latvia"
+    },
+    "population": 1850000,
+    "birthsPerYear": 17700,
+    "lifeExpectancy": {
+      "male": 70,
+      "female": 80
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 36000,
+    "gini": 0.34,
+    "urbanShare": 0.68,
+    "incomeTier": "high",
+    "schoolingYears": 13,
+    "conflictIndex": 0.1,
+    "homicideRate": 2.5,
+    "traditionPacks": [
+      "eastern_europe"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "LIE",
+    "name": {
+      "ru": "Лихтенштейн",
+      "en": "Liechtenstein"
+    },
+    "population": 40000,
+    "birthsPerYear": 300,
+    "lifeExpectancy": {
+      "male": 80,
+      "female": 85
+    },
+    "infantMortality": 2,
+    "gdpPerCapita": 140000,
+    "gini": 0.3,
+    "urbanShare": 0.15,
+    "incomeTier": "high",
+    "schoolingYears": 12,
+    "conflictIndex": 0,
+    "homicideRate": 0.5,
+    "traditionPacks": [
+      "western_europe_secular"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "LTU",
+    "name": {
+      "ru": "Литва",
+      "en": "Lithuania"
+    },
+    "population": 2700000,
+    "birthsPerYear": 27600,
+    "lifeExpectancy": {
+      "male": 71,
+      "female": 81
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 43000,
+    "gini": 0.35,
+    "urbanShare": 0.68,
+    "incomeTier": "high",
+    "schoolingYears": 13.1,
+    "conflictIndex": 0.1,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "eastern_europe"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "LUX",
+    "name": {
+      "ru": "Люксембург",
+      "en": "Luxembourg"
+    },
+    "population": 660000,
+    "birthsPerYear": 7100,
+    "lifeExpectancy": {
+      "male": 80,
+      "female": 85
+    },
+    "infantMortality": 2.5,
+    "gdpPerCapita": 128000,
+    "gini": 0.34,
+    "urbanShare": 0.92,
+    "incomeTier": "high",
+    "schoolingYears": 12.3,
+    "conflictIndex": 0,
+    "homicideRate": 1,
+    "traditionPacks": [
+      "western_europe_secular"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "MLT",
+    "name": {
+      "ru": "Мальта",
+      "en": "Malta"
+    },
+    "population": 530000,
+    "birthsPerYear": 5000,
+    "lifeExpectancy": {
+      "male": 81,
+      "female": 84
+    },
+    "infantMortality": 4,
+    "gdpPerCapita": 48000,
+    "gini": 0.28,
+    "urbanShare": 0.95,
+    "incomeTier": "high",
+    "schoolingYears": 11.6,
+    "conflictIndex": 0,
+    "homicideRate": 0.9,
+    "traditionPacks": [
+      "southern_europe_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "MDA",
+    "name": {
+      "ru": "Молдова",
+      "en": "Moldova"
+    },
+    "population": 2500000,
+    "birthsPerYear": 25400,
+    "lifeExpectancy": {
+      "male": 68,
+      "female": 76
+    },
+    "infantMortality": 10,
+    "gdpPerCapita": 7500,
+    "gini": 0.26,
+    "urbanShare": 0.43,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 11.8,
+    "conflictIndex": 0.15,
+    "homicideRate": 4,
+    "traditionPacks": [
+      "eastern_europe"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "MCO",
+    "name": {
+      "ru": "Монако",
+      "en": "Monaco"
+    },
+    "population": 39000,
+    "birthsPerYear": 300,
+    "lifeExpectancy": {
+      "male": 82,
+      "female": 87
+    },
+    "infantMortality": 2,
+    "gdpPerCapita": 190000,
+    "gini": 0.3,
+    "urbanShare": 1,
+    "incomeTier": "high",
+    "schoolingYears": 12,
+    "conflictIndex": 0,
+    "homicideRate": 0.5,
+    "traditionPacks": [
+      "southern_europe_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "MNE",
+    "name": {
+      "ru": "Черногория",
+      "en": "Montenegro"
+    },
+    "population": 620000,
+    "birthsPerYear": 6800,
+    "lifeExpectancy": {
+      "male": 74,
+      "female": 79
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 11000,
+    "gini": 0.37,
+    "urbanShare": 0.67,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 11.7,
+    "conflictIndex": 0.05,
+    "homicideRate": 3,
+    "traditionPacks": [
+      "balkan"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "NLD",
+    "name": {
+      "ru": "Нидерланды",
+      "en": "Netherlands"
+    },
+    "population": 17700000,
+    "birthsPerYear": 187600,
+    "lifeExpectancy": {
+      "male": 80,
+      "female": 83
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 61000,
+    "gini": 0.29,
+    "urbanShare": 0.93,
+    "incomeTier": "high",
+    "schoolingYears": 12.4,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.6,
+    "traditionPacks": [
+      "western_europe_secular"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "MKD",
+    "name": {
+      "ru": "Северная Македония",
+      "en": "North Macedonia"
+    },
+    "population": 2100000,
+    "birthsPerYear": 22100,
+    "lifeExpectancy": {
+      "male": 73,
+      "female": 78
+    },
+    "infantMortality": 7,
+    "gdpPerCapita": 18000,
+    "gini": 0.33,
+    "urbanShare": 0.59,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 10.4,
+    "conflictIndex": 0.05,
+    "homicideRate": 1.5,
+    "traditionPacks": [
+      "balkan"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "NOR",
+    "name": {
+      "ru": "Норвегия",
+      "en": "Norway"
+    },
+    "population": 5500000,
+    "birthsPerYear": 54000,
+    "lifeExpectancy": {
+      "male": 81,
+      "female": 85
+    },
+    "infantMortality": 2,
+    "gdpPerCapita": 82000,
+    "gini": 0.27,
+    "urbanShare": 0.83,
+    "incomeTier": "high",
+    "schoolingYears": 12.9,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.5,
+    "traditionPacks": [
+      "nordic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "POL",
+    "name": {
+      "ru": "Польша",
+      "en": "Poland"
+    },
+    "population": 37700000,
+    "birthsPerYear": 331100,
+    "lifeExpectancy": {
+      "male": 74,
+      "female": 82
+    },
+    "infantMortality": 4,
+    "gdpPerCapita": 42000,
+    "gini": 0.3,
+    "urbanShare": 0.6,
+    "incomeTier": "high",
+    "schoolingYears": 12.8,
+    "conflictIndex": 0.1,
+    "homicideRate": 0.6,
+    "traditionPacks": [
+      "eastern_europe"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "PRT",
+    "name": {
+      "ru": "Португалия",
+      "en": "Portugal"
+    },
+    "population": 10300000,
+    "birthsPerYear": 92700,
+    "lifeExpectancy": {
+      "male": 78,
+      "female": 84
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 38000,
+    "gini": 0.33,
+    "urbanShare": 0.67,
+    "incomeTier": "high",
+    "schoolingYears": 9.8,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.7,
+    "traditionPacks": [
+      "southern_europe_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "ROU",
+    "name": {
+      "ru": "Румыния",
+      "en": "Romania"
+    },
+    "population": 19100000,
+    "birthsPerYear": 198600,
+    "lifeExpectancy": {
+      "male": 72,
+      "female": 80
+    },
+    "infantMortality": 6,
+    "gdpPerCapita": 35000,
+    "gini": 0.35,
+    "urbanShare": 0.54,
+    "incomeTier": "high",
+    "schoolingYears": 11.1,
+    "conflictIndex": 0.1,
+    "homicideRate": 1.3,
+    "traditionPacks": [
+      "eastern_europe"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "RUS",
+    "name": {
+      "ru": "Россия",
+      "en": "Russia"
+    },
+    "population": 144000000,
+    "birthsPerYear": 1220000,
+    "lifeExpectancy": {
+      "male": 65,
+      "female": 75
+    },
+    "infantMortality": 5,
+    "gdpPerCapita": 36000,
+    "gini": 0.37,
+    "urbanShare": 0.75,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 12,
+    "conflictIndex": 0.3,
+    "homicideRate": 7,
+    "traditionPacks": [
+      "post_soviet_slavic"
+    ],
+    "regions": [
+      "rus_moscow",
+      "rus_spb",
+      "rus_volga",
+      "rus_south",
+      "rus_siberia",
+      "rus_other"
+    ]
+  },
+  {
+    "iso3": "SMR",
+    "name": {
+      "ru": "Сан-Марино",
+      "en": "San Marino"
+    },
+    "population": 34000,
+    "birthsPerYear": 300,
+    "lifeExpectancy": {
+      "male": 80,
+      "female": 86
+    },
+    "infantMortality": 2,
+    "gdpPerCapita": 64000,
+    "gini": 0.3,
+    "urbanShare": 0.97,
+    "incomeTier": "high",
+    "schoolingYears": 12,
+    "conflictIndex": 0,
+    "homicideRate": 0.5,
+    "traditionPacks": [
+      "southern_europe_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SRB",
+    "name": {
+      "ru": "Сербия",
+      "en": "Serbia"
+    },
+    "population": 6600000,
+    "birthsPerYear": 68400,
+    "lifeExpectancy": {
+      "male": 74,
+      "female": 79
+    },
+    "infantMortality": 5,
+    "gdpPerCapita": 22000,
+    "gini": 0.34,
+    "urbanShare": 0.57,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 11.1,
+    "conflictIndex": 0.1,
+    "homicideRate": 1.2,
+    "traditionPacks": [
+      "balkan"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SVK",
+    "name": {
+      "ru": "Словакия",
+      "en": "Slovakia"
+    },
+    "population": 5400000,
+    "birthsPerYear": 59600,
+    "lifeExpectancy": {
+      "male": 74,
+      "female": 81
+    },
+    "infantMortality": 5,
+    "gdpPerCapita": 33000,
+    "gini": 0.24,
+    "urbanShare": 0.54,
+    "incomeTier": "high",
+    "schoolingYears": 12.7,
+    "conflictIndex": 0.02,
+    "homicideRate": 1.2,
+    "traditionPacks": [
+      "eastern_europe"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SVN",
+    "name": {
+      "ru": "Словения",
+      "en": "Slovenia"
+    },
+    "population": 2100000,
+    "birthsPerYear": 21000,
+    "lifeExpectancy": {
+      "male": 78,
+      "female": 84
+    },
+    "infantMortality": 2,
+    "gdpPerCapita": 42000,
+    "gini": 0.24,
+    "urbanShare": 0.55,
+    "incomeTier": "high",
+    "schoolingYears": 12.5,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.5,
+    "traditionPacks": [
+      "southern_europe_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "ESP",
+    "name": {
+      "ru": "Испания",
+      "en": "Spain"
+    },
+    "population": 47600000,
+    "birthsPerYear": 353100,
+    "lifeExpectancy": {
+      "male": 81,
+      "female": 86
+    },
+    "infantMortality": 2.6,
+    "gdpPerCapita": 42000,
+    "gini": 0.33,
+    "urbanShare": 0.81,
+    "incomeTier": "high",
+    "schoolingYears": 10.3,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.65,
+    "traditionPacks": [
+      "southern_europe_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SWE",
+    "name": {
+      "ru": "Швеция",
+      "en": "Sweden"
+    },
+    "population": 10500000,
+    "birthsPerYear": 115900,
+    "lifeExpectancy": {
+      "male": 81,
+      "female": 85
+    },
+    "infantMortality": 2,
+    "gdpPerCapita": 56000,
+    "gini": 0.28,
+    "urbanShare": 0.88,
+    "incomeTier": "high",
+    "schoolingYears": 12.6,
+    "conflictIndex": 0.02,
+    "homicideRate": 1.1,
+    "traditionPacks": [
+      "nordic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "CHE",
+    "name": {
+      "ru": "Швейцария",
+      "en": "Switzerland"
+    },
+    "population": 8800000,
+    "birthsPerYear": 94900,
+    "lifeExpectancy": {
+      "male": 81,
+      "female": 85
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 83000,
+    "gini": 0.33,
+    "urbanShare": 0.74,
+    "incomeTier": "high",
+    "schoolingYears": 13.4,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.5,
+    "traditionPacks": [
+      "western_europe_secular"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "UKR",
+    "name": {
+      "ru": "Украина",
+      "en": "Ukraine"
+    },
+    "population": 36000000,
+    "birthsPerYear": 275900,
+    "lifeExpectancy": {
+      "male": 65,
+      "female": 75
+    },
+    "infantMortality": 7,
+    "gdpPerCapita": 5700,
+    "gini": 0.26,
+    "urbanShare": 0.69,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 11.3,
+    "conflictIndex": 0.85,
+    "homicideRate": 5,
+    "traditionPacks": [
+      "post_soviet_slavic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "GBR",
+    "name": {
+      "ru": "Великобритания",
+      "en": "United Kingdom"
+    },
+    "population": 67700000,
+    "birthsPerYear": 772500,
+    "lifeExpectancy": {
+      "male": 79,
+      "female": 83
+    },
+    "infantMortality": 3.8,
+    "gdpPerCapita": 49000,
+    "gini": 0.35,
+    "urbanShare": 0.84,
+    "incomeTier": "high",
+    "schoolingYears": 13.2,
+    "conflictIndex": 0.05,
+    "homicideRate": 1,
+    "traditionPacks": [
+      "anglo_na"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "XKX",
+    "name": {
+      "ru": "Косово",
+      "en": "Kosovo"
+    },
+    "population": 1800000,
+    "birthsPerYear": 24300,
+    "lifeExpectancy": {
+      "male": 72,
+      "female": 77
+    },
+    "infantMortality": 8,
+    "gdpPerCapita": 13000,
+    "gini": 0.29,
+    "urbanShare": 0.5,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 10.5,
+    "conflictIndex": 0.15,
+    "homicideRate": 1.5,
+    "traditionPacks": [
+      "balkan"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "CAN",
+    "name": {
+      "ru": "Канада",
+      "en": "Canada"
+    },
+    "population": 39000000,
+    "birthsPerYear": 397300,
+    "lifeExpectancy": {
+      "male": 80,
+      "female": 84
+    },
+    "infantMortality": 4,
+    "gdpPerCapita": 55000,
+    "gini": 0.33,
+    "urbanShare": 0.82,
+    "incomeTier": "high",
+    "schoolingYears": 13.3,
+    "conflictIndex": 0.02,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "anglo_na"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "USA",
+    "name": {
+      "ru": "США",
+      "en": "United States"
+    },
+    "population": 339000000,
+    "birthsPerYear": 3660000,
+    "lifeExpectancy": {
+      "male": 76,
+      "female": 81
+    },
+    "infantMortality": 5.4,
+    "gdpPerCapita": 69000,
+    "gini": 0.41,
+    "urbanShare": 0.83,
+    "incomeTier": "high",
+    "schoolingYears": 13.7,
+    "conflictIndex": 0.05,
+    "homicideRate": 6.8,
+    "traditionPacks": [
+      "anglo_na"
+    ],
+    "regions": [
+      "usa_northeast",
+      "usa_midwest",
+      "usa_south",
+      "usa_west"
+    ]
+  },
+  {
+    "iso3": "MEX",
+    "name": {
+      "ru": "Мексика",
+      "en": "Mexico"
+    },
+    "population": 128000000,
+    "birthsPerYear": 2096700,
+    "lifeExpectancy": {
+      "male": 72,
+      "female": 78
+    },
+    "infantMortality": 11,
+    "gdpPerCapita": 21000,
+    "gini": 0.45,
+    "urbanShare": 0.81,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 9.1,
+    "conflictIndex": 0.3,
+    "homicideRate": 25,
+    "traditionPacks": [
+      "latam_urban_catholic"
+    ],
+    "regions": [
+      "mex_cdmx",
+      "mex_north",
+      "mex_central",
+      "mex_south",
+      "mex_yucatan"
+    ]
+  },
+  {
+    "iso3": "BLZ",
+    "name": {
+      "ru": "Белиз",
+      "en": "Belize"
+    },
+    "population": 400000,
+    "birthsPerYear": 8300,
+    "lifeExpectancy": {
+      "male": 71,
+      "female": 76
+    },
+    "infantMortality": 12,
+    "gdpPerCapita": 6500,
+    "gini": 0.4,
+    "urbanShare": 0.46,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 10.8,
+    "conflictIndex": 0.1,
+    "homicideRate": 25,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "CRI",
+    "name": {
+      "ru": "Коста-Рика",
+      "en": "Costa Rica"
+    },
+    "population": 5200000,
+    "birthsPerYear": 71700,
+    "lifeExpectancy": {
+      "male": 78,
+      "female": 83
+    },
+    "infantMortality": 7,
+    "gdpPerCapita": 23000,
+    "gini": 0.48,
+    "urbanShare": 0.81,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 8.8,
+    "conflictIndex": 0.05,
+    "homicideRate": 12,
+    "traditionPacks": [
+      "latam_urban_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SLV",
+    "name": {
+      "ru": "Сальвадор",
+      "en": "El Salvador"
+    },
+    "population": 6300000,
+    "birthsPerYear": 121400,
+    "lifeExpectancy": {
+      "male": 70,
+      "female": 79
+    },
+    "infantMortality": 11,
+    "gdpPerCapita": 9500,
+    "gini": 0.38,
+    "urbanShare": 0.74,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 7,
+    "conflictIndex": 0.2,
+    "homicideRate": 7.8,
+    "traditionPacks": [
+      "latam_urban_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "GTM",
+    "name": {
+      "ru": "Гватемала",
+      "en": "Guatemala"
+    },
+    "population": 18000000,
+    "birthsPerYear": 474500,
+    "lifeExpectancy": {
+      "male": 70,
+      "female": 77
+    },
+    "infantMortality": 20,
+    "gdpPerCapita": 9500,
+    "gini": 0.48,
+    "urbanShare": 0.53,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 6.6,
+    "conflictIndex": 0.2,
+    "homicideRate": 17,
+    "traditionPacks": [
+      "latam_rural_andean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "HND",
+    "name": {
+      "ru": "Гондурас",
+      "en": "Honduras"
+    },
+    "population": 10600000,
+    "birthsPerYear": 264800,
+    "lifeExpectancy": {
+      "male": 72,
+      "female": 78
+    },
+    "infantMortality": 14,
+    "gdpPerCapita": 6500,
+    "gini": 0.48,
+    "urbanShare": 0.59,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 6.6,
+    "conflictIndex": 0.3,
+    "homicideRate": 25,
+    "traditionPacks": [
+      "latam_rural_andean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "NIC",
+    "name": {
+      "ru": "Никарагуа",
+      "en": "Nicaragua"
+    },
+    "population": 6900000,
+    "birthsPerYear": 154500,
+    "lifeExpectancy": {
+      "male": 71,
+      "female": 78
+    },
+    "infantMortality": 14,
+    "gdpPerCapita": 6000,
+    "gini": 0.46,
+    "urbanShare": 0.59,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 6.8,
+    "conflictIndex": 0.2,
+    "homicideRate": 7,
+    "traditionPacks": [
+      "latam_rural_andean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "PAN",
+    "name": {
+      "ru": "Панама",
+      "en": "Panama"
+    },
+    "population": 4400000,
+    "birthsPerYear": 82800,
+    "lifeExpectancy": {
+      "male": 75,
+      "female": 81
+    },
+    "infantMortality": 13,
+    "gdpPerCapita": 31000,
+    "gini": 0.49,
+    "urbanShare": 0.69,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 10.2,
+    "conflictIndex": 0.05,
+    "homicideRate": 9,
+    "traditionPacks": [
+      "latam_urban_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "ATG",
+    "name": {
+      "ru": "Антигуа и Барбуда",
+      "en": "Antigua and Barbuda"
+    },
+    "population": 100000,
+    "birthsPerYear": 1900,
+    "lifeExpectancy": {
+      "male": 75,
+      "female": 79
+    },
+    "infantMortality": 5,
+    "gdpPerCapita": 19000,
+    "gini": 0.4,
+    "urbanShare": 0.26,
+    "incomeTier": "high",
+    "schoolingYears": 9.5,
+    "conflictIndex": 0.02,
+    "homicideRate": 8,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "BHS",
+    "name": {
+      "ru": "Багамы",
+      "en": "Bahamas"
+    },
+    "population": 400000,
+    "birthsPerYear": 5500,
+    "lifeExpectancy": {
+      "male": 71,
+      "female": 78
+    },
+    "infantMortality": 8,
+    "gdpPerCapita": 32000,
+    "gini": 0.57,
+    "urbanShare": 0.83,
+    "incomeTier": "high",
+    "schoolingYears": 11,
+    "conflictIndex": 0.1,
+    "homicideRate": 18,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "BRB",
+    "name": {
+      "ru": "Барбадос",
+      "en": "Barbados"
+    },
+    "population": 280000,
+    "birthsPerYear": 3300,
+    "lifeExpectancy": {
+      "male": 75,
+      "female": 80
+    },
+    "infantMortality": 9,
+    "gdpPerCapita": 19000,
+    "gini": 0.39,
+    "urbanShare": 0.31,
+    "incomeTier": "high",
+    "schoolingYears": 11.5,
+    "conflictIndex": 0.02,
+    "homicideRate": 10,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "CUB",
+    "name": {
+      "ru": "Куба",
+      "en": "Cuba"
+    },
+    "population": 11200000,
+    "birthsPerYear": 110400,
+    "lifeExpectancy": {
+      "male": 76,
+      "female": 80
+    },
+    "infantMortality": 5,
+    "gdpPerCapita": 9500,
+    "gini": 0.4,
+    "urbanShare": 0.77,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 11.8,
+    "conflictIndex": 0.1,
+    "homicideRate": 5,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "DMA",
+    "name": {
+      "ru": "Доминика",
+      "en": "Dominica"
+    },
+    "population": 70000,
+    "birthsPerYear": 1100,
+    "lifeExpectancy": {
+      "male": 76,
+      "female": 80
+    },
+    "infantMortality": 10,
+    "gdpPerCapita": 9500,
+    "gini": 0.4,
+    "urbanShare": 0.7,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 9,
+    "conflictIndex": 0.02,
+    "homicideRate": 10,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "DOM",
+    "name": {
+      "ru": "Доминиканская Республика",
+      "en": "Dominican Republic"
+    },
+    "population": 11300000,
+    "birthsPerYear": 209700,
+    "lifeExpectancy": {
+      "male": 72,
+      "female": 78
+    },
+    "infantMortality": 25,
+    "gdpPerCapita": 21000,
+    "gini": 0.4,
+    "urbanShare": 0.84,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 8.2,
+    "conflictIndex": 0.1,
+    "homicideRate": 10,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "GRD",
+    "name": {
+      "ru": "Гренада",
+      "en": "Grenada"
+    },
+    "population": 120000,
+    "birthsPerYear": 2000,
+    "lifeExpectancy": {
+      "male": 73,
+      "female": 77
+    },
+    "infantMortality": 9,
+    "gdpPerCapita": 11000,
+    "gini": 0.4,
+    "urbanShare": 0.36,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 9.5,
+    "conflictIndex": 0.02,
+    "homicideRate": 15,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "HTI",
+    "name": {
+      "ru": "Гаити",
+      "en": "Haiti"
+    },
+    "population": 11700000,
+    "birthsPerYear": 331100,
+    "lifeExpectancy": {
+      "male": 62,
+      "female": 66
+    },
+    "infantMortality": 50,
+    "gdpPerCapita": 1800,
+    "gini": 0.41,
+    "urbanShare": 0.58,
+    "incomeTier": "low",
+    "schoolingYears": 5.6,
+    "conflictIndex": 0.6,
+    "homicideRate": 25,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "JAM",
+    "name": {
+      "ru": "Ямайка",
+      "en": "Jamaica"
+    },
+    "population": 2800000,
+    "birthsPerYear": 44100,
+    "lifeExpectancy": {
+      "male": 73,
+      "female": 78
+    },
+    "infantMortality": 12,
+    "gdpPerCapita": 10500,
+    "gini": 0.45,
+    "urbanShare": 0.56,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 9.8,
+    "conflictIndex": 0.15,
+    "homicideRate": 44,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "KNA",
+    "name": {
+      "ru": "Сент-Китс и Невис",
+      "en": "Saint Kitts and Nevis"
+    },
+    "population": 47000,
+    "birthsPerYear": 800,
+    "lifeExpectancy": {
+      "male": 73,
+      "female": 78
+    },
+    "infantMortality": 8,
+    "gdpPerCapita": 20000,
+    "gini": 0.4,
+    "urbanShare": 0.31,
+    "incomeTier": "high",
+    "schoolingYears": 9.5,
+    "conflictIndex": 0.02,
+    "homicideRate": 10,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "LCA",
+    "name": {
+      "ru": "Сент-Люсия",
+      "en": "Saint Lucia"
+    },
+    "population": 180000,
+    "birthsPerYear": 2800,
+    "lifeExpectancy": {
+      "male": 73,
+      "female": 78
+    },
+    "infantMortality": 12,
+    "gdpPerCapita": 14500,
+    "gini": 0.4,
+    "urbanShare": 0.19,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 9.3,
+    "conflictIndex": 0.02,
+    "homicideRate": 22,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "VCT",
+    "name": {
+      "ru": "Сент-Винсент и Гренадины",
+      "en": "Saint Vincent and the Grenadines"
+    },
+    "population": 110000,
+    "birthsPerYear": 1700,
+    "lifeExpectancy": {
+      "male": 71,
+      "female": 76
+    },
+    "infantMortality": 15,
+    "gdpPerCapita": 11500,
+    "gini": 0.4,
+    "urbanShare": 0.53,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 9.5,
+    "conflictIndex": 0.05,
+    "homicideRate": 25,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "TTO",
+    "name": {
+      "ru": "Тринидад и Тобаго",
+      "en": "Trinidad and Tobago"
+    },
+    "population": 1500000,
+    "birthsPerYear": 21000,
+    "lifeExpectancy": {
+      "male": 70,
+      "female": 76
+    },
+    "infantMortality": 17,
+    "gdpPerCapita": 17000,
+    "gini": 0.4,
+    "urbanShare": 0.53,
+    "incomeTier": "high",
+    "schoolingYears": 10.8,
+    "conflictIndex": 0.1,
+    "homicideRate": 30,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "ARG",
+    "name": {
+      "ru": "Аргентина",
+      "en": "Argentina"
+    },
+    "population": 45800000,
+    "birthsPerYear": 684200,
+    "lifeExpectancy": {
+      "male": 73,
+      "female": 80
+    },
+    "infantMortality": 8,
+    "gdpPerCapita": 23000,
+    "gini": 0.42,
+    "urbanShare": 0.92,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 10.6,
+    "conflictIndex": 0.1,
+    "homicideRate": 5,
+    "traditionPacks": [
+      "latam_urban_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "BOL",
+    "name": {
+      "ru": "Боливия",
+      "en": "Bolivia"
+    },
+    "population": 12200000,
+    "birthsPerYear": 286900,
+    "lifeExpectancy": {
+      "male": 69,
+      "female": 75
+    },
+    "infantMortality": 23,
+    "gdpPerCapita": 9000,
+    "gini": 0.42,
+    "urbanShare": 0.71,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 9.2,
+    "conflictIndex": 0.1,
+    "homicideRate": 6,
+    "traditionPacks": [
+      "latam_rural_andean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "BRA",
+    "name": {
+      "ru": "Бразилия",
+      "en": "Brazil"
+    },
+    "population": 216000000,
+    "birthsPerYear": 2869200,
+    "lifeExpectancy": {
+      "male": 70,
+      "female": 78
+    },
+    "infantMortality": 12,
+    "gdpPerCapita": 17000,
+    "gini": 0.53,
+    "urbanShare": 0.87,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 8,
+    "conflictIndex": 0.15,
+    "homicideRate": 22,
+    "traditionPacks": [
+      "latam_urban_catholic"
+    ],
+    "regions": [
+      "bra_southeast",
+      "bra_northeast",
+      "bra_south",
+      "bra_north",
+      "bra_centerwest"
+    ]
+  },
+  {
+    "iso3": "CHL",
+    "name": {
+      "ru": "Чили",
+      "en": "Chile"
+    },
+    "population": 19600000,
+    "birthsPerYear": 209700,
+    "lifeExpectancy": {
+      "male": 77,
+      "female": 83
+    },
+    "infantMortality": 6,
+    "gdpPerCapita": 27000,
+    "gini": 0.44,
+    "urbanShare": 0.88,
+    "incomeTier": "high",
+    "schoolingYears": 11,
+    "conflictIndex": 0.05,
+    "homicideRate": 6.5,
+    "traditionPacks": [
+      "latam_urban_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "COL",
+    "name": {
+      "ru": "Колумбия",
+      "en": "Colombia"
+    },
+    "population": 52200000,
+    "birthsPerYear": 695200,
+    "lifeExpectancy": {
+      "male": 73,
+      "female": 80
+    },
+    "infantMortality": 11,
+    "gdpPerCapita": 17000,
+    "gini": 0.51,
+    "urbanShare": 0.81,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 8.9,
+    "conflictIndex": 0.3,
+    "homicideRate": 25,
+    "traditionPacks": [
+      "latam_urban_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "ECU",
+    "name": {
+      "ru": "Эквадор",
+      "en": "Ecuador"
+    },
+    "population": 18200000,
+    "birthsPerYear": 331100,
+    "lifeExpectancy": {
+      "male": 73,
+      "female": 79
+    },
+    "infantMortality": 11,
+    "gdpPerCapita": 12000,
+    "gini": 0.46,
+    "urbanShare": 0.64,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 9.2,
+    "conflictIndex": 0.25,
+    "homicideRate": 27,
+    "traditionPacks": [
+      "latam_rural_andean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "GUY",
+    "name": {
+      "ru": "Гайана",
+      "en": "Guyana"
+    },
+    "population": 810000,
+    "birthsPerYear": 14300,
+    "lifeExpectancy": {
+      "male": 66,
+      "female": 72
+    },
+    "infantMortality": 25,
+    "gdpPerCapita": 20000,
+    "gini": 0.4,
+    "urbanShare": 0.27,
+    "incomeTier": "high",
+    "schoolingYears": 8.8,
+    "conflictIndex": 0.1,
+    "homicideRate": 20,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "PRY",
+    "name": {
+      "ru": "Парагвай",
+      "en": "Paraguay"
+    },
+    "population": 6900000,
+    "birthsPerYear": 132400,
+    "lifeExpectancy": {
+      "male": 71,
+      "female": 77
+    },
+    "infantMortality": 15,
+    "gdpPerCapita": 15000,
+    "gini": 0.46,
+    "urbanShare": 0.63,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 8.4,
+    "conflictIndex": 0.1,
+    "homicideRate": 8,
+    "traditionPacks": [
+      "latam_rural_andean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "PER",
+    "name": {
+      "ru": "Перу",
+      "en": "Peru"
+    },
+    "population": 34000000,
+    "birthsPerYear": 606900,
+    "lifeExpectancy": {
+      "male": 73,
+      "female": 78
+    },
+    "infantMortality": 11,
+    "gdpPerCapita": 14000,
+    "gini": 0.43,
+    "urbanShare": 0.79,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 9.9,
+    "conflictIndex": 0.1,
+    "homicideRate": 8,
+    "traditionPacks": [
+      "latam_rural_andean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SUR",
+    "name": {
+      "ru": "Суринам",
+      "en": "Suriname"
+    },
+    "population": 630000,
+    "birthsPerYear": 12100,
+    "lifeExpectancy": {
+      "male": 68,
+      "female": 75
+    },
+    "infantMortality": 15,
+    "gdpPerCapita": 15500,
+    "gini": 0.4,
+    "urbanShare": 0.66,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 8,
+    "conflictIndex": 0.05,
+    "homicideRate": 10,
+    "traditionPacks": [
+      "caribbean"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "URY",
+    "name": {
+      "ru": "Уругвай",
+      "en": "Uruguay"
+    },
+    "population": 3400000,
+    "birthsPerYear": 48600,
+    "lifeExpectancy": {
+      "male": 74,
+      "female": 81
+    },
+    "infantMortality": 6,
+    "gdpPerCapita": 24000,
+    "gini": 0.4,
+    "urbanShare": 0.96,
+    "incomeTier": "high",
+    "schoolingYears": 9.2,
+    "conflictIndex": 0.02,
+    "homicideRate": 7,
+    "traditionPacks": [
+      "latam_urban_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "VEN",
+    "name": {
+      "ru": "Венесуэла",
+      "en": "Venezuela"
+    },
+    "population": 28400000,
+    "birthsPerYear": 496600,
+    "lifeExpectancy": {
+      "male": 68,
+      "female": 76
+    },
+    "infantMortality": 20,
+    "gdpPerCapita": 5000,
+    "gini": 0.44,
+    "urbanShare": 0.88,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 10.3,
+    "conflictIndex": 0.3,
+    "homicideRate": 20,
+    "traditionPacks": [
+      "latam_urban_catholic"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "AUS",
+    "name": {
+      "ru": "Австралия",
+      "en": "Australia"
+    },
+    "population": 26600000,
+    "birthsPerYear": 331100,
+    "lifeExpectancy": {
+      "male": 81,
+      "female": 85
+    },
+    "infantMortality": 3,
+    "gdpPerCapita": 58000,
+    "gini": 0.34,
+    "urbanShare": 0.86,
+    "incomeTier": "high",
+    "schoolingYears": 12.7,
+    "conflictIndex": 0.02,
+    "homicideRate": 0.9,
+    "traditionPacks": [
+      "anglo_na"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "FJI",
+    "name": {
+      "ru": "Фиджи",
+      "en": "Fiji"
+    },
+    "population": 930000,
+    "birthsPerYear": 17700,
+    "lifeExpectancy": {
+      "male": 68,
+      "female": 73
+    },
+    "infantMortality": 15,
+    "gdpPerCapita": 13000,
+    "gini": 0.36,
+    "urbanShare": 0.57,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 10.9,
+    "conflictIndex": 0.05,
+    "homicideRate": 3,
+    "traditionPacks": [
+      "oceania_pacific"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "KIR",
+    "name": {
+      "ru": "Кирибати",
+      "en": "Kiribati"
+    },
+    "population": 130000,
+    "birthsPerYear": 3300,
+    "lifeExpectancy": {
+      "male": 65,
+      "female": 70
+    },
+    "infantMortality": 30,
+    "gdpPerCapita": 2200,
+    "gini": 0.37,
+    "urbanShare": 0.56,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 7,
+    "conflictIndex": 0.02,
+    "homicideRate": 7,
+    "traditionPacks": [
+      "oceania_pacific"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "MHL",
+    "name": {
+      "ru": "Маршалловы Острова",
+      "en": "Marshall Islands"
+    },
+    "population": 40000,
+    "birthsPerYear": 1100,
+    "lifeExpectancy": {
+      "male": 64,
+      "female": 68
+    },
+    "infantMortality": 25,
+    "gdpPerCapita": 6000,
+    "gini": 0.4,
+    "urbanShare": 0.78,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 10,
+    "conflictIndex": 0.02,
+    "homicideRate": 5,
+    "traditionPacks": [
+      "oceania_pacific"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "FSM",
+    "name": {
+      "ru": "Микронезия",
+      "en": "Micronesia"
+    },
+    "population": 110000,
+    "birthsPerYear": 2500,
+    "lifeExpectancy": {
+      "male": 68,
+      "female": 72
+    },
+    "infantMortality": 25,
+    "gdpPerCapita": 4000,
+    "gini": 0.4,
+    "urbanShare": 0.23,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 9,
+    "conflictIndex": 0.02,
+    "homicideRate": 4,
+    "traditionPacks": [
+      "oceania_pacific"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "NRU",
+    "name": {
+      "ru": "Науру",
+      "en": "Nauru"
+    },
+    "population": 12000,
+    "birthsPerYear": 300,
+    "lifeExpectancy": {
+      "male": 63,
+      "female": 68
+    },
+    "infantMortality": 25,
+    "gdpPerCapita": 12000,
+    "gini": 0.4,
+    "urbanShare": 1,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 9,
+    "conflictIndex": 0.02,
+    "homicideRate": 3,
+    "traditionPacks": [
+      "oceania_pacific"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "NZL",
+    "name": {
+      "ru": "Новая Зеландия",
+      "en": "New Zealand"
+    },
+    "population": 5200000,
+    "birthsPerYear": 62900,
+    "lifeExpectancy": {
+      "male": 80,
+      "female": 84
+    },
+    "infantMortality": 4,
+    "gdpPerCapita": 46000,
+    "gini": 0.33,
+    "urbanShare": 0.87,
+    "incomeTier": "high",
+    "schoolingYears": 12.5,
+    "conflictIndex": 0.02,
+    "homicideRate": 1,
+    "traditionPacks": [
+      "anglo_na"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "PLW",
+    "name": {
+      "ru": "Палау",
+      "en": "Palau"
+    },
+    "population": 18000,
+    "birthsPerYear": 300,
+    "lifeExpectancy": {
+      "male": 66,
+      "female": 73
+    },
+    "infantMortality": 10,
+    "gdpPerCapita": 15000,
+    "gini": 0.4,
+    "urbanShare": 0.81,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 12,
+    "conflictIndex": 0.02,
+    "homicideRate": 3,
+    "traditionPacks": [
+      "oceania_pacific"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "PNG",
+    "name": {
+      "ru": "Папуа — Новая Гвинея",
+      "en": "Papua New Guinea"
+    },
+    "population": 10300000,
+    "birthsPerYear": 286900,
+    "lifeExpectancy": {
+      "male": 63,
+      "female": 68
+    },
+    "infantMortality": 40,
+    "gdpPerCapita": 4300,
+    "gini": 0.42,
+    "urbanShare": 0.13,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 5,
+    "conflictIndex": 0.3,
+    "homicideRate": 10,
+    "traditionPacks": [
+      "oceania_pacific"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "WSM",
+    "name": {
+      "ru": "Самоа",
+      "en": "Samoa"
+    },
+    "population": 220000,
+    "birthsPerYear": 5200,
+    "lifeExpectancy": {
+      "male": 71,
+      "female": 77
+    },
+    "infantMortality": 15,
+    "gdpPerCapita": 6000,
+    "gini": 0.38,
+    "urbanShare": 0.18,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 10.8,
+    "conflictIndex": 0.02,
+    "homicideRate": 3,
+    "traditionPacks": [
+      "oceania_pacific"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "SLB",
+    "name": {
+      "ru": "Соломоновы Острова",
+      "en": "Solomon Islands"
+    },
+    "population": 740000,
+    "birthsPerYear": 21000,
+    "lifeExpectancy": {
+      "male": 70,
+      "female": 74
+    },
+    "infantMortality": 20,
+    "gdpPerCapita": 2700,
+    "gini": 0.37,
+    "urbanShare": 0.25,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 8,
+    "conflictIndex": 0.1,
+    "homicideRate": 3.5,
+    "traditionPacks": [
+      "oceania_pacific"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "TON",
+    "name": {
+      "ru": "Тонга",
+      "en": "Tonga"
+    },
+    "population": 107000,
+    "birthsPerYear": 2200,
+    "lifeExpectancy": {
+      "male": 71,
+      "female": 76
+    },
+    "infantMortality": 12,
+    "gdpPerCapita": 6500,
+    "gini": 0.37,
+    "urbanShare": 0.23,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 11.1,
+    "conflictIndex": 0.02,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "oceania_pacific"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "TUV",
+    "name": {
+      "ru": "Тувалу",
+      "en": "Tuvalu"
+    },
+    "population": 11000,
+    "birthsPerYear": 200,
+    "lifeExpectancy": {
+      "male": 65,
+      "female": 70
+    },
+    "infantMortality": 20,
+    "gdpPerCapita": 6500,
+    "gini": 0.37,
+    "urbanShare": 0.65,
+    "incomeTier": "upper-middle",
+    "schoolingYears": 10,
+    "conflictIndex": 0.02,
+    "homicideRate": 2,
+    "traditionPacks": [
+      "oceania_pacific"
+    ],
+    "regions": []
+  },
+  {
+    "iso3": "VUT",
+    "name": {
+      "ru": "Вануату",
+      "en": "Vanuatu"
+    },
+    "population": 330000,
+    "birthsPerYear": 8300,
+    "lifeExpectancy": {
+      "male": 69,
+      "female": 73
+    },
+    "infantMortality": 18,
+    "gdpPerCapita": 3300,
+    "gini": 0.37,
+    "urbanShare": 0.26,
+    "incomeTier": "lower-middle",
+    "schoolingYears": 7,
+    "conflictIndex": 0.05,
+    "homicideRate": 3,
+    "traditionPacks": [
+      "oceania_pacific"
+    ],
+    "regions": []
+  }
+]

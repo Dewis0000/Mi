@@ -1,0 +1,1444 @@
+{
+  "events": [
+    {
+      "id": "arranged_marriage",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        12,
+        17
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.arranged_marriage.title",
+      "bodyKey": "event.arranged_marriage.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "accept",
+          "riskLabel": "надёжно",
+          "effects": {
+            "education": -10,
+            "bonds": 8,
+            "standing": 6,
+            "wealth": 4
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "married_young",
+            "married",
+            "arranged_marriage"
+          ]
+        },
+        {
+          "id": "resist",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -12,
+            "standing": -10
+          },
+          "mortalityDelta": 1.15
+        },
+        {
+          "id": "negotiate_delay",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "bonds": -3,
+            "standing": -2,
+            "education": 3
+          },
+          "mortalityDelta": 1,
+          "requires": {
+            "statsAbove": {
+              "bonds": 55
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "marriage_bride_price_negotiation",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        16,
+        32
+      ],
+      "baseWeight": 1.4,
+      "titleKey": "event.marriage_bride_price_negotiation.title",
+      "bodyKey": "event.marriage_bride_price_negotiation.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "accept_terms",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": 6,
+            "bonds": 4,
+            "standing": 4
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "married"
+          ]
+        },
+        {
+          "id": "refuse_terms",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -8,
+            "standing": -6
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "independent_terms",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": -2,
+            "standing": 3,
+            "bonds": -2
+          },
+          "mortalityDelta": 1,
+          "requires": {
+            "statsAbove": {
+              "wealth": 50
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "marriage_dowry_economics",
+      "category": "marriage",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        34
+      ],
+      "baseWeight": 1.2,
+      "titleKey": "event.marriage_dowry_economics.title",
+      "bodyKey": "event.marriage_dowry_economics.body",
+      "once": true,
+      "effects": {
+        "wealth": -8,
+        "standing": 5
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "marriage_free_choice",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        36
+      ],
+      "baseWeight": 1.6,
+      "titleKey": "event.marriage_free_choice.title",
+      "bodyKey": "event.marriage_free_choice.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "proceed",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 10,
+            "wealth": 2
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "married"
+          ]
+        },
+        {
+          "id": "family_disapproves",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -6,
+            "standing": -8
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "married"
+          ]
+        },
+        {
+          "id": "postpone",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": 3,
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "marriage_civil_registration",
+      "category": "marriage",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        45
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.marriage_civil_registration.title",
+      "bodyKey": "event.marriage_civil_registration.body",
+      "once": true,
+      "effects": {
+        "standing": 4,
+        "wealth": -2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "marriage_cohabitation_informal",
+      "category": "marriage",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        40
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.marriage_cohabitation_informal.title",
+      "bodyKey": "event.marriage_cohabitation_informal.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "formalize_later",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": 3,
+            "wealth": -2
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "married"
+          ]
+        },
+        {
+          "id": "stay_informal",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "bonds": 2,
+            "standing": -3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "marriage_interfaith_intercommunity",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        40
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.marriage_interfaith_intercommunity.title",
+      "bodyKey": "event.marriage_interfaith_intercommunity.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "proceed_despite_tension",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": 6,
+            "standing": -10
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "married"
+          ]
+        },
+        {
+          "id": "family_reconciles",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "bonds": 8,
+            "standing": -3
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "married"
+          ]
+        },
+        {
+          "id": "elope",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -5,
+            "standing": -12,
+            "wealth": -4
+          },
+          "mortalityDelta": 1.2,
+          "unlockTraits": [
+            "married"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "marriage_long_distance_courtship",
+      "category": "marriage",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        36
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.marriage_long_distance_courtship.title",
+      "bodyKey": "event.marriage_long_distance_courtship.body",
+      "once": true,
+      "effects": {
+        "bonds": 5
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "marriage_proposal_rejected",
+      "category": "marriage",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        36
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.marriage_proposal_rejected.title",
+      "bodyKey": "event.marriage_proposal_rejected.body",
+      "effects": {
+        "bonds": -3,
+        "standing": -2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "marriage_remarriage_after_widowhood",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        30,
+        72
+      ],
+      "requires": {
+        "traits": [
+          "widowed"
+        ]
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.marriage_remarriage_after_widowhood.title",
+      "bodyKey": "event.marriage_remarriage_after_widowhood.body",
+      "choices": [
+        {
+          "id": "remarry",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 6,
+            "wealth": 4,
+            "standing": 3
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "married"
+          ]
+        },
+        {
+          "id": "stay_single",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "standing": -2,
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "marriage_divorce_initiated_by_self",
+      "category": "marriage",
+      "severity": "major",
+      "ageGate": [
+        25,
+        55
+      ],
+      "requires": {
+        "traits": [
+          "married"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.marriage_divorce_initiated_by_self.title",
+      "bodyKey": "event.marriage_divorce_initiated_by_self.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "file_for_divorce",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -8,
+            "standing": -6,
+            "wealth": -6
+          },
+          "mortalityDelta": 1.1,
+          "unlockTraits": [
+            "divorced"
+          ]
+        },
+        {
+          "id": "reconcile",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "bonds": 5
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "informal_separation",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -4,
+            "wealth": -2,
+            "standing": -3
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "divorced"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "marriage_divorce_initiated_by_spouse",
+      "category": "marriage",
+      "severity": "major",
+      "ageGate": [
+        25,
+        55
+      ],
+      "requires": {
+        "traits": [
+          "married"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.marriage_divorce_initiated_by_spouse.title",
+      "bodyKey": "event.marriage_divorce_initiated_by_spouse.body",
+      "once": true,
+      "effects": {
+        "bonds": -10,
+        "wealth": -8,
+        "standing": -5
+      },
+      "mortalityDelta": 1.1,
+      "unlockTraits": [
+        "divorced"
+      ]
+    },
+    {
+      "id": "marriage_divorce_property_division",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        26,
+        58
+      ],
+      "requires": {
+        "traits": [
+          "divorced"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.marriage_divorce_property_division.title",
+      "bodyKey": "event.marriage_divorce_property_division.body",
+      "choices": [
+        {
+          "id": "negotiate_split",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -4,
+            "bonds": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "contest_in_court",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -10,
+            "standing": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "accept_unfavorable",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -12,
+            "bonds": 3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "marriage_widowhood_illness",
+      "category": "marriage",
+      "severity": "major",
+      "ageGate": [
+        25,
+        85
+      ],
+      "requires": {
+        "traits": [
+          "married"
+        ]
+      },
+      "baseWeight": 1.2,
+      "titleKey": "event.marriage_widowhood_illness.title",
+      "bodyKey": "event.marriage_widowhood_illness.body",
+      "once": true,
+      "effects": {
+        "bonds": -14,
+        "wealth": -6,
+        "health": -4
+      },
+      "mortalityDelta": 1.1,
+      "unlockTraits": [
+        "widowed"
+      ]
+    },
+    {
+      "id": "marriage_widowhood_accident",
+      "category": "marriage",
+      "severity": "major",
+      "ageGate": [
+        25,
+        85
+      ],
+      "requires": {
+        "traits": [
+          "married"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.marriage_widowhood_accident.title",
+      "bodyKey": "event.marriage_widowhood_accident.body",
+      "once": true,
+      "effects": {
+        "bonds": -16,
+        "wealth": -8,
+        "health": -3
+      },
+      "mortalityDelta": 1.1,
+      "unlockTraits": [
+        "widowed"
+      ]
+    },
+    {
+      "id": "marriage_widowhood_economic_aftermath",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        25,
+        85
+      ],
+      "requires": {
+        "traits": [
+          "widowed"
+        ]
+      },
+      "baseWeight": 1.3,
+      "titleKey": "event.marriage_widowhood_economic_aftermath.title",
+      "bodyKey": "event.marriage_widowhood_economic_aftermath.body",
+      "choices": [
+        {
+          "id": "take_over_business",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": 4,
+            "education": 2,
+            "bonds": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "rely_on_family",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 4,
+            "standing": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "remarry_for_stability",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "wealth": 3,
+            "bonds": 2,
+            "standing": 2
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "married"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "marriage_in_laws_conflict",
+      "category": "marriage",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        46
+      ],
+      "requires": {
+        "traits": [
+          "married"
+        ]
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.marriage_in_laws_conflict.title",
+      "bodyKey": "event.marriage_in_laws_conflict.body",
+      "choices": [
+        {
+          "id": "defer_to_in_laws",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 2,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "set_boundaries",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -5,
+            "standing": -3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "marriage_spousal_business_partnership",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        22,
+        56
+      ],
+      "requires": {
+        "traits": [
+          "married"
+        ]
+      },
+      "baseWeight": 1.1,
+      "titleKey": "event.marriage_spousal_business_partnership.title",
+      "bodyKey": "event.marriage_spousal_business_partnership.body",
+      "effects": {
+        "wealth": 7,
+        "bonds": 6
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "marriage_delayed_economic_hardship",
+      "category": "marriage",
+      "severity": "minor",
+      "ageGate": [
+        20,
+        36
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.marriage_delayed_economic_hardship.title",
+      "bodyKey": "event.marriage_delayed_economic_hardship.body",
+      "effects": {
+        "bonds": -2,
+        "wealth": 1
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "marriage_elopement",
+      "category": "marriage",
+      "severity": "major",
+      "ageGate": [
+        16,
+        26
+      ],
+      "baseWeight": 0.7,
+      "titleKey": "event.marriage_elopement.title",
+      "bodyKey": "event.marriage_elopement.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "elope_choice",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -10,
+            "standing": -8,
+            "health": -2
+          },
+          "mortalityDelta": 1.3,
+          "mortalityYears": 1,
+          "unlockTraits": [
+            "married"
+          ]
+        },
+        {
+          "id": "stay_and_wait",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "marriage_alliance_match",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        36
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.marriage_alliance_match.title",
+      "bodyKey": "event.marriage_alliance_match.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "accept_alliance",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": 7,
+            "wealth": 5,
+            "bonds": -2
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "married"
+          ]
+        },
+        {
+          "id": "refuse_alliance",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": -9,
+            "bonds": -4
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "marriage_dropout_pressure",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        12,
+        20
+      ],
+      "requires": {
+        "traits": [
+          "dropout"
+        ]
+      },
+      "baseWeight": 1.5,
+      "titleKey": "event.marriage_dropout_pressure.title",
+      "bodyKey": "event.marriage_dropout_pressure.body",
+      "once": true,
+      "choices": [
+        {
+          "id": "accept_pressure",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 5,
+            "standing": 4,
+            "education": -3
+          },
+          "mortalityDelta": 1,
+          "unlockTraits": [
+            "married_young",
+            "married"
+          ]
+        },
+        {
+          "id": "resist_pressure",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -8,
+            "standing": -6
+          },
+          "mortalityDelta": 1.1
+        },
+        {
+          "id": "negotiate_education",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "education": 4,
+            "bonds": -2
+          },
+          "mortalityDelta": 1,
+          "requires": {
+            "statsAbove": {
+              "standing": 50
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "marriage_remarriage_after_divorce",
+      "category": "marriage",
+      "severity": "minor",
+      "ageGate": [
+        28,
+        60
+      ],
+      "requires": {
+        "traits": [
+          "divorced"
+        ]
+      },
+      "baseWeight": 0.9,
+      "titleKey": "event.marriage_remarriage_after_divorce.title",
+      "bodyKey": "event.marriage_remarriage_after_divorce.body",
+      "effects": {
+        "bonds": 6,
+        "standing": 3
+      },
+      "mortalityDelta": 1,
+      "unlockTraits": [
+        "married"
+      ]
+    },
+    {
+      "id": "marriage_matchmaker_introduction",
+      "category": "marriage",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        36
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.marriage_matchmaker_introduction.title",
+      "bodyKey": "event.marriage_matchmaker_introduction.body",
+      "effects": {
+        "bonds": 2,
+        "standing": 1
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "marriage_long_engagement",
+      "category": "marriage",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        36
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.marriage_long_engagement.title",
+      "bodyKey": "event.marriage_long_engagement.body",
+      "effects": {
+        "wealth": 2,
+        "bonds": -1
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "marriage_wedding_debt",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        20,
+        42
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.marriage_wedding_debt.title",
+      "bodyKey": "event.marriage_wedding_debt.body",
+      "choices": [
+        {
+          "id": "scale_down",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -2,
+            "standing": -3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "take_loan",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -10,
+            "standing": 4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "accept_relative_help",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -3,
+            "bonds": 3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "marriage_spousal_migration_separation",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        22,
+        46
+      ],
+      "requires": {
+        "traits": [
+          "married"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.marriage_spousal_migration_separation.title",
+      "bodyKey": "event.marriage_spousal_migration_separation.body",
+      "effects": {
+        "bonds": -4,
+        "wealth": 5
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "marriage_blended_family",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        28,
+        58
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.marriage_blended_family.title",
+      "bodyKey": "event.marriage_blended_family.body",
+      "effects": {
+        "bonds": 2,
+        "wealth": -2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "marriage_community_disapproval",
+      "category": "marriage",
+      "severity": "minor",
+      "ageGate": [
+        18,
+        38
+      ],
+      "baseWeight": 0.8,
+      "titleKey": "event.marriage_community_disapproval.title",
+      "bodyKey": "event.marriage_community_disapproval.body",
+      "choices": [
+        {
+          "id": "ignore_gossip",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 3,
+            "standing": -4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "seek_approval",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "standing": 2,
+            "bonds": -1
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "marriage_annulment",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        30
+      ],
+      "baseWeight": 0.5,
+      "titleKey": "event.marriage_annulment.title",
+      "bodyKey": "event.marriage_annulment.body",
+      "once": true,
+      "effects": {
+        "standing": -6,
+        "bonds": -4,
+        "wealth": -2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "marriage_bride_price_default",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        18,
+        36
+      ],
+      "baseWeight": 0.9,
+      "titleKey": "event.marriage_bride_price_default.title",
+      "bodyKey": "event.marriage_bride_price_default.body",
+      "choices": [
+        {
+          "id": "delay_payment",
+          "riskLabel": "неизвестно",
+          "effects": {
+            "bonds": -2,
+            "wealth": -2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "cancel_engagement",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": -5,
+            "bonds": -4
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "in_kind_settlement",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -4,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "marriage_late_marriage_pressure",
+      "category": "marriage",
+      "severity": "minor",
+      "ageGate": [
+        30,
+        48
+      ],
+      "baseWeight": 1,
+      "titleKey": "event.marriage_late_marriage_pressure.title",
+      "bodyKey": "event.marriage_late_marriage_pressure.body",
+      "effects": {
+        "standing": -2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "marriage_spousal_caregiving_burden",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        40,
+        76
+      ],
+      "requires": {
+        "traits": [
+          "married"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.marriage_spousal_caregiving_burden.title",
+      "bodyKey": "event.marriage_spousal_caregiving_burden.body",
+      "effects": {
+        "health": -4,
+        "wealth": -5,
+        "bonds": 2
+      },
+      "mortalityDelta": 1
+    },
+    {
+      "id": "marriage_widow_inheritance_dispute",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        30,
+        78
+      ],
+      "requires": {
+        "traits": [
+          "widowed"
+        ]
+      },
+      "baseWeight": 1,
+      "titleKey": "event.marriage_widow_inheritance_dispute.title",
+      "bodyKey": "event.marriage_widow_inheritance_dispute.body",
+      "choices": [
+        {
+          "id": "contest_claim",
+          "riskLabel": "рискованно",
+          "effects": {
+            "wealth": -6,
+            "standing": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "cede_claim",
+          "riskLabel": "надёжно",
+          "effects": {
+            "wealth": -10,
+            "bonds": 3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "marriage_second_wife_household",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        22,
+        48
+      ],
+      "baseWeight": 0.6,
+      "titleKey": "event.marriage_second_wife_household.title",
+      "bodyKey": "event.marriage_second_wife_household.body",
+      "choices": [
+        {
+          "id": "accept_arrangement",
+          "riskLabel": "надёжно",
+          "effects": {
+            "standing": 3,
+            "bonds": -4,
+            "wealth": 2
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "object_arrangement",
+          "riskLabel": "рискованно",
+          "effects": {
+            "bonds": -8,
+            "standing": -4
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    },
+    {
+      "id": "marriage_civil_ceremony_abroad",
+      "category": "marriage",
+      "severity": "minor",
+      "ageGate": [
+        22,
+        42
+      ],
+      "baseWeight": 0.6,
+      "titleKey": "event.marriage_civil_ceremony_abroad.title",
+      "bodyKey": "event.marriage_civil_ceremony_abroad.body",
+      "effects": {
+        "standing": 3,
+        "wealth": -2
+      },
+      "mortalityDelta": 1,
+      "unlockTraits": [
+        "married"
+      ]
+    },
+    {
+      "id": "marriage_childhood_betrothal_review",
+      "category": "marriage",
+      "severity": "notable",
+      "ageGate": [
+        15,
+        19
+      ],
+      "requires": {
+        "traits": [
+          "arranged_marriage"
+        ]
+      },
+      "baseWeight": 0.7,
+      "titleKey": "event.marriage_childhood_betrothal_review.title",
+      "bodyKey": "event.marriage_childhood_betrothal_review.body",
+      "choices": [
+        {
+          "id": "confirm_betrothal",
+          "riskLabel": "надёжно",
+          "effects": {
+            "bonds": 3,
+            "standing": 3
+          },
+          "mortalityDelta": 1
+        },
+        {
+          "id": "call_it_off",
+          "riskLabel": "рискованно",
+          "effects": {
+            "standing": -7,
+            "bonds": -3
+          },
+          "mortalityDelta": 1
+        }
+      ]
+    }
+  ],
+  "i18n": {
+    "ru": {
+      "event.arranged_marriage.choice.accept.label": "Принять решение семьи",
+      "event.arranged_marriage.choice.resist.label": "Отказаться",
+      "event.arranged_marriage.choice.negotiate_delay.label": "Договориться об отсрочке",
+      "event.arranged_marriage.title": "Решение семьи",
+      "event.arranged_marriage.body": "Родители договорились о браке — обычай, долг перед другой семьёй или стеснённые средства сделали решение за тебя раньше, чем ты могла бы высказать своё. Вопрос обсуждают как семейный и хозяйственный, не как твой личный.",
+      "event.marriage_bride_price_negotiation.choice.accept_terms.label": "Принять условия",
+      "event.marriage_bride_price_negotiation.choice.refuse_terms.label": "Отказаться от условий",
+      "event.marriage_bride_price_negotiation.choice.independent_terms.label": "Договориться самостоятельно",
+      "event.marriage_bride_price_negotiation.title": "Переговоры о выкупе за невесту",
+      "event.marriage_bride_price_negotiation.body": "Семьи обсуждают размер выкупа за невесту — скотом, деньгами или имуществом. Сумма определяет, когда и на каких условиях состоится брак.",
+      "event.marriage_dowry_economics.title": "Приданое",
+      "event.marriage_dowry_economics.body": "Семья собирает приданое к свадьбе — часть сбережений уходит на подготовку. Расходы ощутимо сокращают семейный бюджет, но повышают положение в глазах соседей.",
+      "event.marriage_free_choice.choice.proceed.label": "Пойти дальше с браком",
+      "event.marriage_free_choice.choice.family_disapproves.label": "Пойти против воли семьи",
+      "event.marriage_free_choice.choice.postpone.label": "Отложить до большей стабильности",
+      "event.marriage_free_choice.title": "Собственный выбор",
+      "event.marriage_free_choice.body": "Ты сам выбрал партнёра для брака, без прямого участия родни в сватовстве. Решение обсуждается в семье, но финальное слово — твоё.",
+      "event.marriage_civil_registration.title": "Регистрация брака",
+      "event.marriage_civil_registration.body": "Брак официально регистрируется в государственных органах. Пошлины и бумажная волокита невелики, но статус теперь закреплён юридически.",
+      "event.marriage_cohabitation_informal.choice.formalize_later.label": "Оформить брак позже",
+      "event.marriage_cohabitation_informal.choice.stay_informal.label": "Оставить всё как есть",
+      "event.marriage_cohabitation_informal.title": "Союз без регистрации",
+      "event.marriage_cohabitation_informal.body": "Вы с партнёром живёте вместе и ведёте общее хозяйство, не оформляя брак официально. Это распространённая практика там, где регистрация дорога или необязательна.",
+      "event.marriage_interfaith_intercommunity.choice.proceed_despite_tension.label": "Пойти дальше, несмотря на напряжение",
+      "event.marriage_interfaith_intercommunity.choice.family_reconciles.label": "Дать семьям время примириться",
+      "event.marriage_interfaith_intercommunity.choice.elope.label": "Уехать и обвенчаться без семьи",
+      "event.marriage_interfaith_intercommunity.title": "Брак между разными общинами",
+      "event.marriage_interfaith_intercommunity.body": "Партнёр принадлежит к другой религиозной или этнической общине. Решение о браке вызывает напряжение в одной или обеих семьях.",
+      "event.marriage_long_distance_courtship.title": "Знакомство на расстоянии",
+      "event.marriage_long_distance_courtship.body": "Работа или учёба в другом регионе привели к знакомству с будущим партнёром издалека. Переписка и редкие встречи постепенно переросли в серьёзные отношения.",
+      "event.marriage_proposal_rejected.title": "Отказ на предложение",
+      "event.marriage_proposal_rejected.body": "Предложение руки и сердца было отклонено. Разговоры об этом в округе быстро стихают, но неловкость остаётся на какое-то время.",
+      "event.marriage_remarriage_after_widowhood.choice.remarry.label": "Вступить в новый брак",
+      "event.marriage_remarriage_after_widowhood.choice.stay_single.label": "Остаться без нового брака",
+      "event.marriage_remarriage_after_widowhood.title": "Повторный брак после вдовства",
+      "event.marriage_remarriage_after_widowhood.body": "После смерти супруга родня предлагает рассмотреть повторный брак — ради хозяйства, помощи с детьми или общественного положения.",
+      "event.marriage_divorce_initiated_by_self.choice.file_for_divorce.label": "Подать на развод",
+      "event.marriage_divorce_initiated_by_self.choice.reconcile.label": "Попытаться сохранить брак",
+      "event.marriage_divorce_initiated_by_self.choice.informal_separation.label": "Разойтись без формального развода",
+      "event.marriage_divorce_initiated_by_self.title": "Решение о разводе",
+      "event.marriage_divorce_initiated_by_self.body": "После лет напряжённого брака ты подаёшь на развод. Процесс затрагивает имущество, детей и отношения с обеими семьями.",
+      "event.marriage_divorce_initiated_by_spouse.title": "Развод по инициативе супруга",
+      "event.marriage_divorce_initiated_by_spouse.body": "Супруг подаёт на развод. Решение не было твоим, но последствия — для имущества, детей и положения — касаются и тебя.",
+      "event.marriage_divorce_property_division.choice.negotiate_split.label": "Договориться о разделе",
+      "event.marriage_divorce_property_division.choice.contest_in_court.label": "Оспорить раздел в суде",
+      "event.marriage_divorce_property_division.choice.accept_unfavorable.label": "Принять невыгодные условия",
+      "event.marriage_divorce_property_division.title": "Раздел имущества",
+      "event.marriage_divorce_property_division.body": "После развода предстоит разделить общее имущество — дом, землю, сбережения. Исход зависит от того, как далеко стороны готовы идти.",
+      "event.marriage_widowhood_illness.title": "Смерть супруга от болезни",
+      "event.marriage_widowhood_illness.body": "Супруг умирает после продолжительной болезни. Хозяйство и семейные обязанности теперь приходится нести одному.",
+      "event.marriage_widowhood_accident.title": "Смерть супруга в результате несчастного случая",
+      "event.marriage_widowhood_accident.body": "Супруг погибает в результате несчастного случая. Новость меняет повседневную жизнь семьи почти мгновенно.",
+      "event.marriage_widowhood_economic_aftermath.choice.take_over_business.label": "Взять дело в свои руки",
+      "event.marriage_widowhood_economic_aftermath.choice.rely_on_family.label": "Опереться на помощь родни",
+      "event.marriage_widowhood_economic_aftermath.choice.remarry_for_stability.label": "Быстро вступить в новый брак",
+      "event.marriage_widowhood_economic_aftermath.title": "Жизнь после вдовства",
+      "event.marriage_widowhood_economic_aftermath.body": "После смерти супруга хозяйство нужно вести самостоятельно. Решение о том, как справляться дальше, определяет ближайшие годы.",
+      "event.marriage_in_laws_conflict.choice.defer_to_in_laws.label": "Пойти на уступки",
+      "event.marriage_in_laws_conflict.choice.set_boundaries.label": "Настоять на своём",
+      "event.marriage_in_laws_conflict.title": "Напряжение с роднёй супруга",
+      "event.marriage_in_laws_conflict.body": "Расходы хозяйства или вопросы обычаев становятся предметом спора с роднёй супруга. Разногласия тянутся не один месяц.",
+      "event.marriage_spousal_business_partnership.title": "Совместное дело с супругом",
+      "event.marriage_spousal_business_partnership.body": "Вы с супругом строите общее хозяйство или небольшое дело. Совместный труд укрепляет и финансы, и отношения.",
+      "event.marriage_delayed_economic_hardship.title": "Брак отложен из-за нехватки средств",
+      "event.marriage_delayed_economic_hardship.body": "Свадьбу приходится отложить — семья не может позволить себе принятые по обычаю расходы в этом году.",
+      "event.marriage_elopement.choice.elope_choice.label": "Уехать и обвенчаться",
+      "event.marriage_elopement.choice.stay_and_wait.label": "Остаться и подождать",
+      "event.marriage_elopement.title": "Побег для заключения брака",
+      "event.marriage_elopement.body": "Пара решает обвенчаться против воли родителей и уезжает без их согласия. Разрыв с семьёй — вероятная цена этого решения.",
+      "event.marriage_alliance_match.choice.accept_alliance.label": "Принять условия союза",
+      "event.marriage_alliance_match.choice.refuse_alliance.label": "Отказаться",
+      "event.marriage_alliance_match.title": "Брак ради союза между семьями",
+      "event.marriage_alliance_match.body": "Две семьи или общины договариваются о браке, чтобы закрепить союз, доступ к земле или защиту. Личные предпочтения в расчёт почти не берутся.",
+      "event.marriage_dropout_pressure.choice.accept_pressure.label": "Согласиться",
+      "event.marriage_dropout_pressure.choice.resist_pressure.label": "Сопротивляться",
+      "event.marriage_dropout_pressure.choice.negotiate_education.label": "Договориться продолжить учёбу хотя бы отчасти",
+      "event.marriage_dropout_pressure.title": "Давление к браку после ухода из школы",
+      "event.marriage_dropout_pressure.body": "После ухода из школы родня начинает говорить о скорейшем браке — раз учёба закончена, откладывать его смысла не видят.",
+      "event.marriage_remarriage_after_divorce.title": "Новый брак после развода",
+      "event.marriage_remarriage_after_divorce.body": "Спустя время после развода появляется возможность вступить в новый брак. Решение взвешивается с учётом прошлого опыта.",
+      "event.marriage_matchmaker_introduction.title": "Знакомство через сваху",
+      "event.marriage_matchmaker_introduction.body": "Профессиональная сваха или уважаемый в общине человек предлагает кандидатуру для брака. Стороны встречаются под наблюдением старших.",
+      "event.marriage_long_engagement.title": "Долгая помолвка",
+      "event.marriage_long_engagement.body": "Помолвка тянется дольше обычного — семьи копят средства на свадьбу постепенно, чтобы избежать долгов.",
+      "event.marriage_wedding_debt.choice.scale_down.label": "Сделать скромнее",
+      "event.marriage_wedding_debt.choice.take_loan.label": "Взять кредит",
+      "event.marriage_wedding_debt.choice.accept_relative_help.label": "Принять помощь родственников",
+      "event.marriage_wedding_debt.title": "Долг на свадьбу",
+      "event.marriage_wedding_debt.body": "Традиционная свадьба стоит больше, чем семья может позволить сразу. Нужно решить, как покрыть разницу.",
+      "event.marriage_spousal_migration_separation.title": "Брак на расстоянии",
+      "event.marriage_spousal_migration_separation.body": "Супруг уезжает на заработки в другой регион или страну. Брак продолжается, но на годы превращается в жизнь на расстоянии.",
+      "event.marriage_blended_family.title": "Новая семья с детьми от прошлого брака",
+      "event.marriage_blended_family.body": "Новый супруг приходит в брак с детьми от прошлых отношений. Два хозяйства объединяются в одно.",
+      "event.marriage_community_disapproval.choice.ignore_gossip.label": "Не обращать внимания",
+      "event.marriage_community_disapproval.choice.seek_approval.label": "Постараться получить одобрение",
+      "event.marriage_community_disapproval.title": "Неодобрение общины",
+      "event.marriage_community_disapproval.body": "Выбор партнёра вызывает недовольство в общине — разница в возрасте, положении или происхождении обсуждается соседями.",
+      "event.marriage_annulment.title": "Аннулирование брака",
+      "event.marriage_annulment.body": "Брак аннулируется вскоре после заключения — по семейным или юридическим причинам. Формально всё возвращается к исходной точке, но репутация уже затронута.",
+      "event.marriage_bride_price_default.choice.delay_payment.label": "Отложить выплату",
+      "event.marriage_bride_price_default.choice.cancel_engagement.label": "Расторгнуть помолвку",
+      "event.marriage_bride_price_default.choice.in_kind_settlement.label": "Договориться о расчёте товаром",
+      "event.marriage_bride_price_default.title": "Невыплаченный выкуп",
+      "event.marriage_bride_price_default.body": "Семья жениха не может собрать условленный выкуп вовремя. Помолвку нужно либо продолжать в долг, либо пересмотреть.",
+      "event.marriage_late_marriage_pressure.title": "Давление из-за позднего брака",
+      "event.marriage_late_marriage_pressure.body": "Ты до сих пор не состоишь в браке, и родня и соседи всё чаще об этом напоминают. Давление раздражает, но прямых последствий пока нет.",
+      "event.marriage_spousal_caregiving_burden.title": "Уход за больным супругом",
+      "event.marriage_spousal_caregiving_burden.body": "Супруг тяжело и надолго заболевает. Забота о нём ложится на плечи семьи и требует времени, сил и денег.",
+      "event.marriage_widow_inheritance_dispute.choice.contest_claim.label": "Оспорить претензии в суде",
+      "event.marriage_widow_inheritance_dispute.choice.cede_claim.label": "Уступить ради мира в семье",
+      "event.marriage_widow_inheritance_dispute.title": "Спор о наследстве после вдовства",
+      "event.marriage_widow_inheritance_dispute.body": "Родня покойного супруга оспаривает права на дом, землю или сбережения. Исход спора определяет финансовое положение на годы вперёд.",
+      "event.marriage_second_wife_household.choice.accept_arrangement.label": "Принять порядок хозяйства",
+      "event.marriage_second_wife_household.choice.object_arrangement.label": "Возразить против этого",
+      "event.marriage_second_wife_household.title": "Расширение семьи",
+      "event.marriage_second_wife_household.body": "Супруг берёт в дом ещё одну жену, следуя принятому в общине порядку. Хозяйство и роли в нём перестраиваются.",
+      "event.marriage_civil_ceremony_abroad.title": "Регистрация брака за границей",
+      "event.marriage_civil_ceremony_abroad.body": "Брак регистрируется в стране, где ты сейчас живёшь и работаешь. Документы позже признаются и на родине.",
+      "event.marriage_childhood_betrothal_review.choice.confirm_betrothal.label": "Подтвердить договорённость",
+      "event.marriage_childhood_betrothal_review.choice.call_it_off.label": "Отказаться от неё",
+      "event.marriage_childhood_betrothal_review.title": "Пересмотр детской договорённости",
+      "event.marriage_childhood_betrothal_review.body": "Договорённость о браке, заключённая в детстве, подходит к сроку исполнения. Семьи обсуждают, остаётся ли она в силе."
+    },
+    "en": {
+      "event.arranged_marriage.choice.accept.label": "Accept the family's decision",
+      "event.arranged_marriage.choice.resist.label": "Refuse",
+      "event.arranged_marriage.choice.negotiate_delay.label": "Negotiate a delay",
+      "event.arranged_marriage.title": "A family decision",
+      "event.arranged_marriage.body": "Your parents have arranged a marriage — custom, an obligation to another family, or tight finances made the decision before you could voice your own. It is discussed as a family and economic matter, not a personal one.",
+      "event.marriage_bride_price_negotiation.choice.accept_terms.label": "Accept the terms",
+      "event.marriage_bride_price_negotiation.choice.refuse_terms.label": "Refuse the terms",
+      "event.marriage_bride_price_negotiation.choice.independent_terms.label": "Negotiate independently",
+      "event.marriage_bride_price_negotiation.title": "Bride price negotiations",
+      "event.marriage_bride_price_negotiation.body": "The two families negotiate the size of the bride price — in livestock, money, or property. The sum decides when and on what terms the marriage goes forward.",
+      "event.marriage_dowry_economics.title": "The dowry",
+      "event.marriage_dowry_economics.body": "The family puts together a dowry for the wedding, spending down part of its savings. The cost is a real dent in the household budget, but it raises standing among neighbors.",
+      "event.marriage_free_choice.choice.proceed.label": "Go ahead with the marriage",
+      "event.marriage_free_choice.choice.family_disapproves.label": "Go against the family's wishes",
+      "event.marriage_free_choice.choice.postpone.label": "Postpone for more stability",
+      "event.marriage_free_choice.title": "A choice of one's own",
+      "event.marriage_free_choice.body": "You chose your own partner for marriage, without relatives arranging the match directly. The family discusses it, but the final word is yours.",
+      "event.marriage_civil_registration.title": "Civil registration",
+      "event.marriage_civil_registration.body": "The marriage is officially registered with the civil authorities. The fees and paperwork are modest, but the status is now legally fixed.",
+      "event.marriage_cohabitation_informal.choice.formalize_later.label": "Formalize the marriage later",
+      "event.marriage_cohabitation_informal.choice.stay_informal.label": "Leave things as they are",
+      "event.marriage_cohabitation_informal.title": "An unregistered union",
+      "event.marriage_cohabitation_informal.body": "You and your partner live together and run a shared household without formally registering the marriage. This is common where registration is costly or not expected.",
+      "event.marriage_interfaith_intercommunity.choice.proceed_despite_tension.label": "Proceed despite the tension",
+      "event.marriage_interfaith_intercommunity.choice.family_reconciles.label": "Give the families time to come around",
+      "event.marriage_interfaith_intercommunity.choice.elope.label": "Leave and marry without the family",
+      "event.marriage_interfaith_intercommunity.title": "Marriage across communities",
+      "event.marriage_interfaith_intercommunity.body": "Your partner belongs to a different religious or ethnic community. The decision to marry creates tension in one or both families.",
+      "event.marriage_long_distance_courtship.title": "A long-distance courtship",
+      "event.marriage_long_distance_courtship.body": "Work or study in another region led to meeting a future partner from far away. Letters, calls, and occasional visits gradually turned into a serious relationship.",
+      "event.marriage_proposal_rejected.title": "A rejected proposal",
+      "event.marriage_proposal_rejected.body": "A marriage proposal was turned down. Talk of it dies down quickly, but the awkwardness lingers for a while.",
+      "event.marriage_remarriage_after_widowhood.choice.remarry.label": "Remarry",
+      "event.marriage_remarriage_after_widowhood.choice.stay_single.label": "Stay unmarried",
+      "event.marriage_remarriage_after_widowhood.title": "Remarriage after widowhood",
+      "event.marriage_remarriage_after_widowhood.body": "After the death of a spouse, relatives raise the idea of remarrying — for the sake of the household, help with children, or social standing.",
+      "event.marriage_divorce_initiated_by_self.choice.file_for_divorce.label": "File for divorce",
+      "event.marriage_divorce_initiated_by_self.choice.reconcile.label": "Try to save the marriage",
+      "event.marriage_divorce_initiated_by_self.choice.informal_separation.label": "Separate without a formal divorce",
+      "event.marriage_divorce_initiated_by_self.title": "The decision to divorce",
+      "event.marriage_divorce_initiated_by_self.body": "After years of a strained marriage, you file for divorce. The process touches property, children, and relations with both families.",
+      "event.marriage_divorce_initiated_by_spouse.title": "Divorce initiated by the spouse",
+      "event.marriage_divorce_initiated_by_spouse.body": "Your spouse files for divorce. The decision was not yours, but its consequences — for property, children, and standing — reach you all the same.",
+      "event.marriage_divorce_property_division.choice.negotiate_split.label": "Negotiate the split",
+      "event.marriage_divorce_property_division.choice.contest_in_court.label": "Contest the division in court",
+      "event.marriage_divorce_property_division.choice.accept_unfavorable.label": "Accept the unfavorable terms",
+      "event.marriage_divorce_property_division.title": "Dividing the property",
+      "event.marriage_divorce_property_division.body": "After the divorce, the shared property — the house, land, savings — has to be divided. The outcome depends on how far each side is willing to push.",
+      "event.marriage_widowhood_illness.title": "Death of a spouse from illness",
+      "event.marriage_widowhood_illness.body": "Your spouse dies after a long illness. The household and family responsibilities now fall on you alone.",
+      "event.marriage_widowhood_accident.title": "Death of a spouse in an accident",
+      "event.marriage_widowhood_accident.body": "Your spouse dies in an accident. The news changes the family's daily life almost overnight.",
+      "event.marriage_widowhood_economic_aftermath.choice.take_over_business.label": "Take over the family's livelihood",
+      "event.marriage_widowhood_economic_aftermath.choice.rely_on_family.label": "Rely on support from relatives",
+      "event.marriage_widowhood_economic_aftermath.choice.remarry_for_stability.label": "Remarry quickly for stability",
+      "event.marriage_widowhood_economic_aftermath.title": "Life after widowhood",
+      "event.marriage_widowhood_economic_aftermath.body": "After the death of a spouse, the household has to be run alone. The decision on how to cope shapes the years ahead.",
+      "event.marriage_in_laws_conflict.choice.defer_to_in_laws.label": "Defer to the in-laws",
+      "event.marriage_in_laws_conflict.choice.set_boundaries.label": "Set firm boundaries",
+      "event.marriage_in_laws_conflict.title": "Tension with in-laws",
+      "event.marriage_in_laws_conflict.body": "Household spending or questions of custom become a point of dispute with the spouse's relatives. The disagreement drags on for months.",
+      "event.marriage_spousal_business_partnership.title": "A joint livelihood with a spouse",
+      "event.marriage_spousal_business_partnership.body": "You and your spouse build a shared livelihood or small venture together. The joint effort strengthens both finances and the relationship.",
+      "event.marriage_delayed_economic_hardship.title": "Marriage delayed by hardship",
+      "event.marriage_delayed_economic_hardship.body": "The wedding has to be postponed — the family cannot afford the customary expenses this year.",
+      "event.marriage_elopement.choice.elope_choice.label": "Leave and marry",
+      "event.marriage_elopement.choice.stay_and_wait.label": "Stay and wait",
+      "event.marriage_elopement.title": "Elopement",
+      "event.marriage_elopement.body": "The couple decides to marry against their parents' wishes and leaves without their consent. A break with the family is the likely cost.",
+      "event.marriage_alliance_match.choice.accept_alliance.label": "Accept the alliance terms",
+      "event.marriage_alliance_match.choice.refuse_alliance.label": "Refuse",
+      "event.marriage_alliance_match.title": "Marriage to secure a family alliance",
+      "event.marriage_alliance_match.body": "Two families or communities arrange a marriage to secure an alliance, access to land, or protection. Personal preference barely enters the calculation.",
+      "event.marriage_dropout_pressure.choice.accept_pressure.label": "Go along with it",
+      "event.marriage_dropout_pressure.choice.resist_pressure.label": "Resist",
+      "event.marriage_dropout_pressure.choice.negotiate_education.label": "Negotiate to keep up some schooling",
+      "event.marriage_dropout_pressure.title": "Pressure to marry after leaving school",
+      "event.marriage_dropout_pressure.body": "After leaving school, relatives start talking about an early marriage — with schooling over, they see no reason to wait.",
+      "event.marriage_remarriage_after_divorce.title": "Remarriage after divorce",
+      "event.marriage_remarriage_after_divorce.body": "Some time after the divorce, a chance to remarry comes up. The decision is weighed against past experience.",
+      "event.marriage_matchmaker_introduction.title": "An introduction through a matchmaker",
+      "event.marriage_matchmaker_introduction.body": "A professional matchmaker, or a respected figure in the community, proposes a match. The two meet under the supervision of elders.",
+      "event.marriage_long_engagement.title": "A long engagement",
+      "event.marriage_long_engagement.body": "The engagement drags on longer than usual — both families are saving gradually for the wedding to avoid taking on debt.",
+      "event.marriage_wedding_debt.choice.scale_down.label": "Scale the ceremony down",
+      "event.marriage_wedding_debt.choice.take_loan.label": "Take out a loan",
+      "event.marriage_wedding_debt.choice.accept_relative_help.label": "Accept help from relatives",
+      "event.marriage_wedding_debt.title": "Wedding debt",
+      "event.marriage_wedding_debt.body": "A traditional wedding costs more than the family can afford outright. A way to cover the gap has to be found.",
+      "event.marriage_spousal_migration_separation.title": "Marriage at a distance",
+      "event.marriage_spousal_migration_separation.body": "The spouse leaves to work in another region or country. The marriage continues, but for years it becomes a life lived apart.",
+      "event.marriage_blended_family.title": "A blended family",
+      "event.marriage_blended_family.body": "A new spouse enters the marriage with children from a previous relationship. Two households merge into one.",
+      "event.marriage_community_disapproval.choice.ignore_gossip.label": "Ignore the talk",
+      "event.marriage_community_disapproval.choice.seek_approval.label": "Try to win approval",
+      "event.marriage_community_disapproval.title": "Community disapproval of the match",
+      "event.marriage_community_disapproval.body": "The choice of partner draws disapproval in the community — the age gap, status, or background becomes a subject of gossip.",
+      "event.marriage_annulment.title": "Annulment of the marriage",
+      "event.marriage_annulment.body": "The marriage is annulled shortly after it began, for family or legal reasons. Formally everything resets, but reputation has already been touched.",
+      "event.marriage_bride_price_default.choice.delay_payment.label": "Delay the payment",
+      "event.marriage_bride_price_default.choice.cancel_engagement.label": "Cancel the engagement",
+      "event.marriage_bride_price_default.choice.in_kind_settlement.label": "Settle with goods instead",
+      "event.marriage_bride_price_default.title": "An unpaid bride price",
+      "event.marriage_bride_price_default.body": "The groom's family cannot raise the agreed bride price on time. The engagement must either continue on credit or be reconsidered.",
+      "event.marriage_late_marriage_pressure.title": "Social pressure over a late marriage",
+      "event.marriage_late_marriage_pressure.body": "You are still unmarried, and relatives and neighbors keep bringing it up. The pressure is irritating but carries no direct consequence yet.",
+      "event.marriage_spousal_caregiving_burden.title": "Caring for a chronically ill spouse",
+      "event.marriage_spousal_caregiving_burden.body": "The spouse falls seriously and lastingly ill. Caring for them falls on the family and demands time, energy, and money.",
+      "event.marriage_widow_inheritance_dispute.choice.contest_claim.label": "Contest the claim in court",
+      "event.marriage_widow_inheritance_dispute.choice.cede_claim.label": "Cede the claim to keep family peace",
+      "event.marriage_widow_inheritance_dispute.title": "An inheritance dispute after widowhood",
+      "event.marriage_widow_inheritance_dispute.body": "The late spouse's relatives contest rights to the house, land, or savings. The outcome of the dispute shapes financial standing for years.",
+      "event.marriage_second_wife_household.choice.accept_arrangement.label": "Accept the household arrangement",
+      "event.marriage_second_wife_household.choice.object_arrangement.label": "Object to it",
+      "event.marriage_second_wife_household.title": "The household expands",
+      "event.marriage_second_wife_household.body": "The spouse brings a second wife into the household, following an arrangement accepted in the community. Roles and the running of the household are rearranged.",
+      "event.marriage_civil_ceremony_abroad.title": "A civil ceremony abroad",
+      "event.marriage_civil_ceremony_abroad.body": "The marriage is registered in the country where you currently live and work. The documents are later recognized back home as well.",
+      "event.marriage_childhood_betrothal_review.choice.confirm_betrothal.label": "Confirm the betrothal",
+      "event.marriage_childhood_betrothal_review.choice.call_it_off.label": "Call it off",
+      "event.marriage_childhood_betrothal_review.title": "Revisiting a childhood betrothal",
+      "event.marriage_childhood_betrothal_review.body": "A betrothal arranged in childhood is approaching the time it was meant to be carried out. The families discuss whether it still stands."
+    }
+  }
+}

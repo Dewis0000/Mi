@@ -1,0 +1,2903 @@
+[
+  {
+    "id": "dza_algiers",
+    "countryIso3": "DZA",
+    "name": {
+      "ru": "Алжир (столица)",
+      "en": "Algiers"
+    },
+    "populationShare": 0.14,
+    "urban": true,
+    "wealthModifier": 0.338,
+    "healthModifier": 0.8103,
+    "educationModifier": 0.189,
+    "hazards": [
+      "quake"
+    ]
+  },
+  {
+    "id": "dza_tell",
+    "countryIso3": "DZA",
+    "name": {
+      "ru": "Северное побережье (Тель)",
+      "en": "North coast/Tell"
+    },
+    "populationShare": 0.46,
+    "urban": false,
+    "wealthModifier": 0.038,
+    "healthModifier": 0.9533,
+    "educationModifier": 0.039,
+    "hazards": [
+      "quake"
+    ]
+  },
+  {
+    "id": "dza_plateaus",
+    "countryIso3": "DZA",
+    "name": {
+      "ru": "Высокие плато",
+      "en": "High plateaus"
+    },
+    "populationShare": 0.2,
+    "urban": false,
+    "wealthModifier": -0.112,
+    "healthModifier": 1.0963,
+    "educationModifier": -0.061,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "dza_sahara",
+    "countryIso3": "DZA",
+    "name": {
+      "ru": "Сахара (юг)",
+      "en": "Sahara south"
+    },
+    "populationShare": 0.2,
+    "urban": false,
+    "wealthModifier": -0.212,
+    "healthModifier": 1.1439,
+    "educationModifier": -0.161,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "ago_luanda",
+    "countryIso3": "AGO",
+    "name": {
+      "ru": "Луанда",
+      "en": "Luanda"
+    },
+    "populationShare": 0.28,
+    "urban": true,
+    "wealthModifier": 0.366,
+    "healthModifier": 0.8021,
+    "educationModifier": 0.183,
+    "hazards": []
+  },
+  {
+    "id": "ago_north",
+    "countryIso3": "AGO",
+    "name": {
+      "ru": "Север (Кабинда/Уиже/Заире)",
+      "en": "North (Cabinda/Uige/Zaire)"
+    },
+    "populationShare": 0.18,
+    "urban": false,
+    "wealthModifier": -0.034,
+    "healthModifier": 0.9804,
+    "educationModifier": -0.017,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "ago_highlands",
+    "countryIso3": "AGO",
+    "name": {
+      "ru": "Центральное нагорье",
+      "en": "Central Highlands"
+    },
+    "populationShare": 0.3,
+    "urban": false,
+    "wealthModifier": -0.134,
+    "healthModifier": 1.0695,
+    "educationModifier": -0.067,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "ago_south",
+    "countryIso3": "AGO",
+    "name": {
+      "ru": "Юг (Кунене и др.)",
+      "en": "South (Cunene etc.)"
+    },
+    "populationShare": 0.24,
+    "urban": false,
+    "wealthModifier": -0.234,
+    "healthModifier": 1.1586,
+    "educationModifier": -0.117,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "bfa_ouaga",
+    "countryIso3": "BFA",
+    "name": {
+      "ru": "Уагадугу",
+      "en": "Ouagadougou"
+    },
+    "populationShare": 0.14,
+    "urban": true,
+    "wealthModifier": 0.358,
+    "healthModifier": 0.7774,
+    "educationModifier": 0.275,
+    "hazards": []
+  },
+  {
+    "id": "bfa_south",
+    "countryIso3": "BFA",
+    "name": {
+      "ru": "Юг и центр",
+      "en": "South/Center"
+    },
+    "populationShare": 0.46,
+    "urban": false,
+    "wealthModifier": 0.058,
+    "healthModifier": 0.9411,
+    "educationModifier": 0.025,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "bfa_north",
+    "countryIso3": "BFA",
+    "name": {
+      "ru": "Север (Сахель, конфликт)",
+      "en": "North/Sahel (conflict)"
+    },
+    "populationShare": 0.4,
+    "urban": false,
+    "wealthModifier": -0.192,
+    "healthModifier": 1.1457,
+    "educationModifier": -0.125,
+    "hazards": [
+      "drought",
+      "conflict"
+    ]
+  },
+  {
+    "id": "cmr_urban",
+    "countryIso3": "CMR",
+    "name": {
+      "ru": "Яунде и Дуала",
+      "en": "Yaounde & Douala (urban)"
+    },
+    "populationShare": 0.25,
+    "urban": true,
+    "wealthModifier": 0.3225,
+    "healthModifier": 0.8108,
+    "educationModifier": 0.2225,
+    "hazards": []
+  },
+  {
+    "id": "cmr_west",
+    "countryIso3": "CMR",
+    "name": {
+      "ru": "Запад и Северо-Запад",
+      "en": "West/Northwest (highlands)"
+    },
+    "populationShare": 0.2,
+    "urban": false,
+    "wealthModifier": -0.0275,
+    "healthModifier": 0.991,
+    "educationModifier": 0.0225,
+    "hazards": [
+      "conflict"
+    ]
+  },
+  {
+    "id": "cmr_south_east",
+    "countryIso3": "CMR",
+    "name": {
+      "ru": "Юг и Восток (лес)",
+      "en": "South/East forest"
+    },
+    "populationShare": 0.25,
+    "urban": false,
+    "wealthModifier": -0.0275,
+    "healthModifier": 0.991,
+    "educationModifier": -0.0275,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "cmr_far_north",
+    "countryIso3": "CMR",
+    "name": {
+      "ru": "Крайний Север (Сахель)",
+      "en": "Far North (Sahel)"
+    },
+    "populationShare": 0.3,
+    "urban": false,
+    "wealthModifier": -0.2275,
+    "healthModifier": 1.1712,
+    "educationModifier": -0.1775,
+    "hazards": [
+      "drought",
+      "conflict"
+    ]
+  },
+  {
+    "id": "tcd_ndjamena",
+    "countryIso3": "TCD",
+    "name": {
+      "ru": "Нджамена",
+      "en": "N'Djamena"
+    },
+    "populationShare": 0.1,
+    "urban": true,
+    "wealthModifier": 0.405,
+    "healthModifier": 0.7302,
+    "educationModifier": 0.305,
+    "hazards": []
+  },
+  {
+    "id": "tcd_south",
+    "countryIso3": "TCD",
+    "name": {
+      "ru": "Юг (сельскохозяйственный)",
+      "en": "South (agricultural)"
+    },
+    "populationShare": 0.35,
+    "urban": false,
+    "wealthModifier": 0.105,
+    "healthModifier": 0.9331,
+    "educationModifier": 0.055,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "tcd_sahel",
+    "countryIso3": "TCD",
+    "name": {
+      "ru": "Сахелианский центр",
+      "en": "Sahelian center"
+    },
+    "populationShare": 0.3,
+    "urban": false,
+    "wealthModifier": -0.095,
+    "healthModifier": 1.0548,
+    "educationModifier": -0.045,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "tcd_north",
+    "countryIso3": "TCD",
+    "name": {
+      "ru": "Север (Сахара, озеро Чад)",
+      "en": "North (Sahara/Lake Chad basin)"
+    },
+    "populationShare": 0.25,
+    "urban": false,
+    "wealthModifier": -0.195,
+    "healthModifier": 1.1359,
+    "educationModifier": -0.145,
+    "hazards": [
+      "drought",
+      "conflict"
+    ]
+  },
+  {
+    "id": "cod_kinshasa",
+    "countryIso3": "COD",
+    "name": {
+      "ru": "Киншаса",
+      "en": "Kinshasa"
+    },
+    "populationShare": 0.12,
+    "urban": true,
+    "wealthModifier": 0.3815,
+    "healthModifier": 0.7235,
+    "educationModifier": 0.2505,
+    "hazards": []
+  },
+  {
+    "id": "cod_katanga",
+    "countryIso3": "COD",
+    "name": {
+      "ru": "Катанга",
+      "en": "Katanga"
+    },
+    "populationShare": 0.15,
+    "urban": false,
+    "wealthModifier": 0.1315,
+    "healthModifier": 0.8842,
+    "educationModifier": 0.1005,
+    "hazards": [
+      "conflict"
+    ]
+  },
+  {
+    "id": "cod_kivu",
+    "countryIso3": "COD",
+    "name": {
+      "ru": "Киву (восток)",
+      "en": "Kivu (east)"
+    },
+    "populationShare": 0.13,
+    "urban": false,
+    "wealthModifier": -0.1185,
+    "healthModifier": 1.1254,
+    "educationModifier": -0.0495,
+    "hazards": [
+      "conflict"
+    ]
+  },
+  {
+    "id": "cod_kasai",
+    "countryIso3": "COD",
+    "name": {
+      "ru": "Касаи",
+      "en": "Kasai"
+    },
+    "populationShare": 0.18,
+    "urban": false,
+    "wealthModifier": -0.1185,
+    "healthModifier": 1.0852,
+    "educationModifier": -0.0995,
+    "hazards": [
+      "conflict"
+    ]
+  },
+  {
+    "id": "cod_equateur",
+    "countryIso3": "COD",
+    "name": {
+      "ru": "Экватер и прочие провинции",
+      "en": "Equateur & other provinces"
+    },
+    "populationShare": 0.42,
+    "urban": false,
+    "wealthModifier": -0.0685,
+    "healthModifier": 1.045,
+    "educationModifier": -0.0495,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "civ_abidjan",
+    "countryIso3": "CIV",
+    "name": {
+      "ru": "Абиджан",
+      "en": "Abidjan"
+    },
+    "populationShare": 0.22,
+    "urban": true,
+    "wealthModifier": 0.332,
+    "healthModifier": 0.7981,
+    "educationModifier": 0.191,
+    "hazards": []
+  },
+  {
+    "id": "civ_south",
+    "countryIso3": "CIV",
+    "name": {
+      "ru": "Южный лесной регион",
+      "en": "South forest region"
+    },
+    "populationShare": 0.3,
+    "urban": false,
+    "wealthModifier": 0.032,
+    "healthModifier": 0.939,
+    "educationModifier": 0.041,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "civ_central",
+    "countryIso3": "CIV",
+    "name": {
+      "ru": "Центральный регион",
+      "en": "Central region"
+    },
+    "populationShare": 0.22,
+    "urban": false,
+    "wealthModifier": -0.118,
+    "healthModifier": 1.0798,
+    "educationModifier": -0.059,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "civ_north",
+    "countryIso3": "CIV",
+    "name": {
+      "ru": "Северный регион",
+      "en": "North region"
+    },
+    "populationShare": 0.26,
+    "urban": false,
+    "wealthModifier": -0.218,
+    "healthModifier": 1.1737,
+    "educationModifier": -0.159,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "egy_cairo",
+    "countryIso3": "EGY",
+    "name": {
+      "ru": "Каир (агломерация)",
+      "en": "Greater Cairo"
+    },
+    "populationShare": 0.22,
+    "urban": true,
+    "wealthModifier": 0.329,
+    "healthModifier": 0.8004,
+    "educationModifier": 0.201,
+    "hazards": []
+  },
+  {
+    "id": "egy_delta",
+    "countryIso3": "EGY",
+    "name": {
+      "ru": "Дельта Нила",
+      "en": "Nile Delta"
+    },
+    "populationShare": 0.4,
+    "urban": false,
+    "wealthModifier": -0.021,
+    "healthModifier": 0.9887,
+    "educationModifier": 0.001,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "egy_upper",
+    "countryIso3": "EGY",
+    "name": {
+      "ru": "Верхний Египет",
+      "en": "Upper Egypt"
+    },
+    "populationShare": 0.3,
+    "urban": false,
+    "wealthModifier": -0.221,
+    "healthModifier": 1.177,
+    "educationModifier": -0.149,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "egy_sinai",
+    "countryIso3": "EGY",
+    "name": {
+      "ru": "Синай и Суэцкий канал",
+      "en": "Canal/Sinai/Red Sea"
+    },
+    "populationShare": 0.08,
+    "urban": false,
+    "wealthModifier": 0.029,
+    "healthModifier": 0.9416,
+    "educationModifier": 0.001,
+    "hazards": [
+      "conflict"
+    ]
+  },
+  {
+    "id": "eth_addis",
+    "countryIso3": "ETH",
+    "name": {
+      "ru": "Аддис-Абеба",
+      "en": "Addis Ababa"
+    },
+    "populationShare": 0.06,
+    "urban": true,
+    "wealthModifier": 0.506,
+    "healthModifier": 0.6625,
+    "educationModifier": 0.359,
+    "hazards": []
+  },
+  {
+    "id": "eth_oromia",
+    "countryIso3": "ETH",
+    "name": {
+      "ru": "Оромия",
+      "en": "Oromia"
+    },
+    "populationShare": 0.35,
+    "urban": false,
+    "wealthModifier": 0.006,
+    "healthModifier": 0.9717,
+    "educationModifier": 0.009,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "eth_amhara",
+    "countryIso3": "ETH",
+    "name": {
+      "ru": "Амхара",
+      "en": "Amhara"
+    },
+    "populationShare": 0.22,
+    "urban": false,
+    "wealthModifier": 0.006,
+    "healthModifier": 1.0159,
+    "educationModifier": 0.009,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "eth_tigray",
+    "countryIso3": "ETH",
+    "name": {
+      "ru": "Тыграй",
+      "en": "Tigray"
+    },
+    "populationShare": 0.06,
+    "urban": false,
+    "wealthModifier": -0.194,
+    "healthModifier": 1.2367,
+    "educationModifier": -0.091,
+    "hazards": [
+      "conflict",
+      "drought"
+    ]
+  },
+  {
+    "id": "eth_snnpr",
+    "countryIso3": "ETH",
+    "name": {
+      "ru": "Южные народы (СННПР)",
+      "en": "SNNPR (South)"
+    },
+    "populationShare": 0.19,
+    "urban": false,
+    "wealthModifier": 0.006,
+    "healthModifier": 0.9717,
+    "educationModifier": 0.009,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "eth_lowlands",
+    "countryIso3": "ETH",
+    "name": {
+      "ru": "Сомалийский и Афарский регионы",
+      "en": "Somali & Afar lowlands"
+    },
+    "populationShare": 0.12,
+    "urban": false,
+    "wealthModifier": -0.194,
+    "healthModifier": 1.1484,
+    "educationModifier": -0.191,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "gha_accra",
+    "countryIso3": "GHA",
+    "name": {
+      "ru": "Большая Аккра",
+      "en": "Greater Accra"
+    },
+    "populationShare": 0.21,
+    "urban": true,
+    "wealthModifier": 0.32,
+    "healthModifier": 0.8084,
+    "educationModifier": 0.1865,
+    "hazards": []
+  },
+  {
+    "id": "gha_south",
+    "countryIso3": "GHA",
+    "name": {
+      "ru": "Ашанти и Центральный регион",
+      "en": "Ashanti/Central (south)"
+    },
+    "populationShare": 0.33,
+    "urban": false,
+    "wealthModifier": 0.02,
+    "healthModifier": 0.951,
+    "educationModifier": 0.0365,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "gha_north",
+    "countryIso3": "GHA",
+    "name": {
+      "ru": "Северные регионы",
+      "en": "Northern regions"
+    },
+    "populationShare": 0.3,
+    "urban": false,
+    "wealthModifier": -0.23,
+    "healthModifier": 1.1888,
+    "educationModifier": -0.1635,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "gha_coast",
+    "countryIso3": "GHA",
+    "name": {
+      "ru": "Прочие прибрежные и западные регионы",
+      "en": "Other coastal/western"
+    },
+    "populationShare": 0.16,
+    "urban": false,
+    "wealthModifier": -0.03,
+    "healthModifier": 0.9986,
+    "educationModifier": -0.0135,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "ken_nairobi",
+    "countryIso3": "KEN",
+    "name": {
+      "ru": "Найроби",
+      "en": "Nairobi"
+    },
+    "populationShare": 0.13,
+    "urban": true,
+    "wealthModifier": 0.3775,
+    "healthModifier": 0.7748,
+    "educationModifier": 0.199,
+    "hazards": []
+  },
+  {
+    "id": "ken_central",
+    "countryIso3": "KEN",
+    "name": {
+      "ru": "Центральный регион и Рифт-Валли",
+      "en": "Central/Rift Valley"
+    },
+    "populationShare": 0.32,
+    "urban": false,
+    "wealthModifier": 0.0775,
+    "healthModifier": 0.9116,
+    "educationModifier": 0.049,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "ken_coast",
+    "countryIso3": "KEN",
+    "name": {
+      "ru": "Побережье",
+      "en": "Coast"
+    },
+    "populationShare": 0.14,
+    "urban": false,
+    "wealthModifier": -0.0225,
+    "healthModifier": 1.0027,
+    "educationModifier": -0.001,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "ken_west",
+    "countryIso3": "KEN",
+    "name": {
+      "ru": "Запад, Ньянза и север",
+      "en": "Western/Nyanza/North"
+    },
+    "populationShare": 0.41,
+    "urban": false,
+    "wealthModifier": -0.1725,
+    "healthModifier": 1.1395,
+    "educationModifier": -0.101,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "mdg_antananarivo",
+    "countryIso3": "MDG",
+    "name": {
+      "ru": "Антананариву",
+      "en": "Antananarivo"
+    },
+    "populationShare": 0.18,
+    "urban": true,
+    "wealthModifier": 0.369,
+    "healthModifier": 0.7853,
+    "educationModifier": 0.246,
+    "hazards": []
+  },
+  {
+    "id": "mdg_highlands",
+    "countryIso3": "MDG",
+    "name": {
+      "ru": "Центральное нагорье",
+      "en": "Highlands"
+    },
+    "populationShare": 0.27,
+    "urban": false,
+    "wealthModifier": 0.069,
+    "healthModifier": 0.9162,
+    "educationModifier": 0.046,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "mdg_east",
+    "countryIso3": "MDG",
+    "name": {
+      "ru": "Восточное побережье (циклоны)",
+      "en": "Coastal east (cyclone belt)"
+    },
+    "populationShare": 0.28,
+    "urban": false,
+    "wealthModifier": -0.081,
+    "healthModifier": 1.0471,
+    "educationModifier": -0.054,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "mdg_south",
+    "countryIso3": "MDG",
+    "name": {
+      "ru": "Юг (засушливый)",
+      "en": "South (drought-prone)"
+    },
+    "populationShare": 0.27,
+    "urban": false,
+    "wealthModifier": -0.231,
+    "healthModifier": 1.178,
+    "educationModifier": -0.154,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "mli_bamako",
+    "countryIso3": "MLI",
+    "name": {
+      "ru": "Бамако",
+      "en": "Bamako"
+    },
+    "populationShare": 0.15,
+    "urban": true,
+    "wealthModifier": 0.385,
+    "healthModifier": 0.75,
+    "educationModifier": 0.3075,
+    "hazards": []
+  },
+  {
+    "id": "mli_south",
+    "countryIso3": "MLI",
+    "name": {
+      "ru": "Южный сельскохозяйственный пояс",
+      "en": "Southern agricultural belt"
+    },
+    "populationShare": 0.5,
+    "urban": false,
+    "wealthModifier": 0.035,
+    "healthModifier": 0.9583,
+    "educationModifier": 0.0075,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "mli_north",
+    "countryIso3": "MLI",
+    "name": {
+      "ru": "Север (Сахара/конфликт)",
+      "en": "North (Sahara/conflict)"
+    },
+    "populationShare": 0.35,
+    "urban": false,
+    "wealthModifier": -0.215,
+    "healthModifier": 1.1667,
+    "educationModifier": -0.1425,
+    "hazards": [
+      "drought",
+      "conflict"
+    ]
+  },
+  {
+    "id": "moz_maputo",
+    "countryIso3": "MOZ",
+    "name": {
+      "ru": "Мапуту",
+      "en": "Maputo"
+    },
+    "populationShare": 0.15,
+    "urban": true,
+    "wealthModifier": 0.3925,
+    "healthModifier": 0.7611,
+    "educationModifier": 0.275,
+    "hazards": []
+  },
+  {
+    "id": "moz_south",
+    "countryIso3": "MOZ",
+    "name": {
+      "ru": "Юг (сельский)",
+      "en": "South (rural)"
+    },
+    "populationShare": 0.2,
+    "urban": false,
+    "wealthModifier": 0.0425,
+    "healthModifier": 0.9302,
+    "educationModifier": 0.025,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "moz_central",
+    "countryIso3": "MOZ",
+    "name": {
+      "ru": "Центр (Замбезия/Софала)",
+      "en": "Central (Zambezia/Sofala)"
+    },
+    "populationShare": 0.35,
+    "urban": false,
+    "wealthModifier": -0.0575,
+    "healthModifier": 1.0571,
+    "educationModifier": -0.025,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "moz_north",
+    "countryIso3": "MOZ",
+    "name": {
+      "ru": "Север (Кабу-Делгаду/Ньяса)",
+      "en": "North (Cabo Delgado/Niassa)"
+    },
+    "populationShare": 0.3,
+    "urban": false,
+    "wealthModifier": -0.1575,
+    "healthModifier": 1.0994,
+    "educationModifier": -0.125,
+    "hazards": [
+      "conflict",
+      "flood"
+    ]
+  },
+  {
+    "id": "ner_niamey",
+    "countryIso3": "NER",
+    "name": {
+      "ru": "Ниамей",
+      "en": "Niamey"
+    },
+    "populationShare": 0.1,
+    "urban": true,
+    "wealthModifier": 0.43,
+    "healthModifier": 0.7258,
+    "educationModifier": 0.3225,
+    "hazards": []
+  },
+  {
+    "id": "ner_south",
+    "countryIso3": "NER",
+    "name": {
+      "ru": "Южный сельскохозяйственный пояс",
+      "en": "Southern agricultural belt"
+    },
+    "populationShare": 0.55,
+    "urban": false,
+    "wealthModifier": 0.03,
+    "healthModifier": 0.9677,
+    "educationModifier": 0.0225,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "ner_north",
+    "countryIso3": "NER",
+    "name": {
+      "ru": "Север (Сахара)",
+      "en": "Northern/Sahel desert fringe"
+    },
+    "populationShare": 0.35,
+    "urban": false,
+    "wealthModifier": -0.17,
+    "healthModifier": 1.129,
+    "educationModifier": -0.1275,
+    "hazards": [
+      "drought",
+      "conflict"
+    ]
+  },
+  {
+    "id": "nga_nw",
+    "countryIso3": "NGA",
+    "name": {
+      "ru": "Северо-Запад",
+      "en": "North West"
+    },
+    "populationShare": 0.24,
+    "urban": false,
+    "wealthModifier": -0.235,
+    "healthModifier": 1.1885,
+    "educationModifier": -0.2,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "nga_ne",
+    "countryIso3": "NGA",
+    "name": {
+      "ru": "Северо-Восток",
+      "en": "North East"
+    },
+    "populationShare": 0.14,
+    "urban": false,
+    "wealthModifier": -0.285,
+    "healthModifier": 1.2733,
+    "educationModifier": -0.25,
+    "hazards": [
+      "drought",
+      "conflict"
+    ]
+  },
+  {
+    "id": "nga_nc",
+    "countryIso3": "NGA",
+    "name": {
+      "ru": "Центральный Север",
+      "en": "North Central"
+    },
+    "populationShare": 0.13,
+    "urban": false,
+    "wealthModifier": -0.085,
+    "healthModifier": 1.0187,
+    "educationModifier": 0,
+    "hazards": [
+      "conflict"
+    ]
+  },
+  {
+    "id": "nga_sw",
+    "countryIso3": "NGA",
+    "name": {
+      "ru": "Юго-Запад (Лагос)",
+      "en": "South West (Lagos)"
+    },
+    "populationShare": 0.21,
+    "urban": true,
+    "wealthModifier": 0.415,
+    "healthModifier": 0.6791,
+    "educationModifier": 0.3,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "nga_se",
+    "countryIso3": "NGA",
+    "name": {
+      "ru": "Юго-Восток",
+      "en": "South East"
+    },
+    "populationShare": 0.12,
+    "urban": false,
+    "wealthModifier": 0.015,
+    "healthModifier": 0.9338,
+    "educationModifier": 0.1,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "nga_ss",
+    "countryIso3": "NGA",
+    "name": {
+      "ru": "Юг-Юг (дельта Нигера)",
+      "en": "South South (Niger Delta)"
+    },
+    "populationShare": 0.16,
+    "urban": true,
+    "wealthModifier": 0.115,
+    "healthModifier": 0.9338,
+    "educationModifier": 0.05,
+    "hazards": [
+      "flood",
+      "conflict"
+    ]
+  },
+  {
+    "id": "som_mogadishu",
+    "countryIso3": "SOM",
+    "name": {
+      "ru": "Могадишо",
+      "en": "Mogadishu"
+    },
+    "populationShare": 0.15,
+    "urban": true,
+    "wealthModifier": 0.265,
+    "healthModifier": 0.818,
+    "educationModifier": 0.18,
+    "hazards": [
+      "conflict"
+    ]
+  },
+  {
+    "id": "som_south",
+    "countryIso3": "SOM",
+    "name": {
+      "ru": "Юг (Джуба)",
+      "en": "South (Juba)"
+    },
+    "populationShare": 0.3,
+    "urban": false,
+    "wealthModifier": -0.085,
+    "healthModifier": 1.0634,
+    "educationModifier": -0.07,
+    "hazards": [
+      "conflict",
+      "drought"
+    ]
+  },
+  {
+    "id": "som_central",
+    "countryIso3": "SOM",
+    "name": {
+      "ru": "Центральный регион",
+      "en": "Central"
+    },
+    "populationShare": 0.25,
+    "urban": false,
+    "wealthModifier": -0.135,
+    "healthModifier": 1.1043,
+    "educationModifier": -0.12,
+    "hazards": [
+      "conflict",
+      "drought"
+    ]
+  },
+  {
+    "id": "som_somaliland",
+    "countryIso3": "SOM",
+    "name": {
+      "ru": "Сомалиленд (север)",
+      "en": "Somaliland (north)"
+    },
+    "populationShare": 0.3,
+    "urban": false,
+    "wealthModifier": 0.065,
+    "healthModifier": 0.9407,
+    "educationModifier": 0.08,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "zaf_gauteng",
+    "countryIso3": "ZAF",
+    "name": {
+      "ru": "Гаутенг",
+      "en": "Gauteng"
+    },
+    "populationShare": 0.26,
+    "urban": true,
+    "wealthModifier": 0.295,
+    "healthModifier": 0.8376,
+    "educationModifier": 0.1645,
+    "hazards": []
+  },
+  {
+    "id": "zaf_westerncape",
+    "countryIso3": "ZAF",
+    "name": {
+      "ru": "Западно-Капская провинция",
+      "en": "Western Cape"
+    },
+    "populationShare": 0.12,
+    "urban": true,
+    "wealthModifier": 0.245,
+    "healthModifier": 0.8376,
+    "educationModifier": 0.1145,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "zaf_kwazulu",
+    "countryIso3": "ZAF",
+    "name": {
+      "ru": "Квазулу-Натал",
+      "en": "KwaZulu-Natal"
+    },
+    "populationShare": 0.19,
+    "urban": false,
+    "wealthModifier": -0.105,
+    "healthModifier": 1.0703,
+    "educationModifier": -0.0355,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "zaf_easterncape",
+    "countryIso3": "ZAF",
+    "name": {
+      "ru": "Восточно-Капская провинция",
+      "en": "Eastern Cape"
+    },
+    "populationShare": 0.13,
+    "urban": false,
+    "wealthModifier": -0.305,
+    "healthModifier": 1.2099,
+    "educationModifier": -0.1855,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "zaf_other",
+    "countryIso3": "ZAF",
+    "name": {
+      "ru": "Остальные провинции",
+      "en": "Remaining provinces"
+    },
+    "populationShare": 0.3,
+    "urban": false,
+    "wealthModifier": -0.155,
+    "healthModifier": 1.0703,
+    "educationModifier": -0.0855,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "sdn_khartoum",
+    "countryIso3": "SDN",
+    "name": {
+      "ru": "Хартум",
+      "en": "Khartoum"
+    },
+    "populationShare": 0.18,
+    "urban": true,
+    "wealthModifier": 0.3615,
+    "healthModifier": 0.7453,
+    "educationModifier": 0.252,
+    "hazards": [
+      "conflict"
+    ]
+  },
+  {
+    "id": "sdn_central",
+    "countryIso3": "SDN",
+    "name": {
+      "ru": "Центральный регион (Нил)",
+      "en": "Central/Nile"
+    },
+    "populationShare": 0.27,
+    "urban": false,
+    "wealthModifier": 0.0615,
+    "healthModifier": 0.9206,
+    "educationModifier": 0.052,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "sdn_darfur",
+    "countryIso3": "SDN",
+    "name": {
+      "ru": "Дарфур",
+      "en": "Darfur"
+    },
+    "populationShare": 0.22,
+    "urban": false,
+    "wealthModifier": -0.2385,
+    "healthModifier": 1.2275,
+    "educationModifier": -0.198,
+    "hazards": [
+      "conflict",
+      "drought"
+    ]
+  },
+  {
+    "id": "sdn_east",
+    "countryIso3": "SDN",
+    "name": {
+      "ru": "Восток и Кордофан",
+      "en": "Eastern/Kordofan & other"
+    },
+    "populationShare": 0.33,
+    "urban": false,
+    "wealthModifier": -0.0885,
+    "healthModifier": 1.0522,
+    "educationModifier": -0.048,
+    "hazards": [
+      "conflict",
+      "drought"
+    ]
+  },
+  {
+    "id": "tza_daressalaam",
+    "countryIso3": "TZA",
+    "name": {
+      "ru": "Дар-эс-Салам",
+      "en": "Dar es Salaam"
+    },
+    "populationShare": 0.12,
+    "urban": true,
+    "wealthModifier": 0.389,
+    "healthModifier": 0.7741,
+    "educationModifier": 0.218,
+    "hazards": []
+  },
+  {
+    "id": "tza_coast",
+    "countryIso3": "TZA",
+    "name": {
+      "ru": "Побережье и Занзибар",
+      "en": "Coast & Zanzibar"
+    },
+    "populationShare": 0.1,
+    "urban": false,
+    "wealthModifier": 0.039,
+    "healthModifier": 0.9563,
+    "educationModifier": 0.018,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "tza_highlands",
+    "countryIso3": "TZA",
+    "name": {
+      "ru": "Нагорье (Аруша/Килиманджаро)",
+      "en": "Highlands (Arusha/Kilimanjaro)"
+    },
+    "populationShare": 0.18,
+    "urban": false,
+    "wealthModifier": 0.089,
+    "healthModifier": 0.8652,
+    "educationModifier": 0.118,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "tza_rural",
+    "countryIso3": "TZA",
+    "name": {
+      "ru": "Остальные сельские регионы",
+      "en": "Lake/Central/Southern rural"
+    },
+    "populationShare": 0.6,
+    "urban": false,
+    "wealthModifier": -0.111,
+    "healthModifier": 1.0929,
+    "educationModifier": -0.082,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "uga_kampala",
+    "countryIso3": "UGA",
+    "name": {
+      "ru": "Кампала и центр",
+      "en": "Kampala & Central"
+    },
+    "populationShare": 0.22,
+    "urban": true,
+    "wealthModifier": 0.276,
+    "healthModifier": 0.8197,
+    "educationModifier": 0.171,
+    "hazards": []
+  },
+  {
+    "id": "uga_west",
+    "countryIso3": "UGA",
+    "name": {
+      "ru": "Западный регион",
+      "en": "Western region"
+    },
+    "populationShare": 0.24,
+    "urban": false,
+    "wealthModifier": 0.026,
+    "healthModifier": 0.9563,
+    "educationModifier": 0.021,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "uga_east",
+    "countryIso3": "UGA",
+    "name": {
+      "ru": "Восточный регион",
+      "en": "Eastern region"
+    },
+    "populationShare": 0.27,
+    "urban": false,
+    "wealthModifier": -0.024,
+    "healthModifier": 1.0018,
+    "educationModifier": 0.021,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "uga_north",
+    "countryIso3": "UGA",
+    "name": {
+      "ru": "Северный регион",
+      "en": "Northern region"
+    },
+    "populationShare": 0.27,
+    "urban": false,
+    "wealthModifier": -0.224,
+    "healthModifier": 1.184,
+    "educationModifier": -0.179,
+    "hazards": [
+      "drought",
+      "conflict"
+    ]
+  },
+  {
+    "id": "afg_kabul",
+    "countryIso3": "AFG",
+    "name": {
+      "ru": "Кабул",
+      "en": "Kabul"
+    },
+    "populationShare": 0.15,
+    "urban": true,
+    "wealthModifier": 0.3675,
+    "healthModifier": 0.7469,
+    "educationModifier": 0.26,
+    "hazards": [
+      "conflict"
+    ]
+  },
+  {
+    "id": "afg_north",
+    "countryIso3": "AFG",
+    "name": {
+      "ru": "Север (Мазари-Шариф/Балх)",
+      "en": "North (Mazar/Balkh)"
+    },
+    "populationShare": 0.22,
+    "urban": false,
+    "wealthModifier": 0.0675,
+    "healthModifier": 0.9129,
+    "educationModifier": 0.06,
+    "hazards": [
+      "drought",
+      "conflict"
+    ]
+  },
+  {
+    "id": "afg_west",
+    "countryIso3": "AFG",
+    "name": {
+      "ru": "Запад (Герат)",
+      "en": "West (Herat)"
+    },
+    "populationShare": 0.18,
+    "urban": false,
+    "wealthModifier": 0.0675,
+    "healthModifier": 0.9129,
+    "educationModifier": 0.06,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "afg_south_east",
+    "countryIso3": "AFG",
+    "name": {
+      "ru": "Юг и Восток",
+      "en": "South/East (Kandahar/Helmand/Nangarhar)"
+    },
+    "populationShare": 0.45,
+    "urban": false,
+    "wealthModifier": -0.1825,
+    "healthModifier": 1.1618,
+    "educationModifier": -0.14,
+    "hazards": [
+      "conflict",
+      "drought"
+    ]
+  },
+  {
+    "id": "bgd_dhaka",
+    "countryIso3": "BGD",
+    "name": {
+      "ru": "Дакка",
+      "en": "Dhaka division"
+    },
+    "populationShare": 0.33,
+    "urban": true,
+    "wealthModifier": 0.1615,
+    "healthModifier": 0.86,
+    "educationModifier": 0.118,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "bgd_chittagong",
+    "countryIso3": "BGD",
+    "name": {
+      "ru": "Читтагонг",
+      "en": "Chittagong division"
+    },
+    "populationShare": 0.25,
+    "urban": false,
+    "wealthModifier": -0.0385,
+    "healthModifier": 1.0033,
+    "educationModifier": -0.032,
+    "hazards": [
+      "flood",
+      "quake"
+    ]
+  },
+  {
+    "id": "bgd_north",
+    "countryIso3": "BGD",
+    "name": {
+      "ru": "Раджшахи и Рангпур (север)",
+      "en": "Rajshahi & Rangpur (north)"
+    },
+    "populationShare": 0.2,
+    "urban": false,
+    "wealthModifier": -0.1385,
+    "healthModifier": 1.0989,
+    "educationModifier": -0.082,
+    "hazards": [
+      "flood",
+      "drought"
+    ]
+  },
+  {
+    "id": "bgd_south",
+    "countryIso3": "BGD",
+    "name": {
+      "ru": "Хулна и Барисал (юг)",
+      "en": "Khulna & Barisal (south)"
+    },
+    "populationShare": 0.15,
+    "urban": false,
+    "wealthModifier": -0.0885,
+    "healthModifier": 1.1467,
+    "educationModifier": -0.082,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "bgd_sylhet",
+    "countryIso3": "BGD",
+    "name": {
+      "ru": "Силхет",
+      "en": "Sylhet"
+    },
+    "populationShare": 0.07,
+    "urban": false,
+    "wealthModifier": -0.0385,
+    "healthModifier": 1.0511,
+    "educationModifier": -0.032,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "chn_beijing_tianjin",
+    "countryIso3": "CHN",
+    "name": {
+      "ru": "Пекин-Тяньцзинь",
+      "en": "Beijing-Tianjin"
+    },
+    "populationShare": 0.04,
+    "urban": true,
+    "wealthModifier": 0.4565,
+    "healthModifier": 0.7191,
+    "educationModifier": 0.28,
+    "hazards": []
+  },
+  {
+    "id": "chn_east_coast",
+    "countryIso3": "CHN",
+    "name": {
+      "ru": "Восточное побережье",
+      "en": "East Coast (Shanghai/Jiangsu/Zhejiang)"
+    },
+    "populationShare": 0.18,
+    "urban": true,
+    "wealthModifier": 0.3565,
+    "healthModifier": 0.7704,
+    "educationModifier": 0.18,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "chn_south_coast",
+    "countryIso3": "CHN",
+    "name": {
+      "ru": "Южное побережье (Гуандун)",
+      "en": "South Coast (Guangdong)"
+    },
+    "populationShare": 0.14,
+    "urban": true,
+    "wealthModifier": 0.2565,
+    "healthModifier": 0.8218,
+    "educationModifier": 0.08,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "chn_central",
+    "countryIso3": "CHN",
+    "name": {
+      "ru": "Центральные провинции",
+      "en": "Central Provinces"
+    },
+    "populationShare": 0.22,
+    "urban": false,
+    "wealthModifier": -0.0935,
+    "healthModifier": 1.0272,
+    "educationModifier": -0.02,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "chn_northeast",
+    "countryIso3": "CHN",
+    "name": {
+      "ru": "Северо-Восток",
+      "en": "Northeast (Dongbei)"
+    },
+    "populationShare": 0.08,
+    "urban": true,
+    "wealthModifier": -0.0435,
+    "healthModifier": 0.9759,
+    "educationModifier": 0.03,
+    "hazards": []
+  },
+  {
+    "id": "chn_southwest",
+    "countryIso3": "CHN",
+    "name": {
+      "ru": "Юго-Запад",
+      "en": "Southwest interior"
+    },
+    "populationShare": 0.2,
+    "urban": false,
+    "wealthModifier": -0.2935,
+    "healthModifier": 1.2327,
+    "educationModifier": -0.17,
+    "hazards": [
+      "quake",
+      "drought"
+    ]
+  },
+  {
+    "id": "chn_northwest",
+    "countryIso3": "CHN",
+    "name": {
+      "ru": "Северо-Запад",
+      "en": "Northwest (Xinjiang/Tibet/Gansu)"
+    },
+    "populationShare": 0.09,
+    "urban": false,
+    "wealthModifier": -0.3435,
+    "healthModifier": 1.284,
+    "educationModifier": -0.17,
+    "hazards": [
+      "drought",
+      "quake"
+    ]
+  },
+  {
+    "id": "chn_other",
+    "countryIso3": "CHN",
+    "name": {
+      "ru": "Прочие провинции",
+      "en": "Other provinces"
+    },
+    "populationShare": 0.05,
+    "urban": false,
+    "wealthModifier": -0.0935,
+    "healthModifier": 1.0272,
+    "educationModifier": -0.07,
+    "hazards": []
+  },
+  {
+    "id": "ind_delhi_ncr",
+    "countryIso3": "IND",
+    "name": {
+      "ru": "Дели (НСТ)",
+      "en": "Delhi NCR"
+    },
+    "populationShare": 0.07,
+    "urban": true,
+    "wealthModifier": 0.524,
+    "healthModifier": 0.6837,
+    "educationModifier": 0.2845,
+    "hazards": []
+  },
+  {
+    "id": "ind_maharashtra",
+    "countryIso3": "IND",
+    "name": {
+      "ru": "Махараштра",
+      "en": "Maharashtra"
+    },
+    "populationShare": 0.13,
+    "urban": true,
+    "wealthModifier": 0.324,
+    "healthModifier": 0.7748,
+    "educationModifier": 0.1845,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "ind_up",
+    "countryIso3": "IND",
+    "name": {
+      "ru": "Уттар-Прадеш",
+      "en": "Uttar Pradesh"
+    },
+    "populationShare": 0.2,
+    "urban": false,
+    "wealthModifier": -0.226,
+    "healthModifier": 1.1851,
+    "educationModifier": -0.1655,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "ind_bihar",
+    "countryIso3": "IND",
+    "name": {
+      "ru": "Бихар",
+      "en": "Bihar"
+    },
+    "populationShare": 0.11,
+    "urban": false,
+    "wealthModifier": -0.326,
+    "healthModifier": 1.3674,
+    "educationModifier": -0.2655,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "ind_wb",
+    "countryIso3": "IND",
+    "name": {
+      "ru": "Западная Бенгалия",
+      "en": "West Bengal"
+    },
+    "populationShare": 0.09,
+    "urban": false,
+    "wealthModifier": -0.026,
+    "healthModifier": 1.0027,
+    "educationModifier": -0.0155,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "ind_tn",
+    "countryIso3": "IND",
+    "name": {
+      "ru": "Тамилнад",
+      "en": "Tamil Nadu"
+    },
+    "populationShare": 0.08,
+    "urban": true,
+    "wealthModifier": 0.224,
+    "healthModifier": 0.7293,
+    "educationModifier": 0.1845,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "ind_rajasthan",
+    "countryIso3": "IND",
+    "name": {
+      "ru": "Раджастхан",
+      "en": "Rajasthan"
+    },
+    "populationShare": 0.08,
+    "urban": false,
+    "wealthModifier": -0.076,
+    "healthModifier": 1.0483,
+    "educationModifier": -0.0655,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "ind_kerala",
+    "countryIso3": "IND",
+    "name": {
+      "ru": "Керала",
+      "en": "Kerala"
+    },
+    "populationShare": 0.04,
+    "urban": true,
+    "wealthModifier": 0.274,
+    "healthModifier": 0.6381,
+    "educationModifier": 0.3345,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "ind_northeast",
+    "countryIso3": "IND",
+    "name": {
+      "ru": "Северо-Восток",
+      "en": "North-East States"
+    },
+    "populationShare": 0.06,
+    "urban": false,
+    "wealthModifier": -0.126,
+    "healthModifier": 1.0939,
+    "educationModifier": -0.0155,
+    "hazards": [
+      "flood",
+      "quake"
+    ]
+  },
+  {
+    "id": "ind_other",
+    "countryIso3": "IND",
+    "name": {
+      "ru": "Прочие штаты",
+      "en": "Other states"
+    },
+    "populationShare": 0.14,
+    "urban": false,
+    "wealthModifier": -0.076,
+    "healthModifier": 1.0027,
+    "educationModifier": -0.0155,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "idn_java",
+    "countryIso3": "IDN",
+    "name": {
+      "ru": "Ява (вкл. Джакарту)",
+      "en": "Java (incl. Jakarta)"
+    },
+    "populationShare": 0.55,
+    "urban": true,
+    "wealthModifier": 0.109,
+    "healthModifier": 0.8887,
+    "educationModifier": 0.0605,
+    "hazards": [
+      "flood",
+      "quake"
+    ]
+  },
+  {
+    "id": "idn_sumatra",
+    "countryIso3": "IDN",
+    "name": {
+      "ru": "Суматра",
+      "en": "Sumatra"
+    },
+    "populationShare": 0.21,
+    "urban": false,
+    "wealthModifier": -0.091,
+    "healthModifier": 1.0978,
+    "educationModifier": -0.0395,
+    "hazards": [
+      "quake",
+      "flood"
+    ]
+  },
+  {
+    "id": "idn_kalimantan",
+    "countryIso3": "IDN",
+    "name": {
+      "ru": "Калимантан",
+      "en": "Kalimantan"
+    },
+    "populationShare": 0.06,
+    "urban": false,
+    "wealthModifier": -0.141,
+    "healthModifier": 1.15,
+    "educationModifier": -0.0895,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "idn_sulawesi",
+    "countryIso3": "IDN",
+    "name": {
+      "ru": "Сулавеси",
+      "en": "Sulawesi"
+    },
+    "populationShare": 0.07,
+    "urban": false,
+    "wealthModifier": -0.141,
+    "healthModifier": 1.15,
+    "educationModifier": -0.0395,
+    "hazards": [
+      "quake"
+    ]
+  },
+  {
+    "id": "idn_bali_nusa",
+    "countryIso3": "IDN",
+    "name": {
+      "ru": "Бали и Малые Зондские острова",
+      "en": "Bali & Nusa Tenggara"
+    },
+    "populationShare": 0.05,
+    "urban": false,
+    "wealthModifier": -0.041,
+    "healthModifier": 0.9932,
+    "educationModifier": 0.0105,
+    "hazards": [
+      "quake"
+    ]
+  },
+  {
+    "id": "idn_papua_maluku",
+    "countryIso3": "IDN",
+    "name": {
+      "ru": "Папуа и Молуккские острова",
+      "en": "Papua & Maluku"
+    },
+    "populationShare": 0.06,
+    "urban": false,
+    "wealthModifier": -0.341,
+    "healthModifier": 1.3591,
+    "educationModifier": -0.2895,
+    "hazards": [
+      "quake"
+    ]
+  },
+  {
+    "id": "irn_tehran",
+    "countryIso3": "IRN",
+    "name": {
+      "ru": "Тегеран",
+      "en": "Tehran province"
+    },
+    "populationShare": 0.16,
+    "urban": true,
+    "wealthModifier": 0.319,
+    "healthModifier": 0.8052,
+    "educationModifier": 0.1765,
+    "hazards": [
+      "quake"
+    ]
+  },
+  {
+    "id": "irn_north",
+    "countryIso3": "IRN",
+    "name": {
+      "ru": "Север и побережье Каспия",
+      "en": "North/Caspian"
+    },
+    "populationShare": 0.15,
+    "urban": false,
+    "wealthModifier": 0.019,
+    "healthModifier": 0.9562,
+    "educationModifier": 0.0265,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "irn_central",
+    "countryIso3": "IRN",
+    "name": {
+      "ru": "Центр (Исфахан/Фарс)",
+      "en": "Central/Isfahan-Fars"
+    },
+    "populationShare": 0.35,
+    "urban": true,
+    "wealthModifier": 0.119,
+    "healthModifier": 0.9059,
+    "educationModifier": 0.0765,
+    "hazards": [
+      "drought",
+      "quake"
+    ]
+  },
+  {
+    "id": "irn_border",
+    "countryIso3": "IRN",
+    "name": {
+      "ru": "Приграничные провинции",
+      "en": "Border provinces (Sistan-Baluchestan/Kurdistan)"
+    },
+    "populationShare": 0.34,
+    "urban": false,
+    "wealthModifier": -0.281,
+    "healthModifier": 1.2079,
+    "educationModifier": -0.1735,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "irq_baghdad",
+    "countryIso3": "IRQ",
+    "name": {
+      "ru": "Багдад",
+      "en": "Baghdad"
+    },
+    "populationShare": 0.22,
+    "urban": true,
+    "wealthModifier": 0.272,
+    "healthModifier": 0.8227,
+    "educationModifier": 0.1635,
+    "hazards": [
+      "conflict"
+    ]
+  },
+  {
+    "id": "irq_kurdistan",
+    "countryIso3": "IRQ",
+    "name": {
+      "ru": "Курдистан",
+      "en": "Kurdistan region"
+    },
+    "populationShare": 0.17,
+    "urban": false,
+    "wealthModifier": 0.122,
+    "healthModifier": 0.8684,
+    "educationModifier": 0.1135,
+    "hazards": []
+  },
+  {
+    "id": "irq_south",
+    "countryIso3": "IRQ",
+    "name": {
+      "ru": "Юг (Басра и др.)",
+      "en": "South (Basra etc.)"
+    },
+    "populationShare": 0.28,
+    "urban": false,
+    "wealthModifier": -0.078,
+    "healthModifier": 1.0512,
+    "educationModifier": -0.0365,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "irq_central",
+    "countryIso3": "IRQ",
+    "name": {
+      "ru": "Центральные провинции",
+      "en": "Central provinces (Anbar/Nineveh)"
+    },
+    "populationShare": 0.33,
+    "urban": false,
+    "wealthModifier": -0.178,
+    "healthModifier": 1.1426,
+    "educationModifier": -0.1365,
+    "hazards": [
+      "conflict",
+      "drought"
+    ]
+  },
+  {
+    "id": "jpn_kanto",
+    "countryIso3": "JPN",
+    "name": {
+      "ru": "Канто (Токио)",
+      "en": "Kanto (Tokyo)"
+    },
+    "populationShare": 0.34,
+    "urban": true,
+    "wealthModifier": 0.1895,
+    "healthModifier": 0.9014,
+    "educationModifier": 0.076,
+    "hazards": [
+      "quake"
+    ]
+  },
+  {
+    "id": "jpn_kansai",
+    "countryIso3": "JPN",
+    "name": {
+      "ru": "Кансай (Осака)",
+      "en": "Kansai (Osaka)"
+    },
+    "populationShare": 0.16,
+    "urban": true,
+    "wealthModifier": 0.0395,
+    "healthModifier": 0.9577,
+    "educationModifier": 0.026,
+    "hazards": [
+      "quake"
+    ]
+  },
+  {
+    "id": "jpn_chubu",
+    "countryIso3": "JPN",
+    "name": {
+      "ru": "Тюбу",
+      "en": "Chubu"
+    },
+    "populationShare": 0.14,
+    "urban": true,
+    "wealthModifier": -0.0105,
+    "healthModifier": 1.0141,
+    "educationModifier": -0.024,
+    "hazards": [
+      "quake"
+    ]
+  },
+  {
+    "id": "jpn_kyushu",
+    "countryIso3": "JPN",
+    "name": {
+      "ru": "Кюсю и Окинава",
+      "en": "Kyushu/Okinawa"
+    },
+    "populationShare": 0.13,
+    "urban": false,
+    "wealthModifier": -0.1605,
+    "healthModifier": 1.0704,
+    "educationModifier": -0.074,
+    "hazards": [
+      "quake",
+      "flood"
+    ]
+  },
+  {
+    "id": "jpn_tohoku",
+    "countryIso3": "JPN",
+    "name": {
+      "ru": "Тохоку, Хоккайдо и прочие сельские районы",
+      "en": "Tohoku/Hokkaido & rural remaining"
+    },
+    "populationShare": 0.23,
+    "urban": false,
+    "wealthModifier": -0.2105,
+    "healthModifier": 1.1268,
+    "educationModifier": -0.074,
+    "hazards": [
+      "quake",
+      "flood"
+    ]
+  },
+  {
+    "id": "mmr_yangon",
+    "countryIso3": "MMR",
+    "name": {
+      "ru": "Янгон",
+      "en": "Yangon"
+    },
+    "populationShare": 0.14,
+    "urban": true,
+    "wealthModifier": 0.365,
+    "healthModifier": 0.7923,
+    "educationModifier": 0.22,
+    "hazards": []
+  },
+  {
+    "id": "mmr_central",
+    "countryIso3": "MMR",
+    "name": {
+      "ru": "Мандалай и сухая зона",
+      "en": "Mandalay/central dry zone"
+    },
+    "populationShare": 0.28,
+    "urban": false,
+    "wealthModifier": 0.015,
+    "healthModifier": 0.9683,
+    "educationModifier": 0.02,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "mmr_delta",
+    "countryIso3": "MMR",
+    "name": {
+      "ru": "Дельта Иравади",
+      "en": "Delta/coastal (Ayeyarwady)"
+    },
+    "populationShare": 0.26,
+    "urban": false,
+    "wealthModifier": 0.015,
+    "healthModifier": 0.9683,
+    "educationModifier": 0.02,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "mmr_border",
+    "countryIso3": "MMR",
+    "name": {
+      "ru": "Приграничные этнические штаты",
+      "en": "Border/ethnic states (conflict)"
+    },
+    "populationShare": 0.32,
+    "urban": false,
+    "wealthModifier": -0.185,
+    "healthModifier": 1.1444,
+    "educationModifier": -0.13,
+    "hazards": [
+      "conflict"
+    ]
+  },
+  {
+    "id": "pak_punjab",
+    "countryIso3": "PAK",
+    "name": {
+      "ru": "Пенджаб",
+      "en": "Punjab"
+    },
+    "populationShare": 0.53,
+    "urban": false,
+    "wealthModifier": -0.016,
+    "healthModifier": 0.9881,
+    "educationModifier": 0.003,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "pak_sindh",
+    "countryIso3": "PAK",
+    "name": {
+      "ru": "Синд (вкл. Карачи)",
+      "en": "Sindh (incl. Karachi)"
+    },
+    "populationShare": 0.24,
+    "urban": true,
+    "wealthModifier": 0.184,
+    "healthModifier": 0.8893,
+    "educationModifier": 0.053,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "pak_kp",
+    "countryIso3": "PAK",
+    "name": {
+      "ru": "Хайбер-Пахтунхва",
+      "en": "Khyber Pakhtunkhwa"
+    },
+    "populationShare": 0.13,
+    "urban": false,
+    "wealthModifier": -0.216,
+    "healthModifier": 1.1858,
+    "educationModifier": -0.097,
+    "hazards": [
+      "conflict",
+      "flood"
+    ]
+  },
+  {
+    "id": "pak_balochistan",
+    "countryIso3": "PAK",
+    "name": {
+      "ru": "Белуджистан",
+      "en": "Balochistan"
+    },
+    "populationShare": 0.06,
+    "urban": false,
+    "wealthModifier": -0.316,
+    "healthModifier": 1.2846,
+    "educationModifier": -0.197,
+    "hazards": [
+      "drought",
+      "conflict"
+    ]
+  },
+  {
+    "id": "pak_other",
+    "countryIso3": "PAK",
+    "name": {
+      "ru": "Исламабад и северные территории",
+      "en": "Islamabad & northern territories"
+    },
+    "populationShare": 0.04,
+    "urban": true,
+    "wealthModifier": 0.284,
+    "healthModifier": 0.7905,
+    "educationModifier": 0.253,
+    "hazards": [
+      "quake"
+    ]
+  },
+  {
+    "id": "phl_manila",
+    "countryIso3": "PHL",
+    "name": {
+      "ru": "Манильская агломерация и Лусон",
+      "en": "Metro Manila & Luzon urban"
+    },
+    "populationShare": 0.3,
+    "urban": true,
+    "wealthModifier": 0.2555,
+    "healthModifier": 0.8209,
+    "educationModifier": 0.174,
+    "hazards": [
+      "flood",
+      "quake"
+    ]
+  },
+  {
+    "id": "phl_luzon_rest",
+    "countryIso3": "PHL",
+    "name": {
+      "ru": "Остальной Лусон",
+      "en": "Rest of Luzon"
+    },
+    "populationShare": 0.25,
+    "urban": false,
+    "wealthModifier": -0.0445,
+    "healthModifier": 1.014,
+    "educationModifier": -0.026,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "phl_visayas",
+    "countryIso3": "PHL",
+    "name": {
+      "ru": "Висайи",
+      "en": "Visayas"
+    },
+    "populationShare": 0.22,
+    "urban": false,
+    "wealthModifier": -0.0945,
+    "healthModifier": 1.0623,
+    "educationModifier": -0.076,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "phl_mindanao",
+    "countryIso3": "PHL",
+    "name": {
+      "ru": "Минданао",
+      "en": "Mindanao"
+    },
+    "populationShare": 0.23,
+    "urban": false,
+    "wealthModifier": -0.1945,
+    "healthModifier": 1.1589,
+    "educationModifier": -0.126,
+    "hazards": [
+      "conflict",
+      "flood"
+    ]
+  },
+  {
+    "id": "tur_istanbul",
+    "countryIso3": "TUR",
+    "name": {
+      "ru": "Стамбул",
+      "en": "Istanbul"
+    },
+    "populationShare": 0.18,
+    "urban": true,
+    "wealthModifier": 0.297,
+    "healthModifier": 0.8504,
+    "educationModifier": 0.167,
+    "hazards": [
+      "quake"
+    ]
+  },
+  {
+    "id": "tur_marmara",
+    "countryIso3": "TUR",
+    "name": {
+      "ru": "Мармара и запад",
+      "en": "Marmara/West"
+    },
+    "populationShare": 0.2,
+    "urban": true,
+    "wealthModifier": 0.197,
+    "healthModifier": 0.9005,
+    "educationModifier": 0.117,
+    "hazards": [
+      "quake"
+    ]
+  },
+  {
+    "id": "tur_central",
+    "countryIso3": "TUR",
+    "name": {
+      "ru": "Центральная Анатолия",
+      "en": "Central Anatolia"
+    },
+    "populationShare": 0.2,
+    "urban": false,
+    "wealthModifier": -0.053,
+    "healthModifier": 1.0005,
+    "educationModifier": -0.033,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "tur_east",
+    "countryIso3": "TUR",
+    "name": {
+      "ru": "Восточная и Юго-Восточная Анатолия",
+      "en": "East/Southeast Anatolia"
+    },
+    "populationShare": 0.27,
+    "urban": false,
+    "wealthModifier": -0.303,
+    "healthModifier": 1.2006,
+    "educationModifier": -0.183,
+    "hazards": [
+      "quake",
+      "conflict"
+    ]
+  },
+  {
+    "id": "tur_coast",
+    "countryIso3": "TUR",
+    "name": {
+      "ru": "Черноморское и Средиземноморское побережье",
+      "en": "Black Sea/Mediterranean coasts"
+    },
+    "populationShare": 0.15,
+    "urban": false,
+    "wealthModifier": -0.003,
+    "healthModifier": 0.9505,
+    "educationModifier": 0.017,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "uzb_tashkent",
+    "countryIso3": "UZB",
+    "name": {
+      "ru": "Ташкент",
+      "en": "Tashkent"
+    },
+    "populationShare": 0.2,
+    "urban": true,
+    "wealthModifier": 0.33,
+    "healthModifier": 0.8213,
+    "educationModifier": 0.185,
+    "hazards": []
+  },
+  {
+    "id": "uzb_fergana",
+    "countryIso3": "UZB",
+    "name": {
+      "ru": "Ферганская долина",
+      "en": "Fergana Valley"
+    },
+    "populationShare": 0.3,
+    "urban": false,
+    "wealthModifier": -0.02,
+    "healthModifier": 1.0145,
+    "educationModifier": -0.015,
+    "hazards": []
+  },
+  {
+    "id": "uzb_samarkand",
+    "countryIso3": "UZB",
+    "name": {
+      "ru": "Самарканд и Бухара",
+      "en": "Samarkand/Bukhara"
+    },
+    "populationShare": 0.25,
+    "urban": false,
+    "wealthModifier": -0.02,
+    "healthModifier": 0.9662,
+    "educationModifier": -0.015,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "uzb_karakalpak",
+    "countryIso3": "UZB",
+    "name": {
+      "ru": "Каракалпакстан и запад",
+      "en": "Karakalpakstan/west (Aral Sea region)"
+    },
+    "populationShare": 0.25,
+    "urban": false,
+    "wealthModifier": -0.22,
+    "healthModifier": 1.1594,
+    "educationModifier": -0.115,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "vnm_red_river",
+    "countryIso3": "VNM",
+    "name": {
+      "ru": "Дельта Красной реки (вкл. Ханой)",
+      "en": "Red River Delta (incl. Hanoi)"
+    },
+    "populationShare": 0.25,
+    "urban": true,
+    "wealthModifier": 0.1325,
+    "healthModifier": 0.8808,
+    "educationModifier": 0.08,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "vnm_north_mountains",
+    "countryIso3": "VNM",
+    "name": {
+      "ru": "Северные горные районы",
+      "en": "Northern mountains"
+    },
+    "populationShare": 0.15,
+    "urban": false,
+    "wealthModifier": -0.2175,
+    "healthModifier": 1.1917,
+    "educationModifier": -0.12,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "vnm_central_coast",
+    "countryIso3": "VNM",
+    "name": {
+      "ru": "Центральное побережье",
+      "en": "Central coast"
+    },
+    "populationShare": 0.2,
+    "urban": false,
+    "wealthModifier": -0.1675,
+    "healthModifier": 1.1399,
+    "educationModifier": -0.07,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "vnm_mekong",
+    "countryIso3": "VNM",
+    "name": {
+      "ru": "Дельта Меконга и юг (вкл. Хошимин)",
+      "en": "Mekong Delta & South (incl. HCMC)"
+    },
+    "populationShare": 0.4,
+    "urban": true,
+    "wealthModifier": 0.0825,
+    "healthModifier": 0.9326,
+    "educationModifier": 0.03,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "yem_sanaa",
+    "countryIso3": "YEM",
+    "name": {
+      "ru": "Сана",
+      "en": "Sanaa"
+    },
+    "populationShare": 0.15,
+    "urban": true,
+    "wealthModifier": 0.2775,
+    "healthModifier": 0.8097,
+    "educationModifier": 0.2075,
+    "hazards": [
+      "conflict"
+    ]
+  },
+  {
+    "id": "yem_highlands",
+    "countryIso3": "YEM",
+    "name": {
+      "ru": "Северное нагорье",
+      "en": "Highlands (north)"
+    },
+    "populationShare": 0.35,
+    "urban": false,
+    "wealthModifier": -0.0725,
+    "healthModifier": 1.0526,
+    "educationModifier": -0.0425,
+    "hazards": [
+      "conflict",
+      "drought"
+    ]
+  },
+  {
+    "id": "yem_coast",
+    "countryIso3": "YEM",
+    "name": {
+      "ru": "Побережье (Аден/Ходейда)",
+      "en": "Coastal (Aden/Hodeidah)"
+    },
+    "populationShare": 0.3,
+    "urban": false,
+    "wealthModifier": 0.0275,
+    "healthModifier": 0.9717,
+    "educationModifier": 0.0075,
+    "hazards": [
+      "conflict",
+      "flood"
+    ]
+  },
+  {
+    "id": "yem_east",
+    "countryIso3": "YEM",
+    "name": {
+      "ru": "Восток (Хадрамаут)",
+      "en": "East/remote (Hadramaut)"
+    },
+    "populationShare": 0.2,
+    "urban": false,
+    "wealthModifier": -0.1225,
+    "healthModifier": 1.0931,
+    "educationModifier": -0.0925,
+    "hazards": [
+      "conflict",
+      "drought"
+    ]
+  },
+  {
+    "id": "rus_moscow",
+    "countryIso3": "RUS",
+    "name": {
+      "ru": "Московский регион",
+      "en": "Moscow region"
+    },
+    "populationShare": 0.14,
+    "urban": true,
+    "wealthModifier": 0.379,
+    "healthModifier": 0.7711,
+    "educationModifier": 0.1945,
+    "hazards": []
+  },
+  {
+    "id": "rus_spb",
+    "countryIso3": "RUS",
+    "name": {
+      "ru": "Санкт-Петербург и Северо-Запад",
+      "en": "St. Petersburg & Northwest"
+    },
+    "populationShare": 0.09,
+    "urban": true,
+    "wealthModifier": 0.179,
+    "healthModifier": 0.8675,
+    "educationModifier": 0.0945,
+    "hazards": []
+  },
+  {
+    "id": "rus_volga",
+    "countryIso3": "RUS",
+    "name": {
+      "ru": "Поволжье",
+      "en": "Volga region"
+    },
+    "populationShare": 0.2,
+    "urban": false,
+    "wealthModifier": -0.071,
+    "healthModifier": 1.012,
+    "educationModifier": -0.0555,
+    "hazards": []
+  },
+  {
+    "id": "rus_south",
+    "countryIso3": "RUS",
+    "name": {
+      "ru": "Юг (Кавказ/Краснодар)",
+      "en": "South (Caucasus/Krasnodar)"
+    },
+    "populationShare": 0.14,
+    "urban": false,
+    "wealthModifier": -0.021,
+    "healthModifier": 0.9639,
+    "educationModifier": -0.0055,
+    "hazards": [
+      "conflict"
+    ]
+  },
+  {
+    "id": "rus_siberia",
+    "countryIso3": "RUS",
+    "name": {
+      "ru": "Сибирь",
+      "en": "Siberia"
+    },
+    "populationShare": 0.2,
+    "urban": false,
+    "wealthModifier": -0.121,
+    "healthModifier": 1.1084,
+    "educationModifier": -0.0555,
+    "hazards": []
+  },
+  {
+    "id": "rus_other",
+    "countryIso3": "RUS",
+    "name": {
+      "ru": "Урал и Дальний Восток",
+      "en": "Urals & Far East"
+    },
+    "populationShare": 0.23,
+    "urban": false,
+    "wealthModifier": -0.121,
+    "healthModifier": 1.1084,
+    "educationModifier": -0.0555,
+    "hazards": []
+  },
+  {
+    "id": "usa_northeast",
+    "countryIso3": "USA",
+    "name": {
+      "ru": "Северо-Восток",
+      "en": "Northeast"
+    },
+    "populationShare": 0.17,
+    "urban": true,
+    "wealthModifier": 0.2285,
+    "healthModifier": 0.8691,
+    "educationModifier": 0.1505,
+    "hazards": []
+  },
+  {
+    "id": "usa_midwest",
+    "countryIso3": "USA",
+    "name": {
+      "ru": "Средний Запад",
+      "en": "Midwest"
+    },
+    "populationShare": 0.21,
+    "urban": false,
+    "wealthModifier": -0.0215,
+    "healthModifier": 0.9714,
+    "educationModifier": 0.0005,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "usa_south",
+    "countryIso3": "USA",
+    "name": {
+      "ru": "Юг",
+      "en": "South"
+    },
+    "populationShare": 0.38,
+    "urban": false,
+    "wealthModifier": -0.1715,
+    "healthModifier": 1.1247,
+    "educationModifier": -0.0995,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "usa_west",
+    "countryIso3": "USA",
+    "name": {
+      "ru": "Запад (вкл. Калифорнию)",
+      "en": "West (incl. California)"
+    },
+    "populationShare": 0.24,
+    "urban": true,
+    "wealthModifier": 0.1285,
+    "healthModifier": 0.9202,
+    "educationModifier": 0.0505,
+    "hazards": [
+      "quake",
+      "drought"
+    ]
+  },
+  {
+    "id": "mex_cdmx",
+    "countryIso3": "MEX",
+    "name": {
+      "ru": "Мехико (агломерация)",
+      "en": "Mexico City Valley"
+    },
+    "populationShare": 0.18,
+    "urban": true,
+    "wealthModifier": 0.328,
+    "healthModifier": 0.7925,
+    "educationModifier": 0.1995,
+    "hazards": [
+      "quake"
+    ]
+  },
+  {
+    "id": "mex_north",
+    "countryIso3": "MEX",
+    "name": {
+      "ru": "Север (приграничные штаты)",
+      "en": "North (border states)"
+    },
+    "populationShare": 0.22,
+    "urban": true,
+    "wealthModifier": 0.178,
+    "healthModifier": 0.8915,
+    "educationModifier": 0.0995,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "mex_central",
+    "countryIso3": "MEX",
+    "name": {
+      "ru": "Центр и Бахио",
+      "en": "Central/Bajio"
+    },
+    "populationShare": 0.25,
+    "urban": false,
+    "wealthModifier": -0.022,
+    "healthModifier": 0.9906,
+    "educationModifier": -0.0005,
+    "hazards": [
+      "quake"
+    ]
+  },
+  {
+    "id": "mex_south",
+    "countryIso3": "MEX",
+    "name": {
+      "ru": "Юг (Чьяпас/Оахака/Герреро)",
+      "en": "South (Chiapas/Oaxaca/Guerrero)"
+    },
+    "populationShare": 0.2,
+    "urban": false,
+    "wealthModifier": -0.372,
+    "healthModifier": 1.2878,
+    "educationModifier": -0.2505,
+    "hazards": [
+      "quake",
+      "drought"
+    ]
+  },
+  {
+    "id": "mex_yucatan",
+    "countryIso3": "MEX",
+    "name": {
+      "ru": "Юкатан и побережье Залива",
+      "en": "Yucatan & Gulf coast"
+    },
+    "populationShare": 0.15,
+    "urban": false,
+    "wealthModifier": -0.122,
+    "healthModifier": 1.0401,
+    "educationModifier": -0.0505,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "bra_southeast",
+    "countryIso3": "BRA",
+    "name": {
+      "ru": "Юго-Восток",
+      "en": "Southeast"
+    },
+    "populationShare": 0.42,
+    "urban": true,
+    "wealthModifier": 0.1845,
+    "healthModifier": 0.866,
+    "educationModifier": 0.1265,
+    "hazards": []
+  },
+  {
+    "id": "bra_northeast",
+    "countryIso3": "BRA",
+    "name": {
+      "ru": "Северо-Восток",
+      "en": "Northeast"
+    },
+    "populationShare": 0.27,
+    "urban": false,
+    "wealthModifier": -0.3155,
+    "healthModifier": 1.2226,
+    "educationModifier": -0.2235,
+    "hazards": [
+      "drought"
+    ]
+  },
+  {
+    "id": "bra_south",
+    "countryIso3": "BRA",
+    "name": {
+      "ru": "Юг",
+      "en": "South"
+    },
+    "populationShare": 0.14,
+    "urban": true,
+    "wealthModifier": 0.2345,
+    "healthModifier": 0.8151,
+    "educationModifier": 0.1765,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "bra_north",
+    "countryIso3": "BRA",
+    "name": {
+      "ru": "Север (Амазония)",
+      "en": "North (Amazon)"
+    },
+    "populationShare": 0.09,
+    "urban": false,
+    "wealthModifier": -0.2655,
+    "healthModifier": 1.2736,
+    "educationModifier": -0.1735,
+    "hazards": [
+      "flood"
+    ]
+  },
+  {
+    "id": "bra_centerwest",
+    "countryIso3": "BRA",
+    "name": {
+      "ru": "Центрально-Западный регион",
+      "en": "Center-West"
+    },
+    "populationShare": 0.08,
+    "urban": false,
+    "wealthModifier": -0.0155,
+    "healthModifier": 0.9679,
+    "educationModifier": -0.0235,
+    "hazards": [
+      "drought"
+    ]
+  }
+]
