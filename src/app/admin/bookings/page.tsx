@@ -38,7 +38,7 @@ export default async function AdminBookingsPage({
       ...(search
         ? {
             OR: [
-              { code: { contains: search, mode: "insensitive" } },
+              { code: { contains: search } },
               { guestPhone: { contains: search } },
               { user: { phone: { contains: search } } },
             ],

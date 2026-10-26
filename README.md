@@ -7,11 +7,11 @@
 ## Стек
 
 Next.js 16 (App Router, TypeScript) · Tailwind CSS v4 + shadcn/ui (Base UI) · Prisma ORM 7 +
-PostgreSQL · Auth.js (next-auth v5) · Framer Motion · React Hook Form + Zod · hls.js.
+MySQL · Auth.js (next-auth v5) · Framer Motion · React Hook Form + Zod · hls.js.
 
 ## Быстрый старт (локально)
 
-Нужны Node.js 22+ и локальный PostgreSQL.
+Нужны Node.js 22+ и локальный MySQL/MariaDB.
 
 ```bash
 npm install
@@ -53,12 +53,15 @@ npm run start
 Подробный чек-лист — в [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#16-хостинг-и-деплой-на-regru).
 Короткая версия:
 
-1. Облачный VPS/VDS на reg.ru (Ubuntu LTS) — **не** бюджетный shared-хостинг, там нельзя
-   держать процесс Node.js.
-2. На сервере: Node.js, PostgreSQL, Nginx (reverse proxy), PM2, certbot (TLS).
-3. `git clone` → `npm ci` → заполнить `.env` реальными ключами → `npx prisma migrate deploy` →
-   `npm run build` → запустить через PM2.
-4. Nginx проксирует домен на `localhost:3000`, certbot выпускает HTTPS.
+1. Обычный хостинг reg.ru на ISPmanager (без root) — БД там MySQL, Node.js-процесс
+   запускается и проксируется самой панелью через её модуль «Node.js».
+2. `git clone` → заполнить `.env` реальными ключами (`DATABASE_URL` — данные MySQL из
+   личного кабинета) → `bash server/install.sh` (делает `npm ci`, миграции, `npm run build`
+   с `output: "standalone"`, копирует статику).
+3. В ISPmanager — один раз создать Node.js-проект: корневая директория —
+   `.../.next/standalone`, файл запуска — `server.js`.
+4. После каждого деплоя (`git pull && bash server/install.sh`) — нажать «Перезапустить»
+   у Node.js-проекта в панели.
 
 ## Что нужно донастроить перед реальным запуском
 

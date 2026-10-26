@@ -7,7 +7,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
 }
 
 // ---------- Перечисления ----------
@@ -164,7 +164,7 @@ model User {
   location         Location? @relation(fields: [locationId], references: [id])
   marketingConsent Boolean   @default(false)
   dataConsentAt    DateTime?
-  avatarUrl        String?
+  avatarUrl        String?   @db.Text
   pointsBalance    Int       @default(0)
   notifyBySms      Boolean   @default(true)
   notifyByEmail    Boolean   @default(true)
@@ -221,7 +221,7 @@ model Room {
   location         Location       @relation(fields: [locationId], references: [id])
   slug             String         @unique
   title            String
-  description      String
+  description      String         @db.Text
   genre            RoomGenre
   difficulty       RoomDifficulty
   minPlayers       Int
@@ -231,7 +231,7 @@ model Room {
   basePrice        Int
   extraPlayerPrice Int            @default(0)
   ageLimit         Int            @default(12)
-  coverImageUrl    String?
+  coverImageUrl    String?        @db.Text
   status           RoomStatus     @default(ACTIVE)
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
@@ -288,7 +288,7 @@ model Booking {
   promoCode      PromoCode?    @relation(fields: [promoCodeId], references: [id])
   status         BookingStatus @default(PENDING_PAYMENT)
   filmingConsent Boolean       @default(false)
-  cancelReason   String?
+  cancelReason   String?       @db.Text
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 
@@ -334,7 +334,7 @@ model GiftCertificate {
   purchaserName  String?
   purchaserEmail String?
   recipientName  String?
-  message        String?
+  message        String?   @db.Text
   expiresAt      DateTime?
   isRedeemed     Boolean   @default(false)
   createdAt      DateTime  @default(now())
@@ -390,7 +390,7 @@ model Receipt {
   payment    Payment     @relation(fields: [paymentId], references: [id], onDelete: Cascade)
   type       ReceiptType @default(SALE)
   externalId String?
-  url        String?
+  url        String?     @db.Text
   amount     Int
   createdAt  DateTime    @default(now())
 }
@@ -414,7 +414,7 @@ model PointsTransaction {
   balanceAfter Int
   bookingId    String?
   booking      Booking?              @relation(fields: [bookingId], references: [id])
-  note         String?
+  note         String?               @db.Text
   createdAt    DateTime              @default(now())
 
   @@index([userId])
@@ -427,8 +427,8 @@ model Camera {
   roomId    String
   room      Room         @relation(fields: [roomId], references: [id], onDelete: Cascade)
   label     String
-  rtspUrl   String? // внутренний адрес медиасервера (не публичный)
-  hlsUrl    String? // публичный плейлист, доступ только по подписанному токену
+  rtspUrl   String?      @db.Text // внутренний адрес медиасервера (не публичный)
+  hlsUrl    String?      @db.Text // публичный плейлист, доступ только по подписанному токену
   status    CameraStatus @default(OFFLINE)
   createdAt DateTime     @default(now())
 
@@ -456,8 +456,8 @@ model Recording {
   cameraId        String?
   camera          Camera?         @relation(fields: [cameraId], references: [id])
   status          RecordingStatus @default(PROCESSING)
-  previewUrl      String?
-  fullUrl         String?
+  previewUrl      String?         @db.Text
+  fullUrl         String?         @db.Text
   price           Int
   durationSeconds Int?
   expiresAt       DateTime? // когда удалится исходник, если не куплен (раздел 8)
@@ -487,7 +487,7 @@ model Review {
   user        User?    @relation(fields: [userId], references: [id])
   authorName  String
   rating      Int
-  text        String
+  text        String   @db.Text
   isPublished Boolean  @default(false)
   createdAt   DateTime @default(now())
 
@@ -498,9 +498,9 @@ model BlogPost {
   id            String    @id @default(cuid())
   slug          String    @unique
   title         String
-  excerpt       String
-  content       String
-  coverImageUrl String?
+  excerpt       String    @db.Text
+  content       String    @db.LongText
+  coverImageUrl String?   @db.Text
   authorId      String?
   author        User?     @relation(fields: [authorId], references: [id])
   isPublished   Boolean   @default(false)
@@ -531,6 +531,6 @@ model NotificationLog {
   template String
   payload  Json?
   status   NotificationStatus  @default(QUEUED)
-  error    String?
+  error    String?             @db.Text
   createdAt DateTime           @default(now())
 }

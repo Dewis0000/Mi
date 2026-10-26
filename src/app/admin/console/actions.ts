@@ -25,11 +25,11 @@ export async function searchBookingsAction(query: string) {
     where: {
       slot: { startsAt: { gte: dayStart, lte: dayEnd } },
       OR: [
-        { code: { contains: trimmed, mode: "insensitive" } },
+        { code: { contains: trimmed } },
         { guestPhone: { contains: trimmed } },
-        { guestName: { contains: trimmed, mode: "insensitive" } },
+        { guestName: { contains: trimmed } },
         { user: { phone: { contains: trimmed } } },
-        { user: { name: { contains: trimmed, mode: "insensitive" } } },
+        { user: { name: { contains: trimmed } } },
       ],
     },
     include: { slot: { include: { room: true } }, user: true, liveSession: true },

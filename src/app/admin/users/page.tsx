@@ -16,9 +16,9 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
     where: query
       ? {
           OR: [
-            { name: { contains: query, mode: "insensitive" } },
+            { name: { contains: query } },
             { phone: { contains: query } },
-            { email: { contains: query, mode: "insensitive" } },
+            { email: { contains: query } },
           ],
         }
       : undefined,

@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
-# Разворачивает/обновляет сайт на Ubuntu-сервере (reg.ru VPS и т.п.).
-# Безопасно запускать повторно — каждый шаг идемпотентен (см. docs/ARCHITECTURE.md, раздел 16).
+# Готовит сайт к запуску на обычном хостинге reg.ru через ISPmanager —
+# без root и без sudo (апи sudo/apt/systemctl/nginx/certbot здесь недоступны).
+# Делает только то, что можно сделать из-под обычного SSH-пользователя:
+# ставит npm-зависимости, прогоняет миграции БД (MySQL) и собирает
+# standalone-сборку Next.js (см. docs/ARCHITECTURE.md, раздел 16).
 #
-# Первый запуск (пример):
-#   ADMIN_PHONE="+79991234567" DOMAIN="nery-quest.ru" bash server/install.sh
-# Повторный деплой после git pull — без переменных, они не нужны:
-#   bash server/install.sh
+# Привязку домена к Node.js-процессу и его (пере)запуск нужно один раз
+# настроить вручную в панели ISPmanager — шаги печатаются в конце скрипта.
+#
+# Первый запуск и каждый следующий деплой — одна и та же команда:
+#   cd ~/nery-quest.ru && git pull && bash server/install.sh
+#
+# Первый запуск с созданием администратора:
+#   ADMIN_PHONE="+79991234567" bash server/install.sh
 set -euo pipefail
 
-# --- Настройки (можно переопределить переменными окружения перед запуском) ---
-DOMAIN="${DOMAIN:-nery-quest.ru}"
-APP_PORT="${APP_PORT:-3000}"
-DB_NAME="${DB_NAME:-quest_club}"
-DB_USER="${DB_USER:-quest_app}"
-CERTBOT_EMAIL="${CERTBOT_EMAIL:-}"
 ADMIN_PHONE="${ADMIN_PHONE:-}"
 ADMIN_PASSWORD="${ADMIN_PASSWORD:-}"
 
@@ -22,76 +23,26 @@ APP_DIR="$(dirname "$SCRIPT_DIR")"
 cd "$APP_DIR"
 
 echo "==> Каталог проекта: $APP_DIR"
-echo "==> Домен: $DOMAIN"
 
-# --- 1. Системные зависимости (пропускаются, если уже установлены) ---
-if ! command -v node >/dev/null 2>&1 || [ "$(node -v | sed 's/^v//;s/\..*//')" -lt 22 ]; then
-  echo "==> Устанавливаю Node.js 22..."
-  curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
-  sudo apt-get install -y nodejs
-fi
-
-if ! command -v psql >/dev/null 2>&1; then
-  echo "==> Устанавливаю PostgreSQL..."
-  sudo apt-get update -y
-  sudo apt-get install -y postgresql postgresql-contrib
-fi
-sudo systemctl enable --now postgresql
-
-if ! command -v nginx >/dev/null 2>&1; then
-  echo "==> Устанавливаю Nginx..."
-  sudo apt-get install -y nginx
-fi
-sudo systemctl enable --now nginx
-
-if ! command -v certbot >/dev/null 2>&1; then
-  echo "==> Устанавливаю certbot..."
-  sudo apt-get install -y certbot python3-certbot-nginx
-fi
-
-if ! command -v pm2 >/dev/null 2>&1; then
-  echo "==> Устанавливаю PM2..."
-  sudo npm install -g pm2
-fi
-
-# --- 2. База данных (пароль генерируется один раз и сохраняется рядом с проектом) ---
-DB_PASS_FILE="$APP_DIR/.db_password"
-if [ ! -f "$DB_PASS_FILE" ]; then
-  openssl rand -hex 24 > "$DB_PASS_FILE"
-  chmod 600 "$DB_PASS_FILE"
-fi
-DB_PASS="$(cat "$DB_PASS_FILE")"
-
-echo "==> Настраиваю роль и базу данных PostgreSQL..."
-sudo -u postgres psql -v ON_ERROR_STOP=1 >/dev/null <<SQL
-DO \$\$
-BEGIN
-  IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '${DB_USER}') THEN
-    CREATE ROLE ${DB_USER} LOGIN PASSWORD '${DB_PASS}';
-  ELSE
-    ALTER ROLE ${DB_USER} WITH PASSWORD '${DB_PASS}';
-  END IF;
-END
-\$\$;
-SQL
-sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname = '${DB_NAME}'" | grep -q 1 \
-  || sudo -u postgres createdb -O "${DB_USER}" "${DB_NAME}"
-
-# --- 3. .env (создаётся один раз, при повторных запусках не перезаписывается) ---
+# --- 1. .env (создаётся один раз из .env.example; дальше не перезаписывается) ---
 if [ ! -f .env ]; then
-  echo "==> Создаю .env..."
+  echo "==> .env не найден — создаю из .env.example"
   cp .env.example .env
-  AUTH_SECRET_VALUE="$(openssl rand -base64 32)"
-  sed -i "s#^DATABASE_URL=.*#DATABASE_URL=\"postgresql://${DB_USER}:${DB_PASS}@localhost:5432/${DB_NAME}\"#" .env
+  AUTH_SECRET_VALUE="$(openssl rand -base64 32 2>/dev/null || node -e "console.log(require('crypto').randomBytes(32).toString('base64'))")"
   sed -i "s#^AUTH_SECRET=.*#AUTH_SECRET=\"${AUTH_SECRET_VALUE}\"#" .env
-  sed -i "s#^NEXTAUTH_URL=.*#NEXTAUTH_URL=\"https://${DOMAIN}\"#" .env
-  sed -i "s#^NEXT_PUBLIC_APP_URL=.*#NEXT_PUBLIC_APP_URL=\"https://${DOMAIN}\"#" .env
-  echo "    Готово. Оплата (ЮKassa) и вход через соцсети — опциональны, впишите ключи в .env позже."
-else
-  echo "==> .env уже существует, не трогаю (там ваши ключи)."
+  echo ""
+  echo "================================================================"
+  echo " Откройте .env и заполните как минимум:"
+  echo "   DATABASE_URL   — данные MySQL из личного кабинета reg.ru, формат:"
+  echo "                    mysql://ЛОГИН:ПАРОЛЬ@localhost:3306/ИМЯ_БАЗЫ"
+  echo "   NEXTAUTH_URL        = https://nery-quest.ru"
+  echo "   NEXT_PUBLIC_APP_URL = https://nery-quest.ru"
+  echo " Затем запустите скрипт ещё раз: bash server/install.sh"
+  echo "================================================================"
+  exit 0
 fi
 
-# --- 4. Зависимости, миграции, сборка ---
+# --- 2. Зависимости, миграции, сборка ---
 echo "==> npm ci"
 npm ci
 
@@ -106,59 +57,36 @@ if [ -n "$ADMIN_PHONE" ]; then
   echo "==> Настраиваю аккаунт администратора"
   ADMIN_PHONE="$ADMIN_PHONE" ADMIN_PASSWORD="$ADMIN_PASSWORD" npm run db:bootstrap
 else
-  echo "==> ADMIN_PHONE не задан — пропускаю создание администратора и базовой локации/баллов."
+  echo "==> ADMIN_PHONE не задан — пропускаю создание администратора и базовой локации."
   echo "    Запустите позже: ADMIN_PHONE='+7...' ADMIN_PASSWORD='...' npm run db:bootstrap"
 fi
 
-echo "==> Собираю приложение"
+echo "==> Собираю приложение (next build, output: standalone)"
 npm run build
 
-# --- 5. PM2 ---
-echo "==> Запускаю через PM2"
-pm2 startOrReload server/ecosystem.config.cjs --env production
-pm2 save
-sudo env PATH="$PATH:/usr/bin" pm2 startup systemd -u "$(whoami)" --hp "$HOME" >/dev/null 2>&1 || true
+echo "==> Копирую статику в standalone-сборку"
+rm -rf .next/standalone/public .next/standalone/.next/static
+cp -r public .next/standalone/
+cp -r .next/static .next/standalone/.next/
+cp -f .env .next/standalone/.env
 
-# --- 6. Nginx (создаётся один раз; дальше конфигом управляет certbot) ---
-NGINX_CONF="/etc/nginx/sites-available/${DOMAIN}"
-if [ ! -f "$NGINX_CONF" ]; then
-  echo "==> Настраиваю Nginx для ${DOMAIN}"
-  sudo tee "$NGINX_CONF" > /dev/null <<NGINXCONF
-server {
-    listen 80;
-    server_name ${DOMAIN};
-
-    location / {
-        proxy_pass http://127.0.0.1:${APP_PORT};
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto \$scheme;
-    }
-}
-NGINXCONF
-  sudo ln -sf "$NGINX_CONF" "/etc/nginx/sites-enabled/${DOMAIN}"
-  sudo nginx -t && sudo systemctl reload nginx
-else
-  echo "==> Конфигурация Nginx для ${DOMAIN} уже есть, не трогаю."
-fi
-
-# --- 7. SSL (не прерывает деплой при неудаче — например, если DNS ещё не настроен) ---
-echo "==> Получаю SSL-сертификат (Let's Encrypt)"
-if [ -n "$CERTBOT_EMAIL" ]; then
-  sudo certbot --nginx -d "$DOMAIN" --non-interactive --agree-tos -m "$CERTBOT_EMAIL" --redirect || \
-    echo "    certbot не отработал — проверьте, что ${DOMAIN} уже указывает на IP этого сервера, и запустите эту команду вручную позже."
-else
-  sudo certbot --nginx -d "$DOMAIN" --non-interactive --agree-tos --register-unsafely-without-email --redirect || \
-    echo "    certbot не отработал — проверьте DNS и запустите вручную: sudo certbot --nginx -d $DOMAIN"
-fi
+STANDALONE_DIR="$APP_DIR/.next/standalone"
 
 echo ""
 echo "================================================================"
-echo " Готово: http://${DOMAIN} (или https://, если certbot отработал)"
+echo " Сборка готова: ${STANDALONE_DIR}/server.js"
+echo ""
+echo " Один раз вручную в панели ISPmanager (адрес панели — в личном кабинете reg.ru):"
+echo "   WWW-домены → nery-quest.ru → «Node.js-приложение» (или «Создать проект»):"
+echo "     Корневая директория:  ${STANDALONE_DIR}"
+echo "     Файл запуска:         server.js"
+echo "     Версия Node.js:       20 или новее"
+echo "   Если нет пункта Node.js — напишите в поддержку reg.ru с просьбой"
+echo "   включить Node.js для аккаунта (раздел «Настройки → Node.js» в панели)."
+echo ""
+echo " После каждого обновления кода (после этого скрипта) нажмите «Перезапустить»"
+echo " у Node.js-проекта в панели ISPmanager — без этого новая сборка не подхватится."
+echo ""
 if [ -n "$ADMIN_PHONE" ]; then
   echo " Админ: $ADMIN_PHONE / пароль: $ADMIN_PASSWORD"
   echo " Сохраните пароль — он не выводится повторно."
