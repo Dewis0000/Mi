@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Деплой-скрипты для сервера — обычный CommonJS, не часть приложения.
+    "server/**",
   ]),
 ]);
 

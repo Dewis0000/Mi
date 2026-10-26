@@ -43,3 +43,6 @@ next-env.d.ts
 
 # prisma
 /generated/
+
+# деплой: автогенерируемый пароль БД (server/install.sh)
+.db_password
