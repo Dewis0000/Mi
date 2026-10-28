@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script src="assets/theme.js?v=460ce522"></script>
-<script src="assets/api.js?v=05dec39a"></script>
+<script src="assets/api.js?v=aea5953e"></script>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:var(--n-1)}
@@ -555,6 +555,12 @@ document.addEventListener('DOMContentLoaded', function () {
 <section role="tabpanel" id="p-promo" aria-labelledby="t-promo" hidden="{{ hidePromo }}" style="margin-top: 24px">
 <div data-dc-keep id="stre-promo-host" style="display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr))"></div>
 </section>
+<section role="tabpanel" id="p-money" aria-labelledby="t-money" hidden="{{ hideMoney }}" style="margin-top: 24px">
+<div data-dc-keep id="stre-money-host" style="display: grid; gap: 16px"></div>
+</section>
+<section role="tabpanel" id="p-prices" aria-labelledby="t-prices" hidden="{{ hidePrices }}" style="margin-top: 24px">
+<div data-dc-keep id="stre-prices-host" style="display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr))"></div>
+</section>
 </template>
 </main>
 </div>
@@ -661,7 +667,7 @@ const ADM_PLANS = [['free', 'Бесплатный', 0], ['advanced', 'Продв
 const ADM_DAYS = [[7, '7 дней'], [30, '30 дней'], [90, '90 дней'], [365, 'Год'], [0, 'Бессрочно'], ['custom', 'Своё']];
 // Музыка (заказы) есть с тарифа «Про», как в server/app/lib/plans.php
 const ADM_MUSIC_PLANS = ['pro', 'max'];
-const ADM_TABS = [['sum', 'Главная'], ['bot', 'Бот и подписки'], ['users', 'Пользователи'], ['bl', 'Чёрный список'], ['mus', 'Музыка каналов'], ['tx', 'Операции'], ['ann', 'Объявления'], ['support', 'Поддержка'], ['promo', 'Промокоды']];
+const ADM_TABS = [['sum', 'Главная'], ['bot', 'Бот и подписки'], ['users', 'Пользователи'], ['bl', 'Чёрный список'], ['mus', 'Музыка каналов'], ['tx', 'Операции'], ['ann', 'Объявления'], ['support', 'Поддержка'], ['promo', 'Промокоды'], ['money', 'Деньги'], ['prices', 'Тарифы']];
 const ADM_TAB_HINT = {
   sum: 'Что происходит в сервисе прямо сейчас: кто онлайн, сколько пользователей, каналов в эфире и денег на балансах.',
   bot: 'Подключён ли аккаунт бота и работают ли подписки Twitch, по которым бот читает чаты.',
@@ -671,7 +677,9 @@ const ADM_TAB_HINT = {
   tx: 'Все оплаты, выданные тарифы, начисления и блокировки. Фильтр — по типу операции.',
   ann: 'Объявление, которое видят все, кто открывает панель. Можно показать на время и скрыть.',
   support: 'Обращения пользователей. Войти в аккаунт пользователя можно только по его коду из раздела «Поддержка».',
-  promo: 'Коды на скидку или бесплатный тариф. Один пользователь использует код один раз.',
+  promo: 'Коды на скидку или бесплатный тариф, для партнёров и акций. Видно, кто применил код, что купил и сколько принёс. Код можно сделать на любой платный тариф.',
+  money: 'Выручка по оплатам тарифов: за сутки, неделю, месяц и всё время, по тарифам, промокодам и партнёрам, последние оплаты.',
+  prices: 'Цены платных тарифов. Новая цена действует для новых оплат и на сайте, уже оплаченные платежи не меняются.',
 };
 const ADM_KIND = { topup: 'Начисление', charge: 'Списание', plan: 'Оплата тарифа', grant: 'Выдача тарифа', ban: 'Блокировка' };
 const ADM_SUB_TYPE = {
@@ -1213,7 +1221,7 @@ class Component extends DCLogic {
         n: t[0] === 'users' ? (st ? StreAPI.fmtNum(st.users) : '') : t[0] === 'bot' ? (nBad ? '! ' + nBad : '') : t[0] === 'bl' && s.bl ? StreAPI.fmtNum(s.bl.items.length) : '',
         pick: () => this.pickTab(t[0]), key: (e) => this.tabKey(e, i),
       })),
-      hideSum: s.tab !== 'sum', hideBot: s.tab !== 'bot', hideUsers: s.tab !== 'users', hideBl: s.tab !== 'bl', hideMus: s.tab !== 'mus', hideTx: s.tab !== 'tx', hideAnn: s.tab !== 'ann', hideSupport: s.tab !== 'support', hidePromo: s.tab !== 'promo',
+      hideSum: s.tab !== 'sum', hideBot: s.tab !== 'bot', hideUsers: s.tab !== 'users', hideBl: s.tab !== 'bl', hideMus: s.tab !== 'mus', hideTx: s.tab !== 'tx', hideAnn: s.tab !== 'ann', hideSupport: s.tab !== 'support', hidePromo: s.tab !== 'promo', hideMoney: s.tab !== 'money', hidePrices: s.tab !== 'prices',
 
       statsErrOn: !!s.statsErr, statsErr: s.statsErr, statsBusy: !st, kpis, kpiUsers: kpis.slice(0, 2), kpiChannels: kpis.slice(2, 4), kpiMoney: kpis.slice(4), tabHint: ADM_TAB_HINT[s.tab] || '',
       cronDot: cronBad ? 'background: var(--accent); box-shadow: 0 0 0 4px rgb(var(--accent-rgb) / .25)' : st ? 'background: var(--n-12)' : 'background: var(--n-7)',

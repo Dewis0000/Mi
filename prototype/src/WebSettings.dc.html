@@ -345,7 +345,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 </sc-if>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2300}}'>
-// Тарифы: запасной список, пока не пришёл ответ маршрута plans. Цены и лимиты — из server/app/lib/plans.php.
+// Тарифы: запасной список, пока не пришёл ответ маршрута plans. Актуальные цены приходят оттуда, лимиты — из server/app/lib/plans.php.
 const STRE_PLANS = [
   { key: 'free', name: 'Бесплатный', price: 0, commands: 10, widgets: 2, music: false, history: 3 },
   { key: 'advanced', name: 'Продвинутая', price: 299, commands: 30, widgets: 3, music: false, history: 7 },
@@ -528,6 +528,9 @@ class Component extends DCLogic {
         this.setState({ promoIn: '', promo: null, promoDone: 'Тариф «' + name + '» включён на ' + days + ' ' + streDays(days, 'день', 'дня', 'дней') + ' и уже действует. Он виден в блоке «Твой тариф сейчас» выше.' });
         StreAPI.toast('Тариф «' + name + '» включён');
         await this.reloadMe(); this.loadTx();
+      } else if (r.needPlan) {
+        this.setState({ promo: r, promoIn: '' });
+        StreAPI.toast('Код работает на любой тариф: выбери тариф ниже');
       } else {
         this.setState({ promo: r, promoIn: '' });
         StreAPI.toast('Скидка ' + r.percent + '% применена');
@@ -538,6 +541,27 @@ class Component extends DCLogic {
     this.setState({ promoBusy: false });
   }
   promoClear() { this.setState({ promo: null }); }
+  // Промокод, который действует на тариф: код на один тариф или на любой платный
+  promoFor(p) {
+    const pr = this.state.promo;
+    return pr && p.price > 0 && (pr.plan === 'any' || pr.plan === p.key) ? pr : null;
+  }
+  // Бесплатный код на любой тариф: тариф выбирает пользователь на карточке
+  async activateFree(p) {
+    const pr = this.state.promo;
+    if (!pr) return;
+    this.setState({ promoBusy: true, promoErr: '' });
+    try {
+      const r = await StreAPI.post('promo.apply', { code: pr.code, plan: p.key });
+      const days = Number(r.days) || 0;
+      this.setState({ promoIn: '', promo: null, promoDone: 'Тариф «' + p.name + '» включён на ' + days + ' ' + streDays(days, 'день', 'дня', 'дней') + ' и уже действует. Он виден в блоке «Твой тариф сейчас» выше.' });
+      StreAPI.toast('Тариф «' + p.name + '» включён');
+      await this.reloadMe(); this.loadTx();
+    } catch (err) {
+      this.setState({ promoErr: err.message || 'Промокод не сработал. Проверь написание и попробуй ещё раз.' });
+    }
+    this.setState({ promoBusy: false });
+  }
 
   async saveEmail(e) {
     if (e && e.preventDefault) e.preventDefault();
@@ -674,7 +698,16 @@ class Component extends DCLogic {
     const now = Date.now() / 1000;
     const same = me.plan === p.key;
     const base = same && me.planUntil > now ? me.planUntil : now;
-    const pr = this.state.promo && this.state.promo.plan === p.key ? this.state.promo : null;
+    const pr = this.promoFor(p);
+    if (pr && pr.percent >= 100) {
+      this.openAsk({
+        title: 'Включить «' + p.name + '» бесплатно?',
+        text: 'По коду ' + pr.code + ' тариф включится без оплаты на ' + (pr.days || 30) + ' ' + streDays(pr.days || 30, 'день', 'дня', 'дней') + '.',
+        yes: 'Включить бесплатно', cls: 'bp',
+        run: () => this.activateFree(p),
+      });
+      return;
+    }
     const until = StreAPI.fmtDate(base + (pr && pr.days ? pr.days : 30) * 86400);
     const price = pr ? Math.round(p.price * (100 - pr.percent) / 100) : p.price;
     let text = 'Оплата ' + streRub(price) + ' картой или через СБП, ЮKassa проведёт платёж. ';
@@ -832,11 +865,13 @@ class Component extends DCLogic {
       const p = Object.assign({}, p0, me && me.plan === p0.key && me.limits ? { commands: me.limits.commands, widgets: me.limits.widgets, music: !!me.limits.music, history: me.limits.history_days || p0.history } : {});
       const isCur = !!me && me.plan === p.key;
       const unlimitedCur = isCur && p.price > 0 && me.planUntil === 0;
-      const canBuy = !!me && p.price > 0 && !unlimitedCur && payOn;
-      const pr = s.promo && s.promo.plan === p.key ? s.promo : null;
+      const pr = this.promoFor(p);
+      const freeNow = !!pr && pr.percent >= 100;
+      const canBuy = !!me && p.price > 0 && !unlimitedCur && (payOn || freeNow);
       const shown = pr ? Math.round(p.price * (100 - pr.percent) / 100) : p.price;
       let note = '';
       if (!me) note = '';
+      else if (freeNow && p.price > 0) note = 'По коду ' + pr.code + ' включится без оплаты';
       else if (p.price === 0) note = isCur ? 'Действует без срока' : 'Включится сам, когда закончится платный тариф';
       else if (unlimitedCur) note = 'Выдан бессрочно, продлевать не нужно';
       else if (!s.payLoaded) note = 'Проверяем оплату…';
@@ -858,7 +893,7 @@ class Component extends DCLogic {
         lines,
         canBuy, dis: s.payBusy || !!s.ask,
         btnCls: primaryKey === p.key ? 'bp' : 'bs',
-        btn: (isCur ? 'Продлить · ' : 'Оплатить · ') + streRub(shown),
+        btn: freeNow ? 'Включить бесплатно' : (isCur ? 'Продлить · ' : 'Оплатить · ') + streRub(shown),
         descId: 'plan-' + p.key + '-n',
         note,
         buy: () => this.askBuy(p),
@@ -880,7 +915,12 @@ class Component extends DCLogic {
     const pr = s.promo;
     const prPlan = pr ? planList.find((x) => x.key === pr.plan) : null;
     let promoText = '';
-    if (pr && prPlan) {
+    if (pr && pr.needPlan) {
+      promoText = 'Код «' + pr.code + '» включает тариф без оплаты. Выбери тариф в карточках ниже и нажми «Включить бесплатно».';
+    } else if (pr && pr.plan === 'any') {
+      const days = pr.days || 30;
+      promoText = 'Скидка ' + pr.percent + '% по коду ' + pr.code + ' на любой платный тариф. Цены со скидкой — в карточках ниже. Срок тарифа — ' + days + ' ' + streDays(days, 'день', 'дня', 'дней') + '.';
+    } else if (pr && prPlan) {
       const days = pr.days || 30;
       promoText = 'Скидка ' + pr.percent + '% по коду ' + pr.code + ' на тариф «' + prPlan.name + '»: ' + streRub(prPlan.price) + ' → ' + streRub(Math.round(prPlan.price * (100 - pr.percent) / 100)) + '. Срок тарифа — ' + days + ' ' + streDays(days, 'день', 'дня', 'дней') + '. Скидка применится при оплате этого тарифа.';
     }
@@ -974,7 +1014,7 @@ class Component extends DCLogic {
       hideDaMsg: () => this.setState({ daMsg: null }),
 
       planName: me ? me.planName : L, planUntil, planLimits, isPaid,
-      promoHas: !!pr && !!prPlan, promoText, promoClear: () => this.promoClear(),
+      promoHas: !!pr && (!!prPlan || pr.plan === 'any' || !!pr.needPlan), promoText, promoClear: () => this.promoClear(),
       promoIn: s.promoIn, setPromoIn: (e) => this.setState({ promoIn: e.target.value }),
       promoSubmit: (e) => this.promoSubmit(e), promoBusy: !!s.promoBusy,
       promoBtn: s.promoBusy ? 'Проверяем…' : 'Применить',

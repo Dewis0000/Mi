@@ -8,6 +8,24 @@ const PLANS = [
     'max' => ['name' => 'Максимум', 'price' => 967, 'commands' => 1000, 'widgets' => 100, 'music' => true, 'giveaways' => true, 'history_days' => 3650],
 ];
 
+// Цена платного тарифа: по умолчанию из PLANS, а администратор может поменять её в разделе «Тарифы» (хранится в kv).
+// Бесплатный тариф всегда стоит 0. Новая цена действует только для новых оплат: уже совершённые платежи хранят свою сумму.
+function plan_price(string $key): int {
+    if (!isset(PLANS[$key])) return 0;
+    if ((int)PLANS[$key]['price'] <= 0) return 0;
+    $over = kv_get('plan_prices');
+    return is_array($over) && isset($over[$key]) ? (int)$over[$key] : (int)PLANS[$key]['price'];
+}
+
+// Тарифы для сайта и админки: лимиты из PLANS, цена — актуальная
+function plan_list(): array {
+    $out = [];
+    foreach (PLANS as $key => $p) {
+        $out[] = ['key' => $key, 'price' => plan_price($key), 'defaultPrice' => (int)$p['price']] + $p;
+    }
+    return $out;
+}
+
 function plan_of(array $user): string {
     $p = $user['plan'] ?? 'free';
     if ($p !== 'free' && (int)$user['plan_until'] > 0 && (int)$user['plan_until'] < now()) return 'free';

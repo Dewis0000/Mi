@@ -36,6 +36,7 @@ require APP_DIR . '/lib/counters.php';
 require APP_DIR . '/lib/managers.php';
 require APP_DIR . '/lib/chat_assets.php';
 require APP_DIR . '/lib/promo.php';
+require APP_DIR . '/lib/money.php';
 require APP_DIR . '/lib/yookassa.php';
 require APP_DIR . '/lib/jobs.php';
 require APP_DIR . '/lib/site.php';

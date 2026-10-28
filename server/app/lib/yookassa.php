@@ -41,9 +41,10 @@ function yk_call(string $method, string $path, ?array $body = null, ?string $ide
 
 // Создаём платёж. Цена берётся на сервере, а не из запроса. Возвращаем ID локального платежа и confirmation_token.
 // Для тарифа $plan — оплата подписки. Для тестового платежа без тарифа $plan пустой: он ничего не меняет на сайте.
-function yk_make(int $uid, string $plan, int $price, string $desc, int $promoId = 0, string $email = ''): array {
+function yk_make(int $uid, string $plan, int $price, string $desc, int $promoId = 0, string $email = '', int $listPrice = 0): array {
     if (!yk_enabled()) fail('Онлайн-оплата пока не подключена. Напиши администратору StreOps');
-    $local = db_insert('payments', ['user_id' => $uid, 'plan' => $plan, 'promo_id' => $promoId, 'amount' => $price, 'status' => 'creating', 'created_at' => now()]);
+    // list_price — цена тарифа без скидки на момент покупки: по ней считаем, сколько денег отдали как скидку
+    $local = db_insert('payments', ['user_id' => $uid, 'plan' => $plan, 'promo_id' => $promoId, 'amount' => $price, 'list_price' => $listPrice ?: $price, 'status' => 'creating', 'created_at' => now()]);
     $body = [
         'amount' => ['value' => number_format($price, 2, '.', ''), 'currency' => 'RUB'],
         'capture' => true,
@@ -66,11 +67,12 @@ function yk_make(int $uid, string $plan, int $price, string $desc, int $promoId 
 
 // Оплата тарифа: цена из PLANS, со скидкой промокода, если он передан (промокод уже проверен).
 function yk_create(array $user, string $plan, ?array $promo = null): array {
-    if (!isset(PLANS[$plan]) || PLANS[$plan]['price'] <= 0) fail('Нет такого тарифа для оплаты');
-    $price = $promo ? promo_price($promo) : (int)PLANS[$plan]['price'];
+    if (!isset(PLANS[$plan]) || plan_price($plan) <= 0) fail('Нет такого тарифа для оплаты');
+    $list = plan_price($plan);
+    $price = $promo ? promo_price($promo, $plan) : $list;
     $days = $promo ? (int)$promo['days'] : 30;
     $desc = 'Тариф «' . PLANS[$plan]['name'] . '» StreOps на ' . $days . ' дн.' . ($promo ? ', промокод ' . $promo['code'] : '');
-    return yk_make((int)$user['id'], $plan, $price, $desc, $promo ? (int)$promo['id'] : 0, (string)($user['email'] ?? ''));
+    return yk_make((int)$user['id'], $plan, $price, $desc, $promo ? (int)$promo['id'] : 0, (string)($user['email'] ?? ''), $list);
 }
 
 // Тестовый платёж для проверки магазина ЮKassa: фиксированная сумма, без входа в аккаунт, тариф не меняется.
@@ -89,12 +91,12 @@ function yk_settle(array $p): string {
     $plan = (string)($p['plan'] ?? '');
     // сумма должна совпадать с той, что мы сами записали при создании платежа (с учётом промокода)
     if ($st === 'succeeded' && !empty($r['json']['paid']) && isset(PLANS[$plan]) && $amount > 0 && $amount === (int)$p['amount']) {
-        $n = db_exec("UPDATE payments SET status = 'succeeded', credited = 1 WHERE id = ? AND credited = 0", [$p['id']]);
+        $n = db_exec("UPDATE payments SET status = 'succeeded', credited = 1, paid_at = ? WHERE id = ? AND credited = 0", [now(), $p['id']]);
         if ($n) {
             $promo = (int)($p['promo_id'] ?? 0) > 0 ? db_one('SELECT * FROM promo_codes WHERE id = ?', [$p['promo_id']]) : null;
             $days = $promo ? (int)$promo['days'] : 30;
             plan_activate((int)$p['user_id'], $plan, $days, 'Оплата тарифа «' . PLANS[$plan]['name'] . '» через ЮKassa на ' . $days . ' дн.' . ($promo ? ', промокод ' . $promo['code'] : ''), 'plan', $amount);
-            if ($promo) promo_mark_used($promo, (int)$p['user_id']);
+            if ($promo) promo_mark_used($promo, (int)$p['user_id'], $plan, $amount);
         }
         return 'succeeded';
     }

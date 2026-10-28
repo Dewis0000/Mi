@@ -627,8 +627,8 @@ function api_dispatch(string $r): never {
         }
 
         // ---------- аккаунт ----------
-        case 'plans': { // тарифы для страниц сайта — один источник с серверными лимитами
-            json_out(['ok' => true, 'items' => array_map(fn($k, $p) => ['key' => $k] + $p, array_keys(PLANS), PLANS), 'pay' => ['enabled' => yk_enabled()]]);
+        case 'plans': { // тарифы для страниц сайта: цены актуальные, лимиты — из того же списка, что серверные лимиты
+            json_out(['ok' => true, 'items' => plan_list(), 'pay' => ['enabled' => yk_enabled()]]);
         }
         case 'pay.create': { // оплата тарифа через ЮKassa: виджет на сайте
             $u = require_user();
@@ -637,52 +637,129 @@ function api_dispatch(string $r): never {
             $code = in_str('code', 64);
             if ($code !== '') {
                 $promo = promo_check($u, $code);
-                if ($promo['plan'] !== $plan) fail('Промокод действует на тариф «' . PLANS[$promo['plan']]['name'] . '»');
+                if (!promo_plan_ok($promo, $plan)) fail($promo['plan'] === PROMO_ANY ? 'Промокод не действует на этот тариф' : 'Промокод действует на тариф «' . PLANS[$promo['plan']]['name'] . '»');
                 if ((int)$promo['percent'] >= 100) fail('Этот промокод включает тариф без оплаты: нажми «Применить» рядом с полем промокода');
             }
             $pay = yk_create($u, $plan, $promo);
             json_out(['ok' => true, 'token' => $pay['token'], 'returnUrl' => base_url() . '/settings.html?pay=return#billing']);
         }
-        case 'promo.apply': { // промокод: бесплатный тариф включается сразу, скидка запоминается до оплаты
+        case 'promo.apply': { // промокод на странице тарифов: бесплатный тариф включается сразу, скидка запоминается до оплаты
             $u = require_user();
             $p = promo_check($u, in_str('code', 64));
+            // код на любой тариф: тариф выбирает пользователь; код на один тариф — тариф уже задан в коде и другой не принимается
+            $want = in_str('plan', 16);
+            if ($p['plan'] !== PROMO_ANY && $want !== '' && $want !== $p['plan']) fail('Промокод действует на тариф «' . PLANS[$p['plan']]['name'] . '»');
+            $plan = $p['plan'] === PROMO_ANY ? $want : (string)$p['plan'];
+            if ($plan !== '' && !promo_plan_ok($p, $plan)) fail('Промокод не действует на этот тариф');
             if ((int)$p['percent'] >= 100) {
+                if ($plan === '') json_out(['ok' => true, 'free' => false, 'needPlan' => true, 'code' => $p['code'], 'plan' => PROMO_ANY, 'percent' => 100, 'days' => (int)$p['days']]);
                 // сначала занимаем использование, потом включаем тариф: два одновременных запроса не продлят тариф дважды
-                if (!promo_claim($p, (int)$u['id'])) fail('Ты уже использовал этот промокод или он закончился');
+                if (!promo_claim($p, (int)$u['id'], $plan)) fail('Ты уже использовал этот промокод или он закончился');
                 try {
-                    plan_activate((int)$u['id'], $p['plan'], (int)$p['days'], 'Промокод ' . $p['code'] . ': тариф «' . PLANS[$p['plan']]['name'] . '» на ' . (int)$p['days'] . ' дн.', 'grant', 0);
+                    plan_activate((int)$u['id'], $plan, (int)$p['days'], 'Промокод ' . $p['code'] . ': тариф «' . PLANS[$plan]['name'] . '» на ' . (int)$p['days'] . ' дн.', 'grant', 0);
                 } catch (Throwable $e) {
                     promo_release($p, (int)$u['id']); // тариф не включился: возвращаем использование, чтобы код не сгорел
                     throw $e;
                 }
-                json_out(['ok' => true, 'free' => true, 'plan' => $p['plan'], 'days' => (int)$p['days']]);
+                json_out(['ok' => true, 'free' => true, 'plan' => $plan, 'days' => (int)$p['days']]);
             }
-            json_out(['ok' => true, 'free' => false, 'code' => $p['code'], 'plan' => $p['plan'], 'percent' => (int)$p['percent'], 'price' => promo_price($p), 'days' => (int)$p['days']]);
+            $prices = [];
+            foreach (plan_list() as $x) if ($x['price'] > 0) $prices[$x['key']] = promo_price($p, $x['key']);
+            json_out(['ok' => true, 'free' => false, 'code' => $p['code'], 'plan' => $p['plan'], 'percent' => (int)$p['percent'], 'days' => (int)$p['days'],
+                'applyTo' => $plan !== '' ? $plan : null, 'price' => $plan !== '' ? promo_price($p, $plan) : null, 'prices' => $prices]);
         }
-        case 'promo.list': { // админ: все промокоды и сколько раз использованы
+        case 'promo.list': { // админ: все промокоды — кто применил, сколько оплат и денег принёс
             require_admin();
-            $rows = db_all('SELECT * FROM promo_codes ORDER BY id DESC');
-            json_out(['ok' => true, 'items' => array_map(fn($r) => ['id' => (int)$r['id'], 'code' => $r['code'], 'plan' => $r['plan'], 'percent' => (int)$r['percent'], 'days' => (int)$r['days'], 'maxUses' => (int)$r['max_uses'], 'used' => (int)$r['used'], 'active' => (bool)$r['active']], $rows)]);
+            $items = [];
+            foreach (db_all('SELECT * FROM promo_codes ORDER BY id DESC') as $r) {
+                $id = (int)$r['id'];
+                $paid = db_one("SELECT COUNT(*) c, COALESCE(SUM(amount), 0) s, COALESCE(SUM(list_price - amount), 0) d FROM payments WHERE promo_id = ? AND status = 'succeeded' AND plan <> ''", [$id]);
+                $items[] = promo_row($r) + ['applied' => promo_applied_count($id), 'paid' => (int)$paid['c'], 'revenue' => (int)$paid['s'], 'discount' => (int)$paid['d'], 'hasPayments' => promo_has_payments($id)];
+            }
+            json_out(['ok' => true, 'items' => $items]);
+        }
+        case 'promo.detail': { // админ: каждый, кто применил код: тариф, сумма, статус оплаты
+            require_admin();
+            $p = db_one('SELECT * FROM promo_codes WHERE id = ?', [in_int('id')]) ?? fail('Код не найден', 404);
+            $id = (int)$p['id'];
+            $rows = [];
+            foreach (db_all("SELECT pay.plan, pay.amount, pay.list_price, pay.status, pay.created_at, pay.paid_at, u.login FROM payments pay JOIN users u ON u.id = pay.user_id WHERE pay.promo_id = ? ORDER BY pay.id DESC LIMIT 300", [$id]) as $x) {
+                $rows[] = ['login' => (string)$x['login'], 'plan' => (string)$x['plan'], 'planName' => PLANS[$x['plan']]['name'] ?? $x['plan'], 'amount' => (int)$x['amount'],
+                    'listPrice' => (int)$x['list_price'], 'status' => $x['status'] === 'succeeded' ? 'paid' : (string)$x['status'], 'at' => (int)($x['paid_at'] ?: $x['created_at'])];
+            }
+            foreach (db_all('SELECT pu.plan, pu.created_at, u.login FROM promo_uses pu JOIN users u ON u.id = pu.user_id WHERE pu.code_id = ? AND pu.amount = 0 ORDER BY pu.created_at DESC LIMIT 300', [$id]) as $x) {
+                $rows[] = ['login' => (string)$x['login'], 'plan' => (string)$x['plan'], 'planName' => PLANS[$x['plan']]['name'] ?? $x['plan'], 'amount' => 0,
+                    'listPrice' => 0, 'status' => 'free', 'at' => (int)$x['created_at']];
+            }
+            usort($rows, fn($a, $b) => $b['at'] <=> $a['at']);
+            json_out(['ok' => true, 'item' => promo_row($p), 'activations' => $rows]);
         }
         case 'promo.save': { // админ: создать промокод
-            require_admin();
+            $admin = require_admin();
             $code = promo_norm(in_str('code', 64));
             if (!preg_match('/^[A-ZА-ЯЁ0-9_-]{3,32}$/u', $code)) fail('Код от 3 до 32 знаков: буквы, цифры, «-» или «_»');
             $plan = in_str('plan', 16);
-            if (!isset(PLANS[$plan]) || PLANS[$plan]['price'] <= 0) fail('Выбери платный тариф');
+            if ($plan !== PROMO_ANY && plan_price($plan) <= 0) fail('Выбери платный тариф или «Любой платный тариф»');
             $percent = in_int('percent', 100, 1, 100);
             $days = in_int('days', 30, 1, 365);
             $maxUses = in_int('maxUses', 0, 0, 1000000);
+            $partner = mb_substr(trim(in_str('partner', 120)), 0, 120);
+            $expires = 0;
+            $expiresDate = in_str('expiresAt', 10); // дата ГГГГ-ММ-ДД: код работает до конца этого дня по Москве
+            if ($expiresDate !== '') {
+                if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $expiresDate)) fail('Срок действия: дата в формате ГГГГ-ММ-ДД');
+                $expires = (int)strtotime($expiresDate . ' 23:59:59');
+                if ($expires < now()) fail('Срок действия уже прошёл');
+            }
             if (db_one('SELECT id FROM promo_codes WHERE code = ?', [$code])) fail('Такой код уже есть');
-            db_insert('promo_codes', ['code' => $code, 'plan' => $plan, 'percent' => $percent, 'days' => $days, 'max_uses' => $maxUses, 'used' => 0, 'active' => 1, 'created_at' => now()]);
+            db_insert('promo_codes', ['code' => $code, 'plan' => $plan, 'percent' => $percent, 'days' => $days, 'max_uses' => $maxUses, 'used' => 0, 'active' => 1,
+                'created_at' => now(), 'partner' => $partner, 'expires_at' => $expires]);
+            logline('admin', $admin['login'] . ' promo created: ' . $code . ' ' . $plan . ' ' . $percent . '%');
             json_out(['ok' => true]);
         }
-        case 'promo.delete': { // админ: удалить код вместе с историей его использования
-            require_admin();
+        case 'promo.update': { // админ: поменять условия кода; тариф меняется только пока по коду не было оплат
+            $admin = require_admin();
+            $p = db_one('SELECT * FROM promo_codes WHERE id = ?', [in_int('id')]) ?? fail('Код не найден', 404);
+            $in = api_input();
+            $patch = [];
+            if (isset($in['plan'])) {
+                $plan = in_str('plan', 16);
+                if ($plan !== $p['plan']) {
+                    if ($plan !== PROMO_ANY && plan_price($plan) <= 0) fail('Выбери платный тариф или «Любой платный тариф»');
+                    if (promo_has_payments((int)$p['id'])) fail('По коду уже были оплаты: тариф менять нельзя');
+                    $patch['plan'] = $plan;
+                }
+            }
+            if (isset($in['percent'])) $patch['percent'] = in_int('percent', 100, 1, 100);
+            if (isset($in['days'])) $patch['days'] = in_int('days', 30, 1, 365);
+            if (isset($in['maxUses'])) {
+                $maxUses = in_int('maxUses', 0, 0, 1000000);
+                if ($maxUses > 0 && $maxUses < (int)$p['used']) fail('Лимит не может быть меньше уже использованных: ' . $p['used']);
+                $patch['max_uses'] = $maxUses;
+            }
+            if (isset($in['partner'])) $patch['partner'] = mb_substr(trim(in_str('partner', 120)), 0, 120);
+            if (isset($in['expiresAt'])) {
+                $expiresDate = in_str('expiresAt', 10);
+                if ($expiresDate === '') $patch['expires_at'] = 0;
+                else {
+                    if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $expiresDate)) fail('Срок действия: дата в формате ГГГГ-ММ-ДД');
+                    $expires = (int)strtotime($expiresDate . ' 23:59:59');
+                    if ($expires < now()) fail('Срок действия уже прошёл');
+                    $patch['expires_at'] = $expires;
+                }
+            }
+            if ($patch) db_update('promo_codes', $patch, 'id = ?', [$p['id']]);
+            logline('admin', $admin['login'] . ' promo updated: ' . $p['code'] . ' ' . json_encode($patch, JSON_UNESCAPED_UNICODE));
+            json_out(['ok' => true]);
+        }
+        case 'promo.delete': { // админ: удалить код, если по нему ещё не было оплат: история продаж важнее
+            $admin = require_admin();
             $p = db_one('SELECT * FROM promo_codes WHERE id = ?', [in_int('id')]);
             if (!$p) fail('Код не найден', 404);
+            if (promo_has_payments((int)$p['id'])) fail('По коду уже были оплаты: его нельзя удалить, можно только выключить');
             db_exec('DELETE FROM promo_uses WHERE code_id = ?', [$p['id']]);
             db_exec('DELETE FROM promo_codes WHERE id = ?', [$p['id']]);
+            logline('admin', $admin['login'] . ' promo deleted: ' . $p['code']);
             json_out(['ok' => true]);
         }
         case 'promo.toggle': { // админ: выключить или включить код
@@ -692,6 +769,26 @@ function api_dispatch(string $r): never {
             db_update('promo_codes', ['active' => (int)$p['active'] ? 0 : 1], 'id = ?', [$p['id']]);
             json_out(['ok' => true]);
         }
+        case 'admin.prices.set': { // админ: цены платных тарифов; действуют для новых оплат, уже сделанные платежи не меняются
+            $admin = require_admin();
+            $in = api_input()['prices'] ?? null;
+            if (!is_array($in)) fail('Нет цен для сохранения');
+            $prices = [];
+            foreach (PLANS as $key => $p) {
+                if ((int)$p['price'] <= 0) continue;
+                $v = $in[$key] ?? plan_price($key);
+                if (!preg_match('/^\d+$/', (string)$v) || (int)$v < 1 || (int)$v > 100000) fail('Цена тарифа «' . $p['name'] . '»: целое число рублей от 1 до 100 000');
+                $prices[$key] = (int)$v;
+            }
+            kv_set('plan_prices', $prices);
+            logline('admin', $admin['login'] . ' plan prices: ' . json_encode($prices, JSON_UNESCAPED_UNICODE));
+            json_out(['ok' => true, 'items' => plan_list()]);
+        }
+        case 'admin.money': { // админ: деньги — выручка по периодам, по дням, тарифам, промокодам, партнёрам, последние оплаты
+            require_admin();
+            json_out(['ok' => true] + money_report());
+        }
+
         case 'pay.demo': { // тестовая страница оплаты для проверки магазина ЮKassa: вход не нужен
             $pay = yk_create_demo();
             json_out(['ok' => true, 'token' => $pay['token'], 'returnUrl' => base_url() . '/test-pay.html?pay=return']);
@@ -759,7 +856,7 @@ function api_dispatch(string $r): never {
                 'botChannels' => (int)db_one('SELECT COUNT(*) c FROM users WHERE bot_enabled = 1')['c'],
                 'live' => (int)db_one('SELECT COUNT(*) c FROM streams WHERE live = 1')['c'],
                 'balances' => (int)db_one('SELECT COALESCE(SUM(balance),0) s FROM users')['s'],
-                'income30' => -(int)db_one("SELECT COALESCE(SUM(amount),0) s FROM transactions WHERE kind = 'plan' AND created_at > ?", [now() - 30 * 86400])['s'],
+                'income30' => money_period(now() - 30 * 86400)['sum'],
                 'bot' => $b ? ['login' => $b['login'], 'ownApp' => !empty($b['own_app'])] : null,
                 'eventsub' => ['total' => count($subs), 'byStatus' => (object)$byStatus],
                 'cronLast' => (int)(kv_get('cron_last') ?? 0),

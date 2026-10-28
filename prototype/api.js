@@ -289,7 +289,9 @@
     const ann = document.getElementById('stre-ann-host');
     const sup = document.getElementById('stre-support-host');
     const promo = document.getElementById('stre-promo-host');
-    if (!ann || !sup || !promo) { // страница ещё не отрисовала вкладки — попробуем чуть позже
+    const money = document.getElementById('stre-money-host');
+    const prices = document.getElementById('stre-prices-host');
+    if (!ann || !sup || !promo || !money || !prices) { // страница ещё не отрисовала вкладки — попробуем чуть позже
       if ((tries || 0) < 40) setTimeout(() => adminPanels((tries || 0) + 1), 150);
       return;
     }
@@ -298,58 +300,333 @@
     ann.appendChild(announceCard());
     sup.append(enterCard(), inboxCard());
     promo.appendChild(promoCard());
+    prices.appendChild(pricesCard());
+    money.appendChild(moneyCard());
   }
 
-  // Промокоды: создать, включить или выключить, удалить
+  // ---------- тарифы: один список цен для админки и страниц сайта ----------
+  let plansPromise = null;
+  function loadPlans(fresh) {
+    if (fresh || !plansPromise) plansPromise = StreAPI.get('plans').then((r) => r.items).catch(() => []);
+    return plansPromise;
+  }
+
+  // Цены на страницах сайта: в разметке стоит data-plan-price="pro", подставляем актуальную цену
+  function fillPlanPrices() {
+    if (!document.querySelector('[data-plan-price]')) return;
+    loadPlans().then((items) => {
+      const price = {};
+      items.forEach((p) => { price[p.key] = p.price; });
+      document.querySelectorAll('[data-plan-price]').forEach((n) => {
+        const v = price[n.getAttribute('data-plan-price')];
+        if (v != null) n.textContent = StreAPI.fmtNum(v);
+      });
+    });
+  }
+
+  function rub(n) { return StreAPI.fmtNum(n) + ' ₽'; }
+
+  function optionEl(value, text) { const o = el('option', null, text); o.value = value; return o; }
+
+  // Список тарифов в форме: платные тарифы и, если нужно, «любой платный»
+  function fillPlanSelect(select, withAny, current) {
+    loadPlans().then((items) => {
+      select.textContent = '';
+      if (withAny) select.appendChild(optionEl('any', 'Любой платный тариф'));
+      items.filter((p) => p.price > 0).forEach((p) => select.appendChild(optionEl(p.key, p.name + ' · ' + rub(p.price))));
+      if (current) select.value = current;
+    });
+  }
+
+  function actionsRow(...nodes) {
+    const row = el('div');
+    row.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;grid-column:1/-1';
+    row.append(...nodes);
+    return row;
+  }
+
+  function fieldLabel(text, input) {
+    const l = el('label', 'stre-lbl', text);
+    l.style.cssText = 'display:flex;flex-direction:column;gap:6px';
+    l.appendChild(input);
+    return l;
+  }
+
+  // Дата окончания кода в формате ГГГГ-ММ-ДД по Москве (как её считает сервер)
+  function moscowDate(ts) {
+    return ts ? new Date(ts * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Moscow' }) : '';
+  }
+
+  // Изменить условия кода: скидку, срок, лимит, партнёра, срок действия. Тариф — только пока не было оплат
+  function promoEditor(c, reload, close) {
+    const f = el('form');
+    f.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end;margin-top:12px';
+    const plan = el('select', 'stre-in');
+    fillPlanSelect(plan, true, c.plan);
+    plan.disabled = c.hasPayments;
+    if (c.hasPayments) plan.title = 'По коду уже были оплаты: тариф менять нельзя';
+    const percent = el('input', 'stre-in'); percent.type = 'number'; percent.min = '1'; percent.max = '100'; percent.value = String(c.percent);
+    const days = el('input', 'stre-in'); days.type = 'number'; days.min = '1'; days.max = '365'; days.value = String(c.days);
+    const max = el('input', 'stre-in'); max.type = 'number'; max.min = '0'; max.value = String(c.maxUses);
+    const partner = el('input', 'stre-in'); partner.maxLength = 120; partner.value = c.partner;
+    const expires = el('input', 'stre-in'); expires.type = 'date'; expires.value = moscowDate(c.expiresAt);
+    const save = el('button', 'stre-btn-p', 'Сохранить'); save.type = 'submit';
+    const cancel = el('button', 'stre-btn', 'Отмена'); cancel.type = 'button'; cancel.onclick = close;
+    f.append(fieldLabel('Тариф', plan), fieldLabel('Скидка, %', percent), fieldLabel('Дней подписки', days),
+      fieldLabel('Лимит, раз (0 — без лимита)', max), fieldLabel('Партнёр', partner), fieldLabel('Действует до', expires),
+      actionsRow(save, cancel));
+    f.onsubmit = (e) => {
+      e.preventDefault();
+      const body = { id: c.id, percent: Number(percent.value), days: Number(days.value), maxUses: Number(max.value), partner: partner.value.trim(), expiresAt: expires.value };
+      if (!plan.disabled) body.plan = plan.value;
+      save.disabled = true;
+      StreAPI.post('promo.update', body).then(() => { toast('Код «' + c.code + '» обновлён'); reload(); })
+        .catch((err) => toast(err.message, 'error')).then(() => { save.disabled = false; });
+    };
+    return f;
+  }
+
+  // Таблица из сетки: заголовки и строки текста
+  function grid(cols, head, rows) {
+    const g = el('div');
+    g.style.cssText = 'display:grid;gap:8px 14px;align-items:center;font-size:13px;grid-template-columns:' + cols;
+    head.forEach((t) => { const c = el('span', 'stre-lbl', t); c.style.margin = '0'; g.appendChild(c); });
+    rows.forEach((r) => r.forEach((v) => {
+      const c = el('span', null, v == null ? '' : String(v));
+      c.style.cssText = 'min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#DCDCDC';
+      g.appendChild(c);
+    }));
+    return g;
+  }
+
+  const PAY_STATUS = { paid: 'Оплачено', free: 'Бесплатно', pending: 'Ждёт оплаты', canceled: 'Отменено', error: 'Ошибка', creating: 'Создаётся' };
+
+  // Кто применил код: оплаты (любой статус) и бесплатные активации
+  function activationsTable(rows) {
+    if (!rows.length) return el('p', 'stre-p', 'Пока никто не применил этот код.');
+    return grid('minmax(110px,1.1fr) minmax(110px,1fr) minmax(100px,0.9fr) 110px 120px', ['Пользователь', 'Тариф', 'Сумма', 'Статус', 'Дата'], rows.map((x) => [
+      '@' + x.login, x.planName,
+      x.status === 'free' ? '0 ₽' : rub(x.amount) + (x.listPrice > x.amount ? ' (было ' + rub(x.listPrice) + ')' : ''),
+      PAY_STATUS[x.status] || x.status, when(x.at),
+    ]));
+  }
+
+  // Промокоды: создать, включить или выключить, удалить; видно, кто применил код, что купил и сколько принёс
   function promoCard() {
     const card = el('section', 'stre-card stre-wide');
     card.setAttribute('aria-labelledby', 'stre-promo-h');
     const h = el('h2', 'stre-h', 'Промокоды');
     h.id = 'stre-promo-h';
-    card.append(h, el('p', 'stre-p', 'Скидка на тариф или бесплатный период. Код привязан к одному тарифу, каждый пользователь применяет его один раз. Бесплатный код (скидка 100%) включает тариф сразу.'));
+    card.append(h, el('p', 'stre-p', 'Скидка или бесплатный период. Код привязан к одному тарифу или работает на любой платный. Партнёр нужен для статистики: видно, кто по его коду покупал и сколько принёс денег. Один пользователь применяет код один раз.'));
     const form = el('form');
     form.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end;margin-top:12px';
     const code = el('input', 'stre-in'); code.maxLength = 32; code.placeholder = 'WELCOME'; code.setAttribute('aria-label', 'Код');
     const plan = el('select', 'stre-in');
-    [['advanced', 'Продвинутая · 299 ₽'], ['pro', 'Про · 499 ₽'], ['max', 'Максимум · 967 ₽']].forEach(([v, t]) => { const o = el('option', null, t); o.value = v; plan.appendChild(o); });
+    fillPlanSelect(plan, true);
     const percent = el('input', 'stre-in'); percent.type = 'number'; percent.min = '1'; percent.max = '100'; percent.value = '50'; percent.setAttribute('aria-label', 'Скидка, процентов');
-    const days = el('input', 'stre-in'); days.type = 'number'; days.min = '1'; days.max = '365'; days.value = '30'; days.setAttribute('aria-label', 'Дней');
+    const days = el('input', 'stre-in'); days.type = 'number'; days.min = '1'; days.max = '365'; days.value = '30'; days.setAttribute('aria-label', 'Дней подписки');
     const max = el('input', 'stre-in'); max.type = 'number'; max.min = '0'; max.value = '0'; max.setAttribute('aria-label', 'Лимит использований, 0 — без лимита');
+    const partner = el('input', 'stre-in'); partner.maxLength = 120; partner.placeholder = 'Блогер, канал, партнёр'; partner.setAttribute('aria-label', 'Партнёр');
+    const expires = el('input', 'stre-in'); expires.type = 'date'; expires.setAttribute('aria-label', 'Действует до');
     const lbl = (text, input) => { const l = el('label', 'stre-lbl', text); l.style.cssText = 'display:flex;flex-direction:column;gap:6px'; l.appendChild(input); return l; };
     const submit = el('button', 'stre-btn-p', 'Создать код'); submit.type = 'submit';
-    form.append(lbl('Код', code), lbl('Тариф', plan), lbl('Скидка, %', percent), lbl('Дней', days), lbl('Лимит, раз (0 — без лимита)', max), submit);
+    form.append(lbl('Код', code), lbl('Тариф', plan), lbl('Скидка, %', percent), lbl('Дней подписки', days),
+      lbl('Лимит, раз (0 — без лимита)', max), lbl('Партнёр (необязательно)', partner), lbl('Действует до (необязательно)', expires), submit);
     const list = el('div');
     list.style.cssText = 'display:flex;flex-direction:column;gap:8px;margin-top:16px';
-    const names = { advanced: 'Продвинутая', pro: 'Про', max: 'Максимум' };
-    const load = () => StreAPI.get('promo.list').then((r) => {
+    const load = () => Promise.all([StreAPI.get('promo.list'), loadPlans()]).then(([r, plans]) => {
+      const names = {};
+      plans.forEach((p) => { names[p.key] = p.name; });
+      names.any = 'любой платный';
       list.textContent = '';
       if (!r.items.length) { list.appendChild(el('p', 'stre-p', 'Промокодов пока нет.')); return; }
-      r.items.forEach((c) => {
-        const row = el('div', 'stre-row');
-        const info = el('span');
-        info.style.cssText = 'flex:1;min-width:0;display:block';
-        const title = el('span', null, c.code);
-        title.style.cssText = 'font-family:"JetBrains Mono",monospace';
-        const sub = el('span', 'stre-p', (c.percent >= 100 ? 'бесплатно, ' : 'скидка ' + c.percent + '%, ') + c.days + ' дн. · ' + (names[c.plan] || c.plan) + ' · использовано ' + c.used + (c.maxUses ? ' из ' + c.maxUses : '') + (c.active ? '' : ' · выключен'));
-        sub.style.cssText = 'display:block;margin-top:2px;color:#8F8F8F';
-        info.append(title, sub);
-        const tgl = el('button', 'stre-btn', c.active ? 'Выключить' : 'Включить'); tgl.type = 'button';
-        tgl.onclick = () => StreAPI.post('promo.toggle', { id: c.id }).then(load).catch((e) => toast(e.message, 'error'));
-        const del = el('button', 'stre-btn', 'Удалить'); del.type = 'button';
-        del.style.color = '#FF6369';
-        del.onclick = () => { if (confirm('Удалить код «' + c.code + '»? История его использования тоже удалится.')) StreAPI.post('promo.delete', { id: c.id }).then(() => { toast('Код удалён'); load(); }).catch((e) => toast(e.message, 'error')); };
-        row.append(info, tgl, del);
-        list.appendChild(row);
-      });
+      r.items.forEach((c) => list.appendChild(promoRow(c, names, load)));
     }).catch((e) => toast(e.message, 'error'));
     form.onsubmit = (e) => {
       e.preventDefault();
-      const body = { code: code.value, plan: plan.value, percent: Number(percent.value), days: Number(days.value), maxUses: Number(max.value) };
+      const body = { code: code.value, plan: plan.value, percent: Number(percent.value), days: Number(days.value), maxUses: Number(max.value), partner: partner.value.trim(), expiresAt: expires.value };
       submit.disabled = true;
-      StreAPI.post('promo.save', body).then(() => { toast('Код «' + code.value.trim().toUpperCase() + '» создан'); code.value = ''; load(); })
+      StreAPI.post('promo.save', body).then(() => { toast('Код «' + code.value.trim().toUpperCase() + '» создан'); code.value = ''; partner.value = ''; expires.value = ''; load(); })
         .catch((err) => toast(err.message, 'error')).then(() => { submit.disabled = false; });
     };
     card.append(form, list);
+    load();
+    return card;
+  }
+
+  function promoRow(c, names, reload) {
+    const box = el('div', 'stre-row');
+    box.style.cssText = 'display:block';
+    const top = el('div');
+    top.style.cssText = 'display:flex;gap:10px;align-items:center;flex-wrap:wrap';
+    const info = el('span');
+    info.style.cssText = 'flex:1;min-width:0;display:block';
+    const title = el('span', null, c.code);
+    title.style.cssText = 'font-family:"JetBrains Mono",monospace;font-weight:600';
+    const tags = [c.percent >= 100 ? 'бесплатно' : 'скидка ' + c.percent + '%', names[c.plan] || c.plan, c.days + ' дн.'];
+    if (c.partner) tags.push('партнёр: ' + c.partner);
+    tags.push('использовано ' + c.used + (c.maxUses ? ' из ' + c.maxUses : ''));
+    if (c.expiresAt) tags.push('до ' + StreAPI.fmtDate(c.expiresAt));
+    if (!c.active) tags.push('выключен');
+    const sub = el('span', 'stre-p', tags.join(' · '));
+    sub.style.cssText = 'display:block;margin-top:2px;color:#8F8F8F';
+    const money = el('span', null, 'Применили: ' + c.applied + ' · оплатили: ' + c.paid + ' · принесли: ' + rub(c.revenue) + (c.discount ? ' · скидки: ' + rub(c.discount) : ''));
+    money.style.cssText = 'display:block;margin-top:4px;font-size:13px;color:#DCDCDC';
+    info.append(title, sub, money);
+    const det = el('button', 'stre-btn', 'Кто применил'); det.type = 'button';
+    const edit = el('button', 'stre-btn', 'Изменить'); edit.type = 'button';
+    let editor = null;
+    edit.onclick = () => {
+      if (editor) { editor.remove(); editor = null; return; }
+      editor = promoEditor(c, reload, () => { editor.remove(); editor = null; });
+      box.append(editor);
+    };
+    const tgl = el('button', 'stre-btn', c.active ? 'Выключить' : 'Включить'); tgl.type = 'button';
+    tgl.onclick = () => StreAPI.post('promo.toggle', { id: c.id }).then(reload).catch((e) => toast(e.message, 'error'));
+    const del = el('button', 'stre-btn', 'Удалить'); del.type = 'button';
+    del.style.color = '#FF6369';
+    if (c.hasPayments) { del.disabled = true; del.title = 'По коду были оплаты: его нельзя удалить, можно выключить'; }
+    del.onclick = () => { if (confirm('Удалить код «' + c.code + '»?')) StreAPI.post('promo.delete', { id: c.id }).then(() => { toast('Код удалён'); reload(); }).catch((e) => toast(e.message, 'error')); };
+    top.append(info, det, edit, tgl, del);
+    box.append(top);
+    let detail = null;
+    det.onclick = () => {
+      if (detail) { detail.remove(); detail = null; det.textContent = 'Кто применил'; return; }
+      det.textContent = 'Скрыть';
+      detail = el('div');
+      detail.style.cssText = 'margin-top:12px';
+      detail.append(el('p', 'stre-p', 'Загружаем…'));
+      box.append(detail);
+      StreAPI.get('promo.detail', { id: c.id }).then((r) => {
+        detail.textContent = '';
+        detail.append(activationsTable(r.activations));
+      }).catch((e) => { detail.textContent = ''; toast(e.message, 'error'); });
+    };
+    return box;
+  }
+
+  // Цены тарифов: меняются в админке, новые оплаты идут уже по ним, прошлые платежи не меняются
+  function pricesCard() {
+    const card = el('section', 'stre-card');
+    card.setAttribute('aria-labelledby', 'stre-prices-h');
+    const h = el('h2', 'stre-h', 'Цены тарифов');
+    h.id = 'stre-prices-h';
+    card.append(h, el('p', 'stre-p', 'Новая цена действует для всех новых оплат и на страницах сайта. Уже оплаченные платежи не меняются: в отчёте о деньгах остаётся сумма, которую заплатили.'));
+    const form = el('form');
+    form.style.cssText = 'display:grid;gap:12px;margin-top:12px;max-width:420px';
+    const inputs = {};
+    const fill = (items) => {
+      form.textContent = '';
+      items.filter((p) => p.defaultPrice > 0).forEach((p) => {
+        const input = el('input', 'stre-in');
+        input.type = 'number'; input.min = '1'; input.max = '100000'; input.step = '1'; input.value = String(p.price);
+        input.setAttribute('aria-label', 'Цена, ' + p.name);
+        inputs[p.key] = input;
+        const hint = el('span', 'stre-p', p.price !== p.defaultPrice ? 'по умолчанию было ' + rub(p.defaultPrice) : 'стандартная цена');
+        hint.style.cssText = 'margin:0;font-size:12px;color:#8F8F8F';
+        const l = el('label', 'stre-lbl', p.name + ', ₽ за 30 дней');
+        l.style.cssText = 'display:flex;flex-direction:column;gap:6px';
+        l.append(input, hint);
+        form.appendChild(l);
+      });
+      const save = el('button', 'stre-btn-p', 'Сохранить цены'); save.type = 'submit';
+      form.appendChild(save);
+    };
+    form.onsubmit = (e) => {
+      e.preventDefault();
+      const prices = {};
+      Object.keys(inputs).forEach((k) => { prices[k] = inputs[k].value.trim(); });
+      StreAPI.post('admin.prices.set', { prices }).then((r) => {
+        toast('Цены сохранены');
+        loadPlans(true).then(fill);
+      }).catch((err) => toast(err.message, 'error'));
+    };
+    card.appendChild(form);
+    loadPlans(true).then(fill);
+    return card;
+  }
+
+  // Деньги: выручка по периодам и дням, тарифы, промокоды, партнёры, последние оплаты
+  function moneyCard() {
+    const card = el('section', 'stre-card stre-wide');
+    card.setAttribute('aria-labelledby', 'stre-money-h');
+    const head = el('div');
+    head.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap';
+    const h = el('h2', 'stre-h', 'Деньги');
+    h.id = 'stre-money-h';
+    const refresh = el('button', 'stre-btn', 'Обновить'); refresh.type = 'button';
+    head.append(h, refresh);
+    const body = el('div');
+    body.style.cssText = 'margin-top:14px;display:flex;flex-direction:column;gap:22px';
+    card.append(head, el('p', 'stre-p', 'Учитываются только подтверждённые оплаты тарифов через ЮKassa. Скидка — цена без скидки минус сумма, которую заплатил пользователь. Возвраты через панель не делаются: деньги, которые вернули в ЮKassa вручную, в отчёте остаются.'), body);
+    const tile = (label, value, sub) => {
+      const t = el('div');
+      t.style.cssText = 'border:1px solid #2A2A2A;border-radius:10px;padding:14px 16px;background:#141414;min-width:0';
+      t.append(el('span', 'stre-lbl', label), el('span', null, value), el('span', 'stre-p', sub));
+      t.lastChild.style.cssText = 'display:block;margin-top:4px;color:#8F8F8F;font-size:12px';
+      t.children[1].style.cssText = 'display:block;font-size:22px;font-weight:600;letter-spacing:-.01em';
+      return t;
+    };
+    const chart = (daily) => {
+      const max = Math.max(1, ...daily.map((d) => d.sum));
+      const bars = el('div');
+      bars.style.cssText = 'display:flex;align-items:flex-end;gap:3px;height:150px;padding:8px 0;border-bottom:1px solid #2A2A2A';
+      daily.forEach((d) => {
+        const b = el('div');
+        b.style.cssText = 'flex:1;min-width:4px;border-radius:3px 3px 0 0;background:' + (d.sum ? '#F2F2F2' : '#2A2A2A') + ';height:' + Math.max(2, Math.round(d.sum / max * 140)) + 'px';
+        b.title = StreAPI.fmtDate(new Date(d.day + 'T12:00:00').getTime() / 1000) + ': ' + rub(d.sum) + ', оплат: ' + d.count;
+        bars.appendChild(b);
+      });
+      const axis = el('div');
+      axis.style.cssText = 'display:flex;justify-content:space-between;font-size:12px;color:#8F8F8F;margin-top:6px';
+      axis.append(el('span', null, daily.length ? daily[0].day : ''), el('span', null, 'Максимум за день: ' + rub(max)), el('span', null, daily.length ? daily[daily.length - 1].day : ''));
+      return [bars, axis];
+    };
+    const render = (r) => {
+      body.textContent = '';
+      const tiles = el('div');
+      tiles.style.cssText = 'display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))';
+      tiles.append(
+        tile('Сегодня', rub(r.periods.today.sum), r.periods.today.count + ' оплат'),
+        tile('7 дней', rub(r.periods.week.sum), r.periods.week.count + ' оплат'),
+        tile('30 дней', rub(r.periods.month.sum), r.periods.month.count + ' оплат'),
+        tile('Всё время', rub(r.all.sum), r.all.count + ' оплат'),
+        tile('Средний чек', rub(r.all.avgCheck), 'по всем оплатам'),
+        tile('Скидки выданы', rub(r.all.discount), 'разница с ценой без скидки'),
+        tile('Без промокода', rub(r.direct.sum), r.direct.count + ' оплат'),
+      );
+      const sec = (title, node) => {
+        const s = el('div');
+        s.append(el('p', 'stre-lbl', title), node);
+        return s;
+      };
+      const f = r.funnel;
+      const conv = f.created ? Math.round(f.succeeded / f.created * 100) : 0;
+      const funnel = grid('1fr 1fr', ['Что произошло', 'Оплат'], [
+        ['Оплата начата', f.created], ['Оплачено', f.succeeded + ' (' + conv + '%)'], ['Ждут оплаты', f.pending], ['Отменено', f.canceled], ['Ошибка ЮKassa', f.error],
+      ]);
+      const plans = r.byPlan.length
+        ? grid('1.3fr 0.7fr 1fr 0.7fr', ['Тариф', 'Оплат', 'Выручка', 'Доля'], r.byPlan.map((p) => [p.name, p.count, rub(p.sum), (r.all.sum ? Math.round(p.sum / r.all.sum * 100) : 0) + '%']))
+        : el('p', 'stre-p', 'Оплат пока нет.');
+      const promos = r.byPromo.length
+        ? grid('1fr 1fr 0.6fr 1fr 1fr 0.7fr', ['Код', 'Партнёр', 'Оплат', 'Выручка', 'Скидки', 'Бесплатно'], r.byPromo.map((c) => [c.code, c.partner || '—', c.count, rub(c.sum), rub(c.discount), c.free]))
+        : el('p', 'stre-p', 'По промокодам оплат пока нет.');
+      const partners = r.byPartner.length
+        ? grid('1.4fr 0.6fr 1fr 1fr 0.7fr', ['Партнёр', 'Оплат', 'Выручка', 'Скидки', 'Бесплатно'], r.byPartner.map((p) => [p.partner, p.count, rub(p.sum), rub(p.discount), p.free]))
+        : el('p', 'stre-p', 'Партнёров пока нет.');
+      const recent = r.recent.length
+        ? grid('1fr 1.2fr 1fr 1fr 1fr 1fr', ['Когда', 'Пользователь', 'Тариф', 'Сумма', 'Было', 'Промокод'], r.recent.map((p) => [
+          when(p.at), '@' + p.login, p.planName, rub(p.amount), p.listPrice > p.amount ? rub(p.listPrice) : '—', p.promo || '—']))
+        : el('p', 'stre-p', 'Оплат пока нет.');
+      const [bars, axis] = chart(r.daily);
+      body.append(tiles, sec('Оплаты за последние 30 дней', bars), axis, sec('Тарифы', plans), sec('Промокоды', promos), sec('Партнёры', partners), sec('Воронка оплат', funnel), sec('Последние оплаты', recent));
+    };
+    const load = () => {
+      body.textContent = '';
+      body.append(el('p', 'stre-p', 'Считаем…'));
+      StreAPI.get('admin.money').then(render).catch((e) => { body.textContent = ''; body.append(el('p', 'stre-p', e.message)); toast(e.message, 'error'); });
+    };
+    refresh.onclick = load;
     load();
     return card;
   }
@@ -552,6 +829,7 @@
   }
 
   async function boot() {
+    fillPlanPrices();
     const me = await StreAPI.me();
     if (!me.user && isPanel()) {
       location.href = '/auth/login.php?next=' + encodeURIComponent(location.pathname + location.search);

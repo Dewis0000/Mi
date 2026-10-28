@@ -50,7 +50,7 @@ function db_update(string $table, array $row, string $where, array $args): int {
     return db_exec('UPDATE ' . $table . ' SET ' . $set . ' WHERE ' . $where, array_merge(array_values($row), $args));
 }
 
-const DB_VERSION = 11;
+const DB_VERSION = 13;
 
 function db_migrate(PDO $pdo, string $driver): void {
     $sqlite = $driver === 'sqlite';
@@ -137,6 +137,19 @@ function db_migrate(PDO $pdo, string $driver): void {
     try { $pdo->exec('ALTER TABLE payments ADD COLUMN promo_id INT NOT NULL DEFAULT 0'); } catch (Throwable $e) { /* колонка уже есть */ }
     try { $pdo->exec("ALTER TABLE chat_messages ADD COLUMN frags {$text}"); } catch (Throwable $e) { /* колонка уже есть */ }
     try { $pdo->exec('ALTER TABLE users ADD COLUMN last_seen INT NOT NULL DEFAULT 0'); } catch (Throwable $e) { /* колонка уже есть */ }
+    // v13: промокоды с партнёром; цена без скидки и время оплаты у платежей; тариф и сумма у каждой активации кода
+    try { $pdo->exec("ALTER TABLE promo_codes ADD COLUMN partner {$vc(120)} NOT NULL DEFAULT ''"); } catch (Throwable $e) { /* колонка уже есть */ }
+    try { $pdo->exec('ALTER TABLE payments ADD COLUMN list_price INT NOT NULL DEFAULT 0'); } catch (Throwable $e) { /* колонка уже есть */ }
+    try { $pdo->exec('ALTER TABLE payments ADD COLUMN paid_at INT NOT NULL DEFAULT 0'); } catch (Throwable $e) { /* колонка уже есть */ }
+    try { $pdo->exec("ALTER TABLE promo_uses ADD COLUMN plan {$vc(16)} NOT NULL DEFAULT ''"); } catch (Throwable $e) { /* колонка уже есть */ }
+    try { $pdo->exec('ALTER TABLE promo_uses ADD COLUMN amount INT NOT NULL DEFAULT 0'); } catch (Throwable $e) { /* колонка уже есть */ }
+    // старые данные: цена без скидки — тарифы того времени, время оплаты — время создания, тариф и сумма активаций
+    // индекс по времени оплаты создаём после колонки paid_at: раньше он не создавался, потому что колонки ещё не было
+    try { $pdo->exec('CREATE INDEX ' . ($sqlite ? 'IF NOT EXISTS ' : '') . 'idx_pay_status ON payments (status, paid_at)'); } catch (Throwable $e) { /* индекс уже есть */ }
+    $pdo->exec("UPDATE payments SET list_price = CASE plan WHEN 'advanced' THEN 299 WHEN 'pro' THEN 499 WHEN 'max' THEN 967 ELSE amount END WHERE list_price = 0");
+    $pdo->exec("UPDATE payments SET paid_at = created_at WHERE status = 'succeeded' AND paid_at = 0");
+    $pdo->exec("UPDATE promo_uses SET plan = (SELECT pc.plan FROM promo_codes pc WHERE pc.id = promo_uses.code_id) WHERE plan = ''");
+    $pdo->exec("UPDATE promo_uses SET amount = (SELECT MAX(p.amount) FROM payments p WHERE p.promo_id = promo_uses.code_id AND p.user_id = promo_uses.user_id AND p.status = 'succeeded') WHERE amount = 0 AND (SELECT COUNT(*) FROM payments p2 WHERE p2.promo_id = promo_uses.code_id AND p2.user_id = promo_uses.user_id AND p2.status = 'succeeded') > 0");
     // v9: новые стартовые ответы. Меняем только тексты, которые создавались по умолчанию и не правились вручную
     $pdo->prepare('UPDATE commands SET response = ? WHERE name = ? AND response = ?')->execute(['Аптайм: {uptime}', 'аптайм', 'Стрим идёт {uptime}']);
     $pdo->prepare('UPDATE commands SET response = ? WHERE name = ? AND response = ?')->execute(['Команды канала: {commands}', 'команды', 'Команды канала: !аптайм, !трек, !очередь']);
