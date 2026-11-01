@@ -1,0 +1,379 @@
+/* Токены — те же значения, что в tokens.js. Меняем здесь и там вместе. */
+:root {
+  --tk-marble: #F4EEE2;
+  --tk-velvet: #5C0B14;
+  --tk-gold-1: #F2D37B;
+  --tk-gold-2: #C9A227;
+  --tk-gold-3: #A8801A;
+  --tk-ink: #171311;
+  --tk-patina: #4E7A63;
+  --tk-alarm: #FF3B1F;
+
+  --tk-ease: cubic-bezier(0.65, 0, 0.35, 1); /* power3.inOut, как у перелётов камеры */
+  --tk-font-display: "Playfair Display", serif;
+  --tk-font-ui: "Unbounded", sans-serif;
+  --tk-font-mono: "Martian Mono", monospace;
+
+  --tk-gold: linear-gradient(180deg, var(--tk-gold-1), var(--tk-gold-2) 50%, var(--tk-gold-3));
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--tk-ink);
+  color: var(--tk-marble);
+  font-family: var(--tk-font-ui);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font: inherit; }
+
+/* Загрузка: одна строка на ink, без спиннера */
+.cx-hush {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font: 600 12px var(--tk-font-ui);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--tk-gold-1);
+}
+
+.cx-stage {
+  position: fixed;
+  inset: 0;
+}
+
+.cx-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cx-overlay button,
+.cx-overlay .cx-panel,
+.cx-overlay .cx-medal {
+  pointer-events: auto;
+}
+
+/* Шапка: вид церемонии и кнопка звука */
+.cx-head {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 28px 32px;
+}
+
+.cx-kicker {
+  margin: 0;
+  font: 600 12px var(--tk-font-ui);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--tk-gold-1);
+}
+
+.cx-sound {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  background: transparent;
+  border: 1px solid var(--tk-gold-2);
+  color: var(--tk-marble);
+  font: 600 11px var(--tk-font-ui);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* Золотая кисточка — круг с градиентом, без иконочного набора */
+.cx-brush {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--tk-gold);
+}
+
+.cx-sound.is-off .cx-brush {
+  background: none;
+  border: 1px solid var(--tk-gold-2);
+}
+
+/* Заголовок: большой, обрезан нижним краем — как выгравированный на плите */
+.cx-title-wrap {
+  position: absolute;
+  left: 4vw;
+  bottom: 13vh;
+  height: 0.8em;
+  font-size: clamp(48px, 15vw, 220px);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cx-title {
+  margin: 0;
+  font: 900 1em/1 var(--tk-font-display);
+  white-space: nowrap;
+  background: var(--tk-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0.02em 0.02em rgba(0, 0, 0, 0.55));
+}
+
+@media (min-width: 900px) {
+  .cx-title-wrap { font-size: clamp(120px, 18vw, 220px); }
+}
+
+/* Аплодисменты: табличка мигает, пока звучат */
+.cx-applause {
+  position: absolute;
+  top: 14vh;
+  left: 50%;
+  margin: 0;
+  transform: translateX(-50%);
+  font: 800 16px var(--tk-font-ui);
+  letter-spacing: 0.4em;
+  color: var(--tk-gold-1);
+  opacity: 0;
+}
+
+.cx-applause.is-on {
+  opacity: 1;
+  animation: cx-blink 0.55s var(--tk-ease) infinite;
+}
+
+/* Итог ответа: курсив, как на табличке с приговором */
+.cx-banner {
+  position: absolute;
+  top: 30vh;
+  left: 50%;
+  margin: 0;
+  transform: translateX(-50%);
+  font: italic 600 40px var(--tk-font-display);
+  color: var(--tk-marble);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+  animation: cx-rise 0.4s var(--tk-ease) both;
+}
+
+/* Медаль: бархатная плашка, нажимается, чтобы закрыть */
+.cx-medal {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 20px;
+  background: var(--tk-velvet);
+  border: 1px solid var(--tk-gold-2);
+  color: var(--tk-gold-1);
+  font: 600 13px var(--tk-font-ui);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Панель церемониймейстера: прототип, не финальный экран */
+.cx-panel {
+  position: absolute;
+  right: 32px;
+  bottom: 84px;
+  width: min(360px, 92vw);
+  padding: 20px;
+  background: var(--tk-velvet);
+  border: 1px solid var(--tk-gold-2);
+}
+
+.cx-panel-title {
+  margin: 0 0 6px;
+  font: 600 11px var(--tk-font-ui);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--tk-gold-1);
+}
+
+.cx-panel-hint {
+  margin: 0 0 12px;
+  font: italic 16px/1.4 var(--tk-font-display);
+  color: var(--tk-marble);
+}
+
+.cx-panel-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.cx-btn {
+  flex: 1 1 auto;
+  padding: 11px 14px;
+  background: var(--tk-gold);
+  border: 1px solid var(--tk-gold-1);
+  color: var(--tk-ink);
+  font: 600 11px var(--tk-font-ui);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.cx-btn-ghost {
+  background: transparent;
+  border-color: rgba(242, 211, 123, 0.5);
+  color: var(--tk-marble);
+}
+
+.cx-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Бегущая строка со спонсором */
+.cx-ticker {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 44px;
+  overflow: hidden;
+  background: var(--tk-ink);
+  border-top: 1px solid var(--tk-gold-3);
+}
+
+.cx-ticker-text {
+  display: inline-block;
+  margin: 0;
+  line-height: 44px;
+  white-space: nowrap;
+  font: italic 18px var(--tk-font-display);
+  color: var(--tk-gold-1);
+  will-change: transform;
+  animation: cx-ticker 30s linear infinite;
+}
+
+/* Табличка над бюстом: имя и счёт. Курсор её не трогает */
+.cx-tag {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: rgba(23, 19, 17, 0.72);
+  border: 1px solid var(--tk-gold-3);
+  color: var(--tk-marble);
+  white-space: nowrap;
+  pointer-events: none;
+  transition: border-color 0.3s var(--tk-ease), color 0.3s var(--tk-ease);
+}
+
+.cx-tag-name {
+  font: 600 11px var(--tk-font-ui);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.cx-tag-score {
+  font: 500 13px var(--tk-font-mono);
+  color: var(--tk-gold-2);
+}
+
+.cx-tag.is-active {
+  border-color: var(--tk-gold-1);
+  color: var(--tk-gold-1);
+}
+
+/* Кроссфейд для режима без движения камеры: затемнение и смена кадра */
+.cx-fade {
+  position: fixed;
+  inset: 0;
+  background: var(--tk-ink);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* Телефон ведущего: одна бархатная кнопка */
+.cx-phone {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 16px;
+  background: var(--tk-ink);
+}
+
+.cx-phone-hint {
+  margin: 0;
+  font: italic 16px var(--tk-font-display);
+  color: var(--tk-marble);
+}
+
+.cx-phone-btn {
+  width: min(86vw, 420px);
+  height: 46vh;
+  background: radial-gradient(ellipse at 50% 35%, #7A1521, var(--tk-velvet) 60%, #3E070D);
+  border: 1px solid var(--tk-gold-2);
+  color: var(--tk-gold-1);
+  font: 800 20px var(--tk-font-ui);
+  letter-spacing: 0.18em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.cx-phone-btn:active {
+  background: radial-gradient(ellipse at 50% 35%, var(--tk-velvet), #3E070D 70%);
+}
+
+/* Мобильный вид: поля меньше, панель на всю ширину, заголовок ниже */
+@media (max-width: 720px) {
+  .cx-head { padding: 16px; }
+  .cx-title-wrap { left: 16px; bottom: 20vh; }
+  .cx-panel {
+    left: 12px;
+    right: 12px;
+    width: auto;
+    bottom: 60px;
+  }
+  .cx-medal { bottom: 112px; }
+}
+
+@keyframes cx-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+@keyframes cx-rise {
+  from { opacity: 0; transform: translate(-50%, 8px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@keyframes cx-ticker {
+  from { transform: translateX(100vw); }
+  to { transform: translateX(-100%); }
+}
+
+/* Движение сокращено: мигание и бегущая строка стоят, камера — кроссфейд */
+@media (prefers-reduced-motion: reduce) {
+  .cx-applause.is-on,
+  .cx-ticker-text,
+  .cx-banner {
+    animation: none;
+  }
+}

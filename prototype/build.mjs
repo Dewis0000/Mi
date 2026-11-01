@@ -1,6 +1,6 @@
 // Сборка статического сайта StreOps из артбордов холста (prototype/src/*.dc.html).
 // Запуск: node prototype/build.mjs  →  результат в site/
-import { readFileSync, writeFileSync, mkdirSync, rmSync, copyFileSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, copyFileSync, readdirSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -305,7 +305,12 @@ DCMount(Component);
   writeFileSync(target, html);
 }
 
-rmSync(outDir, { recursive: true, force: true });
+// Игра «Выпендрёжник» собирается отдельно (vite, папка vypendrezhnik/): при пересборке сайта её не трогаем
+if (existsSync(outDir)) {
+  for (const name of readdirSync(outDir)) {
+    if (name !== 'vypendrezhnik') rmSync(join(outDir, name), { recursive: true, force: true });
+  }
+}
 mkdirSync(join(outDir, 'assets'), { recursive: true });
 for (const f of Object.values(ASSETS)) copyFileSync(join(here, f), join(outDir, 'assets', f));
 copyFileSync(join(here, '..', 'design-system', 'tokens.css'), join(outDir, 'assets', 'tokens.css'));
