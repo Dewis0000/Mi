@@ -348,6 +348,7 @@ function handle_builtin(array $ctx): bool {
     $arg = trim($m[2]);
     $bid = $user['twitch_id'];
     $r = $ctx['roles'];
+    $bc = builtin_config((int)$user['id']); // базовые команды: включены ли и кто может вызвать
 
     // заказ музыки
     $music = music_config((int)$user['id']);
@@ -362,23 +363,23 @@ function handle_builtin(array $ctx): bool {
         tw_send($bid, '@' . $ctx['name'] . ' ' . $res['message'], $ctx['msgId']);
         return true;
     }
-    if (in_array($word, ['!трек', '!song', '!песня'], true)) {
+    if (builtin_match($bc, 'song', $word) && access_ok($user, $bc['song']['access'], $r, $ctx['chatterId'], $ctx['login'])) {
         $cur = db_one("SELECT title, requester FROM songs WHERE user_id = ? AND status = 'playing' ORDER BY id DESC LIMIT 1", [$user['id']]);
         tw_send($bid, $cur ? 'Сейчас играет: ' . $cur['title'] . ($cur['requester'] ? ' (заказал ' . $cur['requester'] . ')' : '') : 'Сейчас ничего не играет', $ctx['msgId']);
         return true;
     }
-    if (in_array($word, ['!очередь', '!queue'], true)) {
+    if (builtin_match($bc, 'queue', $word) && access_ok($user, $bc['queue']['access'], $r, $ctx['chatterId'], $ctx['login'])) {
         $q = db_all("SELECT title FROM songs WHERE user_id = ? AND status = 'queued' ORDER BY pos, id LIMIT 3", [$user['id']]);
         tw_send($bid, $q ? 'Дальше: ' . implode(' · ', array_map(fn($s, $i) => ($i + 1) . '. ' . mb_substr($s['title'], 0, 60), $q, array_keys($q))) : 'Очередь пуста', $ctx['msgId']);
         return true;
     }
-    if ($r['mod'] && in_array($word, ['!skip', '!пропустить', '!скип'], true)) {
+    if ($r['mod'] && builtin_match($bc, 'skip', $word) !== null) {
         music_next($user, 'skipped', 'пропущен модератором');
         tw_send($bid, 'Трек пропущен', $ctx['msgId']);
         return true;
     }
     // разрешить ссылку
-    if ($r['mod'] && $word === '!permit' && $arg !== '' && !empty(mod_config((int)$user['id'])['permit'])) {
+    if ($r['mod'] && builtin_match($bc, 'permit', $word) !== null && $arg !== '' && !empty(mod_config((int)$user['id'])['permit'])) {
         $target = tw_get_user_by_login(ltrim(explode(' ', $arg)[0], '@'));
         if ($target) {
             kv_set('permit:' . $user['id'] . ':' . $target['id'], 1, 60);
@@ -424,9 +425,8 @@ function handle_command(array $ctx): bool {
     $low = mb_strtolower($text);
     $cmds = db_all('SELECT * FROM commands WHERE user_id = ? AND enabled = 1', [$user['id']]);
     foreach ($cmds as $c) {
-        $trigger = mb_strtolower($c['prefix'] . $c['name']);
-        $match = $c['prefix'] === '' ? ($low === $trigger) : ($low === $trigger || str_starts_with($low, $trigger . ' '));
-        if (!$match) continue;
+        $trigger = command_hit($c, $low);
+        if ($trigger === null) continue;
         if (!access_ok($user, (string)$c['access'], $ctx['roles'], $ctx['chatterId'], $ctx['login'], (string)$c['allow_list'])) return true;
         if (!$ctx['roles']['mod']) {
             if ((int)$c['cooldown_global'] > 0 && (int)$c['last_used'] > now() - (int)$c['cooldown_global']) return true;

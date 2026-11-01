@@ -50,7 +50,7 @@ function db_update(string $table, array $row, string $where, array $args): int {
     return db_exec('UPDATE ' . $table . ' SET ' . $set . ' WHERE ' . $where, array_merge(array_values($row), $args));
 }
 
-const DB_VERSION = 13;
+const DB_VERSION = 14;
 
 function db_migrate(PDO $pdo, string $driver): void {
     $sqlite = $driver === 'sqlite';
@@ -73,7 +73,7 @@ function db_migrate(PDO $pdo, string $driver): void {
         "settings (user_id INT NOT NULL, skey {$vc(64)} NOT NULL, value $text, PRIMARY KEY (user_id, skey))",
         "commands (id $id, user_id INT NOT NULL, name {$vc(64)} NOT NULL, prefix {$vc(4)} NOT NULL DEFAULT '!', response $text, enabled INT NOT NULL DEFAULT 1,
           cooldown_global INT NOT NULL DEFAULT 30, cooldown_user INT NOT NULL DEFAULT 0, access {$vc(16)} NOT NULL DEFAULT 'all', allow_list $text,
-          use_count INT NOT NULL DEFAULT 0, last_used INT NOT NULL DEFAULT 0, description $text, created_at INT NOT NULL DEFAULT 0)",
+          use_count INT NOT NULL DEFAULT 0, last_used INT NOT NULL DEFAULT 0, description $text, created_at INT NOT NULL DEFAULT 0, aliases {$vc(400)} NOT NULL DEFAULT '')",
         "cooldowns (k {$vc(190)} PRIMARY KEY, last INT NOT NULL DEFAULT 0)",
         "chat_messages (id $id, user_id INT NOT NULL, msg_id {$vc(64)}, chatter_id {$vc(32)}, chatter_login {$vc(64)}, chatter_name {$vc(64)},
           text $text, badges $text, frags $text, color {$vc(16)}, deleted INT NOT NULL DEFAULT 0, created_at INT NOT NULL DEFAULT 0)",
@@ -143,6 +143,8 @@ function db_migrate(PDO $pdo, string $driver): void {
     try { $pdo->exec('ALTER TABLE payments ADD COLUMN paid_at INT NOT NULL DEFAULT 0'); } catch (Throwable $e) { /* колонка уже есть */ }
     try { $pdo->exec("ALTER TABLE promo_uses ADD COLUMN plan {$vc(16)} NOT NULL DEFAULT ''"); } catch (Throwable $e) { /* колонка уже есть */ }
     try { $pdo->exec('ALTER TABLE promo_uses ADD COLUMN amount INT NOT NULL DEFAULT 0'); } catch (Throwable $e) { /* колонка уже есть */ }
+    // v14: синонимы команд (через запятую, без префикса)
+    try { $pdo->exec("ALTER TABLE commands ADD COLUMN aliases {$vc(400)} NOT NULL DEFAULT ''"); } catch (Throwable $e) { /* колонка уже есть */ }
     // старые данные: цена без скидки — тарифы того времени, время оплаты — время создания, тариф и сумма активаций
     // индекс по времени оплаты создаём после колонки paid_at: раньше он не создавался, потому что колонки ещё не было
     try { $pdo->exec('CREATE INDEX ' . ($sqlite ? 'IF NOT EXISTS ' : '') . 'idx_pay_status ON payments (status, paid_at)'); } catch (Throwable $e) { /* индекс уже есть */ }

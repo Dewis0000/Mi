@@ -55,7 +55,7 @@ function song_row(array $s): array {
 function cmd_row(array $c): array {
     return ['id' => (int)$c['id'], 'name' => $c['name'], 'prefix' => $c['prefix'], 'response' => $c['response'], 'enabled' => (bool)$c['enabled'],
         'cooldownGlobal' => (int)$c['cooldown_global'], 'cooldownUser' => (int)$c['cooldown_user'], 'access' => $c['access'], 'allowList' => (string)$c['allow_list'],
-        'uses' => (int)$c['use_count'], 'description' => (string)$c['description']];
+        'uses' => (int)$c['use_count'], 'description' => (string)$c['description'], 'aliases' => command_aliases((string)($c['aliases'] ?? ''), '')];
 }
 
 function since_for(int $uid): int {
@@ -185,13 +185,16 @@ function api_dispatch(string $r): never {
             $name = preg_replace('/\s+/u', '', $name);
             if ($name === '') fail('Укажи название команды');
             $prefix = in_str('prefix', 3, '!');
+            if (!in_array($prefix, COMMAND_PREFIXES, true)) $prefix = '!';
             $response = in_str('response', 480);
             if ($response === '') fail('Напиши, что ответит бот');
             $access = in_str('access', 16, 'all');
             if (!in_array($access, ['all', 'followers', 'subs', 'vip', 'mods', 'list'], true)) $access = 'all';
-            $dup = db_one('SELECT id FROM commands WHERE user_id = ? AND name = ? AND prefix = ? AND id <> ?', [$u['id'], $name, $prefix, $id]);
-            if ($dup) fail('Команда ' . $prefix . $name . ' уже есть');
-            $row = ['name' => $name, 'prefix' => $prefix, 'response' => $response, 'access' => $access, 'allow_list' => in_str('allowList', 1000),
+            $aliases = command_aliases(in_str('aliases', 400), $name);
+            if (count($aliases) > COMMAND_MAX_ALIASES) fail('Синонимов может быть до ' . COMMAND_MAX_ALIASES);
+            foreach ($aliases as $a) if (mb_strlen($a) > COMMAND_NAME_MAX) fail('Синоним «' . $a . '» длиннее ' . COMMAND_NAME_MAX . ' символов');
+            if ($conflict = command_conflict($u, $id, $prefix, array_merge([$name], $aliases))) fail($conflict);
+            $row = ['name' => $name, 'prefix' => $prefix, 'aliases' => implode(',', $aliases), 'response' => $response, 'access' => $access, 'allow_list' => in_str('allowList', 1000),
                 'cooldown_global' => in_int('cooldownGlobal', 30, 0, 3600), 'cooldown_user' => in_int('cooldownUser', 0, 0, 86400), 'description' => in_str('description', 200)];
             if ($id) {
                 if (!db_one('SELECT id FROM commands WHERE id = ? AND user_id = ?', [$id, $u['id']])) fail('Команда не найдена', 404);
@@ -213,6 +216,46 @@ function api_dispatch(string $r): never {
         case 'commands.delete': {
             $u = require_user();
             db_exec('DELETE FROM commands WHERE id = ? AND user_id = ?', [in_int('id'), $u['id']]);
+            json_out(['ok' => true]);
+        }
+
+        case 'commands.bulk': { // «Выбранные»: включить, выключить или удалить сразу несколько команд
+            $u = require_user();
+            $ids = array_values(array_unique(array_filter(array_map('intval', (array)(api_input()['ids'] ?? [])), fn($v) => $v > 0)));
+            $ids = array_slice($ids, 0, 200);
+            $act = in_str('action', 16);
+            if (!$ids) fail('Выбери хотя бы одну команду');
+            if (!in_array($act, ['enable', 'disable', 'delete'], true)) fail('Нет такого действия');
+            $place = implode(',', array_fill(0, count($ids), '?'));
+            if ($act === 'delete') db_exec("DELETE FROM commands WHERE user_id = ? AND id IN ($place)", array_merge([(int)$u['id']], $ids));
+            else db_exec("UPDATE commands SET enabled = ? WHERE user_id = ? AND id IN ($place)", array_merge([$act === 'enable' ? 1 : 0, (int)$u['id']], $ids));
+            json_out(['ok' => true, 'count' => count($ids)]);
+        }
+        case 'commands.restore': { // вернуть стартовые команды, которых нет; лимит тарифа соблюдаем
+            $u = require_user();
+            $added = commands_seed((int)$u['id'], plan_limits($u)['commands']);
+            json_out(['ok' => true, 'added' => $added]);
+        }
+        case 'builtins.get': { // базовые команды: слова, описание, включена ли и кто может вызвать
+            $u = require_user();
+            $cfg = builtin_config((int)$u['id']);
+            $items = [];
+            foreach (builtin_defs() as $key => $d) {
+                $items[] = ['key' => $key, 'title' => $d['title'], 'desc' => $d['desc'], 'triggers' => builtin_triggers($key),
+                    'on' => $cfg[$key]['on'], 'access' => $cfg[$key]['access'], 'editable' => $d['editable']];
+            }
+            json_out(['ok' => true, 'items' => $items, 'accessOptions' => BUILTIN_ACCESS]);
+        }
+        case 'builtins.save': {
+            $u = require_user();
+            $in = api_input();
+            $key = (string)($in['key'] ?? '');
+            $defs = builtin_defs();
+            if (!isset($defs[$key])) fail('Нет такой базовой команды', 404);
+            $cfg = builtin_config((int)$u['id']);
+            if (array_key_exists('on', $in)) $cfg[$key]['on'] = !empty($in['on']);
+            if ($defs[$key]['editable'] && in_array($in['access'] ?? '', BUILTIN_ACCESS, true)) $cfg[$key]['access'] = $in['access'];
+            settings_set((int)$u['id'], 'builtins', $cfg);
             json_out(['ok' => true]);
         }
 

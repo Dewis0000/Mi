@@ -49,6 +49,8 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 .errbox{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px 14px;border:1px solid #3A3A3A;border-radius:8px;background:#111111}
 .empty{margin:16px 0 4px;padding:20px 16px;border:1px dashed #2A2A2A;border-radius:8px;display:flex;flex-direction:column;align-items:flex-start;gap:12px;font-size:14px;line-height:20px;color:#B4B4B4}
 .chev{transition:transform 180ms cubic-bezier(.2,0,0,1)}
+.cbx{width:20px;height:20px;border-radius:4px;border:1px solid #6E6E6E;background:transparent;color:#0A0A0A;display:inline-flex;align-items:center;justify-content:center;padding:0;margin-top:1px;cursor:pointer;flex:none}
+.cbx:hover{border-color:#8F8F8F}
 @media (max-width: 700px){.wrap-pad{padding:16px!important}}
 </style>
 </helmet>
@@ -95,26 +97,44 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 
 <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
 <section aria-label="Список команд" class="card" style="flex: 999 1 520px; min-width: 0; box-sizing: border-box; overflow: hidden">
-<div style="padding: 16px 20px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; border-bottom: 1px solid #2A2A2A">
+<div style="padding: 16px 20px 0; border-bottom: 1px solid #2A2A2A">
+<div role="radiogroup" aria-label="Раздел команд" style="display: inline-flex; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px; margin-bottom: 14px">
+<sc-for list="{{ sections }}" as="sx" hint-placeholder-count="3"><button type="button" role="radio" class="seg" aria-checked="{{ sx.sel }}" onClick="{{ sx.pick }}" style="{{ sx.style }}">{{ sx.label }}</button></sc-for>
+</div>
+<sc-if value="{{ isCmds }}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap">
 <div role="tablist" aria-label="Фильтр команд" style="display: flex; gap: 24px; flex-wrap: wrap">
 <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3"><button role="tab" type="button" class="tab" aria-selected="{{ t.sel }}" onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}<span class="mono" style="font-size: 12px; color: #8F8F8F">{{ t.n }}</span></button></sc-for>
 </div>
 <label style="position: relative; display: block; width: 240px; max-width: 100%; margin-bottom: 8px"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Поиск по командам</span><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="position: absolute; left: 12px; top: 12px; color: #8F8F8F"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.3-4.3"></path></svg><input type="search" class="inp" placeholder="Найти команду" value="{{ q }}" onChange="{{ setQ }}" style="padding-left: 36px"></label>
 </div>
+</sc-if>
+</div>
+<sc-if value="{{ isCmds }}" hint-placeholder-val="{{ true }}">
 <div style="padding: 12px 20px 20px">
 <sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 24px 0; font-size: 14px; color: #8F8F8F">Загружаем команды…</p></sc-if>
 <sc-if value="{{ loadFailed }}" hint-placeholder-val="{{ false }}"><div role="alert" class="errbox" style="margin-top: 8px"><p style="margin: 0; font-size: 14px; line-height: 20px; color: #DCDCDC">Не удалось загрузить команды. {{ loadErrText }}</p><button type="button" class="bs sm" onClick="{{ reload }}">Повторить</button></div></sc-if>
-<sc-if value="{{ emptyAll }}" hint-placeholder-val="{{ false }}"><div class="empty"><p style="margin: 0">Команд пока нет. Создай первую, например ссылку на Discord или ответ «Сколько идёт эфир».</p><button type="button" class="bs" onClick="{{ create }}">Создать команду</button></div></sc-if>
+<sc-if value="{{ emptyAll }}" hint-placeholder-val="{{ false }}"><div class="empty"><p style="margin: 0">Команд пока нет. Создай первую, например ссылку на Discord или ответ «Сколько идёт эфир».</p><span style="display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="bs" onClick="{{ create }}">Создать команду</button><button type="button" class="bs" disabled="{{ restoreBusy }}" onClick="{{ restoreStarters }}">Вернуть стартовые</button></span></div></sc-if>
 <sc-if value="{{ emptyFilter }}" hint-placeholder-val="{{ false }}"><div class="empty"><p style="margin: 0">{{ filterText }}</p><button type="button" class="bs" onClick="{{ resetFilter }}">Показать все команды</button></div></sc-if>
 <sc-if value="{{ showList }}" hint-placeholder-val="{{ false }}">
-<p class="hint">«Стартовые» создаются при первом входе: !аптайм, !команды, !время. Их можно менять или удалить.</p>
+<p class="hint">«Стартовые» создаются при первом входе: !аптайм, !команды, !время. Их можно менять или удалить. Если вернуть нужно, нажми «Вернуть стартовые».</p>
+<div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+<div role="radiogroup" aria-label="Сортировка" style="display: inline-flex; padding: 2px; border: 1px solid #3A3A3A; border-radius: 6px">
+<sc-for list="{{ sorts }}" as="so" hint-placeholder-count="2"><button type="button" role="radio" class="seg" aria-checked="{{ so.sel }}" onClick="{{ so.pick }}" style="{{ so.style }}">{{ so.label }}</button></sc-for>
+</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="bs sm" onClick="{{ selAll }}">Выбрать все</button><button type="button" class="bs sm" disabled="{{ restoreBusy }}" onClick="{{ restoreStarters }}">Вернуть стартовые</button></div>
+</div>
+<sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}"><div role="region" aria-label="Действия с выбранными" style="margin-top: 12px; padding: 10px 12px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; border: 1px solid #3A3A3A; border-radius: 8px; background: #111111"><span style="font-size: 14px; color: #F2F2F2; margin-right: auto">Выбрано: {{ selCount }}</span><button type="button" class="bs sm" disabled="{{ bulkBusy }}" onClick="{{ bulkEnable }}">Включить</button><button type="button" class="bs sm" disabled="{{ bulkBusy }}" onClick="{{ bulkDisable }}">Выключить</button><button type="button" class="bd" disabled="{{ bulkBusy }}" onClick="{{ bulkDelete }}" style="height: 32px; padding: 0 10px; font-size: 13px">Удалить</button><button type="button" class="bs sm" onClick="{{ clearSel }}">Снять выбор</button></div></sc-if>
 <ul style="list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
 <sc-for list="{{ shown }}" as="c" hint-placeholder-count="6">
 <li class="cmd" style="{{ c.rowStyle }}">
+<div style="min-width: 0; display: flex; gap: 12px; align-items: flex-start">
+<button type="button" role="checkbox" aria-checked="{{ c.selOn }}" aria-label="Выбрать {{ c.name }}" class="cbx" onClick="{{ c.selToggle }}" style="{{ c.selStyle }}"><svg class="ic" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" style="{{ c.selIcon }}"><path d="M5 12l5 5L20 7"></path></svg></button>
 <div style="min-width: 0">
-<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><span class="mono" style="font-size: 15px; font-weight: 500; color: {{ c.nameColor }}">{{ c.name }}</span><span style="font-size: 12px; line-height: 16px; padding: 2px 8px; border: 1px solid #3A3A3A; border-radius: 4px; color: #B4B4B4">{{ c.access }}</span><sc-if value="{{ c.starter }}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; line-height: 16px; padding: 2px 8px; border-radius: 4px; background: #1F1F1F; color: #DCDCDC">стартовая</span></sc-if></div>
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><span class="mono" style="font-size: 15px; font-weight: 500; color: {{ c.nameColor }}">{{ c.name }}</span><span style="font-size: 12px; line-height: 16px; padding: 2px 8px; border: 1px solid #3A3A3A; border-radius: 4px; color: #B4B4B4">{{ c.access }}</span><sc-if value="{{ c.starter }}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; line-height: 16px; padding: 2px 8px; border-radius: 4px; background: #1F1F1F; color: #DCDCDC">стартовая</span></sc-if><sc-if value="{{ c.hasAliases }}" hint-placeholder-val="{{ false }}"><span class="mono" style="font-size: 12px; line-height: 16px; color: #8F8F8F; overflow-wrap: anywhere">{{ c.aliasText }}</span></sc-if></div>
 <p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F; overflow-wrap: anywhere">{{ c.desc }}</p>
 <p class="mono" style="margin: 4px 0 0; font-size: 12px; line-height: 16px; color: #8F8F8F">{{ c.cd }} · {{ c.uses }}</p>
+</div>
 </div>
 <div style="display: flex; align-items: center; gap: 8px">
 <span style="font-size: 12px; color: #8F8F8F; min-width: 72px; text-align: right">{{ c.stateLabel }}</span>
@@ -126,6 +146,60 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 </ul>
 </sc-if>
 </div>
+</sc-if>
+<sc-if value="{{ isBuiltins }}" hint-placeholder-val="{{ false }}">
+<div style="padding: 12px 20px 20px">
+<p class="hint">Базовые команды работают всегда. Их можно выключить. Для трека и очереди ещё выбирается, кто может вызвать. Слова, на которые отзывается бот, не меняются.</p>
+<sc-if value="{{ bShowErr }}" hint-placeholder-val="{{ false }}"><div role="alert" class="errbox" style="margin-top: 12px"><p style="margin: 0; font-size: 14px; line-height: 20px; color: #DCDCDC">Не удалось загрузить базовые команды. {{ bErr }}</p><button type="button" class="bs sm" onClick="{{ reloadBuiltins }}">Повторить</button></div></sc-if>
+<sc-if value="{{ bLoading }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 24px 0; font-size: 14px; color: #8F8F8F">Загружаем базовые команды…</p></sc-if>
+<sc-if value="{{ bReady }}" hint-placeholder-val="{{ false }}">
+<ul style="list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{ bRows }}" as="b" hint-placeholder-count="4">
+<li class="cmd">
+<div style="min-width: 0">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><span style="font-size: 15px; font-weight: 500; color: {{ b.nameColor }}">{{ b.title }}</span></div>
+<p class="mono" style="margin: 4px 0 0; font-size: 12px; line-height: 16px; color: #B4B4B4; overflow-wrap: anywhere">{{ b.trig }}</p>
+<p style="margin: 4px 0 0; font-size: 13px; line-height: 18px; color: #8F8F8F">{{ b.desc }}</p>
+</div>
+<div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end">
+<sc-if value="{{ b.editable }}" hint-placeholder-val="{{ false }}"><select class="inp" aria-label="Кто может вызвать: {{ b.title }}" value="{{ b.access }}" disabled="{{ b.off }}" onChange="{{ b.setAccess }}" style="width: 190px; height: 36px"><option value="all">Все зрители</option><option value="followers">Фолловеры и выше</option><option value="subs">Подписчики и выше</option><option value="vip">Випы и модераторы</option><option value="mods">Только модераторы</option></select></sc-if>
+<sc-if value="{{ b.fixed }}" hint-placeholder-val="{{ false }}"><span class="hint" style="width: 190px; text-align: right">{{ b.accessLabel }}</span></sc-if>
+<span style="font-size: 12px; color: #8F8F8F; min-width: 72px; text-align: right">{{ b.stateLabel }}</span>
+<button type="button" role="switch" class="sw" aria-checked="{{ b.on }}" aria-label="{{ b.swLabel }}" onClick="{{ b.toggle }}"><span></span></button>
+</div>
+</li>
+</sc-for>
+</ul>
+</sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ isRef }}" hint-placeholder-val="{{ false }}">
+<div style="padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 22px">
+<div>
+<h3 style="margin: 0; font-size: 15px; line-height: 20px; font-weight: 600">Как вызывается команда</h3>
+<ul class="hint" style="margin: 8px 0 0; padding: 0 0 0 18px; display: flex; flex-direction: column; gap: 6px">
+<li>Зритель пишет префикс и слово: <span class="mono" style="color: #F2F2F2">!аптайм</span>. Знак перед словом выбирается в редакторе.</li>
+<li>Синонимы — ещё слова, которые вызывают ту же команду: <span class="mono" style="color: #F2F2F2">!дс</span> и <span class="mono" style="color: #F2F2F2">!discord</span>. До 5 штук, без пробелов.</li>
+<li>Регистр не важен: <span class="mono">!Дс</span> и <span class="mono">!дс</span> — одна команда.</li>
+<li>Без префикса команда отвечает, только если сообщение целиком совпадает с её словом.</li>
+<li>Слова базовых команд и заказа музыки заняты: свою команду с таким словом не создать.</li>
+</ul>
+</div>
+<div>
+<h3 style="margin: 0; font-size: 15px; line-height: 20px; font-weight: 600">Кто может вызвать</h3>
+<sc-for list="{{ refAcc }}" as="ra" hint-placeholder-count="5"><div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; padding: 10px 0; border-top: 1px solid #1F1F1F"><span style="font-size: 14px; color: #F2F2F2">{{ ra.label }}</span><span class="hint" style="text-align: right">{{ ra.sub }}</span></div></sc-for>
+</div>
+<div>
+<h3 style="margin: 0; font-size: 15px; line-height: 20px; font-weight: 600">Паузы</h3>
+<p class="hint" style="margin-top: 8px">Пауза для всех — сколько секунд команда ждёт после вызова. Модераторы не ждут. Пауза для одного зрителя — сколько ждать одному и тому же человеку (в расширенных настройках). 0 — без паузы.</p>
+</div>
+<div>
+<h3 style="margin: 0; font-size: 15px; line-height: 20px; font-weight: 600">Переменные</h3>
+<p class="hint" style="margin-top: 4px">Бот заменяет переменную на живое значение в момент ответа.</p>
+<sc-for list="{{ refVars }}" as="rv" hint-placeholder-count="11"><div style="display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; padding: 10px 0; border-top: 1px solid #1F1F1F"><span class="mono" style="font-size: 13px; color: #F2F2F2">{{ rv.code }} <span style="color: #8F8F8F">{{ rv.ex }}</span></span><p class="hint">{{ rv.desc }}</p></div></sc-for>
+</div>
+</div>
+</sc-if>
 </section>
 
 <section aria-labelledby="ed-t" class="card" style="flex: 1 1 420px; max-width: 540px; min-width: 0; box-sizing: border-box; box-shadow: inset 0 1px 0 rgba(255,255,255,0.08)">
@@ -157,6 +231,11 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <div class="fl"><label for="cn">Название</label>
 <div style="display: flex; align-items: center; height: 40px; border-radius: 6px; background: #171717; border: 1px solid #6E6E6E; overflow: hidden"><span class="mono" style="padding: 0 0 0 12px; color: #8F8F8F; font-size: 15px">{{ f.prefix }}</span><input id="cn" value="{{ f.name }}" onChange="{{ setName }}" autocomplete="off" placeholder="дс" class="mono" style="flex: 1; min-width: 0; height: 100%; padding: 0 12px 0 2px; border: 0; background: transparent; color: #F2F2F2; font-size: 15px"></div>
 <p class="hint">Одно слово без пробелов. Регистр не важен: !Дс и !дс — одна команда.</p>
+</div>
+
+<div class="fl"><label for="al">Синонимы (необязательно)</label>
+<input id="al" class="inp mono" value="{{ f.aliases }}" onChange="{{ setAliases }}" autocomplete="off" placeholder="discord, дс" style="font-size: 15px">
+<p class="hint">Другие слова, которые вызывают эту же команду. Через запятую, до 5 штук, без пробелов.</p>
 </div>
 
 <div class="fl"><label for="rp">Ответ бота</label>
@@ -207,7 +286,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding-top: 20px; border-top: 1px solid #2A2A2A">
 <sc-if value="{{ canDelete }}" hint-placeholder-val="{{ true }}"><button type="button" class="bd" onClick="{{ remove }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"></path></svg>Удалить команду</button></sc-if>
-<span style="display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap"><button type="button" class="bs" onClick="{{ closeEd }}">Отменить</button><button type="submit" class="bp" disabled="{{ saving }}">{{ saveLabel }}</button></span>
+<span style="display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap"><sc-if value="{{ canCopy }}" hint-placeholder-val="{{ false }}"><button type="button" class="bs" onClick="{{ duplicate }}">Дублировать</button></sc-if><button type="button" class="bs" onClick="{{ closeEd }}">Отменить</button><button type="submit" class="bp" disabled="{{ saving }}">{{ saveLabel }}</button></span>
 </div>
 </form>
 </sc-if>
@@ -255,11 +334,13 @@ class Component extends DCLogic {
     super(props);
     this.state = {
       items: [], loaded: false, loadErr: '', limit: 0, user: null, bot: 'StreOps',
-      tab: 0, q: '', f: null, saving: false, err: '', adv: false, pvLive: true,
+      section: 0, tab: 0, q: '', sort: 'name', sel: [], bulkBusy: false, restoreBusy: false,
+      builtins: [], bLoaded: false, bErr: '',
+      f: null, saving: false, err: '', adv: false, pvLive: true,
       tts: null, ttsToken: '', ttsLoaded: false, ttsErr: '', ttsBusy: false, ttsDirty: false, ttsSaved: false, ttsCopied: false,
     };
   }
-  componentDidMount() { this.load(false); this.loadTts(); }
+  componentDidMount() { this.load(false); this.loadBuiltins(); this.loadTts(); }
 
   // ---------- загрузка ----------
   async load(quiet) {
@@ -307,11 +388,62 @@ class Component extends DCLogic {
     else StreAPI.toast('Скопируй ссылку вручную: ' + url, 'error');
   }
 
+  // ---------- базовые команды ----------
+  async loadBuiltins() {
+    this.setState({ bLoaded: false, bErr: '' });
+    try {
+      const r = await StreAPI.get('builtins.get');
+      this.setState({ builtins: r.items, bLoaded: true });
+    } catch (e) { this.setState({ bLoaded: true, bErr: e.message || 'нет связи с сервером' }); }
+  }
+  setBuiltin(b, patch) {
+    const prev = this.state.builtins;
+    this.setState({ builtins: prev.map((x) => (x.key === b.key ? Object.assign({}, x, patch) : x)) });
+    StreAPI.post('builtins.save', Object.assign({ key: b.key }, patch)).catch((e) => { this.setState({ builtins: prev }); StreAPI.toast(e.message, 'error'); });
+  }
+
+  // ---------- выбор и массовые действия ----------
+  toggleSel(id) {
+    const sel = this.state.sel;
+    this.setState({ sel: sel.indexOf(id) >= 0 ? sel.filter((x) => x !== id) : sel.concat([id]) });
+  }
+  selected() { return this.state.sel.filter((id) => this.state.items.some((x) => x.id === id)); }
+  async bulk(action) {
+    const ids = this.selected();
+    if (!ids.length) return;
+    if (action === 'delete' && !confirm('Удалить выбранные команды (' + ids.length + ')? Отменить будет нельзя.')) return;
+    this.setState({ bulkBusy: true });
+    try {
+      await StreAPI.post('commands.bulk', { ids: ids, action: action });
+      const f = this.state.f;
+      StreAPI.toast(action === 'delete' ? 'Удалено: ' + ids.length : (action === 'enable' ? 'Включено: ' : 'Выключено: ') + ids.length);
+      this.setState({ sel: [], bulkBusy: false, f: action === 'delete' && f && ids.indexOf(f.id) >= 0 ? null : f });
+      this.load(true);
+    } catch (e) { this.setState({ bulkBusy: false }); StreAPI.toast(e.message, 'error'); }
+  }
+  async restoreStarters() {
+    this.setState({ restoreBusy: true });
+    try {
+      const r = await StreAPI.post('commands.restore', {});
+      StreAPI.toast(r.added ? 'Вернули стартовые команды: ' + r.added : 'Новых стартовых нет: все на месте или лимит тарифа исчерпан');
+      this.setState({ restoreBusy: false });
+      this.load(true);
+    } catch (e) { this.setState({ restoreBusy: false }); StreAPI.toast(e.message, 'error'); }
+  }
+  atLimit() { const s = this.state; return s.loaded && !s.loadErr && s.limit > 0 && s.items.length >= s.limit; }
+  // Копия команды: те же ответ и настройки, без синонимов (они должны быть уникальны)
+  duplicate() {
+    const f = this.state.f;
+    if (!f || !f.id) return;
+    if (this.atLimit()) { StreAPI.toast('Лимит ' + this.state.limit + ' команд исчерпан. Удали ненужную или смени тариф.', 'error'); return; }
+    this.setState({ f: Object.assign({}, f, { id: 0, name: f.name + '2', aliases: '' }), err: '' });
+  }
+
   // ---------- команды ----------
   edit(c) {
     const isEdit = !!c;
     this.setState({
-      f: c ? Object.assign({}, c) : { id: 0, name: '', prefix: '!', response: '', access: 'all', allowList: '', cooldownGlobal: 30, cooldownUser: 0, description: '' },
+      f: c ? Object.assign({}, c, { aliases: (c.aliases || []).join(', ') }) : { id: 0, name: '', prefix: '!', response: '', aliases: '', access: 'all', allowList: '', cooldownGlobal: 30, cooldownUser: 0, description: '' },
       err: '',
       adv: isEdit && (c.access !== 'all' || c.cooldownUser > 0 || !!c.description),
     });
@@ -342,7 +474,7 @@ class Component extends DCLogic {
     try {
       const r = await StreAPI.post('commands.save', Object.assign({}, f, { name: name, response: response }));
       StreAPI.toast('Команда ' + r.item.prefix + r.item.name + ' сохранена');
-      this.setState({ f: r.item, saving: false });
+      this.setState({ f: Object.assign({}, r.item, { aliases: (r.item.aliases || []).join(', ') }), saving: false });
       this.load(true);
     } catch (e2) { this.setState({ saving: false, err: e2.message }); }
   }
@@ -387,7 +519,9 @@ class Component extends DCLogic {
     const planName = s.user ? s.user.planName : '';
     const atLimit = s.loaded && !s.loadErr && limit > 0 && n >= limit;
     const usedPct = limit ? Math.min(100, Math.round(n / limit * 100)) : 0;
-    const all = s.items.filter((c) => !q || (c.prefix + c.name + ' ' + c.response + ' ' + (c.description || '')).toLowerCase().indexOf(q) >= 0).map((c) => {
+    const sorted = s.items.slice().sort(s.sort === 'uses' ? (a, b) => b.uses - a.uses || a.name.localeCompare(b.name, 'ru') : (a, b) => a.name.localeCompare(b.name, 'ru'));
+    const selIds = this.selected();
+    const all = sorted.filter((c) => !q || (c.prefix + c.name + ' ' + (c.aliases || []).join(' ') + ' ' + c.response + ' ' + (c.description || '')).toLowerCase().indexOf(q) >= 0).map((c) => {
       const active = !!f && f.id === c.id;
       return {
         name: c.prefix + c.name, desc: c.description || c.response, access: ACC[c.access] || 'Все зрители',
@@ -400,6 +534,12 @@ class Component extends DCLogic {
         swLabel: 'Команда ' + c.prefix + c.name, editLabel: 'Настроить ' + c.prefix + c.name,
         toggle: () => this.toggleCmd(c),
         edit: () => this.edit(c),
+        selOn: selIds.indexOf(c.id) >= 0 ? 'true' : 'false',
+        selStyle: selIds.indexOf(c.id) >= 0 ? 'background: #FFFFFF; border-color: #FFFFFF; color: #0A0A0A' : '',
+        selIcon: selIds.indexOf(c.id) >= 0 ? 'visibility: visible' : 'visibility: hidden',
+        selToggle: () => this.toggleSel(c.id),
+        hasAliases: (c.aliases || []).length > 0,
+        aliasText: (c.aliases || []).map((a) => c.prefix + a).join(' · '),
       };
     });
     const nOn = all.filter((c) => c.isOn).length;
@@ -469,6 +609,20 @@ class Component extends DCLogic {
     const TTS_ACC = [['mods', 'Модераторы и стример'], ['vip', 'Випы и модераторы'], ['subs', 'Подписчики и выше'], ['followers', 'Фолловеры и выше'], ['list', 'Только из списка ников'], ['all', 'Все зрители']].map((o) => ({ v: o[0], label: o[1] }));
     const ttsReady = s.ttsLoaded && !!s.tts;
     const ttsOff = !ttsReady || s.ttsBusy;
+    const hasSel = selIds.length > 0;
+    const sections = ['Команды', 'Базовые', 'Справочник'].map((label, i) => ({ label, sel: s.section === i ? 'true' : 'false', style: s.section === i ? 'background: #F2F2F2; color: #0A0A0A' : '', pick: () => this.setState({ section: i }) }));
+    const sorts = [['name', 'По названию'], ['uses', 'По вызовам']].map(([k, label]) => ({ label, sel: s.sort === k ? 'true' : 'false', style: s.sort === k ? 'background: #F2F2F2; color: #0A0A0A' : '', pick: () => this.setState({ sort: k }) }));
+    const BACC = { all: 'Все зрители', followers: 'Фолловеры и выше', subs: 'Подписчики и выше', vip: 'Випы и модераторы', mods: 'Только модераторы' };
+    const bRows = s.builtins.map((b) => ({
+      key: b.key, title: b.title, desc: b.desc, trig: b.triggers.join(' · '),
+      on: b.on ? 'true' : 'false', stateLabel: b.on ? 'Включена' : 'Выключена', nameColor: b.on ? '#F2F2F2' : '#8F8F8F',
+      editable: !!b.editable, fixed: !b.editable, off: !b.on, access: b.access, accessLabel: BACC[b.access] || '',
+      swLabel: 'Команда ' + b.triggers[0],
+      toggle: () => this.setBuiltin(b, { on: !b.on }),
+      setAccess: (e) => this.setBuiltin(b, { access: e.target.value }),
+    }));
+    const refAcc = ACC_OPTS.map((o) => ({ label: o[1], sub: o[2] }));
+    const refVars = VARS.map((v) => ({ code: v.code, ex: v.ex, desc: v.desc }));
     return {
       countLabel: !s.loaded ? 'Загружаем…' : (s.loadErr ? 'Не удалось узнать, сколько команд создано' : 'Использовано ' + n + ' из ' + limit + ' команд'),
       usedPct,
@@ -482,6 +636,16 @@ class Component extends DCLogic {
       emptyAll, emptyFilter, filterText, resetFilter: () => this.setState({ q: '', tab: 0 }),
       showList: s.loaded && !s.loadErr && shown.length > 0,
       tabs, shown, q: s.q, setQ: (e) => this.setState({ q: e.target.value }),
+      sections, sorts, isCmds: s.section === 0, isBuiltins: s.section === 1, isRef: s.section === 2,
+      selAll: () => this.setState({ sel: shown.map((c) => c.id) }),
+      hasSel, selCount: selIds.length, clearSel: () => this.setState({ sel: [] }),
+      bulkBusy: s.bulkBusy, restoreBusy: s.restoreBusy,
+      bulkEnable: () => this.bulk('enable'), bulkDisable: () => this.bulk('disable'), bulkDelete: () => this.bulk('delete'),
+      restoreStarters: () => this.restoreStarters(),
+      canCopy: !!(f && f.id), duplicate: () => this.duplicate(),
+      setAliases: (e) => this.setF({ aliases: e.target.value }),
+      bRows, bReady: s.bLoaded && !s.bErr, bLoading: !s.bLoaded, bShowErr: s.bLoaded && !!s.bErr, bErr: s.bErr, reloadBuiltins: () => this.loadBuiltins(),
+      refAcc, refVars,
       hasEditor: !!f, noEditor: !f, isNew,
       edTitle: f ? (f.id ? 'Редактор: ' + (f.prefix + f.name) : 'Новая команда') : 'Редактор',
       closeEd: () => this.setState({ f: null, err: '' }),

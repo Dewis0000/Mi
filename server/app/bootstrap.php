@@ -33,6 +33,7 @@ require APP_DIR . '/lib/bot.php';
 require APP_DIR . '/lib/music_auto.php';
 require APP_DIR . '/lib/music_import.php';
 require APP_DIR . '/lib/counters.php';
+require APP_DIR . '/lib/commands.php';
 require APP_DIR . '/lib/managers.php';
 require APP_DIR . '/lib/chat_assets.php';
 require APP_DIR . '/lib/promo.php';
