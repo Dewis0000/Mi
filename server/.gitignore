@@ -3,3 +3,4 @@ app/data.sqlite*
 app/logs/
 app/sessions/
 app/cron.lock
+app/storage/

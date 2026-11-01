@@ -1,9 +1,14 @@
 <?php
 // Плеер музыки для OBS: https://streops.ru/w/player.php?t=ТОКЕН — источник «Браузер» (1920×1080, «Управлять звуком через OBS»).
-// Чистая страница: берёт текущий трек из /api/index.php?r=widget.data&w=np каждые 3 с, играет его через YouTube IFrame API,
-// по окончании просит следующий (player.next). &ui=0 — без плашки «Сейчас играет», только звук.
+// Берёт текущий трек из /api/index.php?r=widget.data&w=np каждые 3 с. Что играть — решает сам плеер:
+//   1) трек есть в «Моей музыке» стримера — играем файл (YouTube не нужен вовсе);
+//   2) YouTube открывается — играем YouTube через IFrame API;
+//   3) YouTube не открывается (блокировка у зрителя или стримера) — играем запасной трек из «Моей музыки», очередь ждёт;
+//      если YouTube не вернулся 10 минут и своей музыки нет — трек снимаем с причиной, баллы возвращаются.
+// Проверка YouTube — раз в 45 с, так что после включения VPN плеер сам вернётся к очереди. &ui=0 — без плашки «Сейчас играет».
 header('Content-Type: text/html; charset=utf-8');
 header('X-Robots-Tag: noindex');
+header('Cache-Control: no-store');
 ?><!doctype html>
 <html lang="ru">
 <head>
@@ -44,10 +49,19 @@ body{font-family:'Onest',system-ui,sans-serif;color:#F2F2F2}
   var token = qs.get('t') || '';
   var showUi = qs.get('ui') !== '0';
   var API = '/api/index.php?r=';
+  var RETRY_MS = 45000;        // как часто снова проверяем YouTube, пока он не открывается
+  var YT_WAIT_MS = 12000;      // сколько ждём загрузки YouTube, прежде чем считать его недоступным
+  var GIVE_UP_MS = 600000;     // YouTube недоступен это время и своей музыки нет — трек снимаем
   var np = document.getElementById('np'), msg = document.getElementById('msg'), ytBox = document.getElementById('yt');
-  var player = null, ready = false;
-  var playingId = 0, current = null, queued = 0, volume = 70, appliedVol = -1;
-  var gen = 0, advancing = false, polling = false, errCount = 0, holdUntil = 0, blockTimer = null, fatal = false;
+  var audio = new Audio();
+  audio.preload = 'auto';
+
+  var player = null, ready = false, ytLoading = false, ytScript = null, retryTimer = null, blockTimer = null;
+  var ytState = 'unknown';     // unknown | ok | blocked
+  var blockedAt = 0;
+  var mode = 'idle';           // idle | yt | audio | filler | wait
+  var playingId = 0, current = null, queued = 0, volume = 70, appliedVol = -1, fillerTitle = '';
+  var gen = 0, advancing = false, polling = false, errCount = 0, holdUntil = 0, fatal = false, fillerBusy = false;
 
   function say(text, clickable) {
     msg.textContent = text || '';
@@ -55,85 +69,90 @@ body{font-family:'Onest',system-ui,sans-serif;color:#F2F2F2}
     msg.style.cursor = clickable ? 'pointer' : 'default';
   }
 
-  function plate() {
-    if (!showUi || !current) { np.className = ''; return; }
-    np.querySelector('.cv').style.backgroundImage = "url('https://i.ytimg.com/vi/" + current.videoId + "/mqdefault.jpg')";
-    np.querySelector('.t').textContent = current.title;
-    np.querySelector('.r').textContent = current.requester ? 'заказал ' + current.requester : '';
+  // Плашка: для своей музыки и YouTube — текущий трек, для запасного эфира — отдельная подпись
+  function plate(title, requester, thumb, label) {
+    if (!showUi || (!title && !current)) { np.className = ''; return; }
+    var t = title || (current && current.title) || '';
+    np.querySelector('.ov').textContent = label || 'Сейчас играет';
+    np.querySelector('.cv').style.backgroundImage = thumb ? "url('" + thumb + "')" : 'none';
+    np.querySelector('.t').textContent = t;
+    np.querySelector('.r').textContent = requester !== undefined ? requester : (current && current.requester ? 'заказал ' + current.requester : '');
     np.className = 'on';
   }
 
-  function api(route, body) {
-    var opts = { method: body ? 'POST' : 'GET', credentials: 'same-origin', headers: { 'X-Requested-With': 'StreOps' } };
-    var url = API + route;
-    if (body) { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
-    else url += '&t=' + encodeURIComponent(token) + '&w=np';
-    return fetch(url, opts).then(function (res) {
-      return res.json().catch(function () { return null; }).then(function (j) {
-        if (res.status === 404) { fatal = true; throw new Error('Плеер не найден: проверь ссылку в панели StreOps (раздел «Музыка»).'); }
-        if (!j || !j.ok) throw new Error((j && j.error) || 'Сервер ответил с ошибкой (' + res.status + ')');
-        return j;
-      });
+  function readJson(res) {
+    return res.json().catch(function () { return null; }).then(function (j) {
+      if (res.status === 404) { fatal = true; throw new Error('Плеер не найден: проверь ссылку в панели StreOps (раздел «Музыка»).'); }
+      if (!j || !j.ok) throw new Error((j && j.error) || 'Сервер ответил с ошибкой (' + res.status + ')');
+      return j;
     });
   }
+  function apiGet(route, params) {
+    return fetch(API + route + '&t=' + encodeURIComponent(token) + (params || ''), { credentials: 'same-origin', headers: { 'X-Requested-With': 'StreOps' } }).then(readJson);
+  }
+  function apiPost(route, body) {
+    return fetch(API + route, { method: 'POST', credentials: 'same-origin', headers: { 'X-Requested-With': 'StreOps', 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(readJson);
+  }
 
-  // ---------- YouTube ----------
+  // ---------- YouTube: проверяем, открывается ли он ----------
+  function setYt(state) {
+    ytState = state;
+    if (state === 'ok') {
+      blockedAt = 0;
+      if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
+      if (mode === 'filler' || mode === 'wait') say('');
+    } else {
+      if (!blockedAt) blockedAt = Date.now();
+      if (!retryTimer) retryTimer = setTimeout(function () { retryTimer = null; loadYT(); }, RETRY_MS);
+    }
+    sync();
+  }
+
   function loadYT() {
+    if (ytLoading) return;
+    if (window.YT && YT.Player) { makePlayer(); return; }
+    ytLoading = true;
     window.onYouTubeIframeAPIReady = makePlayer;
-    var s = document.createElement('script');
-    s.src = 'https://www.youtube.com/iframe_api';
-    s.onerror = function () { say('Не загрузился YouTube. Проверь интернет — попробуем снова через минуту.'); setTimeout(function () { location.reload(); }, 60000); };
-    document.head.appendChild(s);
+    if (ytScript && ytScript.parentNode) ytScript.parentNode.removeChild(ytScript);
+    ytScript = document.createElement('script');
+    ytScript.src = 'https://www.youtube.com/iframe_api';
+    ytScript.onerror = function () { ytLoading = false; setYt('blocked'); };
+    document.head.appendChild(ytScript);
+    setTimeout(function () { if (!ready && ytLoading) { ytLoading = false; setYt('blocked'); } }, YT_WAIT_MS);
   }
 
   function makePlayer() {
+    ytLoading = false;
+    ytBox.innerHTML = '<div id="yt-player"></div>';
     player = new YT.Player('yt-player', {
       width: '320', height: '180',
       playerVars: { autoplay: 0, controls: 0, disablekb: 1, fs: 0, iv_load_policy: 3, playsinline: 1, rel: 0, origin: location.origin },
       events: {
-        onReady: function () { ready = true; sync(); },
+        onReady: function () { ready = true; setYt('ok'); },
         onStateChange: function (e) { onState(e.data); },
         onError: function (e) { onError(e.data); },
-        onAutoplayBlocked: blocked
+        onAutoplayBlocked: autoplayBlocked
       }
     });
   }
 
-  function blocked() {
+  function autoplayBlocked() {
     // в OBS автозапуск разрешён; в обычном браузере звук включится только после клика
     ytBox.className = 'show';
     say('Браузер не даёт включить звук без клика. Нажми сюда или на видео. В OBS такого не бывает.', true);
   }
-  msg.addEventListener('click', function () { if (player && ready && playingId) { player.playVideo(); } });
-
-  function play(song) {
-    playingId = song.id;
-    current = song;
-    plate();
-    try { player.loadVideoById(song.videoId); player.unMute(); player.setVolume(volume); appliedVol = volume; } catch (e) { /* ещё не готов */ }
-    clearTimeout(blockTimer);
-    blockTimer = setTimeout(function () {
-      if (playingId !== song.id || !player.getPlayerState) return;
-      var st = player.getPlayerState();
-      if (st === -1 || st === 5) blocked();
-    }, 7000);
-  }
-
-  function idle() {
-    playingId = 0;
-    current = null;
-    clearTimeout(blockTimer);
-    try { player.stopVideo(); } catch (e) { /* нет плеера */ }
-    plate();
-  }
+  msg.addEventListener('click', function () {
+    if (mode === 'yt' && player && ready) { try { player.playVideo(); } catch (e) { /* плеер ещё не готов */ } }
+    else if (mode === 'audio' || mode === 'filler') audio.play().catch(function () { /* браузер ещё не дал звук */ });
+  });
 
   function onState(st) {
-    if (st === 0) { if (playingId) advance(playingId); return; }   // доиграл
-    if (st === 1) { errCount = 0; ytBox.className = ''; if (!fatal) say(''); }
+    if (st === 0) { if (mode === 'yt' && playingId) advance(playingId); return; }   // доиграл
+    if (st === 1) { errCount = 0; ytBox.className = ''; if (!fatal && mode === 'yt') say(''); }
   }
 
   function onError(code) {
-    if (!playingId) return;
+    if (mode !== 'yt' || !playingId) return;
     errCount++;
     var id = playingId;
     if (errCount >= 3) { // несколько ошибок подряд — скорее всего, пропал интернет: не листаем всю очередь
@@ -144,39 +163,125 @@ body{font-family:'Onest',system-ui,sans-serif;color:#F2F2F2}
     advance(id, code);
   }
 
+  function stopYT() {
+    clearTimeout(blockTimer);
+    if (player && ready) { try { player.stopVideo(); } catch (e) { /* плеер не готов */ } }
+  }
+  function stopAudio() {
+    audio.pause();
+    audio.removeAttribute('src');
+    audio.load();
+  }
+
+  // ---------- что играть сейчас ----------
+  function sync() {
+    if (fatal || advancing) return;
+    if (player && ready && appliedVol !== volume) { try { player.setVolume(volume); appliedVol = volume; } catch (e) { /* позже */ } }
+    audio.volume = Math.max(0, Math.min(1, volume / 100));
+    if (!current) {
+      if (mode !== 'idle') { stopYT(); stopAudio(); mode = 'idle'; playingId = 0; plate(); }
+      if (queued > 0 && Date.now() > holdUntil && !playingId) advance(0);
+      return;
+    }
+    if (current.audio) return playAudio(current);
+    if (ytState === 'ok') return playYouTube(current);
+    if (ytState === 'unknown') return; // ждём первой проверки YouTube
+    return playFiller();
+  }
+
+  function playAudio(song) {
+    if (mode === 'audio' && playingId === song.id) return;
+    stopYT();
+    playingId = song.id;
+    mode = 'audio';
+    audio.src = song.audio.url;
+    audio.play().catch(function () { say('Браузер не дал включить звук. Нажми сюда.', true); });
+    plate();
+  }
+
+  function playYouTube(song) {
+    if (!ready || !player) return;
+    if (mode === 'yt' && playingId === song.id) return;
+    stopAudio();
+    playingId = song.id;
+    mode = 'yt';
+    try { player.loadVideoById(song.videoId); player.unMute(); player.setVolume(volume); appliedVol = volume; } catch (e) { /* ещё не готов */ }
+    plate();
+    clearTimeout(blockTimer);
+    blockTimer = setTimeout(function () {
+      if (playingId !== song.id || !player.getPlayerState) return;
+      var st = player.getPlayerState();
+      if (st === -1 || st === 5) autoplayBlocked();
+    }, 7000);
+  }
+
+  // YouTube не открывается, а трек — не из «Моей музыки»: играем свой запасной трек, очередь ждёт
+  function playFiller() {
+    if (mode === 'filler' || fillerBusy) return;
+    stopYT();
+    fillerBusy = true;
+    apiGet('player.filler', '').then(function (j) {
+      fillerBusy = false;
+      if (ytState !== 'blocked' || !current || current.audio) { sync(); return; }   // YouTube вернулся или трек сменился
+      if (!j.track) {
+        mode = 'wait';
+        say('YouTube не открывается. Включи VPN или загрузи свою музыку в «Моя музыка» на сайте.');
+        if (playingId && Date.now() - blockedAt > GIVE_UP_MS) advance(playingId, 900); // 10 минут без YouTube и без своей музыки
+        return;
+      }
+      mode = 'filler';
+      playingId = playingId || current.id;
+      fillerTitle = j.track.title;
+      audio.src = j.track.url;
+      audio.play().catch(function () { say('Браузер не дал включить звук. Нажми сюда.', true); });
+      say('YouTube не открывается: играет твоя музыка. Включи VPN, и плеер вернётся к очереди.');
+      plate(fillerTitle, '', '', 'Запасной эфир');
+    }).catch(function (e) {
+      fillerBusy = false;
+      say(fatal ? e.message : 'Нет связи с StreOps: ' + e.message + ' Пробуем снова.');
+    });
+  }
+
+  // Своя музыка и запасной эфир: доиграло — следующий
+  audio.onended = function () {
+    if (mode === 'audio' && playingId) { advance(playingId); return; }
+    if (mode === 'filler') { mode = 'idle'; playFiller(); }
+  };
+  audio.onerror = function () {
+    if (mode === 'audio' && playingId) { advance(playingId, 5); return; }
+    if (mode === 'filler') { mode = 'idle'; fillerBusy = false; playFiller(); }
+  };
+
   // трек доиграл или очередь ждёт запуска: сервер переключит, только если finished — текущий трек
   function advance(finished, err) {
-    if (advancing || !ready) return;
+    if (advancing) return;
     advancing = true;
     gen++;
-    api('player.next', { t: token, finished: finished, err: err || 0 }).then(function (j) {
+    apiPost('player.next', { t: token, finished: finished, err: err || 0 }).then(function (j) {
       if (typeof j.volume === 'number') volume = j.volume;
-      if (j.current) play(j.current); else idle();
+      stopYT();
+      stopAudio();
+      mode = 'idle';
+      playingId = 0;
+      current = j.current || null;
+      sync();
     }).catch(function (e) {
       if (fatal) say(e.message);
     }).then(function () { advancing = false; gen++; });
-  }
-
-  function sync() {
-    if (!ready || advancing || fatal) return;
-    if (appliedVol !== volume) { try { player.setVolume(volume); appliedVol = volume; } catch (e) { /* позже */ } }
-    if (current && current.id !== playingId) play(current);
-    else if (!current && playingId) idle();
-    else if (!current && !playingId && queued > 0 && Date.now() > holdUntil) advance(0);
-    else if (current) plate();
   }
 
   function poll() {
     if (polling || fatal) return;
     polling = true;
     var g = gen;
-    api('widget.data').then(function (j) {
+    var yt = ytState === 'ok' ? '&yt=1' : (ytState === 'blocked' ? '&yt=0' : '');
+    apiGet('widget.data', '&w=np' + yt).then(function (j) {
       if (g !== gen) return; // пока опрос шёл, плеер сам переключил трек — этот ответ устарел
       var d = j.data || {};
       current = d.current || null;
       queued = Number(d.queued) || 0;
       if (typeof d.volume === 'number') volume = d.volume;
-      if (!msg.textContent || /связи|ошибк/i.test(msg.textContent)) say('');
+      if (/связи/i.test(msg.textContent)) say('');
       sync();
     }).catch(function (e) {
       say(fatal ? e.message : 'Нет связи с StreOps: ' + e.message + ' Пробуем снова.');
@@ -184,10 +289,15 @@ body{font-family:'Onest',system-ui,sans-serif;color:#F2F2F2}
   }
 
   function tick() {
-    if (!showUi || !ready || !playingId || !player.getCurrentTime) return;
-    var len = player.getDuration() || (current && current.duration) || 0;
-    var pct = len ? Math.min(100, player.getCurrentTime() / len * 100) : 0;
-    np.querySelector('.bar i').style.width = pct.toFixed(1) + '%';
+    if (!showUi || !playingId) return;
+    var pct = 0;
+    if (mode === 'audio' || mode === 'filler') {
+      if (audio.duration) pct = audio.currentTime / audio.duration * 100;
+    } else if (mode === 'yt' && ready && player.getCurrentTime) {
+      var len = player.getDuration() || (current && current.duration) || 0;
+      pct = len ? player.getCurrentTime() / len * 100 : 0;
+    }
+    np.querySelector('.bar i').style.width = Math.min(100, pct).toFixed(1) + '%';
   }
 
   if (!token) { say('В ссылке нет ключа плеера. Скопируй ссылку в панели StreOps, раздел «Музыка».'); return; }

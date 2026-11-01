@@ -158,8 +158,8 @@ document.addEventListener('DOMContentLoaded', function () {
 <template data-if="hasMgr"><ul style="list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
 <template data-for="mgrs" data-as="m">
 <li class="row">
-<div style="min-width: 0"><span class="mono" style="font-size: 15px; color: var(--n-12)">{{ m.login }}</span><p class="hint" style="margin-top: 4px">{{ m.stat }}</p></div>
-<button type="button" class="bs" onClick="{{ m.remove }}" aria-label="Убрать помощника {{ m.login }}" style="height: 36px">Убрать</button>
+<div style="min-width: 0"><span class="mono" style="font-size: 15px; color: var(--n-12)">{{ m.login }}</span><p class="hint" style="margin-top: 4px">{{ m.stat }}</p><p class="hint" style="margin-top: 6px; font-size: 13px">{{ m.importText }}</p></div>
+<span style="display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="{{ m.importCls }}" onClick="{{ m.toggleImport }}" aria-pressed="{{ m.importOn }}" aria-label="{{ m.importAria }}" style="height: 36px">{{ m.importBtn }}</button><button type="button" class="bs" onClick="{{ m.remove }}" aria-label="Убрать помощника {{ m.login }}" style="height: 36px">Убрать</button></span>
 </li>
 </template></ul></template>
 
@@ -224,6 +224,13 @@ class Component extends DCLogic {
     try { await StreAPI.post('mods.remove', { login: login }); StreAPI.toast('Помощник убран'); await this.load(); }
     catch (e) { StreAPI.toast(e.message, 'error'); }
   }
+  async setImport(login, on) {
+    try {
+      await StreAPI.post('mods.perm', { login, perm: 'import', on });
+      StreAPI.toast(on ? 'Помощник может импортировать плейлисты и загружать музыку' : 'Право на импорт снято');
+      await this.load();
+    } catch (e) { StreAPI.toast(e.message, 'error'); }
+  }
   focusAdd() { const el = document.getElementById('mg-in'); if (el) el.focus(); }
   renderVals() {
     const s = this.state;
@@ -234,6 +241,12 @@ class Component extends DCLogic {
       login: m.login,
       stat: 'действий с музыкой: ' + m.music + ' · ' + fmtLast(m.last),
       remove: () => this.remove(m.login),
+      importOn: m.perms && m.perms.import ? 'true' : 'false',
+      importCls: m.perms && m.perms.import ? 'bp' : 'bs',
+      importBtn: m.perms && m.perms.import ? 'Импорт и файлы: разрешено' : 'Импорт и файлы: запрещено',
+      importAria: (m.perms && m.perms.import ? 'Запретить импорт и файлы помощнику ' : 'Разрешить импорт и файлы помощнику ') + m.login,
+      importText: m.perms && m.perms.import ? 'Может импортировать плейлисты и загружать свою музыку.' : 'Очередью управляет, плейлисты и свои файлы — только с твоего разрешения.',
+      toggleImport: () => this.setImport(m.login, !(m.perms && m.perms.import)),
     }));
     const twList = s.twitch.map((t) => {
       const isMgr = names.indexOf(t.login) >= 0;

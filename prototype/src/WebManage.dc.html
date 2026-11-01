@@ -121,6 +121,18 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 </ul>
 </section>
 
+<sc-if value="{{ importOn }}" hint-placeholder-val="{{ false }}">
+<section class="card" aria-labelledby="mi-t" style="margin-top: 16px">
+<h2 id="mi-t" class="h2">Импорт плейлиста</h2>
+<p class="hint">Стример разрешил тебе импортировать плейлисты и загружать музыку на этот канал. Выгрузи список из Яндекс Музыки или другого сервиса в файл (TXT, CSV или M3U). Ссылку на плейлист Яндекса мы не читаем: без входа её не отдают.</p>
+<div style="margin-top: 14px; display: flex; flex-direction: column; gap: 12px">
+<input type="file" accept=".txt,.csv,.m3u,.m3u8,text/plain,text/csv,audio/x-mpegurl" onChange="{{ setImpFile }}" disabled="{{ impBusy }}" aria-label="Файл со списком треков">
+<div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center"><button type="button" class="bs" onClick="{{ toggleImpQueue }}" disabled="{{ impBusy }}">{{ impQueueLabel }}</button><button type="button" class="bp" onClick="{{ startImport }}" disabled="{{ impFileOff }}">{{ impFileBtn }}</button></div>
+<sc-if value="{{ impErrOn }}" hint-placeholder-val="{{ false }}"><p role="alert" class="errbox" style="font-size: 13px">{{ impErr }}</p></sc-if>
+<sc-if value="{{ impHas }}" hint-placeholder-val="{{ false }}"><p role="status" class="hint">{{ impStatusLine }}</p></sc-if>
+</div>
+</section>
+</sc-if>
 <section class="card" aria-labelledby="pe-t" style="margin-top: 16px">
 <h2 id="pe-t" class="h2">Ждут одобрения</h2>
 <p class="hint">Заказы зрителей, которые ждут решения. «Одобрить» — трек встанет в конец очереди. «Отклонить» — заказ отменяется. Если заказ был оплачен наградой Twitch, зрителю вернут награду.</p>
@@ -139,13 +151,14 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { channels: [], chLoaded: false, chErr: '', sel: '', st: null, stErr: '', netErr: false, stAt: 0, busy: false, addQuery: '', addBusy: false };
+    this.state = { channels: [], chLoaded: false, chErr: '', sel: '', st: null, stErr: '', netErr: false, stAt: 0, busy: false, addQuery: '', addBusy: false, impFile: null, impToQueue: true, impBusy: false, impErr: '', imp: null };
   }
   componentDidMount() {
     this.loadChannels();
     this.timer = setInterval(() => { if (this.state.sel && !document.hidden) this.loadState(); }, 4000);
+    this.impTimer = setInterval(() => { if (this.canImportNow() && !document.hidden) this.loadImport(); }, 4000);
   }
-  componentWillUnmount() { clearInterval(this.timer); }
+  componentWillUnmount() { clearInterval(this.timer); clearInterval(this.impTimer); }
   async loadChannels() {
     this.setState({ chLoaded: false });
     try {
@@ -158,6 +171,28 @@ class Component extends DCLogic {
     } catch (e) {
       this.setState({ chLoaded: true, chErr: e.message || 'Попробуй ещё раз' });
     }
+  }
+  canImportNow() { return !!(this.state.st && this.state.st.canImport); }
+  async loadImport() {
+    const ch = this.state.sel;
+    if (!ch || !this.canImportNow()) return;
+    try {
+      const r = await StreAPI.get('music.import.get', { channel: ch });
+      if (this.state.sel === ch) this.setState({ imp: r.import || null });
+    } catch (e) { /* подождём следующего обновления */ }
+  }
+  setImpFile(e) { this.setState({ impFile: e.target.files && e.target.files[0] || null, impErr: '' }); }
+  async startImport() {
+    const file = this.state.impFile;
+    const ch = this.state.sel;
+    if (!file || !ch) { this.setState({ impErr: 'Выбери файл со списком.' }); return; }
+    this.setState({ impBusy: true, impErr: '' });
+    try {
+      const text = await file.text();
+      const r = await StreAPI.post('music.import.create', { channel: ch, source: text, file: true, name: file.name, queue: this.state.impToQueue });
+      this.setState({ impBusy: false, impFile: null, imp: r.import || null });
+      StreAPI.toast('Импорт начат: треки ищутся на YouTube по порядку списка');
+    } catch (e) { this.setState({ impBusy: false, impErr: e.message || 'Импорт не начался' }); }
   }
   // Фоновое обновление очереди. Если связь пропала, данные остаются на экране и показывается «Нет связи, данные на HH:MM»
   async loadState() {
@@ -237,6 +272,11 @@ class Component extends DCLogic {
     const noPlaying = !st || !playing;
     const orders = !!(st && st.orders);
     return {
+      importOn: !!(st && st.canImport), impBusy: s.impBusy, impFileOff: !s.impFile || s.impBusy,
+      impFileBtn: s.impBusy ? 'Загружаем…' : 'Начать импорт', setImpFile: (e) => this.setImpFile(e), startImport: () => this.startImport(),
+      impQueueLabel: s.impToQueue ? 'Ставим треки в очередь' : 'Только в плейлист', toggleImpQueue: () => this.setState({ impToQueue: !s.impToQueue }),
+      impErrOn: !!s.impErr, impErr: s.impErr, impHas: !!s.imp,
+      impStatusLine: s.imp ? (s.imp.title ? '«' + s.imp.title + '»: ' : '') + 'добавлено ' + (s.imp.counts.added || 0) + ', в плейлисте ' + (s.imp.counts.saved || 0) + ', не нашли ' + (s.imp.counts.skipped || 0) + ', ещё ищем ' + (s.imp.counts.queued || 0) : '',
       chLoading: !s.chLoaded,
       chErrShow: s.chLoaded && !!s.chErr,
       chErrText: s.chErr,

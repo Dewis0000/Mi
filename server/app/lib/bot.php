@@ -373,6 +373,12 @@ function handle_builtin(array $ctx): bool {
         tw_send($bid, $q ? 'Дальше: ' . implode(' · ', array_map(fn($s, $i) => ($i + 1) . '. ' . mb_substr($s['title'], 0, 60), $q, array_keys($q))) : 'Очередь пуста', $ctx['msgId']);
         return true;
     }
+    // голоса за песню, которая играет: !лайк и !дизлайк
+    foreach (['like' => 1, 'dislike' => -1] as $vk => $val) {
+        if (builtin_match($bc, $vk, $word) === null) continue;
+        if (access_ok($user, $bc[$vk]['access'], $r, $ctx['chatterId'], $ctx['login'])) music_vote_chat($user, $ctx, $val);
+        return true;
+    }
     if ($r['mod'] && builtin_match($bc, 'skip', $word) !== null) {
         music_next($user, 'skipped', 'пропущен модератором');
         tw_send($bid, 'Трек пропущен', $ctx['msgId']);
@@ -623,6 +629,7 @@ function music_yt_error_text(int $code): string {
         5 => 'браузер не смог воспроизвести видео',
         100 => 'видео удалено или скрыто',
         101, 150 => 'автор запретил проигрывать видео на других сайтах',
+        900 => 'YouTube у плеера не открывается: включи VPN или добавь свою музыку',
         default => 'видео не проигрывается',
     };
 }

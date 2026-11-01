@@ -104,10 +104,76 @@ function mi_fetch_apple(string $url): array {
     fail('Apple Music не отдал список треков: вставь названия текстом');
 }
 
+// Файл со списком треков: TXT (как текст), CSV (колонки исполнителя и названия), M3U/M3U8 (строки #EXTINF).
+// Так берём выгрузку из Яндекс Музыки или любого сервиса, который умеет экспорт. Ссылку на плейлист Яндекса не читаем: её не отдают без входа.
+function mi_file_items(string $text, string $name): array {
+    $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    $title = mb_substr(trim((string)pathinfo($name, PATHINFO_FILENAME)), 0, 200);
+    $text = str_replace("\0", '', (string)(preg_replace('~^\xEF\xBB\xBF~', '', $text) ?? $text)); // BOM из Windows
+    if (in_array($ext, ['m3u', 'm3u8'], true)) return ['title' => $title, 'items' => mi_text_items(mi_m3u_labels($text))];
+    if ($ext === 'csv') return ['title' => $title, 'items' => mi_csv_items($text)];
+    return ['title' => $title, 'items' => mi_text_items($text)];
+}
+
+// Подписи из M3U: «Исполнитель - Название» из #EXTINF; без подписи — имя файла; ссылка на YouTube остаётся ссылкой
+function mi_m3u_labels(string $text): string {
+    $labels = [];
+    $pending = null;
+    foreach (preg_split('~\R~u', $text) as $line) {
+        $line = trim($line);
+        if ($line === '') continue;
+        if (str_starts_with($line, '#EXTINF')) {
+            $comma = strpos($line, ',');
+            $pending = $comma === false ? '' : trim(substr($line, $comma + 1));
+            continue;
+        }
+        if ($line[0] === '#') continue;
+        if (preg_match('~^https?://~i', $line) && yt_parse_id($line)) {
+            $labels[] = $line;
+        } else {
+            $labels[] = $pending !== null && $pending !== '' ? $pending : pathinfo(basename(str_replace('\\', '/', $line)), PATHINFO_FILENAME);
+        }
+        $pending = null;
+    }
+    return implode("\n", $labels);
+}
+
+// CSV: если в первой строке есть исполнитель и название — берём их по заголовкам (подходят выгрузки Spotify, Exportify и похожие);
+// без заголовков: две колонки — исполнитель и название, одна — название целиком
+function mi_csv_items(string $text): array {
+    $rows = [];
+    foreach (preg_split('~\R~u', $text) as $line) {
+        if (trim($line) !== '') $rows[] = str_getcsv($line);
+    }
+    if (!$rows) return [];
+    $ai = null;
+    $ti = null;
+    foreach ($rows[0] as $i => $h) {
+        $h = mb_strtolower(trim((string)$h));
+        if ($ai === null && preg_match('~artist|исполнит~u', $h)) $ai = $i;
+        elseif ($ti === null && preg_match('~track|title|название|трек|song|^name$~u', $h)) $ti = $i;
+    }
+    if ($ai !== null || $ti !== null) array_shift($rows);
+    $out = [];
+    foreach ($rows as $r) {
+        if ($ai !== null || $ti !== null) {
+            $artist = $ai !== null ? (string)($r[$ai] ?? '') : '';
+            $track = $ti !== null ? (string)($r[$ti] ?? '') : (string)($r[0] ?? '');
+        } else {
+            $artist = count($r) >= 2 ? (string)$r[0] : '';
+            $track = (string)($r[count($r) >= 2 ? 1 : 0] ?? '');
+        }
+        if (trim($artist . $track) === '') continue;
+        $out[] = mi_item($artist, $track);
+        if (count($out) >= MI_MAX_ITEMS) break;
+    }
+    return $out;
+}
+
 // Создаём импорт и сразу обрабатываем первые строки (ссылки на видео ставятся без поиска)
-function music_import_create(array $user, string $input): array {
+function music_import_create(array $user, string $input, array $opts = []): array {
     $uid = (int)$user['id'];
-    $src = mi_source($input);
+    $src = !empty($opts['file']) ? ['source' => 'file'] : mi_source($input);
     if ($src['source'] === 'unsupported') {
         fail('Ссылку на ' . mi_service_name($src['host']) . ' мы не читаем: без входа там не отдают список треков. Скопируй названия и вставь текстом, по одному треку на строку, например «Кино — Группа крови»');
     }
@@ -135,6 +201,10 @@ function music_import_create(array $user, string $input): array {
         [$title, $items] = [$a['title'], $a['items']];
         if ($a['total'] > count($items)) $note = 'Apple Music отдал ' . count($items) . ' из ' . $a['total'] . ' треков — остальные вставь текстом. ';
         $note .= 'У Apple Music известны только названия: исполнителя проверь вручную.';
+    } elseif ($src['source'] === 'file') {
+        $f = mi_file_items($input, (string)($opts['name'] ?? ''));
+        $items = $f['items'];
+        $title = $f['title'] !== '' ? $f['title'] : 'Файл';
     } else {
         $items = mi_text_items($input);
         $title = 'Список треков';
@@ -144,9 +214,14 @@ function music_import_create(array $user, string $input): array {
     db_exec("UPDATE music_import_items SET status = 'skipped', reason = 'replaced', info = ?, updated_at = ? WHERE user_id = ? AND status = 'queued' AND import_id IN (SELECT id FROM music_imports WHERE user_id = ? AND status = 'running')",
         [MI_REASON_TEXT['replaced'], now(), $uid, $uid]);
     db_exec("UPDATE music_imports SET status = 'replaced', updated_at = ? WHERE user_id = ? AND status = 'running'", [now(), $uid]);
+    // импорт всегда создаёт плейлист: название из источника или своё; в очередь ставим, если не отключено
+    $plTitle = trim((string)($opts['title'] ?? '')) ?: ($title !== '' ? $title : 'Импорт');
+    $plId = pl_create($uid, $plTitle, 'import');
     $imp = db_insert('music_imports', [
-        'user_id' => $uid, 'source' => $src['source'], 'title' => mb_substr((string)$title, 0, 200), 'source_url' => $src['source'] === 'text' ? '' : $input,
+        'user_id' => $uid, 'source' => $src['source'], 'title' => mb_substr((string)$title, 0, 200),
+        'source_url' => in_array($src['source'], ['text', 'file'], true) ? (string)($opts['name'] ?? '') : $input,
         'note' => $note, 'status' => 'running', 'created_at' => now(), 'updated_at' => now(),
+        'playlist_id' => $plId, 'to_queue' => array_key_exists('queue', $opts) && !$opts['queue'] ? 0 : 1,
     ]);
     foreach ($items as $i => $it) {
         $row = [
@@ -154,10 +229,11 @@ function music_import_create(array $user, string $input): array {
             'query' => $it['query'], 'video_id' => $it['video_id'], 'video_title' => $it['video_title'], 'status' => 'queued', 'updated_at' => now(),
         ];
         if (!empty($it['unavailable'])) $row += ['status' => 'skipped', 'reason' => 'unavailable', 'info' => MI_REASON_TEXT['unavailable']];
-        db_insert('music_import_items', $row);
+        $iid = db_insert('music_import_items', $row);
+        pl_import_row($plId, $uid, $iid, $it, $i + 1);
     }
     music_import_step($user, $imp, MI_STEP);
-    return ['id' => $imp];
+    return ['id' => $imp, 'playlist' => $plId];
 }
 
 // Что уже стоит в очереди, что уже добавлено из этого импорта и что играло недавно — по видео и по песне (ключ песни)
@@ -170,11 +246,13 @@ function mi_context(int $uid, int $importId): array {
         $recent['k:' . music_split((string)$s['title'])['key']] = true;
     }
     $imported = [];
-    foreach (db_all("SELECT video_id, video_title FROM music_import_items WHERE import_id = ? AND status = 'added'", [$importId]) as $s) {
+    foreach (db_all("SELECT video_id, video_title FROM music_import_items WHERE import_id = ? AND status IN ('added', 'saved')", [$importId]) as $s) {
         $imported['v:' . $s['video_id']] = true;
         $imported['k:' . music_split((string)$s['video_title'])['key']] = true;
     }
-    return ['q' => $q, 'r' => $recent, 'i' => $imported];
+    $toQueue = (bool)(db_one('SELECT to_queue FROM music_imports WHERE id = ?', [$importId])['to_queue'] ?? 1);
+    // «только в плейлист»: то, что уже стоит в очереди, всё равно сохраняем в плейлист
+    return ['q' => $toQueue ? $q : [], 'r' => $recent, 'i' => $imported, 'toQueue' => $toQueue];
 }
 
 // Нормализованные слова названия (для сравнения с выдачей YouTube)
@@ -249,13 +327,21 @@ function mi_apply(array $user, array $it, string $vid, ?array $v, array $d, arra
     $row = ['video_id' => $vid, 'status' => $d['status'], 'reason' => $d['reason'], 'info' => $d['info'], 'updated_at' => now()];
     if ($v) $row['video_title'] = mb_substr($v['title'], 0, 300);
     if ($d['status'] === 'added') {
-        $row['song_id'] = mi_queue_insert($user, $v, 'импорт: ' . mb_substr($importTitle !== '' ? $importTitle : 'список', 0, 30));
-        $row['info'] = 'В очереди';
+        if ($ctx['toQueue']) {
+            $row['song_id'] = mi_queue_insert($user, $v, 'импорт: ' . mb_substr($importTitle !== '' ? $importTitle : 'список', 0, 30));
+            $row['info'] = 'В очереди';
+        } else {
+            $row['status'] = 'saved'; // только в плейлист: в очередь не ставим
+            $row['info'] = 'В плейлисте';
+        }
         $ctx['q'][$vid] = true;
         $ctx['i']['v:' . $vid] = true;
         $ctx['i']['k:' . music_split($v['title'])['key']] = true;
     }
     db_update('music_import_items', $row, 'id = ?', [$it['id']]);
+    // элемент плейлиста: найденное видео становится готовым; не найденное отмечаем, чтобы его можно было заменить ссылкой
+    if (in_array($row['status'], ['added', 'saved'], true)) pl_sync_import_item((int)$it['id'], $v, 'ready');
+    elseif ($row['status'] === 'skipped') pl_sync_import_item((int)$it['id'], null, 'missing');
 }
 
 // Трек в конец очереди (способ «импорт»: без лимита заказов и без проверки стримера)
@@ -328,7 +414,8 @@ function music_import_step(array $user, int $importId, int $cap = MI_STEP): void
         $ctx = mi_context($uid, $importId);
         $cfg = music_config($uid);
         foreach ($batch as [$it, $vids]) {
-            [$vid, $v, $d] = mi_choose_candidate($vids, $det, $ctx, $cfg);
+            // в плейлист берём и то, что недавно играло: список — выбор стримера
+            [$vid, $v, $d] = mi_choose_candidate($vids, $det, $ctx, $cfg, !$ctx['toQueue']);
             mi_apply($user, $it, $vid, $v, $d, $ctx, (string)$imp['title']);
         }
     } finally {
@@ -345,7 +432,7 @@ function music_import_act(array $user, int $itemId, string $action, string $url 
     $it = db_one('SELECT * FROM music_import_items WHERE id = ? AND user_id = ?', [$itemId, $uid]) ?? fail('Трек не найден', 404);
     $imp = db_one('SELECT * FROM music_imports WHERE id = ?', [(int)$it['import_id']]);
     if (!plan_limits($user)['music']) fail('Музыка доступна на тарифе «Про» и выше');
-    if ($it['status'] === 'added') fail('Трек уже в очереди');
+    if (in_array($it['status'], ['added', 'saved'], true)) fail('Трек уже добавлен');
     $force = false;
     $vids = json_decode((string)$it['cands'], true) ?: [];
     switch ($action) {
@@ -402,13 +489,13 @@ function mi_row_view(array $r, bool $budgetOut): array {
     $text = $r['artist'] !== '' ? $r['artist'] . ' — ' . $r['track'] : $r['track'];
     if ($r['status'] === 'added' && $r['video_title'] !== '') $text = $r['video_title'];
     if ($r['status'] === 'queued' && $r['video_id'] === '' && $budgetOut) $label = 'Ждёт лимита';
-    else $label = match ($r['status']) { 'added' => 'Добавлен', 'unsure' => 'Проверьте', 'skipped' => 'Не добавлен', default => 'Ищем' };
+    else $label = match ($r['status']) { 'added' => 'Добавлен', 'saved' => 'В плейлисте', 'unsure' => 'Проверьте', 'skipped' => 'Не добавлен', default => 'Ищем' };
     $info = mb_strtoupper(mb_substr($r['info'], 0, 1)) . mb_substr($r['info'], 1); // причины из чата — строчные, здесь с заглавной
     if ($r['status'] === 'queued' && $r['video_id'] === '' && $budgetOut) $info = MI_REASON_TEXT['budget'];
     if ($r['status'] === 'unsure') $info = 'Нашли «' . $r['cand_title'] . '»' . ($r['cand_channel'] !== '' ? ' (' . $r['cand_channel'] . ')' : '') . '. Это тот трек?';
     return [
         'id' => (int)$r['id'], 'pos' => (int)$r['pos'], 'text' => $text, 'status' => $r['status'], 'label' => $label, 'info' => $info,
-        'canPick' => $r['status'] === 'unsure', 'canLink' => $r['status'] !== 'added', 'canForce' => $r['status'] === 'skipped' && $r['reason'] === 'recent',
+        'canPick' => $r['status'] === 'unsure', 'canLink' => !in_array($r['status'], ['added', 'saved'], true), 'canForce' => $r['status'] === 'skipped' && $r['reason'] === 'recent',
     ];
 }
 
@@ -418,7 +505,7 @@ function music_import_view(array $user): ?array {
     $imp = db_one('SELECT * FROM music_imports WHERE user_id = ? ORDER BY id DESC LIMIT 1', [$uid]);
     if (!$imp) return null;
     $budgetOut = yt_budget_left() <= 0;
-    $counts = ['added' => 0, 'skipped' => 0, 'unsure' => 0, 'queued' => 0];
+    $counts = ['added' => 0, 'saved' => 0, 'skipped' => 0, 'unsure' => 0, 'queued' => 0];
     $items = [];
     foreach (db_all('SELECT * FROM music_import_items WHERE import_id = ? ORDER BY pos', [(int)$imp['id']]) as $r) {
         $counts[$r['status']] = ($counts[$r['status']] ?? 0) + 1;
@@ -426,6 +513,7 @@ function music_import_view(array $user): ?array {
     }
     return [
         'id' => (int)$imp['id'], 'source' => $imp['source'], 'title' => $imp['title'], 'note' => $imp['note'], 'status' => $imp['status'],
+        'playlistId' => (int)$imp['playlist_id'], 'toQueue' => (bool)$imp['to_queue'],
         'counts' => $counts, 'total' => count($items), 'items' => $items,
         'budget' => ['left' => yt_budget_left(), 'limit' => yt_budget_limit()],
     ];

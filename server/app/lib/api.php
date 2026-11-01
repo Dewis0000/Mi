@@ -49,7 +49,8 @@ function action_row(array $a): array {
 
 function song_row(array $s): array {
     return ['id' => (int)$s['id'], 'videoId' => $s['video_id'], 'url' => $s['url'], 'source' => $s['source'], 'title' => $s['title'], 'duration' => (int)$s['duration'],
-        'requester' => $s['requester'], 'method' => $s['method'], 'status' => $s['status'], 'at' => (int)$s['created_at'], 'playedAt' => (int)($s['played_at'] ?? 0)];
+        'requester' => $s['requester'], 'method' => $s['method'], 'status' => $s['status'], 'at' => (int)$s['created_at'], 'playedAt' => (int)($s['played_at'] ?? 0),
+        'fb' => isset($s['user_id']) ? fb_song_mark(fb_own_cache((int)$s['user_id']), (string)$s['title']) : ''];
 }
 
 function cmd_row(array $c): array {
@@ -67,6 +68,7 @@ function api_dispatch(string $r): never {
     require_same_origin();
     jobs_fast(); // фоновые задачи идут от запросов панели и виджетов — отдельный cron не нужен
     site_dispatch($r); // сайт стримера и зритель-панель; для остальных маршрутов возвращает false
+    music_api($r); // музыка: лайки, плейлисты, своя музыка, права помощников (неизвестные маршруты возвращаются)
     switch ($r) {
         // ---------- профиль ----------
         case 'me': {
@@ -290,6 +292,8 @@ function api_dispatch(string $r): never {
             $since = since_for($uid);
             player_heartbeat($uid); // панель открыта — плеер на связи
             json_out(['ok' => true, 'config' => music_config($uid), 'allowed' => plan_limits($u)['music'], 'youtube' => (bool)cfg('YOUTUBE_API_KEY'),
+                'player' => kv_get('player:yt:' . $uid), 'playlists' => pl_list($uid),
+                'library' => ['count' => count(lib_list($uid)), 'used' => lib_used($uid), 'quota' => lib_quota($u), 'max' => LIB_MAX_FILE],
                 'pointsErr' => (string)(kv_get('pts:err:' . $uid) ?? ''),
                 'current' => ($c = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'playing' ORDER BY id DESC LIMIT 1", [$uid])) ? song_row($c) : null,
                 'queue' => array_map('song_row', db_all("SELECT * FROM songs WHERE user_id = ? AND status = 'queued' ORDER BY pos, id", [$uid])),
@@ -307,7 +311,7 @@ function api_dispatch(string $r): never {
         }
         case 'mods.get': { // «Мои модераторы»: помощники StreOps со статистикой и модераторы Twitch
             $u = require_user();
-            $managers = array_map(fn($l) => ['login' => $l] + mgr_stats((int)$u['id'], $l), mgr_list((int)$u['id']));
+            $managers = array_map(fn($l) => ['login' => $l, 'perms' => mgr_perms((int)$u['id'], $l)] + mgr_stats((int)$u['id'], $l), mgr_list((int)$u['id']));
             $twitch = [];
             $twitchErr = '';
             $tok = tw_user_token($u);
@@ -347,7 +351,7 @@ function api_dispatch(string $r): never {
             $queue = array_map('song_row', db_all("SELECT * FROM songs WHERE user_id = ? AND status = 'queued' ORDER BY pos, id LIMIT 30", [$ch['id']]));
             $playing = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'playing' ORDER BY id DESC LIMIT 1", [$ch['id']]);
             $pending = array_map('song_row', db_all("SELECT * FROM songs WHERE user_id = ? AND status = 'pending' ORDER BY id LIMIT 20", [$ch['id']]));
-            json_out(['ok' => true, 'channel' => $ch['login'], 'orders' => !empty(music_config((int)$ch['id'])['cmd']['on']), 'playing' => $playing ? song_row($playing) : null, 'queue' => $queue, 'pending' => $pending]);
+            json_out(['ok' => true, 'channel' => $ch['login'], 'orders' => !empty(music_config((int)$ch['id'])['cmd']['on']), 'playing' => $playing ? song_row($playing) : null, 'queue' => $queue, 'pending' => $pending, 'canImport' => mgr_can((int)$ch['id'], mb_strtolower((string)$u['login']), 'import')]);
         }
         case 'manage.do': { // помощник: пропустить, убрать, одобрить, отклонить, переставить, очистить, включить заказы
             $u = require_user();
@@ -401,29 +405,29 @@ function api_dispatch(string $r): never {
             json_out(['ok' => true, 'message' => $res['message']]);
         }
         case 'music.import.create': { // плейлист по ссылке или список текстом
-            $u = require_user();
+            $u = music_scope(require_user(), in_str('channel', 40), 'import');
             if (!plan_limits($u)['music']) fail('Импорт плейлистов доступен на тарифе «Про» и выше');
-            $r = music_import_create($u, in_str('source', 6000));
+            $r = music_import_create($u, in_str('source', 300000), ['file' => in_bool('file'), 'name' => in_str('name', 200), 'queue' => in_bool('queue', true), 'title' => in_str('title', 200)]);
             json_out(['ok' => true, 'id' => $r['id'], 'import' => music_import_view($u)]);
         }
         case 'music.import.get': { // пока страница открыта, импорт идёт дальше (лимит поиска — по порядку)
-            $u = require_user();
+            $u = music_scope(require_user(), in_str('channel', 40), 'import');
             $running = db_one("SELECT id FROM music_imports WHERE user_id = ? AND status = 'running' ORDER BY id DESC LIMIT 1", [$u['id']]);
             if ($running) music_import_step($u, (int)$running['id'], MI_STEP);
             json_out(['ok' => true, 'import' => music_import_view($u)]);
         }
         case 'music.import.act': { // «Да, это он», «Ссылка», «Добавить всё равно»
-            $u = require_user();
+            $u = music_scope(require_user(), in_str('channel', 40), 'import');
             music_import_act($u, in_int('id'), in_str('action', 16), in_str('url', 300));
             json_out(['ok' => true, 'import' => music_import_view($u)]);
         }
         case 'music.import.pickAll': {
-            $u = require_user();
+            $u = music_scope(require_user(), in_str('channel', 40), 'import');
             $n = music_import_pick_all($u, in_int('id'));
             json_out(['ok' => true, 'added' => $n, 'import' => music_import_view($u)]);
         }
         case 'music.import.cancel': {
-            $u = require_user();
+            $u = music_scope(require_user(), in_str('channel', 40), 'import');
             music_import_cancel($u, in_int('id'));
             json_out(['ok' => true, 'import' => music_import_view($u)]);
         }
@@ -660,12 +664,13 @@ function api_dispatch(string $r): never {
                 if ($err) music_next($u, 'skipped', music_yt_error_text($err)); else music_next($u);
             }
             $c = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'playing' ORDER BY id DESC LIMIT 1", [$u['id']]);
-            json_out(['ok' => true, 'current' => $c ? song_row($c) : null, 'volume' => (int)music_config((int)$u['id'])['volume']]);
+            json_out(['ok' => true, 'current' => $c ? song_play_row($u, $c) : null, 'volume' => (int)music_config((int)$u['id'])['volume']]);
         }
         case 'widget.data': {
             $u = db_one('SELECT * FROM users WHERE widget_token = ?', [in_str('t', 64)]);
             if (!$u || (int)$u['banned']) fail('Виджет не найден', 404);
             if (in_str('w', 16) === 'np') player_heartbeat((int)$u['id']); // OBS-источник плеера опрашивает сервер — значит, он на связи
+            if (in_str('w', 16) === 'np' && in_str('yt', 2) !== '') kv_set('player:yt:' . $u['id'], ['ok' => in_str('yt', 2) === '1', 'at' => now()], 3600); // YouTube у плеера открылся или нет
             json_out(['ok' => true] + widget_payload($u, in_str('w', 16), in_int('after')));
         }
 
@@ -1312,7 +1317,7 @@ function widget_payload(array $u, string $w, int $after): array {
             break;
         case 'np':
             $c = db_one("SELECT * FROM songs WHERE user_id = ? AND status = 'playing' ORDER BY id DESC LIMIT 1", [$uid]);
-            $data['current'] = $c ? song_row($c) : null;
+            $data['current'] = $c ? song_play_row($u, $c) : null;
             $data['queued'] = (int)db_one("SELECT COUNT(*) c FROM songs WHERE user_id = ? AND status = 'queued'", [$uid])['c'];
             $data['volume'] = (int)music_config($uid)['volume'];
             break;

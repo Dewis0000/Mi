@@ -185,6 +185,8 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <sc-if value="{{ showLen }}" hint-placeholder-val="{{ false }}"><p class="mono" style="margin: 0; font-size: 12px; color: #8F8F8F">{{ lenLine }}</p></sc-if>
 </div>
 <p role="status" style="margin: 10px 0 0; font-size: 13px; line-height: 18px; color: #B4B4B4">{{ hereStatus }}</p>
+<p class="hint" style="margin: 8px 0 0; font-size: 13px; line-height: 18px">{{ playerLine }}</p>
+<div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap"><button type="button" class="btn2 sm" aria-pressed="{{ likeOn }}" onClick="{{ likeCur }}" disabled="{{ fbOff }}">{{ likeLabel }}</button><button type="button" class="btn2 sm" aria-pressed="{{ dislikeOn }}" onClick="{{ dislikeCur }}" disabled="{{ fbOff }}">{{ dislikeLabel }}</button><button type="button" class="btn2 sm" onClick="{{ dislikeArtistCur }}" disabled="{{ fbOff }}">Не этот исполнитель</button></div>
 <sc-if value="{{ hasYtErr }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert" style="margin-top: 10px; font-size: 13px; line-height: 18px">{{ ytErr }}</p></sc-if>
 </div>
 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
@@ -227,10 +229,10 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <sc-for list="{{ queue }}" as="q" hint-placeholder-count="4">
 <div role="row" class="row" style="{{ q.rowStyle }}">
 <span role="cell" class="mono" style="font-size: 13px; color: #8F8F8F">{{ q.n }}</span>
-<span role="cell" style="min-width: 0"><span class="ell" style="font-weight: 500" title="{{ q.title }}">{{ q.title }}</span><span class="ell sub-l"><a href="{{ q.url }}" target="_blank" rel="noopener">{{ q.short }}</a><span class="mob"> · {{ q.requester }}</span></span></span>
+<span role="cell" style="min-width: 0"><span class="ell" style="font-weight: 500" title="{{ q.title }}">{{ q.title }}</span><sc-if value="{{ q.hasFb }}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: #B4B4B4; margin-left: 8px">{{ q.fbText }}</span></sc-if><span class="ell sub-l"><a href="{{ q.url }}" target="_blank" rel="noopener">{{ q.short }}</a><span class="mob"> · {{ q.requester }}</span></span></span>
 <span role="cell" class="hide" style="min-width: 0"><span class="ell" style="color: #DCDCDC">{{ q.requester }}</span><span class="how">{{ q.how }}</span></span>
 <span role="cell" class="mono" style="font-size: 13px">{{ q.len }}</span>
-<span role="cell" style="display: flex; justify-content: flex-end"><button type="button" class="ib" aria-label="{{ q.upLabel }}" title="Поднять выше" onClick="{{ q.up }}" disabled="{{ q.upOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></button><button type="button" class="ib" aria-label="{{ q.downLabel }}" title="Опустить ниже" onClick="{{ q.down }}" disabled="{{ q.downOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></button><button type="button" class="ib" aria-label="{{ q.topLabel }}" title="В начало очереди" onClick="{{ q.top }}" disabled="{{ q.upOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></button><button type="button" class="ib" aria-label="{{ q.playLabel }}" title="Сыграть сейчас (текущий трек закончится)" onClick="{{ q.playNow }}" disabled="{{ q.busy }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"></path></svg></button><button type="button" class="ib d" aria-label="{{ q.delLabel }}" title="Убрать из очереди" onClick="{{ q.del }}" disabled="{{ q.busy }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button></span>
+<span role="cell" style="display: flex; justify-content: flex-end"><button type="button" class="ib" aria-label="{{ q.dislikeLabel }}" title="{{ q.dislikeLabel }}" onClick="{{ q.dislike }}" disabled="{{ q.busy }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H6.7a2 2 0 0 0-2 1.7l-1.4 9A2 2 0 0 0 5.3 15z"></path><path d="M17 2h3v13h-3"></path></svg></button><button type="button" class="ib" aria-label="{{ q.upLabel }}" title="Поднять выше" onClick="{{ q.up }}" disabled="{{ q.upOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></button><button type="button" class="ib" aria-label="{{ q.downLabel }}" title="Опустить ниже" onClick="{{ q.down }}" disabled="{{ q.downOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></button><button type="button" class="ib" aria-label="{{ q.topLabel }}" title="В начало очереди" onClick="{{ q.top }}" disabled="{{ q.upOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></button><button type="button" class="ib" aria-label="{{ q.playLabel }}" title="Сыграть сейчас (текущий трек закончится)" onClick="{{ q.playNow }}" disabled="{{ q.busy }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"></path></svg></button><button type="button" class="ib d" aria-label="{{ q.delLabel }}" title="Убрать из очереди" onClick="{{ q.del }}" disabled="{{ q.busy }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button></span>
 </div>
 </sc-for>
 <sc-if value="{{ qLoading }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 48px 16px; text-align: center; border-top: 1px solid #1F1F1F; font-size: 14px; color: #8F8F8F">Загружаем очередь…</p></sc-if>
@@ -245,6 +247,8 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 <h2 id="imp-t" class="h3" style="margin: 0">Импорт плейлиста</h2>
 <p class="hint" style="margin: 0; font-size: 13px; line-height: 18px">Вставь ссылку на плейлист YouTube, Deezer или Apple Music. Яндекс Музыка, Spotify, VK и другие сервисы по ссылке без входа не открываются: скопируй названия треков и вставь списком, по одному треку на строку, например «Кино — Группа крови». Каждый трек получит статус и причину.</p>
 <div class="fl"><label for="imp-in" class="lab">Ссылка или список треков</label><textarea id="imp-in" class="inp" rows="4" style="resize: vertical; font-family: inherit; min-height: 96px" placeholder="https://www.youtube.com/playlist?list=…" value="{{ impInput }}" onChange="{{ setImpInput }}" disabled="{{ impOff }}"></textarea></div>
+<div class="fl"><label for="imp-file" class="lab">Или файл со списком</label><input id="imp-file" type="file" accept=".txt,.csv,.m3u,.m3u8,text/plain,text/csv,audio/x-mpegurl" onChange="{{ setImpFile }}" disabled="{{ impOff }}" style="font-size: 14px"><p class="hint" style="font-size: 13px; line-height: 18px">Выгрузка из Яндекс Музыки или другого сервиса: TXT (по строке на трек), CSV (колонки исполнителя и названия) или M3U. Ссылку на плейлист Яндекса мы не читаем: без входа её не отдают. Название плейлиста возьмём из имени файла.</p></div>
+<div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap"><button type="button" class="btn2 sm" onClick="{{ toggleImpQueue }}" disabled="{{ impOff }}">{{ impQueueLabel }}</button><button type="button" class="btn" onClick="{{ startImportFile }}" disabled="{{ impFileOff }}">{{ impFileBtn }}</button></div>
 <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap"><button type="button" class="btn" onClick="{{ startImport }}" disabled="{{ impOff }}">{{ impBtn }}</button><sc-if value="{{ impErrOn }}" hint-placeholder-val="{{ false }}"><span role="alert" class="err">{{ impErr }}</span></sc-if></div>
 <sc-if value="{{ impHas }}" hint-placeholder-val="{{ true }}">
 <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: flex-start">
@@ -279,6 +283,76 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 </div>
 </sc-if>
 
+<sc-if value="{{ tabPlaylists }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px; padding-top: 12px">
+<p class="hint" style="margin: 0; font-size: 13px; line-height: 18px">Плейлисты — твои подборки. Ставь их в очередь целиком или вперемешку. Подбор музыки тоже берёт треки из них. Создать плейлист можно и из файла на вкладке «Импорт».</p>
+<sc-if value="{{ plLockedOn }}" hint-placeholder-val="{{ false }}"><p class="hint" style="margin: 0">Плейлисты доступны на тарифе «Про» и выше.</p></sc-if>
+<form onSubmit="{{ plCreateSubmit }}" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end">
+<div class="fl" style="flex: 1 1 240px; min-width: 0"><label for="pl-new" class="lab">Новый плейлист</label><input id="pl-new" class="inp" value="{{ plNew }}" onChange="{{ setPlNew }}" placeholder="Вечерний микс" maxlength="120" disabled="{{ plOff }}"></div>
+<button type="submit" class="btn" disabled="{{ plOff }}">Создать</button>
+</form>
+<sc-if value="{{ plErrOn }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert" style="font-size: 13px; line-height: 18px; padding: 10px 12px">{{ plErr }}</p></sc-if>
+<sc-if value="{{ plNone }}" hint-placeholder-val="{{ false }}"><p class="hint" style="padding: 20px; border: 1px dashed #3A3A3A; border-radius: 8px; text-align: center">Плейлистов пока нет.</p></sc-if>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{ plList }}" as="p" hint-placeholder-count="3">
+<li style="{{ p.rowStyle }}; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 12px 14px; border: 1px solid #2A2A2A; border-radius: 8px; background: #111111">
+<span style="flex: 1 1 200px; min-width: 0"><span style="display: block; font-weight: 500; overflow-wrap: anywhere">{{ p.title }}</span><span class="hint">{{ p.count }}</span></span>
+<button type="button" class="btn2 sm" aria-label="{{ p.openLabel }}" onClick="{{ p.open }}" disabled="{{ plOff }}">Открыть</button>
+<button type="button" class="btn2 sm" onClick="{{ p.queueAll }}" disabled="{{ plOff }}">В очередь</button>
+<button type="button" class="btn2 sm" onClick="{{ p.queueShuffle }}" disabled="{{ plOff }}">Вперемешку</button>
+<button type="button" class="btn2 sm" aria-label="{{ p.delLabel }}" onClick="{{ p.del }}" disabled="{{ plOff }}">Удалить</button>
+</li>
+</sc-for>
+</ul>
+<sc-if value="{{ plHasOpen }}" hint-placeholder-val="{{ false }}">
+<section aria-label="Открытый плейлист" style="display: flex; flex-direction: column; gap: 12px; padding: 16px; border: 1px solid #2A2A2A; border-radius: 12px">
+<h3 style="margin: 0; font-size: 18px; line-height: 24px; font-weight: 600; overflow-wrap: anywhere">{{ plOpenTitle }}</h3>
+<form onSubmit="{{ plAddSubmit }}" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end">
+<div class="fl" style="flex: 1 1 280px; min-width: 0"><label for="pl-add" class="lab">Добавить трек</label><input id="pl-add" class="inp" value="{{ plAddQ }}" onChange="{{ setPlAddQ }}" placeholder="Ссылка на YouTube или Кино — Группа крови" maxlength="300" disabled="{{ plOff }}"></div>
+<button type="submit" class="btn" disabled="{{ plOff }}">Добавить</button>
+</form>
+<sc-if value="{{ plMsgOn }}" hint-placeholder-val="{{ false }}"><p role="status" class="ok-l">{{ plMsg }}</p></sc-if>
+<sc-if value="{{ plItemsNone }}" hint-placeholder-val="{{ false }}"><p class="hint">В плейлисте пока нет треков.</p></sc-if>
+<ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column">
+<sc-for list="{{ plItems }}" as="it" hint-placeholder-count="4">
+<li style="display: flex; gap: 10px; align-items: center; padding: 8px 4px; border-top: 1px solid #1F1F1F">
+<span class="mono" style="width: 28px; flex: none; color: #8F8F8F; font-size: 13px">{{ it.n }}</span>
+<span style="flex: 1 1 auto; min-width: 0"><span class="ell" style="display: block; font-weight: 500">{{ it.title }}</span><span class="sub-l">{{ it.statusLabel }}</span></span>
+<button type="button" class="ib" aria-label="Поднять выше" onClick="{{ it.up }}" disabled="{{ it.upOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></button>
+<button type="button" class="ib" aria-label="Опустить ниже" onClick="{{ it.down }}" disabled="{{ it.downOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></button>
+<button type="button" class="ib" aria-label="Убрать из плейлиста" onClick="{{ it.remove }}" disabled="{{ plOff }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button>
+</li>
+</sc-for>
+</ol>
+</section>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ tabLibrary }}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 16px; padding-top: 12px">
+<p class="hint" style="margin: 0; font-size: 13px; line-height: 18px">Своя музыка нужна, когда YouTube у плеера не открывается. Треки, для которых здесь есть файл, тогда играют отсюда. Если файла нет, звучит случайный трек из этого списка. Загружай только музыку, которую можно стримить: своя, свободная лицензия или купленная для стрима. Форматы: {{ libFormats }}, до {{ libMax }}.</p>
+<sc-if value="{{ libLockedOn }}" hint-placeholder-val="{{ false }}"><p class="hint" style="margin: 0">Своя музыка доступна на тарифе «Про» и выше.</p></sc-if>
+<p class="mono" style="margin: 0; font-size: 13px; color: #DCDCDC">{{ libUsedText }}</p>
+<div class="bar" aria-hidden="true"><span style="width: {{ libPct }}%"></span></div>
+<form onSubmit="{{ libUpload }}" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end">
+<div class="fl" style="flex: 1 1 240px; min-width: 0"><label for="lib-file" class="lab">Файл</label><input id="lib-file" type="file" accept="audio/*,.mp3,.m4a,.ogg,.oga,.opus,.wav,.flac" onChange="{{ setLibFile }}" disabled="{{ libOff }}"></div>
+<div class="fl" style="flex: 1 1 200px; min-width: 0"><label for="lib-title" class="lab">Название (необязательно)</label><input id="lib-title" class="inp" value="{{ libTitle }}" onChange="{{ setLibTitle }}" placeholder="Кино — Группа крови" maxlength="300" disabled="{{ libOff }}"></div>
+<button type="submit" class="btn" disabled="{{ libFileOff }}">{{ libBtn }}</button>
+</form>
+<sc-if value="{{ libErrOn }}" hint-placeholder-val="{{ false }}"><p role="alert" class="alert" style="font-size: 13px; line-height: 18px; padding: 10px 12px">{{ libErr }}</p></sc-if>
+<sc-if value="{{ libNone }}" hint-placeholder-val="{{ false }}"><p class="hint" style="padding: 20px; border: 1px dashed #3A3A3A; border-radius: 8px; text-align: center">Своих файлов пока нет.</p></sc-if>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{ libItems }}" as="l" hint-placeholder-count="3">
+<li style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 10px 12px; border: 1px solid #2A2A2A; border-radius: 8px; background: #111111">
+<span style="flex: 1 1 200px; min-width: 0"><span class="ell" style="display: block; font-weight: 500">{{ l.title }}</span><span class="sub-l"><span class="mono">{{ l.len }}</span> · {{ l.size }}{{ l.by }}</span></span>
+<button type="button" class="ib" aria-label="{{ l.delLabel }}" onClick="{{ l.del }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button>
+</li>
+</sc-for>
+</ul>
+</div>
+</sc-if>
+
 <sc-if value="{{ tabHistory }}" hint-placeholder-val="{{ false }}">
 <div role="table" aria-label="История" style="margin-top: 8px">
 <div role="row" class="hrow" style="border-top: 0; font-size: 12px; color: #8F8F8F"><span role="columnheader">Время</span><span role="columnheader">Трек</span><span role="columnheader" class="hide">Кто заказал</span><span role="columnheader">Итог</span></div>
@@ -301,6 +375,7 @@ a{color:#F2F2F2;text-decoration:none}a:hover{color:#FFFFFF}
 </ul>
 <div style="padding-top: 16px; border-top: 1px solid #1F1F1F">
 <h3 class="ov" style="margin-bottom: 10px">Команды в чате</h3>
+<p class="hint" style="margin: 0 0 10px">Зрители голосуют за песню, которая играет: !лайк и !дизлайк. Голоса влияют на подбор. Включить и выбрать, кто голосует, можно в разделе «Чат-бот» → «Команды», вкладка «Базовые».</p>
 <dl class="cmdl">
 <dt>{{ cmdUsage }}</dt><dd>{{ cmdState }}</dd>
 <dt>!трек · !song · !песня</dt><dd>Что сейчас играет и кто заказал</dd>
@@ -402,6 +477,9 @@ class Component extends DCLogic {
       addQ: '', adding: false, addMsg: '', addErr: '', stopQ: '',
       here: false, hereLoading: false, paused: false, blocked: false, pos: 0, len: 0, ytErr: '',
       copied: false, obsUi: true, advOpen: false,
+      plList: [], plId: 0, plData: null, plNew: '', plAddQ: '', plBusy: false, plErr: '', plMsg: '',
+      libItems: [], libUsed: 0, libQuota: 0, libMax: 0, libFormats: [], libFile: null, libTitle: '', libBusy: false, libErr: '',
+      impFile: null, impToQueue: true, player: null,
     };
     try { this.state.obsUi = localStorage.getItem('stre.music.obsUi') !== '0'; } catch (e) { /* без хранилища */ }
     this.gen = 0; this.lastJson = ''; this.inflight = false; this.again = false;
@@ -411,6 +489,8 @@ class Component extends DCLogic {
   componentDidMount() {
     this.load();
     this.loadImport();
+    this.loadPlaylists();
+    this.loadLibrary();
     setInterval(() => this.load(), 4000);
     setInterval(() => { if (this.state.tab === 'import' || (this.state.impData && this.state.impData.status === 'running')) this.loadImport(); }, 4000);
     setInterval(() => this.tick(), 500);
@@ -433,7 +513,7 @@ class Component extends DCLogic {
       const json = JSON.stringify(r);
       if (json !== this.lastJson || s.err || !s.loaded) {
         this.lastJson = json;
-        const patch = { loaded: true, err: '', allowed: !!r.allowed, youtube: !!r.youtube, pointsErr: r.pointsErr || '', config: r.config, current: r.current, queue: r.queue || [], pending: r.pending || [], history: r.history || [], stats: r.stats || { ordered: 0, rejected: 0 } };
+        const patch = { loaded: true, err: '', allowed: !!r.allowed, youtube: !!r.youtube, player: r.player || null, pointsErr: r.pointsErr || '', config: r.config, current: r.current, queue: r.queue || [], pending: r.pending || [], history: r.history || [], stats: r.stats || { ordered: 0, rejected: 0 } };
         if (!s.draft || !this.isDirty()) patch.draft = this.draftOf(r.config);
         if (!this.volTimer) patch.vol = Number(r.config.volume);
         if (s.tab === 'pending' && !r.config.manual && !(r.pending || []).length) patch.tab = 'queue';
@@ -576,7 +656,7 @@ class Component extends DCLogic {
     if (!src) { this.setState({ impErr: 'Вставь ссылку на плейлист или список треков.' }); return; }
     this.setState({ impBusy: true, impErr: '' });
     try {
-      const r = await StreAPI.post('music.import.create', { source: src });
+      const r = await StreAPI.post('music.import.create', { source: src, queue: this.state.impToQueue });
       this.setState({ impBusy: false, impInput: '', impData: r.import, impFilter: 'all' });
     } catch (e) { this.setState({ impBusy: false, impErr: this.cap(e.message) }); }
   }
@@ -604,6 +684,162 @@ class Component extends DCLogic {
       const r = await StreAPI.post('music.import.cancel', { id: imp.id });
       this.setState({ impBusy: false, impData: r.import });
     } catch (e) { this.setState({ impBusy: false, impErr: this.cap(e.message) }); }
+  }
+
+  // ---------- голоса: лайк и дизлайк ----------
+  async feedbackTrack(song, value) {
+    if (!song) return;
+    const prev = { queue: this.state.queue, current: this.state.current };
+    const fb = value > 0 ? 'like' : (value < 0 ? 'dislike' : '');
+    const mark = (x) => (x.id === song.id ? Object.assign({}, x, { fb }) : x);
+    this.setState({ queue: this.state.queue.map(mark), current: this.state.current ? mark(this.state.current) : null });
+    try {
+      await StreAPI.post('music.feedback', { kind: 'track', id: song.id, value });
+      StreAPI.toast(value > 0 ? 'Учту при подборе' : (value < 0 ? 'Больше не поставим, и трек убран из очереди' : 'Голос снят'));
+      this.refresh();
+    } catch (e) { this.setState(prev); StreAPI.toast(this.cap(e.message), 'error'); }
+  }
+  async feedbackArtist(song) {
+    if (!song || !confirm('Не ставить этого исполнителя? Его треки уйдут из очереди, а подбор перестанет его предлагать.')) return;
+    try {
+      await StreAPI.post('music.feedback', { kind: 'artist', id: song.id, value: -1 });
+      StreAPI.toast('Исполнитель больше не в подборе');
+      this.refresh();
+    } catch (e) { StreAPI.toast(this.cap(e.message), 'error'); }
+  }
+
+  // ---------- плейлисты ----------
+  async loadPlaylists() {
+    try { const r = await StreAPI.get('playlists.list'); this.setState({ plList: r.items || [] }); } catch (e) { /* подождём следующего обновления */ }
+  }
+  async openPlaylist(id) {
+    this.setState({ plId: id, plBusy: true, plErr: '', plMsg: '' });
+    try {
+      const r = await StreAPI.get('playlists.get', { id });
+      this.setState({ plData: { playlist: r.playlist, items: r.items || [] }, plBusy: false });
+    } catch (e) { this.setState({ plBusy: false, plErr: this.cap(e.message) }); }
+  }
+  async plCreate() {
+    const title = this.state.plNew.trim();
+    if (!title) { this.setState({ plErr: 'Назови плейлист.' }); return; }
+    this.setState({ plBusy: true, plErr: '' });
+    try {
+      const r = await StreAPI.post('playlists.create', { title });
+      this.setState({ plNew: '', plBusy: false });
+      await this.loadPlaylists();
+      this.openPlaylist(r.id);
+    } catch (e) { this.setState({ plBusy: false, plErr: this.cap(e.message) }); }
+  }
+  async plAdd() {
+    const q = this.state.plAddQ.trim();
+    const id = this.state.plId;
+    if (!q || !id) return;
+    this.setState({ plBusy: true, plErr: '', plMsg: '' });
+    try {
+      const r = await StreAPI.post('playlists.add', { id, query: q });
+      this.setState({ plAddQ: '', plBusy: false, plMsg: this.cap('«' + r.title + '» добавлен в плейлист') });
+      this.openPlaylist(id);
+      this.loadPlaylists();
+    } catch (e) { this.setState({ plBusy: false, plErr: this.cap(e.message) }); }
+  }
+  async plMove(itemId, dir) {
+    const id = this.state.plId;
+    try { await StreAPI.post('playlists.move', { id, itemId, dir }); this.openPlaylist(id); } catch (e) { StreAPI.toast(this.cap(e.message), 'error'); }
+  }
+  async plRemove(itemId) {
+    const id = this.state.plId;
+    try { await StreAPI.post('playlists.remove', { id, itemId }); this.openPlaylist(id); this.loadPlaylists(); } catch (e) { StreAPI.toast(this.cap(e.message), 'error'); }
+  }
+  async plQueue(id, mode) {
+    try {
+      const r = await StreAPI.post('playlists.queue', { id, mode });
+      StreAPI.toast(r.added ? 'В очередь поставлено: ' + r.added : 'Эти треки уже в очереди');
+      this.refresh();
+    } catch (e) { StreAPI.toast(this.cap(e.message), 'error'); }
+  }
+  async plDelete(id) {
+    if (!confirm('Удалить плейлист? Треки, которые уже в очереди, останутся.')) return;
+    try {
+      await StreAPI.post('playlists.delete', { id });
+      this.setState({ plId: 0, plData: null });
+      this.loadPlaylists();
+    } catch (e) { StreAPI.toast(this.cap(e.message), 'error'); }
+  }
+
+  // ---------- своя музыка (запасной плеер) ----------
+  async loadLibrary() {
+    try {
+      const r = await StreAPI.get('library.list');
+      this.setState({ libItems: r.items || [], libUsed: r.used || 0, libQuota: r.quota || 0, libMax: r.max || 0, libFormats: r.formats || [] });
+    } catch (e) { /* подождём следующего обновления */ }
+  }
+  setLibFile(e) { this.setState({ libFile: e.target.files && e.target.files[0] || null, libErr: '' }); }
+  async libUpload() {
+    const file = this.state.libFile;
+    if (!file) { this.setState({ libErr: 'Выбери файл.' }); return; }
+    this.setState({ libBusy: true, libErr: '' });
+    try {
+      // длительность берём у самого файла: нужна для расписания очереди
+      const duration = await new Promise((resolve) => {
+        const a = new Audio();
+        const url = URL.createObjectURL(file);
+        a.preload = 'metadata';
+        a.onloadedmetadata = () => { URL.revokeObjectURL(url); resolve(Math.round(a.duration) || 0); };
+        a.onerror = () => { URL.revokeObjectURL(url); resolve(0); };
+        a.src = url;
+      });
+      const fd = new FormData();
+      fd.append('file', file, file.name);
+      fd.append('title', this.state.libTitle.trim() || file.name.replace(/\.[^.]+$/, ''));
+      fd.append('duration', String(duration));
+      const res = await fetch('/api/index.php?r=library.upload', { method: 'POST', credentials: 'same-origin', headers: { 'X-Requested-With': 'StreOps' }, body: fd });
+      const j = await res.json().catch(() => null);
+      if (!j || !j.ok) throw new Error((j && j.error) || 'Файл не загрузился (код ' + res.status + ')');
+      this.setState({ libBusy: false, libFile: null, libTitle: '', libItems: j.items || [], libUsed: j.used || 0 });
+      StreAPI.toast('Файл добавлен в «Свою музыку»');
+    } catch (e) { this.setState({ libBusy: false, libErr: this.cap(e.message) }); }
+  }
+  async libDelete(id) {
+    if (!confirm('Удалить файл из «Своей музыки»? Он пропадёт и из запасного плеера.')) return;
+    try {
+      const r = await StreAPI.post('library.delete', { id });
+      this.setState({ libItems: r.items || [], libUsed: r.used || 0 });
+    } catch (e) { StreAPI.toast(this.cap(e.message), 'error'); }
+  }
+
+  // ---------- импорт файлом ----------
+  setImpFile(e) { this.setState({ impFile: e.target.files && e.target.files[0] || null, impErr: '' }); }
+  async startImportFile() {
+    const file = this.state.impFile;
+    if (!file) { this.setState({ impErr: 'Выбери файл со списком.' }); return; }
+    this.setState({ impBusy: true, impErr: '' });
+    try {
+      const text = await file.text();
+      const r = await StreAPI.post('music.import.create', { source: text, file: true, name: file.name, queue: this.state.impToQueue });
+      this.setState({ impBusy: false, impFile: null, impData: r.import, impFilter: 'all' });
+      this.loadPlaylists();
+    } catch (e) { this.setState({ impBusy: false, impErr: this.cap(e.message) }); }
+  }
+
+  // ---------- звук из своей музыки в этой вкладке ----------
+  playAudio(song) {
+    this.stopYtQuiet();
+    if (!this.audioEl) this.audioEl = new Audio();
+    this.audioNow = true;
+    this.playingId = song.id;
+    this.audioEl.onended = () => { if (this.playingId === song.id) this.advance(song.id); };
+    this.audioEl.onerror = () => { if (this.playingId === song.id) this.advance(song.id, 5); };
+    this.audioEl.src = song.audio.url;
+    this.audioEl.volume = Math.max(0, Math.min(1, this.state.vol / 100));
+    this.setState({ paused: false, blocked: false, pos: 0, len: song.duration || 0 });
+    this.audioEl.play().catch(() => this.setState({ blocked: true }));
+  }
+  stopAudioEl() {
+    this.audioNow = false;
+    if (this.audioEl) { this.audioEl.pause(); this.audioEl.removeAttribute('src'); this.audioEl.load(); }
+  }
+  stopYtQuiet() {
+    try { if (this.player) this.player.stopVideo(); } catch (e) { /* плеер ещё не готов */ }
   }
 
   cap(t) { t = String(t || ''); return t.charAt(0).toUpperCase() + t.slice(1) + (/[.!?…]$/.test(t) ? '' : '.'); }
@@ -655,11 +891,17 @@ class Component extends DCLogic {
       if (s.current) this.play(s.current);
       else if (s.queue.length) this.advance(0);
     } catch (e) {
-      this.setState({ hereLoading: false, ytErr: e.message });
+      // YouTube не открылся: трек из «Своей музыки» играем файлом, остальное ждёт очередь и подсказка про VPN
+      this.ytError = e.message;
+      const s0 = this.state;
+      if (s0.current && s0.current.audio) { this.setState({ hereLoading: false, here: true, ytErr: '' }); this.play(s0.current); }
+      else if (s0.queue.length || s0.current) { this.setState({ hereLoading: false, here: true, ytErr: '' }); this.advance(0); }
+      else this.setState({ hereLoading: false, ytErr: e.message });
     }
   }
 
   stopHere(msg) {
+    this.stopAudioEl();
     this.playingId = 0;
     clearTimeout(this.blockTimer);
     try { if (this.player) this.player.stopVideo(); } catch (e) { /* плеер уже закрыт */ }
@@ -667,6 +909,13 @@ class Component extends DCLogic {
   }
 
   play(song) {
+    if (song.audio) { this.playAudio(song); return; }
+    this.audioNow = false;
+    if (!this.player) {
+      this.playingId = 0;
+      this.setState({ ytErr: (this.ytError || 'YouTube не открывается.') + ' Этого трека нет в «Своей музыке»: включи VPN или загрузи файл. Очередь ждёт.' });
+      return;
+    }
     this.playingId = song.id;
     this.setState({ paused: false, blocked: false, pos: 0, len: song.duration || 0 });
     try {
@@ -684,6 +933,7 @@ class Component extends DCLogic {
   }
 
   idle() {
+    this.stopAudioEl();
     this.playingId = 0;
     try { this.player.stopVideo(); } catch (e) { /* нет плеера */ }
     this.setState({ paused: false, blocked: false, pos: 0, len: 0 });
@@ -737,6 +987,12 @@ class Component extends DCLogic {
   }
 
   tick() {
+    if (this.audioNow && this.playingId) {
+      const pos = Math.floor(this.audioEl.currentTime || 0);
+      const len = Math.floor(this.audioEl.duration || 0) || this.state.len;
+      if (pos !== this.state.pos || len !== this.state.len) this.setState({ pos, len });
+      return;
+    }
     const p = this.player;
     if (!this.state.here || !p || !this.playingId || typeof p.getCurrentTime !== 'function') return;
     const pos = Math.floor(p.getCurrentTime() || 0);
@@ -767,7 +1023,7 @@ class Component extends DCLogic {
     const plural = (n, a, b, cc) => { const m10 = n % 10, m100 = n % 100; return m10 === 1 && m100 !== 11 ? a : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? b : cc; };
     const cmdName = c ? '!' + c.cmd.name : '!музыка';
     const showPending = !!(c && c.manual) || s.pending.length > 0;
-    const tabDefs = [['queue', 'Очередь', nQ]].concat(showPending ? [['pending', 'На проверке', s.pending.length]] : []).concat([['history', 'История', s.history.length], ['import', 'Импорт', s.impData ? s.impData.total : '']]);
+    const tabDefs = [['queue', 'Очередь', nQ]].concat(showPending ? [['pending', 'На проверке', s.pending.length]] : []).concat([['history', 'История', s.history.length], ['import', 'Импорт', s.impData ? s.impData.total : ''], ['playlists', 'Плейлисты', s.plList.length], ['library', 'Своя музыка', s.libItems.length]]);
     const imp = s.impData;
     const impCnt = imp ? imp.counts : { added: 0, skipped: 0, unsure: 0, queued: 0 };
     const impAll = imp ? imp.items : [];
@@ -788,6 +1044,30 @@ class Component extends DCLogic {
     });
     const impStatusText = !imp ? '' : ({ running: 'Ищем треки на YouTube по порядку списка', done: 'Импорт готов', replaced: 'Список заменён новым импортом', paused: 'Пауза: музыка доступна с тарифа «Про»', cancelled: 'Импорт остановлен' }[imp.status] || '');
     const impBudget = !imp ? '' : 'Поисков YouTube на сегодня осталось ' + imp.budget.left + ' из ' + imp.budget.limit + '.' + (imp.budget.left === 0 && impCnt.queued > 0 ? ' Оставшиеся треки ждут завтрашнего дня — или вставь ссылки на видео.' : '');
+    // плейлисты, своя музыка, голоса
+    const plOff = s.plBusy || locked;
+    const plItems0 = s.plData ? s.plData.items : [];
+    const plOpenTitle = s.plData ? s.plData.playlist.title : '';
+    const plList = s.plList.map((p) => ({
+      id: p.id, title: p.title, count: p.items + ' ' + plural(p.items, 'трек', 'трека', 'треков') + (p.items > p.ready ? ' · готовы ' + p.ready : ''),
+      open: () => this.openPlaylist(p.id), openLabel: 'Открыть плейлист «' + p.title + '»',
+      queueAll: () => this.plQueue(p.id, 'all'), queueShuffle: () => this.plQueue(p.id, 'shuffle'),
+      del: () => this.plDelete(p.id), delLabel: 'Удалить плейлист «' + p.title + '»',
+      rowStyle: s.plId === p.id ? 'box-shadow: inset 2px 0 0 #F2F2F2' : '',
+    }));
+    const plItems = plItems0.map((x, i) => ({
+      n: i + 1, title: x.title, statusLabel: ({ ready: 'готов', pending: 'ищем видео на YouTube', missing: 'не нашли на YouTube — вставь ссылку' })[x.status] || x.status,
+      up: () => this.plMove(x.id, 'up'), down: () => this.plMove(x.id, 'down'), remove: () => this.plRemove(x.id),
+      upOff: i === 0 || plOff, downOff: i === plItems0.length - 1 || plOff,
+    }));
+    const curFb = cur && cur.fb ? cur.fb : '';
+    const playerFresh = !!(s.player && (Date.now() / 1000 - Number(s.player.at)) < 120);
+    const playerLine = !playerFresh ? 'Плеер в OBS сейчас не открыт. Открой его, и здесь появится, открывается ли YouTube.'
+      : (s.player.ok ? 'YouTube у плеера в OBS открывается.' : 'YouTube у плеера в OBS не открывается. Включи VPN на компьютере со OBS. Пока можно играть свои файлы из «Своей музыки».');
+    const libItems = s.libItems.map((l) => ({
+      id: l.id, title: l.title, len: fmt(l.duration), size: (l.size / 1048576).toFixed(1) + ' МБ', by: l.by ? 'загрузил ' + l.by : '',
+      del: () => this.libDelete(l.id), delLabel: 'Удалить «' + l.title + '» из своей музыки',
+    }));
     const tab = tabDefs.some((t) => t[0] === s.tab) ? s.tab : 'queue';
     const pickTab = (k) => this.setState({ tab: k });
     const queuedBy = {};
@@ -912,11 +1192,31 @@ class Component extends DCLogic {
       impPickAllOn: impCnt.unsure > 0, pickAllLabel: 'Добавить все «Проверьте» (' + impCnt.unsure + ')', pickAllImport: () => this.pickAllImport(),
       impRunning: !!imp && imp.status === 'running', cancelImport: () => this.cancelImport(),
       tabId: 'tab-' + tab,
-      tabQueue: tab === 'queue', tabPending: tab === 'pending', tabHistory: tab === 'history',
+      tabQueue: tab === 'queue', tabPending: tab === 'pending', tabHistory: tab === 'history', tabPlaylists: tab === 'playlists', tabLibrary: tab === 'library',
+      playerLine, likeOn: curFb === 'like' ? 'true' : 'false', dislikeOn: curFb === 'dislike' ? 'true' : 'false',
+      likeLabel: 'Нравится', dislikeLabel: 'Не ставить', fbOff: !cur,
+      likeCur: () => this.feedbackTrack(cur, curFb === 'like' ? 0 : 1),
+      dislikeCur: () => this.feedbackTrack(cur, curFb === 'dislike' ? 0 : -1),
+      dislikeArtistCur: () => this.feedbackArtist(cur),
+      impQueueLabel: s.impToQueue ? 'Ставим треки в очередь' : 'Только в плейлист', toggleImpQueue: () => this.setState({ impToQueue: !s.impToQueue }),
+      impFileOff: !s.impFile || s.impBusy || locked, impFileBtn: s.impBusy ? 'Загружаем…' : 'Загрузить файл', setImpFile: (e) => this.setImpFile(e), startImportFile: () => this.startImportFile(),
+      plList, plItems, plHasOpen: !!s.plData, plOpenTitle, plOff, plLockedOn: locked,
+      plNone: s.plList.length === 0, plNew: s.plNew, setPlNew: (e) => this.setState({ plNew: e.target.value, plErr: '' }),
+      plCreateSubmit: (e) => { if (e && e.preventDefault) e.preventDefault(); this.plCreate(); },
+      plErrOn: !!s.plErr, plErr: s.plErr, plAddQ: s.plAddQ, setPlAddQ: (e) => this.setState({ plAddQ: e.target.value, plErr: '' }),
+      plAddSubmit: (e) => { if (e && e.preventDefault) e.preventDefault(); this.plAdd(); },
+      plMsgOn: !!s.plMsg, plMsg: s.plMsg, plItemsNone: !!s.plData && plItems.length === 0,
+      libItems, libNone: s.libItems.length === 0, libUsedText: (s.libUsed / 1048576).toFixed(1) + ' МБ из ' + Math.round(s.libQuota / 1048576) + ' МБ', libPct: s.libQuota ? Math.min(100, Math.round(s.libUsed / s.libQuota * 100)) : 0,
+      libLockedOn: locked, libOff: s.libBusy || locked, libFileOff: !s.libFile || s.libBusy || locked, libBtn: s.libBusy ? 'Загружаем…' : 'Загрузить',
+      setLibFile: (e) => this.setLibFile(e), libTitle: s.libTitle, setLibTitle: (e) => this.setState({ libTitle: e.target.value }),
+      libUpload: (e) => { if (e && e.preventDefault) e.preventDefault(); this.libUpload(); },
+      libErrOn: !!s.libErr, libErr: s.libErr, libFormats: s.libFormats.join(', '), libMax: s.libMax ? Math.round(s.libMax / 1048576) + ' МБ' : '',
 
       queue: s.queue.map((x, i) => ({
         n: i + 1, title: x.title, url: x.url, short: short(x), requester: x.requester || 'зритель', how: HOW[x.method] || x.method, len: fmt(x.duration),
         rowStyle: x.method === 'donate' ? 'box-shadow: inset 2px 0 0 #F2F2F2' : '',
+        fbText: x.fb === 'like' ? 'нравится' : (x.fb === 'dislike' ? 'не ставить' : ''), hasFb: !!x.fb,
+        dislikeLabel: 'Не ставить «' + x.title + '» и убрать из очереди', dislike: () => this.feedbackTrack(x, x.fb === 'dislike' ? 0 : -1),
         upLabel: 'Поднять «' + x.title + '» выше', delLabel: 'Убрать «' + x.title + '» из очереди',
         upOff: i === 0 || busy('up:' + x.id), busy: busy('remove:' + x.id),
         up: () => this.act('up', x),

@@ -50,7 +50,7 @@ function db_update(string $table, array $row, string $where, array $args): int {
     return db_exec('UPDATE ' . $table . ' SET ' . $set . ' WHERE ' . $where, array_merge(array_values($row), $args));
 }
 
-const DB_VERSION = 14;
+const DB_VERSION = 15;
 
 function db_migrate(PDO $pdo, string $driver): void {
     $sqlite = $driver === 'sqlite';
@@ -112,6 +112,16 @@ function db_migrate(PDO $pdo, string $driver): void {
         "site_watch (id $id, streamer_id INT NOT NULL, url $text NOT NULL, title {$vc(200)} NOT NULL DEFAULT '', note {$vc(300)} NOT NULL DEFAULT '', public INT NOT NULL DEFAULT 0, created_at INT NOT NULL DEFAULT 0)",
         "music_imports (id $id, user_id INT NOT NULL, source {$vc(16)} NOT NULL, title {$vc(200)} NOT NULL DEFAULT '', source_url $text, note $text, status {$vc(16)} NOT NULL DEFAULT 'running', created_at INT NOT NULL DEFAULT 0, updated_at INT NOT NULL DEFAULT 0)",
         "music_import_items (id $id, import_id INT NOT NULL, user_id INT NOT NULL, pos INT NOT NULL DEFAULT 0, artist {$vc(200)} NOT NULL DEFAULT '', track {$vc(300)} NOT NULL DEFAULT '', query $text, video_id {$vc(32)} NOT NULL DEFAULT '', video_title $text, status {$vc(16)} NOT NULL DEFAULT 'queued', reason {$vc(24)} NOT NULL DEFAULT '', info $text, cand_id {$vc(32)} NOT NULL DEFAULT '', cands $text, cand_title $text, cand_channel {$vc(128)} NOT NULL DEFAULT '', song_id INT NOT NULL DEFAULT 0, attempts INT NOT NULL DEFAULT 0, updated_at INT NOT NULL DEFAULT 0)",
+        // лайки и дизлайки: kind track|artist; chatter_id пустой — голос стримера или помощника, иначе — зритель
+        "music_feedback (id $id, user_id INT NOT NULL, kind {$vc(16)} NOT NULL, fkey {$vc(40)} NOT NULL, chatter_id {$vc(32)} NOT NULL DEFAULT '', value INT NOT NULL DEFAULT 1,
+          weight INT NOT NULL DEFAULT 1, norm $text, title $text, artist $text, by_login {$vc(64)} NOT NULL DEFAULT '', created_at INT NOT NULL DEFAULT 0, updated_at INT NOT NULL DEFAULT 0)",
+        "music_playlists (id $id, user_id INT NOT NULL, title {$vc(120)} NOT NULL DEFAULT '', source {$vc(16)} NOT NULL DEFAULT 'manual', created_at INT NOT NULL DEFAULT 0, updated_at INT NOT NULL DEFAULT 0)",
+        "music_playlist_items (id $id, playlist_id INT NOT NULL, user_id INT NOT NULL, pos INT NOT NULL DEFAULT 0, artist {$vc(200)} NOT NULL DEFAULT '', track {$vc(300)} NOT NULL DEFAULT '',
+          title $text, query $text, video_id {$vc(32)} NOT NULL DEFAULT '', duration INT NOT NULL DEFAULT 0, status {$vc(16)} NOT NULL DEFAULT 'ready', import_item_id INT NOT NULL DEFAULT 0,
+          created_at INT NOT NULL DEFAULT 0, updated_at INT NOT NULL DEFAULT 0)",
+        // файлы стримера для запасного плеера (когда YouTube недоступен): лежат вне веб-корня
+        "music_library (id $id, user_id INT NOT NULL, title {$vc(300)} NOT NULL DEFAULT '', file {$vc(80)} NOT NULL, mime {$vc(40)} NOT NULL DEFAULT '', size INT NOT NULL DEFAULT 0,
+          duration INT NOT NULL DEFAULT 0, uploaded_by {$vc(64)} NOT NULL DEFAULT '', created_at INT NOT NULL DEFAULT 0, last_played INT NOT NULL DEFAULT 0)",
     ];
     foreach ($tables as $t) $pdo->exec('CREATE TABLE IF NOT EXISTS ' . $t . $tail);
 
@@ -129,6 +139,11 @@ function db_migrate(PDO $pdo, string $driver): void {
         'idx_site_chat ON site_chat (streamer_id, id)',
         'idx_mi_user ON music_imports (user_id, id)',
         'idx_mi_items ON music_import_items (import_id, pos)',
+        'idx_mf_user ON music_feedback (user_id, kind, fkey)',
+        'idx_mpl_user ON music_playlists (user_id, id)',
+        'idx_mpi_list ON music_playlist_items (playlist_id, pos)',
+        'idx_mpi_import ON music_playlist_items (import_item_id)',
+        'idx_lib_user ON music_library (user_id, id)',
     ];
     foreach ($idx as $i) {
         try { $pdo->exec('CREATE INDEX ' . ($sqlite ? 'IF NOT EXISTS ' : '') . $i); } catch (Throwable $e) { /* индекс уже есть */ }
@@ -145,6 +160,10 @@ function db_migrate(PDO $pdo, string $driver): void {
     try { $pdo->exec('ALTER TABLE promo_uses ADD COLUMN amount INT NOT NULL DEFAULT 0'); } catch (Throwable $e) { /* колонка уже есть */ }
     // v14: синонимы команд (через запятую, без префикса)
     try { $pdo->exec("ALTER TABLE commands ADD COLUMN aliases {$vc(400)} NOT NULL DEFAULT ''"); } catch (Throwable $e) { /* колонка уже есть */ }
+    // v15: импорт создаёт плейлист и может не ставить треки в очередь; один голос на зрителя и трек
+    try { $pdo->exec('ALTER TABLE music_imports ADD COLUMN playlist_id INT NOT NULL DEFAULT 0'); } catch (Throwable $e) { /* колонка уже есть */ }
+    try { $pdo->exec('ALTER TABLE music_imports ADD COLUMN to_queue INT NOT NULL DEFAULT 1'); } catch (Throwable $e) { /* колонка уже есть */ }
+    try { $pdo->exec('CREATE UNIQUE INDEX ' . ($sqlite ? 'IF NOT EXISTS ' : '') . 'idx_mf_vote ON music_feedback (user_id, kind, fkey, chatter_id)'); } catch (Throwable $e) { /* индекс уже есть */ }
     // старые данные: цена без скидки — тарифы того времени, время оплаты — время создания, тариф и сумма активаций
     // индекс по времени оплаты создаём после колонки paid_at: раньше он не создавался, потому что колонки ещё не было
     try { $pdo->exec('CREATE INDEX ' . ($sqlite ? 'IF NOT EXISTS ' : '') . 'idx_pay_status ON payments (status, paid_at)'); } catch (Throwable $e) { /* индекс уже есть */ }

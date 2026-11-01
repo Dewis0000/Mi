@@ -6,6 +6,8 @@
 //   neighbor — исполнители, которых играют те же каналы StreOps, что и этого исполнителя (анонимно, по названиям песен)
 //   chart    — популярное в музыке по России
 //   explore  — исполнитель, которого на канале ещё не было, но его слушают другие каналы
+//   playlist — трек из плейлистов канала (стример сам собрал подборку), из него берём то, что давно не звучало
+//   Голоса (лайки и дизлайки) влияют на подбор: что не понравилось — не ставим, любимых исполнителей подталкиваем.
 // Правила повтора:
 //   песня — раз в 60 дней; название важнее исполнителя, значит кавер или перезалив той же песни тоже не повторяется;
 //   исполнитель — не в последних 5 треках и не больше 2 раз в последних 20.
@@ -19,9 +21,9 @@ const AUTO_LEVELS = [
 ];
 // Доли источников по стилям подбора (настройка канала «music.mix»)
 const AUTO_MIX = [
-    'mixed' => ['artist' => 35, 'neighbor' => 35, 'chart' => 20, 'explore' => 10],
-    'similar' => ['artist' => 50, 'neighbor' => 50],
-    'discover' => ['artist' => 15, 'neighbor' => 35, 'chart' => 25, 'explore' => 25],
+    'mixed' => ['artist' => 30, 'neighbor' => 30, 'chart' => 15, 'explore' => 10, 'playlist' => 15],
+    'similar' => ['artist' => 45, 'neighbor' => 35, 'playlist' => 20],
+    'discover' => ['artist' => 10, 'neighbor' => 25, 'chart' => 25, 'explore' => 25, 'playlist' => 15],
 ];
 // Служебные слова ролика: мешают сравнить названия (Official Video, HD, cover)
 const AUTO_NOISE = [
@@ -217,6 +219,14 @@ function music_search(string $raw): ?array {
 // Кандидаты одного источника. Исполнитель-источник выбирается заново на каждой попытке.
 function music_source_items(string $src, array $ctx): array {
     if ($src === 'chart') return music_from_items(yt_chart_items(), 'chart', 0.3, '', '');
+    if ($src === 'playlist') {
+        if (!$ctx['playlist']) return [];
+        $it = $ctx['playlist'][array_rand($ctx['playlist'])];
+        return [[
+            'id' => $it['id'], 'title' => $it['title'], 'artist' => $it['artist'], 'raw' => $it['raw'], 'key' => $it['key'],
+            'src' => 'playlist', 'aff' => 0.9, 'rank' => 0.8, 'seedRaw' => '', 'match' => false, 'plName' => $it['pl'],
+        ]];
+    }
     if ($src === 'explore') {
         if (!$ctx['explore']) return [];
         $key = (string)array_rand($ctx['explore']);
@@ -239,6 +249,7 @@ function music_source_items(string $src, array $ctx): array {
 // Текст причины для строки очереди: зрители и стример видят, почему выбран трек
 function music_reason(array $c): string {
     return match ($c['src']) {
+        'playlist' => 'из плейлиста «' . mb_substr((string)($c['plName'] ?? ''), 0, 40) . '»',
         'artist' => ($c['match'] ? 'ещё от ' : 'похоже на ') . $c['seedRaw'],
         'neighbor' => 'похоже на ' . $c['seedRaw'],
         'chart' => 'популярное сейчас',
@@ -276,6 +287,23 @@ function music_last_sources(array $mem): array {
     return $out;
 }
 
+// Трек из плейлистов канала, который не играл недавно: данные для подбора (исполнитель, ключ песни, название плейлиста)
+function music_playlist_pool(int $uid, array $mem): array {
+    $recent = array_map(fn($m) => $m['id'], array_slice($mem, 0, 60));
+    $out = [];
+    foreach (pl_auto_items($uid, $recent) as $it) {
+        $t = music_split($it['title']);
+        $out[] = ['id' => $it['id'], 'title' => $it['title'], 'artist' => $t['artist'], 'raw' => $t['raw'], 'key' => $t['key'], 'pl' => $it['pl']];
+    }
+    return $out;
+}
+
+// Трек или исполнитель, которых стример или зрители не хотят: такого не ставим ни при каких источниках
+function music_disliked(array $c, array $rules): bool {
+    if (isset($rules['blockTrack'][fb_fkey('track', $c['key'])])) return true;
+    return $c['artist'] !== '' && isset($rules['blockArtist'][fb_fkey('artist', $c['artist'])]);
+}
+
 // Выбор одного трека. Чистая функция: все данные приходят в $ctx, поэтому её можно проверить без сети.
 // $levels — ступени правил, которые пробуем по очереди. Возвращает кандидата с полями reason и level или null.
 function music_pick(array $cands, array $ctx, array $levels): ?array {
@@ -289,6 +317,7 @@ function music_pick(array $cands, array $ctx, array $levels): ?array {
         if (!$d || $d['live'] || !$d['embeddable'] || $d['duration'] < 60 || $d['duration'] > $maxLen) continue;
         if ((int)$ctx['cfg']['minViews'] > 0 && $d['views'] < (int)$ctx['cfg']['minViews']) continue;
         if (music_excluded($c['title'], $ctx['cfg']['stop'] ?? [])) continue;
+        if (music_disliked($c, $ctx['rules'] ?? [])) continue;
         $c['duration'] = $d['duration'];
         $c['views'] = $d['views'];
         $ok[] = $c;
@@ -309,10 +338,13 @@ function music_pick(array $cands, array $ctx, array $levels): ?array {
 function music_choose(array $pool, array $ctx): array {
     $rnd = $ctx['rnd'];
     $last = $ctx['last'];
+    $rules = $ctx['rules'] ?? [];
     $scored = [];
     foreach ($pool as $c) {
         $s = 0.5 * $c['rank'] + 0.6 * $c['aff'] + 0.2 * min(1, log10($c['views'] + 1) / 8) + 0.5 * $rnd();
         if ($c['artist'] !== '' && !isset($ctx['profile'][$c['artist']])) $s += 0.15; // исполнитель новый для канала
+        if (isset($rules['likeTrack'][fb_fkey('track', $c['key'])])) $s += 0.4; // эту песню стример или зрители любят
+        if ($c['artist'] !== '' && isset($rules['likeArtist'][fb_fkey('artist', $c['artist'])])) $s += 0.3;
         if (($last[0] ?? null) === $c['src']) $s -= 0.2;
         if (($last[0] ?? null) === $c['src'] && ($last[1] ?? null) === $c['src']) $s -= 0.4;
         $scored[] = [$s, $c];
@@ -333,14 +365,29 @@ function music_autofill(array $user): bool {
     $mem = music_memory($uid);
     $prof = music_profile($mem);
     $byUser = music_pool($uid);
+    // голоса: любимые исполнители поднимаются в профиле вкуса, нелюбимые из него уходят; треки из плейлистов тоже говорят о вкусе
+    $rules = fb_rules($uid);
+    foreach ($rules['likeArtistNames'] as $norm => $raw) {
+        $prof['w'][$norm] = ($prof['w'][$norm] ?? 0) + 1.5;
+        $prof['raw'][$norm] ??= $raw;
+    }
+    foreach ($rules['blockArtistNames'] as $norm => $raw) unset($prof['w'][$norm]);
+    $playlist = music_playlist_pool($uid, $mem);
+    foreach ($playlist as $it) {
+        if ($it['artist'] === '') continue;
+        $prof['w'][$it['artist']] = ($prof['w'][$it['artist']] ?? 0) + 0.6;
+        $prof['raw'][$it['artist']] ??= $it['raw'];
+    }
     $ctx = [
         'cfg' => $cfg, 'mem' => $mem, 'now' => now(), 'profile' => $prof['w'], 'details' => [], 'last' => music_last_sources($mem),
         'rnd' => fn() => mt_rand() / mt_getrandmax(),
         'seeds' => music_seeds($prof), 'byUser' => $byUser,
         'explore' => music_explore($byUser, $prof['w']),
+        'rules' => $rules, 'playlist' => $playlist,
     ];
     $mixKey = is_string($cfg['mix'] ?? null) ? $cfg['mix'] : 'mixed';
     $mix = AUTO_MIX[$mixKey] ?? AUTO_MIX['mixed'];
+    if (!$playlist) unset($mix['playlist']); // в плейлистах пусто — источник не тратим
     // Два круга источников: во втором каждая попытка берёт другого исполнителя или соседа, пул растёт.
     // Чарт — последний запасной вариант. Второй круг идёт только если первый ничего не дал.
     $order = array_merge(music_draw_sources($mix), music_draw_sources($mix), ['chart']);
